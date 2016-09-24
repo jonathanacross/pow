@@ -11,16 +11,17 @@ import javax.swing.*;
 
 public class MainDraw extends JPanel {
 
-    private GameState gs = new GameState();
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        GameState gs = GameState.getInstance();
         g.drawRect(gs.x, gs.y, 50, 50);
         g.fillRect(gs.x, gs.y, 50, 50);
         g.setColor(Color.BLACK);
     }
 
     public void processKey(KeyEvent e) {
+        GameState gs = GameState.getInstance();
         if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             gs.moveRight();
         else if (e.getKeyCode() == KeyEvent.VK_LEFT)
