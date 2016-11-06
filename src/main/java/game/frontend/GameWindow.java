@@ -1,0 +1,40 @@
+package game.frontend;
+
+import game.GameBackend;
+import game.GameState;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+
+public class GameWindow extends AbstractWindow {
+
+    public GameWindow(int x, int y, int width, int height, boolean visible, GameBackend backend) {
+        super(x, y, width, height, visible, backend);
+    }
+
+    @Override
+    public void processKey(KeyEvent e) {
+
+    }
+
+    @Override
+    public void drawContents(Graphics graphics) {
+        GameState gs = backend.getGameState();
+
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, width, height);
+        graphics.setColor(Color.WHITE);
+
+        int squareSize = 18;
+        Font f = new Font("Courier New", Font.PLAIN, squareSize);
+        graphics.setFont(f);
+        for (int r = 0; r < gs.map.height; r++) {
+            for (int c = 0; c < gs.map.width; c++) {
+                graphics.drawString(Character.toString(gs.map.map[r][c]), c*squareSize, (r+1)*squareSize);
+            }
+        }
+        graphics.drawString("@", gs.x*squareSize, (gs.y+1)*squareSize);
+   }
+}

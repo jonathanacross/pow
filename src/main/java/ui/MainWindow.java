@@ -1,6 +1,4 @@
-package ui; /**
- * Created by jonathan on 9/23/16.
- */
+package ui;
 
 import game.CommandRequest;
 import game.GameBackend;
@@ -37,9 +35,9 @@ public class MainWindow extends JFrame implements KeyListener {
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         setTitle("Pearls of Wisdom");
-        setResizable(false);
-        setSize(600, 600);
-        setMinimumSize(new Dimension(600, 600));
+        setResizable(true);
+        setSize(610, 610);
+        setMinimumSize(new Dimension(610, 610));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         draw = new MainDraw(gameBackend, commandQueue);
         getContentPane().add(draw);
