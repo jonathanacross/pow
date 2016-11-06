@@ -21,7 +21,7 @@ public class GameBackend {
         observers.add(observer);
     }
 
-    private void notifyUpdate() {
+    public void notifyUpdate() {
         for (Observer o: observers) {
             o.update();
         }

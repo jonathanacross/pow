@@ -45,43 +45,6 @@ public class MainWindow extends JFrame implements KeyListener {
         getContentPane().add(draw);
         pack();
 
-        JMenuBar menuBar = initMenuBar(gameBackend);
-        setJMenuBar(menuBar);
-
         setVisible(true);
     }
-
-    private JMenuBar initMenuBar(GameBackend gameBackend) {
-        JMenuBar menuBar = new JMenuBar();
-
-        JMenu fileMenu = new JMenu("File");
-        JMenuItem newItem = new JMenuItem("New");
-        JMenuItem openItem = new JMenuItem("Open");
-        JMenuItem saveItem = new JMenuItem("Save");
-        JMenuItem quitItem = new JMenuItem("Quit");
-        menuBar.add(fileMenu);
-        fileMenu.add(newItem);
-        fileMenu.add(openItem);
-        fileMenu.add(saveItem);
-        fileMenu.add(quitItem);
-        newItem.addActionListener((ActionEvent event) -> {
-            gameBackend.newGame();
-        });
-        openItem.addActionListener(new Hello.OpenListener(this, gameBackend));
-        saveItem.addActionListener(new Hello.SaveListener(this, gameBackend));
-        quitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
-        quitItem.addActionListener((ActionEvent event) -> {
-            System.exit(0);
-        });
-
-        JMenu helpMenu = new JMenu("Help");
-        JMenuItem aboutItem = new JMenuItem("About");
-        JMenuItem helpItem = new JMenuItem("Help");
-        menuBar.add(helpMenu);
-        helpMenu.add(aboutItem);
-        helpMenu.add(helpItem);
-
-        return menuBar;
-    }
-
 }

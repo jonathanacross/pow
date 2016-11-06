@@ -15,8 +15,13 @@ public class Move extends CommandRequest {
     @Override
     public void process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        gs.x += dx;
-        gs.y += dy;
-        backend.shootArrow();
+        int newx = gs.x + dx;
+        int newy = gs.y + dy;
+        if (gs.map.map[newy][newx] != '#') {
+            gs.x = newx;
+            gs.y = newy;
+        }
+        backend.notifyUpdate();
+        //backend.shootArrow();
     }
 }
