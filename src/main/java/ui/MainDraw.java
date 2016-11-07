@@ -1,8 +1,6 @@
 package ui;
 
-import game.CommandRequest;
 import game.GameBackend;
-import game.Move;
 import game.frontend.Frontend;
 import util.Observer;
 
@@ -10,7 +8,8 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.util.concurrent.BlockingQueue;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MainDraw extends JPanel implements Observer {
 
@@ -20,16 +19,18 @@ public class MainDraw extends JPanel implements Observer {
     private int panelHeight = 610;
 
     double boxTimer;
-    GameBackend gameBackend;
     Frontend frontend;
-    BlockingQueue<CommandRequest> commandQueue;
+    Queue<KeyEvent> keyEventQueue;
 
-    public MainDraw(GameBackend gameBackend, BlockingQueue<CommandRequest> commandQueue) {
-        boxTimer = 0.0;
-        this.gameBackend = gameBackend;
-        this.commandQueue = commandQueue;
-        gameBackend.attach(this);
+    public MainDraw() {
+        keyEventQueue = new ConcurrentLinkedQueue<>();
+
+        GameBackend gameBackend = new GameBackend();
         frontend = new Frontend(0, 0, panelWidth, panelHeight, gameBackend);
+        GameThread gameThread = new GameThread(frontend, gameBackend, keyEventQueue, this);
+        (new Thread(gameThread)).start();
+
+        boxTimer = 0.0;
 
         if (dbImage == null) {
             dbImage = createImage(this.panelWidth, this.panelHeight);
@@ -60,28 +61,7 @@ public class MainDraw extends JPanel implements Observer {
     }
 
     public void processKey(KeyEvent e) {
-        try {
-            if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-                commandQueue.put(new Move(1, 0));
-            else if (e.getKeyCode() == KeyEvent.VK_LEFT)
-                commandQueue.put(new Move(-1, 0));
-            else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-                commandQueue.put(new Move(0, 1));
-            else if (e.getKeyCode() == KeyEvent.VK_UP)
-                commandQueue.put(new Move(0, -1));
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void updateAnimation() {
-        boxTimer += 0.01;
-        if (boxTimer > 1) {
-            boxTimer -= 1.0;
-        }
-        render();
-        paintScreen();
-        //repaint();
+        keyEventQueue.add(e);
     }
 
     // called when backend changes

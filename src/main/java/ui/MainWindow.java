@@ -29,7 +29,7 @@ public class MainWindow extends JFrame implements KeyListener {
     public void keyTyped(KeyEvent e) {
     }
 
-    public MainWindow(GameBackend gameBackend, BlockingQueue<CommandRequest> commandQueue) {
+    public MainWindow() {
 
         addKeyListener(this);
         setFocusable(true);
@@ -39,7 +39,7 @@ public class MainWindow extends JFrame implements KeyListener {
         setSize(610, 610);
         setMinimumSize(new Dimension(610, 610));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        draw = new MainDraw(gameBackend, commandQueue);
+        draw = new MainDraw();
         getContentPane().add(draw);
         pack();
 

@@ -1,8 +1,5 @@
 package game;
 
-/**
- * Created by jonathan on 9/25/16.
- */
 public class Move extends CommandRequest {
     int dx;
     int dy;
@@ -21,7 +18,8 @@ public class Move extends CommandRequest {
             gs.x = newx;
             gs.y = newy;
         }
-        backend.notifyUpdate();
+        // TODO: notify frontend that we need an update
+        //backend.notifyUpdate();
         //backend.shootArrow();
     }
 }

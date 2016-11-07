@@ -1,8 +1,7 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.List;
-import util.Observer;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class GameBackend {
     public GameState getGameState() {
@@ -10,20 +9,15 @@ public class GameBackend {
     }
 
     private GameState gameState;
-    public List<Observer> observers;  // TODO: maybe only need one - the UI
+    public Queue<CommandRequest> commandQueue = new LinkedList<>();
 
     public GameBackend() {
         gameState = new GameState();
-        observers = new ArrayList<>();
     }
 
-    public void attach(Observer observer) {
-        observers.add(observer);
-    }
-
-    public void notifyUpdate() {
-        for (Observer o: observers) {
-            o.update();
+    public void processCommand() {
+        if (! commandQueue.isEmpty()) {
+            commandQueue.poll().process(this);
         }
     }
 
@@ -33,19 +27,5 @@ public class GameBackend {
 
     public void load(GameState gameState) {
         gameState = gameState;
-    }
-
-    public void shootArrow() {
-        gameState.arrow = 200;
-        notifyUpdate();
-        while (gameState.arrow > 0) {
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            gameState.arrow -= 1;
-            notifyUpdate();
-        }
     }
 }

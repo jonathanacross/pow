@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.Stack;
 
+// TODO: rename to desktop, or windowManager?
 public class Frontend extends AbstractWindow {
 
     private Stack<AbstractWindow> windows;

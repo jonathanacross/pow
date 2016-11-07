@@ -2,6 +2,7 @@ package game.frontend;
 
 import game.GameBackend;
 import game.GameState;
+import game.Move;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,7 +17,14 @@ public class GameWindow extends AbstractWindow {
 
     @Override
     public void processKey(KeyEvent e) {
-
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+            backend.commandQueue.add(new Move(1, 0));
+        else if (e.getKeyCode() == KeyEvent.VK_LEFT)
+            backend.commandQueue.add(new Move(-1, 0));
+        else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+            backend.commandQueue.add(new Move(0, 1));
+        else if (e.getKeyCode() == KeyEvent.VK_UP)
+            backend.commandQueue.add(new Move(0, -1));
     }
 
     @Override
