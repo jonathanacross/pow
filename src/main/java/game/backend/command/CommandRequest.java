@@ -1,8 +1,7 @@
-package game;
+package game.backend.command;
 
-/**
- * Created by jonathan on 9/25/16.
- */
+import game.GameBackend;
+
 public abstract class CommandRequest {
     public abstract void process(GameBackend backend);
 }
