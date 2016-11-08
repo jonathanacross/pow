@@ -1,5 +1,7 @@
 package game;
 
+import game.backend.command.CommandRequest;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -12,7 +14,7 @@ public class GameBackend {
     public Queue<CommandRequest> commandQueue = new LinkedList<>();
 
     public GameBackend() {
-        gameState = new GameState();
+        this.gameState = new GameState();
     }
 
     public void processCommand() {

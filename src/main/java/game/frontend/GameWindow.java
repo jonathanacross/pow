@@ -2,7 +2,7 @@ package game.frontend;
 
 import game.GameBackend;
 import game.GameState;
-import game.Move;
+import game.backend.command.Move;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -11,8 +11,8 @@ import java.awt.event.KeyEvent;
 
 public class GameWindow extends AbstractWindow {
 
-    public GameWindow(int x, int y, int width, int height, boolean visible, GameBackend backend) {
-        super(x, y, width, height, visible, backend);
+    public GameWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
+        super(x, y, width, height, visible, backend, frontend);
     }
 
     @Override

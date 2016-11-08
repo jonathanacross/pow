@@ -13,14 +13,16 @@ public abstract class AbstractWindow {
     protected int height;
     protected boolean visible;
     protected GameBackend backend;
+    protected Frontend frontend;
 
-    public AbstractWindow(int x, int y, int width, int height, boolean visible, GameBackend backend) {
+    public AbstractWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.visible = visible;
         this.backend = backend;
+        this.frontend = frontend;
     }
 
     public void resize(int width, int height) {
@@ -50,5 +52,4 @@ public abstract class AbstractWindow {
             drawContents(contentGraphics);
         }
     }
-
 }

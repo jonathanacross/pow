@@ -1,6 +1,7 @@
 package ui;
 
 import game.GameBackend;
+import game.GameState;
 import game.frontend.Frontend;
 import util.Observer;
 
@@ -9,13 +10,11 @@ import java.util.Queue;
 
 public class GameThread implements Runnable {
     public Frontend gameFrontend;
-    public GameBackend gameBackend;
     private Queue<KeyEvent> queue;
     private Observer observer;
 
 
-    public GameThread(Frontend gameFrontend, GameBackend gameBackend, Queue<KeyEvent> queue, Observer observer) {
-        this.gameBackend = gameBackend;
+    public GameThread(Frontend gameFrontend, Queue<KeyEvent> queue, Observer observer) {
         this.gameFrontend = gameFrontend;
         this.queue = queue;
         this.observer = observer;
@@ -29,10 +28,6 @@ public class GameThread implements Runnable {
                     // will send things to the backend..
                     gameFrontend.processKey(keyEvent);
                 }
-
-                // TODO: should this be moved inside processKey?
-                // now.. process any stuff in the backend
-                gameBackend.processCommand();
 
                 // force redraw..
                 observer.update();

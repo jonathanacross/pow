@@ -1,4 +1,7 @@
-package game;
+package game.backend.command;
+
+import game.GameBackend;
+import game.GameState;
 
 public class Move extends CommandRequest {
     int dx;

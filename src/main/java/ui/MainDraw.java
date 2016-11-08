@@ -18,19 +18,15 @@ public class MainDraw extends JPanel implements Observer {
     private int panelWidth = 610;
     private int panelHeight = 610;
 
-    double boxTimer;
     Frontend frontend;
     Queue<KeyEvent> keyEventQueue;
 
     public MainDraw() {
         keyEventQueue = new ConcurrentLinkedQueue<>();
-
-        GameBackend gameBackend = new GameBackend();
-        frontend = new Frontend(0, 0, panelWidth, panelHeight, gameBackend);
-        GameThread gameThread = new GameThread(frontend, gameBackend, keyEventQueue, this);
+        //GameBackend gameBackend = new GameBackend();
+        frontend = new Frontend(panelWidth, panelHeight);
+        GameThread gameThread = new GameThread(frontend, keyEventQueue, this);
         (new Thread(gameThread)).start();
-
-        boxTimer = 0.0;
 
         if (dbImage == null) {
             dbImage = createImage(this.panelWidth, this.panelHeight);
@@ -68,7 +64,5 @@ public class MainDraw extends JPanel implements Observer {
     public void update() {
         render();
         paintScreen();
-//        repaint();
-//        paintImmediately(0,0,600,600);
     }
 }
