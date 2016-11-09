@@ -6,13 +6,14 @@ import pow.util.Observer;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class MainDraw extends JPanel implements Observer {
+public class MainDraw extends JPanel implements Observer, ComponentListener {
 
-    private Graphics graphics;
     private Image dbImage = null;
     private int panelWidth = 610;
     private int panelHeight = 610;
@@ -22,23 +23,28 @@ public class MainDraw extends JPanel implements Observer {
 
     public MainDraw() {
         keyEventQueue = new ConcurrentLinkedQueue<>();
-        //GameBackend gameBackend = new GameBackend();
         frontend = new Frontend(panelWidth, panelHeight);
         GameThread gameThread = new GameThread(frontend, keyEventQueue, this);
         (new Thread(gameThread)).start();
+        addComponentListener(this);
+   }
 
-        if (dbImage == null) {
-            dbImage = createImage(this.panelWidth, this.panelHeight);
-            return;
-        }
-        graphics = dbImage.getGraphics();
-    }
+   @Override
+   public void paint(Graphics graphics) {
+       // Theoretically shouldn't have to override this, but doing this
+       // removes flashing when the window is resized.
+       try {
+           if (graphics != null && dbImage != null) {
+               graphics.drawImage(dbImage, 0, 0, null);
+           }
+       } catch (Exception e) { System.out.println("Graphics context error: " + e); }
+   }
 
     private void paintScreen() {
         Graphics g;
         try {
             g = this.getGraphics();
-            if ((g != null) && (dbImage != null))  {
+            if (g != null && dbImage != null) {
                 g.drawImage(dbImage, 0, 0, null);
                 g.dispose();
             }
@@ -46,13 +52,13 @@ public class MainDraw extends JPanel implements Observer {
     }
 
     public void render() {
-
         if (dbImage == null) {
-            dbImage = createImage(this.panelWidth, this.panelHeight);
-            return;
+            dbImage = createImage(getWidth(), getHeight());
         }
-        graphics = dbImage.getGraphics();
-        frontend.draw(graphics);
+        if (dbImage != null) {
+            Graphics graphics = dbImage.getGraphics();
+            frontend.draw(graphics);
+        }
     }
 
     public void processKey(KeyEvent e) {
@@ -63,5 +69,21 @@ public class MainDraw extends JPanel implements Observer {
     public void update() {
         render();
         paintScreen();
+    }
+
+    public void componentHidden(ComponentEvent event) {
+    }
+
+    public void componentMoved(ComponentEvent event) {
+    }
+
+    public void componentResized(ComponentEvent event) {
+        dbImage = null;  // force render to reallocate the image buffer
+        frontend.resize(getWidth(), getHeight());
+        render();
+        paintScreen();
+    }
+
+    public void componentShown(ComponentEvent event) {
     }
 }

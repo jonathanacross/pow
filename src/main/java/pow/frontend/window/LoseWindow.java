@@ -1,6 +1,7 @@
-package pow.frontend;
+package pow.frontend.window;
 
 import pow.backend.GameBackend;
+import pow.frontend.Frontend;
 
 import java.awt.Color;
 import java.awt.Font;

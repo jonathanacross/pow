@@ -5,6 +5,6 @@ import pow.backend.event.GameEvent;
 
 import java.util.List;
 
-public abstract class CommandRequest {
-    public abstract List<GameEvent> process(GameBackend backend);
+public interface CommandRequest {
+    List<GameEvent> process(GameBackend backend);
 }

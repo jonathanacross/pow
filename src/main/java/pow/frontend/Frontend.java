@@ -2,11 +2,22 @@ package pow.frontend;
 
 import pow.backend.GameBackend;
 import pow.backend.event.GameEvent;
+import pow.frontend.effect.Effect;
+import pow.frontend.effect.GlyphLoc;
+import pow.frontend.effect.RocketEffect;
+import pow.frontend.window.AbstractWindow;
+import pow.frontend.window.GameWindow;
+import pow.frontend.window.LoseWindow;
+import pow.frontend.window.WelcomeWindow;
+import pow.frontend.window.WinWindow;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 // TODO: make interface for this
@@ -21,10 +32,30 @@ public class Frontend {
     private WinWindow winWindow;
     private LoseWindow loseWindow;
     private GameBackend gameBackend;
+    private Queue<KeyEvent> keyEvents;
+
+    private List<Effect> effects;
+    private boolean dirty;  // need to redraw
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public List<Effect> getEffects() {
+        return effects;
+    }
 
     public Frontend(int width, int height) {
         this.width = width;
         this.height = height;
+        this.dirty = true;
+        this.effects = new ArrayList<>();
+        this.keyEvents = new LinkedList<>();
+
         gameBackend = new GameBackend();
         gameWindow = new GameWindow(5, 5, 600, 600, true, gameBackend, this);
         welcomeWindow = new WelcomeWindow(5, 5, 600, 600, true, gameBackend, this);
@@ -38,10 +69,34 @@ public class Frontend {
 
     public void open(AbstractWindow window) {
         windows.push(window);
+        dirty = true;
     }
 
     public void close() {
         windows.pop();
+        dirty = true;
+    }
+
+    public void update() {
+        while (! effects.isEmpty()) {
+            Effect effect = effects.get(0);
+            dirty = true;
+            if (effect.update()) {
+                // continue animation of current effect
+                return;
+            } else {
+                effects.remove(0);
+            }
+        }
+
+        KeyEvent keyEvent = keyEvents.poll();
+        if (keyEvent != null) {
+            processKey(keyEvent);
+        }
+    }
+
+    public void addKeyEvent(KeyEvent e) {
+        this.keyEvents.add(e);
     }
 
     public void processKey(KeyEvent e) {
@@ -49,14 +104,15 @@ public class Frontend {
             windows.peek().processKey(e);
         }
 
-        // TODO: should this be moved inside processKey?
-        // now.. process any stuff in the gameBackend
         List<GameEvent> events = gameBackend.processCommand();
-
+        if (! events.isEmpty()) {
+            dirty = true;
+        }
         for (GameEvent event : events) {
             switch (event) {
                 case WON_GAME: open(this.winWindow); break;
                 case LOST_GAME: open(this.loseWindow); break;
+                case ROCKET: this.effects.add(new RocketEffect(this.gameBackend)); break;
             }
         }
     }
@@ -67,5 +123,10 @@ public class Frontend {
         for (AbstractWindow w : windows) {
             w.draw(graphics);
         }
+    }
+
+    public void resize(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 }

@@ -23,17 +23,16 @@ public class GameThread implements Runnable {
             while (true) {
                 KeyEvent keyEvent = queue.poll();
                 if (keyEvent != null) {
-                    // will send things to the backend..
-                    gameFrontend.processKey(keyEvent);
+                    gameFrontend.addKeyEvent(keyEvent);
                 }
 
-                // force redraw..
-                observer.update();
-                //gameBackend.notifyUpdate();
+                gameFrontend.update();
+                if (gameFrontend.isDirty()) {
+                    observer.update();
+                    gameFrontend.setDirty(false);
+                }
 
                 Thread.sleep(50);
-
-                //request.process(gameBackend);
             }
         } catch (InterruptedException ex) {
             ex.printStackTrace();

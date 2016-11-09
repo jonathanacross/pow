@@ -7,7 +7,7 @@ import pow.backend.event.GameEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Move extends CommandRequest {
+public class Move implements CommandRequest {
     int dx;
     int dy;
 
@@ -16,8 +16,9 @@ public class Move extends CommandRequest {
         this.dy = dy;
     }
 
-    private List<GameEvent> checkWinLose(GameBackend backend) {
+    private List<GameEvent> addEvents(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
+        events.add(GameEvent.MOVED);
         GameState gs = backend.getGameState();
         if (gs.map.map[gs.y][gs.x] == 'W') {
             events.add(GameEvent.WON_GAME);
@@ -37,6 +38,6 @@ public class Move extends CommandRequest {
             gs.y = newy;
         }
 
-        return checkWinLose(backend);
+        return addEvents(backend);
     }
 }

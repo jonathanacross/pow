@@ -1,8 +1,11 @@
-package pow.frontend;
+package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.command.FireRocket;
 import pow.backend.command.Move;
+import pow.frontend.Frontend;
+import pow.frontend.effect.GlyphLoc;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -34,6 +37,9 @@ public class GameWindow extends AbstractWindow {
             case KeyEvent.VK_K:
                 backend.commandQueue.add(new Move(0, -1));
                 break;
+            case KeyEvent.VK_F:
+                backend.commandQueue.add(new FireRocket());
+                break;
         }
     }
 
@@ -54,5 +60,11 @@ public class GameWindow extends AbstractWindow {
             }
         }
         graphics.drawString("@", gs.x*squareSize, (gs.y+1)*squareSize);
+
+        if (! frontend.getEffects().isEmpty()) {
+            for (GlyphLoc glyphLoc : frontend.getEffects().get(0).render()) {
+                graphics.drawString(Character.toString(glyphLoc.getC()), glyphLoc.getX() * squareSize, (glyphLoc.getY() + 1)* squareSize);
+            }
+        }
    }
 }
