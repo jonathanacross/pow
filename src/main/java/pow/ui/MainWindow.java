@@ -1,4 +1,4 @@
-package ui;
+package pow.ui;
 
 import javax.swing.JFrame;
 import java.awt.Dimension;

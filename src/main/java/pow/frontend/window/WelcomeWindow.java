@@ -1,7 +1,7 @@
-package game.frontend;
+package pow.frontend.window;
 
-import game.GameBackend;
-import game.backend.command.StartGame;
+import pow.backend.GameBackend;
+import pow.frontend.Frontend;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,8 +16,8 @@ public class WelcomeWindow extends AbstractWindow {
 
     @Override
     public void processKey(KeyEvent e) {
+        System.out.println("got keypress");
         frontend.close();
-        backend.commandQueue.add(new StartGame());
     }
 
     @Override

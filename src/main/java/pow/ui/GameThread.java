@@ -1,9 +1,7 @@
-package ui;
+package pow.ui;
 
-import game.GameBackend;
-import game.GameState;
-import game.frontend.Frontend;
-import util.Observer;
+import pow.frontend.Frontend;
+import pow.util.Observer;
 
 import java.awt.event.KeyEvent;
 import java.util.Queue;
@@ -25,17 +23,16 @@ public class GameThread implements Runnable {
             while (true) {
                 KeyEvent keyEvent = queue.poll();
                 if (keyEvent != null) {
-                    // will send things to the backend..
-                    gameFrontend.processKey(keyEvent);
+                    gameFrontend.addKeyEvent(keyEvent);
                 }
 
-                // force redraw..
-                observer.update();
-                //gameBackend.notifyUpdate();
+                gameFrontend.update();
+                if (gameFrontend.isDirty()) {
+                    observer.update();
+                    gameFrontend.setDirty(false);
+                }
 
-                Thread.sleep(100);
-
-                //request.process(gameBackend);
+                Thread.sleep(50);
             }
         } catch (InterruptedException ex) {
             ex.printStackTrace();

@@ -1,8 +1,5 @@
-package game.backend;
+package pow.backend;
 
-/**
- * Created by jonathan on 11/4/16.
- */
 public class GameMap {
     public char[][] map;
     public int width;
