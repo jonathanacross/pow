@@ -33,7 +33,7 @@ public class GameThread implements Runnable {
                 observer.update();
                 //gameBackend.notifyUpdate();
 
-                Thread.sleep(100);
+                Thread.sleep(50);
 
                 //request.process(gameBackend);
             }

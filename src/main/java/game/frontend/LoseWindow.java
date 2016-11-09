@@ -7,9 +7,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
-public class WelcomeWindow extends AbstractWindow {
+public class LoseWindow extends AbstractWindow {
 
-    public WelcomeWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
+    public LoseWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
         super(x, y, width, height, visible, backend, frontend);
     }
 
@@ -27,11 +27,11 @@ public class WelcomeWindow extends AbstractWindow {
         Font f = new Font("Courier", Font.PLAIN, 2*squareSize);
         graphics.setFont(f);
         graphics.setColor(Color.YELLOW);
-        graphics.drawString("Pearls of Wisdom", 30, 50);
+        graphics.drawString("You died. :(", 30, 50);
 
         f = new Font("Courier", Font.PLAIN, squareSize);
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press any key to begin.", 30, 150);
+        graphics.drawString("Press any key to continue.", 30, 150);
     }
 }

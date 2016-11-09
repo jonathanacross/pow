@@ -1,8 +1,11 @@
 package game;
 
 import game.backend.command.CommandRequest;
+import game.backend.event.GameEvent;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class GameBackend {
@@ -17,10 +20,14 @@ public class GameBackend {
         this.gameState = new GameState();
     }
 
-    public void processCommand() {
+    public List<GameEvent> processCommand() {
+        List<GameEvent> events = new ArrayList<>();
+
         if (! commandQueue.isEmpty()) {
-            commandQueue.poll().process(this);
+            events.addAll(commandQueue.poll().process(this));
         }
+
+        return events;
     }
 
     public void newGame() {

@@ -2,6 +2,10 @@ package game.backend.command;
 
 import game.GameBackend;
 import game.GameState;
+import game.backend.event.GameEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Move extends CommandRequest {
     int dx;
@@ -12,8 +16,19 @@ public class Move extends CommandRequest {
         this.dy = dy;
     }
 
+    private List<GameEvent> checkWinLose(GameBackend backend) {
+        List<GameEvent> events = new ArrayList<>();
+        GameState gs = backend.getGameState();
+        if (gs.map.map[gs.y][gs.x] == 'W') {
+            events.add(GameEvent.WON_GAME);
+        } else if (gs.map.map[gs.y][gs.x] == 'L') {
+            events.add(GameEvent.LOST_GAME);
+        }
+        return events;
+    }
+
     @Override
-    public void process(GameBackend backend) {
+    public List<GameEvent> process(GameBackend backend) {
         GameState gs = backend.getGameState();
         int newx = gs.x + dx;
         int newy = gs.y + dy;
@@ -21,8 +36,7 @@ public class Move extends CommandRequest {
             gs.x = newx;
             gs.y = newy;
         }
-        // TODO: notify frontend that we need an update
-        //backend.notifyUpdate();
-        //backend.shootArrow();
+
+        return checkWinLose(backend);
     }
 }

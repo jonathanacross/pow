@@ -1,7 +1,10 @@
 package game.backend.command;
 
 import game.GameBackend;
+import game.backend.event.GameEvent;
+
+import java.util.List;
 
 public abstract class CommandRequest {
-    public abstract void process(GameBackend backend);
+    public abstract List<GameEvent> process(GameBackend backend);
 }
