@@ -1,7 +1,7 @@
-package game.frontend;
+package pow.frontend;
 
-import game.GameBackend;
-import game.backend.event.GameEvent;
+import pow.backend.GameBackend;
+import pow.backend.event.GameEvent;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -56,7 +56,7 @@ public class Frontend {
         for (GameEvent event : events) {
             switch (event) {
                 case WON_GAME: open(this.winWindow); break;
-                case LOST_GAME:_GAME: open(this.loseWindow); break;
+                case LOST_GAME: open(this.loseWindow); break;
             }
         }
     }

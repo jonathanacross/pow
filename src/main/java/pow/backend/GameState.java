@@ -1,6 +1,4 @@
-package game;
-
-import game.backend.GameMap;
+package pow.backend;
 
 import java.io.Serializable;
 
@@ -8,21 +6,12 @@ import java.io.Serializable;
 // so we can save/load properly
 public class GameState implements Serializable {
 
-    public enum MetaGameState {
-        WELCOME,
-        IN_GAME,
-        WON,
-        LOST
-    }
-
-    public MetaGameState metaGameState;
     public GameMap map;
     public int x;
     public int y;
     public int arrow;
 
     public GameState() {
-        metaGameState = MetaGameState.WELCOME;
         map = new GameMap();
         x = 15;
         y = 15;

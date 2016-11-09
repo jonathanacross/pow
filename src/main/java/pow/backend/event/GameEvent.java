@@ -1,4 +1,4 @@
-package game.backend.event;
+package pow.backend.event;
 
 // class to report back interesting things that the UI should show
 public enum GameEvent {

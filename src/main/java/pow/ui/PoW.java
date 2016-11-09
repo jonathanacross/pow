@@ -1,8 +1,8 @@
-package ui;
+package pow.ui;
 
 import javax.swing.SwingUtilities;
 
-public class Hello {
+public class PoW {
 
 //    public static class OpenListener implements ActionListener {
 //

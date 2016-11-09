@@ -1,8 +1,8 @@
-package game.frontend;
+package pow.frontend;
 
-import game.GameBackend;
-import game.GameState;
-import game.backend.command.Move;
+import pow.backend.GameBackend;
+import pow.backend.GameState;
+import pow.backend.command.Move;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,14 +17,24 @@ public class GameWindow extends AbstractWindow {
 
     @Override
     public void processKey(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-            backend.commandQueue.add(new Move(1, 0));
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT)
-            backend.commandQueue.add(new Move(-1, 0));
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-            backend.commandQueue.add(new Move(0, 1));
-        else if (e.getKeyCode() == KeyEvent.VK_UP)
-            backend.commandQueue.add(new Move(0, -1));
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_L:
+                backend.commandQueue.add(new Move(1, 0));
+                break;
+            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_H:
+                backend.commandQueue.add(new Move(-1, 0));
+                break;
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_J:
+                backend.commandQueue.add(new Move(0, 1));
+                break;
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_K:
+                backend.commandQueue.add(new Move(0, -1));
+                break;
+        }
     }
 
     @Override

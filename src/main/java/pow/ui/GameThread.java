@@ -1,9 +1,7 @@
-package ui;
+package pow.ui;
 
-import game.GameBackend;
-import game.GameState;
-import game.frontend.Frontend;
-import util.Observer;
+import pow.frontend.Frontend;
+import pow.util.Observer;
 
 import java.awt.event.KeyEvent;
 import java.util.Queue;

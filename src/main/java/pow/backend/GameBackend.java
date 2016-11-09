@@ -1,7 +1,7 @@
-package game;
+package pow.backend;
 
-import game.backend.command.CommandRequest;
-import game.backend.event.GameEvent;
+import pow.backend.command.CommandRequest;
+import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

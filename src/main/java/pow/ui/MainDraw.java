@@ -1,8 +1,7 @@
-package ui;
+package pow.ui;
 
-import game.GameBackend;
-import game.frontend.Frontend;
-import util.Observer;
+import pow.frontend.Frontend;
+import pow.util.Observer;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;

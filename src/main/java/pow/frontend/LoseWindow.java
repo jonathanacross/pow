@@ -1,15 +1,15 @@
-package game.frontend;
+package pow.frontend;
 
-import game.GameBackend;
+import pow.backend.GameBackend;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
-public class WinWindow extends AbstractWindow {
+public class LoseWindow extends AbstractWindow {
 
-    public WinWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
+    public LoseWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
         super(x, y, width, height, visible, backend, frontend);
     }
 
@@ -27,11 +27,11 @@ public class WinWindow extends AbstractWindow {
         Font f = new Font("Courier", Font.PLAIN, 2*squareSize);
         graphics.setFont(f);
         graphics.setColor(Color.YELLOW);
-        graphics.drawString("Congratulations, you won!", 20, 50);
+        graphics.drawString("You died. :(", 30, 50);
 
         f = new Font("Courier", Font.PLAIN, squareSize);
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press any key to continue.", 20, 150);
+        graphics.drawString("Press any key to continue.", 30, 150);
     }
 }

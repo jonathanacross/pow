@@ -1,7 +1,7 @@
-package game.backend.command;
+package pow.backend.command;
 
-import game.GameBackend;
-import game.backend.event.GameEvent;
+import pow.backend.GameBackend;
+import pow.backend.event.GameEvent;
 
 import java.util.List;
 

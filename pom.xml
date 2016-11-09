@@ -58,7 +58,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ui.Hello</mainClass>
+                            <mainClass>pow.ui.PoW</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
