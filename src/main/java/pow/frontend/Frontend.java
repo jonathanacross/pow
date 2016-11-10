@@ -3,9 +3,9 @@ package pow.frontend;
 import pow.backend.GameBackend;
 import pow.backend.event.GameEvent;
 import pow.frontend.effect.Effect;
-import pow.frontend.effect.GlyphLoc;
 import pow.frontend.effect.RocketEffect;
 import pow.frontend.window.AbstractWindow;
+import pow.frontend.window.CreateCharWindow;
 import pow.frontend.window.GameWindow;
 import pow.frontend.window.LoseWindow;
 import pow.frontend.window.WelcomeWindow;
@@ -31,6 +31,8 @@ public class Frontend {
     private WelcomeWindow welcomeWindow;
     private WinWindow winWindow;
     private LoseWindow loseWindow;
+    private CreateCharWindow createCharWindow;
+
     private GameBackend gameBackend;
     private Queue<KeyEvent> keyEvents;
 
@@ -61,9 +63,11 @@ public class Frontend {
         welcomeWindow = new WelcomeWindow(5, 5, 600, 600, true, gameBackend, this);
         winWindow = new WinWindow(15, 100, 580, 200, true, gameBackend, this);
         loseWindow = new LoseWindow(15, 100, 480, 200, true, gameBackend, this);
+        createCharWindow = new CreateCharWindow(15, 100, 480, 200, true, gameBackend, this);
 
         windows = new Stack<>();
         open(gameWindow);
+        open(createCharWindow);
         open(welcomeWindow);
     }
 
@@ -89,6 +93,7 @@ public class Frontend {
             }
         }
 
+        // finished all visual effects; now process future actions
         KeyEvent keyEvent = keyEvents.poll();
         if (keyEvent != null) {
             processKey(keyEvent);

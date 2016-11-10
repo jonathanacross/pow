@@ -9,12 +9,10 @@ public class GameState implements Serializable {
     public GameMap map;
     public int x;
     public int y;
-    public int arrow;
 
     public GameState() {
         map = new GameMap();
         x = 15;
         y = 15;
-        arrow = -1;
     }
 }
