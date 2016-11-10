@@ -29,9 +29,10 @@ public class CreateCharWindow extends AbstractWindow {
                 name = name.substring(0, name.length() - 1);
                 frontend.setDirty(true);
             }
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            frontend.close();
+        } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            frontend.setState(Frontend.State.GAME);
+        } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            frontend.setState(Frontend.State.OPEN_GAME);
         }
     }
 

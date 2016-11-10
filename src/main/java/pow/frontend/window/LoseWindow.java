@@ -16,8 +16,7 @@ public class LoseWindow extends AbstractWindow {
 
     @Override
     public void processKey(KeyEvent e) {
-        frontend.close();
-        backend.newGame();
+        frontend.setState(Frontend.State.OPEN_GAME);
     }
 
     @Override
