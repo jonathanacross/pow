@@ -8,7 +8,7 @@ import pow.frontend.window.AbstractWindow;
 import pow.frontend.window.CreateCharWindow;
 import pow.frontend.window.GameWindow;
 import pow.frontend.window.LoseWindow;
-import pow.frontend.window.OpenFileWindow;
+import pow.frontend.window.OpenGameWindow;
 import pow.frontend.window.WelcomeWindow;
 import pow.frontend.window.WinWindow;
 
@@ -33,7 +33,7 @@ public class Frontend {
     private WinWindow winWindow;
     private LoseWindow loseWindow;
     private CreateCharWindow createCharWindow;
-    private OpenFileWindow openFileWindow;
+    private OpenGameWindow openGameWindow;
 
     private GameBackend gameBackend;
     private Queue<KeyEvent> keyEvents;
@@ -66,7 +66,7 @@ public class Frontend {
         winWindow = new WinWindow(15, 100, 580, 200, true, gameBackend, this);
         loseWindow = new LoseWindow(15, 100, 480, 200, true, gameBackend, this);
         createCharWindow = new CreateCharWindow(15, 100, 480, 200, true, gameBackend, this);
-        openFileWindow = new OpenFileWindow(15, 100, 380, 300, true, gameBackend, this);
+        openGameWindow = new OpenGameWindow(15, 100, 380, 300, true, gameBackend, this);
 
         windows = new Stack<>();
         setState(State.WELCOME);
@@ -85,7 +85,7 @@ public class Frontend {
         switch (state) {
             case GAME: windows.push(gameWindow); break;
             case WELCOME: windows.push(welcomeWindow); break;
-            case OPEN_GAME: openFileWindow.refreshFileList(); windows.push(openFileWindow); break;
+            case OPEN_GAME: openGameWindow.refreshFileList(); windows.push(openGameWindow); break;
             case CREATE_CHAR: createCharWindow.resetName(); windows.push(createCharWindow); break;
         }
         dirty = true;

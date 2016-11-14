@@ -12,13 +12,12 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 
-// TODO: rename to OpenGameWindow for consistency
-public class OpenFileWindow extends AbstractWindow {
+public class OpenGameWindow extends AbstractWindow {
 
     private List<File> files;
     private int selectIndex = 0;
 
-    public OpenFileWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
+    public OpenGameWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
         super(x, y, width, height, visible, backend, frontend);
         refreshFileList();
     }
