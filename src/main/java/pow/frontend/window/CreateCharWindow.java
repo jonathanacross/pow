@@ -10,10 +10,14 @@ import java.awt.event.KeyEvent;
 
 public class CreateCharWindow extends AbstractWindow {
 
-    String name;
+    private String name;
 
     public CreateCharWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
         super(x, y, width, height, visible, backend, frontend);
+        resetName();
+    }
+
+    public void resetName() {
         name = "";
     }
 
@@ -30,9 +34,15 @@ public class CreateCharWindow extends AbstractWindow {
                 frontend.setDirty(true);
             }
         } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            frontend.setState(Frontend.State.GAME);
+            if (! name.trim().equals("")) {
+                backend.newGame(name);
+                frontend.setState(Frontend.State.GAME);
+            } else {
+                name = name.trim();
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             frontend.setState(Frontend.State.OPEN_GAME);
+
         }
     }
 

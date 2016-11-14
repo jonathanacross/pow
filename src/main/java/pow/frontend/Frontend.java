@@ -85,8 +85,8 @@ public class Frontend {
         switch (state) {
             case GAME: windows.push(gameWindow); break;
             case WELCOME: windows.push(welcomeWindow); break;
-            case OPEN_GAME: windows.push(openFileWindow); break;
-            case CREATE_CHAR: windows.push(createCharWindow); break;
+            case OPEN_GAME: openFileWindow.refreshFileList(); windows.push(openFileWindow); break;
+            case CREATE_CHAR: createCharWindow.resetName(); windows.push(createCharWindow); break;
         }
         dirty = true;
     }

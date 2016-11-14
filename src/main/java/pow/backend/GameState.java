@@ -7,12 +7,16 @@ import java.io.Serializable;
 public class GameState implements Serializable {
 
     public GameMap map;
+
+    // character attributes
     public int x;
     public int y;
+    public String name;
 
-    public GameState() {
+    public GameState(String name) {
         map = new GameMap();
         x = 15;
         y = 15;
+        this.name = name;
     }
 }

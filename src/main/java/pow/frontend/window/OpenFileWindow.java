@@ -1,6 +1,7 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
+import pow.backend.GameState;
 import pow.frontend.Frontend;
 import pow.frontend.save.SaveUtils;
 
@@ -11,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 
+// TODO: rename to OpenGameWindow for consistency
 public class OpenFileWindow extends AbstractWindow {
 
     private List<File> files;
@@ -18,7 +20,12 @@ public class OpenFileWindow extends AbstractWindow {
 
     public OpenFileWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
         super(x, y, width, height, visible, backend, frontend);
+        refreshFileList();
+    }
+
+    public void refreshFileList() {
         this.files = SaveUtils.findSaveFiles();
+        this.selectIndex = 0;
     }
 
     @Override
@@ -49,6 +56,8 @@ public class OpenFileWindow extends AbstractWindow {
                 frontend.setState(Frontend.State.CREATE_CHAR);
                 break;
             case KeyEvent.VK_ENTER:
+                GameState state = SaveUtils.readFromFile(files.get(selectIndex));
+                backend.load(state);
                 frontend.setState(Frontend.State.GAME);
                 break;
         }
