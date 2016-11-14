@@ -9,15 +9,16 @@ import java.util.List;
 import java.util.Queue;
 
 public class GameBackend {
-    public GameState getGameState() {
-        return gameState;
-    }
 
     private GameState gameState;
     public Queue<CommandRequest> commandQueue = new LinkedList<>();
 
+    public GameState getGameState() {
+        return gameState;
+    }
+
     public GameBackend() {
-        this.gameState = new GameState();
+        this.gameState = new GameState("Unknown Adventurer");
     }
 
     public List<GameEvent> processCommand() {
@@ -30,11 +31,11 @@ public class GameBackend {
         return events;
     }
 
-    public void newGame() {
-        gameState = new GameState();
+    public void newGame(String name) {
+        gameState = new GameState(name);
     }
 
     public void load(GameState gameState) {
-        gameState = gameState;
+        this.gameState = gameState;
     }
 }

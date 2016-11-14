@@ -16,8 +16,7 @@ public class WelcomeWindow extends AbstractWindow {
 
     @Override
     public void processKey(KeyEvent e) {
-        System.out.println("got keypress");
-        frontend.close();
+        frontend.setState(Frontend.State.OPEN_GAME);
     }
 
     @Override

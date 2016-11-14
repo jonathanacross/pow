@@ -1,6 +1,8 @@
 package pow.backend;
 
-public class GameMap {
+import java.io.Serializable;
+
+public class GameMap implements Serializable {
     public char[][] map;
     public int width;
     public int height;
