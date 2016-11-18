@@ -1,6 +1,8 @@
 package pow.backend;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 // class that just holds the DATA for the game state
 // so we can save/load properly
@@ -13,10 +15,14 @@ public class GameState implements Serializable {
     public int y;
     public String name;
 
+    // logging
+    public List<String> log;
+
     public GameState(String name) {
         map = new GameMap();
         x = 15;
         y = 15;
         this.name = name;
+        this.log = new ArrayList<>();
     }
 }

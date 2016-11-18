@@ -26,8 +26,8 @@ public class MainWindow extends JFrame implements KeyListener {
         setFocusTraversalKeysEnabled(false);
         setTitle("Pearls of Wisdom");
         setResizable(true);
-        setSize(610, 610);
-        setMinimumSize(new Dimension(610, 610));
+        setSize(MainDraw.PANEL_WIDTH, MainDraw.PANEL_HEIGHT);
+        setMinimumSize(new Dimension(MainDraw.PANEL_WIDTH, MainDraw.PANEL_HEIGHT));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         draw = new MainDraw();
         getContentPane().add(draw);

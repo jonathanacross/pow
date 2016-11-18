@@ -21,8 +21,10 @@ public class Move implements CommandRequest {
         events.add(GameEvent.MOVED);
         GameState gs = backend.getGameState();
         if (gs.map.map[gs.y][gs.x] == 'W') {
+            backend.logMessage("you won!");
             events.add(GameEvent.WON_GAME);
         } else if (gs.map.map[gs.y][gs.x] == 'L') {
+            backend.logMessage("you died.");
             events.add(GameEvent.LOST_GAME);
         }
         return events;

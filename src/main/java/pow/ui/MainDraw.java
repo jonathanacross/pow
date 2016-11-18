@@ -15,15 +15,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class MainDraw extends JPanel implements Observer, ComponentListener {
 
     private Image dbImage = null;
-    private int panelWidth = 610;
-    private int panelHeight = 610;
+    public static final int PANEL_WIDTH = 890;
+    public static final int PANEL_HEIGHT = 630;
 
     Frontend frontend;
     Queue<KeyEvent> keyEventQueue;
 
     public MainDraw() {
         keyEventQueue = new ConcurrentLinkedQueue<>();
-        frontend = new Frontend(panelWidth, panelHeight);
+        frontend = new Frontend(PANEL_WIDTH, PANEL_HEIGHT);
         GameThread gameThread = new GameThread(frontend, keyEventQueue, this);
         (new Thread(gameThread)).start();
         addComponentListener(this);

@@ -4,6 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.command.FireRocket;
 import pow.backend.command.Move;
+import pow.backend.command.Save;
 import pow.frontend.Frontend;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.save.SaveUtils;
@@ -40,8 +41,7 @@ public class GameWindow extends AbstractWindow {
                 backend.commandQueue.add(new FireRocket());
                 break;
             case KeyEvent.VK_S:
-                SaveUtils.saveToFile(backend.getGameState());
-                System.out.println("saved.");
+                backend.commandQueue.add(new Save());
                 break;
         }
     }

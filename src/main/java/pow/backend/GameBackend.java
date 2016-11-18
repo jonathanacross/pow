@@ -12,6 +12,7 @@ public class GameBackend {
 
     private GameState gameState;
     public Queue<CommandRequest> commandQueue = new LinkedList<>();
+    private boolean logChanged;
 
     public GameState getGameState() {
         return gameState;
@@ -24,11 +25,23 @@ public class GameBackend {
     public List<GameEvent> processCommand() {
         List<GameEvent> events = new ArrayList<>();
 
+        this.logChanged = false;
         if (! commandQueue.isEmpty()) {
             events.addAll(commandQueue.poll().process(this));
         }
+        if (logChanged) {
+            events.add(GameEvent.LOG_UPDATE);
+        }
 
         return events;
+    }
+
+    // note: this must be the only way to log a message, otherwise it may
+    // not immediately show up to the user.
+    // TODO: is there a way to clean up the 'logChanged' variable?
+    public void logMessage(String message) {
+        logChanged = true;
+        gameState.log.add(message);
     }
 
     public void newGame(String name) {
