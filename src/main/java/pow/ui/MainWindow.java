@@ -20,7 +20,6 @@ public class MainWindow extends JFrame implements KeyListener {
     }
 
     public MainWindow() {
-
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);

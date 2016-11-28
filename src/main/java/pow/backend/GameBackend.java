@@ -2,6 +2,7 @@ package pow.backend;
 
 import pow.backend.command.CommandRequest;
 import pow.backend.event.GameEvent;
+import pow.util.MessageLog;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import java.util.Queue;
 public class GameBackend {
 
     private GameState gameState;
+    private MessageLog debugLog;
     public Queue<CommandRequest> commandQueue = new LinkedList<>();
     private boolean logChanged;
 
@@ -42,6 +44,11 @@ public class GameBackend {
     public void logMessage(String message) {
         logChanged = true;
         gameState.log.add(message);
+    }
+
+    public void debugMessage(String message) {
+        logChanged = true;
+        debugLog.add(message);
     }
 
     public void newGame(String name) {

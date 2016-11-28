@@ -1,5 +1,7 @@
 package pow.backend;
 
+import pow.util.MessageLog;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +18,13 @@ public class GameState implements Serializable {
     public String name;
 
     // logging
-    public List<String> log;
+    public MessageLog log;
 
     public GameState(String name) {
         map = new GameMap();
         x = 15;
         y = 15;
         this.name = name;
-        this.log = new ArrayList<>();
+        this.log = new MessageLog(50);
     }
 }
