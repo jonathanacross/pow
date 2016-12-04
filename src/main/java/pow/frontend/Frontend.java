@@ -31,7 +31,6 @@ public class Frontend {
     private OpenGameWindow openGameWindow;
     private LogWindow logWindow;
     private StatusWindow statusWindow;
-    private DebugWindow debugWindow;
 
     private GameBackend gameBackend;
     private Queue<KeyEvent> keyEvents;
@@ -67,7 +66,6 @@ public class Frontend {
         openGameWindow = new OpenGameWindow(15, 100, 380, 300, true, gameBackend, this);
         statusWindow = new StatusWindow(610, 5, 250, 200, true, gameBackend, this);
         logWindow = new LogWindow(610, 210, 250, 395, true, gameBackend, this);
-        debugWindow = new DebugWindow(870, 5, 300, 600, true, gameBackend, this);
 
         windows = new Stack<>();
         setState(State.WELCOME);
@@ -83,7 +81,6 @@ public class Frontend {
 
     public void setState(State state) {
         windows.clear();
-        windows.push(debugWindow);
         switch (state) {
             case GAME: windows.push(statusWindow); windows.push(logWindow); windows.push(gameWindow); break;
             case WELCOME: windows.push(welcomeWindow); break;

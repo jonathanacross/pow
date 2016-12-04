@@ -1,6 +1,7 @@
 package pow.ui;
 
 import pow.frontend.Frontend;
+import pow.util.DebugLogger;
 import pow.util.Observer;
 
 import javax.swing.JPanel;
@@ -37,7 +38,7 @@ public class MainDraw extends JPanel implements Observer, ComponentListener {
            if (graphics != null && dbImage != null) {
                graphics.drawImage(dbImage, 0, 0, null);
            }
-       } catch (Exception e) { System.out.println("Graphics context error: " + e); }
+       } catch (Exception e) { DebugLogger.info("Graphics context error: " + e); }
    }
 
     private void paintScreen() {
@@ -48,7 +49,7 @@ public class MainDraw extends JPanel implements Observer, ComponentListener {
                 g.drawImage(dbImage, 0, 0, null);
                 g.dispose();
             }
-        } catch (Exception e) { System.out.println("Graphics context error: " + e); }
+        } catch (Exception e) { DebugLogger.info("Graphics context error: " + e); }
     }
 
     public void render() {
