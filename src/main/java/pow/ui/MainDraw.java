@@ -1,6 +1,7 @@
 package pow.ui;
 
 import pow.frontend.Frontend;
+import pow.util.DebugLogger;
 import pow.util.Observer;
 
 import javax.swing.JPanel;
@@ -15,15 +16,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class MainDraw extends JPanel implements Observer, ComponentListener {
 
     private Image dbImage = null;
-    private int panelWidth = 610;
-    private int panelHeight = 610;
+    public static final int PANEL_WIDTH = 890;
+    public static final int PANEL_HEIGHT = 630;
 
     Frontend frontend;
     Queue<KeyEvent> keyEventQueue;
 
     public MainDraw() {
         keyEventQueue = new ConcurrentLinkedQueue<>();
-        frontend = new Frontend(panelWidth, panelHeight);
+        frontend = new Frontend(PANEL_WIDTH, PANEL_HEIGHT);
         GameThread gameThread = new GameThread(frontend, keyEventQueue, this);
         (new Thread(gameThread)).start();
         addComponentListener(this);
@@ -37,7 +38,7 @@ public class MainDraw extends JPanel implements Observer, ComponentListener {
            if (graphics != null && dbImage != null) {
                graphics.drawImage(dbImage, 0, 0, null);
            }
-       } catch (Exception e) { System.out.println("Graphics context error: " + e); }
+       } catch (Exception e) { DebugLogger.info("Graphics context error: " + e); }
    }
 
     private void paintScreen() {
@@ -48,7 +49,7 @@ public class MainDraw extends JPanel implements Observer, ComponentListener {
                 g.drawImage(dbImage, 0, 0, null);
                 g.dispose();
             }
-        } catch (Exception e) { System.out.println("Graphics context error: " + e); }
+        } catch (Exception e) { DebugLogger.info("Graphics context error: " + e); }
     }
 
     public void render() {

@@ -4,13 +4,8 @@ import pow.backend.GameBackend;
 import pow.backend.event.GameEvent;
 import pow.frontend.effect.Effect;
 import pow.frontend.effect.RocketEffect;
-import pow.frontend.window.AbstractWindow;
-import pow.frontend.window.CreateCharWindow;
-import pow.frontend.window.GameWindow;
-import pow.frontend.window.LoseWindow;
-import pow.frontend.window.OpenGameWindow;
-import pow.frontend.window.WelcomeWindow;
-import pow.frontend.window.WinWindow;
+import pow.frontend.window.*;
+import pow.util.MessageLog;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -34,6 +29,8 @@ public class Frontend {
     private LoseWindow loseWindow;
     private CreateCharWindow createCharWindow;
     private OpenGameWindow openGameWindow;
+    private LogWindow logWindow;
+    private StatusWindow statusWindow;
 
     private GameBackend gameBackend;
     private Queue<KeyEvent> keyEvents;
@@ -67,6 +64,8 @@ public class Frontend {
         loseWindow = new LoseWindow(15, 100, 480, 200, true, gameBackend, this);
         createCharWindow = new CreateCharWindow(15, 100, 480, 200, true, gameBackend, this);
         openGameWindow = new OpenGameWindow(15, 100, 380, 300, true, gameBackend, this);
+        statusWindow = new StatusWindow(610, 5, 250, 200, true, gameBackend, this);
+        logWindow = new LogWindow(610, 210, 250, 395, true, gameBackend, this);
 
         windows = new Stack<>();
         setState(State.WELCOME);
@@ -83,7 +82,7 @@ public class Frontend {
     public void setState(State state) {
         windows.clear();
         switch (state) {
-            case GAME: windows.push(gameWindow); break;
+            case GAME: windows.push(statusWindow); windows.push(logWindow); windows.push(gameWindow); break;
             case WELCOME: windows.push(welcomeWindow); break;
             case OPEN_GAME: openGameWindow.refreshFileList(); windows.push(openGameWindow); break;
             case CREATE_CHAR: createCharWindow.resetName(); windows.push(createCharWindow); break;

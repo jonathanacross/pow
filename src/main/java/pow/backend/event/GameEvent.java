@@ -2,6 +2,7 @@ package pow.backend.event;
 
 // class to report back interesting things that the UI should show
 public enum GameEvent {
+    LOG_UPDATE,
     MOVED,  // player or creature moved
     ATTACKED,
     KILLED,

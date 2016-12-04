@@ -9,6 +9,7 @@ import java.util.List;
 public class FireRocket implements CommandRequest {
     @Override
     public List<GameEvent> process(GameBackend backend) {
+        backend.logMessage("you fire a rocket");
         return Arrays.asList(GameEvent.ROCKET);
     }
 }
