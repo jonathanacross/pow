@@ -14,8 +14,11 @@ import java.awt.event.KeyEvent;
 
 public class GameWindow extends AbstractWindow {
 
+    private static final int TILE_SIZE = 32;
+
     public GameWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
         super(x, y, width, height, visible, backend, frontend);
+        setTileSize(TILE_SIZE);
     }
 
     @Override
@@ -37,6 +40,18 @@ public class GameWindow extends AbstractWindow {
             case KeyEvent.VK_K:
                 backend.commandQueue.add(new Move(0, -1));
                 break;
+            case KeyEvent.VK_Y:
+                backend.commandQueue.add(new Move(-1, -1));
+                break;
+            case KeyEvent.VK_U:
+                backend.commandQueue.add(new Move(1, -1));
+                break;
+            case KeyEvent.VK_B:
+                backend.commandQueue.add(new Move(-1, 1));
+                break;
+            case KeyEvent.VK_N:
+                backend.commandQueue.add(new Move(1, 1));
+                break;
             case KeyEvent.VK_F:
                 backend.commandQueue.add(new FireRocket());
                 break;
@@ -46,6 +61,35 @@ public class GameWindow extends AbstractWindow {
         }
     }
 
+    // Used to figure out how much we can show on the map.
+    public void setTileSize(int tileSize) {
+        this.tileSize = tileSize;
+
+        // compute how many rows/columns to show
+        this.xRadius = (int) Math.ceil(0.5 * ((double) width / tileSize - 1));
+        this.yRadius = (int) Math.ceil(0.5 * ((double) height / tileSize - 1));
+
+        // how much to shift the tiles to display centered
+        this.windowShiftX = (width - (2 * xRadius + 1) * tileSize) / 2;
+        this.windowShiftY = (height - (2 * yRadius + 1) * tileSize) / 2;
+    }
+
+    private void drawTile(Graphics graphics, char c, int x, int y) {
+        String tile = Character.toString(c);
+        graphics.drawString(tile,
+                x * tileSize + windowShiftX,
+                (y + 1) * tileSize + windowShiftY);
+
+        // for debugging offsets
+        //graphics.drawOval(x*tileSize + windowShiftX, y*tileSize + windowShiftY, tileSize, tileSize );
+    }
+
+    private int tileSize;
+    private int windowShiftX;
+    private int windowShiftY;
+    private int xRadius;
+    private int yRadius;
+
     @Override
     public void drawContents(Graphics graphics) {
         GameState gs = backend.getGameState();
@@ -54,20 +98,32 @@ public class GameWindow extends AbstractWindow {
         graphics.fillRect(0, 0, width, height);
         graphics.setColor(Color.WHITE);
 
-        int squareSize = 18;
-        Font f = new Font("Courier New", Font.PLAIN, squareSize);
-        graphics.setFont(f);
-        for (int r = 0; r < gs.map.height; r++) {
-            for (int c = 0; c < gs.map.width; c++) {
-                graphics.drawString(Character.toString(gs.map.map[r][c]), c*squareSize, (r+1)*squareSize);
-            }
-        }
-        graphics.drawString("@", gs.x*squareSize, (gs.y+1)*squareSize);
+        int colMin = Math.max(0, gs.x - xRadius);
+        int colMax = Math.min(gs.map.width - 1, gs.x + xRadius);
+        int rowMin = Math.max(0, gs.y - yRadius);
+        int rowMax = Math.min(gs.map.height - 1, gs.y + yRadius);
 
-        if (! frontend.getEffects().isEmpty()) {
-            for (GlyphLoc glyphLoc : frontend.getEffects().get(0).render()) {
-                graphics.drawString(Character.toString(glyphLoc.getC()), glyphLoc.getX() * squareSize, (glyphLoc.getY() + 1)* squareSize);
+        int cameraDx = -gs.x + xRadius;
+        int cameraDy = -gs.y + yRadius;
+
+        Font f = new Font("Courier New", Font.PLAIN, this.tileSize);
+        graphics.setFont(f);
+
+        // draw the map
+        for (int y = rowMin; y <= rowMax; y++) {
+            for (int x = colMin; x <= colMax; x++) {
+                drawTile(graphics, gs.map.map[x][y], x + cameraDx, y + cameraDy);
             }
         }
-   }
+
+        // draw the player
+        drawTile(graphics, '@', gs.x + cameraDx, gs.y + cameraDy);
+
+        // draw effects
+        if (!frontend.getEffects().isEmpty()) {
+            for (GlyphLoc glyphLoc : frontend.getEffects().get(0).render()) {
+                drawTile(graphics, glyphLoc.getC(), glyphLoc.getX() + cameraDx, glyphLoc.getY() + cameraDy);
+            }
+        }
+    }
 }

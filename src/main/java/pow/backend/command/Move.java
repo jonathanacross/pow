@@ -20,10 +20,10 @@ public class Move implements CommandRequest {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.MOVED);
         GameState gs = backend.getGameState();
-        if (gs.map.map[gs.y][gs.x] == 'W') {
+        if (gs.map.map[gs.x][gs.y] == 'W') {
             backend.logMessage("you won!");
             events.add(GameEvent.WON_GAME);
-        } else if (gs.map.map[gs.y][gs.x] == 'L') {
+        } else if (gs.map.map[gs.x][gs.y] == 'L') {
             backend.logMessage("you died.");
             events.add(GameEvent.LOST_GAME);
         }
@@ -35,7 +35,7 @@ public class Move implements CommandRequest {
         GameState gs = backend.getGameState();
         int newx = gs.x + dx;
         int newy = gs.y + dy;
-        if (gs.map.map[newy][newx] != '#') {
+        if (gs.map.map[newx][newy] != '#') {
             gs.x = newx;
             gs.y = newy;
         }
