@@ -22,8 +22,8 @@ public class GameState implements Serializable {
 
     public GameState(String name) {
         map = new GameMap();
-        x = 15;
-        y = 15;
+        x = map.width / 2;
+        y = map.height / 2;
         this.name = name;
         this.log = new MessageLog(50);
     }

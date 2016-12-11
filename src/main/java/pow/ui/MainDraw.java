@@ -16,8 +16,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class MainDraw extends JPanel implements Observer, ComponentListener {
 
     private Image dbImage = null;
-    public static final int PANEL_WIDTH = 890;
-    public static final int PANEL_HEIGHT = 630;
+    public static final int PANEL_WIDTH = 898;
+    public static final int PANEL_HEIGHT = 638;
 
     Frontend frontend;
     Queue<KeyEvent> keyEventQueue;
