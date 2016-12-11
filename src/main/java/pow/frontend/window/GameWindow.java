@@ -8,17 +8,16 @@ import pow.backend.command.Save;
 import pow.frontend.Frontend;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.save.SaveUtils;
+import pow.frontend.utils.ImageController;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class GameWindow extends AbstractWindow {
 
-    private static final int TILE_SIZE = 32;
-
     public GameWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
         super(x, y, width, height, visible, backend, frontend);
-        setTileSize(TILE_SIZE);
+        setTileSize(ImageController.TILE_SIZE);
     }
 
     @Override
@@ -75,13 +74,19 @@ public class GameWindow extends AbstractWindow {
     }
 
     private void drawTile(Graphics graphics, char c, int x, int y) {
-        String tile = Character.toString(c);
-        graphics.drawString(tile,
-                x * tileSize + windowShiftX,
-                (y + 1) * tileSize + windowShiftY);
-
-        // for debugging offsets
-        //graphics.drawOval(x*tileSize + windowShiftX, y*tileSize + windowShiftY, tileSize, tileSize );
+        // TODO: input should be tiles, not chars
+        String tile;
+        switch (c) {
+            case '.': tile = "floor"; break;
+            case '#': tile = "big stone wall"; break;
+            case '@': tile = "human_adventurer"; break;
+            case '|': tile = "N purple bolt"; break;
+            case '*': tile = "big purple ball"; break;
+            case 'W': tile = "orange pearl"; break;
+            case 'L': tile = "cobra"; break;
+            default: tile = "debug"; break;
+        }
+        ImageController.drawTile(graphics, tile, x * tileSize + windowShiftX, y * tileSize + windowShiftY);
     }
 
     private int tileSize;
