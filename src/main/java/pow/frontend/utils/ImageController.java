@@ -21,7 +21,9 @@ public class ImageController {
         try {
             instance = new ImageController();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            System.exit(-1);
+            throw new RuntimeException(e); // so intellij won't complain
         }
     }
 
@@ -49,7 +51,7 @@ public class ImageController {
     }
 
     private ImageController() throws IOException, DataFormatException {
-        InputStream imageStream = ImageController.class.getResourceAsStream("/images/32x32.png");
+        InputStream imageStream = this.getClass().getResourceAsStream("/images/32x32.png");
         this.tileImage = ImageIO.read(imageStream);
         this.grayTileImage = ImageUtils.makeGrayscale(this.tileImage);
         this.tileData = readDataFile("/data/32x32.txt");
@@ -59,8 +61,8 @@ public class ImageController {
         StringBuilder result = new StringBuilder("");
 
         //Get file from resources folder
-        File file = new File(ImageController.class.getResource(name).getFile());
-        TsvReader reader = new TsvReader(file);
+        InputStream tsvStream = this.getClass().getResourceAsStream(name);
+        TsvReader reader = new TsvReader(tsvStream);
 
         Map<String, Point> tileMap = new HashMap<>();
         for (String[] line : reader.getData()) {
