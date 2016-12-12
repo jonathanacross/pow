@@ -2,6 +2,7 @@ package pow.backend.command;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.dungeon.DungeonFeature;
 import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
@@ -20,10 +21,11 @@ public class Move implements CommandRequest {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.MOVED);
         GameState gs = backend.getGameState();
-        if (gs.map.map[gs.x][gs.y] == 'W') {
+        DungeonFeature feature = gs.map.map[gs.x][gs.y].feature;
+        if (feature != null && feature.name.equals("orange pearl")) {
             backend.logMessage("you won!");
             events.add(GameEvent.WON_GAME);
-        } else if (gs.map.map[gs.x][gs.y] == 'L') {
+        } else if (feature != null && feature.name.equals("cobra")) {
             backend.logMessage("you died.");
             events.add(GameEvent.LOST_GAME);
         }
@@ -35,7 +37,7 @@ public class Move implements CommandRequest {
         GameState gs = backend.getGameState();
         int newx = gs.x + dx;
         int newy = gs.y + dy;
-        if (gs.map.map[newx][newy] != '#') {
+        if (! gs.map.map[newx][newy].blockGround()) {
             gs.x = newx;
             gs.y = newy;
         }

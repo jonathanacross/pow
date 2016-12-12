@@ -38,12 +38,12 @@ public class RocketEffect implements Effect {
     public List<GlyphLoc> render() {
         List<GlyphLoc> glyphLocs = new ArrayList<>();
         if (arrowDist < DISTANCE) {
-           glyphLocs.add(new GlyphLoc(x, y + arrowDist, '|'));
+           glyphLocs.add(new GlyphLoc(x, y + arrowDist, "N purple bolt"));
         } else {
             for (int i = -explodeDist; i <= explodeDist; i++) {
                 for (int j = -explodeDist; j <= explodeDist; j++) {
                     if (i*i + j*j <= explodeDist*explodeDist) {
-                        glyphLocs.add(new GlyphLoc(x + i, y + arrowDist + j, '*'));
+                        glyphLocs.add(new GlyphLoc(x + i, y + arrowDist + j, "big purple ball"));
                     }
                 }
             }

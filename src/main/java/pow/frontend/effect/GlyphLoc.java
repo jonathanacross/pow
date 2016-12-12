@@ -1,9 +1,9 @@
 package pow.frontend.effect;
 
-public class GlyphLoc {
+public class GlyphLoc {// TODO: replace with a DungeonObject?
     private int x;
     private int y;
-    private char c;
+    private String imageName;
 
     public int getX() {
         return x;
@@ -13,13 +13,13 @@ public class GlyphLoc {
         return y;
     }
 
-    public char getC() {
-        return c;
+    public String getImageName() {
+        return imageName;
     }
 
-    public GlyphLoc(int x, int y, char c) {
+    public GlyphLoc(int x, int y, String imageName) {
         this.x = x;
         this.y = y;
-        this.c = c;
+        this.imageName = imageName;
     }
 }

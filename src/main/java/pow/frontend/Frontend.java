@@ -58,14 +58,14 @@ public class Frontend {
         this.keyEvents = new LinkedList<>();
 
         gameBackend = new GameBackend();
-        gameWindow = new GameWindow(5, 5, 608, 608, true, gameBackend, this);
-        welcomeWindow = new WelcomeWindow(5, 5, 600, 600, true, gameBackend, this);
+        gameWindow = new GameWindow(5, 5, 672, 672, true, gameBackend, this);
+        welcomeWindow = new WelcomeWindow(50, 50, 600, 600, true, gameBackend, this);
         winWindow = new WinWindow(15, 100, 580, 200, true, gameBackend, this);
         loseWindow = new LoseWindow(15, 100, 480, 200, true, gameBackend, this);
         createCharWindow = new CreateCharWindow(15, 100, 480, 200, true, gameBackend, this);
         openGameWindow = new OpenGameWindow(15, 100, 380, 300, true, gameBackend, this);
-        statusWindow = new StatusWindow(618, 5, 250, 200, true, gameBackend, this);
-        logWindow = new LogWindow(618, 210, 250, 395, true, gameBackend, this);
+        statusWindow = new StatusWindow(682, 5, 250, 200, true, gameBackend, this);
+        logWindow = new LogWindow(682, 210, 250, 395, true, gameBackend, this);
 
         windows = new Stack<>();
         setState(State.WELCOME);

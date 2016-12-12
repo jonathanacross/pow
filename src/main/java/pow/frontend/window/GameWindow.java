@@ -5,20 +5,19 @@ import pow.backend.GameState;
 import pow.backend.command.FireRocket;
 import pow.backend.command.Move;
 import pow.backend.command.Save;
+import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.Frontend;
 import pow.frontend.effect.GlyphLoc;
-import pow.frontend.save.SaveUtils;
+import pow.frontend.utils.ImageController;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class GameWindow extends AbstractWindow {
 
-    private static final int TILE_SIZE = 32;
-
     public GameWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
         super(x, y, width, height, visible, backend, frontend);
-        setTileSize(TILE_SIZE);
+        setTileSize(ImageController.TILE_SIZE);
     }
 
     @Override
@@ -74,14 +73,8 @@ public class GameWindow extends AbstractWindow {
         this.windowShiftY = (height - (2 * yRadius + 1) * tileSize) / 2;
     }
 
-    private void drawTile(Graphics graphics, char c, int x, int y) {
-        String tile = Character.toString(c);
-        graphics.drawString(tile,
-                x * tileSize + windowShiftX,
-                (y + 1) * tileSize + windowShiftY);
-
-        // for debugging offsets
-        //graphics.drawOval(x*tileSize + windowShiftX, y*tileSize + windowShiftY, tileSize, tileSize );
+    private void drawTile(Graphics graphics, String tileName, int x, int y) {
+        ImageController.drawTile(graphics, tileName, x * tileSize + windowShiftX, y * tileSize + windowShiftY);
     }
 
     private int tileSize;
@@ -112,17 +105,21 @@ public class GameWindow extends AbstractWindow {
         // draw the map
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
-                drawTile(graphics, gs.map.map[x][y], x + cameraDx, y + cameraDy);
+                DungeonSquare square = gs.map.map[x][y];
+                drawTile(graphics, square.terrain.id, x + cameraDx, y + cameraDy);
+                if (square.feature != null) {
+                    drawTile(graphics, square.feature.id, x + cameraDx, y + cameraDy);
+                }
             }
         }
 
         // draw the player
-        drawTile(graphics, '@', gs.x + cameraDx, gs.y + cameraDy);
+        drawTile(graphics, "human_adventurer", gs.x + cameraDx, gs.y + cameraDy);
 
         // draw effects
         if (!frontend.getEffects().isEmpty()) {
             for (GlyphLoc glyphLoc : frontend.getEffects().get(0).render()) {
-                drawTile(graphics, glyphLoc.getC(), glyphLoc.getX() + cameraDx, glyphLoc.getY() + cameraDy);
+                drawTile(graphics, glyphLoc.getImageName(), glyphLoc.getX() + cameraDx, glyphLoc.getY() + cameraDy);
             }
         }
     }
