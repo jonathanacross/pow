@@ -1,6 +1,7 @@
 package pow.ui;
 
 import pow.frontend.Frontend;
+import pow.util.DebugLogger;
 import pow.util.Observer;
 
 import java.awt.event.KeyEvent;
@@ -35,7 +36,9 @@ public class GameThread implements Runnable {
                 Thread.sleep(50);
             }
         } catch (InterruptedException ex) {
-            ex.printStackTrace();
+            // Not sure what the best thing to do is here..
+            // currently just exiting so it will be obvious if this happens.
+            DebugLogger.fatal(ex);
         }
     }
 

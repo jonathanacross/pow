@@ -1,6 +1,7 @@
 package pow.frontend.utils;
 
 
+import pow.util.DebugLogger;
 import pow.util.Point;
 
 import javax.imageio.ImageIO;
@@ -21,8 +22,7 @@ public class ImageController {
         try {
             instance = new ImageController();
         } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
+            DebugLogger.fatal(e);
             throw new RuntimeException(e); // so intellij won't complain
         }
     }

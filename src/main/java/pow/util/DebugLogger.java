@@ -17,4 +17,9 @@ public class DebugLogger {
             System.err.println(message);
         }
     }
+
+    public static void fatal(Exception e) {
+        e.printStackTrace();
+        System.exit(-1);
+    }
 }

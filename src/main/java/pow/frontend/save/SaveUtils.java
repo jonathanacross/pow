@@ -2,11 +2,14 @@ package pow.frontend.save;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.util.DebugLogger;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static java.lang.System.exit;
 
 public class SaveUtils {
 
@@ -40,10 +43,8 @@ public class SaveUtils {
                 ObjectInput input = new ObjectInputStream(bis);
         ) {
             state = (GameState) input.readObject();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            DebugLogger.fatal(ex);
         }
         return state;
     }
@@ -58,7 +59,7 @@ public class SaveUtils {
         ) {
             output.writeObject(state);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            DebugLogger.fatal(ex);
         }
     }
 }
