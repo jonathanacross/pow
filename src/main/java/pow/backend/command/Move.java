@@ -22,10 +22,10 @@ public class Move implements CommandRequest {
         events.add(GameEvent.MOVED);
         GameState gs = backend.getGameState();
         DungeonFeature feature = gs.map.map[gs.x][gs.y].feature;
-        if (feature != null && feature.name.equals("wintile")) {
+        if (feature != null && feature.name.equals("orange pearl")) {
             backend.logMessage("you won!");
             events.add(GameEvent.WON_GAME);
-        } else if (feature != null && feature.name.equals("losetile")) {
+        } else if (feature != null && feature.name.equals("cobra")) {
             backend.logMessage("you died.");
             events.add(GameEvent.LOST_GAME);
         }

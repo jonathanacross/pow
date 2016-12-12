@@ -2,7 +2,7 @@ package pow.util;
 
 import java.util.regex.Pattern;
 
-public class Description {
+public class TextUtils {
 
     // formats a raw string --
     // ! at the beginning means don't modify; useful for unique things, e.g., "Blarbak the king"

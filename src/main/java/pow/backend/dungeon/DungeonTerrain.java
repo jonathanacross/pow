@@ -12,13 +12,13 @@ public class DungeonTerrain implements Serializable {
         }
     }
 
+    public String id;
     public String name;
-    public String image;
     public Flags flags;
 
-    public DungeonTerrain(String name, String image, Flags flags) {
+    public DungeonTerrain(String id, String name, Flags flags) {
+        this.id = id;
         this.name = name;
-        this.image = image;
         this.flags = flags;
     }
 }

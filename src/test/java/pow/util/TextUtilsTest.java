@@ -1,14 +1,13 @@
 package pow.util;
 
 import org.junit.Test;
-import sun.security.krb5.internal.crypto.Des;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class DescriptionTest {
+public class TextUtilsTest {
 
     private static class TestCase {
         public String raw;
@@ -57,7 +56,7 @@ public class DescriptionTest {
     @Test
     public void testFormatNone() {
         for (TestCase testCase: examples) {
-            String formatted = Description.format(testCase.raw, 0, false);
+            String formatted = TextUtils.format(testCase.raw, 0, false);
             assertEquals(testCase.zero, formatted);
         }
     }
@@ -65,7 +64,7 @@ public class DescriptionTest {
     @Test
     public void testFormatOneIndefinite() {
         for (TestCase testCase: examples) {
-            String formatted = Description.format(testCase.raw, 1, false);
+            String formatted = TextUtils.format(testCase.raw, 1, false);
             assertEquals(testCase.oneIndef, formatted);
         }
     }
@@ -73,7 +72,7 @@ public class DescriptionTest {
     @Test
     public void testFormatOneDefinite() {
         for (TestCase testCase: examples) {
-            String formatted = Description.format(testCase.raw, 1, true);
+            String formatted = TextUtils.format(testCase.raw, 1, true);
             assertEquals(testCase.oneDef, formatted);
         }
     }
@@ -81,7 +80,7 @@ public class DescriptionTest {
     @Test
     public void testFormatTwo() {
         for (TestCase testCase: examples) {
-            String formatted = Description.format(testCase.raw, 2, false);
+            String formatted = TextUtils.format(testCase.raw, 2, false);
             assertEquals(testCase.two, formatted);
         }
     }

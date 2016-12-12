@@ -106,9 +106,9 @@ public class GameWindow extends AbstractWindow {
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
                 DungeonSquare square = gs.map.map[x][y];
-                drawTile(graphics, square.terrain.image, x + cameraDx, y + cameraDy);
+                drawTile(graphics, square.terrain.id, x + cameraDx, y + cameraDy);
                 if (square.feature != null) {
-                    drawTile(graphics, square.feature.image, x + cameraDx, y + cameraDy);
+                    drawTile(graphics, square.feature.id, x + cameraDx, y + cameraDy);
                 }
             }
         }

@@ -29,7 +29,7 @@ public class GameMap implements Serializable {
 
         DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
         // TODO: remove image from backend?
-        DungeonTerrain wall = new DungeonTerrain("wall", "big stone wall",
+        DungeonTerrain wall = new DungeonTerrain("big stone wall", "big stone wall",
                 new DungeonTerrain.Flags(true));
         DungeonTerrain floor = new DungeonTerrain("floor", "floor",
                 new DungeonTerrain.Flags(false));
@@ -44,10 +44,10 @@ public class GameMap implements Serializable {
 
         // add win/lose features
         dungeonMap[(int) (width * 0.25)][(int) (height * 0.3)].feature =
-                new DungeonFeature("wintile", "orange pearl",
+                new DungeonFeature("orange pearl", "orange pearl",
                         new DungeonFeature.Flags(false));
         dungeonMap[(int) (width * 0.75)][(int) (height * 0.6)].feature =
-                new DungeonFeature("losetile", "cobra",
+                new DungeonFeature("cobra", "cobra",
                         new DungeonFeature.Flags(false));
 
         return dungeonMap;
