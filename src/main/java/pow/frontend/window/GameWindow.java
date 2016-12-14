@@ -122,6 +122,11 @@ public class GameWindow extends AbstractWindow {
         // draw the player
         drawTile(graphics, gs.player.image, gs.player.x + cameraDx, gs.player.y + cameraDy);
 
+        // draw any pets
+        if (gs.pet != null) {
+            drawTile(graphics, gs.pet.image, gs.pet.x + cameraDx, gs.pet.y + cameraDy);
+        }
+
         // draw effects
         if (!frontend.getEffects().isEmpty()) {
             for (GlyphLoc glyphLoc : frontend.getEffects().get(0).render()) {

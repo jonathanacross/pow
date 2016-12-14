@@ -28,7 +28,10 @@ public class GameBackend {
 
         this.logChanged = false;
         if (! commandQueue.isEmpty()) {
+            // TODO: unify player, pets, monsters under an actor to simplify this
             events.addAll(commandQueue.poll().process(this));
+
+            events.addAll(gameState.pet.act(this));
 
             for (Monster m : gameState.map.monsters) {
                 events.addAll(m.act(this));

@@ -1,5 +1,6 @@
 package pow.backend;
 
+import pow.backend.dungeon.Pet;
 import pow.backend.dungeon.Player;
 import pow.util.MessageLog;
 
@@ -15,6 +16,7 @@ public class GameState implements Serializable {
 
     // character attributes
     public Player player;
+    public Pet pet;
 
     // logging
     public MessageLog log;
@@ -26,5 +28,6 @@ public class GameState implements Serializable {
         int y = map.height / 2;
         this.player = new Player("player", name, "human_adventurer", "yourself", x, y);
         this.log = new MessageLog(50);
+        this.pet = new Pet("pet", "your pet", "bot", "your pet", x + 2, y + 2);
     }
 }
