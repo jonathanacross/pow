@@ -1,6 +1,7 @@
 package pow.backend;
 
 import pow.backend.command.CommandRequest;
+import pow.backend.dungeon.Monster;
 import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
@@ -28,6 +29,10 @@ public class GameBackend {
         this.logChanged = false;
         if (! commandQueue.isEmpty()) {
             events.addAll(commandQueue.poll().process(this));
+
+            for (Monster m : gameState.map.monsters) {
+                events.addAll(m.act(this));
+            }
         }
         if (logChanged) {
             events.add(GameEvent.LOG_UPDATE);

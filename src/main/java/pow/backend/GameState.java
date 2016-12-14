@@ -1,6 +1,7 @@
 package pow.backend;
 
 import pow.util.MessageLog;
+import pow.util.Random;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 public class GameState implements Serializable {
 
     public GameMap map;
+    public Random rng;
 
     // character attributes
     public int x;
@@ -21,7 +23,8 @@ public class GameState implements Serializable {
     public MessageLog log;
 
     public GameState(String name) {
-        map = new GameMap();
+        rng = new Random(123);
+        map = new GameMap(rng);
         x = map.width / 2;
         y = map.height / 2;
         this.name = name;

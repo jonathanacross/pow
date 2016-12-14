@@ -6,6 +6,7 @@ import pow.backend.command.FireRocket;
 import pow.backend.command.Move;
 import pow.backend.command.Save;
 import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.Monster;
 import pow.frontend.Frontend;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
@@ -106,11 +107,16 @@ public class GameWindow extends AbstractWindow {
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
                 DungeonSquare square = gs.map.map[x][y];
-                drawTile(graphics, square.terrain.id, x + cameraDx, y + cameraDy);
+                drawTile(graphics, square.terrain.image, x + cameraDx, y + cameraDy);
                 if (square.feature != null) {
-                    drawTile(graphics, square.feature.id, x + cameraDx, y + cameraDy);
+                    drawTile(graphics, square.feature.image, x + cameraDx, y + cameraDy);
                 }
             }
+        }
+
+        // draw monsters
+        for (Monster monster : gs.map.monsters) {
+            drawTile(graphics, monster.image, monster.x + cameraDx, monster.y + cameraDy);
         }
 
         // draw the player
