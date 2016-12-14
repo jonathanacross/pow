@@ -4,11 +4,11 @@ import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.Monster;
-import pow.util.Random;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameMap implements Serializable {
     public DungeonSquare[][] map; // indexed by x,y, or c,r

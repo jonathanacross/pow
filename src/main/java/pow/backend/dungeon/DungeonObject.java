@@ -3,6 +3,9 @@ package pow.backend.dungeon;
 import java.io.Serializable;
 
 public class DungeonObject implements Serializable {
+    // TODO: do DungeonObjects really need an Id?  Seems more like
+    // we want a map of id -> dungeonObject, which would be filled out
+    // during data file reading.
     public String id;   // program id, e.g., "axe"
     public String name; // english name, e.g., "& axe~"
     public String image; // for display

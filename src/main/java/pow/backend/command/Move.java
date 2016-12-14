@@ -22,7 +22,7 @@ public class Move implements CommandRequest {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.MOVED);
         GameState gs = backend.getGameState();
-        DungeonFeature feature = gs.map.map[gs.x][gs.y].feature;
+        DungeonFeature feature = gs.map.map[gs.player.x][gs.player.y].feature;
         if (feature != null && feature.id.equals("wintile")) {
             backend.logMessage("you won!");
             events.add(GameEvent.WON_GAME);
@@ -36,11 +36,11 @@ public class Move implements CommandRequest {
     @Override
     public List<GameEvent> process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        int newx = gs.x + dx;
-        int newy = gs.y + dy;
+        int newx = gs.player.x + dx;
+        int newy = gs.player.y + dy;
         if (! gs.map.isBlocked(newx, newy)) {
-            gs.x = newx;
-            gs.y = newy;
+            gs.player.x = newx;
+            gs.player.y = newy;
         }
 
         return addEvents(backend);

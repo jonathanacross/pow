@@ -92,13 +92,13 @@ public class GameWindow extends AbstractWindow {
         graphics.fillRect(0, 0, width, height);
         graphics.setColor(Color.WHITE);
 
-        int colMin = Math.max(0, gs.x - xRadius);
-        int colMax = Math.min(gs.map.width - 1, gs.x + xRadius);
-        int rowMin = Math.max(0, gs.y - yRadius);
-        int rowMax = Math.min(gs.map.height - 1, gs.y + yRadius);
+        int colMin = Math.max(0, gs.player.x - xRadius);
+        int colMax = Math.min(gs.map.width - 1, gs.player.x + xRadius);
+        int rowMin = Math.max(0, gs.player.y - yRadius);
+        int rowMax = Math.min(gs.map.height - 1, gs.player.y + yRadius);
 
-        int cameraDx = -gs.x + xRadius;
-        int cameraDy = -gs.y + yRadius;
+        int cameraDx = -gs.player.x + xRadius;
+        int cameraDy = -gs.player.y + yRadius;
 
         Font f = new Font("Courier New", Font.PLAIN, this.tileSize);
         graphics.setFont(f);
@@ -120,7 +120,7 @@ public class GameWindow extends AbstractWindow {
         }
 
         // draw the player
-        drawTile(graphics, "human_adventurer", gs.x + cameraDx, gs.y + cameraDy);
+        drawTile(graphics, gs.player.image, gs.player.x + cameraDx, gs.player.y + cameraDy);
 
         // draw effects
         if (!frontend.getEffects().isEmpty()) {

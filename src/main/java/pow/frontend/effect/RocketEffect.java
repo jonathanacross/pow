@@ -16,8 +16,8 @@ public class RocketEffect implements Effect {
     private final static int EXPLODE_SIZE = 3;
 
     public RocketEffect(GameBackend gameBackend) {
-        this.x = gameBackend.getGameState().x;
-        this.y = gameBackend.getGameState().y;
+        this.x = gameBackend.getGameState().player.x;
+        this.y = gameBackend.getGameState().player.y;
         this.arrowDist = 1;
         this.explodeDist = 0;
     }

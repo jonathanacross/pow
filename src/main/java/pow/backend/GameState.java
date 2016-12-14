@@ -1,11 +1,10 @@
 package pow.backend;
 
+import pow.backend.dungeon.Player;
 import pow.util.MessageLog;
-import pow.util.Random;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 // class that just holds the DATA for the game state
 // so we can save/load properly
@@ -15,9 +14,7 @@ public class GameState implements Serializable {
     public Random rng;
 
     // character attributes
-    public int x;
-    public int y;
-    public String name;
+    public Player player;
 
     // logging
     public MessageLog log;
@@ -25,9 +22,9 @@ public class GameState implements Serializable {
     public GameState(String name) {
         rng = new Random(123);
         map = new GameMap(rng);
-        x = map.width / 2;
-        y = map.height / 2;
-        this.name = name;
+        int x = map.width / 2;
+        int y = map.height / 2;
+        this.player = new Player("player", name, "human_adventurer", "yourself", x, y);
         this.log = new MessageLog(50);
     }
 }

@@ -22,7 +22,7 @@ public class Monster extends DungeonObject implements Serializable {
         int newy = this.y + dy;
         List<GameEvent> events = new ArrayList<>();
         if (! gs.map.isBlocked(newx, newy)) {
-            if (gs.x == newx && gs.y == newy) {
+            if (gs.player.x == newx && gs.player.y == newy) {
                 backend.logMessage("the " + name + " bumps into you.");
                 events.add(GameEvent.ATTACKED);
             } else {
