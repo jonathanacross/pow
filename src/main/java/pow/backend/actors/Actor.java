@@ -11,11 +11,17 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public boolean needsInput;
     public Energy energy;
 
+    public int health;
+    public int maxHealth;
+
     public abstract List<GameEvent> act(GameBackend backend);
 
-    public Actor(String id, String name, String image, String description, int x, int y, boolean solid, boolean needsInput) {
+    public Actor(String id, String name, String image, String description, int x, int y, boolean solid, boolean needsInput,
+                 int maxHealth) {
         super(id, name, image, description, x, y, solid);
         this.needsInput = needsInput;
         this.energy = new Energy();
+        this.health = maxHealth;
+        this.maxHealth = maxHealth;
     }
 }

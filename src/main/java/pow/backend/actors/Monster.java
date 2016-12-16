@@ -2,7 +2,6 @@ package pow.backend.actors;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
-import pow.backend.dungeon.DungeonObject;
 import pow.backend.event.GameEvent;
 
 import java.io.Serializable;
@@ -12,7 +11,7 @@ import java.util.List;
 public class Monster extends Actor implements Serializable {
 
     public Monster(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, false);
+        super(id, name, image, description, x, y, true, false, 2);
     }
 
     public List<GameEvent> act(GameBackend backend) {

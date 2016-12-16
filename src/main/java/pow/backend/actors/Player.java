@@ -2,7 +2,6 @@ package pow.backend.actors;
 
 import pow.backend.GameBackend;
 import pow.backend.command.CommandRequest;
-import pow.backend.dungeon.DungeonObject;
 import pow.backend.event.GameEvent;
 
 import java.io.Serializable;
@@ -15,7 +14,7 @@ public class Player extends Actor implements Serializable {
     private Queue<CommandRequest> requests;
 
     public Player(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, true);
+        super(id, name, image, description, x, y, true, true, 10);
         this.requests = new LinkedList<>();
     }
 

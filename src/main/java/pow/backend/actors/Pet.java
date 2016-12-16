@@ -20,7 +20,7 @@ public class Pet extends Actor implements Serializable {
     private State state;
 
     public Pet(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, false);
+        super(id, name, image, description, x, y, true, false, 5);
         state = State.FOLLOW_PLAYER;
     }
 
