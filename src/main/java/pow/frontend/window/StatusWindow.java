@@ -25,7 +25,7 @@ public class StatusWindow extends AbstractWindow {
         Font f = new Font("Courier", Font.PLAIN, squareSize);
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
-        String name = backend.getGameState().name;
+        String name = backend.getGameState().player.name;
         graphics.drawString(name, 10, 20);
         graphics.drawString("HP:", 10, 20 + squareSize);
         graphics.drawString("MP:", 10, 20 + 2*squareSize);

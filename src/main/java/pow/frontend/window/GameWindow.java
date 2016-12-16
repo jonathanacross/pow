@@ -2,10 +2,12 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.actors.Actor;
 import pow.backend.command.FireRocket;
 import pow.backend.command.Move;
 import pow.backend.command.Save;
 import pow.backend.dungeon.DungeonSquare;
+import pow.backend.actors.Monster;
 import pow.frontend.Frontend;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
@@ -51,6 +53,10 @@ public class GameWindow extends AbstractWindow {
             case KeyEvent.VK_N:
                 backend.commandQueue.add(new Move(1, 1));
                 break;
+            case KeyEvent.VK_PERIOD:
+                // TODO: change to rest
+                backend.commandQueue.add(new Move(0, 0));
+                break;
             case KeyEvent.VK_F:
                 backend.commandQueue.add(new FireRocket());
                 break;
@@ -91,13 +97,13 @@ public class GameWindow extends AbstractWindow {
         graphics.fillRect(0, 0, width, height);
         graphics.setColor(Color.WHITE);
 
-        int colMin = Math.max(0, gs.x - xRadius);
-        int colMax = Math.min(gs.map.width - 1, gs.x + xRadius);
-        int rowMin = Math.max(0, gs.y - yRadius);
-        int rowMax = Math.min(gs.map.height - 1, gs.y + yRadius);
+        int colMin = Math.max(0, gs.player.x - xRadius);
+        int colMax = Math.min(gs.map.width - 1, gs.player.x + xRadius);
+        int rowMin = Math.max(0, gs.player.y - yRadius);
+        int rowMax = Math.min(gs.map.height - 1, gs.player.y + yRadius);
 
-        int cameraDx = -gs.x + xRadius;
-        int cameraDy = -gs.y + yRadius;
+        int cameraDx = -gs.player.x + xRadius;
+        int cameraDy = -gs.player.y + yRadius;
 
         Font f = new Font("Courier New", Font.PLAIN, this.tileSize);
         graphics.setFont(f);
@@ -106,15 +112,17 @@ public class GameWindow extends AbstractWindow {
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
                 DungeonSquare square = gs.map.map[x][y];
-                drawTile(graphics, square.terrain.id, x + cameraDx, y + cameraDy);
+                drawTile(graphics, square.terrain.image, x + cameraDx, y + cameraDy);
                 if (square.feature != null) {
-                    drawTile(graphics, square.feature.id, x + cameraDx, y + cameraDy);
+                    drawTile(graphics, square.feature.image, x + cameraDx, y + cameraDy);
                 }
             }
         }
 
-        // draw the player
-        drawTile(graphics, "human_adventurer", gs.x + cameraDx, gs.y + cameraDy);
+        // draw monsters, player, pets
+        for (Actor actor : gs.map.actors) {
+            drawTile(graphics, actor.image, actor.x + cameraDx, actor.y + cameraDy);
+        }
 
         // draw effects
         if (!frontend.getEffects().isEmpty()) {

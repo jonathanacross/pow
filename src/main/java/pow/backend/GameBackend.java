@@ -1,5 +1,6 @@
 package pow.backend;
 
+import pow.backend.actors.Actor;
 import pow.backend.command.CommandRequest;
 import pow.backend.event.GameEvent;
 
@@ -27,7 +28,11 @@ public class GameBackend {
 
         this.logChanged = false;
         if (! commandQueue.isEmpty()) {
-            events.addAll(commandQueue.poll().process(this));
+            gameState.player.addCommand(commandQueue.poll());
+
+            for (Actor a: gameState.map.actors) {
+                events.addAll(a.act(this));
+            }
         }
         if (logChanged) {
             events.add(GameEvent.LOG_UPDATE);
