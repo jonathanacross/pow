@@ -1,4 +1,4 @@
-package pow.backend.dungeon;
+package pow.backend.actors;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pet extends DungeonObject implements Serializable {
+public class Pet extends Actor implements Serializable {
 
     public enum State {
         FOLLOW_PLAYER,
@@ -20,7 +20,7 @@ public class Pet extends DungeonObject implements Serializable {
     private State state;
 
     public Pet(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true);
+        super(id, name, image, description, x, y, true, false);
         state = State.FOLLOW_PLAYER;
     }
 
@@ -38,15 +38,17 @@ public class Pet extends DungeonObject implements Serializable {
         return (x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2);
     }
 
-    private Monster nearestMonster(GameState gs) {
+    private Actor nearestMonster(GameState gs) {
 
         int bestDist = Integer.MAX_VALUE;
-        Monster closestMonster = null;
-        for (Monster m : gs.map.monsters) {
-            int d2 = dist2(x, y, m.x, m.y);
-            if (closestMonster == null || d2 < bestDist) {
-                closestMonster = m;
-                bestDist = d2;
+        Actor closestMonster = null;
+        for (Actor m : gs.map.actors) {
+            if (m != gs.player && m != gs.pet) {
+                int d2 = dist2(x, y, m.x, m.y);
+                if (closestMonster == null || d2 < bestDist) {
+                    closestMonster = m;
+                    bestDist = d2;
+                }
             }
         }
         return closestMonster;
@@ -85,7 +87,7 @@ public class Pet extends DungeonObject implements Serializable {
             }
 
             case ATTACK_NEAREST_MONSTER:
-               Monster nearest = nearestMonster(gs);
+               Actor nearest = nearestMonster(gs);
                 if (nearest == null) {
                     state = State.WANDER;
                     DebugLogger.info("pet wandering");

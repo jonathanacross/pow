@@ -1,17 +1,18 @@
-package pow.backend.dungeon;
+package pow.backend.actors;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.dungeon.DungeonObject;
 import pow.backend.event.GameEvent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Monster extends DungeonObject implements Serializable {
+public class Monster extends Actor implements Serializable {
 
     public Monster(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true);
+        super(id, name, image, description, x, y, true, false);
     }
 
     public List<GameEvent> act(GameBackend backend) {

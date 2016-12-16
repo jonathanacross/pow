@@ -1,9 +1,12 @@
 package pow.backend;
 
+import pow.backend.actors.Actor;
+import pow.backend.actors.Pet;
+import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
-import pow.backend.dungeon.Monster;
+import pow.backend.actors.Monster;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,20 +15,30 @@ import java.util.Random;
 
 public class GameMap implements Serializable {
     public DungeonSquare[][] map; // indexed by x,y, or c,r
-    public List<Monster> monsters;
     public int width;
     public int height;
+    public List<Actor> actors;
 
-    public GameMap(Random rng) {
+    public GameMap(Random rng, Player player, Pet pet) {
         width = 40;
         height = 30;
         map = buildArena(width, height, rng);
+        int x = width / 2;
+        int y = height / 2;
+        player.x = x;
+        player.y = y;
+        actors.add(player);
+        if (pet != null) {
+            pet.x = x + 2;
+            pet.y = y + 2;
+            actors.add(pet);
+        }
     }
 
     public boolean isBlocked(int x, int y) {
         if (map[x][y].blockGround()) return true;
-        for (Monster m: this.monsters) {
-            if (m.x == x && m.y == y && m.solid) return true;
+        for (Actor a: this.actors) {
+            if (a.x == x && a.y == y && a.solid) return true;
         }
         return false;
     }
@@ -68,12 +81,12 @@ public class GameMap implements Serializable {
                         new DungeonFeature.Flags(false));
 
         // a some monsters
-        monsters = new ArrayList<>();
+        actors = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             int x = rng.nextInt(width);
             int y = rng.nextInt(height);
             if (!dungeonMap[x][y].blockGround()) {
-                monsters.add(new Monster("white rat", "white rat", "white rat", "white rat", x, y));
+                actors.add(new Monster("white rat", "white rat", "white rat", "white rat", x, y));
             }
         }
         return dungeonMap;

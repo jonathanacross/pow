@@ -2,11 +2,12 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.actors.Actor;
 import pow.backend.command.FireRocket;
 import pow.backend.command.Move;
 import pow.backend.command.Save;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.Monster;
+import pow.backend.actors.Monster;
 import pow.frontend.Frontend;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
@@ -51,6 +52,10 @@ public class GameWindow extends AbstractWindow {
                 break;
             case KeyEvent.VK_N:
                 backend.commandQueue.add(new Move(1, 1));
+                break;
+            case KeyEvent.VK_PERIOD:
+                // TODO: change to rest
+                backend.commandQueue.add(new Move(0, 0));
                 break;
             case KeyEvent.VK_F:
                 backend.commandQueue.add(new FireRocket());
@@ -114,17 +119,9 @@ public class GameWindow extends AbstractWindow {
             }
         }
 
-        // draw monsters
-        for (Monster monster : gs.map.monsters) {
-            drawTile(graphics, monster.image, monster.x + cameraDx, monster.y + cameraDy);
-        }
-
-        // draw the player
-        drawTile(graphics, gs.player.image, gs.player.x + cameraDx, gs.player.y + cameraDy);
-
-        // draw any pets
-        if (gs.pet != null) {
-            drawTile(graphics, gs.pet.image, gs.pet.x + cameraDx, gs.pet.y + cameraDy);
+        // draw monsters, player, pets
+        for (Actor actor : gs.map.actors) {
+            drawTile(graphics, actor.image, actor.x + cameraDx, actor.y + cameraDy);
         }
 
         // draw effects

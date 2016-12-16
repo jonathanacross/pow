@@ -1,7 +1,7 @@
 package pow.backend;
 
+import pow.backend.actors.Actor;
 import pow.backend.command.CommandRequest;
-import pow.backend.dungeon.Monster;
 import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
@@ -28,13 +28,10 @@ public class GameBackend {
 
         this.logChanged = false;
         if (! commandQueue.isEmpty()) {
-            // TODO: unify player, pets, monsters under an actor to simplify this
-            events.addAll(commandQueue.poll().process(this));
+            gameState.player.addCommand(commandQueue.poll());
 
-            events.addAll(gameState.pet.act(this));
-
-            for (Monster m : gameState.map.monsters) {
-                events.addAll(m.act(this));
+            for (Actor a: gameState.map.actors) {
+                events.addAll(a.act(this));
             }
         }
         if (logChanged) {
