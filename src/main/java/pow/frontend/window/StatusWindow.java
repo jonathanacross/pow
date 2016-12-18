@@ -24,7 +24,7 @@ public class StatusWindow extends AbstractWindow {
     final private int TILE_SIZE = 32;
     final private int MARGIN = 10;
     final private int FONT_SIZE = 12;
-    final private int BAR_WIDTH = 170;
+    final private int BAR_WIDTH = 130;
 
     private Color darkenColor(Color orig, double percent) {
         int r = (int) Math.round(orig.getRed() * percent);

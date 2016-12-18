@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
+// TODO: either check to make sure that this is not an existing character, or
+// delete characters on death.
 public class CreateCharWindow extends AbstractWindow {
 
     private String name;

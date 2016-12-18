@@ -2,6 +2,7 @@ package pow.backend.actors;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.command.Attack;
 import pow.backend.event.GameEvent;
 import pow.util.DebugLogger;
 
@@ -20,8 +21,12 @@ public class Pet extends Actor implements Serializable {
     private State state;
 
     public Pet(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, false, 5);
+        super(id, name, image, description, x, y, true, false, 5, true);
         state = State.FOLLOW_PLAYER;
+    }
+
+    public String getPronoun() {
+        return this.name;
     }
 
     private List<GameEvent> tryMoveTo(GameState gs, int newx, int newy) {
@@ -39,11 +44,10 @@ public class Pet extends Actor implements Serializable {
     }
 
     private Actor nearestMonster(GameState gs) {
-
         int bestDist = Integer.MAX_VALUE;
         Actor closestMonster = null;
         for (Actor m : gs.map.actors) {
-            if (m != gs.player && m != gs.pet) {
+            if (!m.friendly) {
                 int d2 = dist2(x, y, m.x, m.y);
                 if (closestMonster == null || d2 < bestDist) {
                     closestMonster = m;
@@ -94,7 +98,7 @@ public class Pet extends Actor implements Serializable {
                 } else {
                     int d2 = dist2(x, y, nearest.x, nearest.y);
                     if (d2 <= 2) {
-                        backend.logMessage("your pet oozes on the monster");
+                        events.addAll(Attack.doAttack(backend, this, nearest));
                         state = State.FOLLOW_PLAYER;
                         DebugLogger.info("pet tracking player");
                     } else {

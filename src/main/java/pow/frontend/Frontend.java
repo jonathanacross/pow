@@ -59,15 +59,17 @@ public class Frontend {
         this.keyEvents = new LinkedList<>();
 
         gameBackend = new GameBackend();
-        statusWindow = new StatusWindow(5, 5, 250, 600, true, gameBackend, this);
-        gameWindow = new GameWindow(260, 5, 672, 672, true, gameBackend, this);
+        // dialogs
         welcomeWindow = new WelcomeWindow(50, 50, 600, 600, true, gameBackend, this);
         winWindow = new WinWindow(15, 100, 580, 200, true, gameBackend, this);
         loseWindow = new LoseWindow(15, 100, 480, 200, true, gameBackend, this);
         createCharWindow = new CreateCharWindow(15, 100, 480, 200, true, gameBackend, this);
         openGameWindow = new OpenGameWindow(15, 100, 380, 300, true, gameBackend, this);
-        mapWindow = new MapWindow(937, 5, 250, 250, true, gameBackend, this);
-        logWindow = new LogWindow(937, 260, 250, 345, true, gameBackend, this);
+        // main game
+        statusWindow = new StatusWindow(5, 5, 200, 672, true, gameBackend, this);
+        gameWindow = new GameWindow(210, 5, 672, 672, true, gameBackend, this);
+        mapWindow = new MapWindow(887, 5, 300, 250, true, gameBackend, this);
+        logWindow = new LogWindow(887, 260, 300, 395, true, gameBackend, this);
 
         windows = new Stack<>();
         setState(State.WELCOME);

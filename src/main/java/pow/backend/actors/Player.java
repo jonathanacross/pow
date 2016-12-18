@@ -14,12 +14,16 @@ public class Player extends Actor implements Serializable {
     private Queue<CommandRequest> requests;
 
     public Player(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, true, 10);
+        super(id, name, image, description, x, y, true, true, 10, true);
         this.requests = new LinkedList<>();
     }
 
     public void addCommand(CommandRequest request) {
         this.requests.add(request);
+    }
+
+    public String getPronoun() {
+        return "you";
     }
 
     @Override
