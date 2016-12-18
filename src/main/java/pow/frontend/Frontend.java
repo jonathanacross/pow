@@ -31,6 +31,7 @@ public class Frontend {
     private OpenGameWindow openGameWindow;
     private LogWindow logWindow;
     private StatusWindow statusWindow;
+    private MapWindow mapWindow;
 
     private GameBackend gameBackend;
     private Queue<KeyEvent> keyEvents;
@@ -58,14 +59,17 @@ public class Frontend {
         this.keyEvents = new LinkedList<>();
 
         gameBackend = new GameBackend();
-        gameWindow = new GameWindow(5, 5, 672, 672, true, gameBackend, this);
+        // dialogs
         welcomeWindow = new WelcomeWindow(50, 50, 600, 600, true, gameBackend, this);
         winWindow = new WinWindow(15, 100, 580, 200, true, gameBackend, this);
         loseWindow = new LoseWindow(15, 100, 480, 200, true, gameBackend, this);
         createCharWindow = new CreateCharWindow(15, 100, 480, 200, true, gameBackend, this);
         openGameWindow = new OpenGameWindow(15, 100, 380, 300, true, gameBackend, this);
-        statusWindow = new StatusWindow(682, 5, 250, 200, true, gameBackend, this);
-        logWindow = new LogWindow(682, 210, 250, 395, true, gameBackend, this);
+        // main game
+        statusWindow = new StatusWindow(5, 5, 200, 672, true, gameBackend, this);
+        gameWindow = new GameWindow(210, 5, 672, 672, true, gameBackend, this);
+        mapWindow = new MapWindow(887, 5, 300, 250, true, gameBackend, this);
+        logWindow = new LogWindow(887, 260, 300, 395, true, gameBackend, this);
 
         windows = new Stack<>();
         setState(State.WELCOME);
@@ -82,10 +86,23 @@ public class Frontend {
     public void setState(State state) {
         windows.clear();
         switch (state) {
-            case GAME: windows.push(statusWindow); windows.push(logWindow); windows.push(gameWindow); break;
-            case WELCOME: windows.push(welcomeWindow); break;
-            case OPEN_GAME: openGameWindow.refreshFileList(); windows.push(openGameWindow); break;
-            case CREATE_CHAR: createCharWindow.resetName(); windows.push(createCharWindow); break;
+            case GAME:
+                windows.push(statusWindow);
+                windows.push(logWindow);
+                windows.push(mapWindow);
+                windows.push(gameWindow);
+                break;
+            case WELCOME:
+                windows.push(welcomeWindow);
+                break;
+            case OPEN_GAME:
+                openGameWindow.refreshFileList();
+                windows.push(openGameWindow);
+                break;
+            case CREATE_CHAR:
+                createCharWindow.resetName();
+                windows.push(createCharWindow);
+                break;
         }
         dirty = true;
     }

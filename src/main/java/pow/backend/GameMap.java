@@ -43,6 +43,13 @@ public class GameMap implements Serializable {
         return false;
     }
 
+    public Actor actorAt(int x, int y) {
+        for (Actor a: this.actors) {
+            if (a.x == x && a.y == y && a.solid) return a;
+        }
+        return null;
+    }
+
     private DungeonSquare[][] buildArena(int width, int height, Random rng) {
         char[][] map = new char[width][height];
 
@@ -82,11 +89,16 @@ public class GameMap implements Serializable {
 
         // a some monsters
         actors = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             int x = rng.nextInt(width);
             int y = rng.nextInt(height);
             if (!dungeonMap[x][y].blockGround()) {
-                actors.add(new Monster("white rat", "white rat", "white rat", "white rat", x, y));
+                switch (rng.nextInt(3)) {
+                    case 0: actors.add(Monster.makeBat(x,y)); break;
+                    case 1: actors.add(Monster.makeRat(x,y)); break;
+                    case 2: actors.add(Monster.makeSnake(x,y)); break;
+                    default: break;
+                }
             }
         }
         return dungeonMap;

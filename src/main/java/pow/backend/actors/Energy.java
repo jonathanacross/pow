@@ -1,9 +1,11 @@
 package pow.backend.actors;
 
+import java.io.Serializable;
+
 /// Energy is used to control the rate that actors move relative to other
 /// actors. Each game turn, every actor will accumulate energy based on their
 /// speed. When it reaches a threshold, that actor can take a turn.
-public class Energy {
+public class Energy implements Serializable {
     // TODO: fix name constants
     static final int minSpeed    = 0;
     static final int normalSpeed = 6;

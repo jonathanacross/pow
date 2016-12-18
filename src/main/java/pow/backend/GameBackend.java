@@ -4,10 +4,7 @@ import pow.backend.actors.Actor;
 import pow.backend.command.CommandRequest;
 import pow.backend.event.GameEvent;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class GameBackend {
 
@@ -32,6 +29,22 @@ public class GameBackend {
 
             for (Actor a: gameState.map.actors) {
                 events.addAll(a.act(this));
+            }
+
+            // TODO: this is a bad hack to make sure we don't modify the
+            // array of actors while we're iterating through it -- e.g.,
+            // because a monster/pet gets killed.  Right now, it's possible
+            // that we kill a monster, and then it does its attack, and then
+            // the monster is removed here.  :(
+            for (Iterator<Actor> iterator = gameState.map.actors.iterator(); iterator.hasNext(); ) {
+                Actor a = iterator.next();
+                if (a.health < 0) {
+                    events.add(GameEvent.KILLED);
+                    iterator.remove();
+                    if (a == gameState.pet) {
+                        gameState.pet = null;
+                    }
+                }
             }
         }
         if (logChanged) {

@@ -3,9 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
-import pow.backend.command.FireRocket;
-import pow.backend.command.Move;
-import pow.backend.command.Save;
+import pow.backend.command.*;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.actors.Monster;
 import pow.frontend.Frontend;
@@ -22,40 +20,62 @@ public class GameWindow extends AbstractWindow {
         setTileSize(ImageController.TILE_SIZE);
     }
 
+    // TODO: move this into the backend.
+    // TODO: handle walls better, right now we move and fail, wasting a turn
+    private CommandRequest getDirectionCommand(int dx, int dy) {
+        GameState gs = backend.getGameState();
+
+        int newx = gs.player.x + dx;
+        int newy = gs.player.y + dy;
+
+        Actor defender = gs.map.actorAt(newx, newy);
+        if (defender != null) {
+           if (!defender.friendly)  {
+               return new Attack(gs.player, defender);
+           }
+           else {
+               // friendly, swap positions
+               return new Swap(gs.player, defender);
+           }
+        }
+
+        return new Move(dx, dy);
+    }
+
     @Override
     public void processKey(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_L:
-                backend.commandQueue.add(new Move(1, 0));
+                backend.commandQueue.add(getDirectionCommand(1, 0));
                 break;
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_H:
-                backend.commandQueue.add(new Move(-1, 0));
+                backend.commandQueue.add(getDirectionCommand(-1, 0));
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_J:
-                backend.commandQueue.add(new Move(0, 1));
+                backend.commandQueue.add(getDirectionCommand(0, 1));
                 break;
             case KeyEvent.VK_UP:
             case KeyEvent.VK_K:
-                backend.commandQueue.add(new Move(0, -1));
+                backend.commandQueue.add(getDirectionCommand(0, -1));
                 break;
             case KeyEvent.VK_Y:
-                backend.commandQueue.add(new Move(-1, -1));
+                backend.commandQueue.add(getDirectionCommand(-1, -1));
                 break;
             case KeyEvent.VK_U:
-                backend.commandQueue.add(new Move(1, -1));
+                backend.commandQueue.add(getDirectionCommand(1, -1));
                 break;
             case KeyEvent.VK_B:
-                backend.commandQueue.add(new Move(-1, 1));
+                backend.commandQueue.add(getDirectionCommand(-1, 1));
                 break;
             case KeyEvent.VK_N:
-                backend.commandQueue.add(new Move(1, 1));
+                backend.commandQueue.add(getDirectionCommand(1, 1));
                 break;
             case KeyEvent.VK_PERIOD:
                 // TODO: change to rest
-                backend.commandQueue.add(new Move(0, 0));
+                backend.commandQueue.add(getDirectionCommand(0, 0));
                 break;
             case KeyEvent.VK_F:
                 backend.commandQueue.add(new FireRocket());
