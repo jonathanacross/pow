@@ -2,11 +2,9 @@ package pow.backend.actors;
 
 import pow.backend.GameBackend;
 import pow.backend.command.CommandRequest;
-import pow.backend.event.GameEvent;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 public class Player extends Actor implements Serializable {
@@ -14,7 +12,7 @@ public class Player extends Actor implements Serializable {
     private Queue<CommandRequest> requests;
 
     public Player(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, true, 10, true);
+        super(id, name, image, description, x, y, true, 10, true, 0);
         this.requests = new LinkedList<>();
     }
 
@@ -22,16 +20,18 @@ public class Player extends Actor implements Serializable {
         this.requests.add(request);
     }
 
+    @Override
     public String getPronoun() {
         return "you";
     }
 
     @Override
-    public List<GameEvent> act(GameBackend backend) {
-        if (!requests.isEmpty()) {
-            return requests.poll().process(backend);
-        } else {
-            return null;  // TODO: or empty list?
-        }
+    public boolean needsInput() {
+        return requests.isEmpty();
+    }
+
+    @Override
+    public CommandRequest act(GameBackend backend) {
+        return this.requests.poll();
     }
 }

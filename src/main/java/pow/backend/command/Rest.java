@@ -2,23 +2,29 @@ package pow.backend.command;
 
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
-import pow.frontend.save.SaveUtils;
 
 import java.util.ArrayList;
 
-public class Save implements CommandRequest {
+public class Rest implements CommandRequest {
+
+    private Actor actor;
+
+    public Rest(Actor actor) {
+        this.actor = actor;
+    }
+
     @Override
     public ActionResult process(GameBackend backend) {
-        SaveUtils.saveToFile(backend.getGameState());
-        backend.logMessage("saved.");
         return ActionResult.Succeeded(new ArrayList<>());
     }
 
     @Override
-    public Actor getActor() {
-        return null;
+    public boolean consumesEnergy() {
+        return true;
     }
 
     @Override
-    public boolean consumesEnergy() { return false; }
+    public Actor getActor() {
+        return this.actor;
+    }
 }

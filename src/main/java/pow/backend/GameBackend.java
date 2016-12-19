@@ -1,16 +1,17 @@
 package pow.backend;
 
 import pow.backend.actors.Actor;
+import pow.backend.command.ActionResult;
 import pow.backend.command.CommandRequest;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameResult;
 
 import java.util.*;
 
 public class GameBackend {
 
     private GameState gameState;
-    public Queue<CommandRequest> commandQueue = new LinkedList<>();
-    private boolean logChanged;
+    public Deque<CommandRequest> commandQueue = new LinkedList<>();
+    //private boolean logChanged;
 
     public GameState getGameState() {
         return gameState;
@@ -20,45 +21,88 @@ public class GameBackend {
         this.gameState = new GameState("Unknown Adventurer");
     }
 
-    public List<GameEvent> processCommand() {
-        List<GameEvent> events = new ArrayList<>();
-
-        this.logChanged = false;
-        if (! commandQueue.isEmpty()) {
-            gameState.player.addCommand(commandQueue.poll());
-
-            for (Actor a: gameState.map.actors) {
-                events.addAll(a.act(this));
-            }
-
-            // TODO: this is a bad hack to make sure we don't modify the
-            // array of actors while we're iterating through it -- e.g.,
-            // because a monster/pet gets killed.  Right now, it's possible
-            // that we kill a monster, and then it does its attack, and then
-            // the monster is removed here.  :(
-            for (Iterator<Actor> iterator = gameState.map.actors.iterator(); iterator.hasNext(); ) {
-                Actor a = iterator.next();
-                if (a.health < 0) {
-                    events.add(GameEvent.KILLED);
-                    iterator.remove();
-                    if (a == gameState.pet) {
-                        gameState.pet = null;
-                    }
-                }
-            }
-        }
-        if (logChanged) {
-            events.add(GameEvent.LOG_UPDATE);
-        }
-
-        return events;
+    public void tellPlayer(CommandRequest request) {
+        gameState.player.addCommand(request);
     }
 
-    // note: this must be the only way to log a message, otherwise it may
-    // not immediately show up to the user.
-    // TODO: is there a way to clean up the 'logChanged' variable?
+    // TODO: right now, UI sees monsters move one at a time.  This is
+    // sort of cool, but it's slow once there are lots of monsters.
+    // Is there a way to move all monsters at once every time step? (I.e., update the UI
+    // once each cycle?)
+    public GameResult update() {
+        boolean madeProgress = false;
+
+        for (;;) {
+
+            // process any ongoing/pending actions
+            while (!commandQueue.isEmpty()) {
+
+                // find alternate commands, if needed
+                CommandRequest command = commandQueue.peek();
+                ActionResult result = command.process(this);
+                while (result.alternate != null) {
+                    commandQueue.removeFirst();  // replace command with alternate
+                    commandQueue.addFirst(result.alternate);
+                    command = commandQueue.peek();
+                    result = command.process(this);
+                }
+
+                madeProgress = true;
+
+                if (result.done) {
+                    commandQueue.removeFirst();
+
+                    if (result.succeeded && command.consumesEnergy()) {
+                        command.getActor().energy.spend();
+                        gameState.map.advanceActor();
+                    }
+
+                    // refresh every time player takes a turn
+                    if (command.getActor() == gameState.player) {
+                        return new GameResult(madeProgress, result.events);
+                    }
+                }
+                if (!result.events.isEmpty()) {
+                    return new GameResult(madeProgress, result.events);
+                }
+            }
+
+            // at this point, we've processed all pending actions, so advance
+            // the time.
+            while (commandQueue.isEmpty()) {
+                Actor actor = gameState.map.getCurrentActor();
+
+                // if waiting for input, just return
+                if (actor.energy.canTakeTurn() && actor.needsInput()) {
+                    return new GameResult(madeProgress, new ArrayList<>());
+                }
+
+                if (actor.energy.canTakeTurn() || actor.energy.gain(actor.speed)) {
+                    // If the actor can move now, but needs input from the user, just
+                    // return so we can wait for it.
+                    if (actor.needsInput()) {
+                        return new GameResult(madeProgress, new ArrayList<>());
+                    }
+
+                    commandQueue.add(actor.act(this));
+                } else {
+                    // This actor doesn't have enough energy yet, so move on to the next.
+                    gameState.map.advanceActor();
+                }
+
+                // Each time we wrap around, process "idle" things that are ongoing and
+                // speed independent.
+//                if (actor == gameState.player) {
+//                    trySpawnMonster();
+//                }
+            }
+
+        }
+    }
+
+    // TODO: Currently just logging won't update the UI.  Fix.
     public void logMessage(String message) {
-        logChanged = true;
+//        logChanged = true;
         gameState.log.add(message);
     }
 

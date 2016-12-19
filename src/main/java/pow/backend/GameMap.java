@@ -20,9 +20,8 @@ public class GameMap implements Serializable {
     public List<Actor> actors;
 
     public GameMap(Random rng, Player player, Pet pet) {
-        width = 40;
-        height = 30;
-        map = buildArena(width, height, rng);
+//        map = buildTestArea();
+        map = buildArena(40, 30, rng);
         int x = width / 2;
         int y = height / 2;
         player.x = x;
@@ -33,6 +32,22 @@ public class GameMap implements Serializable {
             pet.y = y + 2;
             actors.add(pet);
         }
+    }
+
+    private int currActorIdx;
+    public void advanceActor() {
+        currActorIdx = (currActorIdx + 1) % actors.size();
+    }
+    public Actor getCurrentActor() {
+        return actors.get(currActorIdx);
+    }
+
+    public void removeActor(Actor a) {
+        int idx = actors.indexOf(a);
+        if (currActorIdx > idx) {
+            currActorIdx--;
+        }
+        actors.remove(a);
     }
 
     public boolean isBlocked(int x, int y) {
@@ -50,7 +65,37 @@ public class GameMap implements Serializable {
         return null;
     }
 
+    private DungeonSquare[][] buildTestArea() {
+
+        this.width = 10;
+        this.height = 10;
+
+        DungeonTerrain wall = new DungeonTerrain("big stone wall", "big stone wall", "big stone wall",
+                new DungeonTerrain.Flags(true));
+        DungeonTerrain floor = new DungeonTerrain("floor", "floor", "floor",
+                new DungeonTerrain.Flags(false));
+        DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                dungeonMap[x][y] = (x == 0 || y == 0 || x == width-1 || y == height -1) ?
+                            new DungeonSquare(wall, null) :
+                            new DungeonSquare(floor, null);
+            }
+        }
+
+        // a some monsters
+        actors = new ArrayList<>();
+        actors.add(Monster.makeBat(2,3));
+        actors.add(Monster.makeRat(2,4));
+        actors.add(Monster.makeSnake(2,5));
+        return dungeonMap;
+    }
+
     private DungeonSquare[][] buildArena(int width, int height, Random rng) {
+        this.width = width;
+        this.height = height;
+
         char[][] map = new char[width][height];
 
         for (int c = 0; c < width; c++) {

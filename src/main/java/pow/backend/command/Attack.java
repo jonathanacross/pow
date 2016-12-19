@@ -4,7 +4,6 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
-import pow.util.DebugLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +17,13 @@ public class Attack implements CommandRequest {
         this.target = target;
     }
 
+    @Override
+    public Actor getActor() {
+        return this.attacker;
+    }
+
     // TODO: refactor this out so it's useful for monsters as well
-    public static List<GameEvent> doAttack(GameBackend backend, Actor attacker, Actor defender) {
+    public static ActionResult doAttack(GameBackend backend, Actor attacker, Actor defender) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
         if (gs.rng.nextBoolean()) {
@@ -34,24 +38,26 @@ public class Attack implements CommandRequest {
             defender.health -= damage;
             if (defender.health < 0) {
                 backend.logMessage(defender.getPronoun() + " died");
-                DebugLogger.info("removing defender " + defender.toString());
-                DebugLogger.info("actorlist:");
-                for (Actor a: gs.map.actors) {
-                    DebugLogger.info("   " + a.toString());
-                }
-                // TODO: would like to call this here: gs.map.actors.remove(defender);
-                // but can't because we can't currently modify the actor list
+//                DebugLogger.info("removing defender " + defender.toString());
+//                DebugLogger.info("actorlist:");
+//                for (Actor a: gs.map.actors) {
+//                    DebugLogger.info("   " + a.toString());
+//                }
+                gs.map.removeActor(defender);
 
                 if (defender == gs.player) {
                     events.add(GameEvent.LOST_GAME);
                 }
             }
         }
-        return events;
+        return ActionResult.Succeeded(events);
     }
 
     @Override
-    public List<GameEvent> process(GameBackend backend) {
+    public ActionResult process(GameBackend backend) {
         return doAttack(backend, this.attacker, this.target);
     }
+
+    @Override
+    public boolean consumesEnergy() { return true; }
 }

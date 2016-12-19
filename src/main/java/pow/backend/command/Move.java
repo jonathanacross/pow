@@ -2,9 +2,9 @@ package pow.backend.command;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.event.GameEvent;
-import pow.util.DebugLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,10 @@ import java.util.List;
 public class Move implements CommandRequest {
     int dx;
     int dy;
+    Actor actor;
 
-    public Move(int dx, int dy) {
+    public Move(Actor actor, int dx, int dy) {
+        this.actor = actor;
         this.dx = dx;
         this.dy = dy;
     }
@@ -22,27 +24,61 @@ public class Move implements CommandRequest {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.MOVED);
         GameState gs = backend.getGameState();
-        DungeonFeature feature = gs.map.map[gs.player.x][gs.player.y].feature;
-        if (feature != null && feature.id.equals("wintile")) {
-            backend.logMessage("you won!");
-            events.add(GameEvent.WON_GAME);
-        } else if (feature != null && feature.id.equals("losetile")) {
-            backend.logMessage("you died.");
-            events.add(GameEvent.LOST_GAME);
+
+        // temporary custom code to demonstrate winning/losing
+        if (actor == gs.player) {
+            DungeonFeature feature = gs.map.map[actor.x][actor.y].feature;
+            if (feature != null && feature.id.equals("wintile")) {
+                backend.logMessage("you won!");
+                events.add(GameEvent.WON_GAME);
+            } else if (feature != null && feature.id.equals("losetile")) {
+                backend.logMessage("you died.");
+                events.add(GameEvent.LOST_GAME);
+            }
         }
         return events;
     }
 
     @Override
-    public List<GameEvent> process(GameBackend backend) {
+    public Actor getActor() {
+        return this.actor;
+    }
+
+    @Override
+    public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        int newx = gs.player.x + dx;
-        int newy = gs.player.y + dy;
-        if (! gs.map.isBlocked(newx, newy)) {
-            gs.player.x = newx;
-            gs.player.y = newy;
+
+        // just stay still
+        if (dx == 0 && dy == 0) {
+            return ActionResult.Succeeded(new ArrayList<>());
         }
 
-        return addEvents(backend);
+        int newx = actor.x + dx;
+        int newy = actor.y + dy;
+
+        Actor defender = gs.map.actorAt(newx, newy);
+        if (defender != null) {
+            if (!defender.friendly)  {
+                // attack
+                return ActionResult.Failed(new Attack(gs.player, defender));
+            }
+            else {
+                // friendly, swap positions
+                return ActionResult.Failed(new Swap(gs.player, defender));
+            }
+        }
+
+        if (! gs.map.isBlocked(newx, newy)) {
+            // move
+            actor.x = newx;
+            actor.y = newy;
+            return ActionResult.Succeeded(addEvents(backend));
+        } else {
+            // tried to move to a solid area
+            return ActionResult.Failed(null);
+        }
     }
+
+    @Override
+    public boolean consumesEnergy() { return true; }
 }

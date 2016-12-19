@@ -1,10 +1,10 @@
 package pow.backend.command;
 
 import pow.backend.GameBackend;
-import pow.backend.event.GameEvent;
-
-import java.util.List;
+import pow.backend.actors.Actor;
 
 public interface CommandRequest {
-    List<GameEvent> process(GameBackend backend);
+    ActionResult process(GameBackend backend);
+    boolean consumesEnergy();
+    Actor getActor();
 }

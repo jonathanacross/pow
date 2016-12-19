@@ -1,53 +1,61 @@
 package pow.backend.actors;
 
+import pow.util.MathUtils;
 import java.io.Serializable;
 
-/// Energy is used to control the rate that actors move relative to other
-/// actors. Each game turn, every actor will accumulate energy based on their
-/// speed. When it reaches a threshold, that actor can take a turn.
+// Energy is used to control the rate that actors move relative to other
+// actors. Each game turn, every actor will accumulate energy based on their
+// speed. When it reaches a threshold, that actor can take a turn.
 public class Energy implements Serializable {
-    // TODO: fix name constants
-    static final int minSpeed    = 0;
-    static final int normalSpeed = 6;
-    static final int maxSpeed    = 12;
+    private static final int MIN_SPEED = 0;
+    private static final int NORMAL_SPEED = 6;
+    private static final int MAX_SPEED = 12;
 
-    static final int actionCost = 240;
+    private static final int ACTION_COST = 240;
 
     // How much energy is gained each game turn for each speed.
-    static final int[] gains = {
+    // Each increase is approximately 2^(1/3) = 1.25992105 times larger
+    // than the previous,  which means for every +3 to the index, the
+    // speed will double.
+    private static final int[] gains = {
             15,     // 1/4 normal speed
-            20,     // 1/3 normal speed
-            25,
+            19,
+            24,
             30,     // 1/2 normal speed
-            40,
-            50,
+            38,
+            48,
             60,     // normal speed
-            80,
-            100,
+            76,
+            95,
             120,    // 2x normal speed
-            150,
-            180,    // 3x normal speed
+            151,
+            190,
             240     // 4x normal speed
             };
 
-//    static num ticksAtSpeed(int speed) => actionCost / gains[normalSpeed + speed];
+    private int energy = 0;
 
-    public int energy = 0; // TODO: make private?
-
-    boolean canTakeTurn() {
-        return energy >= actionCost;
+    public void setFull() {
+        energy = ACTION_COST;
     }
 
-    /// Advances one game turn and gains an appropriate amount of energy. Returns
-    /// `true` if there is enough energy to take a turn.
-    boolean gain(int speed) {
-        energy += gains[speed];
+    public boolean canTakeTurn() {
+        return energy >= ACTION_COST;
+    }
+
+    // Advances one game turn and gains an appropriate amount of energy. Returns
+    // `true` if there is enough energy to take a turn.
+    public boolean gain(int speed) {
+        int index = MathUtils.clamp(speed + NORMAL_SPEED, MIN_SPEED, MAX_SPEED);
+        energy += gains[index];
         return canTakeTurn();
     }
 
-    /// Spends a turn's worth of energy.
-    void spend() {
-        assert(energy >= actionCost);
-        energy -= actionCost;
+    // Spends a turn's worth of energy.
+    public void spend() {
+        if (energy < ACTION_COST) {
+            throw new RuntimeException("tried to spend energy to take an action, but didn't have enough");
+        }
+        energy -= ACTION_COST;
     }
 }

@@ -3,114 +3,46 @@ package pow.backend.actors;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.command.Attack;
-import pow.backend.event.GameEvent;
-import pow.util.DebugLogger;
+import pow.backend.command.CommandRequest;
+import pow.util.MathUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
+import static pow.util.MathUtils.dist2;
 
 public class Pet extends Actor implements Serializable {
 
-    public enum State {
-        FOLLOW_PLAYER,
-        ATTACK_NEAREST_MONSTER,
-        WANDER
-    }
-
-    private State state;
-
     public Pet(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, false, 5, true);
-        state = State.FOLLOW_PLAYER;
+        super(id, name, image, description, x, y, true, 5, true, 0);
     }
 
+    @Override
     public String getPronoun() {
         return this.name;
     }
 
-    private List<GameEvent> tryMoveTo(GameState gs, int newx, int newy) {
-        List<GameEvent> events = new ArrayList<>();
-        if (! gs.map.isBlocked(newx, newy) && (gs.player.x != newx || gs.player.y != newy)) {
-            events.add(GameEvent.MOVED);
-            this.x = newx;
-            this.y = newy;
-        }
-        return events;
+    @Override
+    public boolean needsInput() {
+        return false;
     }
 
-    private int dist2(int x1, int y1, int x2, int y2) {
-        return (x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2);
-    }
-
-    private Actor nearestMonster(GameState gs) {
-        int bestDist = Integer.MAX_VALUE;
-        Actor closestMonster = null;
-        for (Actor m : gs.map.actors) {
-            if (!m.friendly) {
-                int d2 = dist2(x, y, m.x, m.y);
-                if (closestMonster == null || d2 < bestDist) {
-                    closestMonster = m;
-                    bestDist = d2;
-                }
-            }
-        }
-        return closestMonster;
-    }
-
-    private List<GameEvent> moveTowardTarget(GameState gs, int tx, int ty) {
-        // TODO: factor out distance computations
-        int d2 = dist2(x, y, tx, ty);
-
-        double dist = Math.sqrt(d2);
-        int rdx = tx - this.x;
-        int rdy = ty - this.y;
-        int dx = (int) Math.round(rdx / dist);
-        int dy = (int) Math.round(rdy / dist);
-        return tryMoveTo(gs, x + dx, y + dy);
-    }
-
-    private List<GameEvent> wander(GameState gs) {
-        int dx = gs.rng.nextInt(3) - 1;
-        int dy = gs.rng.nextInt(3) - 1;
-        return tryMoveTo(gs, x + dx, y + dy);
-    }
-
-    public List<GameEvent> act(GameBackend backend) {
-        List<GameEvent> events = new ArrayList<>();
+    @Override
+    public CommandRequest act(GameBackend backend) {
         GameState gs = backend.getGameState();
-        switch (state) {
-            case FOLLOW_PLAYER: {
-                int d2 = dist2(x, y, gs.player.x, gs.player.y);
-                if (d2 <= 2) {
-                    state = State.ATTACK_NEAREST_MONSTER;
-                    DebugLogger.info("pet attacking nearest");
-                }
-                events.addAll(moveTowardTarget(gs, gs.player.x, gs.player.y));
-                break;
-            }
 
-            case ATTACK_NEAREST_MONSTER:
-               Actor nearest = nearestMonster(gs);
-                if (nearest == null) {
-                    state = State.WANDER;
-                    DebugLogger.info("pet wandering");
-                } else {
-                    int d2 = dist2(x, y, nearest.x, nearest.y);
-                    if (d2 <= 2) {
-                        events.addAll(Attack.doAttack(backend, this, nearest));
-                        state = State.FOLLOW_PLAYER;
-                        DebugLogger.info("pet tracking player");
-                    } else {
-                        events.addAll(moveTowardTarget(gs, nearest.x, nearest.y));
-                    }
-                }
-                break;
-
-            case WANDER:
-                events.addAll(wander(gs));
-                break;
+        // try to attack first
+        Actor closestEnemy = AiUtils.findNearestTarget(this, gs);
+        if (closestEnemy != null && MathUtils.dist2(x, y, closestEnemy.x, closestEnemy.y) <= 2) {
+            return new Attack(this, closestEnemy);
         }
-        return events;
+
+        // if "far away" from the player, then try to catch up
+        int playerDist = dist2(x, y, gs.player.x, gs.player.y);
+        if (playerDist >= 9) {
+            return AiUtils.moveTowardTarget(this, gs, gs.player.x, gs.player.y);
+        }
+
+        // move randomly
+        return AiUtils.wander(this, gs);
     }
 }

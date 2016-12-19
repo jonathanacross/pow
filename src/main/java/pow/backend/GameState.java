@@ -21,6 +21,7 @@ public class GameState implements Serializable {
     // logging
     public MessageLog log;
 
+
     public GameState(String name) {
         this.rng = new Random(123);
         this.player = new Player("player", name, "human_adventurer", "yourself", -1, -1);
