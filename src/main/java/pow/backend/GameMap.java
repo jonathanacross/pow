@@ -35,6 +35,22 @@ public class GameMap implements Serializable {
         }
     }
 
+    private int currActorIdx;
+    public void advanceActor() {
+        currActorIdx = (currActorIdx + 1) / actors.size();
+    }
+    public Actor getCurrentActor() {
+        return actors.get(currActorIdx);
+    }
+
+    public void removeActor(Actor a) {
+        int idx = actors.indexOf(a);
+        if (currActorIdx > idx) {
+            currActorIdx--;
+        }
+        actors.remove(a);
+    }
+
     public boolean isBlocked(int x, int y) {
         if (map[x][y].blockGround()) return true;
         for (Actor a: this.actors) {

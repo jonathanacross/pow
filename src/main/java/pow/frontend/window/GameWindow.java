@@ -20,68 +20,48 @@ public class GameWindow extends AbstractWindow {
         setTileSize(ImageController.TILE_SIZE);
     }
 
-    // TODO: move this into the backend.
-    // TODO: handle walls better, right now we move and fail, wasting a turn
-    private CommandRequest getDirectionCommand(int dx, int dy) {
-        GameState gs = backend.getGameState();
-
-        int newx = gs.player.x + dx;
-        int newy = gs.player.y + dy;
-
-        Actor defender = gs.map.actorAt(newx, newy);
-        if (defender != null) {
-           if (!defender.friendly)  {
-               return new Attack(gs.player, defender);
-           }
-           else {
-               // friendly, swap positions
-               return new Swap(gs.player, defender);
-           }
-        }
-
-        return new Move(dx, dy);
-    }
-
     @Override
     public void processKey(KeyEvent e) {
+        GameState gs = backend.getGameState();
+
         switch (e.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_L:
-                backend.commandQueue.add(getDirectionCommand(1, 0));
+                backend.tellPlayer(new Move(gs.player, 1, 0));
                 break;
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_H:
-                backend.commandQueue.add(getDirectionCommand(-1, 0));
+                backend.tellPlayer(new Move(gs.player, -1, 0));
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_J:
-                backend.commandQueue.add(getDirectionCommand(0, 1));
+                backend.tellPlayer(new Move(gs.player, 0, 1));
                 break;
             case KeyEvent.VK_UP:
             case KeyEvent.VK_K:
-                backend.commandQueue.add(getDirectionCommand(0, -1));
+                backend.tellPlayer(new Move(gs.player, 0, -1));
                 break;
             case KeyEvent.VK_Y:
-                backend.commandQueue.add(getDirectionCommand(-1, -1));
+                backend.tellPlayer(new Move(gs.player, -1, -1));
                 break;
             case KeyEvent.VK_U:
-                backend.commandQueue.add(getDirectionCommand(1, -1));
+                backend.tellPlayer(new Move(gs.player, 1, -1));
                 break;
             case KeyEvent.VK_B:
-                backend.commandQueue.add(getDirectionCommand(-1, 1));
+                backend.tellPlayer(new Move(gs.player, -1, 1));
                 break;
             case KeyEvent.VK_N:
-                backend.commandQueue.add(getDirectionCommand(1, 1));
+                backend.tellPlayer(new Move(gs.player, 1, 1));
                 break;
             case KeyEvent.VK_PERIOD:
                 // TODO: change to rest
-                backend.commandQueue.add(getDirectionCommand(0, 0));
+                backend.tellPlayer(new Move(gs.player, 0, 0));
                 break;
             case KeyEvent.VK_F:
-                backend.commandQueue.add(new FireRocket());
+                backend.tellPlayer(new FireRocket(gs.player));
                 break;
             case KeyEvent.VK_S:
-                backend.commandQueue.add(new Save());
+                backend.tellPlayer(new Save());
                 break;
         }
     }

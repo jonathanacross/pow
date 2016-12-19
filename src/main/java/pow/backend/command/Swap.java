@@ -22,7 +22,12 @@ public class Swap implements CommandRequest {
     }
 
     @Override
-    public List<GameEvent> process(GameBackend backend) {
+    public Actor getActor() {
+        return first;
+    }
+
+    @Override
+    public ActionResult process(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
 
         if (first != second) {
@@ -30,7 +35,13 @@ public class Swap implements CommandRequest {
             int tmpy = first.y; first.y = second.y; second.y = tmpy;
             backend.logMessage(first.getPronoun() + " and " + second.getPronoun() + " swap places");
             events.add(GameEvent.MOVED);
+            return ActionResult.Succeeded(events);
+        } else {
+            // tried to swap self.
+            return ActionResult.Failed(null);
         }
-        return events;
     }
+
+    @Override
+    public boolean consumesEnergy() { return true; }
 }

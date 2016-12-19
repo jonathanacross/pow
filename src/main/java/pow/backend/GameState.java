@@ -1,5 +1,6 @@
 package pow.backend;
 
+import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.util.MessageLog;
@@ -20,6 +21,7 @@ public class GameState implements Serializable {
 
     // logging
     public MessageLog log;
+
 
     public GameState(String name) {
         this.rng = new Random(123);
