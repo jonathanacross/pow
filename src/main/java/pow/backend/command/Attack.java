@@ -4,9 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
-import pow.util.DebugLogger;
 
-import javax.swing.Action;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -5,7 +5,6 @@ import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class FireRocket implements CommandRequest {
 

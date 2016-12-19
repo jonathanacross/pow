@@ -12,7 +12,7 @@ public class Player extends Actor implements Serializable {
     private Queue<CommandRequest> requests;
 
     public Player(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, true, 10, true, 0);
+        super(id, name, image, description, x, y, true, 10, true, 0);
         this.requests = new LinkedList<>();
     }
 
@@ -20,8 +20,14 @@ public class Player extends Actor implements Serializable {
         this.requests.add(request);
     }
 
+    @Override
     public String getPronoun() {
         return "you";
+    }
+
+    @Override
+    public boolean needsInput() {
+        return requests.isEmpty();
     }
 
     @Override

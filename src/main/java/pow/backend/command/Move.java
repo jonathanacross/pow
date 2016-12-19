@@ -5,9 +5,7 @@ import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.event.GameEvent;
-import pow.util.DebugLogger;
 
-import javax.swing.Action;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +24,10 @@ public class Move implements CommandRequest {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.MOVED);
         GameState gs = backend.getGameState();
-        DungeonFeature feature = gs.map.map[gs.player.x][gs.player.y].feature;
 
         // temporary custom code to demonstrate winning/losing
         if (actor == gs.player) {
+            DungeonFeature feature = gs.map.map[actor.x][actor.y].feature;
             if (feature != null && feature.id.equals("wintile")) {
                 backend.logMessage("you won!");
                 events.add(GameEvent.WON_GAME);
@@ -55,8 +53,8 @@ public class Move implements CommandRequest {
             return ActionResult.Succeeded(new ArrayList<>());
         }
 
-        int newx = gs.player.x + dx;
-        int newy = gs.player.y + dy;
+        int newx = actor.x + dx;
+        int newy = actor.y + dy;
 
         Actor defender = gs.map.actorAt(newx, newy);
         if (defender != null) {
@@ -72,8 +70,8 @@ public class Move implements CommandRequest {
 
         if (! gs.map.isBlocked(newx, newy)) {
             // move
-            gs.player.x = newx;
-            gs.player.y = newy;
+            actor.x = newx;
+            actor.y = newy;
             return ActionResult.Succeeded(addEvents(backend));
         } else {
             // tried to move to a solid area

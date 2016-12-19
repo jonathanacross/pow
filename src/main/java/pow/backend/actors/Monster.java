@@ -4,40 +4,52 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.command.Attack;
 import pow.backend.command.CommandRequest;
-import pow.backend.command.Move;
-import pow.backend.command.Rest;
-import pow.backend.event.GameEvent;
 import pow.util.MathUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Monster extends Actor implements Serializable {
 
     public Monster(String id, String name, String image, String description, int maxHealth, int speed, int x, int y) {
-        super(id, name, image, description, x, y, true, false, maxHealth, false, speed);
+        super(id, name, image, description, x, y, true, maxHealth, false, speed);
+        this.dx = 1;
     }
+
 
     public static Monster makeRat(int x, int y) {
         return new Monster("white rat", "white rat", "white rat", "white rat", 3, 0, x, y);
     }
 
-    public static Monster makeBat(int x, int y) {
-        return new Monster("bat", "bat", "bat", "bat", 2, 2, x, y);
-    }
+    public static Monster makeBat(int x, int y) { return new Monster("bat", "bat", "bat", "bat", 2, 3, x, y); }
 
     public static Monster makeSnake(int x, int y) {
-        return new Monster("yellow snake", "yellow snake", "yellow snake", "yellow snake", 4, -2, x, y);
+        return new Monster("yellow snake", "yellow snake", "yellow snake", "yellow snake", 4, -3, x, y);
     }
 
+    @Override
     public String getPronoun() {
         return "the " + this.name;
     }
 
+    @Override
+    public boolean needsInput() {
+        return false;
+    }
 
+    private int dx;
+
+    @Override
     public CommandRequest act(GameBackend backend) {
         GameState gs = backend.getGameState();
+
+//        if (gs.map.isBlocked(x + 1, y) && gs.map.isBlocked(x - 1, y)) {
+//            return new Move(this, 0, 0);
+//        }
+//        if (gs.map.isBlocked(x + dx, this.y)) {
+//            dx *= -1;
+//        }
+//        return new Move(this, dx, 0);
+
 
         // try to attack first
         Actor closestEnemy = AiUtils.findNearestTarget(this, gs);

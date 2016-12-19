@@ -1,7 +1,6 @@
 package pow.backend.command;
 
 import pow.backend.GameBackend;
-import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 

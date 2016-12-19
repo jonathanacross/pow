@@ -4,27 +4,29 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.command.Attack;
 import pow.backend.command.CommandRequest;
-import pow.backend.command.Move;
-import pow.backend.event.GameEvent;
-import pow.util.DebugLogger;
 import pow.util.MathUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import static pow.util.MathUtils.dist2;
 
 public class Pet extends Actor implements Serializable {
 
     public Pet(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, false, 5, true, 0);
+        super(id, name, image, description, x, y, true, 5, true, 0);
     }
 
+    @Override
     public String getPronoun() {
         return this.name;
     }
 
+    @Override
+    public boolean needsInput() {
+        return false;
+    }
+
+    @Override
     public CommandRequest act(GameBackend backend) {
         GameState gs = backend.getGameState();
 

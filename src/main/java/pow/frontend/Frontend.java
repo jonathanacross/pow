@@ -2,6 +2,7 @@ package pow.frontend;
 
 import pow.backend.GameBackend;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameResult;
 import pow.frontend.effect.Effect;
 import pow.frontend.effect.RocketEffect;
 import pow.frontend.window.*;
@@ -119,6 +120,19 @@ public class Frontend {
     }
 
     public void update() {
+
+        GameResult result = gameBackend.update();
+        if (!result.events.isEmpty()) {
+            dirty = true;
+        }
+        for (GameEvent event : result.events) {
+            switch (event) {
+                case WON_GAME: open(this.winWindow); break;
+                case LOST_GAME: open(this.loseWindow); break;
+                case ROCKET: this.effects.add(new RocketEffect(this.gameBackend)); break;
+            }
+        }
+
         while (! effects.isEmpty()) {
             Effect effect = effects.get(0);
             dirty = true;
@@ -146,17 +160,6 @@ public class Frontend {
             windows.peek().processKey(e);
         }
 
-        List<GameEvent> events = gameBackend.processCommand();
-        if (! events.isEmpty()) {
-            dirty = true;
-        }
-        for (GameEvent event : events) {
-            switch (event) {
-                case WON_GAME: open(this.winWindow); break;
-                case LOST_GAME: open(this.loseWindow); break;
-                case ROCKET: this.effects.add(new RocketEffect(this.gameBackend)); break;
-            }
-        }
     }
 
     public void draw(Graphics graphics) {

@@ -2,6 +2,7 @@ package pow.backend.command;
 
 import pow.backend.event.GameEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActionResult {
@@ -23,7 +24,7 @@ public class ActionResult {
     }
 
     public static ActionResult Failed(CommandRequest alternate) {
-        return new ActionResult(null, false, true, alternate);
+        return new ActionResult(new ArrayList<>(), false, true, alternate);
     }
 
     public static ActionResult NotDone(List<GameEvent> events) {
