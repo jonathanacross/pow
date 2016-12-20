@@ -22,7 +22,7 @@ public class Move implements CommandRequest {
 
     private List<GameEvent> addEvents(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.MOVED);
+        events.add(GameEvent.Moved());
         GameState gs = backend.getGameState();
 
         // temporary custom code to demonstrate winning/losing
@@ -30,10 +30,10 @@ public class Move implements CommandRequest {
             DungeonFeature feature = gs.map.map[actor.x][actor.y].feature;
             if (feature != null && feature.id.equals("wintile")) {
                 backend.logMessage("you won!");
-                events.add(GameEvent.WON_GAME);
+                events.add(GameEvent.WonGame());
             } else if (feature != null && feature.id.equals("losetile")) {
                 backend.logMessage("you died.");
-                events.add(GameEvent.LOST_GAME);
+                events.add(GameEvent.LostGame());
             }
         }
         return events;

@@ -33,7 +33,7 @@ public class Attack implements CommandRequest {
 
             backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + damage + " damage");
 
-            events.add(GameEvent.ATTACKED);
+            events.add(GameEvent.Attacked());
 
             defender.health -= damage;
             if (defender.health < 0) {
@@ -46,7 +46,7 @@ public class Attack implements CommandRequest {
                 gs.map.removeActor(defender);
 
                 if (defender == gs.player) {
-                    events.add(GameEvent.LOST_GAME);
+                    events.add(GameEvent.LostGame());
                 }
             }
         }

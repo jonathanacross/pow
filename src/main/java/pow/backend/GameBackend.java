@@ -25,12 +25,15 @@ public class GameBackend {
         gameState.player.addCommand(request);
     }
 
-    // TODO: right now, UI sees monsters move one at a time.  This is
-    // sort of cool, but it's slow once there are lots of monsters.
-    // Is there a way to move all monsters at once every time step? (I.e., update the UI
-    // once each cycle?)
+    public void setGameInProgress(boolean gameInProgress) {
+        gameState.gameInProgress = gameInProgress;
+    }
+
     public GameResult update() {
-        boolean madeProgress = false;
+        GameResult gameResult = new GameResult(new ArrayList<>());
+        if (!gameState.gameInProgress) {
+            return gameResult;
+        }
 
         for (;;) {
 
@@ -47,8 +50,6 @@ public class GameBackend {
                     result = command.process(this);
                 }
 
-                madeProgress = true;
-
                 if (result.done) {
                     commandQueue.removeFirst();
 
@@ -59,13 +60,17 @@ public class GameBackend {
 
                     // refresh every time player takes a turn
                     if (command.getActor() == gameState.player) {
-                        return new GameResult(madeProgress, result.events);
+                        gameResult.addEvents(result.events);
+                        //return gameResult;
+                        //return new GameResult(madeProgress, result.events);
                     }
                 }
                 if (!result.events.isEmpty()) {
-                    return new GameResult(madeProgress, result.events);
+                    gameResult.addEvents(result.events);
+                    //return new GameResult(madeProgress, result.events);
                 }
             }
+
 
             // at this point, we've processed all pending actions, so advance
             // the time.
@@ -74,14 +79,16 @@ public class GameBackend {
 
                 // if waiting for input, just return
                 if (actor.energy.canTakeTurn() && actor.needsInput()) {
-                    return new GameResult(madeProgress, new ArrayList<>());
+                    return gameResult;
+                    //return new GameResult(madeProgress, new ArrayList<>());
                 }
 
                 if (actor.energy.canTakeTurn() || actor.energy.gain(actor.speed)) {
                     // If the actor can move now, but needs input from the user, just
                     // return so we can wait for it.
                     if (actor.needsInput()) {
-                        return new GameResult(madeProgress, new ArrayList<>());
+                        return gameResult;
+                        //return new GameResult(madeProgress, new ArrayList<>());
                     }
 
                     commandQueue.add(actor.act(this));

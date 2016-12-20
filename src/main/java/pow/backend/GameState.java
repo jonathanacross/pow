@@ -21,8 +21,11 @@ public class GameState implements Serializable {
     // logging
     public MessageLog log;
 
+    public boolean gameInProgress;
+
 
     public GameState(String name) {
+        this.gameInProgress = false;
         this.rng = new Random(123);
         this.player = new Player("player", name, "human_adventurer", "yourself", -1, -1);
         this.pet = new Pet("pet", "your pet", "bot", "your pet", -1, -1);

@@ -17,7 +17,7 @@ public class FireRocket implements CommandRequest {
     @Override
     public ActionResult process(GameBackend backend) {
         backend.logMessage(actor.getPronoun() + " fire a rocket");
-        return ActionResult.Succeeded(Arrays.asList(GameEvent.ROCKET));
+        return ActionResult.Succeeded(Arrays.asList(GameEvent.Rocket(actor)));
     }
 
     @Override

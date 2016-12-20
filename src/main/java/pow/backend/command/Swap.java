@@ -33,7 +33,7 @@ public class Swap implements CommandRequest {
             int tmpx = first.x; first.x = second.x; second.x = tmpx;
             int tmpy = first.y; first.y = second.y; second.y = tmpy;
             backend.logMessage(first.getPronoun() + " and " + second.getPronoun() + " swap places");
-            events.add(GameEvent.MOVED);
+            events.add(GameEvent.Moved());
             return ActionResult.Succeeded(events);
         } else {
             // tried to swap self.

@@ -4,6 +4,8 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.command.Attack;
 import pow.backend.command.CommandRequest;
+import pow.backend.command.FireRocket;
+import pow.backend.command.Move;
 import pow.util.MathUtils;
 
 import java.io.Serializable;
@@ -37,19 +39,24 @@ public class Monster extends Actor implements Serializable {
     }
 
     private int dx;
+    private int n;
 
     @Override
     public CommandRequest act(GameBackend backend) {
         GameState gs = backend.getGameState();
 
-//        if (gs.map.isBlocked(x + 1, y) && gs.map.isBlocked(x - 1, y)) {
-//            return new Move(this, 0, 0);
+//        n++;
+//        if (n % 2 == 0) {
+//            return new FireRocket(this);
+//        } else {
+//            if (gs.map.isBlocked(x + 1, y) && gs.map.isBlocked(x - 1, y)) {
+//                return new Move(this, 0, 0);
+//            }
+//            if (gs.map.isBlocked(x + dx, this.y)) {
+//                dx *= -1;
+//            }
+//            return new Move(this, dx, 0);
 //        }
-//        if (gs.map.isBlocked(x + dx, this.y)) {
-//            dx *= -1;
-//        }
-//        return new Move(this, dx, 0);
-
 
         // try to attack first
         Actor closestEnemy = AiUtils.findNearestTarget(this, gs);
