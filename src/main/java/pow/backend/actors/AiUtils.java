@@ -1,20 +1,20 @@
 package pow.backend.actors;
 
 import pow.backend.GameState;
-import pow.backend.command.CommandRequest;
-import pow.backend.command.Move;
+import pow.backend.action.Action;
+import pow.backend.action.Move;
 import pow.util.MathUtils;
 
 // collection of AI utilities for actors
 public class AiUtils {
 
-    public static CommandRequest wander(Actor actor, GameState gs) {
+    public static Action wander(Actor actor, GameState gs) {
         int dx = gs.rng.nextInt(3) - 1;
         int dy = gs.rng.nextInt(3) - 1;
         return moveOrWait(actor, gs, dx, dy);
     }
 
-    public static CommandRequest moveTowardTarget(Actor actor, GameState gs, int tx, int ty) {
+    public static Action moveTowardTarget(Actor actor, GameState gs, int tx, int ty) {
         int d2 = MathUtils.dist2(actor.x, actor.y, tx, ty);
 
         double dist = Math.sqrt(d2);
@@ -40,7 +40,7 @@ public class AiUtils {
         return closestMonster;
     }
 
-    private static CommandRequest moveOrWait(Actor actor, GameState gs, int dx, int dy) {
+    private static Action moveOrWait(Actor actor, GameState gs, int dx, int dy) {
         if (!gs.map.isBlocked(actor.x + dx, actor.y + dy)) {
             return new Move(actor, dx, dy);
         } else {

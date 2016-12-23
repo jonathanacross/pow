@@ -1,4 +1,4 @@
-package pow.backend.command;
+package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
@@ -11,7 +11,7 @@ import java.util.List;
 // nice to remove some energy from both parties, otherwise it
 // looks a little odd if you swap with a pet and then it moves;
 // it essentially got a free move!
-public class Swap implements CommandRequest {
+public class Swap implements Action {
     Actor first;
     Actor second;
 

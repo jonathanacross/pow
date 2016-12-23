@@ -1,4 +1,4 @@
-package pow.backend.command;
+package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
@@ -9,7 +9,7 @@ import pow.backend.event.GameEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Move implements CommandRequest {
+public class Move implements Action {
     int dx;
     int dy;
     Actor actor;

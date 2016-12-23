@@ -1,8 +1,8 @@
 package pow.backend;
 
 import pow.backend.actors.Actor;
-import pow.backend.command.ActionResult;
-import pow.backend.command.CommandRequest;
+import pow.backend.action.ActionResult;
+import pow.backend.action.Action;
 import pow.backend.event.GameResult;
 
 import java.util.*;
@@ -10,7 +10,7 @@ import java.util.*;
 public class GameBackend {
 
     private GameState gameState;
-    public Deque<CommandRequest> commandQueue = new LinkedList<>();
+    public Deque<Action> commandQueue = new LinkedList<>();
     //private boolean logChanged;
 
     public GameState getGameState() {
@@ -21,7 +21,7 @@ public class GameBackend {
         this.gameState = new GameState("Unknown Adventurer");
     }
 
-    public void tellPlayer(CommandRequest request) {
+    public void tellPlayer(Action request) {
         gameState.player.addCommand(request);
     }
 
@@ -41,10 +41,10 @@ public class GameBackend {
             while (!commandQueue.isEmpty()) {
 
                 // find alternate commands, if needed
-                CommandRequest command = commandQueue.peek();
+                Action command = commandQueue.peek();
                 ActionResult result = command.process(this);
                 while (result.alternate != null) {
-                    commandQueue.removeFirst();  // replace command with alternate
+                    commandQueue.removeFirst();  // replace action with alternate
                     commandQueue.addFirst(result.alternate);
                     command = commandQueue.peek();
                     result = command.process(this);

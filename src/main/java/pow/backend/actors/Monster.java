@@ -2,10 +2,8 @@ package pow.backend.actors;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
-import pow.backend.command.Attack;
-import pow.backend.command.CommandRequest;
-import pow.backend.command.FireRocket;
-import pow.backend.command.Move;
+import pow.backend.action.Attack;
+import pow.backend.action.Action;
 import pow.util.MathUtils;
 
 import java.io.Serializable;
@@ -42,7 +40,7 @@ public class Monster extends Actor implements Serializable {
     private int n;
 
     @Override
-    public CommandRequest act(GameBackend backend) {
+    public Action act(GameBackend backend) {
         GameState gs = backend.getGameState();
 
 //        n++;

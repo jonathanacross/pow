@@ -1,4 +1,4 @@
-package pow.backend.command;
+package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
@@ -8,7 +8,7 @@ import pow.backend.event.GameEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Attack implements CommandRequest {
+public class Attack implements Action {
     Actor attacker;
     Actor target;
 
@@ -47,6 +47,9 @@ public class Attack implements CommandRequest {
 
                 if (defender == gs.player) {
                     events.add(GameEvent.LostGame());
+                }
+                if (defender == gs.pet) {
+                    gs.pet = null;
                 }
             }
         }

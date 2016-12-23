@@ -1,11 +1,11 @@
-package pow.backend.command;
+package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 
 import java.util.ArrayList;
 
-public class Rest implements CommandRequest {
+public class Rest implements Action {
 
     private Actor actor;
 
