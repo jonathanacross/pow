@@ -1,5 +1,6 @@
 package pow.backend;
 
+import pow.backend.action.Log;
 import pow.backend.actors.Actor;
 import pow.backend.action.ActionResult;
 import pow.backend.action.Action;
@@ -11,7 +12,6 @@ public class GameBackend {
 
     private GameState gameState;
     public Deque<Action> commandQueue = new LinkedList<>();
-    //private boolean logChanged;
 
     public GameState getGameState() {
         return gameState;
@@ -107,9 +107,10 @@ public class GameBackend {
         }
     }
 
-    // TODO: Currently just logging won't update the UI.  Fix.
+    // NOTE: to make sure that the UI updates, we can't modify gameState.log
+    // directly; instead MUST use this method for all logging.
     public void logMessage(String message) {
-//        logChanged = true;
+        commandQueue.add(new Log());
         gameState.log.add(message);
     }
 
