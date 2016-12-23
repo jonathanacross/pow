@@ -93,17 +93,21 @@ public class Frontend {
                 windows.push(logWindow);
                 windows.push(mapWindow);
                 windows.push(gameWindow);
+                gameBackend.setGameInProgress(true);
                 break;
             case WELCOME:
                 windows.push(welcomeWindow);
+                gameBackend.setGameInProgress(false);
                 break;
             case OPEN_GAME:
                 openGameWindow.refreshFileList();
                 windows.push(openGameWindow);
+                gameBackend.setGameInProgress(false);
                 break;
             case CREATE_CHAR:
                 createCharWindow.resetName();
                 windows.push(createCharWindow);
+                gameBackend.setGameInProgress(false);
                 break;
         }
         dirty = true;
@@ -120,18 +124,6 @@ public class Frontend {
     }
 
     public void update() {
-
-        GameResult result = gameBackend.update();
-        if (!result.events.isEmpty()) {
-            dirty = true;
-        }
-        for (GameEvent event : result.events) {
-            switch (event) {
-                case WON_GAME: open(this.winWindow); break;
-                case LOST_GAME: open(this.loseWindow); break;
-                case ROCKET: this.effects.add(new RocketEffect(this.gameBackend)); break;
-            }
-        }
 
         while (! effects.isEmpty()) {
             Effect effect = effects.get(0);
@@ -158,6 +150,18 @@ public class Frontend {
     public void processKey(KeyEvent e) {
         if (!windows.isEmpty()) {
             windows.peek().processKey(e);
+        }
+
+        GameResult result = gameBackend.update();
+        if (!result.events.isEmpty()) {
+            dirty = true;
+        }
+        for (GameEvent event : result.events) {
+            switch (event.eventType) {
+                case WON_GAME: open(this.winWindow); break;
+                case LOST_GAME: open(this.loseWindow); break;
+                case ROCKET: this.effects.add(new RocketEffect(event.actor)); break;
+            }
         }
 
     }

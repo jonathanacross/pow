@@ -1,9 +1,9 @@
-package pow.backend.command;
+package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 
-public interface CommandRequest {
+public interface Action {
     ActionResult process(GameBackend backend);
     boolean consumesEnergy();
     Actor getActor();

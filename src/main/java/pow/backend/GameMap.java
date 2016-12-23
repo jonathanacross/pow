@@ -26,6 +26,7 @@ public class GameMap implements Serializable {
         int y = height / 2;
         player.x = x;
         player.y = y;
+        player.energy.setFull(); // make sure the player can move first
         actors.add(player);
         if (pet != null) {
             pet.x = x + 2;

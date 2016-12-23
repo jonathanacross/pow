@@ -1,4 +1,4 @@
-package pow.backend.command;
+package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
@@ -6,7 +6,7 @@ import pow.frontend.save.SaveUtils;
 
 import java.util.ArrayList;
 
-public class Save implements CommandRequest {
+public class Save implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         SaveUtils.saveToFile(backend.getGameState());

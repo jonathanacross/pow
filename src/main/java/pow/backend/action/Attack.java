@@ -1,4 +1,4 @@
-package pow.backend.command;
+package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
@@ -8,7 +8,7 @@ import pow.backend.event.GameEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Attack implements CommandRequest {
+public class Attack implements Action {
     Actor attacker;
     Actor target;
 
@@ -33,20 +33,22 @@ public class Attack implements CommandRequest {
 
             backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + damage + " damage");
 
-            events.add(GameEvent.ATTACKED);
+            events.add(GameEvent.Attacked());
 
             defender.health -= damage;
             if (defender.health < 0) {
                 backend.logMessage(defender.getPronoun() + " died");
-//                DebugLogger.info("removing defender " + defender.toString());
-//                DebugLogger.info("actorlist:");
-//                for (Actor a: gs.map.actors) {
-//                    DebugLogger.info("   " + a.toString());
-//                }
-                gs.map.removeActor(defender);
 
                 if (defender == gs.player) {
-                    events.add(GameEvent.LOST_GAME);
+                    gs.gameInProgress = false;
+                    events.add(GameEvent.LostGame());
+                } else {
+                    // Only remove the actor if it's NOT the player,
+                    // so that the player won't disappear from the map.
+                    gs.map.removeActor(defender);
+                }
+                if (defender == gs.pet) {
+                    gs.pet = null;
                 }
             }
         }

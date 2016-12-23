@@ -1,7 +1,7 @@
 package pow.backend.actors;
 
 import pow.backend.GameBackend;
-import pow.backend.command.CommandRequest;
+import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonObject;
 
 import java.io.Serializable;
@@ -14,7 +14,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public boolean friendly; // friendly to the player
     public int speed;
 
-    public abstract CommandRequest act(GameBackend backend);
+    public abstract Action act(GameBackend backend);
 
     public abstract boolean needsInput();
 

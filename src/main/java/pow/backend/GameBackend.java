@@ -1,8 +1,8 @@
 package pow.backend;
 
 import pow.backend.actors.Actor;
-import pow.backend.command.ActionResult;
-import pow.backend.command.CommandRequest;
+import pow.backend.action.ActionResult;
+import pow.backend.action.Action;
 import pow.backend.event.GameResult;
 
 import java.util.*;
@@ -10,7 +10,7 @@ import java.util.*;
 public class GameBackend {
 
     private GameState gameState;
-    public Deque<CommandRequest> commandQueue = new LinkedList<>();
+    public Deque<Action> commandQueue = new LinkedList<>();
     //private boolean logChanged;
 
     public GameState getGameState() {
@@ -21,33 +21,35 @@ public class GameBackend {
         this.gameState = new GameState("Unknown Adventurer");
     }
 
-    public void tellPlayer(CommandRequest request) {
+    public void tellPlayer(Action request) {
         gameState.player.addCommand(request);
     }
 
-    // TODO: right now, UI sees monsters move one at a time.  This is
-    // sort of cool, but it's slow once there are lots of monsters.
-    // Is there a way to move all monsters at once every time step? (I.e., update the UI
-    // once each cycle?)
+    public void setGameInProgress(boolean gameInProgress) {
+        gameState.gameInProgress = gameInProgress;
+    }
+
     public GameResult update() {
-        boolean madeProgress = false;
+        GameResult gameResult = new GameResult(new ArrayList<>());
 
         for (;;) {
+
+            if (!gameState.gameInProgress) {
+                return gameResult;
+            }
 
             // process any ongoing/pending actions
             while (!commandQueue.isEmpty()) {
 
                 // find alternate commands, if needed
-                CommandRequest command = commandQueue.peek();
+                Action command = commandQueue.peek();
                 ActionResult result = command.process(this);
                 while (result.alternate != null) {
-                    commandQueue.removeFirst();  // replace command with alternate
+                    commandQueue.removeFirst();  // replace action with alternate
                     commandQueue.addFirst(result.alternate);
                     command = commandQueue.peek();
                     result = command.process(this);
                 }
-
-                madeProgress = true;
 
                 if (result.done) {
                     commandQueue.removeFirst();
@@ -57,13 +59,16 @@ public class GameBackend {
                         gameState.map.advanceActor();
                     }
 
-                    // refresh every time player takes a turn
-                    if (command.getActor() == gameState.player) {
-                        return new GameResult(madeProgress, result.events);
-                    }
+//                    // refresh every time player takes a turn
+//                    if (command.getActor() == gameState.player) {
+//                        gameResult.addEvents(result.events);
+//                        //return gameResult;
+//                        //return new GameResult(madeProgress, result.events);
+//                    }
                 }
                 if (!result.events.isEmpty()) {
-                    return new GameResult(madeProgress, result.events);
+                    gameResult.addEvents(result.events);
+                    //return new GameResult(madeProgress, result.events);
                 }
             }
 
@@ -74,14 +79,16 @@ public class GameBackend {
 
                 // if waiting for input, just return
                 if (actor.energy.canTakeTurn() && actor.needsInput()) {
-                    return new GameResult(madeProgress, new ArrayList<>());
+                    return gameResult;
+                    //return new GameResult(madeProgress, new ArrayList<>());
                 }
 
                 if (actor.energy.canTakeTurn() || actor.energy.gain(actor.speed)) {
                     // If the actor can move now, but needs input from the user, just
                     // return so we can wait for it.
                     if (actor.needsInput()) {
-                        return new GameResult(madeProgress, new ArrayList<>());
+                        return gameResult;
+                        //return new GameResult(madeProgress, new ArrayList<>());
                     }
 
                     commandQueue.add(actor.act(this));

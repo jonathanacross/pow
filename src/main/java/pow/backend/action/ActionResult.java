@@ -1,4 +1,4 @@
-package pow.backend.command;
+package pow.backend.action;
 
 import pow.backend.event.GameEvent;
 
@@ -10,9 +10,9 @@ public class ActionResult {
     public List<GameEvent> events;
     public boolean succeeded;
     public boolean done;
-    public CommandRequest alternate;
+    public Action alternate;
 
-    public ActionResult(List<GameEvent> events, boolean succeeded, boolean done, CommandRequest alternate) {
+    public ActionResult(List<GameEvent> events, boolean succeeded, boolean done, Action alternate) {
         this.events = events;
         this.succeeded = succeeded;
         this.done = done;
@@ -23,7 +23,7 @@ public class ActionResult {
         return new ActionResult(events, true, true, null);
     }
 
-    public static ActionResult Failed(CommandRequest alternate) {
+    public static ActionResult Failed(Action alternate) {
         return new ActionResult(new ArrayList<>(), false, true, alternate);
     }
 
