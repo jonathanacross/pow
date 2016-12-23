@@ -74,7 +74,7 @@ public class Move implements Action {
             actor.y = newy;
             return ActionResult.Succeeded(addEvents(backend));
         } else {
-            // tried to move to a solid area
+            backend.logMessage(actor.getPronoun() + " can't go that way");
             return ActionResult.Failed(null);
         }
     }
