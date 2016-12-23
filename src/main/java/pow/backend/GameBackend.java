@@ -31,11 +31,12 @@ public class GameBackend {
 
     public GameResult update() {
         GameResult gameResult = new GameResult(new ArrayList<>());
-        if (!gameState.gameInProgress) {
-            return gameResult;
-        }
 
         for (;;) {
+
+            if (!gameState.gameInProgress) {
+                return gameResult;
+            }
 
             // process any ongoing/pending actions
             while (!commandQueue.isEmpty()) {
@@ -58,19 +59,18 @@ public class GameBackend {
                         gameState.map.advanceActor();
                     }
 
-                    // refresh every time player takes a turn
-                    if (command.getActor() == gameState.player) {
-                        gameResult.addEvents(result.events);
-                        //return gameResult;
-                        //return new GameResult(madeProgress, result.events);
-                    }
+//                    // refresh every time player takes a turn
+//                    if (command.getActor() == gameState.player) {
+//                        gameResult.addEvents(result.events);
+//                        //return gameResult;
+//                        //return new GameResult(madeProgress, result.events);
+//                    }
                 }
                 if (!result.events.isEmpty()) {
                     gameResult.addEvents(result.events);
                     //return new GameResult(madeProgress, result.events);
                 }
             }
-
 
             // at this point, we've processed all pending actions, so advance
             // the time.

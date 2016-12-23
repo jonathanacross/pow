@@ -38,15 +38,14 @@ public class Attack implements Action {
             defender.health -= damage;
             if (defender.health < 0) {
                 backend.logMessage(defender.getPronoun() + " died");
-//                DebugLogger.info("removing defender " + defender.toString());
-//                DebugLogger.info("actorlist:");
-//                for (Actor a: gs.map.actors) {
-//                    DebugLogger.info("   " + a.toString());
-//                }
-                gs.map.removeActor(defender);
 
                 if (defender == gs.player) {
+                    gs.gameInProgress = false;
                     events.add(GameEvent.LostGame());
+                } else {
+                    // Only remove the actor if it's NOT the player,
+                    // so that the player won't disappear from the map.
+                    gs.map.removeActor(defender);
                 }
                 if (defender == gs.pet) {
                     gs.pet = null;
