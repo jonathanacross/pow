@@ -2,7 +2,6 @@ package pow.backend;
 
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
-import pow.util.MessageLog;
 
 import java.io.Serializable;
 import java.util.Random;

@@ -52,19 +52,21 @@ public class StatusWindow extends AbstractWindow {
 
     private void drawActorSummary(Graphics graphics, Actor a, int x, int y, boolean showExact) {
         int textX = x + TILE_SIZE + MARGIN;
-        ImageController.drawTile(graphics, a.image, x, y); y += FONT_SIZE;
-        graphics.drawString(a.name, textX, y);
+
+        // draw bars
         Color healthColor = Color.RED;
         Color manaColor = Color.BLUE;
-        drawBar(graphics, textX, y, BAR_WIDTH, FONT_SIZE-1, healthColor, a.health, a.maxHealth);
-        y+= FONT_SIZE;
+        drawBar(graphics, textX, y + FONT_SIZE, BAR_WIDTH, FONT_SIZE-1, healthColor, a.health, a.maxHealth);
+        drawBar(graphics, textX, y + 2*FONT_SIZE, BAR_WIDTH, FONT_SIZE-1, manaColor, 13, 20);
+
+        // draw the text
+        ImageController.drawTile(graphics, a.image, x, y);
+        graphics.drawString(a.name, textX, y + FONT_SIZE);
         if (showExact) {
-            graphics.drawString("HP:" + a.health + "/" + a.maxHealth, textX, y);
+            graphics.drawString("HP:" + a.health + "/" + a.maxHealth, textX, y + 2*FONT_SIZE);
         }
-        drawBar(graphics, textX, y, BAR_WIDTH, FONT_SIZE-1, manaColor, 13, 20);
-        y+= FONT_SIZE;
         if (showExact) {
-            graphics.drawString("MP:", textX, y);
+            graphics.drawString("MP:", textX, y + 3*FONT_SIZE);
         }
     }
 

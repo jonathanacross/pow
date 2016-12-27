@@ -12,6 +12,8 @@ public class GameThread implements Runnable {
     private Queue<KeyEvent> queue;
     private Observer observer;
 
+    public static final int ANIMATION_DELAY_MILLIS = 10;
+
 
     public GameThread(Frontend gameFrontend, Queue<KeyEvent> queue, Observer observer) {
         this.gameFrontend = gameFrontend;
@@ -33,7 +35,7 @@ public class GameThread implements Runnable {
                     gameFrontend.setDirty(false);
                 }
 
-                Thread.sleep(50);
+                Thread.sleep(ANIMATION_DELAY_MILLIS);
             }
         } catch (InterruptedException ex) {
             // Not sure what the best thing to do is here..
