@@ -1,6 +1,7 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.frontend.Frontend;
 
 import java.awt.Color;
@@ -29,10 +30,10 @@ public class LogWindow extends AbstractWindow {
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
 
-        List<String> messages = backend.getGameState().log.getLastN(20);
+        List<MessageLog.Message> messages = backend.getGameState().log.getLastN(20);
         int row = 0;
         for (int idx = 0; idx < messages.size(); idx++) {
-            graphics.drawString(messages.get(idx), 10, row*squareSize + 20);
+            graphics.drawString(messages.get(idx).toString(), 10, row*squareSize + 20);
             row++;
         }
     }
