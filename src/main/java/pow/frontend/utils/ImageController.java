@@ -36,6 +36,7 @@ public class ImageController {
         drawTile(graphics, tileName, x, y, false);
     }
 
+
     public static void drawTile(Graphics graphics, String tileName, int x, int y, boolean gray) {
         Point srcLoc;
         if (!instance.tileData.containsKey(tileName)) {
@@ -45,6 +46,20 @@ public class ImageController {
         }
         BufferedImage srcImage = gray ? instance.grayTileImage : instance.tileImage;
         graphics.drawImage(srcImage, x, y, x + TILE_SIZE, y + TILE_SIZE,
+                srcLoc.x * TILE_SIZE, srcLoc.y * TILE_SIZE,
+                (srcLoc.x + 1) * TILE_SIZE, (srcLoc.y + 1) * TILE_SIZE,
+                null);
+    }
+
+    public static void drawTile(Graphics graphics, String tileName, int x, int y, boolean gray, int size) {
+        Point srcLoc;
+        if (!instance.tileData.containsKey(tileName)) {
+            srcLoc = instance.tileData.get("debug");
+        } else {
+            srcLoc = instance.tileData.get(tileName);
+        }
+        BufferedImage srcImage = gray ? instance.grayTileImage : instance.tileImage;
+        graphics.drawImage(srcImage, x, y, x + size, y + size,
                 srcLoc.x * TILE_SIZE, srcLoc.y * TILE_SIZE,
                 (srcLoc.x + 1) * TILE_SIZE, (srcLoc.y + 1) * TILE_SIZE,
                 null);

@@ -22,6 +22,7 @@ public class GameMap implements Serializable {
     public GameMap(Random rng, Player player, Pet pet) {
 //        map = buildTestArea();
         map = buildArena(40, 30, rng);
+//        map = buildArena(140, 160, rng);
         int x = width / 2;
         int y = height / 2;
         player.x = x;
