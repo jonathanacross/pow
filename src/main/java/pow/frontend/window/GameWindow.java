@@ -8,6 +8,7 @@ import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.Frontend;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
+import pow.util.DebugLogger;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -96,13 +97,16 @@ public class GameWindow extends AbstractWindow {
         graphics.fillRect(0, 0, width, height);
         graphics.setColor(Color.WHITE);
 
-        int colMin = Math.max(0, gs.player.x - xRadius);
-        int colMax = Math.min(gs.map.width - 1, gs.player.x + xRadius);
-        int rowMin = Math.max(0, gs.player.y - yRadius);
-        int rowMax = Math.min(gs.map.height - 1, gs.player.y + yRadius);
+        int camCenterX = Math.min(Math.max(xRadius, gs.player.x), gs.map.width - 1 - xRadius);
+        int camCenterY = Math.min(Math.max(yRadius, gs.player.y), gs.map.height - 1 - yRadius);
 
-        int cameraDx = -gs.player.x + xRadius;
-        int cameraDy = -gs.player.y + yRadius;
+        int colMin = Math.max(0, camCenterX - xRadius);
+        int colMax = Math.min(gs.map.width - 1, camCenterX + xRadius);
+        int rowMin = Math.max(0, camCenterY - xRadius);
+        int rowMax = Math.min(gs.map.height - 1, camCenterY + xRadius);
+
+        int cameraDx = -(colMin + colMax) / 2 + xRadius;
+        int cameraDy = -(rowMin + rowMax) / 2 + yRadius;
 
         Font f = new Font("Courier New", Font.PLAIN, this.tileSize);
         graphics.setFont(f);
