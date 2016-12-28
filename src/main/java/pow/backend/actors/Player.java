@@ -18,7 +18,7 @@ public class Player extends Actor implements Serializable {
     public Player(String id, String name, String image, String description, int x, int y) {
         super(id, name, image, description, x, y, true, 10, true, 0);
         this.actionQueue = new LinkedList<>();
-        this.viewRadius = 6;
+        this.viewRadius = 8;
     }
 
     public void addCommand(Action request) {

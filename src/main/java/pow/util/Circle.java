@@ -19,7 +19,7 @@ public class Circle {
     }
 
     public static int getRadiusSquared(int radius) {
-        return radius < RADII_SQUARED.length ? RADII_SQUARED[radius] : radius*radius;
+        return radius < RADII_SQUARED.length ? RADII_SQUARED[radius] : radius*radius + 1;
     }
 
     public static List<Point> getPointsInCircle(int radius) {
