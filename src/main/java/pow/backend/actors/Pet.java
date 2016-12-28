@@ -32,14 +32,14 @@ public class Pet extends Actor implements Serializable {
 
         // try to attack first
         Actor closestEnemy = AiUtils.findNearestTarget(this, gs);
-        if (closestEnemy != null && MathUtils.dist2(x, y, closestEnemy.x, closestEnemy.y) <= 2) {
+        if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 2) {
             return new Attack(this, closestEnemy);
         }
 
         // if "far away" from the player, then try to catch up
-        int playerDist = dist2(x, y, gs.player.x, gs.player.y);
+        int playerDist = dist2(loc, gs.player.loc);
         if (playerDist >= 9) {
-            return AiUtils.moveTowardTarget(this, gs, gs.player.x, gs.player.y);
+            return AiUtils.moveTowardTarget(this, gs, gs.player.loc);
         }
 
         // move randomly

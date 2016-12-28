@@ -27,7 +27,7 @@ public class Move implements Action {
 
         // temporary custom code to demonstrate winning/losing
         if (actor == gs.player) {
-            DungeonFeature feature = gs.map.map[actor.x][actor.y].feature;
+            DungeonFeature feature = gs.map.map[actor.loc.x][actor.loc.y].feature;
             if (feature != null && feature.id.equals("wintile")) {
                 backend.logMessage("you won!");
                 events.add(GameEvent.WonGame());
@@ -53,25 +53,28 @@ public class Move implements Action {
             return ActionResult.Succeeded(new ArrayList<>());
         }
 
-        int newx = actor.x + dx;
-        int newy = actor.y + dy;
+        int newx = actor.loc.x + dx;
+        int newy = actor.loc.y + dy;
 
         Actor defender = gs.map.actorAt(newx, newy);
         if (defender != null) {
             if (!defender.friendly)  {
                 // attack
-                return ActionResult.Failed(new Attack(gs.player, defender));
+                return ActionResult.Failed(new Attack(this.actor, defender));
             }
             else {
                 // friendly, swap positions
-                return ActionResult.Failed(new Swap(gs.player, defender));
+                return ActionResult.Failed(new Swap(this.actor, defender));
             }
         }
 
         if (! gs.map.isBlocked(newx, newy)) {
             // move
-            actor.x = newx;
-            actor.y = newy;
+            actor.loc.x = newx;
+            actor.loc.y = newy;
+            if (actor == gs.player) {
+                gs.map.updateSeenLocations(gs.player.loc, gs.player.viewRadius);
+            }
             return ActionResult.Succeeded(addEvents(backend));
         } else {
             backend.logMessage(actor.getPronoun() + " can't go that way");

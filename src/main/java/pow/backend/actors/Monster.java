@@ -58,7 +58,7 @@ public class Monster extends Actor implements Serializable {
 
         // try to attack first
         Actor closestEnemy = AiUtils.findNearestTarget(this, gs);
-        if (closestEnemy != null && MathUtils.dist2(x, y, closestEnemy.x, closestEnemy.y) <= 2) {
+        if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 2) {
             return new Attack(this, closestEnemy);
         }
 

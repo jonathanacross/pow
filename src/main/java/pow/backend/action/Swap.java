@@ -3,6 +3,7 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
+import pow.util.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,7 @@ public class Swap implements Action {
         List<GameEvent> events = new ArrayList<>();
 
         if (first != second) {
-            int tmpx = first.x; first.x = second.x; second.x = tmpx;
-            int tmpy = first.y; first.y = second.y; second.y = tmpy;
+            Point tmp = first.loc; first.loc = second.loc; second.loc = tmp;
             backend.logMessage(first.getPronoun() + " and " + second.getPronoun() + " swap places");
             events.add(GameEvent.Moved());
             return ActionResult.Succeeded(events);

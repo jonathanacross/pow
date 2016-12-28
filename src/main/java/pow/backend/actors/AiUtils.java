@@ -4,6 +4,7 @@ import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.Move;
 import pow.util.MathUtils;
+import pow.util.Point;
 
 // collection of AI utilities for actors
 public class AiUtils {
@@ -14,12 +15,12 @@ public class AiUtils {
         return moveOrWait(actor, gs, dx, dy);
     }
 
-    public static Action moveTowardTarget(Actor actor, GameState gs, int tx, int ty) {
-        int d2 = MathUtils.dist2(actor.x, actor.y, tx, ty);
+    public static Action moveTowardTarget(Actor actor, GameState gs, Point target) {
+        int d2 = MathUtils.dist2(actor.loc, target);
 
         double dist = Math.sqrt(d2);
-        int rdx = tx - actor.x;
-        int rdy = ty - actor.y;
+        int rdx = target.x - actor.loc.x;
+        int rdy = target.y - actor.loc.y;
         int dx = (int) Math.round(rdx / dist);
         int dy = (int) Math.round(rdy / dist);
         return moveOrWait(actor, gs, dx, dy);
@@ -30,7 +31,7 @@ public class AiUtils {
         Actor closestMonster = null;
         for (Actor m : gs.map.actors) {
             if (actor.friendly != m.friendly) {
-                int d2 = MathUtils.dist2(actor.x, actor.y, m.x, m.y);
+                int d2 = MathUtils.dist2(actor.loc, m.loc);
                 if (closestMonster == null || d2 < bestDist) {
                     closestMonster = m;
                     bestDist = d2;
@@ -41,7 +42,7 @@ public class AiUtils {
     }
 
     private static Action moveOrWait(Actor actor, GameState gs, int dx, int dy) {
-        if (!gs.map.isBlocked(actor.x + dx, actor.y + dy)) {
+        if (!gs.map.isBlocked(actor.loc.x + dx, actor.loc.y + dy)) {
             return new Move(actor, dx, dy);
         } else {
             return new Move(actor, 0, 0);
