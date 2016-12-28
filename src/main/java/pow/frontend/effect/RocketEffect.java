@@ -17,8 +17,8 @@ public class RocketEffect implements Effect {
     private final static int EXPLODE_SIZE = 3;
 
     public RocketEffect(Actor actor) {
-        this.x = actor.x;
-        this.y = actor.y;
+        this.x = actor.loc.x;
+        this.y = actor.loc.y;
         this.arrowDist = 1;
         this.explodeDist = 0;
     }

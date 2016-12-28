@@ -5,6 +5,7 @@ import pow.backend.actors.Actor;
 import pow.backend.action.ActionResult;
 import pow.backend.action.Action;
 import pow.backend.event.GameResult;
+import pow.util.DebugLogger;
 
 import java.util.*;
 
@@ -114,9 +115,7 @@ public class GameBackend {
         gameState.log.add(message);
     }
 
-    public void newGame(String name) {
-        gameState = new GameState(name);
-    }
+    public void newGame(String name) { gameState = new GameState(name); }
 
     public void load(GameState gameState) {
         this.gameState = gameState;

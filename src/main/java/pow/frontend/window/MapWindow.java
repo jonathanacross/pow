@@ -10,6 +10,7 @@ import pow.frontend.utils.ImageController;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+// TODO: there's a fair amount of common drawing code here with GameWindow.  See if I can combine
 public class MapWindow extends AbstractWindow {
 
     private int tileSize;
@@ -70,8 +71,8 @@ public class MapWindow extends AbstractWindow {
         graphics.fillRect(0, 0, width, height);
         graphics.setColor(Color.WHITE);
 
-        int camCenterX = Math.min(Math.max(xRadius, gs.player.x), gs.map.width - 1 - xRadius);
-        int camCenterY = Math.min(Math.max(yRadius, gs.player.y), gs.map.height - 1 - yRadius);
+        int camCenterX = Math.min(Math.max(xRadius, gs.player.loc.x), gs.map.width - 1 - xRadius);
+        int camCenterY = Math.min(Math.max(yRadius, gs.player.loc.y), gs.map.height - 1 - yRadius);
 
         int colMin = Math.max(0, camCenterX - xRadius);
         int colMax = Math.min(gs.map.width - 1, camCenterX + xRadius);
@@ -87,6 +88,11 @@ public class MapWindow extends AbstractWindow {
         // draw the map
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
+                // only draw squares we've seen
+                if (! gs.map.seen[x][y]) {
+                    continue;
+                }
+
                 DungeonSquare square = gs.map.map[x][y];
                 // TODO: add flags to features so this isn't hardcoded; it's probably
                 // better to draw only blocks for the map, no tiles.
@@ -102,12 +108,16 @@ public class MapWindow extends AbstractWindow {
 
         // draw monsters, player, pets
         for (Actor actor : gs.map.actors) {
+            if (! gs.player.canSee(actor.loc)) {
+                continue;
+            }
+
             if (actor == gs.player) {
-                drawBlock(graphics, PLAYER_COLOR, actor.x + cameraDx, actor.y + cameraDy);
+                drawBlock(graphics, PLAYER_COLOR, actor.loc.x + cameraDx, actor.loc.y + cameraDy);
             } else if (actor == gs.pet) {
-                drawBlock(graphics, PET_COLOR, actor.x + cameraDx, actor.y + cameraDy);
+                drawBlock(graphics, PET_COLOR, actor.loc.x + cameraDx, actor.loc.y + cameraDy);
             } else {
-                drawBlock(graphics, MONSTER_COLOR, actor.x + cameraDx, actor.y + cameraDy);
+                drawBlock(graphics, MONSTER_COLOR, actor.loc.x + cameraDx, actor.loc.y + cameraDy);
             }
         }
     }

@@ -7,6 +7,9 @@ import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.actors.Monster;
+import pow.util.Circle;
+import pow.util.DebugLogger;
+import pow.util.Point;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,24 +18,39 @@ import java.util.Random;
 
 public class GameMap implements Serializable {
     public DungeonSquare[][] map; // indexed by x,y, or c,r
+    public boolean[][] seen;  // has the player seen the square
     public int width;
     public int height;
     public List<Actor> actors;
 
     public GameMap(Random rng, Player player, Pet pet) {
 //        map = buildTestArea();
-        map = buildArena(40, 30, rng);
-//        map = buildArena(140, 160, rng);
+//        map = buildArena(40, 30, rng);
+        map = buildArena(140, 160, rng);
         int x = width / 2;
         int y = height / 2;
-        player.x = x;
-        player.y = y;
+        player.loc.x = x;
+        player.loc.y = y;
         player.energy.setFull(); // make sure the player can move first
         actors.add(player);
         if (pet != null) {
-            pet.x = x + 2;
-            pet.y = y + 2;
+            pet.loc.x = x + 2;
+            pet.loc.y = y + 2;
             actors.add(pet);
+        }
+
+        seen = new boolean[width][height];
+        updateSeenLocations(player.loc, player.viewRadius);
+    }
+
+    // update the seen locations
+    public void updateSeenLocations(Point playerLoc, int radius) {
+        for (Point p : Circle.getPointsInCircle(radius)) {
+            int x = p.x + playerLoc.x;
+            int y = p.y + playerLoc.y;
+            if (x >= 0 && x < width && y >= 0 && y < height) {
+                seen[x][y] = true;
+            }
         }
     }
 
@@ -55,14 +73,14 @@ public class GameMap implements Serializable {
     public boolean isBlocked(int x, int y) {
         if (map[x][y].blockGround()) return true;
         for (Actor a: this.actors) {
-            if (a.x == x && a.y == y && a.solid) return true;
+            if (a.loc.x == x && a.loc.y == y && a.solid) return true;
         }
         return false;
     }
 
     public Actor actorAt(int x, int y) {
         for (Actor a: this.actors) {
-            if (a.x == x && a.y == y && a.solid) return a;
+            if (a.loc.x == x && a.loc.y == y && a.solid) return a;
         }
         return null;
     }

@@ -8,7 +8,10 @@ import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.Frontend;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
+import pow.util.Circle;
+import pow.util.Point;
 import pow.util.DebugLogger;
+import pow.util.MathUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -83,6 +86,13 @@ public class GameWindow extends AbstractWindow {
         ImageController.drawTile(graphics, tileName, x * tileSize + windowShiftX, y * tileSize + windowShiftY);
     }
 
+    // darkness = 0 -> no shadow, darkness 255 -> all black
+    private void makeShadow(Graphics graphics, int x, int y, int darkness) {
+        Color black = new Color(0,0, 0, darkness);
+        graphics.setColor(black);
+        graphics.fillRect(x*tileSize + windowShiftX, y * tileSize + windowShiftY, tileSize, tileSize);
+    }
+
     private int tileSize;
     private int windowShiftX;
     private int windowShiftY;
@@ -97,8 +107,8 @@ public class GameWindow extends AbstractWindow {
         graphics.fillRect(0, 0, width, height);
         graphics.setColor(Color.WHITE);
 
-        int camCenterX = Math.min(Math.max(xRadius, gs.player.x), gs.map.width - 1 - xRadius);
-        int camCenterY = Math.min(Math.max(yRadius, gs.player.y), gs.map.height - 1 - yRadius);
+        int camCenterX = Math.min(Math.max(xRadius, gs.player.loc.x), gs.map.width - 1 - xRadius);
+        int camCenterY = Math.min(Math.max(yRadius, gs.player.loc.y), gs.map.height - 1 - yRadius);
 
         int colMin = Math.max(0, camCenterX - xRadius);
         int colMax = Math.min(gs.map.width - 1, camCenterX + xRadius);
@@ -115,6 +125,9 @@ public class GameWindow extends AbstractWindow {
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
                 DungeonSquare square = gs.map.map[x][y];
+                if (!gs.map.seen[x][y]) {
+                    continue;
+                }
                 drawTile(graphics, square.terrain.image, x + cameraDx, y + cameraDy);
                 if (square.feature != null) {
                     drawTile(graphics, square.feature.image, x + cameraDx, y + cameraDy);
@@ -124,13 +137,34 @@ public class GameWindow extends AbstractWindow {
 
         // draw monsters, player, pets
         for (Actor actor : gs.map.actors) {
-            drawTile(graphics, actor.image, actor.x + cameraDx, actor.y + cameraDy);
+            if (gs.player.canSee(actor.loc)) {
+                drawTile(graphics, actor.image, actor.loc.x + cameraDx, actor.loc.y + cameraDy);
+            }
         }
 
         // draw effects
         if (!frontend.getEffects().isEmpty()) {
             for (GlyphLoc glyphLoc : frontend.getEffects().get(0).render()) {
-                drawTile(graphics, glyphLoc.getImageName(), glyphLoc.getX() + cameraDx, glyphLoc.getY() + cameraDy);
+                if (gs.player.canSee(glyphLoc.loc)) {
+                    drawTile(graphics, glyphLoc.imageName, glyphLoc.loc.x + cameraDx, glyphLoc.loc.y + cameraDy);
+                }
+            }
+        }
+
+        // add shadow
+        for (int y = rowMin; y <= rowMax; y++) {
+            for (int x = colMin; x <= colMax; x++) {
+                if (!gs.map.seen[x][y]) {
+                    continue;
+                }
+                int maxDarkness = 220;
+                int r2 = MathUtils.dist2(x, y, gs.player.loc.x, gs.player.loc.y);
+                int maxR2 = Circle.getRadiusSquared(gs.player.viewRadius);
+                int darkness = maxDarkness;
+                if (r2 <= maxR2) {
+                    darkness = (int) Math.round(maxDarkness * (double) r2*r2 / (maxR2*maxR2));
+                }
+                makeShadow(graphics, x + cameraDx, y + cameraDy, darkness);
             }
         }
     }

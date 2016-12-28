@@ -1,25 +1,13 @@
 package pow.frontend.effect;
 
-public class GlyphLoc {// TODO: replace with a DungeonObject?
-    private int x;
-    private int y;
-    private String imageName;
+import pow.util.Point;
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public String getImageName() {
-        return imageName;
-    }
+public class GlyphLoc {// TODO: replace with a DungeonObject
+    public Point loc;
+    public String imageName;
 
     public GlyphLoc(int x, int y, String imageName) {
-        this.x = x;
-        this.y = y;
+        this.loc = new Point(x,y);
         this.imageName = imageName;
     }
 }
