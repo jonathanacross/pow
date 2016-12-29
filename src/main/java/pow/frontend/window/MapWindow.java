@@ -108,7 +108,7 @@ public class MapWindow extends AbstractWindow {
 
         // draw monsters, player, pets
         for (Actor actor : gs.map.actors) {
-            if (! gs.player.canSee(actor.loc)) {
+            if (! gs.player.canSee(gs, actor.loc)) {
                 continue;
             }
 

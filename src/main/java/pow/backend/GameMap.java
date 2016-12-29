@@ -3,17 +3,15 @@ package pow.backend;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
-import pow.backend.dungeon.DungeonFeature;
-import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.DungeonTerrain;
+import pow.backend.dungeon.*;
 import pow.backend.actors.Monster;
-import pow.backend.dungeon.gen.Arena;
 import pow.backend.dungeon.gen.ShapeDLA;
 import pow.backend.dungeon.gen.DungeonGenerator;
 import pow.backend.dungeon.gen.GenUtils;
 import pow.backend.dungeon.gen.SquareTypes;
 import pow.util.Circle;
 import pow.util.DebugLogger;
+import pow.util.MathUtils;
 import pow.util.Point;
 
 import java.io.Serializable;
@@ -23,10 +21,15 @@ import java.util.Random;
 
 public class GameMap implements Serializable {
     public DungeonSquare[][] map; // indexed by x,y, or c,r
+    // These hold information for player visibility; must be updated every time
+    // the player moves.
     public boolean[][] seen;  // has the player seen the square
+    public int[][] lightMap; // how bright is each square
+
     public int width;
     public int height;
     public List<Actor> actors;
+    public List<LightSource> lightSources;
 
     private void autogenMap(int width, int height, Random rng) {
         this.width = width;
@@ -42,7 +45,7 @@ public class GameMap implements Serializable {
                 new DungeonTerrain.Flags(false));
 
         DungeonFeature candle = new DungeonFeature("candle", "candle", "candle",
-                new DungeonFeature.Flags(false));
+                new DungeonFeature.Flags(false), 3);
 
         DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
 
@@ -60,10 +63,10 @@ public class GameMap implements Serializable {
         // add win/lose features
         dungeonMap[(int) (width * 0.25)][(int) (height * 0.3)].feature =
                 new DungeonFeature("wintile", "way to win", "orange pearl",
-                        new DungeonFeature.Flags(false));
+                        new DungeonFeature.Flags(false), 0);
         dungeonMap[(int) (width * 0.75)][(int) (height * 0.6)].feature =
                 new DungeonFeature("losetile", "death", "cobra",
-                        new DungeonFeature.Flags(false));
+                        new DungeonFeature.Flags(false), 0);
 
         this.map = dungeonMap;
 
@@ -81,7 +84,63 @@ public class GameMap implements Serializable {
                 }
             }
         }
+    }
 
+    public void updatePlayerVisibilityData(Player player) {
+        this.lightMap = computeLightMap();
+        updateSeenLocations(player);
+    }
+
+    private void initLightSources(Player player) {
+        // TODO: can objects, monsters be light sources?
+        // if so, this logic will get much more complex
+        this.lightSources = new ArrayList<>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (map[x][y].feature == null) {
+                    continue;
+                }
+                int radius = map[x][y].feature.lightRadius;
+                if (radius > 0) {
+                    this.lightSources.add(new SimpleLightSource(new Point(x,y), radius));
+                }
+            }
+        }
+
+        this.lightSources.add(player);
+    }
+
+    // Returns an array of values showing how bright each square is.
+    // 0 = completely black; 100 = completely lit.
+    // For purposes of gameplay, 0 = dark, and anything > 0 is lit
+    // (i.e., the player can see).  The gradation 0-100 is primarily
+    // a convenience for the frontend to display light in a cool manner.
+    public static int MAX_BRIGHTNESS = 100;
+    private int[][] computeLightMap() {
+        int[][] litPercent = new int[width][height];
+
+        for (LightSource source: lightSources) {
+            int maxR2 = Circle.getRadiusSquared(source.getLightRadius());
+            int sx = source.getLocation().x;
+            int sy = source.getLocation().y;
+            int r = source.getLightRadius();
+            int xmin = Math.max(sx - r - 1, 0);
+            int ymin = Math.max(sy - r - 1, 0);
+            int xmax = Math.min(sx + r + 1, width - 1);
+            int ymax = Math.min(sy + r + 1, height - 1);
+            for (int x = xmin; x <= xmax; x++) {
+                for (int y = ymin; y <= ymax; y++) {
+                    int r2 = MathUtils.dist2(x, y, sx, sy);
+                    if (r2 <= maxR2) {
+                        double brightness = 1.0 - (double) r2*r2 / (maxR2*maxR2);
+                        litPercent[x][y] += (int) Math.round(MAX_BRIGHTNESS * brightness);
+                        litPercent[x][y] = MathUtils.clamp(litPercent[x][y], 0, MAX_BRIGHTNESS);
+                    }
+                }
+            }
+        }
+
+        return litPercent;
     }
 
     public GameMap(Random rng, Player player, Pet pet) {
@@ -89,6 +148,7 @@ public class GameMap implements Serializable {
 //        map = buildArena(40, 30, rng);
 //        map = buildArena(140, 160, rng);
         autogenMap(60, 60, rng);
+        initLightSources(player);
 
         int x = width / 2;
         int y = height / 2;
@@ -103,16 +163,18 @@ public class GameMap implements Serializable {
         }
 
         seen = new boolean[width][height];
-        updateSeenLocations(player.loc, player.viewRadius);
+        updatePlayerVisibilityData(player);
     }
 
     // update the seen locations
-    public void updateSeenLocations(Point playerLoc, int radius) {
-        for (Point p : Circle.getPointsInCircle(radius)) {
-            int x = p.x + playerLoc.x;
-            int y = p.y + playerLoc.y;
+    private void updateSeenLocations(Player player) {
+        for (Point p : Circle.getPointsInCircle(player.viewRadius)) {
+            int x = p.x + player.loc.x;
+            int y = p.y + player.loc.y;
             if (x >= 0 && x < width && y >= 0 && y < height) {
-                seen[x][y] = true;
+                if (lightMap[x][y] > 0) {
+                    seen[x][y] = true;
+                }
             }
         }
     }
@@ -210,10 +272,10 @@ public class GameMap implements Serializable {
         // add win/lose features
         dungeonMap[(int) (width * 0.25)][(int) (height * 0.3)].feature =
                 new DungeonFeature("wintile", "way to win", "orange pearl",
-                        new DungeonFeature.Flags(false));
+                        new DungeonFeature.Flags(false), 0);
         dungeonMap[(int) (width * 0.75)][(int) (height * 0.6)].feature =
                 new DungeonFeature("losetile", "death", "cobra",
-                        new DungeonFeature.Flags(false));
+                        new DungeonFeature.Flags(false), 0);
 
         // a some monsters
         actors = new ArrayList<>();

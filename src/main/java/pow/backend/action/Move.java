@@ -73,7 +73,7 @@ public class Move implements Action {
             actor.loc.x = newx;
             actor.loc.y = newy;
             if (actor == gs.player) {
-                gs.map.updateSeenLocations(gs.player.loc, gs.player.viewRadius);
+                gs.map.updatePlayerVisibilityData(gs.player);
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {

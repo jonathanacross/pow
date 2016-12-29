@@ -9,9 +9,13 @@ public class Array2D {
     public static int width(int[][] data) { return data.length; }
     public static int width(char[][] data) { return data.length; }
     public static int width(boolean[][] data) { return data.length; }
+    public static int width(float[][] data) { return data.length; }
+    public static int width(double[][] data) { return data.length; }
 
     public static <T> int height(T[][] data) { return data[0].length; }
     public static int height(int[][] data) { return data[0].length; }
     public static int height(char[][] data) { return data[0].length; }
     public static int height(boolean[][] data) { return data[0].length; }
+    public static int height(float[][] data) { return data[0].length; }
+    public static int height(double[][] data) { return data[0].length; }
 }
