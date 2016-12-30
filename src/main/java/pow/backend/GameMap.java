@@ -68,16 +68,19 @@ public class GameMap implements Serializable {
 
         // a some monsters
         actors = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            int x = rng.nextInt(width);
-            int y = rng.nextInt(height);
-            if (!dungeonMap[x][y].blockGround()) {
-                switch (rng.nextInt(3)) {
-                    case 0: actors.add(Monster.makeBat(x,y)); break;
-                    case 1: actors.add(Monster.makeRat(x,y)); break;
-                    case 2: actors.add(Monster.makeSnake(x,y)); break;
-                    default: break;
-                }
+        for (int i = 0; i < 15; i++) {
+            int x;
+            int y;
+            do {
+                x = rng.nextInt(width);
+                y = rng.nextInt(height);
+            } while (dungeonMap[x][y].blockGround());
+            switch (rng.nextInt(4)) {
+                case 0: actors.add(Monster.makeMushroom(x, y)); break;
+                case 1: actors.add(Monster.makeBat(x, y)); break;
+                case 2: actors.add(Monster.makeRat(x, y)); break;
+                case 3: actors.add(Monster.makeSnake(x, y)); break;
+                default: break;
             }
         }
     }
