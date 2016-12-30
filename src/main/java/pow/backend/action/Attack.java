@@ -22,7 +22,6 @@ public class Attack implements Action {
         return this.attacker;
     }
 
-    // TODO: refactor this out so it's useful for monsters as well
     public static ActionResult doAttack(GameBackend backend, Actor attacker, Actor defender) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
@@ -35,7 +34,10 @@ public class Attack implements Action {
 
             events.add(GameEvent.Attacked());
 
-            defender.health -= damage;
+            defender.takeDamage(backend, damage);
+            // TODO: this logic will likely be common for other types of attacks, so should
+            // be put into actor.takeDamage().  However, we need to add the list of game
+            // events directly to the backend, rather than returning.
             if (defender.health < 0) {
                 backend.logMessage(defender.getPronoun() + " died");
 

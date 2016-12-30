@@ -1,6 +1,7 @@
 package pow.backend.actors;
 
 import pow.backend.GameBackend;
+import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonObject;
 
@@ -19,6 +20,10 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public abstract boolean needsInput();
 
     public abstract String getPronoun();
+
+    public void takeDamage(GameBackend backend, int damage) {
+        this.health -= damage;
+    }
 
     public Actor(String id, String name, String image, String description, int x, int y, boolean solid,
                  int maxHealth, boolean friendly, int speed) {

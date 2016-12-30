@@ -8,22 +8,28 @@ import pow.util.MathUtils;
 
 import java.io.Serializable;
 
-public class Monster extends Actor implements Serializable {
+public class Monster extends AiActor implements Serializable {
 
-    public Monster(String id, String name, String image, String description, int maxHealth, int speed, int x, int y) {
-        super(id, name, image, description, x, y, true, maxHealth, false, speed);
-        this.dx = 1;
+    public Monster(String id, String name, String image, String description, int maxHealth, int speed, int x, int y, AiActor.Flags flags) {
+        super(id, name, image, description, x, y, true, maxHealth, false, speed, flags);
     }
 
+    public static Monster makeMushroom(int x, int y) {
+        return new Monster("yellow mushrooms", "yellow mushrooms", "yellow mushrooms", "yellow mushrooms", 3, 0, x, y,
+                new Flags(true, false));
+    }
 
     public static Monster makeRat(int x, int y) {
-        return new Monster("white rat", "white rat", "white rat", "white rat", 3, 0, x, y);
+        return new Monster("white rat", "white rat", "white rat", "white rat", 3, 0, x, y,
+                new Flags(false, false));
     }
 
-    public static Monster makeBat(int x, int y) { return new Monster("bat", "bat", "bat", "bat", 2, 3, x, y); }
+    public static Monster makeBat(int x, int y) { return new Monster("bat", "bat", "bat", "bat", 2, 3, x, y,
+            new Flags(false, false)); }
 
     public static Monster makeSnake(int x, int y) {
-        return new Monster("yellow snake", "yellow snake", "yellow snake", "yellow snake", 4, -3, x, y);
+        return new Monster("yellow snake", "yellow snake", "yellow snake", "yellow snake", 4, -3, x, y,
+                new Flags(false, true));
     }
 
     @Override
@@ -36,33 +42,17 @@ public class Monster extends Actor implements Serializable {
         return false;
     }
 
-    private int dx;
-    private int n;
-
-    @Override
-    public Action act(GameBackend backend) {
-        GameState gs = backend.getGameState();
-
-//        n++;
-//        if (n % 2 == 0) {
-//            return new FireRocket(this);
-//        } else {
-//            if (gs.map.isBlocked(x + 1, y) && gs.map.isBlocked(x - 1, y)) {
-//                return new Move(this, 0, 0);
-//            }
-//            if (gs.map.isBlocked(x + dx, this.y)) {
-//                dx *= -1;
-//            }
-//            return new Move(this, dx, 0);
+//    @Override
+//    public Action act(GameBackend backend) {
+//        GameState gs = backend.getGameState();
+//
+//        // try to attack first
+//        Actor closestEnemy = AiUtils.findNearestTarget(this, gs);
+//        if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 2) {
+//            return new Attack(this, closestEnemy);
 //        }
-
-        // try to attack first
-        Actor closestEnemy = AiUtils.findNearestTarget(this, gs);
-        if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 2) {
-            return new Attack(this, closestEnemy);
-        }
-
-        // move randomly
-        return AiUtils.wander(this, gs);
-    }
+//
+//        // move randomly
+//        return AiUtils.wander(this, gs);
+//    }
 }
