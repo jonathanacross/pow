@@ -16,11 +16,13 @@ public class DungeonFeature implements Serializable {
     public String name; // english name, e.g., "& axe~"
     public String image; // name for display
     public Flags flags;
+    public int lightRadius;
 
-    public DungeonFeature(String id, String name, String image, Flags flags) {
+    public DungeonFeature(String id, String name, String image, Flags flags, int lightRadius) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.flags = flags;
+        this.lightRadius = lightRadius;
     }
 }

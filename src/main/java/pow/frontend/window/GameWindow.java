@@ -125,9 +125,12 @@ public class GameWindow extends AbstractWindow {
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
                 DungeonSquare square = gs.map.map[x][y];
-                if (!gs.map.seen[x][y]) {
+                if (!gs.map.map[x][y].seen) {
                     continue;
                 }
+//                if (!gs.player.canSee(gs, new Point(x,y))) {
+//                    continue;
+//                }
                 drawTile(graphics, square.terrain.image, x + cameraDx, y + cameraDy);
                 if (square.feature != null) {
                     drawTile(graphics, square.feature.image, x + cameraDx, y + cameraDy);
@@ -137,7 +140,7 @@ public class GameWindow extends AbstractWindow {
 
         // draw monsters, player, pets
         for (Actor actor : gs.map.actors) {
-            if (gs.player.canSee(actor.loc)) {
+            if (gs.player.canSee(gs, actor.loc)) {
                 drawTile(graphics, actor.image, actor.loc.x + cameraDx, actor.loc.y + cameraDy);
             }
         }
@@ -145,7 +148,7 @@ public class GameWindow extends AbstractWindow {
         // draw effects
         if (!frontend.getEffects().isEmpty()) {
             for (GlyphLoc glyphLoc : frontend.getEffects().get(0).render()) {
-                if (gs.player.canSee(glyphLoc.loc)) {
+                if (gs.player.canSee(gs, glyphLoc.loc)) {
                     drawTile(graphics, glyphLoc.imageName, glyphLoc.loc.x + cameraDx, glyphLoc.loc.y + cameraDy);
                 }
             }
@@ -154,16 +157,17 @@ public class GameWindow extends AbstractWindow {
         // add shadow
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
-                if (!gs.map.seen[x][y]) {
+                if (!gs.map.map[x][y].seen) {
                     continue;
                 }
                 int maxDarkness = 220;
-                int r2 = MathUtils.dist2(x, y, gs.player.loc.x, gs.player.loc.y);
-                int maxR2 = Circle.getRadiusSquared(gs.player.viewRadius);
-                int darkness = maxDarkness;
-                if (r2 <= maxR2) {
-                    darkness = (int) Math.round(maxDarkness * (double) r2*r2 / (maxR2*maxR2));
+                double darknessD = 1.0 - (gs.map.map[x][y].brightness / (double) gs.map.MAX_BRIGHTNESS);
+                // Assign max darkness if we can't see it; alternatively, we could paint
+                // in gray, or something.  Or just not show it at all?
+                if (!gs.player.canSee(gs, new Point(x,y))) {
+                    darknessD = 1;
                 }
+                int darkness = (int) Math.round(maxDarkness * darknessD);
                 makeShadow(graphics, x + cameraDx, y + cameraDy, darkness);
             }
         }

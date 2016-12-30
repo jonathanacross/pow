@@ -89,7 +89,7 @@ public class MapWindow extends AbstractWindow {
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
                 // only draw squares we've seen
-                if (! gs.map.seen[x][y]) {
+                if (! gs.map.map[x][y].seen) {
                     continue;
                 }
 
@@ -108,7 +108,7 @@ public class MapWindow extends AbstractWindow {
 
         // draw monsters, player, pets
         for (Actor actor : gs.map.actors) {
-            if (! gs.player.canSee(actor.loc)) {
+            if (! gs.player.canSee(gs, actor.loc)) {
                 continue;
             }
 

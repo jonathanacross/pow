@@ -87,7 +87,7 @@ public class StatusWindow extends AbstractWindow {
         graphics.drawString("Level:", textX, y); y += FONT_SIZE;
         graphics.drawString("Gold:", textX, y); y += FONT_SIZE;
 
-        if (gs.pet != null && gs.player.canSee(gs.pet.loc)) {
+        if (gs.pet != null && gs.player.canSee(gs, gs.pet.loc)) {
             y += 5;
             drawActorSummary(graphics, gs.pet, MARGIN, y, true); y += 40;
         }
@@ -100,7 +100,7 @@ public class StatusWindow extends AbstractWindow {
 
         for (Actor a: gs.map.actors) {
             if (a == gs.player || a == gs.pet) continue;
-            if (!gs.player.canSee(a.loc)) continue;
+            if (!gs.player.canSee(gs, a.loc)) continue;
             drawActorSummary(graphics, a, MARGIN, y, false); y += 40;
         }
     }
