@@ -22,7 +22,7 @@ public class Player extends Actor implements Serializable, LightSource {
         super(id, name, image, description, x, y, true, 10, true, 0);
         this.actionQueue = new LinkedList<>();
         this.viewRadius = 11;  // how far can you see, assuming things are lit
-        this.lightRadius = 7;
+        this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
     }
 
     public void addCommand(Action request) {
@@ -32,7 +32,7 @@ public class Player extends Actor implements Serializable, LightSource {
     public boolean canSee(GameState gs, Point point) {
         // must be within the player's view radius, and must be lit
         return ((MathUtils.dist2(loc, point) <= Circle.getRadiusSquared(viewRadius)) &&
-                (gs.map.lightMap[point.x][point.y] > 0));
+                (gs.map.map[point.x][point.y].brightness > 0));
     }
 
     @Override

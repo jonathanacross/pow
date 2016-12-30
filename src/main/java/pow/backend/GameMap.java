@@ -21,10 +21,6 @@ import java.util.Random;
 
 public class GameMap implements Serializable {
     public DungeonSquare[][] map; // indexed by x,y, or c,r
-    // These hold information for player visibility; must be updated every time
-    // the player moves.
-    public boolean[][] seen;  // has the player seen the square
-    public int[][] lightMap; // how bright is each square
 
     public int width;
     public int height;
@@ -87,7 +83,7 @@ public class GameMap implements Serializable {
     }
 
     public void updatePlayerVisibilityData(Player player) {
-        this.lightMap = computeLightMap();
+        updateBrightness();
         updateSeenLocations(player);
     }
 
@@ -116,8 +112,13 @@ public class GameMap implements Serializable {
     // (i.e., the player can see).  The gradation 0-100 is primarily
     // a convenience for the frontend to display light in a cool manner.
     public static int MAX_BRIGHTNESS = 100;
-    private int[][] computeLightMap() {
-        int[][] litPercent = new int[width][height];
+    private void updateBrightness() {
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                map[x][y].brightness = 0;
+            }
+        }
 
         for (LightSource source: lightSources) {
             int maxR2 = Circle.getRadiusSquared(source.getLightRadius());
@@ -133,14 +134,12 @@ public class GameMap implements Serializable {
                     int r2 = MathUtils.dist2(x, y, sx, sy);
                     if (r2 <= maxR2) {
                         double brightness = 1.0 - (double) r2*r2 / (maxR2*maxR2);
-                        litPercent[x][y] += (int) Math.round(MAX_BRIGHTNESS * brightness);
-                        litPercent[x][y] = MathUtils.clamp(litPercent[x][y], 0, MAX_BRIGHTNESS);
+                        map[x][y].brightness += (int) Math.round(MAX_BRIGHTNESS * brightness);
+                        map[x][y].brightness = MathUtils.clamp(map[x][y].brightness, 0, MAX_BRIGHTNESS);
                     }
                 }
             }
         }
-
-        return litPercent;
     }
 
     public GameMap(Random rng, Player player, Pet pet) {
@@ -162,7 +161,6 @@ public class GameMap implements Serializable {
             actors.add(pet);
         }
 
-        seen = new boolean[width][height];
         updatePlayerVisibilityData(player);
     }
 
@@ -172,8 +170,8 @@ public class GameMap implements Serializable {
             int x = p.x + player.loc.x;
             int y = p.y + player.loc.y;
             if (x >= 0 && x < width && y >= 0 && y < height) {
-                if (lightMap[x][y] > 0) {
-                    seen[x][y] = true;
+                if (map[x][y].brightness > 0) {
+                    map[x][y].seen = true;
                 }
             }
         }

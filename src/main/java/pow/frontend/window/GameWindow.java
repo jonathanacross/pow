@@ -125,7 +125,7 @@ public class GameWindow extends AbstractWindow {
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
                 DungeonSquare square = gs.map.map[x][y];
-                if (!gs.map.seen[x][y]) {
+                if (!gs.map.map[x][y].seen) {
                     continue;
                 }
 //                if (!gs.player.canSee(gs, new Point(x,y))) {
@@ -157,11 +157,11 @@ public class GameWindow extends AbstractWindow {
         // add shadow
         for (int y = rowMin; y <= rowMax; y++) {
             for (int x = colMin; x <= colMax; x++) {
-                if (!gs.map.seen[x][y]) {
+                if (!gs.map.map[x][y].seen) {
                     continue;
                 }
                 int maxDarkness = 220;
-                double darknessD = 1.0 - (gs.map.lightMap[x][y] / (double) gs.map.MAX_BRIGHTNESS);
+                double darknessD = 1.0 - (gs.map.map[x][y].brightness / (double) gs.map.MAX_BRIGHTNESS);
                 // Assign max darkness if we can't see it; alternatively, we could paint
                 // in gray, or something.  Or just not show it at all?
                 if (!gs.player.canSee(gs, new Point(x,y))) {
