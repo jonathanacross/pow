@@ -1,0 +1,142 @@
+# area is unused, just a reminder for roughly where the monsters will be.  Remove it later
+#area*	id	name	image	description	hp	attacks[]	dexterity	defense	experience	speed	flags[]
+basement.L1	green mushrooms	green mushrooms	green mushrooms	green mushrooms	3	1d1	1	0	1	0	stationary
+basement.L1.L2	black ant	black ant	black ant	black ant	2	1d1	1	1	1	0	erratic
+basement.L2.L3	white rat	white rat	white rat	white rat	4	1d2	2	2	2	0	
+basement.L2.L3	brown beetle	brown beetle	brown beetle	brown beetle	2	1d2	2	2	2	1	erratic
+basement.L3	crawling moss	crawling moss	crawling moss	crawling moss	5	1d3	1	2	2	-1	
+basement.L3	giant salamander	giant salamander	giant salamander	giant salamander	10	1d3	3	2	5	0	boss
+area1.1	bit	bit	bit	bit	3	1d3	2	2	3	0	
+area1.1	bot	bot	bot	bot	4	1d4	2	2	3	0	
+area1	yellow ant	yellow ant	yellow ant	yellow ant	5	1d3	3	2	3	0	erratic
+area1	pigeon	pigeon	pigeon	pigeon	8	1d3	4	1	4	0	
+area1	yellow snake	yellow snake	yellow snake	yellow snake	10	1d5	3	2	5	-3	
+area1	scruffy dog	scruffy dog	scruffy dog	scruffy dog	15	1d2	3	2	5	0	
+area1	yellow mushrooms	yellow mushrooms	yellow mushrooms	yellow mushrooms	7	1d5	3	2	5	0	stationary
+area1	floating eye	floating eye	floating eye	floating eye	9	1d4	3	2	5	0	
+area1	bat	bat	bat	bat	7	1d5	3	2	5	2	
+area1	green worm mass	green worm mass	green worm mass	green worm mass	10	2d3	3	2	5	0	
+area1	brown imp	brown imp	brown imp	brown imp	15	3d3	3	2	5	2	
+area1	green kimodo	green kimodo	green kimodo	green kimodo	20	2d4	3	2	5	0	boss
+area1	purple spider	purple spider	purple spider	purple spider	25	1d5	3	2	5	0	boss
+area2	novice mage	novice mage	novice mage	novice mage	10	1d5	3	2	5	0	
+area2	novice warrior	novice warrior	novice warrior	novice warrior	15	1d5	3	2	5	0	
+area2	novice archer	novice archer	novice archer	novice archer	12	1d5	3	2	5	0	
+area2	novice rogue	novice rogue	novice rogue	novice rogue	12	1d5	3	2	5	0	
+area2	red ant	red ant	red ant	red ant	6	1d5	3	2	5	1	
+area2	cobra	cobra	cobra	cobra	10	1d5	3	2	5	-1	
+area2	green centipede	green centipede	green centipede	green centipede	7	1d5	3	2	5	0	
+area2	pincer beetle	pincer beetle	pincer beetle	pincer beetle	8	1d5	3	2	5	0	
+area2	dust devil	dust devil	dust devil	dust devil	7	1d5	3	2	5	2	erratic
+area2	jackal	jackal	jackal	jackal	7	1d5	3	2	5	1	
+area2	brown scorpion	brown scorpion	brown scorpion	brown scorpion	10	1d5	3	2	5	0	
+area2	blue ooze	blue ooze	blue ooze	blue ooze	6	1d5	3	2	5	-3	
+area2	great turtle	great turtle	great turtle	great turtle	20	1d5	3	2	5	-1	boss
+area2	minotaur	minotaur	minotaur	minotaur	30	1d5	3	2	5	1	boss
+area3	rabbit mage	rabbit mage	rabbit mage	rabbit mage	16	1d5	3	2	5	0	
+area3	rabbit warrior	rabbit warrior	rabbit warrior	rabbit warrior	24	1d5	3	2	5	0	
+area3	rabbit archer	rabbit archer	rabbit archer	rabbit archer	19	1d5	3	2	5	0	
+area3	rabbit rogue	rabbit rogue	rabbit rogue	rabbit rogue	19	1d5	3	2	5	0	
+area3	purple beetle	purple beetle	purple beetle	purple beetle	9	1d5	3	2	5	1	erratic
+area3	blue snake	blue snake	blue snake	blue snake	15	1d5	3	2	5	-2	
+area3	black spider	black spider	black spider	black spider	12	1d5	3	2	5	1	
+area3	green imp	green imp	green imp	green imp	15	1d5	3	2	5	2	
+area3	small red spiny	small red spiny	small red spiny	small red spiny	25	1d5	3	2	5	0	
+area3	rock lizard	rock lizard	rock lizard	rock lizard	20	1d5	3	2	5	0	
+area1	yellow worm mass	yellow worm mass	yellow worm mass	yellow worm mass	15	1d5	3	2	5	0	
+area3	yellow schweinhund	yellow schweinhund	yellow schweinhund	yellow schweinhund	35	1d5	3	2	5	1	boss
+area3	Balthazar the Great	Balthazar the Great	Balthazar the Great	Balthazar the Great	50	1d5	3	2	5	0	boss
+area4	dark elf mage	dark elf mage	dark elf mage	dark elf mage	25	1d5	3	2	5	0	
+area4	dark elf warrior	dark elf warrior	dark elf warrior	dark elf warrior	38	1d5	3	2	5	0	
+area4	dark elf archer	dark elf archer	dark elf archer	dark elf archer	30	1d5	3	2	5	0	
+area4	dark elf rogue	dark elf rogue	dark elf rogue	dark elf rogue	30	1d5	3	2	5	0	
+area4	baby blue dragon	baby blue dragon	baby blue dragon	baby blue dragon	40	1d5	3	2	5	0	
+area4	baby yellow dragon	baby yellow dragon	baby yellow dragon	baby yellow dragon	40	1d5	3	2	5	0	
+area4	blue beetle	blue beetle	blue beetle	blue beetle	15	1d5	3	2	5	0	
+area4	gray wolf	gray wolf	gray wolf	gray wolf	20	1d5	3	2	5	2	
+area4	bear	bear	bear	bear	35	1d5	3	2	5	0	
+area4	white wolf	white wolf	white wolf	white wolf	20	1d5	3	2	5	2	
+area4	big red spiny	big red spiny	big red spiny	big red spiny	35	1d5	3	2	5	0	
+area4	frost giant	frost giant	frost giant	frost giant	40	1d5	3	2	5	-1	
+area4	Hagar the Merciless	Hagar the Merciless	Hagar the Merciless	Hagar the Merciless	60	1d5	3	2	5	0	boss
+area4	ice creature	ice creature	ice creature	ice creature	75	1d5	3	2	5	0	boss
+area5	orc mage	orc mage	orc mage	orc mage	40	1d5	3	2	5	0	
+area5	orc warrior	orc warrior	orc warrior	orc warrior	60	1d5	3	2	5	0	
+area5	orc archer	orc archer	orc archer	orc archer	48	1d5	3	2	5	0	
+area5	orc rogue	orc rogue	orc rogue	orc rogue	48	1d5	3	2	5	0	
+area5	baby green dragon	baby green dragon	baby green dragon	baby green dragon	50	1d5	3	2	5	2	
+area5	baby red dragon	baby red dragon	baby red dragon	baby red dragon	50	1d5	3	2	5	2	
+area5	gold dragonfly	gold dragonfly	gold dragonfly	gold dragonfly	30	1d5	3	2	5	3	erratic
+area5	purple worms	purple worms	purple worms	purple worms	35	1d5	3	2	5	1	
+area5	golem	golem	golem	golem	60	1d5	3	2	5	0	
+area5	griphon	griphon	griphon	griphon	45	1d5	3	2	5	0	
+area5	chess knight	chess knight	chess knight	chess knight	50	1d5	3	2	5	0	knightmove
+area5	copperhead snake	copperhead snake	copperhead snake	copperhead snake	40	1d5	3	2	5	-2	
+area5	Lor the Betrayer	Lor the Betrayer	Lor the Betrayer	Lor the Betrayer	80	1d5	3	2	5	3	boss
+area5	basilisk	basilisk	basilisk	basilisk	120	1d5	3	2	5	0	boss
+area6	skeleton mage	skeleton mage	skeleton mage	skeleton mage	63	1d5	3	2	5	0	
+area6	skeleton warrior	skeleton warrior	skeleton warrior	skeleton warrior	95	1d5	3	2	5	0	
+area6	skeleton archer	skeleton archer	skeleton archer	skeleton archer	76	1d5	3	2	5	0	
+area6	skeleton rogue	skeleton rogue	skeleton rogue	skeleton rogue	76	1d5	3	2	5	0	
+area6	mummy	mummy	mummy	mummy	70	1d5	3	2	5	-1	
+area6	blue ghost	blue ghost	blue ghost	blue ghost	80	1d5	3	2	5	0	
+area6	pink ghost	pink ghost	pink ghost	pink ghost	70	1d5	3	2	5	0	
+area6	vampire	vampire	vampire	vampire	90	1d5	3	2	5	2	
+area6	evil eye	evil eye	evil eye	evil eye	60	1d5	3	2	5	1	
+monster	floating skull	floating skull	floating skull	floating skull	50	1d5	3	2	5	2	stationary
+monster	vampire bat	vampire bat	vampire bat	vampire bat	45	1d5	3	2	5	3	erratic
+area6	red spider	red spider	red spider	red spider	120	1d5	3	2	5	3	boss
+area6	skeletal dragon	skeletal dragon	skeletal dragon	skeletal dragon	190	1d5	3	2	5	0	boss
+area7	troll mage	troll mage	troll mage	troll mage	100	1d5	3	2	5	0	
+area7	troll warrior	troll warrior	troll warrior	troll warrior	150	1d5	3	2	5	0	
+area7	troll archer	troll archer	troll archer	troll archer	120	1d5	3	2	5	0	
+area7	troll rogue	troll rogue	troll rogue	troll rogue	120	1d5	3	2	5	0	
+area7	blue dragon	blue dragon	blue dragon	blue dragon	160	1d5	3	2	5	2	
+area7	yellow dragon	yellow dragon	yellow dragon	yellow dragon	160	1d5	3	2	5	2	
+area7	red komado	red komado	red komado	red komado	130	1d5	3	2	5	0	
+area7	griphon	griphon	griphon	griphon	100	1d5	3	2	5	0	
+area7	sand crawler	sand crawler	sand crawler	sand crawler	140	1d5	3	2	5	-1	
+area7	red cobra	red cobra	red cobra	red cobra	80	1d5	3	2	5	0	
+area7	sand worm	sand worm	sand worm	sand worm	80	1d5	3	2	5	-1	erratic
+area7	two headed ogre	two headed ogre	two headed ogre	two headed ogre	200	1d5	3	2	5	1	boss
+area7	oliphant	oliphant	oliphant	oliphant	300	1d5	3	2	5	0	boss
+area8	demon mage	demon mage	demon mage	demon mage	160	1d5	3	2	5	1	
+area8	demon warrior	demon warrior	demon warrior	demon warrior	240	1d5	3	2	5	1	
+area8	demon archer	demon archer	demon archer	demon archer	190	1d5	3	2	5	1	
+area8	demon rogue	demon rogue	demon rogue	demon rogue	190	1d5	3	2	5	1	
+area8	green dragon	green dragon	green dragon	green dragon	200	1d5	3	2	5	3	
+area8	red dragon	red dragon	red dragon	red dragon	200	1d5	3	2	5	3	
+area8	creeping magma	creeping magma	creeping magma	creeping magma	200	1d5	3	2	5	-3	
+area8	lava beetle	lava beetle	lava beetle	lava beetle	150	1d5	3	2	5	2	erratic
+area8	mumak	mumak	mumak	mumak	180	1d5	3	2	5	0	
+area8	iron golem	iron golem	iron golem	iron golem	220	1d5	3	2	5	0	
+area8	fire vortex	fire vortex	fire vortex	fire vortex	160	1d5	3	2	5	3	
+area8	lava dragon	lava dragon	lava dragon	lava dragon	200	1d5	3	2	5	0	
+area8	phoenix	phoenix	phoenix	phoenix	320	1d5	3	2	5	2	boss
+area8	Maeglor	Maeglor	Maeglor	Maeglor	480	1d5	3	2	5	3	boss
+area9	alien mage	alien mage	alien mage	alien mage	250	1d5	3	2	5	1	
+area9	alien warrior	alien warrior	alien warrior	alien warrior	375	1d5	3	2	5	1	
+area9	alien archer	alien archer	alien archer	alien archer	300	1d5	3	2	5	1	
+area9	alien rogue	alien rogue	alien rogue	alien rogue	300	1d5	3	2	5	1	
+area9	ancient black dragon	ancient black dragon	ancient black dragon	ancient black dragon	450	1d5	3	2	5	5	
+area9	ancient gold dragon	ancient gold dragon	ancient gold dragon	ancient gold dragon	450	1d5	3	2	5	5	
+area9	master vampire	master vampire	master vampire	master vampire	350	1d5	3	2	5	5	
+monster	beholder	beholder	beholder	beholder	180	1d5	3	2	5	0	
+area9	magic whirlwind	magic whirlwind	magic whirlwind	magic whirlwind	220	1d5	3	2	5	3	erratic
+area9	genie	genie	genie	genie	300	1d5	3	2	5	0	
+area9	spike dog	spike dog	spike dog	spike dog	280	1d5	3	2	5	2	
+area9	Lugorith	Lugorith	Lugorith	Lugorith	600	1d5	3	2	5	9	boss
+area9	evil incarnate	evil incarnate	evil incarnate	evil incarnate	800	1d5	3	2	5	9	boss
+ocean	goldfish	goldfish	goldfish	goldfish	5	1d5	3	2	5	0	erratic
+ocean	green fish	green fish	green fish	green fish	10	1d5	3	2	5	0	erratic
+ocean	eel	eel	eel	eel	20	1d5	3	2	5	1	
+ocean	pink jellyfish	pink jellyfish	pink jellyfish	pink jellyfish	15	1d5	3	2	5	-2	erratic
+ocean	copper jellyfish	copper jellyfish	copper jellyfish	copper jellyfish	25	1d5	3	2	5	-2	erratic
+ocean	scaryfish	scaryfish	scaryfish	scaryfish	50	1d5	3	2	5	2	
+ocean	water whirlwind	water whirlwind	water whirlwind	water whirlwind	80	1d5	3	2	5	2	erratic
+ocean	octopus	octopus	octopus	octopus	150	1d5	3	2	5	0	
+ocean	medusa	medusa	medusa	medusa	120	1d5	3	2	5	1	
+ocean	sea dragon4	sea dragon4	sea dragon4	sea dragon4	200	1d5	3	2	5	1	
+island	yellow turtle	yellow turtle	yellow turtle	yellow turtle	30	1d5	3	2	5	-1	
+island	red turtle	red turtle	red turtle	red turtle	40	1d5	3	2	5	-1	
+

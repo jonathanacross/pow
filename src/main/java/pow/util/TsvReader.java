@@ -1,4 +1,4 @@
-package pow.frontend.utils;
+package pow.util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,6 +38,7 @@ public class TsvReader {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.startsWith("#")) continue;
+                if (line.trim().isEmpty()) continue;
                 data.add(line.split("\t", -1));
             }
         }

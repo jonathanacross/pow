@@ -7,6 +7,11 @@ import java.io.Serializable;
 // actors. Each game turn, every actor will accumulate energy based on their
 // speed. When it reaches a threshold, that actor can take a turn.
 public class Energy implements Serializable {
+    // TODO: consider whether it's worth using my original speed notation,
+    // where 1 = normal speed, 2 = double speed, 0.5 = half, etc.
+    // speeds must be computed relative to 1.0, but give a little more
+    // flexibility and understandability.  Revisit this around the time
+    // when I start applying speed bonuses/penalties.
     private static final int MIN_SPEED = 0;
     private static final int NORMAL_SPEED = 6;
     private static final int MAX_SPEED = 12;

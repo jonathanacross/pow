@@ -1,4 +1,4 @@
-package pow.backend.dungeon.gen;
+package pow.backend.dungeon.gen.proto;
 
 import pow.util.Array2D;
 import pow.util.Point;
@@ -14,7 +14,7 @@ public class GenUtils {
         int[][] data = new int[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                data[x][y] = SquareTypes.WALL.value();
+                data[x][y] = Constants.TERRAIN_WALL;
             }
         }
 
@@ -22,7 +22,7 @@ public class GenUtils {
     }
 
     // adapted from http://lodev.org/cgtutor/floodfill.html
-    static int[][] floodFill(int[][] data, int lx, int ly, int newColor, int oldColor) {
+    public static int[][] floodFill(int[][] data, int lx, int ly, int newColor, int oldColor) {
 
         if (oldColor == newColor) {
             return data;
@@ -66,7 +66,7 @@ public class GenUtils {
         return data;
     }
 
-    static Point findOpenSpace(int[][] data) {
+    public static Point findOpenSpace(int[][] data) {
         int h = Array2D.height(data);
         int w = Array2D.width(data);
 
@@ -78,12 +78,12 @@ public class GenUtils {
 
         for (int y = mid; y < h; y++) {
             for (int x = 0; x < w; x++) {
-                if (data[x][y] == SquareTypes.FLOOR.value()) return new Point(x, y);
+                if (data[x][y] == Constants.TERRAIN_FLOOR) return new Point(x, y);
             }
         }
         for (int y = 0; y < mid; y++) {
             for (int x = 0; x < w; x++) {
-                if (data[x][y] == SquareTypes.FLOOR.value()) return new Point(x, y);
+                if (data[x][y] == Constants.TERRAIN_FLOOR) return new Point(x, y);
             }
         }
 
@@ -91,6 +91,7 @@ public class GenUtils {
         return new Point(-1, -1);
     }
 
+    // useful to draw debug maps
     public static String getMapString(int[][] map) {
         int height = Array2D.height(map);
         int width = Array2D.width(map);
@@ -98,11 +99,37 @@ public class GenUtils {
         StringBuilder sb = new StringBuilder();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                SquareTypes s = SquareTypes.fromValue(map[x][y]);
-                sb.append(s.displayChar());
+                sb.append(getChar(map[x][y]));
             }
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    private static char getChar(int x) {
+        int feature = Constants.getFeature(x);
+        // if there's a feature, draw it
+        if (feature != Constants.FEATURE_NONE) {
+            switch (feature) {
+                case Constants.FEATURE_CLOSED_DOOR: return '+';
+                case Constants.FEATURE_OPEN_DOOR: return '\'';
+                case Constants.FEATURE_CANDLE: return 'c';
+                case Constants.FEATURE_WIN_TILE: return 'W';
+                case Constants.FEATURE_LOSE_TILE: return 'L';
+                default: throw new IllegalArgumentException("unknown feature " + feature);
+            }
+        } else {
+            // draw the terrain
+            int terrain = Constants.getTerrain(x);
+            switch (terrain) {
+                case Constants.TERRAIN_WALL: return '#';
+                case Constants.TERRAIN_FLOOR: return '.';
+                case Constants.TERRAIN_DIGGABLE_WALL: return '%';
+                case Constants.TERRAIN_LAVA: return '~';
+                case Constants.TERRAIN_WATER: return 'w';
+                case Constants.TERRAIN_DEBUG: return '?';
+                default: throw new IllegalArgumentException("unknown terrain " + terrain);
+            }
+        }
     }
 }
