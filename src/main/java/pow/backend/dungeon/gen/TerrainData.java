@@ -1,18 +1,13 @@
 package pow.backend.dungeon.gen;
 
-import pow.backend.actors.AiActor;
-import pow.backend.actors.Monster;
-import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.util.DebugLogger;
-import pow.util.Point;
 import pow.util.TsvReader;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 public class TerrainData {
