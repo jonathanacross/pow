@@ -36,12 +36,9 @@ public class GameMap implements Serializable {
         this.lightSources = new ArrayList<>();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if (map[x][y].feature == null) {
-                    continue;
-                }
-                int radius = map[x][y].feature.lightRadius;
-                if (radius > 0) {
-                    this.lightSources.add(new SimpleLightSource(new Point(x,y), radius));
+                DungeonFeature f = map[x][y].feature;
+                if (f != null && f.flags.glowing) {
+                    this.lightSources.add(new SimpleLightSource(new Point(x,y), 3));
                 }
             }
         }
@@ -87,7 +84,7 @@ public class GameMap implements Serializable {
 
     public GameMap(Random rng, Player player, Pet pet) {
         ProtoGenerator generator = new ShapeDLA(3, 15);
-        ProtoTranslator translator = new ProtoTranslator(0);
+        ProtoTranslator translator = new ProtoTranslator(2);
         this.height = 60;
         this.width = 60;
         this.map = DungeonGenerator.generateMap(generator, translator, this.width, this.height, rng);
