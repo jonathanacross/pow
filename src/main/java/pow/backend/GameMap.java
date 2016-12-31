@@ -4,11 +4,12 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.*;
-import pow.backend.actors.Monster;
-import pow.backend.dungeon.gen.ShapeDLA;
+import pow.backend.dungeon.gen.MonsterGenerator;
+import pow.backend.dungeon.gen.proto.ShapeDLA;
 import pow.backend.dungeon.gen.DungeonGenerator;
-import pow.backend.dungeon.gen.GenUtils;
+import pow.backend.dungeon.gen.proto.GenUtils;
 import pow.backend.dungeon.gen.SquareTypes;
+import pow.util.Array2D;
 import pow.util.Circle;
 import pow.util.DebugLogger;
 import pow.util.MathUtils;
@@ -66,23 +67,7 @@ public class GameMap implements Serializable {
 
         this.map = dungeonMap;
 
-        // a some monsters
-        actors = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            int x;
-            int y;
-            do {
-                x = rng.nextInt(width);
-                y = rng.nextInt(height);
-            } while (dungeonMap[x][y].blockGround());
-            switch (rng.nextInt(4)) {
-                case 0: actors.add(Monster.makeMushroom(x, y)); break;
-                case 1: actors.add(Monster.makeBat(x, y)); break;
-                case 2: actors.add(Monster.makeRat(x, y)); break;
-                case 3: actors.add(Monster.makeSnake(x, y)); break;
-                default: break;
-            }
-        }
+        this.actors = createMonsters(dungeonMap, 15, rng);
     }
 
     public void updatePlayerVisibilityData(Player player) {
@@ -230,11 +215,8 @@ public class GameMap implements Serializable {
             }
         }
 
-        // a some monsters
-        actors = new ArrayList<>();
-        actors.add(Monster.makeBat(2,3));
-        actors.add(Monster.makeRat(2,4));
-        actors.add(Monster.makeSnake(2,5));
+        // note this will fail if any monsters need a random number generator to create (e.g., nondeterministic HP)
+        this.actors = createMonsters(dungeonMap, 3, null);
         return dungeonMap;
     }
 
@@ -256,7 +238,6 @@ public class GameMap implements Serializable {
         }
 
         DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
-        // TODO: remove image from backend?
         DungeonTerrain wall = new DungeonTerrain("big stone wall", "big stone wall", "big stone wall",
                 new DungeonTerrain.Flags(true));
         DungeonTerrain floor = new DungeonTerrain("floor", "floor", "floor",
@@ -278,20 +259,38 @@ public class GameMap implements Serializable {
                 new DungeonFeature("losetile", "death", "cobra",
                         new DungeonFeature.Flags(false), 0);
 
-        // a some monsters
-        actors = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            int x = rng.nextInt(width);
-            int y = rng.nextInt(height);
-            if (!dungeonMap[x][y].blockGround()) {
-                switch (rng.nextInt(3)) {
-                    case 0: actors.add(Monster.makeBat(x,y)); break;
-                    case 1: actors.add(Monster.makeRat(x,y)); break;
-                    case 2: actors.add(Monster.makeSnake(x,y)); break;
-                    default: break;
-                }
-            }
-        }
+        // add some monsters
+        this.actors = createMonsters(dungeonMap, 10, null);
+
         return dungeonMap;
     }
+
+    // creates some monsters
+    private List<Actor> createMonsters(DungeonSquare[][] dungeonMap, int numMonsters, Random rng) {
+        List<Actor> actors = new ArrayList<>();
+        int width = Array2D.width(dungeonMap);
+        int height = Array2D.height(dungeonMap);
+        for (int i = 0; i < numMonsters; i++) {
+            int x;
+            int y;
+            do {
+                x = rng.nextInt(width);
+                y = rng.nextInt(height);
+            } while (dungeonMap[x][y].blockGround());
+            Point location = new Point(x,y);
+            String id = "";
+            switch (i % 7) {
+                case 0: id = "ant"; break;
+                case 1: id = "yellow mushroom patch"; break;
+                case 2: id = "white rat"; break;
+                case 3: id = "bat"; break;
+                case 4: id = "yellow snake"; break;
+                case 5: id = "floating eye"; break;
+                case 6: id = "chess knight"; break;
+            }
+            actors.add(MonsterGenerator.genMonster(id, rng, location));
+        }
+        return actors;
+    }
+
 }

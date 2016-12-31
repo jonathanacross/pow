@@ -18,15 +18,15 @@ public abstract class AiActor extends Actor {
 
     public static class Flags {
         public boolean stationary;  // can't move (e.g., a mushroom or mold)
-        public boolean intelligent;  // smart enough to track player, etc., else may just move randomly, e.g., insects
+        public boolean erratic;  // just move randomly, e.g., insects
 //        public boolean aggressive;  // won't get scared/run away
 //        public boolean passive;  // doesn't attack player unless attacked
 //        public boolean perfect;  // never have random moves
 //        public boolean knight;  // moves like a knight
 
-        public Flags(boolean stationary, boolean intelligent) {
+        public Flags(boolean stationary, boolean erratic) {
             this.stationary = stationary;
-            this.intelligent = intelligent;
+            this.erratic = erratic;
         }
     }
 
@@ -62,13 +62,13 @@ public abstract class AiActor extends Actor {
             return new Move(this, 0, 0);
         }
 
-        if (flags.intelligent) {
-            // try to track the player
-            return AiUtils.moveTowardTarget(this, gs, gs.player.loc);
+        if (flags.erratic) {
+            // move randomly
+            return AiUtils.wander(this, gs);
         }
 
-        // move randomly
-        return AiUtils.wander(this, gs);
+        // try to track the player
+        return AiUtils.moveTowardTarget(this, gs, gs.player.loc);
     }
 
     private Action doSleep(GameBackend backend) {

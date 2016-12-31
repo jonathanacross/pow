@@ -1,0 +1,8 @@
+#id	name	image	description	HP	attacks	speed	flags	experience
+ant	ant	black ant	a fire ant	3	1d1	0	erratic	1
+yellow mushroom patch	yellow mushroom patch	yellow mushrooms	A slimy yellow mushroom patch.	3	1d2	0	stationary	1
+white rat	white rat	white rat	A white lab rat	3	1d3	0	erratic	2
+bat	bat	bat	A fluttery bat, with black wings and small fangs.	2	1d2	3	erratic	1
+yellow snake	yellow snake	yellow snake	A golden yellow snake; it looks poisonous.	7	1d3	-3		2
+floating eye	floating eye	floating eye	A floating eye.. it looks like it has a bad case of conjunctivitis	5	2d3	0		5
+chess knight	chess knight	chess knight	A magical aura surrounds this chess piece.	10	2d3	0		20

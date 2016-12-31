@@ -1,4 +1,7 @@
-package pow.backend.dungeon.gen;
+package pow.backend.dungeon.gen.proto;
+
+import pow.backend.dungeon.gen.DungeonGenerator;
+import pow.backend.dungeon.gen.SquareTypes;
 
 import java.util.Random;
 

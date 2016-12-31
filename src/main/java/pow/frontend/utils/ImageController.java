@@ -3,11 +3,11 @@ package pow.frontend.utils;
 
 import pow.util.DebugLogger;
 import pow.util.Point;
+import pow.util.TsvReader;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;

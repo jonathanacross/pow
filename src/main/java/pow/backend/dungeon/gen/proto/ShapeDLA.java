@@ -1,5 +1,7 @@
-package pow.backend.dungeon.gen;
+package pow.backend.dungeon.gen.proto;
 
+import pow.backend.dungeon.gen.DungeonGenerator;
+import pow.backend.dungeon.gen.SquareTypes;
 import pow.util.Array2D;
 import pow.util.Point;
 
