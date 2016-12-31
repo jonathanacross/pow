@@ -4,11 +4,10 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.*;
-import pow.backend.dungeon.gen.IntSquare;
 import pow.backend.dungeon.gen.IntSquareTranslator;
 import pow.backend.dungeon.gen.MonsterGenerator;
 import pow.backend.dungeon.gen.proto.ShapeDLA;
-import pow.backend.dungeon.gen.proto.DungeonGenerator;
+import pow.backend.dungeon.gen.proto.ProtoGenerator;
 import pow.backend.dungeon.gen.proto.GenUtils;
 import pow.util.Array2D;
 import pow.util.Circle;
@@ -32,15 +31,12 @@ public class GameMap implements Serializable {
     private void autogenMap(int width, int height, Random rng) {
         this.width = width;
         this.height = height;
-        DungeonGenerator mapGenerator = new ShapeDLA(3, 15);
+        ProtoGenerator mapGenerator = new ShapeDLA(3, 15);
 
         int[][] squares = mapGenerator.genMap(width, height, rng);
         DebugLogger.info(GenUtils.getMapString(squares));
 
         IntSquareTranslator translator = new IntSquareTranslator(2);
-
-        squares[(int) (width * 0.25)][(int) (height * 0.3)] |= IntSquare.WIN;
-        squares[(int) (width * 0.75)][(int) (height * 0.6)] |= IntSquare.LOSE;
 
         DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
 

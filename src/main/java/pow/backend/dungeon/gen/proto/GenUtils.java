@@ -1,7 +1,5 @@
 package pow.backend.dungeon.gen.proto;
 
-import pow.backend.dungeon.gen.IntSquare;
-import pow.backend.dungeon.gen.IntSquare;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -16,7 +14,7 @@ public class GenUtils {
         int[][] data = new int[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                data[x][y] = IntSquare.WALL;
+                data[x][y] = Constants.TERRAIN_WALL;
             }
         }
 
@@ -80,12 +78,12 @@ public class GenUtils {
 
         for (int y = mid; y < h; y++) {
             for (int x = 0; x < w; x++) {
-                if (data[x][y] == IntSquare.FLOOR) return new Point(x, y);
+                if (data[x][y] == Constants.TERRAIN_FLOOR) return new Point(x, y);
             }
         }
         for (int y = 0; y < mid; y++) {
             for (int x = 0; x < w; x++) {
-                if (data[x][y] == IntSquare.FLOOR) return new Point(x, y);
+                if (data[x][y] == Constants.TERRAIN_FLOOR) return new Point(x, y);
             }
         }
 
@@ -109,27 +107,27 @@ public class GenUtils {
 
     // useful to help draw debug maps
     private static char getChar(int x) {
-        int feature = IntSquare.getFeature(x);
+        int feature = Constants.getFeature(x);
         // if there's a feature, draw it
-        if (feature != IntSquare.NO_FEATURE) {
+        if (feature != Constants.FEATURE_NONE) {
             switch (feature) {
-                case IntSquare.CLOSED_DOOR: return '+';
-                case IntSquare.OPEN_DOOR: return '\'';
-                case IntSquare.CANDLE: return 'c';
-                case IntSquare.WIN: return 'W';
-                case IntSquare.LOSE: return 'L';
+                case Constants.FEATURE_CLOSED_DOOR: return '+';
+                case Constants.FEATURE_OPEN_DOOR: return '\'';
+                case Constants.FEATURE_CANDLE: return 'c';
+                case Constants.FEATURE_WIN_TILE: return 'W';
+                case Constants.FEATURE_LOSE_TILE: return 'L';
                 default: throw new IllegalArgumentException("unknown feature " + feature);
             }
         } else {
             // draw the terrain
-            int terrain = IntSquare.getTerrain(x);
+            int terrain = Constants.getTerrain(x);
             switch (terrain) {
-                case IntSquare.WALL: return '#';
-                case IntSquare.FLOOR: return '.';
-                case IntSquare.DIGGABLE_WALL: return '%';
-                case IntSquare.LAVA: return '~';
-                case IntSquare.WATER: return 'w';
-                case IntSquare.DEBUG: return '?';
+                case Constants.TERRAIN_WALL: return '#';
+                case Constants.TERRAIN_FLOOR: return '.';
+                case Constants.TERRAIN_DIGGABLE_WALL: return '%';
+                case Constants.TERRAIN_LAVA: return '~';
+                case Constants.TERRAIN_WATER: return 'w';
+                case Constants.TERRAIN_DEBUG: return '?';
                 default: throw new IllegalArgumentException("unknown terrain " + terrain);
             }
         }

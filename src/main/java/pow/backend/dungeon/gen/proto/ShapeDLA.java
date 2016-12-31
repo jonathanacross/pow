@@ -1,6 +1,5 @@
 package pow.backend.dungeon.gen.proto;
 
-import pow.backend.dungeon.gen.IntSquare;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -9,7 +8,7 @@ import java.util.Random;
 // generates a dungeon using rectangle diffusion limited aggregation
 // described at http://www.roguebasin.com/index.php?title=Diffusion-limited_aggregation
 // Note that this may not work well for very non-square dungeons.
-public class ShapeDLA implements DungeonGenerator {
+public class ShapeDLA implements ProtoGenerator {
 
     private static class Shape {
         public int xmin;
@@ -52,18 +51,18 @@ public class ShapeDLA implements DungeonGenerator {
 
     private boolean touches(int[][] map, Shape shape) {
         for (int x = shape.xmin; x < shape.xmax; x++) {
-            if (map[x][shape.ymin] == IntSquare.FLOOR) {
+            if (map[x][shape.ymin] == Constants.TERRAIN_FLOOR) {
                 return true;
             }
-            if (map[x][shape.ymax - 1] == IntSquare.FLOOR) {
+            if (map[x][shape.ymax - 1] == Constants.TERRAIN_FLOOR) {
                 return true;
             }
         }
         for (int y = shape.ymin; y < shape.ymax; y++) {
-            if (map[shape.xmin][y] == IntSquare.FLOOR) {
+            if (map[shape.xmin][y] == Constants.TERRAIN_FLOOR) {
                 return true;
             }
-            if (map[shape.xmax - 1][y] == IntSquare.FLOOR) {
+            if (map[shape.xmax - 1][y] == Constants.TERRAIN_FLOOR) {
                 return true;
             }
         }
@@ -112,14 +111,14 @@ public class ShapeDLA implements DungeonGenerator {
         for ( ; ; ) {
             int x = rng.nextInt(width - 2) + 1;
             int y = rng.nextInt(height - 2) + 1;
-            if (map[x][y] == IntSquare.WALL) {
+            if (map[x][y] == Constants.TERRAIN_WALL) {
                 int wallCount = 0;
                 int floorCount = 0;
                 for (int i = 0; i < adjs.length; i++) {
                     int m = map[x + adjs[i][0]][y + adjs[i][1]];
-                    if (m == IntSquare.WALL) {
+                    if (m == Constants.TERRAIN_WALL) {
                         wallCount++;
-                    } else if (m == IntSquare.FLOOR) {
+                    } else if (m == Constants.TERRAIN_FLOOR) {
                         floorCount++;
                     }
                 }
@@ -140,7 +139,7 @@ public class ShapeDLA implements DungeonGenerator {
         int midy = height / 2;
         for (int x = -1; x < 1; x++) {
             for (int y = -1; y < 1; y++) {
-                map[midx + x][midy + y] = IntSquare.FLOOR;
+                map[midx + x][midy + y] = Constants.TERRAIN_FLOOR;
             }
         }
 
@@ -155,18 +154,18 @@ public class ShapeDLA implements DungeonGenerator {
             if (iters % 4 != 0) {
                 // make just an outline
                 for (int x = shape.xmin; x < shape.xmax; x++) {
-                    map[x][shape.ymin] = IntSquare.FLOOR;
-                    map[x][shape.ymax - 1] = IntSquare.FLOOR;
+                    map[x][shape.ymin] = Constants.TERRAIN_FLOOR;
+                    map[x][shape.ymax - 1] = Constants.TERRAIN_FLOOR;
                 }
                 for (int y = shape.ymin; y < shape.ymax; y++) {
-                    map[shape.xmin][y] = IntSquare.FLOOR;
-                    map[shape.xmax - 1][y] = IntSquare.FLOOR;
+                    map[shape.xmin][y] = Constants.TERRAIN_FLOOR;
+                    map[shape.xmax - 1][y] = Constants.TERRAIN_FLOOR;
                 }
             } else {
                 // make a solid room
                 for (int x = shape.xmin; x < shape.xmax; x++) {
                     for (int y = shape.ymin; y < shape.ymax; y++) {
-                        map[x][y] = IntSquare.FLOOR;
+                        map[x][y] = Constants.TERRAIN_FLOOR;
                     }
                 }
             }
@@ -177,7 +176,7 @@ public class ShapeDLA implements DungeonGenerator {
         int numCandles = mindim / 2;
         for (int i = 0; i < numCandles; i++) {
             Point pos = findCandlePosition(map, rng);
-            map[pos.x][pos.y] |= IntSquare.CANDLE;
+            map[pos.x][pos.y] |= Constants.FEATURE_CANDLE;
         }
 
         return map;

@@ -1,10 +1,8 @@
 package pow.backend.dungeon.gen.proto;
 
-import pow.backend.dungeon.gen.IntSquare;
-
 import java.util.Random;
 
-public class Arena implements DungeonGenerator {
+public class Arena implements ProtoGenerator {
 
     public int[][] genMap(int width, int height, Random rng) {
 
@@ -18,9 +16,13 @@ public class Arena implements DungeonGenerator {
                 double z = d - 0.5;
                 double probWall = 16.0 * z * z * z * z;
                 map[c][r] = (rng.nextDouble() < probWall) ?
-                        IntSquare.WALL : IntSquare.FLOOR;
+                        Constants.TERRAIN_WALL :
+                        Constants.TERRAIN_FLOOR;
             }
         }
+
+        map[(int) (width * 0.25)][(int) (height * 0.3)] |= Constants.FEATURE_WIN_TILE;
+        map[(int) (width * 0.75)][(int) (height * 0.6)] |= Constants.FEATURE_LOSE_TILE;
 
         return map;
     }
