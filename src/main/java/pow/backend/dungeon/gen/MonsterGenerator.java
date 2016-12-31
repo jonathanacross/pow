@@ -11,8 +11,13 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class MonsterGenerator {
+
+    public static Set<String> getMonsterIds() {
+        return instance.generatorMap.keySet();
+    }
 
     // generates a single monster
     public static Monster genMonster(String id, Random rng, Point location) {
@@ -68,7 +73,10 @@ public class MonsterGenerator {
                 switch (t) {
                     case "": break;  // will happen if we have an empty string
                     case "stationary": stationary = true; break;
-                    case "erratic": erratic = true; break; default:
+                    case "erratic": erratic = true; break;
+                    case "knightmove": break;
+                    case "boss": break;
+                    default:
                         throw new IllegalArgumentException("unknown monster flag '" + t + "'");
                 }
             }
@@ -79,19 +87,22 @@ public class MonsterGenerator {
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificMonsterGenerator(String[] line) {
-            if (line.length != 9) {
-                throw new IllegalArgumentException("expected line to have 9 fields");
+            if (line.length != 12) {
+                throw new IllegalArgumentException("Expected 12 fields, but had " + line.length
+                + ". Fields = \n" + String.join(",", line));
             }
 
-            id = line[0];
-            name = line[1];
-            image = line[2];
-            description = line[3];
-            maxHealth = Integer.parseInt(line[4]);
-            // attacks = parseAttacks(line[5]);
-            speed = Integer.parseInt(line[6]);
-            flags = parseFlags(line[7]);
-            experience = Integer.parseInt(line[8]);
+            id = line[1];
+            name = line[2];
+            image = line[3];
+            description = line[4];
+            maxHealth = Integer.parseInt(line[5]);
+            // attacks = parseAttacks(line[6]);
+            // dexterity = Integer.parseInt(line[7]);
+            // defense = Integer.parseInt(line[8]);
+            experience = Integer.parseInt(line[9]);
+            speed = Integer.parseInt(line[10]);
+            flags = parseFlags(line[11]);
         }
 
         // resolves die rolls, location to get a specific monster instance

@@ -7,6 +7,8 @@ import pow.backend.action.Attack;
 import pow.backend.action.Move;
 import pow.util.MathUtils;
 
+import java.io.Serializable;
+
 // TODO: see if it makes sense to have a separate class for this (do pets need it?)
 // otherwise, merge this logic directly into the monster class.
 public abstract class AiActor extends Actor {
@@ -16,7 +18,7 @@ public abstract class AiActor extends Actor {
         AWAKE   // eventually, replace this with more fine-grained states: WANDERING, FLEEING, ATTACKING
     }
 
-    public static class Flags {
+    public static class Flags implements Serializable {
         public boolean stationary;  // can't move (e.g., a mushroom or mold)
         public boolean erratic;  // just move randomly, e.g., insects
 //        public boolean aggressive;  // won't get scared/run away

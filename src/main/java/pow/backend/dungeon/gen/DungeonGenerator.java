@@ -37,6 +37,10 @@ public class DungeonGenerator {
         List<Actor> actors = new ArrayList<>();
         int width = Array2D.width(dungeonMap);
         int height = Array2D.height(dungeonMap);
+
+        List<String> monsterIds = new ArrayList<>();
+        monsterIds.addAll(MonsterGenerator.getMonsterIds());
+
         for (int i = 0; i < numMonsters; i++) {
             int x;
             int y;
@@ -45,16 +49,8 @@ public class DungeonGenerator {
                 y = rng.nextInt(height);
             } while (dungeonMap[x][y].blockGround());
             Point location = new Point(x,y);
-            String id = "";
-            switch (i % 7) {
-                case 0: id = "ant"; break;
-                case 1: id = "yellow mushroom patch"; break;
-                case 2: id = "white rat"; break;
-                case 3: id = "bat"; break;
-                case 4: id = "yellow snake"; break;
-                case 5: id = "floating eye"; break;
-                case 6: id = "chess knight"; break;
-            }
+
+            String id = monsterIds.get(rng.nextInt(monsterIds.size()));
             actors.add(MonsterGenerator.genMonster(id, rng, location));
         }
         return actors;
