@@ -4,11 +4,12 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.*;
+import pow.backend.dungeon.gen.IntSquare;
+import pow.backend.dungeon.gen.IntSquareTranslator;
 import pow.backend.dungeon.gen.MonsterGenerator;
 import pow.backend.dungeon.gen.proto.ShapeDLA;
-import pow.backend.dungeon.gen.DungeonGenerator;
+import pow.backend.dungeon.gen.proto.DungeonGenerator;
 import pow.backend.dungeon.gen.proto.GenUtils;
-import pow.backend.dungeon.gen.SquareTypes;
 import pow.util.Array2D;
 import pow.util.Circle;
 import pow.util.DebugLogger;
@@ -36,34 +37,20 @@ public class GameMap implements Serializable {
         int[][] squares = mapGenerator.genMap(width, height, rng);
         DebugLogger.info(GenUtils.getMapString(squares));
 
-        DungeonTerrain wall = new DungeonTerrain("big stone wall", "big stone wall", "big stone wall",
-                new DungeonTerrain.Flags(true));
-        DungeonTerrain floor = new DungeonTerrain("floor", "floor", "floor",
-                new DungeonTerrain.Flags(false));
+        IntSquareTranslator translator = new IntSquareTranslator(2);
 
-        DungeonFeature candle = new DungeonFeature("candle", "candle", "candle",
-                new DungeonFeature.Flags(false), 3);
+        squares[(int) (width * 0.25)][(int) (height * 0.3)] |= IntSquare.WIN;
+        squares[(int) (width * 0.75)][(int) (height * 0.6)] |= IntSquare.LOSE;
 
         DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                DungeonTerrain terrain =
-                        (squares[x][y] == SquareTypes.WALL.value() ||
-                        squares[x][y] == SquareTypes.CANDLEWALL.value())
-                                ? wall : floor;
-                DungeonFeature feature = squares[x][y] == SquareTypes.CANDLEWALL.value() ? candle : null;
+                DungeonTerrain terrain = translator.getTerrain(squares[x][y]);
+                DungeonFeature feature = translator.getFeature(squares[x][y]);
                 dungeonMap[x][y] = new DungeonSquare(terrain, feature);
             }
         }
-
-        // add win/lose features
-        dungeonMap[(int) (width * 0.25)][(int) (height * 0.3)].feature =
-                new DungeonFeature("wintile", "way to win", "orange pearl",
-                        new DungeonFeature.Flags(false), 0);
-        dungeonMap[(int) (width * 0.75)][(int) (height * 0.6)].feature =
-                new DungeonFeature("losetile", "death", "cobra",
-                        new DungeonFeature.Flags(false), 0);
 
         this.map = dungeonMap;
 
@@ -217,51 +204,6 @@ public class GameMap implements Serializable {
 
         // note this will fail if any monsters need a random number generator to create (e.g., nondeterministic HP)
         this.actors = createMonsters(dungeonMap, 3, null);
-        return dungeonMap;
-    }
-
-    private DungeonSquare[][] buildArena(int width, int height, Random rng) {
-        this.width = width;
-        this.height = height;
-
-        char[][] map = new char[width][height];
-
-        for (int c = 0; c < width; c++) {
-            for (int r = 0; r < height; r++) {
-                double x = c / (width - 1.0);
-                double y = r / (height - 1.0);
-                double d = Math.min(Math.min(x, y), Math.min(1.0 - x, 1.0 - y));
-                double z = d - 0.5;
-                double probWall = 16.0 * z * z * z * z;
-                map[c][r] = (rng.nextDouble() < probWall) ? '#' : '.';
-            }
-        }
-
-        DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
-        DungeonTerrain wall = new DungeonTerrain("big stone wall", "big stone wall", "big stone wall",
-                new DungeonTerrain.Flags(true));
-        DungeonTerrain floor = new DungeonTerrain("floor", "floor", "floor",
-                new DungeonTerrain.Flags(false));
-
-        for (int c = 0; c < width; c++) {
-            for (int r = 0; r < height; r++) {
-                dungeonMap[c][r] = map[c][r] == '#' ?
-                        new DungeonSquare(wall, null) :
-                        new DungeonSquare(floor, null);
-            }
-        }
-
-        // add win/lose features
-        dungeonMap[(int) (width * 0.25)][(int) (height * 0.3)].feature =
-                new DungeonFeature("wintile", "way to win", "orange pearl",
-                        new DungeonFeature.Flags(false), 0);
-        dungeonMap[(int) (width * 0.75)][(int) (height * 0.6)].feature =
-                new DungeonFeature("losetile", "death", "cobra",
-                        new DungeonFeature.Flags(false), 0);
-
-        // add some monsters
-        this.actors = createMonsters(dungeonMap, 10, null);
-
         return dungeonMap;
     }
 

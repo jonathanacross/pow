@@ -1,7 +1,6 @@
 package pow.backend.dungeon.gen.proto;
 
-import pow.backend.dungeon.gen.DungeonGenerator;
-import pow.backend.dungeon.gen.SquareTypes;
+import pow.backend.dungeon.gen.IntSquare;
 
 import java.util.Random;
 
@@ -19,7 +18,7 @@ public class Arena implements DungeonGenerator {
                 double z = d - 0.5;
                 double probWall = 16.0 * z * z * z * z;
                 map[c][r] = (rng.nextDouble() < probWall) ?
-                        SquareTypes.WALL.value() : SquareTypes.FLOOR.value();
+                        IntSquare.WALL : IntSquare.FLOOR;
             }
         }
 

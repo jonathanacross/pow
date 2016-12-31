@@ -1,7 +1,6 @@
 package pow.backend.dungeon.gen.proto;
 
-import pow.backend.dungeon.gen.DungeonGenerator;
-import pow.backend.dungeon.gen.SquareTypes;
+import pow.backend.dungeon.gen.IntSquare;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -53,18 +52,18 @@ public class ShapeDLA implements DungeonGenerator {
 
     private boolean touches(int[][] map, Shape shape) {
         for (int x = shape.xmin; x < shape.xmax; x++) {
-            if (map[x][shape.ymin] == SquareTypes.FLOOR.value()) {
+            if (map[x][shape.ymin] == IntSquare.FLOOR) {
                 return true;
             }
-            if (map[x][shape.ymax - 1] == SquareTypes.FLOOR.value()) {
+            if (map[x][shape.ymax - 1] == IntSquare.FLOOR) {
                 return true;
             }
         }
         for (int y = shape.ymin; y < shape.ymax; y++) {
-            if (map[shape.xmin][y] == SquareTypes.FLOOR.value()) {
+            if (map[shape.xmin][y] == IntSquare.FLOOR) {
                 return true;
             }
-            if (map[shape.xmax - 1][y] == SquareTypes.FLOOR.value()) {
+            if (map[shape.xmax - 1][y] == IntSquare.FLOOR) {
                 return true;
             }
         }
@@ -113,14 +112,14 @@ public class ShapeDLA implements DungeonGenerator {
         for ( ; ; ) {
             int x = rng.nextInt(width - 2) + 1;
             int y = rng.nextInt(height - 2) + 1;
-            if (map[x][y] == SquareTypes.WALL.value()) {
+            if (map[x][y] == IntSquare.WALL) {
                 int wallCount = 0;
                 int floorCount = 0;
                 for (int i = 0; i < adjs.length; i++) {
                     int m = map[x + adjs[i][0]][y + adjs[i][1]];
-                    if (m == SquareTypes.WALL.value()) {
+                    if (m == IntSquare.WALL) {
                         wallCount++;
-                    } else if (m == SquareTypes.FLOOR.value()) {
+                    } else if (m == IntSquare.FLOOR) {
                         floorCount++;
                     }
                 }
@@ -141,7 +140,7 @@ public class ShapeDLA implements DungeonGenerator {
         int midy = height / 2;
         for (int x = -1; x < 1; x++) {
             for (int y = -1; y < 1; y++) {
-                map[midx + x][midy + y] = SquareTypes.FLOOR.value();
+                map[midx + x][midy + y] = IntSquare.FLOOR;
             }
         }
 
@@ -156,18 +155,18 @@ public class ShapeDLA implements DungeonGenerator {
             if (iters % 4 != 0) {
                 // make just an outline
                 for (int x = shape.xmin; x < shape.xmax; x++) {
-                    map[x][shape.ymin] = SquareTypes.FLOOR.value();
-                    map[x][shape.ymax - 1] = SquareTypes.FLOOR.value();
+                    map[x][shape.ymin] = IntSquare.FLOOR;
+                    map[x][shape.ymax - 1] = IntSquare.FLOOR;
                 }
                 for (int y = shape.ymin; y < shape.ymax; y++) {
-                    map[shape.xmin][y] = SquareTypes.FLOOR.value();
-                    map[shape.xmax - 1][y] = SquareTypes.FLOOR.value();
+                    map[shape.xmin][y] = IntSquare.FLOOR;
+                    map[shape.xmax - 1][y] = IntSquare.FLOOR;
                 }
             } else {
                 // make a solid room
                 for (int x = shape.xmin; x < shape.xmax; x++) {
                     for (int y = shape.ymin; y < shape.ymax; y++) {
-                        map[x][y] = SquareTypes.FLOOR.value();
+                        map[x][y] = IntSquare.FLOOR;
                     }
                 }
             }
@@ -178,7 +177,7 @@ public class ShapeDLA implements DungeonGenerator {
         int numCandles = mindim / 2;
         for (int i = 0; i < numCandles; i++) {
             Point pos = findCandlePosition(map, rng);
-            map[pos.x][pos.y] = SquareTypes.CANDLEWALL.value();
+            map[pos.x][pos.y] |= IntSquare.CANDLE;
         }
 
         return map;

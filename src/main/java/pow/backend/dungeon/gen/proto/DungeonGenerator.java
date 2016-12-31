@@ -1,4 +1,4 @@
-package pow.backend.dungeon.gen;
+package pow.backend.dungeon.gen.proto;
 
 import java.util.Random;
 
