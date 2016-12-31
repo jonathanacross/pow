@@ -1,6 +1,6 @@
 package pow.backend.dungeon.gen.proto;
 
-// Class to store basic information about a map
+// Class to store basic information about a map.
 // Useful for dungeon generation where we don't care about detailed
 // information on each square.
 public class Constants {

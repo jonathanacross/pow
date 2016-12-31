@@ -34,9 +34,6 @@ public class ShapeDLA implements ProtoGenerator {
     }
 
     private Shape genOutline(int dungeonWidth, int dungeonHeight, Random rng) {
-        int minSize = 3;
-        int maxSize = 15;
-
         int width = rng.nextInt(maxRoomSize - minRoomSize) + minRoomSize;
         int height = rng.nextInt(maxRoomSize - minRoomSize) + minRoomSize;
         int locxmin = 1;
@@ -114,8 +111,8 @@ public class ShapeDLA implements ProtoGenerator {
             if (map[x][y] == Constants.TERRAIN_WALL) {
                 int wallCount = 0;
                 int floorCount = 0;
-                for (int i = 0; i < adjs.length; i++) {
-                    int m = map[x + adjs[i][0]][y + adjs[i][1]];
+                for (int[] adj : adjs) {
+                    int m = map[x + adj[0]][y + adj[1]];
                     if (m == Constants.TERRAIN_WALL) {
                         wallCount++;
                     } else if (m == Constants.TERRAIN_FLOOR) {

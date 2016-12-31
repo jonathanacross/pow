@@ -4,14 +4,11 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.*;
-import pow.backend.dungeon.gen.IntSquareTranslator;
-import pow.backend.dungeon.gen.MonsterGenerator;
+import pow.backend.dungeon.gen.DungeonGenerator;
+import pow.backend.dungeon.gen.ProtoTranslator;
 import pow.backend.dungeon.gen.proto.ShapeDLA;
 import pow.backend.dungeon.gen.proto.ProtoGenerator;
-import pow.backend.dungeon.gen.proto.GenUtils;
-import pow.util.Array2D;
 import pow.util.Circle;
-import pow.util.DebugLogger;
 import pow.util.MathUtils;
 import pow.util.Point;
 
@@ -27,31 +24,6 @@ public class GameMap implements Serializable {
     public int height;
     public List<Actor> actors;
     public List<LightSource> lightSources;
-
-    private void autogenMap(int width, int height, Random rng) {
-        this.width = width;
-        this.height = height;
-        ProtoGenerator mapGenerator = new ShapeDLA(3, 15);
-
-        int[][] squares = mapGenerator.genMap(width, height, rng);
-        DebugLogger.info(GenUtils.getMapString(squares));
-
-        IntSquareTranslator translator = new IntSquareTranslator(2);
-
-        DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                DungeonTerrain terrain = translator.getTerrain(squares[x][y]);
-                DungeonFeature feature = translator.getFeature(squares[x][y]);
-                dungeonMap[x][y] = new DungeonSquare(terrain, feature);
-            }
-        }
-
-        this.map = dungeonMap;
-
-        this.actors = createMonsters(dungeonMap, 15, rng);
-    }
 
     public void updatePlayerVisibilityData(Player player) {
         updateBrightness();
@@ -114,10 +86,12 @@ public class GameMap implements Serializable {
     }
 
     public GameMap(Random rng, Player player, Pet pet) {
-//        map = buildTestArea();
-//        map = buildArena(40, 30, rng);
-//        map = buildArena(140, 160, rng);
-        autogenMap(60, 60, rng);
+        ProtoGenerator generator = new ShapeDLA(3, 15);
+        ProtoTranslator translator = new ProtoTranslator(0);
+        this.height = 60;
+        this.width = 60;
+        this.map = DungeonGenerator.generateMap(generator, translator, this.width, this.height, rng);
+        this.actors = DungeonGenerator.createMonsters(this.map, 15, rng);
         initLightSources(player);
 
         int x = width / 2;
@@ -199,36 +173,7 @@ public class GameMap implements Serializable {
         }
 
         // note this will fail if any monsters need a random number generator to create (e.g., nondeterministic HP)
-        this.actors = createMonsters(dungeonMap, 3, null);
+        this.actors = DungeonGenerator.createMonsters(dungeonMap, 3, null);
         return dungeonMap;
     }
-
-    // creates some monsters
-    private List<Actor> createMonsters(DungeonSquare[][] dungeonMap, int numMonsters, Random rng) {
-        List<Actor> actors = new ArrayList<>();
-        int width = Array2D.width(dungeonMap);
-        int height = Array2D.height(dungeonMap);
-        for (int i = 0; i < numMonsters; i++) {
-            int x;
-            int y;
-            do {
-                x = rng.nextInt(width);
-                y = rng.nextInt(height);
-            } while (dungeonMap[x][y].blockGround());
-            Point location = new Point(x,y);
-            String id = "";
-            switch (i % 7) {
-                case 0: id = "ant"; break;
-                case 1: id = "yellow mushroom patch"; break;
-                case 2: id = "white rat"; break;
-                case 3: id = "bat"; break;
-                case 4: id = "yellow snake"; break;
-                case 5: id = "floating eye"; break;
-                case 6: id = "chess knight"; break;
-            }
-            actors.add(MonsterGenerator.genMonster(id, rng, location));
-        }
-        return actors;
-    }
-
 }

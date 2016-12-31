@@ -91,6 +91,7 @@ public class GenUtils {
         return new Point(-1, -1);
     }
 
+    // useful to draw debug maps
     public static String getMapString(int[][] map) {
         int height = Array2D.height(map);
         int width = Array2D.width(map);
@@ -105,7 +106,6 @@ public class GenUtils {
         return sb.toString();
     }
 
-    // useful to help draw debug maps
     private static char getChar(int x) {
         int feature = Constants.getFeature(x);
         // if there's a feature, draw it

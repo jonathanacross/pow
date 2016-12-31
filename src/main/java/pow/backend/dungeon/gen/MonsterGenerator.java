@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class MonsterGenerator {
 
-    // main method to call
+    // generates a single monster
     public static Monster genMonster(String id, Random rng, Point location) {
         if (!instance.generatorMap.containsKey(id)) {
             DebugLogger.error("unknown monster id '" + id + "'");
