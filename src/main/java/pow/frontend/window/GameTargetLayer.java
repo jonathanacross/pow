@@ -1,40 +1,23 @@
 package pow.frontend.window;
 
 import pow.backend.GameState;
-import pow.backend.action.FireRocket;
-import pow.backend.action.Move;
-import pow.backend.action.Save;
-import pow.backend.actors.Actor;
-import pow.backend.dungeon.DungeonSquare;
-import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
 import pow.util.Point;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 public class GameTargetLayer extends AbstractWindow {
 
-    GameWindow parent;
+    private GameWindow parent;
+    private Point cursorPosition;
 
     public GameTargetLayer(GameWindow parent) {
         super(parent.x, parent.y, parent.width, parent.height, parent.visible, parent.backend, parent.frontend);
         this.parent = parent;
-        setTileSize(ImageController.TILE_SIZE);
-        GameState gs = backend.getGameState();
-        cursorPosition = new Point(gs.player.getLocation().x, gs.player.getLocation().y);
-    }
-
-    private Point cursorPosition;
-
-    private void moveCursor(int dx, int dy) {
-        cursorPosition.x += dx;
-        cursorPosition.y += dy;
-        frontend.setDirty(true);
-    }
-
-    private void stopLooking() {
-        parent.removeLayer();
+        Point playerLoc = backend.getGameState().player.getLocation();
+        cursorPosition = new Point(playerLoc.x, playerLoc.y);
     }
 
     @Override
@@ -81,57 +64,21 @@ public class GameTargetLayer extends AbstractWindow {
         }
     }
 
-    // Used to figure out how much we can show on the map.
-    public void setTileSize(int tileSize) {
-        this.tileSize = tileSize;
-
-        // compute how many rows/columns to show
-        this.xRadius = (int) Math.ceil(0.5 * ((double) width / tileSize - 1));
-        this.yRadius = (int) Math.ceil(0.5 * ((double) height / tileSize - 1));
-
-        // how much to shift the tiles to display centered
-        this.windowShiftX = (width - (2 * xRadius + 1) * tileSize) / 2;
-        this.windowShiftY = (height - (2 * yRadius + 1) * tileSize) / 2;
-    }
-
-    private void frameRect(Graphics graphics, int x, int y) {
-        graphics.setColor(Color.YELLOW);
-        graphics.drawRect(x*tileSize + windowShiftX, y * tileSize + windowShiftY, tileSize, tileSize);
-    }
-
-    private int tileSize;
-    private int windowShiftX;
-    private int windowShiftY;
-    private int xRadius;
-    private int yRadius;
-
-    // TODO: pull this out to a general map class
-    int camCenterX;
-    int camCenterY;
-
-    int colMin;
-    int colMax;
-    int rowMin;
-    int rowMax;
-
-    int cameraDx;
-    int cameraDy;
-
     @Override
     public void drawContents(Graphics graphics) {
         GameState gs = backend.getGameState();
+        MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gs);
 
-        camCenterX = Math.min(Math.max(xRadius, gs.player.loc.x), gs.map.width - 1 - xRadius);
-        camCenterY = Math.min(Math.max(yRadius, gs.player.loc.y), gs.map.height - 1 - yRadius);
+        mapView.frameRect(graphics, Color.YELLOW, cursorPosition.x, cursorPosition.y);
+    }
 
-        colMin = Math.max(0, camCenterX - xRadius);
-        colMax = Math.min(gs.map.width - 1, camCenterX + xRadius);
-        rowMin = Math.max(0, camCenterY - xRadius);
-        rowMax = Math.min(gs.map.height - 1, camCenterY + xRadius);
+    private void moveCursor(int dx, int dy) {
+        cursorPosition.x += dx;
+        cursorPosition.y += dy;
+        frontend.setDirty(true);
+    }
 
-        cameraDx = -(colMin + colMax) / 2 + xRadius;
-        cameraDy = -(rowMin + rowMax) / 2 + yRadius;
-
-        frameRect(graphics, cursorPosition.x + cameraDx, cursorPosition.y + cameraDy);
+    private void stopLooking() {
+        parent.removeLayer();
     }
 }

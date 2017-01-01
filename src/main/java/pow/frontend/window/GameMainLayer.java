@@ -1,20 +1,18 @@
 package pow.frontend.window;
 
-import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.FireRocket;
 import pow.backend.action.Move;
 import pow.backend.action.Save;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
-import pow.frontend.Frontend;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
 import pow.util.Point;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.awt.Font;
 
 public class GameMainLayer extends AbstractWindow {
 
@@ -23,7 +21,6 @@ public class GameMainLayer extends AbstractWindow {
     public GameMainLayer(GameWindow parent) {
         super(parent.x, parent.y, parent.width, parent.height, parent.visible, parent.backend, parent.frontend);
         this.parent = parent;
-        setTileSize(ImageController.TILE_SIZE);
     }
 
     @Override
@@ -75,65 +72,17 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
-    private void startLooking() {
-        parent.addLayer(new GameTargetLayer(parent));
-    }
-
-    // Used to figure out how much we can show on the map.
-    public void setTileSize(int tileSize) {
-        this.tileSize = tileSize;
-
-        // compute how many rows/columns to show
-        this.xRadius = (int) Math.ceil(0.5 * ((double) width / tileSize - 1));
-        this.yRadius = (int) Math.ceil(0.5 * ((double) height / tileSize - 1));
-
-        // how much to shift the tiles to display centered
-        this.windowShiftX = (width - (2 * xRadius + 1) * tileSize) / 2;
-        this.windowShiftY = (height - (2 * yRadius + 1) * tileSize) / 2;
-    }
-
-    private void drawTile(Graphics graphics, String tileName, int x, int y) {
-        ImageController.drawTile(graphics, tileName, x * tileSize + windowShiftX, y * tileSize + windowShiftY);
-    }
-
-    // darkness = 0 -> no shadow, darkness 255 -> all black
-    private void makeShadow(Graphics graphics, int x, int y, int darkness) {
-        Color black = new Color(0,0, 0, darkness);
-        graphics.setColor(black);
-        graphics.fillRect(x*tileSize + windowShiftX, y * tileSize + windowShiftY, tileSize, tileSize);
-    }
-
-    private int tileSize;
-    private int windowShiftX;
-    private int windowShiftY;
-    private int xRadius;
-    private int yRadius;
-
     @Override
     public void drawContents(Graphics graphics) {
         GameState gs = backend.getGameState();
+        MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, backend.getGameState());
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, width, height);
-        graphics.setColor(Color.WHITE);
-
-        int camCenterX = Math.min(Math.max(xRadius, gs.player.loc.x), gs.map.width - 1 - xRadius);
-        int camCenterY = Math.min(Math.max(yRadius, gs.player.loc.y), gs.map.height - 1 - yRadius);
-
-        int colMin = Math.max(0, camCenterX - xRadius);
-        int colMax = Math.min(gs.map.width - 1, camCenterX + xRadius);
-        int rowMin = Math.max(0, camCenterY - xRadius);
-        int rowMax = Math.min(gs.map.height - 1, camCenterY + xRadius);
-
-        int cameraDx = -(colMin + colMax) / 2 + xRadius;
-        int cameraDy = -(rowMin + rowMax) / 2 + yRadius;
-
-        Font f = new Font("Courier New", Font.PLAIN, this.tileSize);
-        graphics.setFont(f);
 
         // draw the map
-        for (int y = rowMin; y <= rowMax; y++) {
-            for (int x = colMin; x <= colMax; x++) {
+        for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
+            for (int x = mapView.colMin; x <= mapView.colMax; x++) {
                 DungeonSquare square = gs.map.map[x][y];
                 if (!gs.map.map[x][y].seen) {
                     continue;
@@ -141,9 +90,9 @@ public class GameMainLayer extends AbstractWindow {
 //                if (!gs.player.canSee(gs, new Point(x,y))) {
 //                    continue;
 //                }
-                drawTile(graphics, square.terrain.image, x + cameraDx, y + cameraDy);
+                mapView.drawTile(graphics, square.terrain.image, x, y);
                 if (square.feature != null) {
-                    drawTile(graphics, square.feature.image, x + cameraDx, y + cameraDy);
+                    mapView.drawTile(graphics, square.feature.image, x, y);
                 }
             }
         }
@@ -151,7 +100,7 @@ public class GameMainLayer extends AbstractWindow {
         // draw monsters, player, pets
         for (Actor actor : gs.map.actors) {
             if (gs.player.canSee(gs, actor.loc)) {
-                drawTile(graphics, actor.image, actor.loc.x + cameraDx, actor.loc.y + cameraDy);
+                mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y);
             }
         }
 
@@ -159,14 +108,14 @@ public class GameMainLayer extends AbstractWindow {
         if (!frontend.getEffects().isEmpty()) {
             for (GlyphLoc glyphLoc : frontend.getEffects().get(0).render()) {
                 if (gs.player.canSee(gs, glyphLoc.loc)) {
-                    drawTile(graphics, glyphLoc.imageName, glyphLoc.loc.x + cameraDx, glyphLoc.loc.y + cameraDy);
+                    mapView.drawTile(graphics, glyphLoc.imageName, glyphLoc.loc.x, glyphLoc.loc.y);
                 }
             }
         }
 
         // add shadow
-        for (int y = rowMin; y <= rowMax; y++) {
-            for (int x = colMin; x <= colMax; x++) {
+        for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
+            for (int x = mapView.colMin; x <= mapView.colMax; x++) {
                 if (!gs.map.map[x][y].seen) {
                     continue;
                 }
@@ -178,8 +127,12 @@ public class GameMainLayer extends AbstractWindow {
                     darknessD = 1;
                 }
                 int darkness = (int) Math.round(maxDarkness * darknessD);
-                makeShadow(graphics, x + cameraDx, y + cameraDy, darkness);
+                mapView.makeShadow(graphics, x, y, darkness);
             }
         }
+    }
+
+    private void startLooking() {
+        parent.addLayer(new GameTargetLayer(parent));
     }
 }
