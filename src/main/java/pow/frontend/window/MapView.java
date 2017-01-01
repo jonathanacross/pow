@@ -9,7 +9,8 @@ import java.awt.Graphics;
 // A utility class to aid in drawing map-related views.
 public class MapView {
 
-    // These variables are useful to restrict what tiles to draw (e.g., anything outside of these bounds will not appear in the view).
+    // These variables are useful to restrict what tiles to draw
+    // (e.g., anything outside of these bounds will not appear in the view).
     public int colMin;
     public int colMax;
     public int rowMin;
@@ -72,6 +73,6 @@ public class MapView {
     }
 
     private int gameYToPixelY(int y) {
-        return (y + cameraDy)*tileSize + windowShiftX;
+        return (y + cameraDy)*tileSize + windowShiftY;
     }
 }

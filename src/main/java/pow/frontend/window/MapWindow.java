@@ -46,13 +46,11 @@ public class MapWindow extends AbstractWindow {
                 }
 
                 DungeonSquare square = gs.map.map[x][y];
-                // TODO: add flags to features so this isn't hardcoded; it's probably
-                // better to draw only blocks for the map, no tiles.
-//                Color c = square.terrain.flags.blockGround ? WALL_COLOR : FLOOR_COLOR;
-//                drawBlock(graphics, c, x, y);
                 mapView.drawTile(graphics, square.terrain.image, x, y);
                 if (square.feature != null) {
-//                    drawBlock(graphics, STAIR_COLOR, x, y);
+                    // TODO: use feature flags so that important things
+                    // such as stairs show up more easily.
+                    // mapView.drawBlock(graphics, STAIR_COLOR, x, y);
                     mapView.drawTile(graphics, square.feature.image, x, y);
                 }
             }
