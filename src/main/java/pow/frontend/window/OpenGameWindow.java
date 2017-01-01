@@ -55,9 +55,11 @@ public class OpenGameWindow extends AbstractWindow {
                 frontend.setState(Frontend.State.CREATE_CHAR);
                 break;
             case KeyEvent.VK_ENTER:
-                GameState state = SaveUtils.readFromFile(files.get(selectIndex));
-                backend.load(state);
-                frontend.setState(Frontend.State.GAME);
+                if (! files.isEmpty()) {
+                    GameState state = SaveUtils.readFromFile(files.get(selectIndex));
+                    backend.load(state);
+                    frontend.setState(Frontend.State.GAME);
+                }
                 break;
         }
     }
