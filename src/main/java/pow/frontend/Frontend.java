@@ -166,13 +166,15 @@ public class Frontend {
 
     }
 
+    private static final Color BACKGROUND_COLOR = Color.BLACK;
+
     public void draw(Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.setRenderingHint(
                 RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
 
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(BACKGROUND_COLOR);
         graphics.fillRect(0, 0, width, height);
         for (AbstractWindow w : windows) {
             w.draw(graphics);

@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameState;
 import pow.frontend.utils.ImageController;
+import pow.util.MathUtils;
 import pow.util.Point;
 
 import java.awt.Color;
@@ -12,12 +13,15 @@ public class GameTargetLayer extends AbstractWindow {
 
     private GameWindow parent;
     private Point cursorPosition;
+    MapView mapView;
 
     public GameTargetLayer(GameWindow parent) {
         super(parent.x, parent.y, parent.width, parent.height, parent.visible, parent.backend, parent.frontend);
         this.parent = parent;
-        Point playerLoc = backend.getGameState().player.getLocation();
+        GameState gs = backend.getGameState();
+        Point playerLoc = gs.player.getLocation();
         cursorPosition = new Point(playerLoc.x, playerLoc.y);
+        mapView = new MapView(width, height, ImageController.TILE_SIZE, gs);
     }
 
     @Override
@@ -67,14 +71,13 @@ public class GameTargetLayer extends AbstractWindow {
     @Override
     public void drawContents(Graphics graphics) {
         GameState gs = backend.getGameState();
-        MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gs);
 
         mapView.frameRect(graphics, Color.YELLOW, cursorPosition.x, cursorPosition.y);
     }
 
     private void moveCursor(int dx, int dy) {
-        cursorPosition.x += dx;
-        cursorPosition.y += dy;
+        cursorPosition.x = MathUtils.clamp(cursorPosition.x + dx, mapView.colMin, mapView.colMax);
+        cursorPosition.y = MathUtils.clamp(cursorPosition.y + dy, mapView.rowMin, mapView.rowMax);
         frontend.setDirty(true);
     }
 

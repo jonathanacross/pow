@@ -49,7 +49,7 @@ public class MapView {
 
     public void frameRect(Graphics graphics, Color color, int x, int y) {
         graphics.setColor(color);
-        graphics.drawRect(gameXToPixelX(x), gameYToPixelY(y), tileSize, tileSize);
+        graphics.drawRect(gameXToPixelX(x), gameYToPixelY(y), tileSize - 1, tileSize - 1);
     }
 
     public void drawTile(Graphics graphics, String tileName, int x, int y) {
