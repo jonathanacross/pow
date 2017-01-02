@@ -8,11 +8,15 @@ import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
+import pow.frontend.utils.KeyInput;
+import pow.frontend.utils.KeyUtils;
 import pow.util.Point;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 
 public class GameMainLayer extends AbstractWindow {
 
@@ -27,48 +31,21 @@ public class GameMainLayer extends AbstractWindow {
     public void processKey(KeyEvent e) {
         GameState gs = backend.getGameState();
 
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_L:
-                backend.tellPlayer(new Move(gs.player, 1, 0));
-                break;
-            case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_H:
-                backend.tellPlayer(new Move(gs.player, -1, 0));
-                break;
-            case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_J:
-                backend.tellPlayer(new Move(gs.player, 0, 1));
-                break;
-            case KeyEvent.VK_UP:
-            case KeyEvent.VK_K:
-                backend.tellPlayer(new Move(gs.player, 0, -1));
-                break;
-            case KeyEvent.VK_Y:
-                backend.tellPlayer(new Move(gs.player, -1, -1));
-                break;
-            case KeyEvent.VK_U:
-                backend.tellPlayer(new Move(gs.player, 1, -1));
-                break;
-            case KeyEvent.VK_B:
-                backend.tellPlayer(new Move(gs.player, -1, 1));
-                break;
-            case KeyEvent.VK_N:
-                backend.tellPlayer(new Move(gs.player, 1, 1));
-                break;
-            case KeyEvent.VK_PERIOD:
-                // TODO: change to rest
-                backend.tellPlayer(new Move(gs.player, 0, 0));
-                break;
-            case KeyEvent.VK_F:
-                backend.tellPlayer(new FireRocket(gs.player));
-                break;
-            case KeyEvent.VK_S:
-                backend.tellPlayer(new Save());
-                break;
-            case KeyEvent.VK_X:
-                startLooking();
-                break;
+        KeyInput input = KeyUtils.getKeyInput(e);
+        switch (input) {
+            case EAST: backend.tellPlayer(new Move(gs.player, 1, 0)); break;
+            case WEST: backend.tellPlayer(new Move(gs.player, -1, 0)); break;
+            case SOUTH: backend.tellPlayer(new Move(gs.player, 0, 1)); break;
+            case NORTH: backend.tellPlayer(new Move(gs.player, 0, -1)); break;
+            case NORTH_WEST: backend.tellPlayer(new Move(gs.player, -1, -1)); break;
+            case NORTH_EAST: backend.tellPlayer(new Move(gs.player, 1, -1)); break;
+            case SOUTH_WEST: backend.tellPlayer(new Move(gs.player, -1, 1)); break;
+            case SOUTH_EAST: backend.tellPlayer(new Move(gs.player, 1, 1)); break;
+            case REST: backend.tellPlayer(new Move(gs.player, 0, 0)); break;
+            case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
+            case SAVE: backend.tellPlayer(new Save()); break;
+            case LOOK: startLooking(); break;
+            case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
         }
     }
 

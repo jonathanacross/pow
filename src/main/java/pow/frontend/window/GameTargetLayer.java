@@ -5,6 +5,8 @@ import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.frontend.utils.ImageController;
+import pow.frontend.utils.KeyInput;
+import pow.frontend.utils.KeyUtils;
 import pow.util.MathUtils;
 import pow.util.Point;
 
@@ -30,45 +32,19 @@ public class GameTargetLayer extends AbstractWindow {
 
     @Override
     public void processKey(KeyEvent e) {
-        GameState gs = backend.getGameState();
-
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_L:
-                moveCursor(1, 0);
-                break;
-            case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_H:
-                moveCursor(-1, 0);
-                break;
-            case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_J:
-                moveCursor(0, 1);
-                break;
-            case KeyEvent.VK_UP:
-            case KeyEvent.VK_K:
-                moveCursor(0, -1);
-                break;
-            case KeyEvent.VK_Y:
-                moveCursor(-1, -1);
-                break;
-            case KeyEvent.VK_U:
-                moveCursor(1, -1);
-                break;
-            case KeyEvent.VK_B:
-                moveCursor(-1, 1);
-                break;
-            case KeyEvent.VK_N:
-                moveCursor(1, 1);
-                break;
-            case KeyEvent.VK_PERIOD:
-                moveCursor(0, 0);
-                break;
-            case KeyEvent.VK_ESCAPE:
-            case KeyEvent.VK_ENTER:
-            case KeyEvent.VK_X:
-                stopLooking();
-                break;
+        KeyInput input = KeyUtils.getKeyInput(e);
+        switch (input) {
+            case EAST: moveCursor(1, 0); break;
+            case WEST: moveCursor(-1, 0); break;
+            case SOUTH: moveCursor(0, 1); break;
+            case NORTH: moveCursor(0, -1); break;
+            case NORTH_WEST: moveCursor(-1, -1); break;
+            case NORTH_EAST: moveCursor(1, -1); break;
+            case SOUTH_WEST: moveCursor(-1, 1); break;
+            case SOUTH_EAST: moveCursor(1, 1); break;
+            case OKAY:
+            case CANCEL:
+            case LOOK: stopLooking(); break;
         }
     }
 
