@@ -1,6 +1,9 @@
 package pow.frontend.window;
 
+import com.sun.org.apache.xalan.internal.utils.FeatureManager;
 import pow.backend.GameState;
+import pow.backend.actors.Actor;
+import pow.backend.dungeon.DungeonFeature;
 import pow.frontend.utils.ImageController;
 import pow.util.MathUtils;
 import pow.util.Point;
@@ -22,6 +25,7 @@ public class GameTargetLayer extends AbstractWindow {
         Point playerLoc = gs.player.getLocation();
         cursorPosition = new Point(playerLoc.x, playerLoc.y);
         mapView = new MapView(width, height, ImageController.TILE_SIZE, gs);
+        frontend.messages.push("");
     }
 
     @Override
@@ -78,10 +82,43 @@ public class GameTargetLayer extends AbstractWindow {
     private void moveCursor(int dx, int dy) {
         cursorPosition.x = MathUtils.clamp(cursorPosition.x + dx, mapView.colMin, mapView.colMax);
         cursorPosition.y = MathUtils.clamp(cursorPosition.y + dy, mapView.rowMin, mapView.rowMax);
+        frontend.messages.pop();
+        frontend.messages.push(makeMessage());
         frontend.setDirty(true);
     }
 
     private void stopLooking() {
+        frontend.messages.pop();
         parent.removeLayer();
+    }
+
+    private String makeMessage() {
+        int x = cursorPosition.x;
+        int y = cursorPosition.y;
+        GameState gs = backend.getGameState();
+
+        if (gs.player.canSee(gs, cursorPosition)) {
+            Actor actor = gs.map.actorAt(x,y);
+            if (actor != null) {
+                return "you see a " + actor.name;
+            }
+            DungeonFeature feature = gs.map.map[x][y].feature;
+            if (feature != null) {
+                return "you see a " + feature.name;
+            }
+            return "you see a " + gs.map.map[x][y].terrain.name;
+        }
+        else {
+            if (gs.map.map[x][y].seen) {
+                DungeonFeature feature = gs.map.map[x][y].feature;
+                if (feature != null) {
+                    return feature.name;
+                }
+
+                return gs.map.map[x][y].terrain.name;
+            } else {
+                return "";  // skip squares the player can't see
+            }
+        }
     }
 }

@@ -34,12 +34,14 @@ public class Frontend {
     private LogWindow logWindow;
     private StatusWindow statusWindow;
     private MapWindow mapWindow;
+    private MessageWindow messageWindow;
 
     private GameBackend gameBackend;
     private Queue<KeyEvent> keyEvents;
 
     private List<Effect> effects;
     private boolean dirty;  // need to redraw
+    public Stack<String> messages;  // short messages/help suggestions
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
@@ -59,6 +61,7 @@ public class Frontend {
         this.dirty = true;
         this.effects = new ArrayList<>();
         this.keyEvents = new LinkedList<>();
+        this.messages = new Stack<>();
 
         gameBackend = new GameBackend();
         // dialogs
@@ -68,10 +71,11 @@ public class Frontend {
         createCharWindow = new CreateCharWindow(15, 100, 480, 200, true, gameBackend, this);
         openGameWindow = new OpenGameWindow(15, 100, 380, 300, true, gameBackend, this);
         // main game
-        statusWindow = new StatusWindow(5, 5, 200, 672, true, gameBackend, this);
+        statusWindow = new StatusWindow(5, 5, 200, 707, true, gameBackend, this);
         gameWindow = new GameWindow(210, 5, 672, 672, true, gameBackend, this);
         mapWindow = new MapWindow(887, 5, 300, 250, true, gameBackend, this);
-        logWindow = new LogWindow(887, 260, 300, 395, true, gameBackend, this);
+        logWindow = new LogWindow(887, 260, 300, 452, true, gameBackend, this);
+        messageWindow = new MessageWindow(210, 682, 672, 30, true, gameBackend, this);
 
         windows = new Stack<>();
         setState(State.WELCOME);
@@ -91,6 +95,7 @@ public class Frontend {
             case GAME:
                 windows.push(statusWindow);
                 windows.push(logWindow);
+                windows.push(messageWindow);
                 windows.push(mapWindow);
                 windows.push(gameWindow);
                 gameBackend.setGameInProgress(true);
