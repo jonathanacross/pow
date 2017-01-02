@@ -114,7 +114,7 @@ public class MonsterGenerator {
         // resolves die rolls, location to get a specific monster instance
         public Monster genMonster(Random rng, Point location) {
             return new Monster(
-                    new DungeonObject.Params( id, name, image, description, location, true),
+                    new DungeonObject.Params(id, name, image, description, location, true),
                     new Actor.Params(maxHealth, dexterity, defense, false, speed),
                     flags);
         }

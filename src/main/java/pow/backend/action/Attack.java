@@ -25,7 +25,7 @@ public class Attack implements Action {
     public static ActionResult doAttack(GameBackend backend, Actor attacker, Actor defender) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
-        if (gs.rng.nextBoolean()) {
+        if (gs.rng.nextDouble() > hitProb(attacker.dexterity, defender.defense)) {
             backend.logMessage(attacker.getPronoun() + " misses " + defender.getPronoun());
         } else {
             int damage = 1;
@@ -55,6 +55,10 @@ public class Attack implements Action {
             }
         }
         return ActionResult.Succeeded(events);
+    }
+
+    public static double hitProb(int dex, int defense) {
+        return 1.0 / (1.0 + Math.exp(-(dex - defense) * 0.2));
     }
 
     @Override
