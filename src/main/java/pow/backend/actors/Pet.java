@@ -4,6 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.Attack;
 import pow.backend.action.Action;
+import pow.backend.dungeon.DungeonObject;
 import pow.util.MathUtils;
 
 import java.io.Serializable;
@@ -12,8 +13,8 @@ import static pow.util.MathUtils.dist2;
 
 public class Pet extends Actor implements Serializable {
 
-    public Pet(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, 5, true, 0);
+    public Pet(DungeonObject.Params objectParams, Actor.Params actorParams) {
+        super(objectParams, actorParams);
     }
 
     @Override

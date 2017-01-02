@@ -3,6 +3,7 @@ package pow.backend.actors;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.Action;
+import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.LightSource;
 import pow.util.Circle;
 import pow.util.MathUtils;
@@ -18,8 +19,8 @@ public class Player extends Actor implements Serializable, LightSource {
     public int viewRadius;
     public int lightRadius;
 
-    public Player(String id, String name, String image, String description, int x, int y) {
-        super(id, name, image, description, x, y, true, 10, true, 0);
+    public Player(DungeonObject.Params objectParams, Actor.Params actorParams) {
+        super(objectParams, actorParams);
         this.actionQueue = new LinkedList<>();
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern

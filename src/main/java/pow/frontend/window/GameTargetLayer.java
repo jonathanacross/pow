@@ -74,8 +74,6 @@ public class GameTargetLayer extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        GameState gs = backend.getGameState();
-
         mapView.frameRect(graphics, Color.YELLOW, cursorPosition.x, cursorPosition.y);
     }
 
