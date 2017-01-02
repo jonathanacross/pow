@@ -4,6 +4,7 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonObject;
+import pow.util.DieRoll;
 import pow.util.Point;
 
 import java.io.Serializable;
@@ -41,6 +42,7 @@ public class GameState implements Serializable {
                         30, // maxHealth
                         5, // dexterity
                         7, // defense
+                        new DieRoll(2, 3, 1),
                         true, // friendly to player
                         0) // speed
         );
@@ -57,6 +59,7 @@ public class GameState implements Serializable {
                         20, // maxHealth
                         4, // dexterity
                         3, // defense
+                        new DieRoll(1, 4, 0),
                         true, // friendly to player
                         0) // speed
         );

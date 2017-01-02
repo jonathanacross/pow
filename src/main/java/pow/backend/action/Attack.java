@@ -28,29 +28,33 @@ public class Attack implements Action {
         if (gs.rng.nextDouble() > hitProb(attacker.dexterity, defender.defense)) {
             backend.logMessage(attacker.getPronoun() + " misses " + defender.getPronoun());
         } else {
-            int damage = 1;
+            int damage = attacker.attackDamage.rollDice(gs.rng);
+            if (damage == 0) {
+                backend.logMessage(attacker.getPronoun() + " misses " + defender.getPronoun());
+            } else {
 
-            backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + damage + " damage");
+                backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + damage + " damage");
 
-            events.add(GameEvent.Attacked());
+                events.add(GameEvent.Attacked());
 
-            defender.takeDamage(backend, damage);
-            // TODO: this logic will likely be common for other types of attacks, so should
-            // be put into actor.takeDamage().  However, we need to add the list of game
-            // events directly to the backend, rather than returning.
-            if (defender.health < 0) {
-                backend.logMessage(defender.getPronoun() + " died");
+                defender.takeDamage(backend, damage);
+                // TODO: this logic will likely be common for other types of attacks, so should
+                // be put into actor.takeDamage().  However, we need to add the list of game
+                // events directly to the backend, rather than returning.
+                if (defender.health < 0) {
+                    backend.logMessage(defender.getPronoun() + " died");
 
-                if (defender == gs.player) {
-                    gs.gameInProgress = false;
-                    events.add(GameEvent.LostGame());
-                } else {
-                    // Only remove the actor if it's NOT the player,
-                    // so that the player won't disappear from the map.
-                    gs.map.removeActor(defender);
-                }
-                if (defender == gs.pet) {
-                    gs.pet = null;
+                    if (defender == gs.player) {
+                        gs.gameInProgress = false;
+                        events.add(GameEvent.LostGame());
+                    } else {
+                        // Only remove the actor if it's NOT the player,
+                        // so that the player won't disappear from the map.
+                        gs.map.removeActor(defender);
+                    }
+                    if (defender == gs.pet) {
+                        gs.pet = null;
+                    }
                 }
             }
         }

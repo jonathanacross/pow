@@ -3,6 +3,7 @@ package pow.backend.actors;
 import pow.backend.GameBackend;
 import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonObject;
+import pow.util.DieRoll;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public int health;
     public int maxHealth;
     public int dexterity;
+    public DieRoll attackDamage;
     public int defense;
 
     public boolean friendly; // friendly to the player
@@ -31,13 +33,15 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public int maxHealth;
         public int dexterity;
         public int defense;
+        public DieRoll attackDamage;
         public boolean friendly; // friendly to the player
         public int speed;
 
-        public Params(int maxHealth, int dexterity, int defense, boolean friendly, int speed) {
+        public Params(int maxHealth, int dexterity, int defense, DieRoll attackDamage, boolean friendly, int speed) {
             this.maxHealth = maxHealth;
             this.dexterity = dexterity;
             this.defense = defense;
+            this.attackDamage = attackDamage;
             this.friendly = friendly;
             this.speed = speed;
         }
@@ -50,6 +54,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.maxHealth = actorParams.maxHealth;
         this.dexterity = actorParams.dexterity;
         this.defense = actorParams.defense;
+        this.attackDamage = actorParams.attackDamage;
         this.friendly = actorParams.friendly;
         this.speed = actorParams.speed;
     }
