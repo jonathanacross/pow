@@ -1,8 +1,9 @@
 package pow.util;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class DieRoll {
+public class DieRoll implements Serializable {
     public int roll;
     public int die;
     public int plus;
@@ -51,4 +52,18 @@ public class DieRoll {
         }
         return new DieRoll(roll, die, plus);
     }
+
+    @Override
+    public String toString() {
+        if (roll == 0) {
+            return Integer.toString(plus);
+        }
+
+        if (plus == 0) {
+            return roll + "d" + die;
+        }
+
+        return roll + "d" + die + " + " + plus;
+    }
+
 }

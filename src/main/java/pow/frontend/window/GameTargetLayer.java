@@ -82,11 +82,16 @@ public class GameTargetLayer extends AbstractWindow {
         cursorPosition.y = MathUtils.clamp(cursorPosition.y + dy, mapView.rowMin, mapView.rowMax);
         frontend.messages.pop();
         frontend.messages.push(makeMessage());
+        Actor selectedActor = backend.getGameState().map.actorAt(cursorPosition.x, cursorPosition.y);
+        frontend.monsterInfoWindow.setActor(selectedActor);
+        frontend.monsterInfoWindow.visible = selectedActor != null;
         frontend.setDirty(true);
     }
 
     private void stopLooking() {
         frontend.messages.pop();
+        frontend.monsterInfoWindow.setActor(null);
+        frontend.monsterInfoWindow.visible = false;
         parent.removeLayer();
     }
 
