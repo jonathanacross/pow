@@ -44,7 +44,7 @@ public abstract class AbstractWindow {
     void drawFrame(Graphics graphics) {
         int margin = 1;
         graphics.setColor(Color.DARK_GRAY);
-        graphics.fillRect(x - margin, y - margin, width + 2*margin, height + 2*margin);
+        graphics.drawRect(x - margin, y - margin, width + margin, height + margin);
     }
 
     public void draw(Graphics graphics) {
