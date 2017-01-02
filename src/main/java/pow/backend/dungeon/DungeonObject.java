@@ -15,13 +15,33 @@ public class DungeonObject implements Serializable {
     public Point loc;
     public boolean solid;
 
-    public DungeonObject(String id, String name, String image, String description, int x, int y, boolean solid) {
-        this.id = id;
-        this.name = name;
-        this.image = image;
-        this.description = description;
-        this.loc = new Point(x, y);
-        this.solid = solid;
+    // This class repeats the members above; it's just helpful
+    // to reduce the number of constructor parameters.
+    public static class Params {
+        public String id;   // program id, e.g., "axe"
+        public String name; // english name, e.g., "& axe~"
+        public String image; // for display
+        public String description;
+        public Point loc;
+        public boolean solid;
+
+        public Params(String id, String name, String image, String description, Point loc, boolean solid) {
+            this.id = id;
+            this.name = name;
+            this.image = image;
+            this.description = description;
+            this.loc = loc;
+            this.solid = solid;
+        }
+    }
+
+    public DungeonObject(Params params) {
+        this.id = params.id;
+        this.name = params.name;
+        this.image = params.image;
+        this.description = params.description;
+        this.loc = params.loc;
+        this.solid = params.solid;
     }
 
     public void move(int dx, int dy) {

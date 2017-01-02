@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
 import pow.backend.action.Move;
+import pow.backend.dungeon.DungeonObject;
 import pow.util.MathUtils;
 
 import java.io.Serializable;
@@ -36,10 +37,10 @@ public abstract class AiActor extends Actor {
     protected ActorState state;
     protected Flags flags;
 
-    public AiActor(String id, String name, String image, String description, int x, int y, boolean solid, int maxHealth, boolean friendly, int speed, Flags flags) {
-        super(id, name, image, description, x, y, solid, maxHealth, friendly, speed);
-        stateTurnCount = 0;
-        state = ActorState.SLEEPING;
+    public AiActor(DungeonObject.Params objectParams, Actor.Params actorParams, Flags flags) {
+        super(objectParams, actorParams);
+        this.stateTurnCount = 0;
+        this.state = ActorState.SLEEPING;
         this.flags = flags;
     }
 

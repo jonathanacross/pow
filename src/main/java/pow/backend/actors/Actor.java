@@ -1,9 +1,9 @@
 package pow.backend.actors;
 
 import pow.backend.GameBackend;
-import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonObject;
+import pow.util.DieRoll;
 
 import java.io.Serializable;
 
@@ -12,6 +12,10 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public int health;
     public int maxHealth;
+    public int dexterity;
+    public DieRoll attackDamage;
+    public int defense;
+
     public boolean friendly; // friendly to the player
     public int speed;
 
@@ -25,13 +29,33 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.health -= damage;
     }
 
-    public Actor(String id, String name, String image, String description, int x, int y, boolean solid,
-                 int maxHealth, boolean friendly, int speed) {
-        super(id, name, image, description, x, y, solid);
+    public static class Params {
+        public int maxHealth;
+        public int dexterity;
+        public int defense;
+        public DieRoll attackDamage;
+        public boolean friendly; // friendly to the player
+        public int speed;
+
+        public Params(int maxHealth, int dexterity, int defense, DieRoll attackDamage, boolean friendly, int speed) {
+            this.maxHealth = maxHealth;
+            this.dexterity = dexterity;
+            this.defense = defense;
+            this.attackDamage = attackDamage;
+            this.friendly = friendly;
+            this.speed = speed;
+        }
+    }
+
+    public Actor(DungeonObject.Params objectParams, Params actorParams) {
+        super(objectParams);
         this.energy = new Energy();
-        this.health = maxHealth;
-        this.maxHealth = maxHealth;
-        this.friendly = friendly;
-        this.speed = speed;
+        this.health = actorParams.maxHealth;
+        this.maxHealth = actorParams.maxHealth;
+        this.dexterity = actorParams.dexterity;
+        this.defense = actorParams.defense;
+        this.attackDamage = actorParams.attackDamage;
+        this.friendly = actorParams.friendly;
+        this.speed = actorParams.speed;
     }
 }
