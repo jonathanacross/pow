@@ -31,6 +31,8 @@ public class Frontend {
     private LoseWindow loseWindow;
     private CreateCharWindow createCharWindow;
     private OpenGameWindow openGameWindow;
+    public MonsterInfoWindow monsterInfoWindow;
+    public PlayerInfoWindow playerInfoWindow;
     private LogWindow logWindow;
     private StatusWindow statusWindow;
     private MapWindow mapWindow;
@@ -76,6 +78,9 @@ public class Frontend {
         mapWindow = new MapWindow(887, 5, 300, 250, true, gameBackend, this);
         logWindow = new LogWindow(887, 260, 300, 452, true, gameBackend, this);
         messageWindow = new MessageWindow(210, 682, 672, 30, true, gameBackend, this);
+        // popups in main game
+        monsterInfoWindow = new MonsterInfoWindow(887, 260,300,180, false, gameBackend, this);
+        playerInfoWindow = new PlayerInfoWindow(100, 100,300,300, true, gameBackend, this);
 
         windows = new Stack<>();
         setState(State.WELCOME);
@@ -97,6 +102,7 @@ public class Frontend {
                 windows.push(logWindow);
                 windows.push(messageWindow);
                 windows.push(mapWindow);
+                windows.push(monsterInfoWindow);
                 windows.push(gameWindow);
                 gameBackend.setGameInProgress(true);
                 break;
@@ -168,7 +174,6 @@ public class Frontend {
                 case ROCKET: this.effects.add(new RocketEffect(event.actor)); break;
             }
         }
-
     }
 
     private static final Color BACKGROUND_COLOR = Color.BLACK;

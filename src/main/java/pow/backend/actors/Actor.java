@@ -10,11 +10,11 @@ import java.io.Serializable;
 public abstract class Actor extends DungeonObject implements Serializable {
     public Energy energy;
 
-    public int health;
     public int maxHealth;
-    public int dexterity;
-    public DieRoll attackDamage;
+    public int health;
+    public int dexterity;  // chance of hitting is related to dexterity and defense
     public int defense;
+    public DieRoll attackDamage;
 
     public boolean friendly; // friendly to the player
     public int speed;
