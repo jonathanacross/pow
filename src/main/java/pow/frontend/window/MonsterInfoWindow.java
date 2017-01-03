@@ -5,10 +5,12 @@ import pow.backend.action.Attack;
 import pow.backend.actors.Actor;
 import pow.frontend.Frontend;
 import pow.frontend.utils.ImageController;
+import pow.frontend.utils.ImageUtils;
 import pow.util.DebugLogger;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -45,16 +47,19 @@ public class MonsterInfoWindow extends AbstractWindow {
             return;
         }
 
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, width, height);
-
-        ImageController.drawTile(graphics, actor.image, MARGIN, MARGIN);
-
         Actor player = backend.getGameState().player;
+
+        // figure out the description; it's a multi-line mess
+        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
+        int textWidth = width - 3*MARGIN - TILE_SIZE;
+
+        graphics.setFont(font);
+        FontMetrics textMetrics = graphics.getFontMetrics(font);
+        List<String> descriptionLines = ImageUtils.wrapText(actor.description, textMetrics, textWidth);
 
         List<String> lines = new ArrayList<>();
         lines.add(actor.name);
-        lines.add(actor.description);
+        lines.addAll(descriptionLines);
         lines.add("");
         lines.add("HP:     " + actor.health + "/" + actor.maxHealth);
         lines.add("MP:     ");
@@ -66,12 +71,15 @@ public class MonsterInfoWindow extends AbstractWindow {
         lines.add("Can hit you " + toPercentString(Attack.hitProb(actor.dexterity, player.defense)) + "% of the time");
         lines.add("You can hit " + toPercentString(Attack.hitProb(player.dexterity, actor.defense)) + "% of the time");
 
-        Font f = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(f);
+        // actual drawing here
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, width, height);
+
+        ImageController.drawTile(graphics, actor.image, MARGIN, MARGIN);
+
         graphics.setColor(Color.WHITE);
         for (int i = 0; i < lines.size(); i++) {
             graphics.drawString(lines.get(i), TILE_SIZE + 2*MARGIN, MARGIN + (i+1)*FONT_SIZE);
         }
-
     }
 }

@@ -404,8 +404,8 @@
 32x32	3	25	troll rogue	area7
 32x32	4	25	blue dragon	area7
 32x32	5	25	yellow dragon	area7
-32x32	6	25	red komado	area7
-32x32	7	25	griphon	area7
+32x32	6	25	red komodo	area7
+32x32	7	25	great griphon	area7
 32x32	8	25	mummy	area7
 32x32	9	25	red cobra	area7
 32x32	10	25	sand worm	area7

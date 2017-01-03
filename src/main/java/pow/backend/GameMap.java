@@ -88,7 +88,7 @@ public class GameMap implements Serializable {
         this.height = 60;
         this.width = 60;
         this.map = DungeonGenerator.generateMap(generator, translator, this.width, this.height, rng);
-        this.actors = DungeonGenerator.createMonsters(this.map, 15, rng);
+        this.actors = DungeonGenerator.createMonsters(this.map, 50, rng);
         initLightSources(player);
 
         int x = width / 2;
