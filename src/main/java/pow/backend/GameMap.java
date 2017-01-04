@@ -85,8 +85,10 @@ public class GameMap implements Serializable {
     public GameMap(Random rng, Player player, Pet pet) {
         ProtoGenerator generator = new ShapeDLA(3, 15);
         ProtoTranslator translator = new ProtoTranslator(2);
+        buildTestArea();
         this.height = 60;
         this.width = 60;
+//        this.map = buildTestArea();
         this.map = DungeonGenerator.generateMap(generator, translator, this.width, this.height, rng);
         this.actors = DungeonGenerator.createMonsters(this.map, 50, rng);
         initLightSources(player);
@@ -152,8 +154,8 @@ public class GameMap implements Serializable {
 
     private DungeonSquare[][] buildTestArea() {
 
-        this.width = 10;
-        this.height = 10;
+        this.width = 15;
+        this.height = 15;
 
         DungeonTerrain wall = new DungeonTerrain("big stone wall", "big stone wall", "big stone wall",
                 new DungeonTerrain.Flags(true));
@@ -170,7 +172,8 @@ public class GameMap implements Serializable {
         }
 
         // note this will fail if any monsters need a random number generator to create (e.g., nondeterministic HP)
-        this.actors = DungeonGenerator.createMonsters(dungeonMap, 3, null);
+        this.actors = DungeonGenerator.createMonstersOrdered(dungeonMap, null);
+        //this.actors = DungeonGenerator.createMonsters(dungeonMap, 3, null);
         return dungeonMap;
     }
 }
