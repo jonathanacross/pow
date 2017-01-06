@@ -26,6 +26,30 @@ public class GameState implements Serializable {
 
     public boolean gameInProgress;
 
+    // makes a partial gamestate useful when not playing the actual game..
+    public GameState() {
+        this.map = null;
+        this.rng = new Random(123);
+        this.gameInProgress = false;
+        this.player = new Player(
+                new DungeonObject.Params(
+                        "player", // id
+                        "", // name
+                        "human_adventurer", // image
+                        "yourself", // description
+                        new Point(-1, -1), // location -- will be updated later
+                        true), // solid
+                new Actor.Params(
+                        30, // maxHealth
+                        5, // dexterity
+                        7, // defense
+                        new DieRoll(2, 3, 1),
+                        true, // friendly to player
+                        0) // speed
+        );
+        this.pet = null;
+        this.log = new MessageLog(50);
+    }
 
     public GameState(String name) {
         this.gameInProgress = false;

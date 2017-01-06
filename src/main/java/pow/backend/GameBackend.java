@@ -17,9 +17,7 @@ public class GameBackend {
         return gameState;
     }
 
-    public GameBackend() {
-        this.gameState = new GameState("Unknown Adventurer");
-    }
+    public GameBackend() { this.gameState = new GameState(); }
 
     public void tellPlayer(Action request) {
         gameState.player.addCommand(request);
