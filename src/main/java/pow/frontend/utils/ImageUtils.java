@@ -1,6 +1,9 @@
 package pow.frontend.utils;
 
+import java.awt.FontMetrics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImageUtils {
     // changes an image to grayscale and reduces the contrast
@@ -28,5 +31,22 @@ public class ImageUtils {
             }
         }
         return outImg;
+    }
+
+    public static List<String> wrapText(String text, FontMetrics textMetrics, int width) {
+        String textToDraw = text;
+        String[] words = textToDraw.split(" ");
+        int nIndex = 0;
+        List<String> lines = new ArrayList<>();
+        while (nIndex < words.length) {
+            StringBuilder line = new StringBuilder();
+            line.append(words[nIndex++]);
+            while ((nIndex < words.length) && (textMetrics.stringWidth(line + " " + words[nIndex]) < width)) {
+                line.append(" " + words[nIndex]);
+                nIndex++;
+            }
+            lines.add(line.toString());
+        }
+        return lines;
     }
 }

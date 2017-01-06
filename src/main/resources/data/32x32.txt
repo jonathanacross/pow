@@ -375,7 +375,7 @@
 32x32	6	23	gold dragonfly	area5
 32x32	7	23	purple worms	area5
 32x32	8	23	golem	area5
-32x32	9	23	griphon	area5
+32x32	9	23	griffin	area5
 32x32	10	23	chess knight	area5
 32x32	11	23	copperhead snake	area5
 32x32	12	23	-:null:-	:null:
@@ -404,9 +404,9 @@
 32x32	3	25	troll rogue	area7
 32x32	4	25	blue dragon	area7
 32x32	5	25	yellow dragon	area7
-32x32	6	25	red komado	area7
-32x32	7	25	griphon	area7
-32x32	8	25	mummy	area7
+32x32	6	25	red komodo	area7
+32x32	7	25	giant roc	area7
+32x32	8	25	zombie	area7
 32x32	9	25	red cobra	area7
 32x32	10	25	sand worm	area7
 32x32	11	25	-:null:-	:null:
@@ -439,7 +439,7 @@
 32x32	6	27	master vampire	area9
 32x32	7	27	beholder	monster
 32x32	8	27	magic whirlwind	area9
-32x32	9	27	genie	area9
+32x32	9	27	djinn	area9
 32x32	10	27	spike dog	area9
 32x32	11	27	-:null:-	:null:
 32x32	12	27	-:null:-	:null:
@@ -455,7 +455,7 @@
 32x32	6	28	water whirlwind	ocean
 32x32	7	28	octopus	ocean
 32x32	8	28	medusa	ocean
-32x32	9	28	sea dragon4	ocean
+32x32	9	28	sea dragon	ocean
 32x32	10	28	yellow turtle	ocean
 32x32	11	28	red turtle	ocean
 32x32	12	28	-:null:-	:null:

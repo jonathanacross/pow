@@ -38,6 +38,9 @@ public class DungeonGenerator {
         int width = Array2D.width(dungeonMap);
         int height = Array2D.height(dungeonMap);
 
+        // to make sure we don't put monsters on top of each other
+        boolean[][] monsterAt = new boolean[width][height];
+
         List<String> monsterIds = new ArrayList<>();
         monsterIds.addAll(MonsterGenerator.getMonsterIds());
 
@@ -47,11 +50,41 @@ public class DungeonGenerator {
             do {
                 x = rng.nextInt(width);
                 y = rng.nextInt(height);
-            } while (dungeonMap[x][y].blockGround());
+            } while (dungeonMap[x][y].blockGround() || monsterAt[x][y]);
             Point location = new Point(x,y);
 
             String id = monsterIds.get(rng.nextInt(monsterIds.size()));
             actors.add(MonsterGenerator.genMonster(id, rng, location));
+            monsterAt[location.x][location.y] = true;
+        }
+        return actors;
+    }
+
+    public static List<Actor> createMonstersOrdered(DungeonSquare[][] dungeonMap, Random rng) {
+        List<Actor> actors = new ArrayList<>();
+        int width = Array2D.width(dungeonMap);
+        int height = Array2D.height(dungeonMap);
+
+        // to make sure we don't put monsters on top of each other
+        boolean[][] monsterAt = new boolean[width][height];
+
+        List<String> monsterIds = new ArrayList<>();
+        monsterIds.addAll(MonsterGenerator.getMonsterIds());
+
+        int x = 0;
+        int y = 0;
+        for (String monster : MonsterGenerator.getMonsterIds()) {
+            do {
+                x++;
+                if (x >= width) {
+                    x = 0;
+                    y++;
+                }
+            } while (dungeonMap[x][y].blockGround() || monsterAt[x][y]);
+            Point location = new Point(x,y);
+
+            actors.add(MonsterGenerator.genMonster(monster, rng, location));
+            monsterAt[location.x][location.y] = true;
         }
         return actors;
     }

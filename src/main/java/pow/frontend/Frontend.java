@@ -79,7 +79,7 @@ public class Frontend {
         logWindow = new LogWindow(887, 260, 300, 452, true, gameBackend, this);
         messageWindow = new MessageWindow(210, 682, 672, 30, true, gameBackend, this);
         // popups in main game
-        monsterInfoWindow = new MonsterInfoWindow(887, 260,300,180, false, gameBackend, this);
+        monsterInfoWindow = new MonsterInfoWindow(887, 260,300,350, false, gameBackend, this);
         playerInfoWindow = new PlayerInfoWindow(100, 100,300,300, true, gameBackend, this);
 
         windows = new Stack<>();

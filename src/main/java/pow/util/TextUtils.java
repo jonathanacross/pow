@@ -83,5 +83,4 @@ public class TextUtils {
                 .replaceAll("~", "s");
         return replaceCustomPlural(simplePlural);
     }
-
 }
