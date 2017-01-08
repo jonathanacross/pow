@@ -4,7 +4,10 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.DungeonTerrain;
+import pow.backend.dungeon.gen.TerrainData;
 import pow.backend.event.GameEvent;
+import pow.util.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +80,12 @@ public class Move implements Action {
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {
+            if (gs.map.map[newx][newy].terrain.flags.diggable) {
+                Point loc = new Point(newx, newy);
+                String newTerrainName = gs.map.map[newx][newy].terrain.actionParams.name;
+                DungeonTerrain newTerrain = TerrainData.getTerrain(newTerrainName);
+                return ActionResult.Failed(new ModifyTerrain(this.actor, loc, newTerrain));
+            }
             backend.logMessage(actor.getPronoun() + " can't go that way");
             return ActionResult.Failed(null);
         }

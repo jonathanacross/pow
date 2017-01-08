@@ -8,6 +8,8 @@ import pow.backend.dungeon.gen.DungeonGenerator;
 import pow.backend.dungeon.gen.ProtoTranslator;
 import pow.backend.dungeon.gen.proto.ShapeDLA;
 import pow.backend.dungeon.gen.proto.ProtoGenerator;
+import pow.backend.dungeon.gen.proto.TestArea;
+import pow.util.Array2D;
 import pow.util.Circle;
 import pow.util.MathUtils;
 import pow.util.Point;
@@ -83,14 +85,13 @@ public class GameMap implements Serializable {
     }
 
     public GameMap(Random rng, Player player, Pet pet) {
-        ProtoGenerator generator = new ShapeDLA(3, 15);
+        //ProtoGenerator generator = new ShapeDLA(3, 15);
+        ProtoGenerator generator = new TestArea();
         ProtoTranslator translator = new ProtoTranslator(2);
-        buildTestArea();
-        this.height = 60;
-        this.width = 60;
-//        this.map = buildTestArea();
-        this.map = DungeonGenerator.generateMap(generator, translator, this.width, this.height, rng);
-        this.actors = DungeonGenerator.createMonsters(this.map, 50, rng);
+        this.map = DungeonGenerator.generateMap(generator, translator, 60, 60, rng);
+        this.height = Array2D.height(this.map);
+        this.width = Array2D.width(this.map);
+        this.actors = DungeonGenerator.createMonsters(this.map, 10, rng);
         initLightSources(player);
 
         int x = width / 2;
@@ -152,28 +153,28 @@ public class GameMap implements Serializable {
         return null;
     }
 
-    private DungeonSquare[][] buildTestArea() {
-
-        this.width = 15;
-        this.height = 15;
-
-        DungeonTerrain wall = new DungeonTerrain("big stone wall", "big stone wall", "big stone wall",
-                new DungeonTerrain.Flags(true));
-        DungeonTerrain floor = new DungeonTerrain("floor", "floor", "floor",
-                new DungeonTerrain.Flags(false));
-        DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                dungeonMap[x][y] = (x == 0 || y == 0 || x == width-1 || y == height -1) ?
-                            new DungeonSquare(wall, null) :
-                            new DungeonSquare(floor, null);
-            }
-        }
-
-        // note this will fail if any monsters need a random number generator to create (e.g., nondeterministic HP)
-        this.actors = DungeonGenerator.createMonstersOrdered(dungeonMap, null);
-        //this.actors = DungeonGenerator.createMonsters(dungeonMap, 3, null);
-        return dungeonMap;
-    }
+//    private DungeonSquare[][] buildTestArea() {
+//
+//        this.width = 15;
+//        this.height = 15;
+//
+//        DungeonTerrain wall = new DungeonTerrain("big stone wall", "big stone wall", "big stone wall",
+//                new DungeonTerrain.Flags(true));
+//        DungeonTerrain floor = new DungeonTerrain("floor", "floor", "floor",
+//                new DungeonTerrain.Flags(false));
+//        DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
+//
+//        for (int x = 0; x < width; x++) {
+//            for (int y = 0; y < height; y++) {
+//                dungeonMap[x][y] = (x == 0 || y == 0 || x == width-1 || y == height -1) ?
+//                            new DungeonSquare(wall, null) :
+//                            new DungeonSquare(floor, null);
+//            }
+//        }
+//
+//        // note this will fail if any monsters need a random number generator to create (e.g., nondeterministic HP)
+//        this.actors = DungeonGenerator.createMonstersOrdered(dungeonMap, null);
+//        //this.actors = DungeonGenerator.createMonsters(dungeonMap, 3, null);
+//        return dungeonMap;
+//    }
 }
