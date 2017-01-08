@@ -116,6 +116,8 @@ public class GenUtils {
                 case Constants.FEATURE_CANDLE: return 'c';
                 case Constants.FEATURE_WIN_TILE: return 'W';
                 case Constants.FEATURE_LOSE_TILE: return 'L';
+                case Constants.FEATURE_UP_STAIRS: return '<';
+                case Constants.FEATURE_DOWN_STAIRS: return '>';
                 default: throw new IllegalArgumentException("unknown feature " + feature);
             }
         } else {

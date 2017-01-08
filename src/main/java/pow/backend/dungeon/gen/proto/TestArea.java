@@ -1,7 +1,5 @@
 package pow.backend.dungeon.gen.proto;
 
-import com.sun.tools.internal.jxc.ap.Const;
-
 import java.util.Random;
 
 public class TestArea implements ProtoGenerator {
@@ -14,19 +12,19 @@ public class TestArea implements ProtoGenerator {
                 "####################",
                 "#..................#",
                 "#..................#",
-                "#..c%%%%%%%%%%%%%..#",
+                "#..c%%%%%'%%%%%%%..#",
                 "#..%............%..#",
                 "#..%............%..#",
-                "#..%%%%%%%%%%%%%%..#",
+                "#..%%%%%%+%%%%%%%..#",
+                "#..%.........>..%..#",
                 "#..%............%..#",
                 "#..%............%..#",
                 "#..%............%..#",
-                "#..%............%..#",
-                "#..%............%..#",
-                "#..%%%%%%%%%%%%%%..#",
-                "#..%............%..#",
-                "#..%............%..#",
-                "#..%%%%%%%%%%%%%c..#",
+                "#..%..<.........%..#",
+                "#..%%%%%%+%%%%%%%..#",
+                "#..%wwww....~~~~%..#",
+                "#..%w.w......~.~%..#",
+                "#..%%%%%%'%%%%%%c..#",
                 "#..................#",
                 "#..................#",
                 "####################"
@@ -42,8 +40,14 @@ public class TestArea implements ProtoGenerator {
                 switch (map[y].charAt(x)) {
                     case '#': data[x][y] = Constants.TERRAIN_WALL; break;
                     case 'c': data[x][y] = Constants.TERRAIN_WALL | Constants.FEATURE_CANDLE; break;
+                    case 'w': data[x][y] = Constants.TERRAIN_WATER; break;
+                    case '~': data[x][y] = Constants.TERRAIN_LAVA; break;
                     case '.': data[x][y] = Constants.TERRAIN_FLOOR; break;
                     case '%': data[x][y] = Constants.TERRAIN_DIGGABLE_WALL; break;
+                    case '+': data[x][y] = Constants.TERRAIN_FLOOR | Constants.FEATURE_CLOSED_DOOR; break;
+                    case '\'': data[x][y] = Constants.TERRAIN_FLOOR | Constants.FEATURE_OPEN_DOOR; break;
+                    case '>': data[x][y] = Constants.TERRAIN_FLOOR | Constants.FEATURE_DOWN_STAIRS; break;
+                    case '<': data[x][y] = Constants.TERRAIN_FLOOR | Constants.FEATURE_UP_STAIRS; break;
                     default: data[x][y] = Constants.TERRAIN_DEBUG; break;
                 }
             }

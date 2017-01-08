@@ -41,6 +41,10 @@ public class ProtoTranslator {
                 new DungeonFeature.Flags(false, false)));
         featureMap.put(Constants.FEATURE_LOSE_TILE, new DungeonFeature("losetile", "death", "cobra",
                 new DungeonFeature.Flags(false, false)));
+        featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("stairs up"));
+        featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("stairs down"));
+        featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("open door"));
+        featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("closed door"));
         featureMap.put(Constants.FEATURE_CANDLE, FeatureData.getFeature("candle"));
     }
 
@@ -57,6 +61,10 @@ public class ProtoTranslator {
                 new DungeonFeature.Flags(false, false)));
         featureMap.put(Constants.FEATURE_LOSE_TILE, new DungeonFeature("losetile", "death", "cobra",
                 new DungeonFeature.Flags(false, false)));
+        featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("ivy stone stairs up"));
+        featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("ivy stone stairs down"));
+        featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("ivy stone open door"));
+        featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("ivy stone closed door"));
         featureMap.put(Constants.FEATURE_CANDLE, FeatureData.getFeature("candle"));
     }
 
@@ -73,6 +81,10 @@ public class ProtoTranslator {
                 new DungeonFeature.Flags(false, false)));
         featureMap.put(Constants.FEATURE_LOSE_TILE, new DungeonFeature("losetile", "death", "cobra",
                 new DungeonFeature.Flags(false, false)));
+        featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("brown stone stairs up"));
+        featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("brown stone stairs down"));
+        featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("brown stone open door"));
+        featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("brown stone closed door"));
         featureMap.put(Constants.FEATURE_CANDLE, FeatureData.getFeature("candle"));
     }
 }
