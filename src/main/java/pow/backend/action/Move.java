@@ -3,6 +3,7 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
+import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.gen.TerrainData;
@@ -80,12 +81,24 @@ public class Move implements Action {
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {
-            if (gs.map.map[newx][newy].terrain.flags.diggable) {
+            DungeonTerrain terrain = gs.map.map[newx][newy].terrain;
+            if (terrain.flags.actOnStep) {
                 Point loc = new Point(newx, newy);
-                String newTerrainName = gs.map.map[newx][newy].terrain.actionParams.name;
-                DungeonTerrain newTerrain = TerrainData.getTerrain(newTerrainName);
-                return ActionResult.Failed(new ModifyTerrain(this.actor, loc, newTerrain));
+                ActionParams params = terrain.actionParams.clone();
+                params.point = loc;
+                Action newAction = ActionParams.buildAction(this.actor, params);
+                return ActionResult.Failed(newAction);
             }
+
+            DungeonFeature feature = gs.map.map[newx][newy].feature;
+            if (feature != null && feature.flags.actOnStep) {
+                Point loc = new Point(newx, newy);
+                ActionParams params = feature.actionParams.clone();
+                params.point = loc;
+                Action newAction = ActionParams.buildAction(this.actor, params);
+                return ActionResult.Failed(newAction);
+            }
+
             backend.logMessage(actor.getPronoun() + " can't go that way");
             return ActionResult.Failed(null);
         }

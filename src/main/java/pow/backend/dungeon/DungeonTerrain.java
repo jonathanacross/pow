@@ -9,10 +9,12 @@ public class DungeonTerrain implements Serializable {
     public static class Flags implements Serializable {
         public boolean blockGround;
         public boolean diggable;
+        public boolean actOnStep;
 
-        public Flags(boolean blockGround, boolean diggable) {
+        public Flags(boolean blockGround, boolean diggable, boolean actOnStep) {
             this.blockGround = blockGround;
             this.diggable = diggable;
+            this.actOnStep = actOnStep;
         }
     }
 

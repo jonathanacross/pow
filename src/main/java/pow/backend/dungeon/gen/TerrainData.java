@@ -86,11 +86,12 @@ public class TerrainData {
 
         boolean blockGround = false;
         boolean diggable = false;
+        boolean actOnStep = false;
 
         for (String t : tokens) {
             switch (t) {
                 case "": break;  // will happen if we have an empty string
-                case "actOnStep": break;
+                case "actOnStep": actOnStep = true; break;
                 case "blockAir": break;
                 case "blockGround": blockGround = true; break;
                 case "blockLava": break;
@@ -101,6 +102,6 @@ public class TerrainData {
             }
         }
 
-        return new DungeonTerrain.Flags(blockGround, diggable);
+        return new DungeonTerrain.Flags(blockGround, diggable, actOnStep);
     }
 }
