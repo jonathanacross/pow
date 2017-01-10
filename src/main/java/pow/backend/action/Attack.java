@@ -50,7 +50,7 @@ public class Attack implements Action {
                     } else {
                         // Only remove the actor if it's NOT the player,
                         // so that the player won't disappear from the map.
-                        gs.map.removeActor(defender);
+                        gs.world.currentMap.removeActor(defender);
                     }
                     if (defender == gs.pet) {
                         gs.pet = null;

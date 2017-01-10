@@ -31,7 +31,7 @@ public class Move implements Action {
 
         // temporary custom code to demonstrate winning/losing
         if (actor == gs.player) {
-            DungeonFeature feature = gs.map.map[actor.loc.x][actor.loc.y].feature;
+            DungeonFeature feature = gs.world.currentMap.map[actor.loc.x][actor.loc.y].feature;
             if (feature != null && feature.id.equals("wintile")) {
                 backend.logMessage("you won!");
                 events.add(GameEvent.WonGame());
@@ -60,7 +60,7 @@ public class Move implements Action {
         int newx = actor.loc.x + dx;
         int newy = actor.loc.y + dy;
 
-        Actor defender = gs.map.actorAt(newx, newy);
+        Actor defender = gs.world.currentMap.actorAt(newx, newy);
         if (defender != null) {
             if (!defender.friendly)  {
                 // attack
@@ -72,16 +72,16 @@ public class Move implements Action {
             }
         }
 
-        if (! gs.map.isBlocked(newx, newy)) {
+        if (! gs.world.currentMap.isBlocked(newx, newy)) {
             // move
             actor.loc.x = newx;
             actor.loc.y = newy;
             if (actor == gs.player) {
-                gs.map.updatePlayerVisibilityData(gs.player);
+                gs.world.currentMap.updatePlayerVisibilityData(gs.player);
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {
-            DungeonTerrain terrain = gs.map.map[newx][newy].terrain;
+            DungeonTerrain terrain = gs.world.currentMap.map[newx][newy].terrain;
             if (terrain.flags.actOnStep) {
                 Point loc = new Point(newx, newy);
                 ActionParams params = terrain.actionParams.clone();
@@ -90,7 +90,7 @@ public class Move implements Action {
                 return ActionResult.Failed(newAction);
             }
 
-            DungeonFeature feature = gs.map.map[newx][newy].feature;
+            DungeonFeature feature = gs.world.currentMap.map[newx][newy].feature;
             if (feature != null && feature.flags.actOnStep) {
                 Point loc = new Point(newx, newy);
                 ActionParams params = feature.actionParams.clone();

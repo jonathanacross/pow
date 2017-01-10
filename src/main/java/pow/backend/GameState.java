@@ -14,7 +14,7 @@ import java.util.Random;
 // so we can save/load properly
 public class GameState implements Serializable {
 
-    public GameMap map;
+    public GameWorld world;
     public Random rng;
 
     // character attributes
@@ -28,7 +28,7 @@ public class GameState implements Serializable {
 
     // makes a partial gamestate useful when not playing the actual game..
     public GameState() {
-        this.map = null;
+        this.world = null;
         this.rng = new Random(123);
         this.gameInProgress = false;
         this.player = new Player(
@@ -87,7 +87,7 @@ public class GameState implements Serializable {
                         true, // friendly to player
                         0) // speed
         );
-        this.map = new GameMap(rng, player, pet); // fixes positions of player and pet
+        this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
         this.log = new MessageLog(50);
     }
 }

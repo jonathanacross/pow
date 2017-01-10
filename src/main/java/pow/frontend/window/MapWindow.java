@@ -39,11 +39,11 @@ public class MapWindow extends AbstractWindow {
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
             for (int x = mapView.colMin; x <= mapView.colMax; x++) {
                 // only draw squares we've seen
-                if (! gs.map.map[x][y].seen) {
+                if (! gs.world.currentMap.map[x][y].seen) {
                     continue;
                 }
 
-                DungeonSquare square = gs.map.map[x][y];
+                DungeonSquare square = gs.world.currentMap.map[x][y];
                 mapView.drawBlock(graphics, ImageController.getColor(square.terrain.image), x, y);
 //                mapView.drawTile(graphics, square.terrain.image, x, y);
                 if (square.feature != null) {
@@ -54,7 +54,7 @@ public class MapWindow extends AbstractWindow {
         }
 
         // draw monsters, player, pets
-        for (Actor actor : gs.map.actors) {
+        for (Actor actor : gs.world.currentMap.actors) {
             if (! gs.player.canSee(gs, actor.loc)) {
                 continue;
             }

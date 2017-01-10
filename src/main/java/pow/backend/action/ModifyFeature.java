@@ -23,7 +23,7 @@ public class ModifyFeature implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        GameMap map = backend.getGameState().map;
+        GameMap map = backend.getGameState().world.currentMap;
         map.map[loc.x][loc.y].feature = newFeature;
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());
