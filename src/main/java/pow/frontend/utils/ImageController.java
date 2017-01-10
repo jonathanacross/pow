@@ -6,7 +6,7 @@ import pow.util.Point;
 import pow.util.TsvReader;
 
 import javax.imageio.ImageIO;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,10 +30,18 @@ public class ImageController {
     private BufferedImage tileImage;
     private BufferedImage grayTileImage;
     private Map<String, Point> tileData;
+    private Map<String, Color> colorData;
     public static final int TILE_SIZE = 32;
 
     public static void drawTile(Graphics graphics, String tileName, int x, int y) {
         drawTile(graphics, tileName, x, y, false);
+    }
+
+    public static Color getColor(String tileName) {
+        if (!instance.colorData.containsKey(tileName)) {
+            return Color.MAGENTA;
+        }
+        return instance.colorData.get(tileName);
     }
 
 
@@ -70,6 +78,20 @@ public class ImageController {
         this.tileImage = ImageIO.read(imageStream);
         this.grayTileImage = ImageUtils.makeGrayscale(this.tileImage);
         this.tileData = readDataFile("/data/32x32.txt");
+        this.colorData = initColorsFromTiles(this.tileImage, this.tileData, TILE_SIZE);
+    }
+
+    private Map<String, Color> initColorsFromTiles(BufferedImage tileImage, Map<String, Point> tileData, int tileSize) {
+
+        Map<String, Color> colorData = new HashMap<>();
+        for (Map.Entry<String, Point> entry : tileData.entrySet()) {
+            String tileName = entry.getKey();
+            Point p = entry.getValue();
+            Color avgColor = ImageUtils.getAverageColorOfSubImage(tileImage, p.x*tileSize, p.y*tileSize, tileSize, tileSize);
+            colorData.put(tileName, avgColor);
+        }
+
+        return colorData;
     }
 
     private Map<String, Point> readDataFile(String name) throws DataFormatException, IOException {

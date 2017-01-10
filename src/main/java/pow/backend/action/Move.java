@@ -3,8 +3,12 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
+import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.DungeonTerrain;
+import pow.backend.dungeon.gen.TerrainData;
 import pow.backend.event.GameEvent;
+import pow.util.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +31,7 @@ public class Move implements Action {
 
         // temporary custom code to demonstrate winning/losing
         if (actor == gs.player) {
-            DungeonFeature feature = gs.map.map[actor.loc.x][actor.loc.y].feature;
+            DungeonFeature feature = gs.world.currentMap.map[actor.loc.x][actor.loc.y].feature;
             if (feature != null && feature.id.equals("wintile")) {
                 backend.logMessage("you won!");
                 events.add(GameEvent.WonGame());
@@ -56,7 +60,7 @@ public class Move implements Action {
         int newx = actor.loc.x + dx;
         int newy = actor.loc.y + dy;
 
-        Actor defender = gs.map.actorAt(newx, newy);
+        Actor defender = gs.world.currentMap.actorAt(newx, newy);
         if (defender != null) {
             if (!defender.friendly)  {
                 // attack
@@ -68,15 +72,33 @@ public class Move implements Action {
             }
         }
 
-        if (! gs.map.isBlocked(newx, newy)) {
+        if (! gs.world.currentMap.isBlocked(newx, newy)) {
             // move
             actor.loc.x = newx;
             actor.loc.y = newy;
             if (actor == gs.player) {
-                gs.map.updatePlayerVisibilityData(gs.player);
+                gs.world.currentMap.updatePlayerVisibilityData(gs.player);
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {
+            DungeonTerrain terrain = gs.world.currentMap.map[newx][newy].terrain;
+            if (terrain.flags.actOnStep) {
+                Point loc = new Point(newx, newy);
+                ActionParams params = terrain.actionParams.clone();
+                params.point = loc;
+                Action newAction = ActionParams.buildAction(this.actor, params);
+                return ActionResult.Failed(newAction);
+            }
+
+            DungeonFeature feature = gs.world.currentMap.map[newx][newy].feature;
+            if (feature != null && feature.flags.actOnStep) {
+                Point loc = new Point(newx, newy);
+                ActionParams params = feature.actionParams.clone();
+                params.point = loc;
+                Action newAction = ActionParams.buildAction(this.actor, params);
+                return ActionResult.Failed(newAction);
+            }
+
             backend.logMessage(actor.getPronoun() + " can't go that way");
             return ActionResult.Failed(null);
         }

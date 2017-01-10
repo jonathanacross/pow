@@ -13,6 +13,7 @@ public class GameEvent {
         WON_GAME,
         LOST_GAME,
         IN_STORE,
+        DUNGEON_UPDATED,  // possibly make this more granular: dig, unlocked....
         ROCKET;  // demo effect to show animation
     }
 
@@ -32,5 +33,6 @@ public class GameEvent {
     public static GameEvent WonGame() { return new GameEvent(EventType.WON_GAME, null); }
     public static GameEvent LostGame() { return new GameEvent(EventType.LOST_GAME, null); }
     public static GameEvent InStore() { return new GameEvent(EventType.IN_STORE, null); }
+    public static GameEvent DungeonUpdated() { return new GameEvent(EventType.DUNGEON_UPDATED, null); }
     public static GameEvent Rocket(Actor a) { return new GameEvent(EventType.ROCKET, a); }
 }

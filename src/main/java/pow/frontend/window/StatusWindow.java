@@ -98,7 +98,7 @@ public class StatusWindow extends AbstractWindow {
         graphics.setColor(Color.WHITE);
         y += FONT_SIZE;
 
-        for (Actor a: gs.map.actors) {
+        for (Actor a: gs.world.currentMap.actors) {
             if (a == gs.player || a == gs.pet) continue;
             if (!gs.player.canSee(gs, a.loc)) continue;
             drawActorSummary(graphics, a, MARGIN, y, false); y += 40;

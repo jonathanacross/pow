@@ -58,7 +58,7 @@ public class GameTargetLayer extends AbstractWindow {
         cursorPosition.y = MathUtils.clamp(cursorPosition.y + dy, mapView.rowMin, mapView.rowMax);
         frontend.messages.pop();
         frontend.messages.push(makeMessage());
-        Actor selectedActor = backend.getGameState().map.actorAt(cursorPosition.x, cursorPosition.y);
+        Actor selectedActor = backend.getGameState().world.currentMap.actorAt(cursorPosition.x, cursorPosition.y);
         frontend.monsterInfoWindow.setActor(selectedActor);
         frontend.monsterInfoWindow.visible = selectedActor != null;
         frontend.setDirty(true);
@@ -77,24 +77,24 @@ public class GameTargetLayer extends AbstractWindow {
         GameState gs = backend.getGameState();
 
         if (gs.player.canSee(gs, cursorPosition)) {
-            Actor actor = gs.map.actorAt(x,y);
+            Actor actor = gs.world.currentMap.actorAt(x,y);
             if (actor != null) {
                 return "you see a " + actor.name;
             }
-            DungeonFeature feature = gs.map.map[x][y].feature;
+            DungeonFeature feature = gs.world.currentMap.map[x][y].feature;
             if (feature != null) {
                 return "you see a " + feature.name;
             }
-            return "you see a " + gs.map.map[x][y].terrain.name;
+            return "you see a " + gs.world.currentMap.map[x][y].terrain.name;
         }
         else {
-            if (gs.map.map[x][y].seen) {
-                DungeonFeature feature = gs.map.map[x][y].feature;
+            if (gs.world.currentMap.map[x][y].seen) {
+                DungeonFeature feature = gs.world.currentMap.map[x][y].feature;
                 if (feature != null) {
                     return feature.name;
                 }
 
-                return gs.map.map[x][y].terrain.name;
+                return gs.world.currentMap.map[x][y].terrain.name;
             } else {
                 return "";  // skip squares the player can't see
             }

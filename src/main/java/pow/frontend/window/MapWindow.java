@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.Frontend;
+import pow.frontend.utils.ImageController;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -13,12 +14,9 @@ public class MapWindow extends AbstractWindow {
 
     private static final int TILE_SIZE = 4;
 
-    private static final Color WALL_COLOR = Color.DARK_GRAY;
-    private static final Color FLOOR_COLOR = Color.GRAY;
-    private static final Color STAIR_COLOR = Color.WHITE;
-    private static final Color MONSTER_COLOR = Color.RED;
+    private static final Color MONSTER_COLOR = Color.MAGENTA;
     private static final Color PLAYER_COLOR = Color.YELLOW;
-    private static final Color PET_COLOR = new Color(66, 134, 244);
+    private static final Color PET_COLOR = new Color(153, 192, 255);
 
     public MapWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
         super(x, y, width, height, visible, backend, frontend);
@@ -41,23 +39,22 @@ public class MapWindow extends AbstractWindow {
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
             for (int x = mapView.colMin; x <= mapView.colMax; x++) {
                 // only draw squares we've seen
-                if (! gs.map.map[x][y].seen) {
+                if (! gs.world.currentMap.map[x][y].seen) {
                     continue;
                 }
 
-                DungeonSquare square = gs.map.map[x][y];
-                mapView.drawTile(graphics, square.terrain.image, x, y);
+                DungeonSquare square = gs.world.currentMap.map[x][y];
+                mapView.drawBlock(graphics, ImageController.getColor(square.terrain.image), x, y);
+//                mapView.drawTile(graphics, square.terrain.image, x, y);
                 if (square.feature != null) {
-                    // TODO: use feature flags so that important things
-                    // such as stairs show up more easily.
-                    // mapView.drawBlock(graphics, STAIR_COLOR, x, y);
-                    mapView.drawTile(graphics, square.feature.image, x, y);
+                    mapView.drawBlock(graphics, ImageController.getColor(square.feature.image), x, y);
+//                    mapView.drawTile(graphics, square.feature.image, x, y);
                 }
             }
         }
 
         // draw monsters, player, pets
-        for (Actor actor : gs.map.actors) {
+        for (Actor actor : gs.world.currentMap.actors) {
             if (! gs.player.canSee(gs, actor.loc)) {
                 continue;
             }

@@ -60,8 +60,8 @@ public class GameMainLayer extends AbstractWindow {
         // draw the map
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
             for (int x = mapView.colMin; x <= mapView.colMax; x++) {
-                DungeonSquare square = gs.map.map[x][y];
-                if (!gs.map.map[x][y].seen) {
+                DungeonSquare square = gs.world.currentMap.map[x][y];
+                if (!gs.world.currentMap.map[x][y].seen) {
                     continue;
                 }
 //                if (!gs.player.canSee(gs, new Point(x,y))) {
@@ -75,7 +75,7 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         // draw monsters, player, pets
-        for (Actor actor : gs.map.actors) {
+        for (Actor actor : gs.world.currentMap.actors) {
             if (gs.player.canSee(gs, actor.loc)) {
                 mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y);
             }
@@ -93,11 +93,11 @@ public class GameMainLayer extends AbstractWindow {
         // add shadow
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
             for (int x = mapView.colMin; x <= mapView.colMax; x++) {
-                if (!gs.map.map[x][y].seen) {
+                if (!gs.world.currentMap.map[x][y].seen) {
                     continue;
                 }
                 int maxDarkness = 220;
-                double darknessD = 1.0 - (gs.map.map[x][y].brightness / (double) gs.map.MAX_BRIGHTNESS);
+                double darknessD = 1.0 - (gs.world.currentMap.map[x][y].brightness / (double) gs.world.currentMap.MAX_BRIGHTNESS);
                 // Assign max darkness if we can't see it; alternatively, we could paint
                 // in gray, or something.  Or just not show it at all?
                 if (!gs.player.canSee(gs, new Point(x,y))) {

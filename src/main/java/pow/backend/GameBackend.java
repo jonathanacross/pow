@@ -17,9 +17,7 @@ public class GameBackend {
         return gameState;
     }
 
-    public GameBackend() {
-        this.gameState = new GameState("Unknown Adventurer");
-    }
+    public GameBackend() { this.gameState = new GameState(); }
 
     public void tellPlayer(Action request) {
         gameState.player.addCommand(request);
@@ -56,7 +54,7 @@ public class GameBackend {
 
                     if (result.succeeded && command.consumesEnergy()) {
                         command.getActor().energy.spend();
-                        gameState.map.advanceActor();
+                        gameState.world.currentMap.advanceActor();
                     }
 
 //                    // refresh every time player takes a turn
@@ -75,7 +73,7 @@ public class GameBackend {
             // at this point, we've processed all pending actions, so advance
             // the time.
             while (commandQueue.isEmpty()) {
-                Actor actor = gameState.map.getCurrentActor();
+                Actor actor = gameState.world.currentMap.getCurrentActor();
 
                 // if waiting for input, just return
                 if (actor.energy.canTakeTurn() && actor.needsInput()) {
@@ -94,7 +92,7 @@ public class GameBackend {
                     commandQueue.add(actor.act(this));
                 } else {
                     // This actor doesn't have enough energy yet, so move on to the next.
-                    gameState.map.advanceActor();
+                    gameState.world.currentMap.advanceActor();
                 }
 
                 // Each time we wrap around, process "idle" things that are ongoing and

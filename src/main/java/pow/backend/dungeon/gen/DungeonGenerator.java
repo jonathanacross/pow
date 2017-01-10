@@ -18,12 +18,14 @@ public class DungeonGenerator {
     public static DungeonSquare[][] generateMap(ProtoGenerator generator, ProtoTranslator translator, int width, int height, Random rng) {
 
         int[][] squares = generator.genMap(width, height, rng);
+        int w = Array2D.width(squares);
+        int h = Array2D.height(squares);
         DebugLogger.info(GenUtils.getMapString(squares));
 
-        DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
+        DungeonSquare[][] dungeonMap = new DungeonSquare[w][h];
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
                 DungeonTerrain terrain = translator.getTerrain(squares[x][y]);
                 DungeonFeature feature = translator.getFeature(squares[x][y]);
                 dungeonMap[x][y] = new DungeonSquare(terrain, feature);

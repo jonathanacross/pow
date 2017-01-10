@@ -18,7 +18,7 @@ water 4	deep water	water 4	blockGround,blockLava
 forest	forest	forest	blockWater,blockLava	
 diggable hot stone wall	diggable hot stone wall	diggable hot stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	dig::cold lava floor
 big stone wall	stone wall	big stone wall	blockGround,blockAir,blockWater,blockLava	
-diggable ivy stone wall	diggable ivy stone wall	diggable ivy stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	dig::floor
+diggable ivy stone wall	diggable ivy stone wall	diggable ivy stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	dig::charcoal floor
 diggable rock	diggable rock	diggable rock	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	dig::dark sand
 black pit	black pit	black pit	blockGround,blockLava,blockWater	
 charcoal floor	floor	charcoal floor	blockWater,blockLava	

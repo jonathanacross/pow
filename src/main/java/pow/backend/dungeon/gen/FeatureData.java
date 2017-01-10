@@ -1,5 +1,6 @@
 package pow.backend.dungeon.gen;
 
+import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonFeature;
 import pow.util.DebugLogger;
 import pow.util.TsvReader;
@@ -54,21 +55,22 @@ public class FeatureData {
         String name = line[1];
         String image = line[2];
         DungeonFeature.Flags flags = parseFlags(line[3]);
-        //action = line[4];
+        ActionParams actionParams = parseActionParams(line[4]);
 
-        return new DungeonFeature(id, name, image, flags);
+        return new DungeonFeature(id, name, image, flags, actionParams);
     }
 
     private DungeonFeature.Flags parseFlags(String text) {
         String[] tokens = text.split(",", -1);
 
+        boolean actOnStep = false;
         boolean blockGround = false;
         boolean glowing = false;
 
         for (String t : tokens) {
             switch (t) {
                 case "": break;  // will happen if we have an empty string
-                case "actOnStep": break;
+                case "actOnStep": actOnStep = true; break;
                 case "blockAir": break;
                 case "blockGround": blockGround = true; break;
                 case "blockLava": break;
@@ -83,7 +85,27 @@ public class FeatureData {
             }
         }
 
-        return new DungeonFeature.Flags(blockGround, glowing);
+        return new DungeonFeature.Flags(blockGround, glowing, actOnStep);
     }
 
+    // TODO: duplicate code in TerrainData
+    private ActionParams parseActionParams(String text) {
+        ActionParams params = new ActionParams();
+        if (text.isEmpty()) {
+            return params;
+        }
+        String[] tokens = text.split(":", 3);
+
+        params.actionName = tokens[0];
+
+        if (!tokens[1].isEmpty()) {
+            params.number = Integer.parseInt(tokens[1]);
+        }
+
+        if (!tokens[2].isEmpty()) {
+            params.name = tokens[2];
+        }
+
+        return params;
+    }
 }
