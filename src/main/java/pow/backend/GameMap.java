@@ -17,6 +17,7 @@ import pow.util.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class GameMap implements Serializable {
@@ -26,6 +27,7 @@ public class GameMap implements Serializable {
     public int height;
     public List<Actor> actors;
     public List<LightSource> lightSources;
+    public Map<String, Point> keyLocations;  // useful for joining areas together
 
     public void updatePlayerVisibilityData(Player player) {
         updateBrightness();
@@ -84,9 +86,55 @@ public class GameMap implements Serializable {
         }
     }
 
+    public GameMap(DungeonSquare[][] map, Map<String, Point> keyLocations, List<Actor> monsters) {
+        this.map = map;
+        this.height = Array2D.height(this.map);
+        this.width = Array2D.width(this.map);
+        this.keyLocations = keyLocations;
+        this.actors = monsters;
+    }
+
+    // call when a player enters the level the first time.
+    // TODO: and when they exit the level... what happens to the pet?
+    public void placePlayer(Player player, Pet pet) {
+        player.energy.setFull(); // make sure the player can move first
+        actors.add(player);
+        if (pet != null) {
+            actors.add(pet);
+        }
+
+        initLightSources(player);
+        updatePlayerVisibilityData(player);
+    }
+
+    // temp method to create custom different levels
+    public GameMap(Random rng, Player player, Pet pet, int levelType) {
+        ProtoGenerator generator = new TestArea(1);
+        ProtoTranslator translator = new ProtoTranslator(levelType);
+        this.map = DungeonGenerator.generateMap(generator, translator, 10, 10, rng);
+        this.height = Array2D.height(this.map);
+        this.width = Array2D.width(this.map);
+        this.actors = DungeonGenerator.createMonsters(this.map, 2, rng);
+        initLightSources(player);
+
+        int x = width / 2;
+        int y = height / 2;
+        player.loc.x = x;
+        player.loc.y = y;
+        player.energy.setFull(); // make sure the player can move first
+        actors.add(player);
+        if (pet != null) {
+            pet.loc.x = x + 2;
+            pet.loc.y = y + 2;
+            actors.add(pet);
+        }
+
+        updatePlayerVisibilityData(player);
+    }
+
     public GameMap(Random rng, Player player, Pet pet) {
         //ProtoGenerator generator = new ShapeDLA(3, 15);
-        ProtoGenerator generator = new TestArea();
+        ProtoGenerator generator = new TestArea(0);
         ProtoTranslator translator = new ProtoTranslator(2);
         this.map = DungeonGenerator.generateMap(generator, translator, 60, 60, rng);
         this.height = Array2D.height(this.map);

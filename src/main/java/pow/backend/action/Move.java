@@ -5,9 +5,11 @@ import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.gen.TerrainData;
 import pow.backend.event.GameEvent;
+import pow.util.Array2D;
 import pow.util.Point;
 
 import java.util.ArrayList;
@@ -57,8 +59,26 @@ public class Move implements Action {
             return ActionResult.Succeeded(new ArrayList<>());
         }
 
+
         int newx = actor.loc.x + dx;
         int newy = actor.loc.y + dy;
+
+
+        // if the current square is a teleport tile at the edge of the screen,
+        // and the player tries to move off, then go the the appropriate area.
+        DungeonSquare[][] currMap = gs.world.currentMap.map;
+        int width = Array2D.width(currMap);
+        int height = Array2D.height(currMap);
+        DungeonTerrain currSquareTerrain = gs.world.currentMap.map[actor.loc.x][actor.loc.y].terrain;
+        if (currSquareTerrain.flags.teleport) {
+            if (newx < 0 || newx >= width || newy < 0 || newy >= height) {
+                String encodedLoc = currSquareTerrain.actionParams.name;
+                String[] fields = encodedLoc.split("@");
+                String targetArea = fields[0];
+                Point targetLoc = gs.world.world.get(targetArea).keyLocations.get(fields[1]);
+                return ActionResult.Failed(new GotoArea(this.actor, targetArea, targetLoc));
+            }
+        }
 
         Actor defender = gs.world.currentMap.actorAt(newx, newy);
         if (defender != null) {
@@ -72,6 +92,24 @@ public class Move implements Action {
             }
         }
 
+        DungeonTerrain terrain = gs.world.currentMap.map[newx][newy].terrain;
+        if (terrain.flags.actOnStep) {
+            Point loc = new Point(newx, newy);
+            ActionParams params = terrain.actionParams.clone();
+            params.point = loc;
+            Action newAction = ActionParams.buildAction(this.actor, params);
+            return ActionResult.Failed(newAction);
+        }
+
+        DungeonFeature feature = gs.world.currentMap.map[newx][newy].feature;
+        if (feature != null && feature.flags.actOnStep) {
+            Point loc = new Point(newx, newy);
+            ActionParams params = feature.actionParams.clone();
+            params.point = loc;
+            Action newAction = ActionParams.buildAction(this.actor, params);
+            return ActionResult.Failed(newAction);
+        }
+
         if (! gs.world.currentMap.isBlocked(newx, newy)) {
             // move
             actor.loc.x = newx;
@@ -81,24 +119,6 @@ public class Move implements Action {
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {
-            DungeonTerrain terrain = gs.world.currentMap.map[newx][newy].terrain;
-            if (terrain.flags.actOnStep) {
-                Point loc = new Point(newx, newy);
-                ActionParams params = terrain.actionParams.clone();
-                params.point = loc;
-                Action newAction = ActionParams.buildAction(this.actor, params);
-                return ActionResult.Failed(newAction);
-            }
-
-            DungeonFeature feature = gs.world.currentMap.map[newx][newy].feature;
-            if (feature != null && feature.flags.actOnStep) {
-                Point loc = new Point(newx, newy);
-                ActionParams params = feature.actionParams.clone();
-                params.point = loc;
-                Action newAction = ActionParams.buildAction(this.actor, params);
-                return ActionResult.Failed(newAction);
-            }
-
             backend.logMessage(actor.getPronoun() + " can't go that way");
             return ActionResult.Failed(null);
         }
