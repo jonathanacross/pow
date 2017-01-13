@@ -10,4 +10,9 @@ public class Point implements Serializable{
         this.x = x;
         this.y = y;
     }
+
+    public void shiftBy(Point other) {
+        this.x += other.x;
+        this.y += other.y;
+    }
 }

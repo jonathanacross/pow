@@ -6,7 +6,6 @@ import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
-import pow.backend.dungeon.gen.TerrainData;
 import pow.backend.event.GameEvent;
 import pow.util.Array2D;
 import pow.util.Point;
@@ -49,13 +48,6 @@ public class Move implements Action {
         return this.actor;
     }
 
-    private boolean offMap(GameState gs, int x, int y) {
-        DungeonSquare[][] currMap = gs.world.currentMap.map;
-        int width = Array2D.width(currMap);
-        int height = Array2D.height(currMap);
-        return (x < 0 || x >= width || y < 0 || y >= height);
-    }
-
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
@@ -65,14 +57,13 @@ public class Move implements Action {
             return ActionResult.Succeeded(new ArrayList<>());
         }
 
-
         int newx = actor.loc.x + dx;
         int newy = actor.loc.y + dy;
 
         // Check that the target location is valid.  The ONLY case where it is
         // valid to move off the map is if the actor == player, and the 
         // player is on a tile that lets them go to another area.
-        if (offMap(gs, newx, newy)) {
+        if (!gs.world.currentMap.isOnMap(newx, newy)) {
             // check for player changing maps
             if (actor == gs.player) {
                 DungeonTerrain currSquareTerrain = gs.world.currentMap.map[actor.loc.x][actor.loc.y].terrain;

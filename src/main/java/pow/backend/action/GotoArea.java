@@ -1,11 +1,9 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
-import pow.backend.GameMap; 
 import pow.backend.GameState;
 import pow.backend.GameWorld;
 import pow.backend.actors.Actor;
-import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.event.GameEvent;
 import pow.util.Point;
 
@@ -27,11 +25,19 @@ public class GotoArea implements Action {
         GameWorld world = gs.world;
         // TODO: add a default area that always exists, and put the player there
         // if the world doesn't contain areaName.
+
+        // remove player and pet from current area
+        gs.world.currentMap.removeActor(gs.player);
+        if (gs.pet != null) {
+            gs.world.currentMap.removeActor(gs.pet);
+        }
+
+        // set the new area
         world.currentMap = world.world.get(areaName);
-        gs.player.loc.x = loc.x;
-        gs.player.loc.y = loc.y;
-        gs.player.energy.setFull(); // make sure the player can move first
-        // TODO: move the pet, too!
+
+        // set up player/pet in the new area
+        world.currentMap.placePlayerAndPet(gs.player, loc, gs.pet);
+
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());
         return ActionResult.Succeeded(events);

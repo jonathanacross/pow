@@ -4,15 +4,11 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.*;
-import pow.backend.dungeon.gen.DungeonGenerator;
-import pow.backend.dungeon.gen.ProtoTranslator;
-import pow.backend.dungeon.gen.proto.ShapeDLA;
-import pow.backend.dungeon.gen.proto.ProtoGenerator;
-import pow.backend.dungeon.gen.proto.TestArea;
 import pow.util.Array2D;
 import pow.util.Circle;
 import pow.util.MathUtils;
 import pow.util.Point;
+import pow.util.Spiral;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,11 +26,11 @@ public class GameMap implements Serializable {
     public Map<String, Point> keyLocations;  // useful for joining areas together
 
     public void updatePlayerVisibilityData(Player player) {
-        updateBrightness();
+        updateBrightness(player);
         updateSeenLocations(player);
     }
 
-    private void initLightSources(Player player) {
+    private void initLightSources() {
         // TODO: can objects, monsters be light sources?
         // if so, this logic will get much more complex
         this.lightSources = new ArrayList<>();
@@ -46,8 +42,28 @@ public class GameMap implements Serializable {
                 }
             }
         }
+    }
 
-        this.lightSources.add(player);
+    // helper method for updateBrightness
+    private void addBrightness(LightSource lightSource) {
+        int maxR2 = Circle.getRadiusSquared(lightSource.getLightRadius());
+        int sx = lightSource.getLocation().x;
+        int sy = lightSource.getLocation().y;
+        int r = lightSource.getLightRadius();
+        int xmin = Math.max(sx - r - 1, 0);
+        int ymin = Math.max(sy - r - 1, 0);
+        int xmax = Math.min(sx + r + 1, width - 1);
+        int ymax = Math.min(sy + r + 1, height - 1);
+        for (int x = xmin; x <= xmax; x++) {
+            for (int y = ymin; y <= ymax; y++) {
+                int r2 = MathUtils.dist2(x, y, sx, sy);
+                if (r2 <= maxR2) {
+                    double brightness = 1.0 - (double) r2*r2 / (maxR2*maxR2);
+                    map[x][y].brightness += (int) Math.round(MAX_BRIGHTNESS * brightness);
+                    map[x][y].brightness = MathUtils.clamp(map[x][y].brightness, 0, MAX_BRIGHTNESS);
+                }
+            }
+        }
     }
 
     // Returns an array of values showing how bright each square is.
@@ -56,7 +72,7 @@ public class GameMap implements Serializable {
     // (i.e., the player can see).  The gradation 0-100 is primarily
     // a convenience for the frontend to display light in a cool manner.
     public static int MAX_BRIGHTNESS = 100;
-    private void updateBrightness() {
+    private void updateBrightness(Player player) {
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -65,25 +81,9 @@ public class GameMap implements Serializable {
         }
 
         for (LightSource source: lightSources) {
-            int maxR2 = Circle.getRadiusSquared(source.getLightRadius());
-            int sx = source.getLocation().x;
-            int sy = source.getLocation().y;
-            int r = source.getLightRadius();
-            int xmin = Math.max(sx - r - 1, 0);
-            int ymin = Math.max(sy - r - 1, 0);
-            int xmax = Math.min(sx + r + 1, width - 1);
-            int ymax = Math.min(sy + r + 1, height - 1);
-            for (int x = xmin; x <= xmax; x++) {
-                for (int y = ymin; y <= ymax; y++) {
-                    int r2 = MathUtils.dist2(x, y, sx, sy);
-                    if (r2 <= maxR2) {
-                        double brightness = 1.0 - (double) r2*r2 / (maxR2*maxR2);
-                        map[x][y].brightness += (int) Math.round(MAX_BRIGHTNESS * brightness);
-                        map[x][y].brightness = MathUtils.clamp(map[x][y].brightness, 0, MAX_BRIGHTNESS);
-                    }
-                }
-            }
+            addBrightness(source);
         }
+        addBrightness(player);
     }
 
     public GameMap(DungeonSquare[][] map, Map<String, Point> keyLocations, List<Actor> monsters) {
@@ -92,77 +92,71 @@ public class GameMap implements Serializable {
         this.width = Array2D.width(this.map);
         this.keyLocations = keyLocations;
         this.actors = monsters;
+        initLightSources();
     }
 
-    // call when a player enters the level the first time.
-    // TODO: and when they exit the level... what happens to the pet?
-    public void placePlayer(Player player, Pet pet) {
+    // Call when a player enters a level.
+    // Player is set to the requested location, and set to full energy.
+    // Pet is moved as near to the player as possible.
+    public void placePlayerAndPet(Player player, Point playerLoc, Pet pet) {
+        player.loc.x = playerLoc.x;
+        player.loc.y = playerLoc.y;
+        addActor(player);
         player.energy.setFull(); // make sure the player can move first
-        actors.add(player);
+
         if (pet != null) {
-            actors.add(pet);
-        }
-
-        initLightSources(player);
-        updatePlayerVisibilityData(player);
-    }
-
-    // temp method to create custom different levels
-    public GameMap(Random rng, Player player, Pet pet, int levelType) {
-        ProtoGenerator generator = new TestArea(1);
-        ProtoTranslator translator = new ProtoTranslator(levelType);
-        this.map = DungeonGenerator.generateMap(generator, translator, 10, 10, rng);
-        this.height = Array2D.height(this.map);
-        this.width = Array2D.width(this.map);
-        this.actors = DungeonGenerator.createMonsters(this.map, 2, rng);
-        initLightSources(player);
-
-        int x = width / 2;
-        int y = height / 2;
-        player.loc.x = x;
-        player.loc.y = y;
-        player.energy.setFull(); // make sure the player can move first
-        actors.add(player);
-        if (pet != null) {
-            pet.loc.x = x + 2;
-            pet.loc.y = y + 2;
-            actors.add(pet);
+            addActor(pet);
+            pet.loc = findClosestOpenSquare(playerLoc);
         }
 
         updatePlayerVisibilityData(player);
     }
 
-    public GameMap(Random rng, Player player, Pet pet) {
-        //ProtoGenerator generator = new ShapeDLA(3, 15);
-        ProtoGenerator generator = new TestArea(0);
-        ProtoTranslator translator = new ProtoTranslator(2);
-        this.map = DungeonGenerator.generateMap(generator, translator, 60, 60, rng);
-        this.height = Array2D.height(this.map);
-        this.width = Array2D.width(this.map);
-        this.actors = DungeonGenerator.createMonsters(this.map, 10, rng);
-        initLightSources(player);
+//    // temp method to create custom different levels
+//    public GameMap(Random rng, Player player, Pet pet, int levelType) {
+//        ProtoGenerator generator = new TestArea(1);
+//        ProtoTranslator translator = new ProtoTranslator(levelType);
+//        this.map = DungeonGenerator.generateMap(generator, translator, 10, 10, rng);
+//        this.height = Array2D.height(this.map);
+//        this.width = Array2D.width(this.map);
+//        this.actors = DungeonGenerator.createMonsters(this.map, 2, rng);
+//        initLightSources();
+//
+//        int x = width / 2;
+//        int y = height / 2;
+//        player.loc.x = x;
+//        player.loc.y = y;
+//        player.energy.setFull(); // make sure the player can move first
+//        actors.add(player);
+//        if (pet != null) {
+//            pet.loc.x = x + 2;
+//            pet.loc.y = y + 2;
+//            actors.add(pet);
+//        }
+//
+//        updatePlayerVisibilityData(player);
+//    }
 
-        int x = width / 2;
-        int y = height / 2;
-        player.loc.x = x;
-        player.loc.y = y;
-        player.energy.setFull(); // make sure the player can move first
-        actors.add(player);
-        if (pet != null) {
-            pet.loc.x = x + 2;
-            pet.loc.y = y + 2;
-            actors.add(pet);
-        }
-
-        updatePlayerVisibilityData(player);
-    }
+//    public GameMap(Random rng, Player player, Pet pet) {
+//        //ProtoGenerator generator = new ShapeDLA(3, 15);
+//        ProtoGenerator generator = new TestArea(0);
+//        ProtoTranslator translator = new ProtoTranslator(2);
+//        this.map = DungeonGenerator.generateMap(generator, translator, 60, 60, rng);
+//        this.height = Array2D.height(this.map);
+//        this.width = Array2D.width(this.map);
+//        this.actors = DungeonGenerator.createMonsters(this.map, 10, rng);
+//        initLightSources();
+//
+//        // TODO: figure out where this goes..
+//        updatePlayerVisibilityData(player);
+//    }
 
     // update the seen locations
     private void updateSeenLocations(Player player) {
         for (Point p : Circle.getPointsInCircle(player.viewRadius)) {
             int x = p.x + player.loc.x;
             int y = p.y + player.loc.y;
-            if (x >= 0 && x < width && y >= 0 && y < height) {
+            if (isOnMap(x,y)) {
                 if (map[x][y].brightness > 0) {
                     map[x][y].seen = true;
                 }
@@ -178,6 +172,10 @@ public class GameMap implements Serializable {
         return actors.get(currActorIdx);
     }
 
+    public void addActor(Actor a) {
+        actors.add(a);
+    }
+
     public void removeActor(Actor a) {
         int idx = actors.indexOf(a);
         if (currActorIdx > idx) {
@@ -186,7 +184,12 @@ public class GameMap implements Serializable {
         actors.remove(a);
     }
 
+    public boolean isOnMap(int x, int y) {
+        return x >= 0 && y >= 0 && x < width && y < height;
+    }
+
     public boolean isBlocked(int x, int y) {
+        if (!isOnMap(x,y)) return true;
         if (map[x][y].blockGround()) return true;
         for (Actor a: this.actors) {
             if (a.loc.x == x && a.loc.y == y && a.solid) return true;
@@ -201,28 +204,28 @@ public class GameMap implements Serializable {
         return null;
     }
 
-//    private DungeonSquare[][] buildTestArea() {
-//
-//        this.width = 15;
-//        this.height = 15;
-//
-//        DungeonTerrain wall = new DungeonTerrain("big stone wall", "big stone wall", "big stone wall",
-//                new DungeonTerrain.Flags(true));
-//        DungeonTerrain floor = new DungeonTerrain("floor", "floor", "floor",
-//                new DungeonTerrain.Flags(false));
-//        DungeonSquare[][] dungeonMap = new DungeonSquare[width][height];
-//
-//        for (int x = 0; x < width; x++) {
-//            for (int y = 0; y < height; y++) {
-//                dungeonMap[x][y] = (x == 0 || y == 0 || x == width-1 || y == height -1) ?
-//                            new DungeonSquare(wall, null) :
-//                            new DungeonSquare(floor, null);
-//            }
-//        }
-//
-//        // note this will fail if any monsters need a random number generator to create (e.g., nondeterministic HP)
-//        this.actors = DungeonGenerator.createMonstersOrdered(dungeonMap, null);
-//        //this.actors = DungeonGenerator.createMonsters(dungeonMap, 3, null);
-//        return dungeonMap;
-//    }
+    // Finds the closest open square to the starting location.
+    // This assumes that there is at least one open square.
+    public Point findClosestOpenSquare(Point start) {
+        int i = 0;
+        Point loc = null;
+        do {
+            loc = Spiral.position(i);
+            loc.shiftBy(start);
+            i++;
+        } while (isBlocked(loc.x, loc.y));
+
+        return loc;
+    }
+
+    // Assumes that there is at least one open point.
+    public Point findRandomOpenSquare(Random rng) {
+        int x;
+        int y;
+        do {
+            x = rng.nextInt(width);
+            y = rng.nextInt(height);
+        } while (map[x][y].blockGround());
+        return new Point(x,y);
+    }
 }
