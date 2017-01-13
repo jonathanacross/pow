@@ -43,7 +43,7 @@ public class ActionParams implements Serializable {
             //TODO:change dig->modifyTerrain
             case "dig": return new ModifyTerrain(actor, params.point, TerrainData.getTerrain(params.name));
             case "modifyFeature": return new ModifyFeature(actor, params.point, FeatureData.getFeature(params.name));
-            case "gotoArea": return new GotoArea(actor, params.name, params.point );
+            case "gotoArea": return new GotoArea(params.name, params.point );
 //            case "heal": return new HealAction(params.number);
 //            case "restoreMana": return new RestoreManaAction(params.number);
             default: throw new RuntimeException("unknown action name " + params.actionName);

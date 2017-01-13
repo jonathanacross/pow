@@ -1,6 +1,5 @@
 package pow.frontend.window;
 
-import com.sun.org.apache.xalan.internal.utils.FeatureManager;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;

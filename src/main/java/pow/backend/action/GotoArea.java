@@ -1,7 +1,8 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
-import pow.backend.GameMap;
+import pow.backend.GameMap; 
+import pow.backend.GameState;
 import pow.backend.GameWorld;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonTerrain;
@@ -12,25 +13,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GotoArea implements Action {
-    private Actor actor;
     private String areaName;
     private Point loc;
 
-    public GotoArea(Actor actor, String areaName, Point loc) {
-        this.actor = actor;
+    public GotoArea(String areaName, Point loc) {
         this.areaName = areaName;
         this.loc = loc;
     }
 
     @Override
     public ActionResult process(GameBackend backend) {
-        GameWorld world = backend.getGameState().world;
+        GameState gs = backend.getGameState();
+        GameWorld world = gs.world;
         // TODO: add a default area that always exists, and put the player there
         // if the world doesn't contain areaName.
         world.currentMap = world.world.get(areaName);
-        actor.loc.x = loc.x;
-        actor.loc.y = loc.y;
-        actor.energy.setFull(); // make sure the player can move first
+        gs.player.loc.x = loc.x;
+        gs.player.loc.y = loc.y;
+        gs.player.energy.setFull(); // make sure the player can move first
         // TODO: move the pet, too!
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());
@@ -42,6 +42,6 @@ public class GotoArea implements Action {
 
     @Override
     public Actor getActor() {
-        return this.actor;
+        return null;
     }
 }

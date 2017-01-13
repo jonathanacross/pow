@@ -1,5 +1,4 @@
 package pow.backend.action;
-
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
@@ -50,6 +49,13 @@ public class Move implements Action {
         return this.actor;
     }
 
+    private boolean offMap(GameState gs, int x, int y) {
+        DungeonSquare[][] currMap = gs.world.currentMap.map;
+        int width = Array2D.width(currMap);
+        int height = Array2D.height(currMap);
+        return (x < 0 || x >= width || y < 0 || y >= height);
+    }
+
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
@@ -63,23 +69,27 @@ public class Move implements Action {
         int newx = actor.loc.x + dx;
         int newy = actor.loc.y + dy;
 
-
-        // if the current square is a teleport tile at the edge of the screen,
-        // and the player tries to move off, then go the the appropriate area.
-        DungeonSquare[][] currMap = gs.world.currentMap.map;
-        int width = Array2D.width(currMap);
-        int height = Array2D.height(currMap);
-        DungeonTerrain currSquareTerrain = gs.world.currentMap.map[actor.loc.x][actor.loc.y].terrain;
-        if (currSquareTerrain.flags.teleport) {
-            if (newx < 0 || newx >= width || newy < 0 || newy >= height) {
-                String encodedLoc = currSquareTerrain.actionParams.name;
-                String[] fields = encodedLoc.split("@");
-                String targetArea = fields[0];
-                Point targetLoc = gs.world.world.get(targetArea).keyLocations.get(fields[1]);
-                return ActionResult.Failed(new GotoArea(this.actor, targetArea, targetLoc));
+        // Check that the target location is valid.  The ONLY case where it is
+        // valid to move off the map is if the actor == player, and the 
+        // player is on a tile that lets them go to another area.
+        if (offMap(gs, newx, newy)) {
+            // check for player changing maps
+            if (actor == gs.player) {
+                DungeonTerrain currSquareTerrain = gs.world.currentMap.map[actor.loc.x][actor.loc.y].terrain;
+                if (currSquareTerrain.flags.teleport) {
+                    String encodedLoc = currSquareTerrain.actionParams.name;
+                    String[] fields = encodedLoc.split("@");
+                    String targetArea = fields[0];
+                    Point targetLoc = gs.world.world.get(targetArea).keyLocations.get(fields[1]);
+                    return ActionResult.Failed(new GotoArea(targetArea, targetLoc));
+                }
             }
+
+            backend.logMessage(actor.getPronoun() + " can't go that way");
+            return ActionResult.Failed(null);
         }
 
+        // Check if we should attack
         Actor defender = gs.world.currentMap.actorAt(newx, newy);
         if (defender != null) {
             if (!defender.friendly)  {
