@@ -13,6 +13,7 @@ public class DirectionNames {
     public static final int W = 6;
     public static final int NW = 7;
 
+
     private static final int[] OPPOSITES = {4, 5, 6, 7, 0, 1, 2, 3};
     public static int getOpposite(int dirName) {
         return OPPOSITES[dirName];
