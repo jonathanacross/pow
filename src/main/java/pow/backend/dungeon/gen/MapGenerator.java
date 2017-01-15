@@ -28,8 +28,8 @@ public class MapGenerator {
         DungeonTerrain terrainTemplate = TerrainData.getTerrain(terrainTemplateName);
 
         ActionParams params = new ActionParams();
+        // TODO: pull out magic strings somewhere
         params.actionName = "gotoArea";
-        // TODO: clean up separator
         params.name = target;
         DungeonTerrain.Flags flags = new DungeonTerrain.Flags(false, false, false, true);
         DungeonTerrain terrain = new DungeonTerrain(
@@ -47,7 +47,7 @@ public class MapGenerator {
             int width,
             int height,
             MapStyle style,
-            Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreanLocName
+            Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
             Random rng) {
 
         // fill in a simple area
