@@ -109,20 +109,23 @@ public class GameWorld implements Serializable {
     }
 
     private List<RoomConnection> genWorldTopology(Random rng) {
-        final int numGroups = 7;
-        final int roomsPerGroup = 4;
+        final int numGroups = 9;
+        final int roomsPerGroup = 5;
         final double probMakeCycle = 0.3;
 
+        int foo = rng.nextInt();
         final int numLevels = numGroups * roomsPerGroup;
 
         int roomGridSize = 3 * (int) Math.sqrt(numLevels);
         RoomConnection[][] connections = new RoomConnection[roomGridSize][roomGridSize];
         List<RoomConnection> rooms = new ArrayList<>();  // same data, but just the rooms of interest
+        List<List<RoomConnection>> roomsInGroup = new ArrayList<>();
 
         int level = 0;
         for (int group = 0; group < numGroups; group++) {
+            System.out.println("starting group " + group);
 
-            List<RoomConnection> roomsInGroup = new ArrayList<>();
+            roomsInGroup.add(new ArrayList<>());
 
             for (int levelInGroup = 0; levelInGroup < roomsPerGroup; levelInGroup++) {
                 // initial condition -- put a room in the center
@@ -133,7 +136,7 @@ public class GameWorld implements Serializable {
                     level++;
                     connections[start.x][start.y] = startRoom;
                     rooms.add(startRoom);
-                    roomsInGroup.add(startRoom);
+                    roomsInGroup.get(group).add(startRoom);
                     continue;
                 }
 
@@ -143,16 +146,29 @@ public class GameWorld implements Serializable {
                 int dir;
                 RoomConnection randRoom = null;
                 do {
-                    if (levelInGroup == 0)
-                        randRoom = rooms.get(rng.nextInt(rooms.size()));
-                    else
-                        randRoom = roomsInGroup.get(rng.nextInt(roomsInGroup.size()));
+                    if (levelInGroup == 0) {
+                        // pick something from most recent 2 groups?
+                        // this computation may be easier just to look at rooms
+                        // with level number > x.??
+                        int randGroup = group - rng.nextInt(2) - 1;
+                        if (randGroup < 0) randGroup = 0;
+                        System.out.println("trying to connect to group: " + randGroup);
+                        List<RoomConnection> connGroup = roomsInGroup.get(randGroup);
+                        randRoom = connGroup.get(rng.nextInt(connGroup.size()));
+                        System.out.println("trying to connect to room: " + randRoom.level);
+                    }
+                    else {
+                        List<RoomConnection> connGroup = roomsInGroup.get(group);
+                        randRoom = connGroup.get(rng.nextInt(connGroup.size()));
+                    }
 
                     // pick random direction from this room
                     dir = rng.nextInt(DirectionSets.Cardinal.size());
                     Direction d = DirectionSets.Cardinal.getDirection(dir);
                     x = randRoom.x + d.dx;
                     y = randRoom.y + d.dy;
+                    // TODO: This may fail to be possible -- need to check for this
+                    // so we don't loop forever.
                 } while (!(x >= 0 && x < roomGridSize && y >= 0 && y < roomGridSize) || connections[x][y] != null);
 
                 // found a valid space
@@ -161,7 +177,7 @@ public class GameWorld implements Serializable {
                 level++;
                 connections[x][y] = newRoom;
                 rooms.add(newRoom);
-                roomsInGroup.add(newRoom);
+                roomsInGroup.get(group).add(newRoom);
 
                 // connect room to adjacent rooms
                 for (int dIdx = 0; dIdx < DirectionSets.Cardinal.size(); dIdx++) {
