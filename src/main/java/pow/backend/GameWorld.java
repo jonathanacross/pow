@@ -74,10 +74,11 @@ public class GameWorld implements Serializable {
     }
 
     private void genMapWorld(Random rng, Player player, Pet pet) {
-        int numGroups = 5;
+        int numGroups = 6;
         MapGenerator.MapStyle[] styles = {
             new MapGenerator.MapStyle("rock", "grass"),
             new MapGenerator.MapStyle("rock", "dark sand"),
+            new MapGenerator.MapStyle("waves", "water 3"),
             new MapGenerator.MapStyle("snowy rock", "snow"),
             new MapGenerator.MapStyle("rock", "swamp"),
             new MapGenerator.MapStyle("rock", "cold lava floor"),

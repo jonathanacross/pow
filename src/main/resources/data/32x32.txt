@@ -12,7 +12,7 @@
 32x32	11	0	sand	terrain
 32x32	12	0	snow	terrain
 32x32	13	0	hot lava floor	terrain
-32x32	14	0	-:null:-	:null:
+32x32	14	0	waves	terrain
 32x32	15	0	-:null:-	:null:
 32x32	0	1	big stone wall	feature
 32x32	1	1	ivy stone wall	terrain
