@@ -48,7 +48,6 @@ public class TerrainData {
     private DungeonTerrain parseTerrain(String[] line) {
         if (line.length != 5) {
             throw new IllegalArgumentException("Expected 5 fields, but had " + line.length
-
             + ". Fields = \n" + String.join(",", line));
         }
 
