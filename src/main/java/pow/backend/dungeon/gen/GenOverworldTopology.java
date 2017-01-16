@@ -36,7 +36,7 @@ public class GenOverworldTopology {
     private int currLevel;
 
     public GenOverworldTopology(Random rng) {
-        this(rng, 12, 4, 0.25);
+        this(rng, 9, 5, 0.25);
     }
 
     public GenOverworldTopology(Random rng, int numGroups, int roomsPerGroup, double probMakeCycle) {
@@ -61,16 +61,10 @@ public class GenOverworldTopology {
     // This may fail about 20% of the time (depending on parameters), so we just
     // call it until we succeed. Main effect is to initialize this.rooms
     private boolean genWorldTopology(Random rng) {
-
-
         this.connections = new RoomConnection[roomGridSize][roomGridSize];
         this.rooms = new ArrayList<>();  // same data, but just the rooms of interest
         this.roomsInGroup = new ArrayList<>();
-
         this.currLevel = 0;
-        // DEBUG: force a different random combination
-        rng.nextInt();
-        rng.nextInt();
 
         for (int group = 0; group < numGroups; group++) {
             if (!tryAddGroupOfRooms(rng, group == 0, roomsPerGroup)) return false;
@@ -91,7 +85,7 @@ public class GenOverworldTopology {
         }
     }
 
-    // This is probabilistic; it may fail.  If this happens, then returns null.
+    // This is probabilistic; it may fail.  If this happens, then return null.
     private NewConnectedRoomLocation getNewConnectedRoomLocation(Random rng, boolean newGroup, int maxAttempts) {
 
         int attempts = 0;
@@ -152,21 +146,6 @@ public class GenOverworldTopology {
         }
 
         return true;
-    }
-
-    private void addGroupOfRooms(Random rng, boolean firstGroup, int numRooms) {
-        final int maxAttempts = 100;
-        for (int attempt = 0; attempt < maxAttempts; attempt++) {
-           if (tryAddGroupOfRooms(rng, firstGroup, numRooms)) {
-               return;
-           }
-        }
-
-        // If got here, then couldn't place the group of rooms.
-        // Since this algorithm is probabilistic, it is *possible* for this to happen.
-        // but chances are minute.
-        System.out.println(this);
-        throw new RuntimeException("couldn't create overworld; could not place all rooms");
     }
 
     // Picks a random room to connect to.

@@ -24,12 +24,6 @@ public class GameWorld implements Serializable {
         GenTestWorld(rng, player, pet);
     }
 
-//    private void GenSimpleWorld(Random rng, Player player, Pet pet) {
-//        world = new HashMap<>();
-//        world.put("testArea", new GameMap(rng, player, pet));
-//        currentMap  = world.get("testArea");
-//    }
-
     private void GenTestWorld(Random rng, Player player, Pet pet) {
 
         // area 1.
@@ -61,7 +55,10 @@ public class GameWorld implements Serializable {
         area1.placePlayerAndPet(player, playerLoc, pet);
 
         // debug
-        GenOverworldTopology topologyGenerator = new GenOverworldTopology(rng);
+        int numGroups = 3;
+        int roomsPerGroup = 5;
+        double probMakeCycle = 0.25;
+        GenOverworldTopology topologyGenerator = new GenOverworldTopology(rng, numGroups, roomsPerGroup, probMakeCycle);
         System.out.println(topologyGenerator);
     }
 
