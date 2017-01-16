@@ -21,10 +21,12 @@ public class GameWorld implements Serializable {
     public GameMap currentMap; // the area where the player currently is
 
     public GameWorld(Random rng, Player player, Pet pet) {
-        GenTestWorld(rng, player, pet);
+        //genTestWorld(rng, player, pet);
+        genMapWorld(rng, player, pet);
     }
 
-    private void GenTestWorld(Random rng, Player player, Pet pet) {
+    // small sample with 3 rooms
+    private void genTestWorld(Random rng, Player player, Pet pet) {
 
         // area 1.
         Map<String, String> area1Exits = new HashMap<>();
@@ -53,13 +55,61 @@ public class GameWorld implements Serializable {
         currentMap = area1;
         Point playerLoc = area1.findRandomOpenSquare(rng);
         area1.placePlayerAndPet(player, playerLoc, pet);
+    }
 
-        // debug
-        int numGroups = 3;
-        int roomsPerGroup = 5;
+    private static final String AREA_NAME = "area";
+
+    private Map<String, String> getExits(GenOverworldTopology.RoomConnection roomConnection) {
+        Map<String, String> exits = new HashMap<>();
+        for (int d = 0; d < DirectionSets.Cardinal.size(); d++) {
+            int oppD = DirectionSets.Cardinal.getOpposite(d);
+            if (roomConnection.adjroomIdx[d] >= 0) {
+                int adjId = roomConnection.adjroomIdx[d];
+                exits.put(DirectionSets.Cardinal.getName(d),
+                        AREA_NAME + adjId + "@" + DirectionSets.Cardinal.getName(oppD));
+            }
+        }
+
+        return exits;
+    }
+
+    private void genMapWorld(Random rng, Player player, Pet pet) {
+        int numGroups = 5;
+        MapGenerator.MapStyle[] styles = {
+            new MapGenerator.MapStyle("rock", "grass"),
+            new MapGenerator.MapStyle("rock", "dark sand"),
+            new MapGenerator.MapStyle("snowy rock", "snow"),
+            new MapGenerator.MapStyle("rock", "swamp"),
+            new MapGenerator.MapStyle("rock", "cold lava floor"),
+        };
+
+        int roomsPerGroup = 2;
         double probMakeCycle = 0.25;
         GenOverworldTopology topologyGenerator = new GenOverworldTopology(rng, numGroups, roomsPerGroup, probMakeCycle);
+        List<GenOverworldTopology.RoomConnection> roomConnections = topologyGenerator.getRooms();
         System.out.println(topologyGenerator);
+
+        world = new HashMap<>();
+        for (int group = 0; group < numGroups; group++) {
+            MapGenerator.MapStyle style = styles[group];
+            for (int room = 0; room < roomsPerGroup; room++) {
+                int levelIdx = group * roomsPerGroup + room;
+
+                GenOverworldTopology.RoomConnection roomConnection = roomConnections.get(levelIdx);
+                Map<String, String> exits = getExits(roomConnection);
+
+                GameMap area = MapGenerator.genMap(10, 10, style, exits, rng);
+                world.put(AREA_NAME + roomConnection.level, area);
+            }
+        }
+
+        // set up the player at the start
+        GameMap startArea = world.get(AREA_NAME + "0");
+        currentMap = startArea;
+        Point playerLoc = startArea.findRandomOpenSquare(rng);
+        startArea.placePlayerAndPet(player, playerLoc, pet);
+
+        // debug
     }
 
 }

@@ -3,6 +3,7 @@ package pow.backend.dungeon.gen;
 import pow.util.direction.DirectionSets;
 import pow.util.direction.Direction;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
@@ -13,12 +14,16 @@ public class GenOverworldTopology {
     public static class RoomConnection {
         public int level;
         public boolean[] connect;
+        public int[] adjroomIdx;  // index (level) of rooms in the cardinal directions
         public int x;
         public int y;
 
         public RoomConnection(int x, int y) {
             level = -1;
-            connect = new boolean[DirectionSets.Cardinal.size()];
+            int numDirs = DirectionSets.Cardinal.size();
+            connect = new boolean[numDirs];
+            adjroomIdx = new int[numDirs];
+            Arrays.fill(adjroomIdx, -1);
             this.x = x;
             this.y = y;
         }
@@ -205,6 +210,8 @@ public class GenOverworldTopology {
             if (rng.nextDouble() <= probConnect) {
                 newRoom.connect[dirIndex] = true;
                 adjRoom.connect[oppDirIndex] = true;
+                newRoom.adjroomIdx[dirIndex] = adjRoom.level;
+                adjRoom.adjroomIdx[oppDirIndex] = newRoom.level;
             }
         }
     }
