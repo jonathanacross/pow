@@ -45,15 +45,11 @@ public class GenOverworldTopology {
         this.probMakeCycle = probMakeCycle;
 
         this.numRooms = numGroups * roomsPerGroup;
-        this.roomGridSize = 5 * (int) Math.sqrt(numRooms);
+        this.roomGridSize = 3 * (int) Math.sqrt(numRooms);
 
-        this.connections = new RoomConnection[roomGridSize][roomGridSize];
-        this.rooms = new ArrayList<>();  // same data, but just the rooms of interest
-        this.roomsInGroup = new ArrayList<>();
-
-        this.currLevel = 0;
-
-        genWorldTopology(rng);
+        while (!genWorldTopology(rng)) {
+            // theoretically could loop endlessly here, but in practice, succeeds after a few times (avg = 1.2).
+        }
     }
 
     public List<RoomConnection> getRooms() {
@@ -62,17 +58,25 @@ public class GenOverworldTopology {
 
     // -------------- private implementation -----------
 
-    private List<RoomConnection> genWorldTopology(Random rng) {
+    // This may fail about 20% of the time (depending on parameters), so we just
+    // call it until we succeed. Main effect is to initialize this.rooms
+    private boolean genWorldTopology(Random rng) {
 
+
+        this.connections = new RoomConnection[roomGridSize][roomGridSize];
+        this.rooms = new ArrayList<>();  // same data, but just the rooms of interest
+        this.roomsInGroup = new ArrayList<>();
+
+        this.currLevel = 0;
         // DEBUG: force a different random combination
         rng.nextInt();
         rng.nextInt();
 
         for (int group = 0; group < numGroups; group++) {
-            addGroupOfRooms(rng, group == 0, roomsPerGroup);
+            if (!tryAddGroupOfRooms(rng, group == 0, roomsPerGroup)) return false;
         }
 
-        return rooms;
+        return true;
     }
 
     private static class NewConnectedRoomLocation {
@@ -115,58 +119,6 @@ public class GenOverworldTopology {
         }
     }
 
-//    //-------------------------------------------------
-//    // JC -- new implementation
-//    //-------------------------------------------------
-//    private List<NewConnectedRoomLocation> tryGetNewRoomGroupList(Random rng, boolean firstGroup, int numRooms) {
-//
-//        int[][] existingRoomGroups = new int[roomGridSize][roomGridSize];
-//        for (int x = 0; x < roomGridSize; x++) {
-//            for (int y = 0; y < roomGridSize; y++) {
-//                existingRoomGroups[x][y] = -1;
-//            }
-//        }
-//        int numGroupsSoFar = roomsInGroup.size();
-//        for (int group = 0; group < numGroupsSoFar; group++) {
-//            for (RoomConnection room : roomsInGroup.get(group)) {
-//                existingRoomGroups[room.x][room.y] = group;
-//            }
-//        }
-//
-//        List<NewConnectedRoomLocation> newRooms = new ArrayList<>();
-//
-//        int startIdx = 0;
-//        // for first room in first group, just add a room to the center
-//        if (firstGroup) {
-//            int x = roomGridSize / 2;
-//            int y = roomGridSize / 2;
-//            newRooms.add(new NewConnectedRoomLocation(x, y,-1);
-//            existingRoomGroups[x][y] = numGroupsSoFar+1;
-//            startIdx = 1;
-//        }
-//
-//        for (int levelInGroup = startIdx; levelInGroup < numRooms; levelInGroup++) {
-//            NewConnectedRoomLocation ncrl = getNewConnectedRoomLocation(rng, levelInGroup == 0, 100);
-//
-//            if (ncrl != null) {
-//                // found a valid space; add a new room
-//                RoomConnection newRoom = addLevel(ncrl.x, ncrl.y);
-//                connectToPrevious(newRoom, ncrl.dir, rng);
-//            } else {
-//                // failed to get a space for a room to complete the group.
-//                // Clean up our work so we can try again
-//                int currGroupIdx = currGroup();
-//                for (RoomConnection room : roomsInGroup.get(currGroupIdx)) {
-//                    connections[room.x][room.y] = null;
-//                    rooms.remove(room);
-//                }
-//                roomsInGroup.remove(currGroupIdx);
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
 
     // returns true if success
     private boolean tryAddGroupOfRooms(Random rng, boolean firstGroup, int numRooms) {
@@ -201,7 +153,6 @@ public class GenOverworldTopology {
 
         return true;
     }
-
 
     private void addGroupOfRooms(Random rng, boolean firstGroup, int numRooms) {
         final int maxAttempts = 100;
@@ -309,9 +260,26 @@ public class GenOverworldTopology {
                 }
             }
         }
-        StringBuilder sb = new StringBuilder();
+
+        // Find the bounds of what to print; not the most efficient way, but easy.
+        int xmin = debugWidth - 1;
+        int xmax = 0;
+        int ymin = debugHeight - 1;
+        int ymax = 0;
         for (int y = 0; y < debugHeight; y++) {
             for (int x = 0; x < debugWidth; x++) {
+                if (debugArea[x][y] != ' ') {
+                    xmin = Math.min(xmin, x);
+                    xmax = Math.max(xmax, x);
+                    ymin = Math.min(ymin, y);
+                    ymax = Math.max(ymax, y);
+                }
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int y = ymin; y <= ymax; y++) {
+            for (int x = xmin; x <= xmax; x++) {
                 sb.append(debugArea[x][y]);
             }
             sb.append('\n');
