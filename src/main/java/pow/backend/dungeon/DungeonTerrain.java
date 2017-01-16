@@ -10,11 +10,13 @@ public class DungeonTerrain implements Serializable {
         public boolean blockGround;
         public boolean diggable;
         public boolean actOnStep;
+        public boolean teleport;  // teleports you to another area
 
-        public Flags(boolean blockGround, boolean diggable, boolean actOnStep) {
+        public Flags(boolean blockGround, boolean diggable, boolean actOnStep, boolean teleport) {
             this.blockGround = blockGround;
             this.diggable = diggable;
             this.actOnStep = actOnStep;
+            this.teleport = teleport;
         }
     }
 

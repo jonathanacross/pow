@@ -87,6 +87,7 @@ public class TerrainData {
         boolean blockGround = false;
         boolean diggable = false;
         boolean actOnStep = false;
+        boolean teleport = false;
 
         for (String t : tokens) {
             switch (t) {
@@ -97,11 +98,12 @@ public class TerrainData {
                 case "blockLava": break;
                 case "blockWater": break;
                 case "diggable": diggable = true; break;
+                case "teleport": teleport = true;
                 default:
                     throw new IllegalArgumentException("unknown terrain flag '" + t + "'");
             }
         }
 
-        return new DungeonTerrain.Flags(blockGround, diggable, actOnStep);
+        return new DungeonTerrain.Flags(blockGround, diggable, actOnStep, teleport);
     }
 }

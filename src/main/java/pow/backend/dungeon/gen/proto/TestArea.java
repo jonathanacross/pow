@@ -4,9 +4,37 @@ import java.util.Random;
 
 public class TestArea implements ProtoGenerator {
 
-    // NOTE: this ignores the input width and height!
+    private int mode;
+    public TestArea(int mode) {
+        this.mode = mode;
+    }
+
     @Override
     public int[][] genMap(int width, int height, Random randSeed) {
+        switch (mode) {
+            case 0: return genMapPremade(randSeed);
+            case 1:
+            default: return genMapEmpty(width, height);
+        }
+    }
+
+    public int[][] genMapEmpty(int width, int height) {
+
+        // start with an empty room
+        int[][] data = new int[width][height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                data[x][y] = (x == 0 || y == 0 || x == width-1 || y == height-1) ?
+                        Constants.TERRAIN_WALL :
+                        Constants.TERRAIN_FLOOR;
+            }
+        }
+
+        return data;
+    }
+
+    // NOTE: this ignores the input width and height!
+    public int[][] genMapPremade(Random randSeed) {
 
         String[] map = {
                 "####################",
