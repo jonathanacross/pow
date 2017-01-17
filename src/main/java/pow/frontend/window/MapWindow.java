@@ -12,6 +12,8 @@ import java.awt.event.KeyEvent;
 
 public class MapWindow extends AbstractWindow {
 
+    final private int MARGIN = 10;
+    final private int FONT_SIZE = 14;
     private static final int TILE_SIZE = 4;
 
     private static final Color MONSTER_COLOR = Color.MAGENTA;
@@ -67,5 +69,17 @@ public class MapWindow extends AbstractWindow {
                 mapView.drawBlock(graphics, MONSTER_COLOR, actor.loc.x, actor.loc.y);
             }
         }
+
+        // show what map we're on
+        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
+        graphics.setFont(font);
+        // cheap way of drawing an outline
+        graphics.setColor(Color.BLACK);
+        graphics.drawString(gs.world.currentMap.name, MARGIN - 1, MARGIN + FONT_SIZE - 1);
+        graphics.drawString(gs.world.currentMap.name, MARGIN - 1, MARGIN + FONT_SIZE + 1);
+        graphics.drawString(gs.world.currentMap.name, MARGIN + 1, MARGIN + FONT_SIZE - 1);
+        graphics.drawString(gs.world.currentMap.name, MARGIN + 1, MARGIN + FONT_SIZE + 1);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString(gs.world.currentMap.name, MARGIN, MARGIN + FONT_SIZE);
     }
 }

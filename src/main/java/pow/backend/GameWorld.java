@@ -5,6 +5,7 @@ import pow.backend.actors.Player;
 import pow.backend.dungeon.gen.GenOverworldTopology;
 import pow.backend.dungeon.gen.MapGenerator;
 import pow.util.Array2D;
+import pow.util.DebugLogger;
 import pow.util.Point;
 import pow.util.direction.Direction;
 import pow.util.direction.DirectionSets;
@@ -33,19 +34,19 @@ public class GameWorld implements Serializable {
         area1Exits.put("east", "area2@west");
         area1Exits.put("south", "area3@north");
         MapGenerator.MapStyle area1Style = new MapGenerator.MapStyle("rock", "grass");
-        GameMap area1 = MapGenerator.genMap(10, 10, area1Style, area1Exits, rng);
+        GameMap area1 = MapGenerator.genMap("area 1", 10, 10, area1Style, area1Exits, rng);
 
         // area 2.
         Map<String, String> area2Exits = new HashMap<>();
         area2Exits.put("west", "area1@east");
         MapGenerator.MapStyle area2Style = new MapGenerator.MapStyle("rock", "dark sand");
-        GameMap area2 = MapGenerator.genMap(10, 20, area2Style, area2Exits, rng);
+        GameMap area2 = MapGenerator.genMap("area 2", 10, 20, area2Style, area2Exits, rng);
 
         // area 3.
         Map<String, String> area3Exits = new HashMap<>();
         area3Exits.put("north", "area1@south");
         MapGenerator.MapStyle area3Style = new MapGenerator.MapStyle("rock", "swamp");
-        GameMap area3 = MapGenerator.genMap(20, 10, area3Style, area3Exits, rng);
+        GameMap area3 = MapGenerator.genMap("area 3", 20, 10, area3Style, area3Exits, rng);
 
         world = new HashMap<>();
         world.put("area1", area1);
@@ -88,7 +89,7 @@ public class GameWorld implements Serializable {
         double probMakeCycle = 0.25;
         GenOverworldTopology topologyGenerator = new GenOverworldTopology(rng, numGroups, roomsPerGroup, probMakeCycle);
         List<GenOverworldTopology.RoomConnection> roomConnections = topologyGenerator.getRooms();
-        System.out.println(topologyGenerator);
+        DebugLogger.info(topologyGenerator.toString());
 
         world = new HashMap<>();
         for (int group = 0; group < numGroups; group++) {
@@ -99,7 +100,7 @@ public class GameWorld implements Serializable {
                 GenOverworldTopology.RoomConnection roomConnection = roomConnections.get(levelIdx);
                 Map<String, String> exits = getExits(roomConnection);
 
-                GameMap area = MapGenerator.genMap(10, 10, style, exits, rng);
+                GameMap area = MapGenerator.genMap("area " + levelIdx, 100, 100, style, exits, rng);
                 world.put(AREA_NAME + roomConnection.level, area);
             }
         }
@@ -109,8 +110,6 @@ public class GameWorld implements Serializable {
         currentMap = startArea;
         Point playerLoc = startArea.findRandomOpenSquare(rng);
         startArea.placePlayerAndPet(player, playerLoc, pet);
-
-        // debug
     }
 
 }
