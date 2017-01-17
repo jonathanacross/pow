@@ -3,12 +3,16 @@ package pow.backend.dungeon.gen;
 import pow.backend.ActionParams;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
+import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.util.Array2D;
 import pow.util.Point;
+import pow.util.SimplexNoise;
 
 import java.util.*;
+
+import static pow.util.SimplexNoise.noise;
 
 public class MapGenerator {
     public static class TerrainFeatureTriplet {
@@ -64,6 +68,14 @@ public class MapGenerator {
         return square;
     }
 
+    // removes the features at random from the source triplet
+    private static TerrainFeatureTriplet mixup(TerrainFeatureTriplet source, Random rng) {
+        String terrain = source.terrain;
+        String feature1 = rng.nextBoolean() ? source.feature1 : null;
+        String feature2 = rng.nextBoolean() ? source.feature2 : null;
+        return new TerrainFeatureTriplet(terrain, feature1, feature2);
+    }
+
     private static TerrainFeatureTriplet[][] genTerrainLayout(
             int width, int height, MapStyle style, Random rng) {
         int numInteriors = style.interiors.size();
@@ -76,9 +88,9 @@ public class MapGenerator {
                 boolean isEdge = (x == 0 | x == width - 1 || y == 0 || y == height - 1);
                 if (isEdge) {
                     // for now, just using first border; later extend this to multiple types.
-                    layout[x][y] = style.borders.get(0);
+                    layout[x][y] = mixup(style.borders.get(0), rng);
                 } else {
-                    layout[x][y] = style.interiors.get(rng.nextInt(numInteriors));
+                    layout[x][y] = mixup(style.interiors.get(rng.nextInt(numInteriors)), rng);
                 }
             }
         }
@@ -155,6 +167,34 @@ public class MapGenerator {
         return map;
     }
 
+    static double[][] fractalNoise(int width, int height, double initAmp, double initScale, double delta, int iters) {
+        double[][] data = new double[width][height];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                double t = 0.0;
+                double amp = initAmp;
+                double scale = width * initScale;
+
+                for (int i = 0; i < iters; i++) {
+                    t += amp * noise(x / scale + delta, y / scale + delta);
+                    amp *= 0.5;
+                    scale *= 0.5;
+                }
+
+                data[x][y] = t;
+
+            }
+        }
+        return data;
+    }
+
+
+    static double[][] makeNoise(int width, int height, int interpolationSteps) {
+        int areaSize = (1 << interpolationSteps);
+        double[][] noise = fractalNoise(width, height, 1.0, 0.5 / areaSize, 0.0, interpolationSteps);
+        return noise;
+    }
 
     public static GameMap genMap(
             String name,
@@ -165,19 +205,29 @@ public class MapGenerator {
             Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
             Random rng) {
 
+        // build the terrain
         TerrainFeatureTriplet[][] layout = genTerrainLayout(width, height, style, rng);
         TerrainFeatureTriplet[][] terrainMap = makeInterpMap(layout, rng, numInterpolationSteps);
         int w = Array2D.width(terrainMap);
         int h = Array2D.height(terrainMap);
-        List<TerrainFeatureTriplet> terrainIds = new ArrayList<>();
-        terrainIds.addAll(style.borders);
-        terrainIds.addAll(style.interiors);
+
+        // generate fractal noise for feature placement
+        double[][] noiseMap = makeNoise(w,h,numInterpolationSteps);
 
         DungeonSquare[][] squares = new DungeonSquare[w][h];
         for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
                 DungeonTerrain terrain = TerrainData.getTerrain(terrainMap[x][y].terrain);
-                squares[x][y] = new DungeonSquare(terrain, null);
+
+                DungeonFeature feature = null;
+                if (noiseMap[x][y] > 0.7 && terrainMap[x][y].feature1 != null) {
+                    feature = FeatureData.getFeature(terrainMap[x][y].feature1);
+                }
+                else if (noiseMap[x][y] < -0.7 && terrainMap[x][y].feature2 != null) {
+                    feature = FeatureData.getFeature(terrainMap[x][y].feature2);
+                }
+
+                squares[x][y] = new DungeonSquare(terrain, feature);
             }
         }
 
