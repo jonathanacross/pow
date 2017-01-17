@@ -44,6 +44,7 @@ public class MapGenerator {
     }
 
     public static GameMap genMap(
+            String name,
             int width,
             int height,
             MapStyle style,
@@ -87,7 +88,7 @@ public class MapGenerator {
 
         int numMonsters = (width - 1)*(height - 1) / 50;
         List<Actor> monsters = DungeonGenerator.createMonsters(squares, numMonsters, rng);
-        GameMap map = new GameMap(squares, keyLocations, monsters);
+        GameMap map = new GameMap(name, squares, keyLocations, monsters);
         return map;
     }
 }

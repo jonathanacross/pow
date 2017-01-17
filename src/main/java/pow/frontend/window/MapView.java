@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameState;
 import pow.frontend.utils.ImageController;
+import pow.util.MathUtils;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -35,13 +36,13 @@ public class MapView {
         this.windowShiftX = (width - (2 * xRadius + 1) * tileSize) / 2;
         this.windowShiftY = (height - (2 * yRadius + 1) * tileSize) / 2;
 
-        int camCenterX = Math.min(Math.max(xRadius, gs.player.loc.x), gs.world.currentMap.width - 1 - xRadius);
-        int camCenterY = Math.min(Math.max(yRadius, gs.player.loc.y), gs.world.currentMap.height - 1 - yRadius);
+        int camCenterX = MathUtils.clamp(gs.player.loc.x, xRadius, gs.world.currentMap.width - 1 - xRadius);
+        int camCenterY = MathUtils.clamp(gs.player.loc.y, yRadius, gs.world.currentMap.height - 1 - yRadius);
 
         colMin = Math.max(0, camCenterX - xRadius);
         colMax = Math.min(gs.world.currentMap.width - 1, camCenterX + xRadius);
-        rowMin = Math.max(0, camCenterY - xRadius);
-        rowMax = Math.min(gs.world.currentMap.height - 1, camCenterY + xRadius);
+        rowMin = Math.max(0, camCenterY - yRadius);
+        rowMax = Math.min(gs.world.currentMap.height - 1, camCenterY + yRadius);
 
         cameraDx = -(colMin + colMax) / 2 + xRadius;
         cameraDy = -(rowMin + rowMax) / 2 + yRadius;
