@@ -17,10 +17,12 @@ public class MapGenerator {
     public static class MapStyle {
         public String borderTerrainId;
         public String interiorTerrainId;
+        public List<String> monsterIds;
 
-        public MapStyle(String borderTerrainId, String interiorTerrainId) {
+        public MapStyle(String borderTerrainId, String interiorTerrainId, List<String> monsterIds) {
             this.borderTerrainId = borderTerrainId;
             this.interiorTerrainId = interiorTerrainId;
+            this.monsterIds = monsterIds;
         }
     }
 
@@ -87,7 +89,7 @@ public class MapGenerator {
         }
 
         int numMonsters = (width - 1)*(height - 1) / 50;
-        List<Actor> monsters = DungeonGenerator.createMonsters(squares, numMonsters, rng);
+        List<Actor> monsters = DungeonGenerator.createMonsters(squares, numMonsters, style.monsterIds, rng);
         GameMap map = new GameMap(name, squares, keyLocations, monsters);
         return map;
     }
