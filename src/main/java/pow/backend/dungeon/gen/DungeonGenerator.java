@@ -35,7 +35,9 @@ public class DungeonGenerator {
         return dungeonMap;
     }
 
-    public static List<Actor> createMonsters(DungeonSquare[][] dungeonMap, int numMonsters, Random rng) {
+    // Generates from a subset of monsters.
+    // If monsterIds == null, then generate from all possible monsters
+    public static List<Actor> createMonsters(DungeonSquare[][] dungeonMap, int numMonsters, List<String> monsterIds, Random rng) {
         List<Actor> actors = new ArrayList<>();
         int width = Array2D.width(dungeonMap);
         int height = Array2D.height(dungeonMap);
@@ -43,8 +45,10 @@ public class DungeonGenerator {
         // to make sure we don't put monsters on top of each other
         boolean[][] monsterAt = new boolean[width][height];
 
-        List<String> monsterIds = new ArrayList<>();
-        monsterIds.addAll(MonsterGenerator.getMonsterIds());
+        if (monsterIds == null) {
+            monsterIds = new ArrayList<>();
+            monsterIds.addAll(MonsterGenerator.getMonsterIds());
+        }
 
         for (int i = 0; i < numMonsters; i++) {
             int x;
