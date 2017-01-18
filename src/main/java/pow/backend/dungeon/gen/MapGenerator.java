@@ -95,6 +95,15 @@ public class MapGenerator {
             }
         }
 
+        // TODO: this works with width=height=5, will probably not work with other sizes
+        // Add squares of impassible in the middle (for dungeon shape variety)
+        int numImpassible = rng.nextInt(3);
+        for (int i = 0; i < numImpassible; i++) {
+            int x = rng.nextInt(width - 2) + 1;
+            int y = rng.nextInt(height - 2) + 1;
+            layout[x][y] = mixup(style.borders.get(0), rng);
+        }
+
         return layout;
     }
 
@@ -189,11 +198,103 @@ public class MapGenerator {
         return data;
     }
 
+    // removes extra borders of impassible stuff -- makes the map smaller, and
+    // makes it so we won't have to "tunnel" to the nearest exit.
+    static TerrainFeatureTriplet[][] trimTerrainBorder(TerrainFeatureTriplet[][] layout, Set<String> borders) {
+        int width = Array2D.width(layout);
+        int height = Array2D.height(layout);
+
+        int minInteriorX = width - 1;
+        int maxInteriorX = 0;
+        int minInteriorY = height - 1;
+        int maxInteriorY = 0;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (!borders.contains(layout[x][y].terrain)) {
+                    minInteriorX = Math.min(minInteriorX, x);
+                    maxInteriorX = Math.max(maxInteriorX, x);
+                    minInteriorY = Math.min(minInteriorY, y);
+                    maxInteriorY = Math.max(maxInteriorY, y);
+                }
+            }
+        }
+
+        int newWidth = maxInteriorX - minInteriorX + 3;
+        int newHeight = maxInteriorY - minInteriorY + 3;
+        TerrainFeatureTriplet[][] croppedLayout = new TerrainFeatureTriplet[newWidth][newHeight];
+        for (int x = minInteriorX - 1; x <= maxInteriorX + 1; x++) {
+            for (int y = minInteriorY - 1; y <= maxInteriorY + 1; y++) {
+                croppedLayout[x - minInteriorX + 1][y - minInteriorY + 1] = layout[x][y];
+            }
+        }
+        return croppedLayout;
+    }
 
     static double[][] makeNoise(int width, int height, int interpolationSteps) {
         int areaSize = (1 << interpolationSteps);
         double[][] noise = fractalNoise(width, height, 1.0, 0.5 / areaSize, 0.0, interpolationSteps);
         return noise;
+    }
+
+    // Given a row or column to search, this returns a coordinate where there is some
+    // interior square.  This will fail if there are no interior squares in this row/column.
+    private static int findOtherCoordinate(TerrainFeatureTriplet[][] terrainMap, Set<String> borders,
+                                           int rowOrCol, boolean vertical, Random rng) {
+        List<Integer> candidates = new ArrayList<>();
+        if (vertical) {
+            int x = rowOrCol;
+            int height = Array2D.height(terrainMap);
+            for (int y = 0; y < height; y++) {
+                if (!borders.contains(terrainMap[x][y].terrain)) {
+                    candidates.add(y);
+                }
+            }
+        } else {
+            int y = rowOrCol;
+            int width = Array2D.width(terrainMap);
+            for (int x = 0; x < width; x++) {
+                if (!borders.contains(terrainMap[x][y].terrain)) {
+                    candidates.add(x);
+                }
+            }
+        }
+
+        // pick one at random
+        return candidates.get(rng.nextInt(candidates.size()));
+    }
+
+    private static Point findExitCoordinates(TerrainFeatureTriplet[][] terrainMap, Set<String> borders,
+                                             String side, Random rng) {
+        int width = Array2D.width(terrainMap);
+        int height = Array2D.height(terrainMap);
+
+        int x;
+        int y;
+        switch (side) {
+            case "north":
+                y = 0;
+                x = findOtherCoordinate(terrainMap, borders, y + 1, false, rng);
+                break;
+            case "south":
+                y = height - 1;
+                x = findOtherCoordinate(terrainMap, borders, y - 1, false, rng);
+                break;
+            case "west":
+                x = 0;
+                y = findOtherCoordinate(terrainMap, borders, x + 1, true, rng);
+                break;
+            case "east":
+                x = width - 1;
+                y = findOtherCoordinate(terrainMap, borders, x - 1, true, rng);
+                break;
+            default:
+                x = -1;
+                y = -1;
+                break;
+        }
+
+        return new Point(x,y);
     }
 
     public static GameMap genMap(
@@ -205,9 +306,16 @@ public class MapGenerator {
             Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
             Random rng) {
 
+        // get the border types; used in various functions below
+        Set<String> borders = new HashSet<>();
+        for (TerrainFeatureTriplet b : style.borders) {
+            borders.add(b.terrain);
+        }
+
         // build the terrain
         TerrainFeatureTriplet[][] layout = genTerrainLayout(width, height, style, rng);
         TerrainFeatureTriplet[][] terrainMap = makeInterpMap(layout, rng, numInterpolationSteps);
+        terrainMap = trimTerrainBorder(terrainMap, borders);
         int w = Array2D.width(terrainMap);
         int h = Array2D.height(terrainMap);
 
@@ -232,42 +340,18 @@ public class MapGenerator {
         }
 
         // place the exits
-        int w2 = w / 2;
-        int h2 = h / 2;
         Map<String, Point> keyLocations = new HashMap<>();
         for (Map.Entry<String, String> entry : exits.entrySet()) {
             String exitName = entry.getKey();
             String target = entry.getValue();
             DungeonSquare square = buildTeleportTile(style.interiors.get(0).terrain, target);
-
-            Point loc = new Point(-1, -1);
-
-            switch (exitName) {
-                case "north":
-                    loc.x = w2;
-                    loc.y = 0;
-                    break;
-                case "south":
-                    loc.x = w2;
-                    loc.y = h - 1;
-                    break;
-                case "west":
-                    loc.x = 0;
-                    loc.y = h2;
-                    break;
-                case "east":
-                    loc.x = w - 1;
-                    loc.y = h2;
-                    break;
-                default:
-                    throw new RuntimeException("unknown exit name " + exitName);
-            }
-
+            Point loc = findExitCoordinates(terrainMap, borders, exitName, rng);
             squares[loc.x][loc.y] = square;
             keyLocations.put(exitName, loc);
         }
 
-        int numMonsters = (w - 1) * (h - 1) / 50;
+        int numMonsters = 0;
+        //int numMonsters = (w - 1) * (h - 1) / 50;
         List<Actor> monsters = DungeonGenerator.createMonsters(squares, numMonsters, style.monsterIds, rng);
         GameMap map = new GameMap(name, squares, keyLocations, monsters);
         return map;

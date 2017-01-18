@@ -136,7 +136,7 @@ public class GameWorld implements Serializable {
                 GenOverworldTopology.RoomConnection roomConnection = roomConnections.get(levelIdx);
                 Map<String, String> exits = getExits(roomConnection);
 
-                GameMap area = MapGenerator.genMap("area " + levelIdx, 5, 5, 3, style, exits, rng);
+                GameMap area = MapGenerator.genMap("area " + levelIdx, 5, 5, 4, style, exits, rng);
                 world.put(AREA_NAME + roomConnection.level, area);
             }
         }
