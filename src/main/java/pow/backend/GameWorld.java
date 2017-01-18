@@ -35,7 +35,7 @@ public class GameWorld implements Serializable {
         area1Exits.put("south", "area3@north");
         MapGenerator.MapStyle area1Style = new MapGenerator.MapStyle(
                 Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("grass", "bush", "green tree")),
+                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("grass", "bush", "big tree")),
                 monsters);
         GameMap area1 = MapGenerator.genMap("area 1", 10, 10, 0, area1Style, area1Exits, rng);
 
@@ -53,7 +53,7 @@ public class GameWorld implements Serializable {
         area3Exits.put("north", "area1@south");
         MapGenerator.MapStyle area3Style = new MapGenerator.MapStyle(
                 Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("swamp", "swamp flower", "swamp tree")),
+                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
                 monsters);
         GameMap area3 = MapGenerator.genMap("area 3", 20, 10, 0, area3Style, area3Exits, rng);
 
@@ -84,18 +84,23 @@ public class GameWorld implements Serializable {
     }
 
     private void genMapWorld(Random rng, Player player, Pet pet) {
-        int numGroups = 6;
+        int numGroups = 7;
         MapGenerator.MapStyle[] styles = {
             // grassy fields
             new MapGenerator.MapStyle(
                 Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("grass", "bush", "green tree")),
+                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("grass", "bush", "big tree")),
                 Arrays.asList("bit", "bot", "yellow ant", "pigeon", "yellow snake", "scruffy dog", "yellow mushrooms", "floating eye", "bat", "green worm mass", "brown imp")),
             // desert
             new MapGenerator.MapStyle(
                 Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new MapGenerator.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
                 Arrays.asList("novice mage", "novice warrior", "novice archer", "novice rogue", "red ant", "cobra", "green centipede", "pincer beetle", "dust devil", "jackal", "brown scorpion")),
+            // forest
+            new MapGenerator.MapStyle(
+                    Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
+                    Arrays.asList(new MapGenerator.TerrainFeatureTriplet("forest", "big tree", "pine tree")),
+                    Arrays.asList("rabbit mage", "rabbit warrior", "rabbit archer", "rabbit rogue", "purple beetle", "blue snake", "black spider", "green imp", "small red spiny", "rock lizard", "yellow worm mass", "yellow schweinhund")),
             // water
             new MapGenerator.MapStyle(
                 Arrays.asList(new MapGenerator.TerrainFeatureTriplet("waves", null, null)),
@@ -104,12 +109,12 @@ public class GameWorld implements Serializable {
             // snow
             new MapGenerator.MapStyle(
                 Arrays.asList(new MapGenerator.TerrainFeatureTriplet("snowy rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("snow", "snowy pine tree", "small white tree")),
+                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("snow", "snowy pine tree", "white small tree")),
                 Arrays.asList("dark elf mage", "dark elf warrior", "dark elf archer", "dark elf rogue", "baby blue dragon", "baby yellow dragon", "blue beetle", "gray wolf", "bear", "white wolf", "big red spiny", "frost giant" )),
             // swamp
             new MapGenerator.MapStyle(
                 Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("swamp", "swamp flower", "swamp tree")),
+                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
                 Arrays.asList("orc mage", "orc warrior", "orc archer", "orc rogue", "baby green dragon", "baby red dragon", "gold dragonfly", "purple worms", "golem", "griffin", "chess knight", "copperhead snake")),
             // volcano
             new MapGenerator.MapStyle(
@@ -133,7 +138,7 @@ public class GameWorld implements Serializable {
                 GenOverworldTopology.RoomConnection roomConnection = roomConnections.get(levelIdx);
                 Map<String, String> exits = getExits(roomConnection);
 
-                GameMap area = MapGenerator.genMap("area " + levelIdx, 5, 5, 4, style, exits, rng);
+                GameMap area = MapGenerator.genMap("area " + levelIdx, 6, 6, 3, style, exits, rng);
                 world.put(AREA_NAME + roomConnection.level, area);
             }
         }

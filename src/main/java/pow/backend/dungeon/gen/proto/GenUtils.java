@@ -134,4 +134,55 @@ public class GenUtils {
             }
         }
     }
+
+    // Finds the location of 'value' in the array.
+    // If it doesn't exist, returns (-1,-1).
+    public static Point findValue(int[][] data, int value) {
+        int h = Array2D.height(data);
+        int w = Array2D.width(data);
+
+        // Search starting at the middle, then go back
+        // to the top -- if we start at the top, then often
+        // the first several rows will not be open, and
+        // this will waste time going through such squares.
+        int mid = h / 2;
+
+        for (int y = mid; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                if (data[x][y] == value) return new Point(x, y);
+            }
+        }
+        for (int y = 0; y < mid; y++) {
+            for (int x = 0; x < w; x++) {
+                if (data[x][y] == value) return new Point(x, y);
+            }
+        }
+
+        // no point found; return somewhere off the map
+        return new Point(-1, -1);
+    }
+
+    // returns true if the region of squares with value 'value' is
+    // connected.  Returns false if the region doesn't exist, or
+    // if not connected.
+    public static boolean hasConnectedRegionWithValue(int[][] data, int value) {
+        Point startLoc = findValue(data, value);
+        if (startLoc.x < 0) {
+            return false;
+        }
+
+        // temporarily fill the region with another color
+        int tmp = Integer.MIN_VALUE;
+        floodFill(data, startLoc.x, startLoc.y, tmp, value);
+
+        // if connected, then we shouldn't be able to find any more
+        // squares with 'value'
+        Point startLoc2 = findValue(data, value);
+        boolean connected = startLoc2.x < 0;
+
+        // restore the flood-fill area
+        floodFill(data, startLoc.x, startLoc.y, value, tmp);
+
+        return connected;
+    }
 }

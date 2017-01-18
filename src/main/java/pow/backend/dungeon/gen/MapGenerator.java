@@ -8,10 +8,9 @@ import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.util.Array2D;
 import pow.util.Point;
+import pow.backend.dungeon.gen.proto.GenUtils;
 
 import java.util.*;
-
-import static pow.util.SimplexNoise.noise;
 
 public class MapGenerator {
     public static class TerrainFeatureTriplet {
@@ -67,6 +66,42 @@ public class MapGenerator {
         return square;
     }
 
+    // fills in squares such that the open squares are connected
+    private static List<Point> findSafeInternalSquaresToBlock(int width, int height, int desiredBlocked, Random rng) {
+        int[][] blocked = new int[width][height];
+
+        // make the edges blocked initially
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                blocked[x][y] = (x == 0 | x == width - 1 || y == 0 || y == height - 1) ? 1 : 0;
+            }
+        }
+
+        // goal is to block squares in the center, so that the unblocked
+        // part is still connected.
+        List<Point> safeBlocks = new ArrayList<>();
+        for (int i = 0; i < desiredBlocked; ) {
+            int x;
+            int y;
+            // find a random empty square
+            do {
+                x = rng.nextInt(width - 2) + 1;
+                y = rng.nextInt(height - 2) + 1;
+            } while (blocked[x][y] == 1);
+            blocked[x][y] = 1;
+            if (GenUtils.hasConnectedRegionWithValue(blocked, 0)) {
+                // was good, keep it
+                safeBlocks.add(new Point(x,y));
+                i++;
+            } else {
+                // was a bad one, so remove it
+                blocked[x][y] = 0;
+            }
+        }
+
+        return safeBlocks;
+    }
+
     // removes the features at random from the source triplet
     private static TerrainFeatureTriplet mixup(TerrainFeatureTriplet source, Random rng) {
         String terrain = source.terrain;
@@ -95,25 +130,12 @@ public class MapGenerator {
         }
 
         // Add squares of impassible in the middle (for dungeon shape variety)
-        int numImpassible = 0;
-        if (width == 4 && height == 4) {
-            numImpassible = rng.nextInt(2);
-        }
-        else if (width == 5 && height == 5) {
-            int option = rng.nextInt(10);
-            if (option == 0) numImpassible = 0;
-            else if (option < 4) numImpassible = 1;
-            else numImpassible = 2;
-        }
-        else if (width > 5 && height > 5) {
-            // this probably doesn't work very well, can improve later if needed
-            numImpassible = rng.nextInt(width - 3);
-        }
-
-        for (int i = 0; i < numImpassible; i++) {
-            int x = rng.nextInt(width - 2) + 1;
-            int y = rng.nextInt(height - 2) + 1;
-            layout[x][y] = mixup(style.borders.get(0), rng);
+        int x = rng.nextInt(19) + rng.nextInt(19);  // pick number from 0 to 36, 18 is most likely
+        int numPossibleSquares = (width - 2)*(height - 2);
+        int numDesiredToFill = (int) Math.round(x / 100.0 * numPossibleSquares);
+        List<Point> safeBlocks = findSafeInternalSquaresToBlock(width, height, numDesiredToFill, rng);
+        for (Point p : safeBlocks) {
+            layout[p.x][p.y] = mixup(style.borders.get(0), rng);
         }
 
         return layout;
@@ -195,10 +217,10 @@ public class MapGenerator {
             for (int y = 0; y < height; y++) {
                 double t = 0.0;
                 double amp = initAmp;
-                double scale = width * initScale;
+                double scale = initScale;
 
                 for (int i = 0; i < iters; i++) {
-                    t += amp * noise(x / scale + delta, y / scale + delta);
+                    t += amp * pow.util.SimplexNoise.noise(x / scale + delta, y / scale + delta);
                     amp *= 0.5;
                     scale *= 0.5;
                 }
@@ -243,9 +265,9 @@ public class MapGenerator {
         return croppedLayout;
     }
 
-    static double[][] makeNoise(int width, int height, int interpolationSteps) {
-        int areaSize = (1 << interpolationSteps);
-        double[][] noise = fractalNoise(width, height, 1.0, 0.5 / areaSize, 0.0, interpolationSteps);
+    static double[][] makeNoise(int width, int height, int origWidth, int origHeight, int interpolationSteps) {
+        int scale = Math.max(origWidth, origHeight) * 2;
+        double[][] noise = fractalNoise(width, height, 1.0, scale, 0.0, interpolationSteps);
         return noise;
     }
 
@@ -332,7 +354,7 @@ public class MapGenerator {
         int h = Array2D.height(terrainMap);
 
         // generate fractal noise for feature placement
-        double[][] noiseMap = makeNoise(w,h,numInterpolationSteps);
+        double[][] noiseMap = makeNoise(w, h, width, height, numInterpolationSteps);
 
         DungeonSquare[][] squares = new DungeonSquare[w][h];
         for (int x = 0; x < w; x++) {
@@ -340,10 +362,10 @@ public class MapGenerator {
                 DungeonTerrain terrain = TerrainData.getTerrain(terrainMap[x][y].terrain);
 
                 DungeonFeature feature = null;
-                if (noiseMap[x][y] > 0.7 && terrainMap[x][y].feature1 != null) {
+                if (noiseMap[x][y] > 0.5 && terrainMap[x][y].feature1 != null) {
                     feature = FeatureData.getFeature(terrainMap[x][y].feature1);
                 }
-                else if (noiseMap[x][y] < -0.7 && terrainMap[x][y].feature2 != null) {
+                else if (noiseMap[x][y] < -0.5 && terrainMap[x][y].feature2 != null) {
                     feature = FeatureData.getFeature(terrainMap[x][y].feature2);
                 }
 

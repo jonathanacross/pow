@@ -17,7 +17,13 @@ public class FeatureData {
         return instance.featureMap.keySet();
     }
 
-    public static DungeonFeature getFeature(String id) { return instance.featureMap.get(id); }
+    public static DungeonFeature getFeature(String id) {
+        if (instance.featureMap.containsKey(id)) {
+            return instance.featureMap.get(id);
+        } else {
+            return instance.featureMap.get("debug");
+        }
+    }
 
     private static FeatureData instance;
     private Map<String, DungeonFeature> featureMap;
