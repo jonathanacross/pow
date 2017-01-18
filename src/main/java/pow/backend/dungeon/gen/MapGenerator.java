@@ -8,7 +8,6 @@ import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.util.Array2D;
 import pow.util.Point;
-import pow.util.SimplexNoise;
 
 import java.util.*;
 
@@ -95,9 +94,22 @@ public class MapGenerator {
             }
         }
 
-        // TODO: this works with width=height=5, will probably not work with other sizes
         // Add squares of impassible in the middle (for dungeon shape variety)
-        int numImpassible = rng.nextInt(3);
+        int numImpassible = 0;
+        if (width == 4 && height == 4) {
+            numImpassible = rng.nextInt(2);
+        }
+        else if (width == 5 && height == 5) {
+            int option = rng.nextInt(10);
+            if (option == 0) numImpassible = 0;
+            else if (option < 4) numImpassible = 1;
+            else numImpassible = 2;
+        }
+        else if (width > 5 && height > 5) {
+            // this probably doesn't work very well, can improve later if needed
+            numImpassible = rng.nextInt(width - 3);
+        }
+
         for (int i = 0; i < numImpassible; i++) {
             int x = rng.nextInt(width - 2) + 1;
             int y = rng.nextInt(height - 2) + 1;
@@ -350,8 +362,8 @@ public class MapGenerator {
             keyLocations.put(exitName, loc);
         }
 
-        int numMonsters = 0;
-        //int numMonsters = (w - 1) * (h - 1) / 50;
+        //int numMonsters = 0;
+        int numMonsters = (w - 1) * (h - 1) / 100;
         List<Actor> monsters = DungeonGenerator.createMonsters(squares, numMonsters, style.monsterIds, rng);
         GameMap map = new GameMap(name, squares, keyLocations, monsters);
         return map;

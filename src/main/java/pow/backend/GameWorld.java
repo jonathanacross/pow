@@ -4,14 +4,11 @@ import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.gen.GenOverworldTopology;
 import pow.backend.dungeon.gen.MapGenerator;
-import pow.util.Array2D;
 import pow.util.DebugLogger;
 import pow.util.Point;
-import pow.util.direction.Direction;
 import pow.util.direction.DirectionSets;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -147,5 +144,4 @@ public class GameWorld implements Serializable {
         Point playerLoc = startArea.findRandomOpenSquare(rng);
         startArea.placePlayerAndPet(player, playerLoc, pet);
     }
-
 }
