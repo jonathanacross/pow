@@ -3,7 +3,6 @@ package pow.backend.dungeon.gen;
 import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonTerrain;
-import pow.backend.dungeon.gen.proto.Constants;
 
 import java.util.HashMap;
 import java.util.Map;

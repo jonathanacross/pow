@@ -1,14 +1,39 @@
-package pow.backend.dungeon.gen.proto;
+package pow.backend.dungeon.gen.mapgen;
 
+import pow.backend.GameMap;
+import pow.backend.actors.Actor;
+import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.gen.Constants;
+import pow.backend.dungeon.gen.GeneratorUtils;
+import pow.backend.dungeon.gen.ProtoTranslator;
 import pow.util.Array2D;
 import pow.util.Point;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 // generates a dungeon using rectangle diffusion limited aggregation
 // described at http://www.roguebasin.com/index.php?title=Diffusion-limited_aggregation
 // Note that this may not work well for very non-square dungeons.
-public class ShapeDLA implements ProtoGenerator {
+public class ShapeDLA implements MapGenerator {
+
+    private ProtoTranslator translator;
+    private List<String> monsterIds;
+    private int width;
+    private int height;
+    private int minRoomSize;
+    private int maxRoomSize;
+
+    public ShapeDLA(ProtoTranslator translator, List<String> monsterIds, int width, int height) {
+        this.translator = translator;
+        this.monsterIds = monsterIds;
+        this.width = width;
+        this.height = height;
+        this.minRoomSize = 3;
+        this.maxRoomSize = 15;
+    }
 
     private static class Shape {
         public int xmin;
@@ -24,13 +49,20 @@ public class ShapeDLA implements ProtoGenerator {
         }
     }
 
+    public GameMap genMap(String name,
+                          // TODO: add exits: at least up/down!
+                          Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
+                          Random rng) {
 
-    int minRoomSize;// = 3;
-    int maxRoomSize;// = 15;
+        int[][] data = genMap(this.width, this.height, rng);
+        DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, this.translator);
+        int numMonsters = (this.width - 1) * (this.height - 1) / 100;
+        List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, this.monsterIds, rng);
 
-    public ShapeDLA(int minRoomSize, int maxRoomSize) {
-        this.minRoomSize = minRoomSize;
-        this.maxRoomSize = maxRoomSize;
+        Map<String, Point> keyLocations = new HashMap<>();
+
+        GameMap map = new GameMap(name, dungeonSquares, keyLocations, monsters);
+        return map;
     }
 
     private Shape genOutline(int dungeonWidth, int dungeonHeight, Random rng) {
@@ -129,7 +161,7 @@ public class ShapeDLA implements ProtoGenerator {
     public int[][] genMap(int width, int height, Random rng) {
 
         // initialize the map to all walls
-        int[][] map = GenUtils.solidMap(width, height);
+        int[][] map = GeneratorUtils.solidMap(width, height);
 
         // initially, put a small 3x3 seed room in the middle
         int midx = width / 2;

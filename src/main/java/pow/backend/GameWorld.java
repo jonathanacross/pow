@@ -3,7 +3,8 @@ package pow.backend;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.gen.GenOverworldTopology;
-import pow.backend.dungeon.gen.MapGenerator;
+import pow.backend.dungeon.gen.mapgen.MapGenerator;
+import pow.backend.dungeon.gen.mapgen.RecursiveInterpolation;
 import pow.util.DebugLogger;
 import pow.util.Point;
 import pow.util.direction.DirectionSets;
@@ -33,29 +34,32 @@ public class GameWorld implements Serializable {
         Map<String, String> area1Exits = new HashMap<>();
         area1Exits.put("east", "area2@west");
         area1Exits.put("south", "area3@north");
-        MapGenerator.MapStyle area1Style = new MapGenerator.MapStyle(
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("grass", "bush", "big tree")),
+        RecursiveInterpolation.MapStyle area1Style = new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree")),
                 monsters);
-        GameMap area1 = MapGenerator.genMap("area 1", 10, 10, 0, area1Style, area1Exits, rng);
+        MapGenerator area1Gen = new RecursiveInterpolation(10, 0, area1Style);
+        GameMap area1 = area1Gen.genMap("area 1", area1Exits, rng);
 
         // area 2.
         Map<String, String> area2Exits = new HashMap<>();
         area2Exits.put("west", "area1@east");
-        MapGenerator.MapStyle area2Style = new MapGenerator.MapStyle(
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
+        RecursiveInterpolation.MapStyle area2Style = new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
                 monsters);
-        GameMap area2 = MapGenerator.genMap("area 2", 10, 20, 0, area2Style, area2Exits, rng);
+        MapGenerator area2Gen = new RecursiveInterpolation(10, 0, area2Style);
+        GameMap area2 = area2Gen.genMap("area 2", area2Exits, rng);
 
         // area 3.
         Map<String, String> area3Exits = new HashMap<>();
         area3Exits.put("north", "area1@south");
-        MapGenerator.MapStyle area3Style = new MapGenerator.MapStyle(
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
+        RecursiveInterpolation.MapStyle area3Style = new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
                 monsters);
-        GameMap area3 = MapGenerator.genMap("area 3", 20, 10, 0, area3Style, area3Exits, rng);
+        MapGenerator area3Gen = new RecursiveInterpolation(10, 0, area3Style);
+        GameMap area3 = area3Gen.genMap("area 3", area3Exits, rng);
 
         world = new HashMap<>();
         world.put("area1", area1);
@@ -85,41 +89,41 @@ public class GameWorld implements Serializable {
 
     private void genMapWorld(Random rng, Player player, Pet pet) {
         int numGroups = 7;
-        MapGenerator.MapStyle[] styles = {
+        RecursiveInterpolation.MapStyle[] styles = {
             // grassy fields
-            new MapGenerator.MapStyle(
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("grass", "bush", "big tree")),
+            new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree")),
                 Arrays.asList("bit", "bot", "yellow ant", "pigeon", "yellow snake", "scruffy dog", "yellow mushrooms", "floating eye", "bat", "green worm mass", "brown imp")),
             // desert
-            new MapGenerator.MapStyle(
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
+            new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
                 Arrays.asList("novice mage", "novice warrior", "novice archer", "novice rogue", "red ant", "cobra", "green centipede", "pincer beetle", "dust devil", "jackal", "brown scorpion")),
             // forest
-            new MapGenerator.MapStyle(
-                    Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                    Arrays.asList(new MapGenerator.TerrainFeatureTriplet("forest", "big tree", "pine tree")),
+            new RecursiveInterpolation.MapStyle(
+                    Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                    Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "big tree", "pine tree")),
                     Arrays.asList("rabbit mage", "rabbit warrior", "rabbit archer", "rabbit rogue", "purple beetle", "blue snake", "black spider", "green imp", "small red spiny", "rock lizard", "yellow worm mass", "yellow schweinhund")),
             // water
-            new MapGenerator.MapStyle(
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("waves", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("water 3", null, "water 4")),
+            new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("waves", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("water 3", null, "water 4")),
                 Arrays.asList("goldfish", "green fish", "eel", "pink jellyfish", "copper jellyfish", "scaryfish", "water whirlwind", "octopus", "medusa", "sea dragon")),
             // snow
-            new MapGenerator.MapStyle(
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("snowy rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("snow", "snowy pine tree", "white small tree")),
+            new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("snowy rock", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("snow", "snowy pine tree", "white small tree")),
                 Arrays.asList("dark elf mage", "dark elf warrior", "dark elf archer", "dark elf rogue", "baby blue dragon", "baby yellow dragon", "blue beetle", "gray wolf", "bear", "white wolf", "big red spiny", "frost giant" )),
             // swamp
-            new MapGenerator.MapStyle(
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
+            new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
                 Arrays.asList("orc mage", "orc warrior", "orc archer", "orc rogue", "baby green dragon", "baby red dragon", "gold dragonfly", "purple worms", "golem", "griffin", "chess knight", "copperhead snake")),
             // volcano
-            new MapGenerator.MapStyle(
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("rock", null, null)),
-                Arrays.asList(new MapGenerator.TerrainFeatureTriplet("cold lava floor", null, "dark pebbles")),
+            new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("cold lava floor", null, "dark pebbles")),
                 Arrays.asList("demon mage", "demon warrior", "demon archer", "demon rogue", "green dragon", "red dragon", "creeping magma", "lava beetle", "mumak", "iron golem", "fire vortex", "lava dragon")),
         };
 
@@ -131,14 +135,14 @@ public class GameWorld implements Serializable {
 
         world = new HashMap<>();
         for (int group = 0; group < numGroups; group++) {
-            MapGenerator.MapStyle style = styles[group];
+            MapGenerator mapGenerator = new RecursiveInterpolation(6, 3, styles[group]);
             for (int room = 0; room < roomsPerGroup; room++) {
                 int levelIdx = group * roomsPerGroup + room;
 
                 GenOverworldTopology.RoomConnection roomConnection = roomConnections.get(levelIdx);
                 Map<String, String> exits = getExits(roomConnection);
 
-                GameMap area = MapGenerator.genMap("area " + levelIdx, 6, 6, 3, style, exits, rng);
+                GameMap area = mapGenerator.genMap("area " + levelIdx, exits, rng);
                 world.put(AREA_NAME + roomConnection.level, area);
             }
         }

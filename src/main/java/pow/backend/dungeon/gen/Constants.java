@@ -1,8 +1,6 @@
-package pow.backend.dungeon.gen.proto;
+package pow.backend.dungeon.gen;
 
-// Class to store basic information about a map.
-// Useful for dungeon generation where we don't care about detailed
-// information on each square.
+// Constants to store terrain/feature data while constructing a map.
 public class Constants {
 
     public static final int TERRAIN_WALL = 0;
