@@ -11,7 +11,7 @@ public class KeyUtils {
     }
 
     public static KeyInput getKeyInput(KeyEvent event) {
-        switch (event.getKeyCode()) {
+            switch (event.getKeyCode()) {
             case KeyEvent.VK_ENTER:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.OKAY;
             case KeyEvent.VK_ESCAPE:
@@ -47,7 +47,10 @@ public class KeyUtils {
             case KeyEvent.VK_N:
             case KeyEvent.VK_NUMPAD3:
                 return hasShift(event) ? KeyInput.RUN_SOUTH_EAST : KeyInput.SOUTH_EAST;
+            case KeyEvent.VK_COMMA:
+                return hasShift(event) ? KeyInput.UP_STAIRS : KeyInput.UNKNOWN;
             case KeyEvent.VK_PERIOD:
+                return hasShift(event) ? KeyInput.DOWN_STAIRS : KeyInput.REST;
             case KeyEvent.VK_NUMPAD5:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.REST;
             case KeyEvent.VK_F:

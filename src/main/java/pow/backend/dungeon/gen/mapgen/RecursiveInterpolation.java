@@ -42,11 +42,16 @@ public class RecursiveInterpolation implements MapGenerator {
         public List<TerrainFeatureTriplet> borders;
         public List<TerrainFeatureTriplet> interiors;
         public List<String> monsterIds;
+        public String upstairsFeatureId;
+        public String downstairsFeatureId;
 
-        public MapStyle(List<TerrainFeatureTriplet> borders, List<TerrainFeatureTriplet> interiors, List<String> monsterIds) {
+        public MapStyle(List<TerrainFeatureTriplet> borders, List<TerrainFeatureTriplet> interiors, List<String> monsterIds,
+                        String upstairsFeatureId, String downstairsFeatureId) {
             this.borders = borders;
             this.interiors = interiors;
             this.monsterIds = monsterIds;
+            this.upstairsFeatureId = upstairsFeatureId;
+            this.downstairsFeatureId = downstairsFeatureId;
         }
     }
 
@@ -112,10 +117,22 @@ public class RecursiveInterpolation implements MapGenerator {
         for (Map.Entry<String, String> entry : exits.entrySet()) {
             String exitName = entry.getKey();
             String target = entry.getValue();
-            DungeonSquare square = buildTeleportTile(style.interiors.get(0).terrain, target);
-            Point loc = findExitCoordinates(terrainMap, borders, exitName, rng);
-            squares[loc.x][loc.y] = square;
-            keyLocations.put(exitName, loc);
+            // TODO: clean up area moving class: two strings relies too much on random convention
+            if (exitName.startsWith("up") || exitName.startsWith("down")) {
+                // up or down
+                boolean up = exitName.startsWith("up");
+                String featureId = up ? style.upstairsFeatureId : style.downstairsFeatureId;
+                DungeonFeature stairs = GeneratorUtils.buildStairsFeature(featureId, target, up);
+                Point loc = GeneratorUtils.findStairsLocation(squares, rng);
+                squares[loc.x][loc.y].feature = stairs;
+                keyLocations.put(exitName, loc);
+            } else {
+                // cardinal direction
+                DungeonSquare square = buildTeleportTile(style.interiors.get(0).terrain, target);
+                Point loc = findExitCoordinates(terrainMap, borders, exitName, rng);
+                squares[loc.x][loc.y] = square;
+                keyLocations.put(exitName, loc);
+            }
         }
 
         // add the monsters
@@ -125,6 +142,7 @@ public class RecursiveInterpolation implements MapGenerator {
         GameMap map = new GameMap(name, squares, keyLocations, monsters);
         return map;
     }
+
 
     private static DungeonSquare buildTeleportTile(String terrainTemplateName, String target) {
         DungeonTerrain terrainTemplate = TerrainData.getTerrain(terrainTemplateName);

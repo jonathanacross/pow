@@ -2,6 +2,7 @@ package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
+import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.gen.Constants;
 import pow.backend.dungeon.gen.GeneratorUtils;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 
 // generates a dungeon using rectangle diffusion limited aggregation
 // described at http://www.roguebasin.com/index.php?title=Diffusion-limited_aggregation
@@ -56,13 +58,43 @@ public class ShapeDLA implements MapGenerator {
 
         int[][] data = genMap(this.width, this.height, rng);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, this.translator);
+        Map<String, Point> keyLocations = addStairs(dungeonSquares, exits, rng);
         int numMonsters = (this.width - 1) * (this.height - 1) / 100;
         List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, this.monsterIds, rng);
 
-        Map<String, Point> keyLocations = new HashMap<>();
-
         GameMap map = new GameMap(name, dungeonSquares, keyLocations, monsters);
         return map;
+    }
+
+    // modifies squares and returns keyLocations..
+    // TODO: kind of a bad signature
+    private Map<String, Point> addStairs(DungeonSquare[][] squares, Map<String, String> exits, Random rng) {
+        Map<String, Point> keyLocations = new HashMap<>();
+        for (Map.Entry<String, String> entry : exits.entrySet()) {
+            String exitName = entry.getKey();
+            String target = entry.getValue();
+            // TODO: clean up area moving class: two strings relies too much on random convention
+            if (exitName.startsWith("up") || exitName.startsWith("down")) {
+                // up or down
+                boolean up = exitName.startsWith("up");
+                String featureId = up
+                        ? translator.getFeature(Constants.FEATURE_UP_STAIRS).id
+                        : translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
+                DungeonFeature stairs = GeneratorUtils.buildStairsFeature(featureId, target, up);
+                Point loc = GeneratorUtils.findStairsLocation(squares, rng);
+                squares[loc.x][loc.y].feature = stairs;
+                keyLocations.put(exitName, loc);
+            } else {
+                // cardinal direction
+                // TODO: implement
+//                String target = entry.getValue();
+//                DungeonSquare square = buildTeleportTile(style.interiors.get(0).terrain, target);
+//                Point loc = findExitCoordinates(terrainMap, borders, exitName, rng);
+//                squares[loc.x][loc.y] = square;
+//                keyLocations.put(exitName, loc);
+            }
+        }
+        return keyLocations;
     }
 
     private Shape genOutline(int dungeonWidth, int dungeonHeight, Random rng) {

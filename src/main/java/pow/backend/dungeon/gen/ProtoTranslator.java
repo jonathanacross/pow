@@ -38,9 +38,9 @@ public class ProtoTranslator {
 
         featureMap = new HashMap<>();
         featureMap.put(Constants.FEATURE_WIN_TILE, new DungeonFeature("wintile", "way to win", "orange pearl",
-                new DungeonFeature.Flags(false, false, false), new ActionParams()));
+                new DungeonFeature.Flags(false, false, false, false, false), new ActionParams()));
         featureMap.put(Constants.FEATURE_LOSE_TILE, new DungeonFeature("losetile", "death", "cobra",
-                new DungeonFeature.Flags(false, false, false), new ActionParams()));
+                new DungeonFeature.Flags(false, false, false, false, false), new ActionParams()));
         featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("stairs up"));
         featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("stairs down"));
         featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("open door"));
@@ -58,9 +58,9 @@ public class ProtoTranslator {
 
         featureMap = new HashMap<>();
         featureMap.put(Constants.FEATURE_WIN_TILE, new DungeonFeature("wintile", "way to win", "orange pearl",
-                new DungeonFeature.Flags(false, false, false), new ActionParams()));
+                new DungeonFeature.Flags(false, false, false, false, false), new ActionParams()));
         featureMap.put(Constants.FEATURE_LOSE_TILE, new DungeonFeature("losetile", "death", "cobra",
-                new DungeonFeature.Flags(false, false, false), new ActionParams()));
+                new DungeonFeature.Flags(false, false, false, false, false), new ActionParams()));
         featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("ivy stone stairs up"));
         featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("ivy stone stairs down"));
         featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("ivy stone open door"));
@@ -78,9 +78,9 @@ public class ProtoTranslator {
 
         featureMap = new HashMap<>();
         featureMap.put(Constants.FEATURE_WIN_TILE, new DungeonFeature("wintile", "way to win", "orange pearl",
-                new DungeonFeature.Flags(false, false, false), new ActionParams()));
+                new DungeonFeature.Flags(false, false, false, false, false), new ActionParams()));
         featureMap.put(Constants.FEATURE_LOSE_TILE, new DungeonFeature("losetile", "death", "cobra",
-                new DungeonFeature.Flags(false, false, false), new ActionParams()));
+                new DungeonFeature.Flags(false, false, false, false, false), new ActionParams()));
         featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("brown stone stairs up"));
         featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("brown stone stairs down"));
         featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("brown stone open door"));

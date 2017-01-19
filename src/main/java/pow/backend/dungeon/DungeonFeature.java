@@ -11,11 +11,15 @@ public class DungeonFeature implements Serializable {
         public boolean blockGround;
         public boolean glowing;
         public boolean actOnStep;
+        public boolean stairsUp;
+        public boolean stairsDown;
 
-        public Flags(boolean blockGround, boolean glowing, boolean actOnStep) {
+        public Flags(boolean blockGround, boolean glowing, boolean actOnStep, boolean stairsUp, boolean stairsDown) {
             this.blockGround = blockGround;
             this.glowing = glowing;
             this.actOnStep = actOnStep;
+            this.stairsUp = stairsUp;
+            this.stairsDown = stairsDown;
         }
     }
 

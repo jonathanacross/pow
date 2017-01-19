@@ -1,5 +1,6 @@
 package pow.backend.dungeon.gen;
 
+import pow.backend.ActionParams;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
@@ -272,4 +273,37 @@ public class GeneratorUtils {
         }
         return actors;
     }
+
+    public static Point findStairsLocation(DungeonSquare[][] squares, Random rng) {
+        int width = Array2D.width(squares);
+        int height = Array2D.width(squares);
+        int x;
+        int y;
+        do {
+            x = rng.nextInt(width);
+            y = rng.nextInt(height);
+        } while (squares[x][y].feature != null || squares[x][y].blockGround());
+        return new Point(x,y);
+    }
+
+    // makes a feature for up/down stairs (or into dungeon)
+    public static DungeonFeature buildStairsFeature(String featureName, String target, boolean up) {
+        DungeonFeature featureTemplate = FeatureData.getFeature(featureName);
+        // Set the flags in case not set in the file. We may even be able to remove such
+        // flags from the file.
+        ActionParams params = new ActionParams();
+        // TODO: pull out magic strings somewhere
+        params.actionName = "gotoArea";
+        params.name = target;
+        DungeonFeature.Flags flags =  new DungeonFeature.Flags(false, false, false, up, !up) ;
+        DungeonFeature feature = new DungeonFeature(
+                featureTemplate.id,
+                featureTemplate.name,
+                featureTemplate.image,
+                flags,
+                params);
+
+        return feature;
+    }
+
 }
