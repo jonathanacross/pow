@@ -1,4 +1,4 @@
-package pow.backend.dungeon.gen;
+package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.ActionParams;
 import pow.backend.GameMap;
@@ -6,14 +6,16 @@ import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
+import pow.backend.dungeon.gen.FeatureData;
+import pow.backend.dungeon.gen.TerrainData;
 import pow.util.Array2D;
 import pow.util.Point;
+import pow.backend.dungeon.gen.GeneratorUtils;
 
 import java.util.*;
 
-import static pow.util.SimplexNoise.noise;
+public class RecursiveInterpolation implements MapGenerator {
 
-public class MapGenerator {
     public static class TerrainFeatureTriplet {
         public String terrain;
         public String feature1;
@@ -40,13 +42,107 @@ public class MapGenerator {
         public List<TerrainFeatureTriplet> borders;
         public List<TerrainFeatureTriplet> interiors;
         public List<String> monsterIds;
+        public String upstairsFeatureId;
+        public String downstairsFeatureId;
 
-        public MapStyle(List<TerrainFeatureTriplet> borders, List<TerrainFeatureTriplet> interiors, List<String> monsterIds) {
+        public MapStyle(List<TerrainFeatureTriplet> borders, List<TerrainFeatureTriplet> interiors, List<String> monsterIds,
+                        String upstairsFeatureId, String downstairsFeatureId) {
             this.borders = borders;
             this.interiors = interiors;
             this.monsterIds = monsterIds;
+            this.upstairsFeatureId = upstairsFeatureId;
+            this.downstairsFeatureId = downstairsFeatureId;
         }
     }
+
+    private int sourceSize;
+    private int numInterpolationSteps;
+    private MapStyle mapStyle;
+    public RecursiveInterpolation(int sourceSize, int numInterpolationSteps, MapStyle mapStyle) {
+        this.sourceSize = sourceSize;
+        this.numInterpolationSteps = numInterpolationSteps;
+        this.mapStyle = mapStyle;
+    }
+
+    public GameMap genMap(String name,
+                          Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
+                          Random rng) {
+        return genMap(name, sourceSize, sourceSize, numInterpolationSteps, mapStyle, exits, rng);
+    }
+
+    private static GameMap genMap(
+            String name,
+            int width,
+            int height,
+            int numInterpolationSteps,
+            MapStyle style,
+            Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
+            Random rng) {
+
+        // get the border types; used in various functions below
+        Set<String> borders = new HashSet<>();
+        for (TerrainFeatureTriplet b : style.borders) {
+            borders.add(b.terrain);
+        }
+
+        // build the terrain
+        TerrainFeatureTriplet[][] layout = genTerrainLayout(width, height, style, rng);
+        TerrainFeatureTriplet[][] terrainMap = makeInterpMap(layout, rng, numInterpolationSteps);
+        terrainMap = trimTerrainBorder(terrainMap, borders);
+        int w = Array2D.width(terrainMap);
+        int h = Array2D.height(terrainMap);
+
+        // generate fractal noise for feature placement
+        double[][] noiseMap = makeNoise(w, h, width, height, numInterpolationSteps);
+
+        DungeonSquare[][] squares = new DungeonSquare[w][h];
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                DungeonTerrain terrain = TerrainData.getTerrain(terrainMap[x][y].terrain);
+
+                DungeonFeature feature = null;
+                if (noiseMap[x][y] > 0.5 && terrainMap[x][y].feature1 != null) {
+                    feature = FeatureData.getFeature(terrainMap[x][y].feature1);
+                }
+                else if (noiseMap[x][y] < -0.5 && terrainMap[x][y].feature2 != null) {
+                    feature = FeatureData.getFeature(terrainMap[x][y].feature2);
+                }
+
+                squares[x][y] = new DungeonSquare(terrain, feature);
+            }
+        }
+
+        // place the exits
+        Map<String, Point> keyLocations = new HashMap<>();
+        for (Map.Entry<String, String> entry : exits.entrySet()) {
+            String exitName = entry.getKey();
+            String target = entry.getValue();
+            // TODO: clean up area moving class: two strings relies too much on random convention
+            if (exitName.startsWith("up") || exitName.startsWith("down")) {
+                // up or down
+                boolean up = exitName.startsWith("up");
+                String featureId = up ? style.upstairsFeatureId : style.downstairsFeatureId;
+                DungeonFeature stairs = GeneratorUtils.buildStairsFeature(featureId, target, up);
+                Point loc = GeneratorUtils.findStairsLocation(squares, rng);
+                squares[loc.x][loc.y].feature = stairs;
+                keyLocations.put(exitName, loc);
+            } else {
+                // cardinal direction
+                DungeonSquare square = buildTeleportTile(style.interiors.get(0).terrain, target);
+                Point loc = findExitCoordinates(terrainMap, borders, exitName, rng);
+                squares[loc.x][loc.y] = square;
+                keyLocations.put(exitName, loc);
+            }
+        }
+
+        // add the monsters
+        //int numMonsters = 0;
+        int numMonsters = (w - 1) * (h - 1) / 100;
+        List<Actor> monsters = GeneratorUtils.createMonsters(squares, numMonsters, style.monsterIds, rng);
+        GameMap map = new GameMap(name, squares, keyLocations, monsters);
+        return map;
+    }
+
 
     private static DungeonSquare buildTeleportTile(String terrainTemplateName, String target) {
         DungeonTerrain terrainTemplate = TerrainData.getTerrain(terrainTemplateName);
@@ -65,6 +161,42 @@ public class MapGenerator {
 
         DungeonSquare square = new DungeonSquare(terrain, null);
         return square;
+    }
+
+    // fills in squares such that the open squares are connected
+    private static List<Point> findSafeInternalSquaresToBlock(int width, int height, int desiredBlocked, Random rng) {
+        int[][] blocked = new int[width][height];
+
+        // make the edges blocked initially
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                blocked[x][y] = (x == 0 | x == width - 1 || y == 0 || y == height - 1) ? 1 : 0;
+            }
+        }
+
+        // goal is to block squares in the center, so that the unblocked
+        // part is still connected.
+        List<Point> safeBlocks = new ArrayList<>();
+        for (int i = 0; i < desiredBlocked; ) {
+            int x;
+            int y;
+            // find a random empty square
+            do {
+                x = rng.nextInt(width - 2) + 1;
+                y = rng.nextInt(height - 2) + 1;
+            } while (blocked[x][y] == 1);
+            blocked[x][y] = 1;
+            if (GeneratorUtils.hasConnectedRegionWithValue(blocked, 0)) {
+                // was good, keep it
+                safeBlocks.add(new Point(x,y));
+                i++;
+            } else {
+                // was a bad one, so remove it
+                blocked[x][y] = 0;
+            }
+        }
+
+        return safeBlocks;
     }
 
     // removes the features at random from the source triplet
@@ -95,31 +227,18 @@ public class MapGenerator {
         }
 
         // Add squares of impassible in the middle (for dungeon shape variety)
-        int numImpassible = 0;
-        if (width == 4 && height == 4) {
-            numImpassible = rng.nextInt(2);
-        }
-        else if (width == 5 && height == 5) {
-            int option = rng.nextInt(10);
-            if (option == 0) numImpassible = 0;
-            else if (option < 4) numImpassible = 1;
-            else numImpassible = 2;
-        }
-        else if (width > 5 && height > 5) {
-            // this probably doesn't work very well, can improve later if needed
-            numImpassible = rng.nextInt(width - 3);
-        }
-
-        for (int i = 0; i < numImpassible; i++) {
-            int x = rng.nextInt(width - 2) + 1;
-            int y = rng.nextInt(height - 2) + 1;
-            layout[x][y] = mixup(style.borders.get(0), rng);
+        int x = rng.nextInt(19) + rng.nextInt(19);  // pick number from 0 to 36, 18 is most likely
+        int numPossibleSquares = (width - 2)*(height - 2);
+        int numDesiredToFill = (int) Math.round(x / 100.0 * numPossibleSquares);
+        List<Point> safeBlocks = findSafeInternalSquaresToBlock(width, height, numDesiredToFill, rng);
+        for (Point p : safeBlocks) {
+            layout[p.x][p.y] = mixup(style.borders.get(0), rng);
         }
 
         return layout;
     }
 
-    static TerrainFeatureTriplet[][] interpolate(TerrainFeatureTriplet[][] layout, Random rng) {
+    private static TerrainFeatureTriplet[][] interpolate(TerrainFeatureTriplet[][] layout, Random rng) {
 
         int width = Array2D.width(layout);
         int height = Array2D.width(layout);
@@ -180,7 +299,7 @@ public class MapGenerator {
         return interpMap;
     }
 
-    static TerrainFeatureTriplet[][] makeInterpMap(TerrainFeatureTriplet[][] layout, Random rng, int interpolationSteps) {
+    private static TerrainFeatureTriplet[][] makeInterpMap(TerrainFeatureTriplet[][] layout, Random rng, int interpolationSteps) {
         TerrainFeatureTriplet[][] map = layout;
         for (int i = 0; i < interpolationSteps; i++) {
             map = interpolate(map, rng);
@@ -188,17 +307,17 @@ public class MapGenerator {
         return map;
     }
 
-    static double[][] fractalNoise(int width, int height, double initAmp, double initScale, double delta, int iters) {
+    private static double[][] fractalNoise(int width, int height, double initAmp, double initScale, double delta, int iters) {
         double[][] data = new double[width][height];
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 double t = 0.0;
                 double amp = initAmp;
-                double scale = width * initScale;
+                double scale = initScale;
 
                 for (int i = 0; i < iters; i++) {
-                    t += amp * noise(x / scale + delta, y / scale + delta);
+                    t += amp * pow.util.SimplexNoise.noise(x / scale + delta, y / scale + delta);
                     amp *= 0.5;
                     scale *= 0.5;
                 }
@@ -212,7 +331,7 @@ public class MapGenerator {
 
     // removes extra borders of impassible stuff -- makes the map smaller, and
     // makes it so we won't have to "tunnel" to the nearest exit.
-    static TerrainFeatureTriplet[][] trimTerrainBorder(TerrainFeatureTriplet[][] layout, Set<String> borders) {
+    private static TerrainFeatureTriplet[][] trimTerrainBorder(TerrainFeatureTriplet[][] layout, Set<String> borders) {
         int width = Array2D.width(layout);
         int height = Array2D.height(layout);
 
@@ -243,9 +362,9 @@ public class MapGenerator {
         return croppedLayout;
     }
 
-    static double[][] makeNoise(int width, int height, int interpolationSteps) {
-        int areaSize = (1 << interpolationSteps);
-        double[][] noise = fractalNoise(width, height, 1.0, 0.5 / areaSize, 0.0, interpolationSteps);
+    private static double[][] makeNoise(int width, int height, int origWidth, int origHeight, int interpolationSteps) {
+        int scale = Math.max(origWidth, origHeight) * 2;
+        double[][] noise = fractalNoise(width, height, 1.0, scale, 0.0, interpolationSteps);
         return noise;
     }
 
@@ -309,63 +428,4 @@ public class MapGenerator {
         return new Point(x,y);
     }
 
-    public static GameMap genMap(
-            String name,
-            int width,
-            int height,
-            int numInterpolationSteps,
-            MapStyle style,
-            Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
-            Random rng) {
-
-        // get the border types; used in various functions below
-        Set<String> borders = new HashSet<>();
-        for (TerrainFeatureTriplet b : style.borders) {
-            borders.add(b.terrain);
-        }
-
-        // build the terrain
-        TerrainFeatureTriplet[][] layout = genTerrainLayout(width, height, style, rng);
-        TerrainFeatureTriplet[][] terrainMap = makeInterpMap(layout, rng, numInterpolationSteps);
-        terrainMap = trimTerrainBorder(terrainMap, borders);
-        int w = Array2D.width(terrainMap);
-        int h = Array2D.height(terrainMap);
-
-        // generate fractal noise for feature placement
-        double[][] noiseMap = makeNoise(w,h,numInterpolationSteps);
-
-        DungeonSquare[][] squares = new DungeonSquare[w][h];
-        for (int x = 0; x < w; x++) {
-            for (int y = 0; y < h; y++) {
-                DungeonTerrain terrain = TerrainData.getTerrain(terrainMap[x][y].terrain);
-
-                DungeonFeature feature = null;
-                if (noiseMap[x][y] > 0.7 && terrainMap[x][y].feature1 != null) {
-                    feature = FeatureData.getFeature(terrainMap[x][y].feature1);
-                }
-                else if (noiseMap[x][y] < -0.7 && terrainMap[x][y].feature2 != null) {
-                    feature = FeatureData.getFeature(terrainMap[x][y].feature2);
-                }
-
-                squares[x][y] = new DungeonSquare(terrain, feature);
-            }
-        }
-
-        // place the exits
-        Map<String, Point> keyLocations = new HashMap<>();
-        for (Map.Entry<String, String> entry : exits.entrySet()) {
-            String exitName = entry.getKey();
-            String target = entry.getValue();
-            DungeonSquare square = buildTeleportTile(style.interiors.get(0).terrain, target);
-            Point loc = findExitCoordinates(terrainMap, borders, exitName, rng);
-            squares[loc.x][loc.y] = square;
-            keyLocations.put(exitName, loc);
-        }
-
-        //int numMonsters = 0;
-        int numMonsters = (w - 1) * (h - 1) / 100;
-        List<Actor> monsters = DungeonGenerator.createMonsters(squares, numMonsters, style.monsterIds, rng);
-        GameMap map = new GameMap(name, squares, keyLocations, monsters);
-        return map;
-    }
 }

@@ -1,41 +1,40 @@
-package pow.backend.dungeon.gen.proto;
+package pow.backend.dungeon.gen.mapgen;
 
+import pow.backend.GameMap;
+import pow.backend.actors.Actor;
+import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.gen.Constants;
+import pow.backend.dungeon.gen.GeneratorUtils;
+import pow.backend.dungeon.gen.ProtoTranslator;
+import pow.util.Point;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
-public class TestArea implements ProtoGenerator {
+// generates a test area.  Not designed to be configurable.
+public class TestArea implements MapGenerator {
 
-    private int mode;
-    public TestArea(int mode) {
-        this.mode = mode;
+    public GameMap genMap(String name,
+                          // TODO: this is currently ignored; no exits are made
+                          Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
+                          Random rng) {
+
+        int[][] data = genMapPremade();
+        ProtoTranslator translator = new ProtoTranslator(0);
+        DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, translator);
+
+        int numMonsters = 10;
+        List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, null, rng);
+
+        Map<String, Point> keyLocations = new HashMap<>();
+
+        GameMap map = new GameMap(name, dungeonSquares, keyLocations, monsters);
+        return map;
     }
 
-    @Override
-    public int[][] genMap(int width, int height, Random randSeed) {
-        switch (mode) {
-            case 0: return genMapPremade(randSeed);
-            case 1:
-            default: return genMapEmpty(width, height);
-        }
-    }
-
-    public int[][] genMapEmpty(int width, int height) {
-
-        // start with an empty room
-        int[][] data = new int[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                data[x][y] = (x == 0 || y == 0 || x == width-1 || y == height-1) ?
-                        Constants.TERRAIN_WALL :
-                        Constants.TERRAIN_FLOOR;
-            }
-        }
-
-        return data;
-    }
-
-    // NOTE: this ignores the input width and height!
-    public int[][] genMapPremade(Random randSeed) {
-
+    private int[][] genMapPremade() {
         String[] map = {
                 "####################",
                 "#..................#",

@@ -4,6 +4,7 @@ import pow.backend.GameState;
 import pow.backend.action.FireRocket;
 import pow.backend.action.Move;
 import pow.backend.action.Save;
+import pow.backend.action.TakeStairs;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.effect.GlyphLoc;
@@ -41,6 +42,8 @@ public class GameMainLayer extends AbstractWindow {
             case NORTH_EAST: backend.tellPlayer(new Move(gs.player, 1, -1)); break;
             case SOUTH_WEST: backend.tellPlayer(new Move(gs.player, -1, 1)); break;
             case SOUTH_EAST: backend.tellPlayer(new Move(gs.player, 1, 1)); break;
+            case UP_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, true)); break;
+            case DOWN_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, false)); break;
             case REST: backend.tellPlayer(new Move(gs.player, 0, 0)); break;
             case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
             case SAVE: backend.tellPlayer(new Save()); break;

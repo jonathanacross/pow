@@ -20,6 +20,7 @@ ice open door	ice open door	ice open door	openDoor,blockWater,blockLava	modifyFe
 ice closed door	ice closed door	ice closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround	modifyFeature::ice open door
 ice stairs down	ice stairs down	ice stairs down	downstairs,blockWater,blockLava	
 ice stairs up	ice stairs up	ice stairs up	upstairs,blockWater,blockLava	
+dungeon entrance	dungeon entrance	dungeon entrance	downstairs,blockWater,blockLava	
 hot stone open door	hot stone open door	hot stone open door	openDoor,blockWater,blockLava	modifyFeature::hot stone closed door
 hot stone closed door	hot stone closed door	hot stone closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround	modifyFeature::hot stone open door
 hot stone stairs down	hot stone stairs down	hot stone stairs down	downstairs,blockWater,blockLava	

@@ -23,6 +23,9 @@ public enum KeyInput {
     RUN_WEST,
     RUN_NORTH_WEST,
 
+    UP_STAIRS,
+    DOWN_STAIRS,
+
     SAVE,
     PLAYER_INFO,
     LOOK,
