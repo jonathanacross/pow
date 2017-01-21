@@ -3,6 +3,7 @@ package pow.backend;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.gen.GenOverworldTopology;
+import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.ProtoTranslator;
 import pow.backend.dungeon.gen.mapgen.MapGenerator;
 import pow.backend.dungeon.gen.mapgen.RecursiveInterpolation;
@@ -12,11 +13,7 @@ import pow.util.Point;
 import pow.util.direction.DirectionSets;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class GameWorld implements Serializable {
     public Map<String, GameMap> world;
@@ -37,35 +34,35 @@ public class GameWorld implements Serializable {
         List<String> monsters = Arrays.asList("green mushrooms", "yellow ant", "scruffy dog");
 
         // area 1.
-        Map<String, String> area1Exits = new HashMap<>();
-        area1Exits.put("east", "area2@west");
-        area1Exits.put("south", "area3@north");
+        List<MapConnection> area1Connections = new ArrayList<>();
+        area1Connections.add(new MapConnection("east", MapConnection.Direction.E, "area2", "west"));
+        area1Connections.add(new MapConnection("south", MapConnection.Direction.S, "area3", "north"));
         RecursiveInterpolation.MapStyle area1Style = new RecursiveInterpolation.MapStyle(
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree")),
                 monsters, STAIRS_UP, STAIRS_DOWN);
         MapGenerator area1Gen = new RecursiveInterpolation(10, 0, area1Style);
-        GameMap area1 = area1Gen.genMap("area 1", area1Exits, rng);
+        GameMap area1 = area1Gen.genMap("area 1", area1Connections, rng);
 
         // area 2.
-        Map<String, String> area2Exits = new HashMap<>();
-        area2Exits.put("west", "area1@east");
+        List<MapConnection> area2Connections = new ArrayList<>();
+        area1Connections.add(new MapConnection("west", MapConnection.Direction.W, "area1", "east"));
         RecursiveInterpolation.MapStyle area2Style = new RecursiveInterpolation.MapStyle(
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
                 monsters, STAIRS_UP, STAIRS_DOWN);
         MapGenerator area2Gen = new RecursiveInterpolation(10, 0, area2Style);
-        GameMap area2 = area2Gen.genMap("area 2", area2Exits, rng);
+        GameMap area2 = area2Gen.genMap("area 2", area2Connections, rng);
 
         // area 3.
-        Map<String, String> area3Exits = new HashMap<>();
-        area3Exits.put("north", "area1@south");
+        List<MapConnection> area3Connections = new ArrayList<>();
+        area1Connections.add(new MapConnection("north", MapConnection.Direction.N, "area1", "south"));
         RecursiveInterpolation.MapStyle area3Style = new RecursiveInterpolation.MapStyle(
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
                 monsters, STAIRS_UP, STAIRS_DOWN);
         MapGenerator area3Gen = new RecursiveInterpolation(10, 0, area3Style);
-        GameMap area3 = area3Gen.genMap("area 3", area3Exits, rng);
+        GameMap area3 = area3Gen.genMap("area 3", area3Connections, rng);
 
         world = new HashMap<>();
         world.put("area1", area1);
@@ -79,18 +76,27 @@ public class GameWorld implements Serializable {
 
     private static final String AREA_NAME = "area";
 
-    private Map<String, String> getExits(GenOverworldTopology.RoomConnection roomConnection) {
-        Map<String, String> exits = new HashMap<>();
+    private List<MapConnection> getConnections(GenOverworldTopology.RoomConnection roomConnection) {
+        List<MapConnection> connections = new ArrayList<>();
         for (int d = 0; d < DirectionSets.Cardinal.size(); d++) {
-            int oppD = DirectionSets.Cardinal.getOpposite(d);
             if (roomConnection.adjroomIdx[d] >= 0) {
                 int adjId = roomConnection.adjroomIdx[d];
-                exits.put(DirectionSets.Cardinal.getName(d),
-                        AREA_NAME + adjId + "@" + DirectionSets.Cardinal.getName(oppD));
+                String destAreaId = AREA_NAME + adjId;
+                // TODO: see if it's worth refactoring RoomConnection to use MapConnection.Direction
+                MapConnection.Direction dir = null;
+                switch (d) {
+                    case DirectionSets.Cardinal.N: dir = MapConnection.Direction.N; break;
+                    case DirectionSets.Cardinal.E: dir = MapConnection.Direction.E; break;
+                    case DirectionSets.Cardinal.S: dir = MapConnection.Direction.S; break;
+                    case DirectionSets.Cardinal.W: dir = MapConnection.Direction.W; break;
+                }
+                String locName = dir.name();
+                String destLocName = dir.opposite().name();
+                connections.add( new MapConnection(locName, dir, destAreaId, destLocName) );
             }
         }
 
-        return exits;
+        return connections;
     }
 
     private void genMapWorld(Random rng, Player player, Pet pet) {
@@ -147,21 +153,17 @@ public class GameWorld implements Serializable {
         DebugLogger.info(topologyGenerator.toString());
 
         // add a sample dungeon to test up/down stairs.
-        Map<String, String> dungeon1Exits = new HashMap<>();
-        // TODO: make adding exits more foolproof; it is difficult right now.
-        // 1. if possible, separate out direction from name, so that utility can know
-        //    whether to make stairs or a dungeon edge.
-        // 2. nice to have method with something like:
-        //    addExits(area1id, direction, name, area2id, name), which can
-        //    validate that area ids are correct.  Also maybe even have something that
-        //    fills in names automatically for cardinal directions?
-        //    Or area1.addExit(direction, area2); ? Think about it.
-        // 3. Refactor out stair/edge generation into utilities
-        dungeon1Exits.put("up", "area0@down dungeon1");
+        // TODO: add a method that can act on a dungeon topology and add a connection to two areas.
+        final String UP_LOC_NAME = "up";
+        final String DOWN_LOC_NAME = "down dungeon1";
+        final String TEST_DUNGEON_ID = "D1L1";
+
+        List<MapConnection> dungeon1Connections = new ArrayList<>();
+        dungeon1Connections.add(new MapConnection(UP_LOC_NAME, MapConnection.Direction.U, "area0", DOWN_LOC_NAME));
         ProtoTranslator dungeon1Style = new ProtoTranslator(1);
         List<String> dungeon1Monsters = Arrays.asList("yellow snake", "scruffy dog", "yellow mushrooms", "floating eye", "bat", "green worm mass", "brown imp");
         MapGenerator dungeon1Gen = new ShapeDLA(dungeon1Style, dungeon1Monsters, 50, 50);
-        GameMap dungeon1 = dungeon1Gen.genMap("dungeon 1 level 1", dungeon1Exits, rng);
+        GameMap dungeon1 = dungeon1Gen.genMap(TEST_DUNGEON_ID, dungeon1Connections, rng);
 
         world = new HashMap<>();
         for (int group = 0; group < numGroups; group++) {
@@ -170,17 +172,17 @@ public class GameWorld implements Serializable {
                 int levelIdx = group * roomsPerGroup + room;
 
                 GenOverworldTopology.RoomConnection roomConnection = roomConnections.get(levelIdx);
-                Map<String, String> exits = getExits(roomConnection);
+                List<MapConnection> connections = getConnections(roomConnection);
                 if (group == 0 && room == 0) {
-                    exits.put("down dungeon1", "dungeon 1 level 1@up");
+                    connections.add(new MapConnection(DOWN_LOC_NAME, MapConnection.Direction.D, TEST_DUNGEON_ID, UP_LOC_NAME));
                 }
 
-                GameMap area = mapGenerator.genMap("area " + levelIdx, exits, rng);
+                GameMap area = mapGenerator.genMap("area " + levelIdx, connections, rng);
                 world.put(AREA_NAME + roomConnection.level, area);
             }
         }
 
-        world.put("dungeon 1 level 1", dungeon1);
+        world.put(TEST_DUNGEON_ID, dungeon1);
 
 
         // set up the player at the start

@@ -1,13 +1,14 @@
 package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
+import pow.backend.dungeon.gen.MapConnection;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Random;
 
 public interface MapGenerator {
     GameMap genMap(String name,
-                   Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
+                   List<MapConnection> connections,
                    Random rng);
 
 }

@@ -15,6 +15,5 @@ public class DirectionSets {
         public static String getName(int dirIdx) { return NAMES[dirIdx]; }
     }
 
-    // TODO: add similar classes for diagonal/all directions if it's useful
 
 }

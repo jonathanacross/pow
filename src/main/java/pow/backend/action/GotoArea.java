@@ -23,8 +23,6 @@ public class GotoArea implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         GameWorld world = gs.world;
-        // TODO: add a default area that always exists, and put the player there
-        // if the world doesn't contain areaName.
 
         // remove player and pet from current area
         gs.world.currentMap.removeActor(gs.player);

@@ -3,6 +3,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.ActionParams;
+import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
@@ -68,10 +69,9 @@ public class Move implements Action {
             if (actor == gs.player) {
                 DungeonTerrain currSquareTerrain = gs.world.currentMap.map[actor.loc.x][actor.loc.y].terrain;
                 if (currSquareTerrain.flags.teleport) {
-                    String encodedLoc = currSquareTerrain.actionParams.name;
-                    String[] fields = encodedLoc.split("@");
-                    String targetArea = fields[0];
-                    Point targetLoc = gs.world.world.get(targetArea).keyLocations.get(fields[1]);
+                    DungeonExit exit = new DungeonExit(currSquareTerrain.actionParams.name);
+                    String targetArea = exit.areaId;
+                    Point targetLoc = gs.world.world.get(exit.areaId).keyLocations.get(exit.locName);
                     return ActionResult.Failed(new GotoArea(targetArea, targetLoc));
                 }
             }
