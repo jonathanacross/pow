@@ -2,7 +2,7 @@ package pow.backend;
 
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
-import pow.backend.dungeon.gen.GenOverworldTopology;
+import pow.backend.dungeon.gen.worldgen.GenOverworldTopology;
 import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.ProtoTranslator;
 import pow.backend.dungeon.gen.mapgen.MapGenerator;
