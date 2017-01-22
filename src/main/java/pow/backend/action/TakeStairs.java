@@ -4,6 +4,7 @@ import pow.backend.ActionParams;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
+import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.event.GameEvent;
@@ -44,10 +45,9 @@ public class TakeStairs implements Action {
             return ActionResult.Failed(null);
         }
 
-        String encodedLoc = feature.actionParams.name;
-        String[] fields = encodedLoc.split("@");
-        String targetArea = fields[0];
-        Point targetLoc = gs.world.world.get(targetArea).keyLocations.get(fields[1]);
+        DungeonExit exit = new DungeonExit(feature.actionParams.name);
+        String targetArea = exit.areaId;
+        Point targetLoc = gs.world.world.get(exit.areaId).keyLocations.get(exit.locName);
         return ActionResult.Failed(new GotoArea(targetArea, targetLoc));
     }
 

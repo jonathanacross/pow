@@ -9,11 +9,7 @@ import pow.util.Array2D;
 import pow.util.DebugLogger;
 import pow.util.Point;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Stack;
-
+import java.util.*;
 
 public class GeneratorUtils {
 
@@ -274,6 +270,8 @@ public class GeneratorUtils {
         return actors;
     }
 
+    // --------------------- related to exits --------------
+
     public static Point findStairsLocation(DungeonSquare[][] squares, Random rng) {
         int width = Array2D.width(squares);
         int height = Array2D.width(squares);
@@ -287,14 +285,16 @@ public class GeneratorUtils {
     }
 
     // makes a feature for up/down stairs (or into dungeon)
-    public static DungeonFeature buildStairsFeature(String featureName, String target, boolean up) {
-        DungeonFeature featureTemplate = FeatureData.getFeature(featureName);
+    public static DungeonFeature buildStairsFeature(String upFeatureId, String downFeatureId, MapConnection connection) {
+        boolean up = connection.dir == MapConnection.Direction.U;
+        String featureId = up ? upFeatureId : downFeatureId;
+        DungeonFeature featureTemplate = FeatureData.getFeature(featureId);
         // Set the flags in case not set in the file. We may even be able to remove such
         // flags from the file.
         ActionParams params = new ActionParams();
         // TODO: pull out magic strings somewhere
         params.actionName = "gotoArea";
-        params.name = target;
+        params.name = connection.destination.toString();
         DungeonFeature.Flags flags =  new DungeonFeature.Flags(false, false, false, up, !up) ;
         DungeonFeature feature = new DungeonFeature(
                 featureTemplate.id,
@@ -306,4 +306,131 @@ public class GeneratorUtils {
         return feature;
     }
 
+    public static DungeonSquare buildTeleportTile(String terrainTemplateName, String target) {
+        DungeonTerrain terrainTemplate = TerrainData.getTerrain(terrainTemplateName);
+
+        ActionParams params = new ActionParams();
+        // TODO: pull out magic strings somewhere
+        params.actionName = "gotoArea";
+        params.name = target;
+        DungeonTerrain.Flags flags = new DungeonTerrain.Flags(false, false, false, true);
+        DungeonTerrain terrain = new DungeonTerrain(
+                terrainTemplate.id,
+                terrainTemplate.name,
+                terrainTemplate.image,
+                flags,
+                params);
+
+        DungeonSquare square = new DungeonSquare(terrain, null);
+        return square;
+    }
+
+    private static boolean isOpen(DungeonSquare square) {
+        return !square.terrain.flags.blockGround;// && square.feature == null;
+    }
+
+    // Given a row or column to search, this returns a coordinate where there is some
+    // interior square.  This will fail if there are no interior squares in this row/column.
+    private static int findOtherCoordinate(DungeonSquare[][] squares,
+                                           int rowOrCol, boolean vertical, Random rng) {
+        List<Integer> candidates = new ArrayList<>();
+        if (vertical) {
+            int x = rowOrCol;
+            int height = Array2D.height(squares);
+            for (int y = 0; y < height; y++) {
+                if (isOpen(squares[x][y])) {
+                    candidates.add(y);
+                }
+            }
+        } else {
+            int y = rowOrCol;
+            int width = Array2D.width(squares);
+            for (int x = 0; x < width; x++) {
+                if (isOpen(squares[x][y])) {
+                    candidates.add(x);
+                }
+            }
+        }
+
+        // pick one at random
+        return candidates.get(rng.nextInt(candidates.size()));
+    }
+
+    // Utility method to find a location to put a square exiting a map.
+    // This requires that the map has a border of at most one square thick
+    // at some point on each side of the map.  It works by picking one of
+    // the locations on the side of interest where the interior is one
+    // square from the edge.
+    public static Point findExitCoordinates(
+            DungeonSquare[][] squares,
+            MapConnection.Direction direction,
+            Random rng) {
+        int width = Array2D.width(squares);
+        int height = Array2D.height(squares);
+
+        int x;
+        int y;
+        switch (direction) {
+            case N:
+                y = 0;
+                x = findOtherCoordinate(squares, y + 1, false, rng);
+                break;
+            case S:
+                y = height - 1;
+                x = findOtherCoordinate(squares, y - 1, false, rng);
+                break;
+            case W:
+                x = 0;
+                y = findOtherCoordinate(squares, x + 1, true, rng);
+                break;
+            case E:
+                x = width - 1;
+                y = findOtherCoordinate(squares, x - 1, true, rng);
+                break;
+            default:
+                x = -1;
+                y = -1;
+                break;
+        }
+
+        return new Point(x,y);
+    }
+
+    // Function to add exits to a map.
+    // It modifies the array of DungeonSquares in place, adding features,
+    // or replacing the squares completely to put exits.  This function
+    // returns the list of key locations.
+    //
+    // This function makes multiple assumptions:
+    //    * The map has been trimmed--that is, there is a spot on each
+    //      edge where the border is only one square thick.
+    //    * There is at most 1 connection in each cardinal direction
+    //      (There may be multiple up/down connections)
+    public static Map<String, Point> addDefaultExits(
+            List<MapConnection> connections,
+            DungeonSquare[][] squares,  // modified in place
+            String interiorTerrainId, // interior terrain id used to make a N/S/E/W exit.
+            String upstairsFeatureId,  // feature ids used to make upstairs or downstairs.
+            String downstairsFeatureId,
+            Random rng) {
+        Map<String, Point> keyLocations = new HashMap<>();
+        for (MapConnection connection : connections) {
+            if (connection.dir == MapConnection.Direction.U ||
+                    connection.dir == MapConnection.Direction.D) {
+                // up or down
+                DungeonFeature stairs = GeneratorUtils.buildStairsFeature(upstairsFeatureId, downstairsFeatureId, connection);
+                Point loc = GeneratorUtils.findStairsLocation(squares, rng);
+                squares[loc.x][loc.y].feature = stairs;
+                keyLocations.put(connection.name, loc);
+            } else {
+                // cardinal direction
+                DungeonSquare square = GeneratorUtils.buildTeleportTile(interiorTerrainId, connection.destination.toString());
+                Point loc = GeneratorUtils.findExitCoordinates(squares, connection.dir, rng);
+                squares[loc.x][loc.y] = square;
+                keyLocations.put(connection.name, loc);
+            }
+        }
+        return keyLocations;
+
+    }
 }

@@ -1,12 +1,12 @@
 package pow.backend.dungeon.gen.mapgen;
 
-import pow.backend.ActionParams;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.gen.FeatureData;
+import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.TerrainData;
 import pow.util.Array2D;
 import pow.util.Point;
@@ -45,8 +45,11 @@ public class RecursiveInterpolation implements MapGenerator {
         public String upstairsFeatureId;
         public String downstairsFeatureId;
 
-        public MapStyle(List<TerrainFeatureTriplet> borders, List<TerrainFeatureTriplet> interiors, List<String> monsterIds,
-                        String upstairsFeatureId, String downstairsFeatureId) {
+        public MapStyle(List<TerrainFeatureTriplet> borders,
+                        List<TerrainFeatureTriplet> interiors,
+                        List<String> monsterIds,
+                        String upstairsFeatureId,
+                        String downstairsFeatureId) {
             this.borders = borders;
             this.interiors = interiors;
             this.monsterIds = monsterIds;
@@ -65,9 +68,9 @@ public class RecursiveInterpolation implements MapGenerator {
     }
 
     public GameMap genMap(String name,
-                          Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
+                          List<MapConnection> connections,
                           Random rng) {
-        return genMap(name, sourceSize, sourceSize, numInterpolationSteps, mapStyle, exits, rng);
+        return genMap(name, sourceSize, sourceSize, numInterpolationSteps, mapStyle, connections, rng);
     }
 
     private static GameMap genMap(
@@ -76,7 +79,7 @@ public class RecursiveInterpolation implements MapGenerator {
             int height,
             int numInterpolationSteps,
             MapStyle style,
-            Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
+            List<MapConnection> connections,
             Random rng) {
 
         // get the border types; used in various functions below
@@ -113,27 +116,13 @@ public class RecursiveInterpolation implements MapGenerator {
         }
 
         // place the exits
-        Map<String, Point> keyLocations = new HashMap<>();
-        for (Map.Entry<String, String> entry : exits.entrySet()) {
-            String exitName = entry.getKey();
-            String target = entry.getValue();
-            // TODO: clean up area moving class: two strings relies too much on random convention
-            if (exitName.startsWith("up") || exitName.startsWith("down")) {
-                // up or down
-                boolean up = exitName.startsWith("up");
-                String featureId = up ? style.upstairsFeatureId : style.downstairsFeatureId;
-                DungeonFeature stairs = GeneratorUtils.buildStairsFeature(featureId, target, up);
-                Point loc = GeneratorUtils.findStairsLocation(squares, rng);
-                squares[loc.x][loc.y].feature = stairs;
-                keyLocations.put(exitName, loc);
-            } else {
-                // cardinal direction
-                DungeonSquare square = buildTeleportTile(style.interiors.get(0).terrain, target);
-                Point loc = findExitCoordinates(terrainMap, borders, exitName, rng);
-                squares[loc.x][loc.y] = square;
-                keyLocations.put(exitName, loc);
-            }
-        }
+        Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
+                connections,
+                squares,
+                style.interiors.get(0).terrain,
+                style.upstairsFeatureId,
+                style.downstairsFeatureId,
+                rng);
 
         // add the monsters
         //int numMonsters = 0;
@@ -141,26 +130,6 @@ public class RecursiveInterpolation implements MapGenerator {
         List<Actor> monsters = GeneratorUtils.createMonsters(squares, numMonsters, style.monsterIds, rng);
         GameMap map = new GameMap(name, squares, keyLocations, monsters);
         return map;
-    }
-
-
-    private static DungeonSquare buildTeleportTile(String terrainTemplateName, String target) {
-        DungeonTerrain terrainTemplate = TerrainData.getTerrain(terrainTemplateName);
-
-        ActionParams params = new ActionParams();
-        // TODO: pull out magic strings somewhere
-        params.actionName = "gotoArea";
-        params.name = target;
-        DungeonTerrain.Flags flags = new DungeonTerrain.Flags(false, false, false, true);
-        DungeonTerrain terrain = new DungeonTerrain(
-                terrainTemplate.id,
-                terrainTemplate.name,
-                terrainTemplate.image,
-                flags,
-                params);
-
-        DungeonSquare square = new DungeonSquare(terrain, null);
-        return square;
     }
 
     // fills in squares such that the open squares are connected
@@ -367,65 +336,4 @@ public class RecursiveInterpolation implements MapGenerator {
         double[][] noise = fractalNoise(width, height, 1.0, scale, 0.0, interpolationSteps);
         return noise;
     }
-
-    // Given a row or column to search, this returns a coordinate where there is some
-    // interior square.  This will fail if there are no interior squares in this row/column.
-    private static int findOtherCoordinate(TerrainFeatureTriplet[][] terrainMap, Set<String> borders,
-                                           int rowOrCol, boolean vertical, Random rng) {
-        List<Integer> candidates = new ArrayList<>();
-        if (vertical) {
-            int x = rowOrCol;
-            int height = Array2D.height(terrainMap);
-            for (int y = 0; y < height; y++) {
-                if (!borders.contains(terrainMap[x][y].terrain)) {
-                    candidates.add(y);
-                }
-            }
-        } else {
-            int y = rowOrCol;
-            int width = Array2D.width(terrainMap);
-            for (int x = 0; x < width; x++) {
-                if (!borders.contains(terrainMap[x][y].terrain)) {
-                    candidates.add(x);
-                }
-            }
-        }
-
-        // pick one at random
-        return candidates.get(rng.nextInt(candidates.size()));
-    }
-
-    private static Point findExitCoordinates(TerrainFeatureTriplet[][] terrainMap, Set<String> borders,
-                                             String side, Random rng) {
-        int width = Array2D.width(terrainMap);
-        int height = Array2D.height(terrainMap);
-
-        int x;
-        int y;
-        switch (side) {
-            case "north":
-                y = 0;
-                x = findOtherCoordinate(terrainMap, borders, y + 1, false, rng);
-                break;
-            case "south":
-                y = height - 1;
-                x = findOtherCoordinate(terrainMap, borders, y - 1, false, rng);
-                break;
-            case "west":
-                x = 0;
-                y = findOtherCoordinate(terrainMap, borders, x + 1, true, rng);
-                break;
-            case "east":
-                x = width - 1;
-                y = findOtherCoordinate(terrainMap, borders, x - 1, true, rng);
-                break;
-            default:
-                x = -1;
-                y = -1;
-                break;
-        }
-
-        return new Point(x,y);
-    }
-
 }

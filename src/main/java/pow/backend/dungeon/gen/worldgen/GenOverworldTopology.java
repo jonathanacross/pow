@@ -1,4 +1,4 @@
-package pow.backend.dungeon.gen;
+package pow.backend.dungeon.gen.worldgen;
 
 import pow.util.direction.DirectionSets;
 import pow.util.direction.Direction;

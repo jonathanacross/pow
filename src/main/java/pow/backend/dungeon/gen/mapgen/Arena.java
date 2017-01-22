@@ -5,10 +5,10 @@ import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.gen.Constants;
 import pow.backend.dungeon.gen.GeneratorUtils;
+import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.ProtoTranslator;
 import pow.util.Point;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -28,16 +28,30 @@ public class Arena implements MapGenerator {
     }
 
     public GameMap genMap(String name,
-                   // TODO: this is currently ignored; no exits are made
-                   Map<String, String> exits,  // name of this exit -> otherAreaId@otherAreaLocName
-                   Random rng) {
+                          List<MapConnection> connections,
+                          Random rng) {
 
         int[][] data = genMap(this.width, this.height, rng);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, this.translator);
+
+        // Add exits
+        // TODO: this dungeon may have no guarantee that there's
+        // a floor tile 1 away from the edge on each side, so
+        // exit logic may fail.
+        String upstairsFeatureId = translator.getFeature(Constants.FEATURE_UP_STAIRS).id;
+        String downstairsFeatureId =  translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
+        String floorTerrainId = translator.getTerrain(Constants.TERRAIN_FLOOR).id;
+        Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
+                connections,
+                dungeonSquares,
+                floorTerrainId,
+                upstairsFeatureId,
+                downstairsFeatureId,
+                rng);
+
+        // Add monsters
         int numMonsters = (this.width - 1) * (this.height - 1) / 100;
         List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, this.monsterIds, rng);
-
-        Map<String, Point> keyLocations = new HashMap<>();
 
         GameMap map = new GameMap(name, dungeonSquares, keyLocations, monsters);
         return map;
