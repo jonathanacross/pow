@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
@@ -74,26 +75,28 @@ public class GameTargetLayer extends AbstractWindow {
         int x = cursorPosition.x;
         int y = cursorPosition.y;
         GameState gs = backend.getGameState();
+        DungeonSquare square = gs.world.currentMap.map[x][y];
 
         if (gs.player.canSee(gs, cursorPosition)) {
             Actor actor = gs.world.currentMap.actorAt(x,y);
             if (actor != null) {
                 return "you see a " + actor.name;
             }
-            DungeonFeature feature = gs.world.currentMap.map[x][y].feature;
-            if (feature != null) {
-                return "you see a " + feature.name;
+            if (square.items != null && square.items.size() > 0) {
+                return "you see a " + square.items.get(0).name;
             }
-            return "you see a " + gs.world.currentMap.map[x][y].terrain.name;
+            if (square.feature != null) {
+                return "you see a " + square.feature.name;
+            }
+            return "you see a " + square.terrain.name;
         }
         else {
-            if (gs.world.currentMap.map[x][y].seen) {
-                DungeonFeature feature = gs.world.currentMap.map[x][y].feature;
-                if (feature != null) {
-                    return feature.name;
+            if (square.seen) {
+                if (square.feature != null) {
+                    return square.feature.name;
                 }
 
-                return gs.world.currentMap.map[x][y].terrain.name;
+                return square.terrain.name;
             } else {
                 return "";  // skip squares the player can't see
             }

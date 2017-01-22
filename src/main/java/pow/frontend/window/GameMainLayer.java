@@ -6,6 +6,7 @@ import pow.backend.action.Move;
 import pow.backend.action.Save;
 import pow.backend.action.TakeStairs;
 import pow.backend.actors.Actor;
+import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
@@ -16,8 +17,6 @@ import pow.util.Point;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-
-import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 
 public class GameMainLayer extends AbstractWindow {
 
@@ -73,6 +72,11 @@ public class GameMainLayer extends AbstractWindow {
                 mapView.drawTile(graphics, square.terrain.image, x, y);
                 if (square.feature != null) {
                     mapView.drawTile(graphics, square.feature.image, x, y);
+                }
+                if (square.items != null) {
+                    for (DungeonItem item: square.items) {
+                        mapView.drawTile(graphics, item.image, x, y);
+                    }
                 }
             }
         }
