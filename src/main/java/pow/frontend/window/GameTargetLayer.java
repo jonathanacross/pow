@@ -83,7 +83,7 @@ public class GameTargetLayer extends AbstractWindow {
                 return "you see a " + actor.name;
             }
             if (square.items != null && square.items.size() > 0) {
-                return "you see a " + square.items.get(0).name;
+                return "you see a " + square.items.items.get(0).name;
             }
             if (square.feature != null) {
                 return "you see a " + square.feature.name;

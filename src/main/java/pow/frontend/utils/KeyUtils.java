@@ -61,6 +61,8 @@ public class KeyUtils {
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.LOOK;
             case KeyEvent.VK_C:
                 return hasShift(event) ? KeyInput.PLAYER_INFO : KeyInput.CLOSE_DOOR;
+            case KeyEvent.VK_G:
+                    return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.GET;
             default:
                 return KeyInput.UNKNOWN;
         }

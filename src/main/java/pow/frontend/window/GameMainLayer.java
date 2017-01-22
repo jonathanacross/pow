@@ -1,10 +1,7 @@
 package pow.frontend.window;
 
 import pow.backend.GameState;
-import pow.backend.action.FireRocket;
-import pow.backend.action.Move;
-import pow.backend.action.Save;
-import pow.backend.action.TakeStairs;
+import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
@@ -47,6 +44,7 @@ public class GameMainLayer extends AbstractWindow {
             case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
             case SAVE: backend.tellPlayer(new Save()); break;
             case LOOK: startLooking(); break;
+            case GET: backend.tellPlayer(new PickUp(gs.player, 0, 1)); break; // TODO: make window if diff. items
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
         }
     }
@@ -66,15 +64,12 @@ public class GameMainLayer extends AbstractWindow {
                 if (!gs.world.currentMap.map[x][y].seen) {
                     continue;
                 }
-//                if (!gs.player.canSee(gs, new Point(x,y))) {
-//                    continue;
-//                }
                 mapView.drawTile(graphics, square.terrain.image, x, y);
                 if (square.feature != null) {
                     mapView.drawTile(graphics, square.feature.image, x, y);
                 }
                 if (square.items != null) {
-                    for (DungeonItem item: square.items) {
+                    for (DungeonItem item: square.items.items) {
                         mapView.drawTile(graphics, item.image, x, y);
                     }
                 }

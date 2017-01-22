@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.LightSource;
+import pow.backend.dungeon.ItemList;
 import pow.util.Circle;
 import pow.util.MathUtils;
 import pow.util.Point;

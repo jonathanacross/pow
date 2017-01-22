@@ -32,6 +32,7 @@ public enum KeyInput {
     REST,
     FIRE,
     CLOSE_DOOR,
+    GET,
     HELP,
     MAGIC,
     PET,
