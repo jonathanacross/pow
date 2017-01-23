@@ -35,7 +35,18 @@ public class PickUp implements Action {
         events.add(GameEvent.DungeonUpdated());
 
         DungeonSquare square = gs.world.currentMap.map[actor.loc.x][actor.loc.y];
+        if (square.items.size() == 0) {
+            backend.logMessage(actor.getPronoun() + " can't pick up anything here.");
+            return ActionResult.Failed(null);
+        }
+
         DungeonItem item = square.items.items.get(itemNum);
+        int numCanGet = actor.inventory.numCanAdd(item);
+        if (numCanGet <= 0) {
+            backend.logMessage(actor.getPronoun() + " can't hold any more.");
+            return ActionResult.Failed(null);
+        }
+
         if (numToAdd == item.count) {
             // if can pick up all, then just transfer the item to inventory
             actor.inventory.add(item);

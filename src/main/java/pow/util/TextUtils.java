@@ -24,6 +24,10 @@ public class TextUtils {
         return result;
     }
 
+    public static String pluralize(String name) {
+        return replacePlural(name);
+    }
+
     private static Pattern customPluralRegex = Pattern.compile("(.*)\\|(.*)\\|(.*)\\|(.*)");
 
     private static boolean startsWithVowel(String s) {

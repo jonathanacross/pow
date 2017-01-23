@@ -1,9 +1,10 @@
 package pow.backend.dungeon;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemList {
+public class ItemList implements Serializable {
     public int maxItems;
     public int maxPerSlot;
     public List<DungeonItem> items;
@@ -72,7 +73,7 @@ public class ItemList {
     // if not found, returns -1
     private int findIdx(DungeonItem item) {
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i) == item)
+            if (items.get(i).equals(item))
                 return i;
         }
         return -1;

@@ -59,6 +59,6 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.attackDamage = actorParams.attackDamage;
         this.friendly = actorParams.friendly;
         this.speed = actorParams.speed;
-        this.inventory = new ItemList(10, 99);
+        this.inventory = new ItemList(20, 99);
     }
 }

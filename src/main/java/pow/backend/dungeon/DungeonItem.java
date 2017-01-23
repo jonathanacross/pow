@@ -3,10 +3,12 @@ package pow.backend.dungeon;
 import pow.backend.ActionParams;
 import pow.util.DieRoll;
 
-public class DungeonItem implements Comparable<DungeonItem> {
+import java.io.Serializable;
+
+public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     // TODO: does genMultiple belong here?
-    public static class Flags {
+    public static class Flags implements Serializable {
 //        public boolean genMultiple;
         public boolean potion;
 //        public boolean money;
