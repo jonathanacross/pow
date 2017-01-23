@@ -25,6 +25,7 @@ is not possible.  The keys . or number pad 5 indicate to stay still.
       k    Walk north
       l    Walk east
       n    Walk southeast
+      q    Quaff a potion
       s    Save
       u    Walk northeast
       x    Examine nearby things

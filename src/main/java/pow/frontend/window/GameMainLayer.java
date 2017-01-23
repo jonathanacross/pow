@@ -62,6 +62,27 @@ public class GameMainLayer extends AbstractWindow {
                         }));
     }
 
+    private void tryQuaff(GameState gs) {
+        // see if there are any potions to quaff in the first place.
+        int numPotions = 0;
+        for (DungeonItem item : gs.player.inventory.items) {
+            if (item.flags.potion) {
+                numPotions++;
+            }
+        }
+        if (numPotions == 0) {
+            backend.logMessage("You have no potions to quaff.");
+            return;
+        }
+
+        frontend.open(
+                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Quaff which potion?",
+                        gs.player.inventory.items, (DungeonItem item) -> !item.flags.potion,
+                        (int itemNum) -> {
+                            backend.tellPlayer(new Quaff(gs.player, itemNum));
+                        }));
+    }
+
     @Override
     public void processKey(KeyEvent e) {
         GameState gs = backend.getGameState();
@@ -86,6 +107,7 @@ public class GameMainLayer extends AbstractWindow {
             case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
+            case QUAFF: tryQuaff(gs); break;
             case HELP: frontend.open(frontend.helpWindow); break;
         }
     }

@@ -136,40 +136,46 @@ public class RecursiveInterpolation implements MapGenerator {
 
     private static void addItems(DungeonSquare[][] squares, int numItems, Random rng) {
         DungeonItem softLeatherArmor = new DungeonItem(
-            "& soft leather armor~",
-            "soft_leather_armor",
-            "soft leather armor",
-            DungeonItem.Slot.ARMOR,
-            new DieRoll(0,0,0),
-            1,
-            3,
-            0,
-            1,
-            null);
+                "& soft leather armor~",
+                "soft_leather_armor",
+                "soft leather armor",
+                DungeonItem.Slot.ARMOR,
+                new DungeonItem.Flags(false),
+                new DieRoll(0, 0, 0),
+                1,
+                3,
+                0,
+                1,
+                null);
 
         DungeonItem dagger = new DungeonItem(
                 "& dagger~",
                 "dagger",
                 "a sharp dagger",
                 DungeonItem.Slot.WEAPON,
-                new DieRoll(2,3,1),
+                new DungeonItem.Flags(false),
+                new DieRoll(2, 3, 1),
                 1,
                 0,
                 0,
                 1,
                 null);
 
+        ActionParams healthPotionParams = new ActionParams();
+        healthPotionParams.actionName = "heal";
+        healthPotionParams.number = 10;
         DungeonItem healthPotion = new DungeonItem(
                 "& red potion~",
                 "red_potion",
                 "tastes like fruit punch",
                 DungeonItem.Slot.NONE,
-                new DieRoll(0,0,0),
+                new DungeonItem.Flags(true),
+                new DieRoll(0, 0, 0),
                 0,
                 0,
                 0,
                 1,
-                new ActionParams());
+                healthPotionParams);
 
         int width = Array2D.width(squares);
         int height = Array2D.height(squares);

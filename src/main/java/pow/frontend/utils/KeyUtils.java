@@ -67,6 +67,8 @@ public class KeyUtils {
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.DROP;
             case KeyEvent.VK_I:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.INVENTORY;
+            case KeyEvent.VK_Q:
+                return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.QUAFF;
             default:
                 return KeyInput.UNKNOWN;
         }
