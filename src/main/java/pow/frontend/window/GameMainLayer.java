@@ -5,6 +5,7 @@ import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.ItemList;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
@@ -22,6 +23,43 @@ public class GameMainLayer extends AbstractWindow {
     public GameMainLayer(GameWindow parent) {
         super(parent.x, parent.y, parent.width, parent.height, parent.visible, parent.backend, parent.frontend);
         this.parent = parent;
+    }
+
+    private void tryPickup(GameState gs) {
+        Point playerLoc = gs.player.loc;
+        ItemList items = gs.world.currentMap.map[playerLoc.x][playerLoc.y].items;
+        // TODO: Currently, we rely on the backend to tell what is valid.  This
+        // is guaranteed to work correctly, but may be a little frustrating,
+        // e.g., if there are multiple items, but only one item that the user
+        // can pick up., Or if the player is completely full and there are
+        // multiple items..
+        if (items.size() == 1) {
+            // no ambiguity, just pick up the one item
+            backend.tellPlayer(new PickUp(gs.player, 0, items.size()));
+        }
+        else {
+            // ask the user to pick which item
+            frontend.open(
+                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Pick up which item?",
+                        items.items, (DungeonItem item) -> false,
+                        (int itemNum) -> {backend.tellPlayer(new PickUp(gs.player, itemNum, items.size())); }));
+        }
+    }
+
+    private void showInventory(GameState gs) {
+        frontend.open(
+                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Inventory:",
+                        gs.player.inventory.items, (DungeonItem item) -> false, (int x) -> {
+                }));
+    }
+
+    private void tryDrop(GameState gs) {
+        frontend.open(
+                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Drop which item?",
+                        gs.player.inventory.items, (DungeonItem item) -> false,
+                        (int itemNum) -> {
+                            backend.tellPlayer(new Drop(gs.player, itemNum, gs.player.inventory.items.get(itemNum).count));
+                        }));
     }
 
     @Override
@@ -44,18 +82,9 @@ public class GameMainLayer extends AbstractWindow {
             case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
             case SAVE: backend.tellPlayer(new Save()); break;
             case LOOK: startLooking(); break;
-            case INVENTORY:
-                frontend.open(
-                   new ItemChoiceWindow(632, 25, true, this.backend, this.frontend, "Inventory:",
-                           gs.player.inventory.items, (DungeonItem item) -> false, (int x) -> {}));
-                break;
-            case DROP:
-                frontend.open(
-                        new ItemChoiceWindow(632, 25, true, this.backend, this.frontend, "Drop which item?",
-                                gs.player.inventory.items, (DungeonItem item) -> false,
-                                (int itemNum) -> {backend.tellPlayer(new Drop(gs.player, itemNum, gs.player.inventory.items.get(itemNum).count));}));  //
-                break;
-            case GET: backend.tellPlayer(new PickUp(gs.player, 0, Integer.MAX_VALUE)); break;  // TODO: make a window if diff items
+            case INVENTORY: showInventory(gs); break;
+            case DROP: tryDrop(gs); break;
+            case GET: tryPickup(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
         }
     }

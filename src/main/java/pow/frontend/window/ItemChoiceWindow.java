@@ -21,12 +21,12 @@ public class ItemChoiceWindow extends AbstractWindow {
     private Function<DungeonItem, Boolean> disabled;
     private IntConsumer callback;
 
-    public ItemChoiceWindow(int x, int y, boolean visible, GameBackend backend, Frontend frontend,
+    public ItemChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
                             String message,
                             List<DungeonItem> items,
                             Function<DungeonItem, Boolean> disabled,
                             IntConsumer callback) {
-        super(x, y, 250, 35 + 32 * items.size(), visible, backend, frontend);
+        super(x, y, 250, 35 + 32 * items.size(), true, backend, frontend);
         this.message = message;
         this.items = items;
         this.disabled = disabled;
