@@ -3,6 +3,7 @@ package pow.backend.actors;
 import pow.backend.GameBackend;
 import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonObject;
+import pow.backend.dungeon.ItemList;
 import pow.util.DieRoll;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public int dexterity;  // chance of hitting is related to dexterity and defense
     public int defense;
     public DieRoll attackDamage;
+    public ItemList inventory;
 
     public boolean friendly; // friendly to the player
     public int speed;
@@ -57,5 +59,6 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.attackDamage = actorParams.attackDamage;
         this.friendly = actorParams.friendly;
         this.speed = actorParams.speed;
+        this.inventory = new ItemList(20, 99);
     }
 }

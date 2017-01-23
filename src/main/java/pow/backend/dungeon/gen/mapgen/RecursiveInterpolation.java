@@ -1,16 +1,13 @@
 package pow.backend.dungeon.gen.mapgen;
 
+import pow.backend.ActionParams;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
-import pow.backend.dungeon.DungeonFeature;
-import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.DungeonTerrain;
-import pow.backend.dungeon.gen.FeatureData;
-import pow.backend.dungeon.gen.MapConnection;
-import pow.backend.dungeon.gen.TerrainData;
+import pow.backend.dungeon.*;
+import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
+import pow.util.DieRoll;
 import pow.util.Point;
-import pow.backend.dungeon.gen.GeneratorUtils;
 
 import java.util.*;
 
@@ -124,12 +121,76 @@ public class RecursiveInterpolation implements MapGenerator {
                 style.downstairsFeatureId,
                 rng);
 
+        // add items
+        addItems(squares, 20, rng);
+
         // add the monsters
         //int numMonsters = 0;
         int numMonsters = (w - 1) * (h - 1) / 100;
         List<Actor> monsters = GeneratorUtils.createMonsters(squares, numMonsters, style.monsterIds, rng);
+
+
         GameMap map = new GameMap(name, squares, keyLocations, monsters);
         return map;
+    }
+
+    private static void addItems(DungeonSquare[][] squares, int numItems, Random rng) {
+        DungeonItem softLeatherArmor = new DungeonItem(
+            "& soft leather armor~",
+            "soft_leather_armor",
+            "soft leather armor",
+            DungeonItem.Slot.ARMOR,
+            new DieRoll(0,0,0),
+            1,
+            3,
+            0,
+            1,
+            null);
+
+        DungeonItem dagger = new DungeonItem(
+                "& dagger~",
+                "dagger",
+                "a sharp dagger",
+                DungeonItem.Slot.WEAPON,
+                new DieRoll(2,3,1),
+                1,
+                0,
+                0,
+                1,
+                null);
+
+        DungeonItem healthPotion = new DungeonItem(
+                "& red potion~",
+                "red_potion",
+                "tastes like fruit punch",
+                DungeonItem.Slot.NONE,
+                new DieRoll(0,0,0),
+                0,
+                0,
+                0,
+                1,
+                new ActionParams());
+
+        int width = Array2D.width(squares);
+        int height = Array2D.height(squares);
+
+        for (int i = 0; i < numItems; i++) {
+            // find open location
+            int x;
+            int y;
+            do {
+                x = rng.nextInt(width);
+                y = rng.nextInt(height);
+            } while (squares[x][y].blockGround() || squares[x][y].feature != null || squares[x][y].items.size() > 0);
+
+            DungeonItem item = null;
+            switch (rng.nextInt(3)) {
+                case 0: item = new DungeonItem(softLeatherArmor); break;
+                case 1: item = new DungeonItem(dagger); break;
+                case 2: item = new DungeonItem(healthPotion); break;
+            }
+            squares[x][y].items.add(item);
+        }
     }
 
     // fills in squares such that the open squares are connected

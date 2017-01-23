@@ -1,10 +1,12 @@
 package pow.backend.dungeon;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class DungeonSquare implements Serializable {
     public DungeonTerrain terrain;
     public DungeonFeature feature;
+    public ItemList items;
 
     // These hold information for player visibility; must be updated every time
     // the player moves.
@@ -20,11 +22,10 @@ public class DungeonSquare implements Serializable {
     // if outside, or if the player has cast a spell to light an area
     public boolean illuminated;
 
-    // add list of items here, too
-
     public DungeonSquare(DungeonTerrain terrain, DungeonFeature feature) {
         this.terrain = terrain;
         this.feature = feature;
+        this.items = new ItemList();
     }
 
     public boolean blockGround() {

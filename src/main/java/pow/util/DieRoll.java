@@ -66,4 +66,23 @@ public class DieRoll implements Serializable {
         return roll + "d" + die + " + " + plus;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DieRoll dieRoll = (DieRoll) o;
+
+        if (roll != dieRoll.roll) return false;
+        if (die != dieRoll.die) return false;
+        return plus == dieRoll.plus;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = roll;
+        result = 1001 * result + die;
+        result = 1001 * result + plus;
+        return result;
+    }
 }

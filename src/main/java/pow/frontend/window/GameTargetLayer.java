@@ -3,11 +3,15 @@ package pow.frontend.window;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.DungeonItem;
+import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.DungeonTerrain;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 import pow.util.MathUtils;
 import pow.util.Point;
+import pow.util.TextUtils;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -74,26 +78,29 @@ public class GameTargetLayer extends AbstractWindow {
         int x = cursorPosition.x;
         int y = cursorPosition.y;
         GameState gs = backend.getGameState();
+        DungeonSquare square = gs.world.currentMap.map[x][y];
 
         if (gs.player.canSee(gs, cursorPosition)) {
             Actor actor = gs.world.currentMap.actorAt(x,y);
             if (actor != null) {
-                return "you see a " + actor.name;
+                return "you see " + TextUtils.format(actor.name, 1, false);
             }
-            DungeonFeature feature = gs.world.currentMap.map[x][y].feature;
-            if (feature != null) {
-                return "you see a " + feature.name;
+            if (square.items != null && square.items.size() > 0) {
+                // TODO: improve to handle multiple items, features, monsters
+                DungeonItem item = square.items.items.get(0);
+                return "you see " + TextUtils.format(item.name, item.count, false);
             }
-            return "you see a " + gs.world.currentMap.map[x][y].terrain.name;
+            if (square.feature != null) {
+                return "you see " + TextUtils.format(square.feature.name, 1, false);
+            }
+            return "you see " + TextUtils.format(square.terrain.name, 1, false);
         }
         else {
-            if (gs.world.currentMap.map[x][y].seen) {
-                DungeonFeature feature = gs.world.currentMap.map[x][y].feature;
-                if (feature != null) {
-                    return feature.name;
+            if (square.seen) {
+                if (square.feature != null) {
+                    return TextUtils.format(square.feature.name, 1, false);
                 }
-
-                return gs.world.currentMap.map[x][y].terrain.name;
+                return TextUtils.format(square.terrain.name, 1, false);
             } else {
                 return "";  // skip squares the player can't see
             }
