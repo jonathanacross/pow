@@ -44,11 +44,18 @@ public class GameMainLayer extends AbstractWindow {
             case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
             case SAVE: backend.tellPlayer(new Save()); break;
             case LOOK: startLooking(); break;
-            case INVENTORY: frontend.open(  // width 250, height 672
+            case INVENTORY:
+                frontend.open(
                    new ItemChoiceWindow(632, 25, true, this.backend, this.frontend, "Inventory:",
-                           gs.player.inventory.items, (DungeonItem item) -> false, (int x) -> {})
-            ); break;
-            case GET: backend.tellPlayer(new PickUp(gs.player, 0, 1)); break; // TODO: make window if diff. items
+                           gs.player.inventory.items, (DungeonItem item) -> false, (int x) -> {}));
+                break;
+            case DROP:
+                frontend.open(
+                        new ItemChoiceWindow(632, 25, true, this.backend, this.frontend, "Drop which item?",
+                                gs.player.inventory.items, (DungeonItem item) -> false,
+                                (int itemNum) -> {backend.tellPlayer(new Drop(gs.player, itemNum, gs.player.inventory.items.get(itemNum).count));}));  //
+                break;
+            case GET: backend.tellPlayer(new PickUp(gs.player, 0, Integer.MAX_VALUE)); break;  // TODO: make a window if diff items
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
         }
     }

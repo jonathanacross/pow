@@ -3,12 +3,15 @@ package pow.frontend.window;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.DungeonTerrain;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 import pow.util.MathUtils;
 import pow.util.Point;
+import pow.util.TextUtils;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -80,23 +83,24 @@ public class GameTargetLayer extends AbstractWindow {
         if (gs.player.canSee(gs, cursorPosition)) {
             Actor actor = gs.world.currentMap.actorAt(x,y);
             if (actor != null) {
-                return "you see a " + actor.name;
+                return "you see " + TextUtils.format(actor.name, 1, false);
             }
             if (square.items != null && square.items.size() > 0) {
-                return "you see a " + square.items.items.get(0).name;
+                // TODO: improve to handle multiple items, features, monsters
+                DungeonItem item = square.items.items.get(0);
+                return "you see " + TextUtils.format(item.name, item.count, false);
             }
             if (square.feature != null) {
-                return "you see a " + square.feature.name;
+                return "you see " + TextUtils.format(square.feature.name, 1, false);
             }
-            return "you see a " + square.terrain.name;
+            return "you see " + TextUtils.format(square.terrain.name, 1, false);
         }
         else {
             if (square.seen) {
                 if (square.feature != null) {
-                    return square.feature.name;
+                    return TextUtils.format(square.feature.name, 1, false);
                 }
-
-                return square.terrain.name;
+                return TextUtils.format(square.terrain.name, 1, false);
             } else {
                 return "";  // skip squares the player can't see
             }

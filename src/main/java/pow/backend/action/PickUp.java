@@ -41,12 +41,13 @@ public class PickUp implements Action {
         }
 
         DungeonItem item = square.items.items.get(itemNum);
-        int numCanGet = actor.inventory.numCanAdd(item);
+        int numCanGet = Math.min(actor.inventory.numCanAdd(item), item.count);
         if (numCanGet <= 0) {
             backend.logMessage(actor.getPronoun() + " can't hold any more.");
             return ActionResult.Failed(null);
         }
 
+        numToAdd = Math.min(numToAdd, numCanGet); // make sure we don't add more than we are able!
         if (numToAdd == item.count) {
             // if can pick up all, then just transfer the item to inventory
             actor.inventory.add(item);

@@ -136,7 +136,7 @@ public class RecursiveInterpolation implements MapGenerator {
 
     private static void addItems(DungeonSquare[][] squares, int numItems, Random rng) {
         DungeonItem softLeatherArmor = new DungeonItem(
-            "soft leather armor~",
+            "& soft leather armor~",
             "soft_leather_armor",
             "soft leather armor",
             DungeonItem.Slot.ARMOR,
@@ -148,7 +148,7 @@ public class RecursiveInterpolation implements MapGenerator {
             null);
 
         DungeonItem dagger = new DungeonItem(
-                "dagger~",
+                "& dagger~",
                 "dagger",
                 "a sharp dagger",
                 DungeonItem.Slot.WEAPON,
@@ -160,7 +160,7 @@ public class RecursiveInterpolation implements MapGenerator {
                 null);
 
         DungeonItem healthPotion = new DungeonItem(
-                "red potion~",
+                "& red potion~",
                 "red_potion",
                 "tastes like fruit punch",
                 DungeonItem.Slot.NONE,

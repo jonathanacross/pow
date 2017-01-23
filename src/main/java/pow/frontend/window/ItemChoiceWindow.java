@@ -35,8 +35,18 @@ public class ItemChoiceWindow extends AbstractWindow {
 
     @Override
     public void processKey(KeyEvent e) {
-        // TODO: implement
-        frontend.close();
+        int keyCode = e.getKeyCode();
+
+        if (keyCode == KeyEvent.VK_ESCAPE) {
+            frontend.close();
+            return;
+        }
+
+        if (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z) {
+            int itemNumber = keyCode - KeyEvent.VK_A;
+            this.callback.accept(itemNumber);
+            frontend.close();
+        }
     }
 
     final private int TILE_SIZE = 32;
