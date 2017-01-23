@@ -86,6 +86,7 @@ public class GameMainLayer extends AbstractWindow {
             case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
+            case HELP: frontend.open(frontend.helpWindow); break;
         }
     }
 

@@ -1,0 +1,33 @@
+Use the following keys to move, attack, or open adjacent doors:
+
+     y  k  u      7  8  9
+     h     l      4     6
+     b  j  n      1  2  3
+
+You can also use the arrow keys, though diagonal movement 
+is not possible.  The keys . or number pad 5 indicate to stay still.
+
+    Key    Action
+    ===    ========================
+      .    Stay still
+      <    Go upstairs
+      >    Go downstairs
+      ?    See help
+      C    Character description
+      b    Walk southwest
+      c    Close door
+      d    Drop an item
+      f    Fire
+      g    Get objects on the floor
+      h    Walk west
+      i    Inventory list
+      j    Walk south
+      k    Walk north
+      l    Walk east
+      n    Walk southeast
+      s    Save
+      u    Walk northeast
+      x    Examine nearby things
+      y    Walk northwest
+
+Press any key to continue.
