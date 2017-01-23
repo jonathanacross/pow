@@ -89,5 +89,7 @@ public class GameState implements Serializable {
         );
         this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
         this.log = new MessageLog(50);
+        log.add("Welcome to Pearls of Wisdom!");
+        log.add("Press ? for help.");
     }
 }

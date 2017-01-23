@@ -37,6 +37,7 @@ public class Frontend {
     private StatusWindow statusWindow;
     private MapWindow mapWindow;
     private MessageWindow messageWindow;
+    public HelpWindow helpWindow;
 
     private GameBackend gameBackend;
     private Queue<KeyEvent> keyEvents;
@@ -81,6 +82,7 @@ public class Frontend {
         // popups in main game
         monsterInfoWindow = new MonsterInfoWindow(887, 260,300,350, false, gameBackend, this);
         playerInfoWindow = new PlayerInfoWindow(100, 100,300,300, true, gameBackend, this);
+        helpWindow = new HelpWindow(210, 5,672,672, true, gameBackend, this);
 
         windows = new Stack<>();
         setState(State.WELCOME);
