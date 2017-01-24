@@ -109,7 +109,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void tryTakeOff(GameState gs) {
         Function<DungeonItem, Boolean> removable = (DungeonItem item) -> true;
-        if (countLegalItems(gs.player.inventory.items, removable) == 0) {
+        if (countLegalItems(gs.player.equipment, removable) == 0) {
             backend.logMessage("You have nothing you can take off.");
             return;
         }

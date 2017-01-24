@@ -39,13 +39,12 @@ public class GameState implements Serializable {
                         "yourself", // description
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
-                new Actor.Params(
-                        30, // maxHealth
-                        5, // dexterity
-                        7, // defense
-                        new DieRoll(2, 3, 1),
-                        true, // friendly to player
-                        0) // speed
+                30, // maxHealth
+                1, // cStr
+                1, // cDex
+                1, // cInt
+                1, // cCon
+                new DieRoll(2, 2, 0) // attack
         );
         this.pet = null;
         this.log = new MessageLog(50);
@@ -62,13 +61,12 @@ public class GameState implements Serializable {
                         "yourself", // description
                         new Point(-1, -1), // location -- will be updated
                         true), // solid
-                new Actor.Params(
-                        30, // maxHealth
-                        5, // dexterity
-                        7, // defense
-                        new DieRoll(2, 3, 1),
-                        true, // friendly to player
-                        0) // speed
+                30, // maxHealth
+                1, // cStr
+                1, // cDex
+                1, // cInt
+                1, // cCon
+                new DieRoll(2, 2, 0) // attack
         );
 
         this.pet = new Pet(

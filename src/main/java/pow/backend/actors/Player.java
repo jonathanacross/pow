@@ -7,6 +7,7 @@ import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.LightSource;
 import pow.util.Circle;
+import pow.util.DieRoll;
 import pow.util.MathUtils;
 import pow.util.Point;
 
@@ -22,13 +23,51 @@ public class Player extends Actor implements Serializable, LightSource {
     public int viewRadius;
     public int lightRadius;
     public List<DungeonItem> equipment;
+    public int cStr;
+    public int cDex;
+    public int cInt;
+    public int cCon;
+    public int experience;
+    public int level;
 
-    public Player(DungeonObject.Params objectParams, Actor.Params actorParams) {
-        super(objectParams, actorParams);
+    private static final int[] levelBreakpoints = {
+            0, // level 1
+            10,
+            25,
+            47,
+            80,
+            130,
+            205,
+            318,
+            488,
+            744,
+            1128,
+            1704,
+            2568,
+            3865,
+            5811,
+            8730,
+            13108,
+            19676,
+            29528,
+            44306,
+            66474,
+            99726};
+
+    public Player(DungeonObject.Params objectParams, int maxHealth,
+                  int cStr, int cDex, int cInt, int cCon,
+                  DieRoll attackDamage) {
+        super(objectParams, new Actor.Params(maxHealth, cDex, cDex, attackDamage, true, 0));
         this.actionQueue = new LinkedList<>();
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
         this.equipment = new ArrayList<>();
+        this.cStr = cStr;
+        this.cDex = cDex;
+        this.cInt = cInt;
+        this.cCon = cCon;
+        this.experience = 0;
+        this.level = 1;
     }
 
     public void addCommand(Action request) {
@@ -64,7 +103,21 @@ public class Player extends Actor implements Serializable, LightSource {
         return this.lightRadius;
     }
 
-    private void updateStats() { }
+    // update our stats to include current equipped items and other bonuses.
+    private void updateStats() {
+        defense = cDex;
+        for (DungeonItem item : equipment) {
+            defense += item.defense + item.defenseBonus;
+        }
+
+        int innateHitDamage = cStr;
+        attackDamage = new DieRoll(0, 0, innateHitDamage);
+        for (DungeonItem item : equipment) {
+            if (item.slot == DungeonItem.Slot.WEAPON) {
+                attackDamage = new DieRoll(item.attack.roll, item.attack.die, item.attack.plus + innateHitDamage);
+            }
+        }
+    }
 
     // returns the old item, if any
     public DungeonItem wear(DungeonItem item) {
