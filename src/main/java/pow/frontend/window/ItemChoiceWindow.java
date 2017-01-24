@@ -18,18 +18,18 @@ public class ItemChoiceWindow extends AbstractWindow {
 
     private String message;
     private List<DungeonItem> items;
-    private Function<DungeonItem, Boolean> disabled;
+    private Function<DungeonItem, Boolean> enabled;
     private IntConsumer callback;
 
     public ItemChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
                             String message,
                             List<DungeonItem> items,
-                            Function<DungeonItem, Boolean> disabled,
+                            Function<DungeonItem, Boolean> enabled,
                             IntConsumer callback) {
         super(x, y, 250, 35 + 32 * items.size(), true, backend, frontend);
         this.message = message;
         this.items = items;
-        this.disabled = disabled;
+        this.enabled = enabled;
         this.callback = callback;
     }
 
@@ -67,12 +67,12 @@ public class ItemChoiceWindow extends AbstractWindow {
 
         int idx = 0;
         for (DungeonItem item : this.items) {
-            boolean isDisabled = disabled.apply(item);
-            ImageController.drawTile(graphics, item.image, 25, y, isDisabled);
+            boolean isEnabled = enabled.apply(item);
+            ImageController.drawTile(graphics, item.image, 25, y, !isEnabled);
 
             String label = (char) ((int) 'a' + idx) + ")";
             int textY = y + 20;
-            graphics.setColor(isDisabled ? Color.GRAY : Color.WHITE);
+            graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
             graphics.drawString(label, MARGIN, textY);
             graphics.drawString(TextUtils.format(item.name, item.count, false), 60, textY);
 

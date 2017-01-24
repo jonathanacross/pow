@@ -36,6 +36,8 @@ public enum KeyInput {
     DROP,
     HELP,
     QUAFF,
+    WEAR,
+    TAKE_OFF,
     MAGIC,
     PET,
     INVENTORY,

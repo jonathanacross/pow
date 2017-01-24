@@ -15,6 +15,8 @@ import pow.util.Point;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.List;
+import java.util.function.Function;
 
 public class GameMainLayer extends AbstractWindow {
 
@@ -28,20 +30,17 @@ public class GameMainLayer extends AbstractWindow {
     private void tryPickup(GameState gs) {
         Point playerLoc = gs.player.loc;
         ItemList items = gs.world.currentMap.map[playerLoc.x][playerLoc.y].items;
-        // TODO: Currently, we rely on the backend to tell what is valid.  This
-        // is guaranteed to work correctly, but may be a little frustrating,
-        // e.g., if there are multiple items, but only one item that the user
-        // can pick up., Or if the player is completely full and there are
-        // multiple items..
-        if (items.size() == 1) {
+
+        if (items.size() == 0) {
+            backend.logMessage("Nothing here to pick up.");
+        } else if (items.size() == 1) {
             // no ambiguity, just pick up the one item
             backend.tellPlayer(new PickUp(gs.player, 0, items.size()));
-        }
-        else {
+        } else {
             // ask the user to pick which item
             frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Pick up which item?",
-                        items.items, (DungeonItem item) -> false,
+                        items.items, (DungeonItem item) -> true,
                         (int itemNum) -> {backend.tellPlayer(new PickUp(gs.player, itemNum, items.size())); }));
         }
     }
@@ -49,37 +48,77 @@ public class GameMainLayer extends AbstractWindow {
     private void showInventory(GameState gs) {
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Inventory:",
-                        gs.player.inventory.items, (DungeonItem item) -> false, (int x) -> {
+                        gs.player.inventory.items, (DungeonItem item) -> true, (int x) -> {
                 }));
     }
 
+    private int countLegalItems(List<DungeonItem> items, Function<DungeonItem, Boolean> isLegal) {
+        int numLegal = 0;
+        for (DungeonItem item : items) {
+            if (isLegal.apply(item)) {
+                numLegal++;
+            }
+        }
+        return numLegal;
+    }
+
     private void tryDrop(GameState gs) {
+        Function<DungeonItem, Boolean> droppable = (DungeonItem item) -> true;
+        if (countLegalItems(gs.player.inventory.items, droppable) == 0) {
+            backend.logMessage("You have nothing to drop.");
+            return;
+        }
+
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Drop which item?",
-                        gs.player.inventory.items, (DungeonItem item) -> false,
+                        gs.player.inventory.items, droppable,
                         (int itemNum) -> {
                             backend.tellPlayer(new Drop(gs.player, itemNum, gs.player.inventory.items.get(itemNum).count));
                         }));
     }
 
     private void tryQuaff(GameState gs) {
-        // see if there are any potions to quaff in the first place.
-        int numPotions = 0;
-        for (DungeonItem item : gs.player.inventory.items) {
-            if (item.flags.potion) {
-                numPotions++;
-            }
-        }
-        if (numPotions == 0) {
+        Function<DungeonItem, Boolean> quaffable = (DungeonItem item) -> item.flags.potion;
+        if (countLegalItems(gs.player.inventory.items, quaffable) == 0) {
             backend.logMessage("You have no potions to quaff.");
             return;
         }
 
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Quaff which potion?",
-                        gs.player.inventory.items, (DungeonItem item) -> !item.flags.potion,
+                        gs.player.inventory.items, quaffable,
                         (int itemNum) -> {
                             backend.tellPlayer(new Quaff(gs.player, itemNum));
+                        }));
+    }
+
+    private void tryWear(GameState gs) {
+        Function<DungeonItem, Boolean> wearable = (DungeonItem item) -> item.slot != DungeonItem.Slot.NONE;
+        if (countLegalItems(gs.player.inventory.items, wearable) == 0) {
+            backend.logMessage("You have nothing you can equip/wear.");
+            return;
+        }
+
+        frontend.open(
+                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Wear which item?",
+                        gs.player.inventory.items, wearable,
+                        (int itemNum) -> {
+                            backend.tellPlayer(new Wear(gs.player, itemNum));
+                        }));
+    }
+
+    private void tryTakeOff(GameState gs) {
+        Function<DungeonItem, Boolean> removable = (DungeonItem item) -> true;
+        if (countLegalItems(gs.player.inventory.items, removable) == 0) {
+            backend.logMessage("You have nothing you can take off.");
+            return;
+        }
+
+        frontend.open(
+                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Take off which item?",
+                        gs.player.equipment, removable,
+                        (int itemNum) -> {
+                            backend.tellPlayer(new TakeOff(gs.player, itemNum));
                         }));
     }
 
@@ -108,6 +147,8 @@ public class GameMainLayer extends AbstractWindow {
             case GET: tryPickup(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
             case QUAFF: tryQuaff(gs); break;
+            case WEAR: tryWear(gs); break;
+            case TAKE_OFF: tryTakeOff(gs); break;
             case HELP: frontend.open(frontend.helpWindow); break;
         }
     }
