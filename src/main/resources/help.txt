@@ -14,6 +14,7 @@ is not possible.  The keys . or number pad 5 indicate to stay still.
       >    Go downstairs
       ?    See help
       C    Character description
+      W    Take off equipment
       b    Walk southwest
       c    Close door
       d    Drop an item
@@ -25,8 +26,10 @@ is not possible.  The keys . or number pad 5 indicate to stay still.
       k    Walk north
       l    Walk east
       n    Walk southeast
+      q    Quaff a potion
       s    Save
       u    Walk northeast
+      w    Wear/wield equipment
       x    Examine nearby things
       y    Walk northwest
 

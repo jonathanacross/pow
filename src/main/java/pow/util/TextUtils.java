@@ -24,8 +24,11 @@ public class TextUtils {
         return result;
     }
 
-    public static String pluralize(String name) {
-        return replacePlural(name);
+    public static String plural(String name) {
+        return replacePlural(removePrefix(name));
+    }
+    public static String singular(String name) {
+        return replaceSingular(removePrefix(name));
     }
 
     private static Pattern customPluralRegex = Pattern.compile("(.*)\\|(.*)\\|(.*)\\|(.*)");
@@ -40,6 +43,10 @@ public class TextUtils {
 
         char c = s.charAt(idx);
         return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
+    }
+
+    private static String removePrefix(String s) {
+        return s.replaceAll("& ", "");
     }
 
     private static String replacePrefix(String s, int count, boolean definite) {

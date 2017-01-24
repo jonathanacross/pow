@@ -44,8 +44,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     public String name; // english name, e.g., "& axe~"
     public String image; // for display
     public String description;
-//    public Point loc;
-//    public boolean solid;
+    public Flags flags;
 
     public Slot slot;
 
@@ -59,11 +58,22 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     public ActionParams actionParams;
 
-    public DungeonItem(String name, String image, String description, Slot slot, DieRoll attack, int attackBonus, int defense, int defenseBonus, int count, ActionParams actionParams) {
+    public DungeonItem(String name,
+                       String image,
+                       String description,
+                       Slot slot,
+                       Flags flags,
+                       DieRoll attack,
+                       int attackBonus,
+                       int defense,
+                       int defenseBonus,
+                       int count,
+                       ActionParams actionParams) {
         this.name = name;
         this.image = image;
         this.description = description;
         this.slot = slot;
+        this.flags = flags;
         this.attack = attack;
         this.attackBonus = attackBonus;
         this.defense = defense;
@@ -78,6 +88,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         this.image = other.image;
         this.description = other.description;
         this.slot = other.slot;
+        this.flags = other.flags;
         this.attack = other.attack;
         this.attackBonus = other.attackBonus;
         this.defense = other.defense;

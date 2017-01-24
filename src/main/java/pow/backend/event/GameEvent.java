@@ -13,6 +13,7 @@ public class GameEvent {
         WON_GAME,
         LOST_GAME,
         IN_STORE,
+        HEALED,
         DUNGEON_UPDATED,  // possibly make this more granular: dig, unlocked....
         ROCKET;  // demo effect to show animation
     }
@@ -28,6 +29,7 @@ public class GameEvent {
 
     public static GameEvent LogUpdate() { return new GameEvent(EventType.LOG_UPDATE, null); }
     public static GameEvent Moved() { return new GameEvent(EventType.MOVED, null); }
+    public static GameEvent Healed() { return new GameEvent(EventType.HEALED, null); }
     public static GameEvent Attacked() { return new GameEvent(EventType.ATTACKED, null); }
     public static GameEvent Killed() { return new GameEvent(EventType.KILLED, null); }
     public static GameEvent WonGame() { return new GameEvent(EventType.WON_GAME, null); }
