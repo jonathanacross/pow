@@ -78,8 +78,9 @@ public class PlayerInfoWindow extends AbstractWindow {
                 slotData.put(DungeonItem.Slot.ARMOR, new SlotData("Armor", 4));
                 slotData.put(DungeonItem.Slot.CLOAK, new SlotData("Cloak", 5));
                 slotData.put(DungeonItem.Slot.RING, new SlotData("Ring", 6));
-                slotData.put(DungeonItem.Slot.GLOVES, new SlotData("Gloves", 7));
-                slotData.put(DungeonItem.Slot.BOOTS, new SlotData("Boots", 8));
+                slotData.put(DungeonItem.Slot.AMULET, new SlotData("Amulet", 7));
+                slotData.put(DungeonItem.Slot.GLOVES, new SlotData("Gloves",8));
+                slotData.put(DungeonItem.Slot.BOOTS, new SlotData("Boots", 9));
         for (SlotData sd : slotData.values()) {
             graphics.drawString(sd.name, 220, TILE_SIZE * sd.position + 30);
         }

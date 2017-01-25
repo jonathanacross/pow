@@ -35,6 +35,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         ARMOR,
         CLOAK,
         RING,
+        AMULET,
         GLOVES,
         BOOTS;
     }
@@ -54,6 +55,9 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     public int defense;
     public int defenseBonus;
 
+    public int bonus;  // general bonus.  TODO: make this useful, consistent with attack/defense bonuses above
+    String bonusStat;
+
     public int count;  // e.g. for 2 gold coins, or 23 arrows
 
     public ActionParams actionParams;
@@ -63,6 +67,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
                        String description,
                        Slot slot,
                        Flags flags,
+                       int bonus,
                        DieRoll attack,
                        int attackBonus,
                        int defense,
@@ -74,6 +79,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         this.description = description;
         this.slot = slot;
         this.flags = flags;
+        this.bonus = bonus;
         this.attack = attack;
         this.attackBonus = attackBonus;
         this.defense = defense;
