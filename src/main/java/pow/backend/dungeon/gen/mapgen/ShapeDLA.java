@@ -24,14 +24,16 @@ public class ShapeDLA implements MapGenerator {
     private int height;
     private int minRoomSize;
     private int maxRoomSize;
+    private int level;
 
-    public ShapeDLA(ProtoTranslator translator, List<String> monsterIds, int width, int height) {
+    public ShapeDLA(ProtoTranslator translator, List<String> monsterIds, int width, int height, int level) {
         this.translator = translator;
         this.monsterIds = monsterIds;
         this.width = width;
         this.height = height;
         this.minRoomSize = 3;
         this.maxRoomSize = 15;
+        this.level = level;
     }
 
     private static class Shape {
@@ -67,11 +69,15 @@ public class ShapeDLA implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
+        // add items
+        int numItems = (this.width - 1) * (this.height - 1) / 100;
+        GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
+
         // add monsters
         int numMonsters = (this.width - 1) * (this.height - 1) / 100;
         List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, this.monsterIds, rng);
 
-        GameMap map = new GameMap(name, dungeonSquares, keyLocations, monsters);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsters);
         return map;
     }
 

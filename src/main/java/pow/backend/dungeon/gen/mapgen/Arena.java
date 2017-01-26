@@ -19,12 +19,14 @@ public class Arena implements MapGenerator {
     private List<String> monsterIds;
     private int width;
     private int height;
+    private int level;
 
-    public Arena(ProtoTranslator translator, List<String> monsterIds, int width, int height) {
+    public Arena(ProtoTranslator translator, List<String> monsterIds, int width, int height, int level) {
         this.translator = translator;
         this.monsterIds = monsterIds;
         this.width = width;
         this.height = height;
+        this.level = level;
     }
 
     public GameMap genMap(String name,
@@ -53,7 +55,7 @@ public class Arena implements MapGenerator {
         int numMonsters = (this.width - 1) * (this.height - 1) / 100;
         List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, this.monsterIds, rng);
 
-        GameMap map = new GameMap(name, dungeonSquares, keyLocations, monsters);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsters);
         return map;
     }
 

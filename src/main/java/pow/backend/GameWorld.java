@@ -41,7 +41,7 @@ public class GameWorld implements Serializable {
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree")),
                 monsters, STAIRS_UP, STAIRS_DOWN);
-        MapGenerator area1Gen = new RecursiveInterpolation(10, 0, area1Style);
+        MapGenerator area1Gen = new RecursiveInterpolation(10, 0, area1Style, 1);
         GameMap area1 = area1Gen.genMap("area 1", area1Connections, rng);
 
         // area 2.
@@ -51,7 +51,7 @@ public class GameWorld implements Serializable {
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
                 monsters, STAIRS_UP, STAIRS_DOWN);
-        MapGenerator area2Gen = new RecursiveInterpolation(10, 0, area2Style);
+        MapGenerator area2Gen = new RecursiveInterpolation(10, 0, area2Style, 11);
         GameMap area2 = area2Gen.genMap("area 2", area2Connections, rng);
 
         // area 3.
@@ -61,7 +61,7 @@ public class GameWorld implements Serializable {
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
                 monsters, STAIRS_UP, STAIRS_DOWN);
-        MapGenerator area3Gen = new RecursiveInterpolation(10, 0, area3Style);
+        MapGenerator area3Gen = new RecursiveInterpolation(10, 0, area3Style, 31);
         GameMap area3 = area3Gen.genMap("area 3", area3Connections, rng);
 
         world = new HashMap<>();
@@ -162,13 +162,14 @@ public class GameWorld implements Serializable {
         dungeon1Connections.add(new MapConnection(UP_LOC_NAME, MapConnection.Direction.U, "area0", DOWN_LOC_NAME));
         ProtoTranslator dungeon1Style = new ProtoTranslator(1);
         List<String> dungeon1Monsters = Arrays.asList("yellow snake", "scruffy dog", "yellow mushrooms", "floating eye", "bat", "green worm mass", "brown imp");
-        MapGenerator dungeon1Gen = new ShapeDLA(dungeon1Style, dungeon1Monsters, 50, 50);
+        MapGenerator dungeon1Gen = new ShapeDLA(dungeon1Style, dungeon1Monsters, 50, 50, 5);
         GameMap dungeon1 = dungeon1Gen.genMap(TEST_DUNGEON_ID, dungeon1Connections, rng);
 
         world = new HashMap<>();
         for (int group = 0; group < numGroups; group++) {
-            MapGenerator mapGenerator = new RecursiveInterpolation(6, 3, styles[group]);
             for (int room = 0; room < roomsPerGroup; room++) {
+                int difficultyLevel = 10 * group + room;
+                MapGenerator mapGenerator = new RecursiveInterpolation(6, 3, styles[group], difficultyLevel);
                 int levelIdx = group * roomsPerGroup + room;
 
                 GenOverworldTopology.RoomConnection roomConnection = roomConnections.get(levelIdx);

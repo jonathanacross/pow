@@ -25,6 +25,7 @@ public class GameMap implements Serializable {
     public List<LightSource> lightSources;
     public Map<String, Point> keyLocations;  // useful for joining areas together
     public String name; // name of the area
+    public int level;  // difficulty level
 
     public void updatePlayerVisibilityData(Player player) {
         updateBrightness(player);
@@ -87,8 +88,9 @@ public class GameMap implements Serializable {
         addBrightness(player);
     }
 
-    public GameMap(String name, DungeonSquare[][] map, Map<String, Point> keyLocations, List<Actor> monsters) {
+    public GameMap(String name, int level, DungeonSquare[][] map, Map<String, Point> keyLocations, List<Actor> monsters) {
         this.name = name;
+        this.level = level;
         this.map = map;
         this.height = Array2D.height(this.map);
         this.width = Array2D.width(this.map);

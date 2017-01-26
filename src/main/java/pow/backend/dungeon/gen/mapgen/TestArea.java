@@ -17,6 +17,11 @@ import java.util.Random;
 
 // generates a test area.  Not designed to be configurable.
 public class TestArea implements MapGenerator {
+    private int level;
+
+    public TestArea(int level) {
+        this.level = level;
+    }
 
     public GameMap genMap(String name,
                           List<MapConnection> connections,
@@ -42,7 +47,7 @@ public class TestArea implements MapGenerator {
         int numMonsters = 10;
         List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, null, rng);
 
-        GameMap map = new GameMap(name, dungeonSquares, keyLocations, monsters);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsters);
         return map;
     }
 

@@ -3,6 +3,7 @@ package pow.backend.dungeon.gen;
 import pow.backend.ActionParams;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.util.Array2D;
@@ -433,4 +434,28 @@ public class GeneratorUtils {
         return keyLocations;
 
     }
+
+    public static void addItems(int level, DungeonSquare[][] squares, int numItems, Random rng) {
+        int width = Array2D.width(squares);
+        int height = Array2D.height(squares);
+
+        for (int i = 0; i < numItems; i++) {
+            // find open location
+            int x;
+            int y;
+            do {
+                x = rng.nextInt(width);
+                y = rng.nextInt(height);
+            } while (squares[x][y].blockGround() || squares[x][y].feature != null || squares[x][y].items.size() > 0);
+
+            int perturbedLevel = (int) Math.round(2 * rng.nextGaussian() + level);
+
+            List<String> possibleItemIds = ItemGenerator.getItemIdsForLevel(perturbedLevel);
+            String itemId = possibleItemIds.get(rng.nextInt(possibleItemIds.size()));
+            DungeonItem item = ItemGenerator.genItem(itemId, perturbedLevel);
+
+            squares[x][y].items.add(item);
+        }
+    }
+
 }
