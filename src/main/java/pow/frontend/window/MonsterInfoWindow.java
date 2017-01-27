@@ -6,7 +6,6 @@ import pow.backend.actors.Actor;
 import pow.frontend.Frontend;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ImageUtils;
-import pow.util.DebugLogger;
 
 import java.awt.Color;
 import java.awt.Font;

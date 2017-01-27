@@ -1,6 +1,5 @@
 package pow.frontend.window;
 
-import com.sun.prism.paint.*;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;

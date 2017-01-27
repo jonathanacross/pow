@@ -43,7 +43,7 @@ etherial cloak	etherial cloak	light_blue_cloak	etherial cloak	cloak			71	90	0	12
 # shields														
 small wood shield	small wood shield	leather_shield	small wood shield	shield			1	30	0	1		0	2	
 large wood shield	large wood shield	large_shield	large wood shield	shield			11	50	0	2		0	3	
-metal buckler	metal buckler	buckler armor	metal buckler	shield			31	70	0	3		0	7	
+metal buckler	metal buckler	buckler	metal buckler	shield			31	70	0	3		0	7	
 diamond shield	diamond shield	crystal_shield	diamond shield	shield			51	80	0	7		0	12	
 golden shield	golden shield	golden_shield	golden shield	shield			71	90	0	12		0	19	+1 con
 shield of death	shield of death	death_shield	shield of death	shield			81	90	0	19		0	30	reflect damage
@@ -53,7 +53,7 @@ soft leather armor	soft leather armor	soft_leather_armor	soft leather armor	armo
 studded leather armor	studded leather armor	hard_leather_armor	studded leather armor	armor			31	60	0	5		0	8	
 chain mail	chain mail	chain_mail	chain mail	armor			41	70	0	8		0	13	
 plate mail	plate mail	plate_mail	plate mail	armor			51	80	0	13		0	21	
-augmented mail	augmented mail	augmented mail	augmented mail	armor			61	90	0	21		0	34	+1 int
+augmented mail	augmented mail	augmented_mail	augmented mail	armor			61	90	0	21		0	34	+1 int
 ceramic armor	ceramic armor	ceramic_mail	ceramic armor	armor			71	90	0	34		0	55	+1 con
 dragon scale mail	dragon scale mail	dragon scale mail	dragon scale mail	armor			81	90	0	55		0	89	+1 str
 # rings														
@@ -64,11 +64,11 @@ ring of dexterity	ring of dexterity	goldblue ring	ring of dexterity	ring			21	60
 ring of constitution	ring of constitution	goldred ring	ring of constitution	ring			21	60	1	4	con	0	0	
 ring of strength	ring of strength	golddkblue ring	ring of strength	ring			21	60	1	4	str	0	0	
 ring of speed	ring of speed	platinum ring	ring of speed	ring			41	90	1	5	speed	0	0	
-ring of fire	ring of fire	red	ring of fire	ring			51	80	0	0		0	0	res fire + fire brand
-ring of acid	ring of acid	black	ring of acid	ring			51	80	0	0		0	0	res acid + acid brand
-ring of cold	ring of cold	white	ring of cold	ring			51	80	0	0		0	0	res col + cold brand
-ring of poison	ring of poison	green	ring of poison	ring			51	80	0	0		0	0	res. poison + poisonbrand
-ring of power	ring of power	gold	ring of power	ring			81	90	1	4	str, int,dex,con	0	0	
+ring of fire	ring of fire	red ring	ring of fire	ring			51	80	0	0		0	0	res fire + fire brand
+ring of acid	ring of acid	black ring	ring of acid	ring			51	80	0	0		0	0	res acid + acid brand
+ring of cold	ring of cold	white ring	ring of cold	ring			51	80	0	0		0	0	res col + cold brand
+ring of poison	ring of poison	green ring	ring of poison	ring			51	80	0	0		0	0	res. poison + poisonbrand
+ring of power	ring of power	gold ring	ring of power	ring			81	90	1	4	str, int,dex,con	0	0	
 # amulets														
 amulet of wealth	amulet of wealth	onyx amulet	amulet of wealth	amulet			1	30	0	0		0	0	better gold drops
 amulet of defense	amulet of defense	coral amulet	amulet of defense	amulet			11	80	1	20	def	0	0	
@@ -91,7 +91,7 @@ emeralds	emeralds	emeralds	emeralds	none			11	90	1	5		0	0
 # potions (need major work)														
 mana potion	mana potion	blue_potion	mana potion	none			1	90	0	0		0	0	
 root beer	root beer	bubbly_potion	root beer	none			0	30	0	0		0	0	
-health potion	health potion	red_potion	health potion	none			1	90	0	0		0	0	
+health potion	health potion	red_potion	health potion	none	potion	heal:15:	1	90	0	0		0	0	
 gatorade	gatorade	green_potion	gatorade	none			0	30	0	0		0	0	
 speed potion	speed potion	swirl_potion	speed potion	none			51	90	0	0		0	0	
 restore potion	restore potion	purple_potion	restores mana and health	none			21	90	0	0		0	0	

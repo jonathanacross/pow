@@ -2,6 +2,7 @@ package pow.backend;
 
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
+import pow.backend.dungeon.gen.mapgen.TestArea;
 import pow.backend.dungeon.gen.worldgen.GenOverworldTopology;
 import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.ProtoTranslator;
@@ -100,7 +101,7 @@ public class GameWorld implements Serializable {
     }
 
     private void genMapWorld(Random rng, Player player, Pet pet) {
-        int numGroups = 7;
+        int numGroups = 9;
         RecursiveInterpolation.MapStyle[] styles = {
             // grassy fields
             new RecursiveInterpolation.MapStyle(
@@ -138,11 +139,23 @@ public class GameWorld implements Serializable {
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
                 Arrays.asList("orc mage", "orc warrior", "orc archer", "orc rogue", "baby green dragon", "baby red dragon", "gold dragonfly", "purple worms", "golem", "griffin", "chess knight", "copperhead snake"),
                 STAIRS_UP, DUNGEON_ENTRANCE),
+            // forest 2
+            new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "berry bush", "pine tree")),
+                Arrays.asList("skeleton mage", "skeleton warrior", "skeleton archer", "skeleton rogue", "mummy", "blue ghost", "pink ghost", "vampire", "evil eye", "floating skull", "vampire bat"),
+                STAIRS_UP, DUNGEON_ENTRANCE),
             // volcano
             new RecursiveInterpolation.MapStyle(
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("cold lava floor", null, "dark pebbles")),
                 Arrays.asList("demon mage", "demon warrior", "demon archer", "demon rogue", "green dragon", "red dragon", "creeping magma", "lava beetle", "mumak", "iron golem", "fire vortex", "lava dragon"),
+                STAIRS_UP, DUNGEON_ENTRANCE),
+            // desert again..
+            new RecursiveInterpolation.MapStyle(
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "gold tree", "light pebbles")),
+                Arrays.asList("alien mage", "alien warrior", "alien archer", "alien rogue", "ancient black dragon", "ancient gold dragon", "master vampire", "magic whirlwind", "djinn", "spike dog"),
                 STAIRS_UP, DUNGEON_ENTRANCE),
         };
 
@@ -160,9 +173,10 @@ public class GameWorld implements Serializable {
 
         List<MapConnection> dungeon1Connections = new ArrayList<>();
         dungeon1Connections.add(new MapConnection(UP_LOC_NAME, MapConnection.Direction.U, "area0", DOWN_LOC_NAME));
-        ProtoTranslator dungeon1Style = new ProtoTranslator(1);
-        List<String> dungeon1Monsters = Arrays.asList("yellow snake", "scruffy dog", "yellow mushrooms", "floating eye", "bat", "green worm mass", "brown imp");
-        MapGenerator dungeon1Gen = new ShapeDLA(dungeon1Style, dungeon1Monsters, 50, 50, 5);
+//        ProtoTranslator dungeon1Style = new ProtoTranslator(1);
+//        List<String> dungeon1Monsters = Arrays.asList("yellow snake", "scruffy dog", "yellow mushrooms", "floating eye", "bat", "green worm mass", "brown imp");
+//        MapGenerator dungeon1Gen = new ShapeDLA(dungeon1Style, dungeon1Monsters, 50, 50, 5);
+        MapGenerator dungeon1Gen = new TestArea(0);
         GameMap dungeon1 = dungeon1Gen.genMap(TEST_DUNGEON_ID, dungeon1Connections, rng);
 
         world = new HashMap<>();

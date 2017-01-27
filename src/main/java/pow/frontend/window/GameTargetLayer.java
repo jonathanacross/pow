@@ -2,10 +2,8 @@ package pow.frontend.window;
 
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
-import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.DungeonTerrain;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;

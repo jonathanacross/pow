@@ -1,8 +1,6 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
-import pow.backend.GameState;
-import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.utils.ImageController;
@@ -26,7 +24,7 @@ public class ItemChoiceWindow extends AbstractWindow {
                             List<DungeonItem> items,
                             Function<DungeonItem, Boolean> enabled,
                             IntConsumer callback) {
-        super(x, y, 250, 35 + 32 * items.size(), true, backend, frontend);
+        super(x, y, 300, 35 + 32 * items.size(), true, backend, frontend);
         this.message = message;
         this.items = items;
         this.enabled = enabled;
@@ -44,14 +42,29 @@ public class ItemChoiceWindow extends AbstractWindow {
 
         if (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z) {
             int itemNumber = keyCode - KeyEvent.VK_A;
-            this.callback.accept(itemNumber);
-            frontend.close();
+            if (enabled.apply(items.get(itemNumber))) {
+                this.callback.accept(itemNumber);
+                frontend.close();
+            }
         }
     }
 
     final private int TILE_SIZE = 32;
     final private int MARGIN = 10;
     final private int FONT_SIZE = 12;
+
+    private String itemStringWithInfo(DungeonItem item) {
+        String itemDesc = TextUtils.format(item.name, item.count, false);
+        if (item.attack != null &&
+                (item.attack.die + item.attack.plus + item.attack.roll > 0)) {
+            itemDesc = itemDesc + " (" + item.attack.toString() + ")";
+        }
+        if (item.defense > 0) {
+            itemDesc = itemDesc + " [" + item.defense + "]";
+        }
+        itemDesc = itemDesc + " {" + item.bonus + "}";
+        return itemDesc;
+    }
 
     @Override
     public void drawContents(Graphics graphics) {
@@ -74,7 +87,7 @@ public class ItemChoiceWindow extends AbstractWindow {
             int textY = y + 20;
             graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
             graphics.drawString(label, MARGIN, textY);
-            graphics.drawString(TextUtils.format(item.name, item.count, false), 60, textY);
+            graphics.drawString(itemStringWithInfo(item), 60, textY);
 
             idx++;
             y += TILE_SIZE;

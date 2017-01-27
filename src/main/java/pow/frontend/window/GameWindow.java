@@ -1,17 +1,7 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
-import pow.backend.GameState;
-import pow.backend.actors.Actor;
-import pow.backend.action.*;
-import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.Frontend;
-import pow.frontend.effect.GlyphLoc;
-import pow.frontend.utils.ImageController;
-import pow.util.Circle;
-import pow.util.Point;
-import pow.util.DebugLogger;
-import pow.util.MathUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
