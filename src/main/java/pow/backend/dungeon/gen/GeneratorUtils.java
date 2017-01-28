@@ -452,7 +452,7 @@ public class GeneratorUtils {
 
             List<String> possibleItemIds = ItemGenerator.getItemIdsForLevel(perturbedLevel);
             String itemId = possibleItemIds.get(rng.nextInt(possibleItemIds.size()));
-            DungeonItem item = ItemGenerator.genItem(itemId, perturbedLevel);
+            DungeonItem item = ItemGenerator.genItem(itemId, perturbedLevel, rng);
 
             squares[x][y].items.add(item);
         }

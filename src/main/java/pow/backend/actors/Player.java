@@ -62,6 +62,7 @@ public class Player extends Actor implements Serializable, LightSource {
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
         this.equipment = new ArrayList<>();
+        this.toHit = 0;
         this.cStr = cStr;
         this.cDex = cDex;
         this.cInt = cInt;
@@ -107,15 +108,21 @@ public class Player extends Actor implements Serializable, LightSource {
     private void updateStats() {
         defense = cDex;
         for (DungeonItem item : equipment) {
-            defense += item.defense + item.defenseBonus;
+            defense += item.defense + item.bonuses[DungeonItem.DEF_IDX];
         }
 
-        int innateHitDamage = cStr;
-        attackDamage = new DieRoll(0, 0, innateHitDamage);
+        int innateToHit = cDex;
+        int innateToDam = cStr;
+        attackDamage = new DieRoll(0, 0, innateToDam);
         for (DungeonItem item : equipment) {
             if (item.slot == DungeonItem.Slot.WEAPON) {
-                attackDamage = new DieRoll(item.attack.roll, item.attack.die, item.attack.plus + innateHitDamage);
+                attackDamage = new DieRoll(item.attack.roll, item.attack.die, item.attack.plus + innateToDam);
             }
+        }
+        toHit = innateToHit;
+        for (DungeonItem item : equipment) {
+            attackDamage.plus += item.bonuses[DungeonItem.TO_DAM_IDX];
+            toHit += item.bonuses[DungeonItem.TO_HIT_IDX];
         }
     }
 

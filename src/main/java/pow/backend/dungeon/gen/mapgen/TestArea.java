@@ -87,7 +87,7 @@ public class TestArea implements MapGenerator {
         for (int level = 0; level < 90; level++) {
             List<String> itemIds = ItemGenerator.getItemIdsForLevel(level);
             for (int id = 0; id < itemIds.size(); id++) {
-                dungeonSquares[id+1][level+1].items.add(ItemGenerator.genItem(itemIds.get(id), level));
+                dungeonSquares[id+1][level+1].items.add(ItemGenerator.genItem(itemIds.get(id), level, rng));
             }
         }
 

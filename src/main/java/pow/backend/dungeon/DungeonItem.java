@@ -2,8 +2,10 @@ package pow.backend.dungeon;
 
 import pow.backend.ActionParams;
 import pow.util.DieRoll;
+import pow.util.TextUtils;
 
 import java.io.Serializable;
+import java.util.*;
 
 public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
@@ -26,6 +28,16 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         }
     }
 
+    public static final int TO_HIT_IDX = 0;
+    public static final int TO_DAM_IDX = 1;
+    public static final int DEF_IDX = 2;
+    public static final int STR_IDX = 3;
+    public static final int DEX_IDX = 4;
+    public static final int INT_IDX = 5;
+    public static final int CON_IDX = 6;
+    public static final int SPEED_IDX = 7;
+    public static final int NUM_BONUSES = 8;
+
     public enum Slot {
         NONE,
         WEAPON,
@@ -40,23 +52,14 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         BOOTS;
     }
 
-    // from dungeonobject, and there's a structure for them
-//    public String id;   // program id, e.g., "axe"
     public String name; // english name, e.g., "& axe~"
     public String image; // for display
     public String description;
     public Flags flags;
-
     public Slot slot;
-
     public DieRoll attack;
-    public int attackBonus;
-
     public int defense;
-    public int defenseBonus;
-
-    public int bonus;  // general bonus.  TODO: make this useful, consistent with attack/defense bonuses above
-    String bonusStat;
+    public int[] bonuses;
 
     public int count;  // e.g. for 2 gold coins, or 23 arrows
 
@@ -67,11 +70,9 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
                        String description,
                        Slot slot,
                        Flags flags,
-                       int bonus,
+                       int[] bonuses,
                        DieRoll attack,
-                       int attackBonus,
                        int defense,
-                       int defenseBonus,
                        int count,
                        ActionParams actionParams) {
         this.name = name;
@@ -79,11 +80,9 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         this.description = description;
         this.slot = slot;
         this.flags = flags;
-        this.bonus = bonus;
+        this.bonuses = bonuses;
         this.attack = attack;
-        this.attackBonus = attackBonus;
         this.defense = defense;
-        this.defenseBonus = defenseBonus;
         this.count = count;
         this.actionParams = actionParams;
     }
@@ -96,9 +95,8 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         this.slot = other.slot;
         this.flags = other.flags;
         this.attack = other.attack;
-        this.attackBonus = other.attackBonus;
         this.defense = other.defense;
-        this.defenseBonus = other.defenseBonus;
+        this.bonuses = other.bonuses;
         this.count = other.count;
         this.actionParams = other.actionParams;
     }
@@ -110,24 +108,16 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
         DungeonItem that = (DungeonItem) o;
 
+        if (count != that.count) return false;
         if (!name.equals(that.name)) return false;
-        if (slot != that.slot) return false;
-        if (attack != null ? !attack.equals(that.attack) : that.attack != null) return false;
-        if (attackBonus != that.attackBonus) return false;
-        if (defense != that.defense) return false;
-        if (defenseBonus != that.defenseBonus) return false;
-
-        return true;
+        return Arrays.equals(bonuses, that.bonuses);
     }
 
     @Override
     public int hashCode() {
         int result = name.hashCode();
-        result = 31 * result + slot.hashCode();
-        result = 31 * result + (attack != null ? attack.hashCode() : 0);
-        result = 31 * result + attackBonus;
-        result = 31 * result + defense;
-        result = 31 * result + defenseBonus;
+        result = 31 * result + Arrays.hashCode(bonuses);
+        result = 31 * result + count;
         return result;
     }
 
@@ -139,20 +129,91 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         i = slot.compareTo(other.slot);
         if (i != 0) return i;
 
-        int thisAttackValue = attack != null ? (attack.die * 10000) + (attack.roll * 100) + attackBonus : -1;
-        int otherAttackValue = other.attack != null ? (other.attack.die * 10000) + (other.attack.roll * 100) + other.attackBonus : -1;
+        int thisAttackValue = attack != null ? (attack.die * 10000) + (attack.roll * 100) + attack.plus : -1;
+        int otherAttackValue = other.attack != null ? (other.attack.die * 10000) + (other.attack.roll * 100) + other.attack.plus : -1;
         i = Integer.compare(thisAttackValue, otherAttackValue);
-        if (i != 0) return i;
-
-        i = Integer.compare(attackBonus, other.attackBonus);
         if (i != 0) return i;
 
         i = Integer.compare(defense, other.defense);
         if (i != 0) return i;
 
-        i = Integer.compare(defenseBonus, other.defenseBonus);
-        if (i != 0) return i;
+        for (int b = 0; b < NUM_BONUSES; b++) {
+            i = Integer.compare(bonuses[b], other.bonuses[b]);
+            if (i != 0) return i;
+        }
 
         return 0;
+    }
+
+    private static String formatBonus(int x) {
+        if (x < 0) { return "-" + (-x); }
+        else { return "+" + x; }
+    }
+
+    private static String formatGroupBonus(int[] bonusAmts, String[] names) {
+        // simple case - see if all 0
+        int numNonZero = 0;
+        for (int bonusAmt : bonusAmts) {
+            if (bonusAmt != 0) numNonZero++;
+        }
+        if (numNonZero == 0) {
+            return "";
+        }
+
+        // for all nonzero bonuses, group by the amount
+        SortedMap<Integer, List<Integer>> bonusAmtToIdx = new TreeMap<>();
+        for (int i = 0; i < bonusAmts.length; i++) {
+            int bonus = bonusAmts[i];
+            if (bonus == 0) continue;
+
+            if (!bonusAmtToIdx.containsKey(bonus)) {
+                bonusAmtToIdx.put(bonus, new ArrayList<>());
+            }
+            bonusAmtToIdx.get(bonus).add(i);
+        }
+        List<String> groups = new ArrayList<>();
+        for (Map.Entry<Integer, List<Integer>> entry : bonusAmtToIdx.entrySet()) {
+            int bonusAmt = entry.getKey();
+            List<Integer> statIdxs = entry.getValue();
+
+            List<String> stats = new ArrayList<>();
+            for (int idx : statIdxs) {
+                stats.add(names[idx]);
+            }
+            groups.add(formatBonus(bonusAmt) + " to " + String.join("/", stats));
+        }
+        return String.join(", ", groups);
+    }
+
+    // Formats an item in a nice way, showing all the stats
+    public String stringWithInfo() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(TextUtils.format(name, count, false));
+
+        if (attack != null && (attack.die + attack.plus + attack.roll > 0)) {
+            sb.append(" (" + attack.toString() + ")");
+            sb.append(" (" + formatBonus(bonuses[TO_HIT_IDX]) + "," + formatBonus(bonuses[TO_DAM_IDX]) + ")");
+        } else if ((bonuses[TO_HIT_IDX] != 0) || (bonuses[TO_DAM_IDX] != 0)) {
+            // this happens for rings of attack, where there is no inherent damage, just bonuses
+            sb.append(" (" + formatBonus(bonuses[TO_HIT_IDX]) + "," + formatBonus(bonuses[TO_DAM_IDX]) + ")");
+        }
+
+        if (defense > 0) {
+            sb.append(" [" + defense + "," + formatBonus(bonuses[DEF_IDX]) + "]");
+        } else if (bonuses[DEF_IDX] != 0) {
+            // happens, e.g., for rings of defense
+            sb.append(" [" + formatBonus(bonuses[DEF_IDX]) + "]");
+        }
+
+        if ((bonuses[STR_IDX] != 0) || (bonuses[DEX_IDX] != 0) ||
+                (bonuses[INT_IDX] != 0) || (bonuses[CON_IDX] != 0) ||
+                (bonuses[SPEED_IDX] != 0)) {
+            sb.append(" {" + formatGroupBonus(
+                    new int[] {bonuses[STR_IDX], bonuses[DEX_IDX], bonuses[INT_IDX], bonuses[CON_IDX], bonuses[SPEED_IDX]},
+                    new String[] {"Str", "Dex", "Int", "Con", "Speed"}
+                    ) + "}");
+        }
+        return sb.toString();
     }
 }

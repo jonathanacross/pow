@@ -136,9 +136,9 @@
 32x32	7	8	fountain	feature
 32x32	8	8	tombstone	feature
 32x32	9	8	wood chest	misc item
-32x32	10	8	red_rune	misc item
-32x32	11	8	yellow_rune	misc item
-32x32	12	8	green_rune	misc item
+32x32	10	8	red rune	misc item
+32x32	11	8	yellow rune	misc item
+32x32	12	8	green rune	misc item
 32x32	13	8	-:null:-	:null:
 32x32	14	8	-:null:-	:null:
 32x32	15	8	-:null:-	:null:
@@ -175,12 +175,12 @@
 32x32	14	10	-:null:-	:null:
 32x32	15	10	-:null:-	:null:
 32x32	0	11	dagger	weapon
-32x32	1	11	main_gauche	weapon
-32x32	2	11	short_sword	weapon
+32x32	1	11	main gauche	weapon
+32x32	2	11	short sword	weapon
 32x32	3	11	cutlass	weapon
-32x32	4	11	long_sword	weapon
-32x32	5	11	broad_sword	weapon
-32x32	6	11	blade_of_chaos	weapon
+32x32	4	11	long sword	weapon
+32x32	5	11	broad sword	weapon
+32x32	6	11	blade of chaos	weapon
 32x32	7	11	short bow	bow
 32x32	8	11	long bow	bow
 32x32	9	11	gold longbow	bow
@@ -191,44 +191,44 @@
 32x32	14	11	-:null:-	:null:
 32x32	15	11	-:null:-	:null:
 32x32	0	12	cloak	armor
-32x32	1	12	fur_cloak	armor
-32x32	2	12	blue_cloak	armor
-32x32	3	12	purple_cloak	armor
-32x32	4	12	light_blue_cloak	armor
+32x32	1	12	fur cloak	armor
+32x32	2	12	blue cloak	armor
+32x32	3	12	purple cloak	armor
+32x32	4	12	light blue cloak	armor
 32x32	5	12	gloves	armor
 32x32	6	12	heavy gloves	armor
 32x32	7	12	green gloves	armor
 32x32	8	12	iron gloves	armor
 32x32	9	12	blue gloves	armor
 32x32	10	12	gold gloves	armor
-32x32	11	12	leather_cap	armor
-32x32	12	12	hard_leather_cap	armor
-32x32	13	12	iron_helmet	armor
-32x32	14	12	steel_helmet	armor
-32x32	15	12	golden_helmet	armor
+32x32	11	12	leather cap	armor
+32x32	12	12	hard leather cap	armor
+32x32	13	12	iron helmet	armor
+32x32	14	12	steel helmet	armor
+32x32	15	12	golden helmet	armor
 32x32	0	13	soft leather boots	armor
 32x32	1	13	hard leather boots	armor
 32x32	2	13	steel boots	armor
 32x32	3	13	blue boots	armor
 32x32	4	13	green boots	armor
 32x32	5	13	gold boots	armor
-32x32	6	13	leather_shield	armor
-32x32	7	13	large_shield	armor
+32x32	6	13	leather shield	armor
+32x32	7	13	large shield	armor
 32x32	8	13	buckler	armor
-32x32	9	13	crystal_shield	armor
-32x32	10	13	death_shield	armor
-32x32	11	13	golden_shield	armor
+32x32	9	13	crystal shield	armor
+32x32	10	13	death shield	armor
+32x32	11	13	golden shield	armor
 32x32	12	13	-:null:-	:null:
 32x32	13	13	-:null:-	:null:
 32x32	14	13	-:null:-	:null:
 32x32	15	13	-:null:-	:null:
 32x32	0	14	robe	armor
-32x32	1	14	soft_leather_armor	armor
-32x32	2	14	hard_leather_armor	armor
-32x32	3	14	chain_mail	armor
-32x32	4	14	plate_mail	armor
-32x32	5	14	ceramic_mail	armor
-32x32	6	14	augmented_mail	armor
+32x32	1	14	soft leather armor	armor
+32x32	2	14	hard leather armor	armor
+32x32	3	14	chain mail	armor
+32x32	4	14	plate mail	armor
+32x32	5	14	ceramic mail	armor
+32x32	6	14	augmented mail	armor
 32x32	7	14	dragon scale mail	armor
 32x32	8	14	onyx amulet	amulet
 32x32	9	14	coral amulet	amulet
@@ -263,12 +263,12 @@
 32x32	6	16	rubies	money
 32x32	7	16	diamonds	money
 32x32	8	16	emeralds	money
-32x32	9	16	blue_potion	potion
-32x32	10	16	bubbly_potion	potion
-32x32	11	16	red_potion	potion
-32x32	12	16	green_potion	potion
-32x32	13	16	swirl_potion	potion
-32x32	14	16	purple_potion	potion
+32x32	9	16	blue potion	potion
+32x32	10	16	bubbly potion	potion
+32x32	11	16	red potion	potion
+32x32	12	16	green potion	potion
+32x32	13	16	swirl potion	potion
+32x32	14	16	purple potion	potion
 32x32	15	16	-:null:-	:null:
 32x32	0	17	human_adventurer	human
 32x32	1	17	human_fighter	human

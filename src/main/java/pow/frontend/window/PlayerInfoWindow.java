@@ -5,7 +5,6 @@ import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.utils.ImageController;
-import pow.util.TextUtils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -31,20 +30,6 @@ public class PlayerInfoWindow extends AbstractWindow {
     final private int MARGIN = 10;
     final private int FONT_SIZE = 12;
 
-    // TODO: repeated code with ItemChoiceWindow
-    private String itemStringWithInfo(DungeonItem item) {
-        String itemDesc = TextUtils.format(item.name, item.count, false);
-        if (item.attack != null &&
-                (item.attack.die + item.attack.plus + item.attack.roll > 0)) {
-            itemDesc = itemDesc + " (" + item.attack.toString() + ")";
-        }
-        if (item.defense > 0) {
-            itemDesc = itemDesc + " [" + item.defense + "]";
-        }
-        itemDesc = itemDesc + " {" + item.bonus + "}";
-        return itemDesc;
-    }
-
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
@@ -57,12 +42,12 @@ public class PlayerInfoWindow extends AbstractWindow {
         List<String> lines = new ArrayList<>();
         lines.add(player.name);
         lines.add("");
-        lines.add("HP:       " + player.health + "/" + player.maxHealth);
-        lines.add("MP:       ");
-        lines.add("Exp:      " + player.experience);
-        lines.add("Exp next: ");
-        lines.add("Level:    " + player.level);
-        lines.add("Gold:     ");
+        lines.add("HP:        " + player.health + "/" + player.maxHealth);
+        lines.add("MP:        ");
+        lines.add("Exp:       " + player.experience);
+        lines.add("Exp next:  ");
+        lines.add("Level:     " + player.level);
+        lines.add("Gold:      ");
         lines.add("");
         lines.add("Str:       " + player.cStr);
         lines.add("Dex:       " + player.cDex);
@@ -99,7 +84,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         for (DungeonItem item: player.equipment) {
             int position = slotData.get(item.slot).position;
             ImageController.drawTile(graphics, item.image, 270, TILE_SIZE * position + MARGIN);
-            graphics.drawString(itemStringWithInfo(item), 310, TILE_SIZE * position + 30);
+            graphics.drawString(item.stringWithInfo(), 310, TILE_SIZE * position + 30);
         }
     }
 

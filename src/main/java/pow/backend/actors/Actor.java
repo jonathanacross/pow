@@ -15,6 +15,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public int health;
     public int dexterity;  // chance of hitting is related to dexterity and defense
     public int defense;
+    public int toHit;
     public DieRoll attackDamage;
     public ItemList inventory;
 
@@ -56,6 +57,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.maxHealth = actorParams.maxHealth;
         this.dexterity = actorParams.dexterity;
         this.defense = actorParams.defense;
+        this.toHit = actorParams.dexterity;
         this.attackDamage = actorParams.attackDamage;
         this.friendly = actorParams.friendly;
         this.speed = actorParams.speed;

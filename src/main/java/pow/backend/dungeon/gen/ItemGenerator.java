@@ -29,12 +29,12 @@ public class ItemGenerator {
     }
 
     // generates a single item
-    public static DungeonItem genItem(String id, double level) {
+    public static DungeonItem genItem(String id, double level, Random rng) {
         if (!instance.generatorMap.containsKey(id)) {
             DebugLogger.error("unknown item id '" + id + "'");
         }
         SpecificItemGenerator generator = instance.generatorMap.get(id);
-        return generator.genItem(level);
+        return generator.genItem(level, rng);
     }
 
     public static ItemGenerator instance;
@@ -97,7 +97,7 @@ public class ItemGenerator {
         int maxLevel;
         int minBonus;
         int maxBonus;
-        String bonusStat;
+        int[] bonuses;
         DieRoll attack;
         int defense;
         String extra;
@@ -139,6 +139,42 @@ public class ItemGenerator {
             return params;
         }
 
+        private static final int ATTACK_IDX = DungeonItem.TO_HIT_IDX;
+        private static final int MATCH_BONUS = -99999;
+        private static final Map<String, Integer> keyToBonusIdx;
+        static {
+            keyToBonusIdx = new HashMap<>();
+            keyToBonusIdx.put("attack", ATTACK_IDX);
+            keyToBonusIdx.put("def", DungeonItem.DEF_IDX);
+            keyToBonusIdx.put("str", DungeonItem.STR_IDX);
+            keyToBonusIdx.put("dex", DungeonItem.DEX_IDX);
+            keyToBonusIdx.put("int", DungeonItem.INT_IDX);
+            keyToBonusIdx.put("con", DungeonItem.CON_IDX);
+            keyToBonusIdx.put("speed", DungeonItem.SPEED_IDX);
+        }
+
+        private int[] parseBonuses(String text) {
+            int[] bonuses = new int[DungeonItem.NUM_BONUSES];
+            if (text.isEmpty()) {
+                return bonuses;
+            }
+
+            String[] statBonuses = text.split(",");
+            for (String statBonus: statBonuses) {
+                String[] tokens = statBonus.split(":", 2);
+                // x indicates that we'll use the bounus calculated based on the level
+                int bonusAmt = (tokens[1].charAt(0) == 'x') ? MATCH_BONUS : Integer.parseInt(tokens[1]);
+                String stat = tokens[0];
+                if (keyToBonusIdx.containsKey(stat)) {
+                    bonuses[keyToBonusIdx.get(stat)] = bonusAmt;
+                } else {
+                    throw new RuntimeException("error: couldn't parse item stat bonus: " + stat);
+                }
+            }
+
+            return bonuses;
+        }
+
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificItemGenerator(String[] line) {
@@ -157,7 +193,7 @@ public class ItemGenerator {
             maxLevel = Integer.parseInt(line[8]);
             minBonus = Integer.parseInt(line[9]);
             maxBonus = Integer.parseInt(line[10]);
-            bonusStat = line[11];
+            bonuses = parseBonuses(line[11]);
             attack = DieRoll.parseDieRoll(line[12]);
             defense = Integer.parseInt(line[13]);
             extra = line[14];
@@ -169,23 +205,38 @@ public class ItemGenerator {
 
         // resolves level to get a specific item instance
         // TODO: add quantity (e.g., for arrows, money)
-        public DungeonItem genItem(double level) {
-            // compute bonus given the level
+        public DungeonItem genItem(double level, Random rng) {
+            // compute general bonus given the level
             double ratio = (level - minLevel) / (double) (maxLevel - minLevel);
             int bonus = (int) Math.round(ratio * (maxBonus - minBonus) + minBonus);
 
-            return new DungeonItem(name, image, description, slot, flags, bonus, attack, 0,
-                    defense, 0, 1, actionParams);
+            // convert to item bonuses
+            int[] specificItemBonuses = new int[DungeonItem.NUM_BONUSES];
+            for (int i = 0; i < DungeonItem.NUM_BONUSES; i++) {
+                specificItemBonuses[i] = (bonuses[i] == MATCH_BONUS) ? bonus : bonuses[i];
+            }
+            // split up attack into toHit, toDam.
+            int totalAttack = specificItemBonuses[ATTACK_IDX];
+            specificItemBonuses[DungeonItem.TO_HIT_IDX] = 0;
+            specificItemBonuses[DungeonItem.TO_DAM_IDX] = 0;
+            if (totalAttack > 0) {
+                specificItemBonuses[DungeonItem.TO_HIT_IDX] = rng.nextInt(totalAttack);
+                specificItemBonuses[DungeonItem.TO_DAM_IDX] = totalAttack - specificItemBonuses[DungeonItem.TO_HIT_IDX];
+            }
+
+            return new DungeonItem(name, image, description, slot, flags, specificItemBonuses, attack,
+                    defense, 1, actionParams);
         }
     }
 
     public static void main(String[] args) {
+        Random rng = new Random(123);
         for (int level = 0; level < 100; level += 5) {
             List<String> itemIds = ItemGenerator.getItemIdsForLevel(level);
             System.out.println(level);
             for (String itemId : itemIds) {
-                DungeonItem item = ItemGenerator.genItem(itemId, level);
-                System.out.println("\t" + item.name + "\t" + item.bonus);
+                DungeonItem item = ItemGenerator.genItem(itemId, level, rng);
+                System.out.println("\t" + item.name);
             }
         }
     }
