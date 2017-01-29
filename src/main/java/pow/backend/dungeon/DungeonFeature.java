@@ -2,7 +2,6 @@ package pow.backend.dungeon;
 
 import pow.backend.ActionParams;
 
-import javax.swing.Action;
 import java.io.Serializable;
 
 public class DungeonFeature implements Serializable {

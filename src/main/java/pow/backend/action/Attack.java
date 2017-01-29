@@ -25,10 +25,10 @@ public class Attack implements Action {
     public static ActionResult doAttack(GameBackend backend, Actor attacker, Actor defender) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
-        if (gs.rng.nextDouble() > hitProb(attacker.dexterity, defender.defense)) {
+        if (gs.rng.nextDouble() > hitProb(attacker.attack.plusToHit, defender.defense)) {
             backend.logMessage(attacker.getPronoun() + " misses " + defender.getPronoun());
         } else {
-            int damage = attacker.attackDamage.rollDice(gs.rng);
+            int damage = attacker.attack.dieRoll.rollDice(gs.rng);
             if (damage == 0) {
                 backend.logMessage(attacker.getPronoun() + " misses " + defender.getPronoun());
             } else {

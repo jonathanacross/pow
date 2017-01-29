@@ -1,5 +1,6 @@
 package pow.backend.dungeon.gen;
 
+import pow.backend.AttackData;
 import pow.backend.actors.Actor;
 import pow.backend.actors.AiActor;
 import pow.backend.actors.Monster;
@@ -61,9 +62,9 @@ public class MonsterGenerator {
         String name;
         String image;
         String description;
-        DieRoll maxHealth;
+        int maxHealth;
         DieRoll attack;
-        int dexterity;
+        int toHit;
         int defense;
         int speed;
         AiActor.Flags flags;
@@ -101,9 +102,9 @@ public class MonsterGenerator {
             name = line[2];
             image = line[3];
             description = line[4];
-            maxHealth = DieRoll.parseDieRoll(line[5]);
+            maxHealth = Integer.parseInt(line[5]);
             attack = DieRoll.parseDieRoll(line[6]);
-            dexterity = Integer.parseInt(line[7]);
+            toHit = Integer.parseInt(line[7]);
             defense = Integer.parseInt(line[8]);
             experience = Integer.parseInt(line[9]);
             speed = Integer.parseInt(line[10]);
@@ -112,10 +113,11 @@ public class MonsterGenerator {
 
         // resolves die rolls, location to get a specific monster instance
         public Monster genMonster(Random rng, Point location) {
-            int instanceHP = maxHealth.rollDice(rng);
+            int instanceHP = maxHealth;
+            AttackData attackData = new AttackData(attack, toHit, 0);
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
-                    new Actor.Params(instanceHP, dexterity, defense, attack, false, speed),
+                    new Actor.Params(instanceHP, defense, attackData, false, speed),
                     flags);
         }
     }

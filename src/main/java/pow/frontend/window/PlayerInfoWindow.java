@@ -1,13 +1,10 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
-import pow.backend.action.Attack;
-import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.utils.ImageController;
-import pow.util.TextUtils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -45,20 +42,21 @@ public class PlayerInfoWindow extends AbstractWindow {
         List<String> lines = new ArrayList<>();
         lines.add(player.name);
         lines.add("");
-        lines.add("HP:       " + player.health + "/" + player.maxHealth);
-        lines.add("MP:       ");
-        lines.add("Exp:      " + player.experience);
-        lines.add("Exp next: ");
-        lines.add("Level:    " + player.level);
-        lines.add("Gold:     ");
+        lines.add("HP:        " + player.health + "/" + player.maxHealth);
+        lines.add("MP:        ");
+        lines.add("Exp:       " + player.experience);
+        lines.add("Exp next:  ");
+        lines.add("Level:     " + player.level);
+        lines.add("Gold:      ");
         lines.add("");
-        lines.add("Str:       " + player.cStr);
-        lines.add("Dex:       " + player.cDex);
-        lines.add("Int:       " + player.cInt);
-        lines.add("Con:       " + player.cCon);
+        lines.add("Str:       " + player.currStats.strength);
+        lines.add("Dex:       " + player.currStats.dexterity);
+        lines.add("Int:       " + player.currStats.intelligence);
+        lines.add("Con:       " + player.currStats.constitution);
         lines.add("");
-        lines.add("Attack:    " + player.attackDamage);
-        lines.add("Defense:   " + player.defense);
+        lines.add("Attack:    " + player.attack);   // 2d4 (+3, +1)
+        lines.add("Bow:       " + player.bowAttack);  // 1d2 (+2, +0)
+        lines.add("Defense:   " + player.defense); // [19, +5]
         lines.add("Speed:     " + player.speed);
         lines.add("");
 
@@ -78,15 +76,16 @@ public class PlayerInfoWindow extends AbstractWindow {
                 slotData.put(DungeonItem.Slot.ARMOR, new SlotData("Armor", 4));
                 slotData.put(DungeonItem.Slot.CLOAK, new SlotData("Cloak", 5));
                 slotData.put(DungeonItem.Slot.RING, new SlotData("Ring", 6));
-                slotData.put(DungeonItem.Slot.GLOVES, new SlotData("Gloves", 7));
-                slotData.put(DungeonItem.Slot.BOOTS, new SlotData("Boots", 8));
+                slotData.put(DungeonItem.Slot.AMULET, new SlotData("Amulet", 7));
+                slotData.put(DungeonItem.Slot.GLOVES, new SlotData("Gloves",8));
+                slotData.put(DungeonItem.Slot.BOOTS, new SlotData("Boots", 9));
         for (SlotData sd : slotData.values()) {
-            graphics.drawString(sd.name, 220, TILE_SIZE * sd.position + 30);
+            graphics.drawString(sd.name, 245, TILE_SIZE * sd.position + 30);
         }
         for (DungeonItem item: player.equipment) {
             int position = slotData.get(item.slot).position;
-            ImageController.drawTile(graphics, item.image, 270, TILE_SIZE * position + MARGIN);
-            graphics.drawString(TextUtils.singular(item.name), 310, TILE_SIZE * position + 30);
+            ImageController.drawTile(graphics, item.image, 295, TILE_SIZE * position + MARGIN);
+            graphics.drawString(item.stringWithInfo(), 335, TILE_SIZE * position + 30);
         }
     }
 

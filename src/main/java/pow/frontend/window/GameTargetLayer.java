@@ -2,10 +2,8 @@ package pow.frontend.window;
 
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
-import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.DungeonTerrain;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
@@ -88,7 +86,9 @@ public class GameTargetLayer extends AbstractWindow {
             if (square.items != null && square.items.size() > 0) {
                 // TODO: improve to handle multiple items, features, monsters
                 DungeonItem item = square.items.items.get(0);
-                return "you see " + TextUtils.format(item.name, item.count, false);
+                // TODO: temporarily showing detailed string for debugging. remove later.
+                return "you see " + item.stringWithInfo();
+                //return "you see " + TextUtils.format(item.name, item.count, false);
             }
             if (square.feature != null) {
                 return "you see " + TextUtils.format(square.feature.name, 1, false);

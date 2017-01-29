@@ -31,21 +31,7 @@ public class GameState implements Serializable {
         this.world = null;
         this.rng = new Random(123);
         this.gameInProgress = false;
-        this.player = new Player(
-                new DungeonObject.Params(
-                        "player", // id
-                        "", // name
-                        "human_adventurer", // image
-                        "yourself", // description
-                        new Point(-1, -1), // location -- will be updated later
-                        true), // solid
-                30, // maxHealth
-                1, // cStr
-                1, // cDex
-                1, // cInt
-                1, // cCon
-                new DieRoll(2, 2, 0) // attack
-        );
+        this.player = new Player();
         this.pet = null;
         this.log = new MessageLog(50);
     }
@@ -53,22 +39,8 @@ public class GameState implements Serializable {
     public GameState(String name) {
         this.gameInProgress = false;
         this.rng = new Random(123);
-        this.player = new Player(
-                new DungeonObject.Params(
-                        "player", // id
-                        name, // name
-                        "human_adventurer", // image
-                        "yourself", // description
-                        new Point(-1, -1), // location -- will be updated
-                        true), // solid
-                30, // maxHealth
-                1, // cStr
-                1, // cDex
-                1, // cInt
-                1, // cCon
-                new DieRoll(2, 2, 0) // attack
-        );
-
+        this.player = new Player();
+        this.player.name = name;
         this.pet = new Pet(
                 new DungeonObject.Params(
                         "pet", // id
@@ -79,9 +51,8 @@ public class GameState implements Serializable {
                         true), // solid
                 new Actor.Params(
                         20, // maxHealth
-                        4, // dexterity
                         3, // defense
-                        new DieRoll(1, 4, 0),
+                        new AttackData(new DieRoll(1, 4), 4, 0),
                         true, // friendly to player
                         0) // speed
         );

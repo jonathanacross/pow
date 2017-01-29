@@ -97,7 +97,7 @@ public class FeatureData {
         return new DungeonFeature.Flags(blockGround, glowing, actOnStep, stairsUp, stairsDown);
     }
 
-    // TODO: duplicate code in TerrainData
+    // TODO: duplicate code in TerrainData, ItemGenerator
     private ActionParams parseActionParams(String text) {
         ActionParams params = new ActionParams();
         if (text.isEmpty()) {

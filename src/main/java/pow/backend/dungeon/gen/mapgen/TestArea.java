@@ -2,23 +2,29 @@ package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
-import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.gen.Constants;
-import pow.backend.dungeon.gen.GeneratorUtils;
-import pow.backend.dungeon.gen.MapConnection;
-import pow.backend.dungeon.gen.ProtoTranslator;
+import pow.backend.dungeon.gen.*;
 import pow.util.Point;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 // generates a test area.  Not designed to be configurable.
 public class TestArea implements MapGenerator {
+    private int level;
+
+    public TestArea(int level) {
+        this.level = level;
+    }
 
     public GameMap genMap(String name,
+                          List<MapConnection> connections,
+                          Random rng) {
+        return genItemMap(name, connections, rng);
+    }
+
+    private GameMap genPremadeMap(String name,
                           List<MapConnection> connections,
                           Random rng) {
 
@@ -42,7 +48,54 @@ public class TestArea implements MapGenerator {
         int numMonsters = 10;
         List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, null, rng);
 
-        GameMap map = new GameMap(name, dungeonSquares, keyLocations, monsters);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsters);
+        return map;
+    }
+
+    // Creates a map showing all items for all levels.
+    public GameMap genItemMap(String name,
+            List<MapConnection> connections,
+            Random rng) {
+        int width = 100;
+        int height = 100;
+        int[][] data = new int[width][height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                data[x][y] =
+                        (x == 0 || y == 0 || x == width - 1 || y == height - 1) ?
+                                Constants.TERRAIN_WALL + Constants.FEATURE_CANDLE :
+                                Constants.TERRAIN_FLOOR;
+            }
+        }
+
+        ProtoTranslator translator = new ProtoTranslator(1);
+        DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, translator);
+
+        // place the exits and get key locations
+        String upstairsFeatureId = translator.getFeature(Constants.FEATURE_UP_STAIRS).id;
+        String downstairsFeatureId =  translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
+        String floorTerrainId = translator.getTerrain(Constants.TERRAIN_FLOOR).id;
+        Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
+                connections,
+                dungeonSquares,
+                floorTerrainId,
+                upstairsFeatureId,
+                downstairsFeatureId,
+                rng);
+
+        // add all items
+        for (int level = 0; level < 90; level++) {
+            List<String> itemIds = ItemGenerator.getItemIdsForLevel(level);
+            for (int id = 0; id < itemIds.size(); id++) {
+                dungeonSquares[id+1][level+1].items.add(ItemGenerator.genItem(itemIds.get(id), level, rng));
+            }
+        }
+
+        // place monsters
+        int numMonsters = 0;
+        List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, null, rng);
+
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsters);
         return map;
     }
 

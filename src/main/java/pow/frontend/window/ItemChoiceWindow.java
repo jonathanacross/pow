@@ -1,8 +1,6 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
-import pow.backend.GameState;
-import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.utils.ImageController;
@@ -26,7 +24,7 @@ public class ItemChoiceWindow extends AbstractWindow {
                             List<DungeonItem> items,
                             Function<DungeonItem, Boolean> enabled,
                             IntConsumer callback) {
-        super(x, y, 250, 35 + 32 * items.size(), true, backend, frontend);
+        super(x, y, 350, 35 + 32 * items.size(), true, backend, frontend);
         this.message = message;
         this.items = items;
         this.enabled = enabled;
@@ -44,8 +42,11 @@ public class ItemChoiceWindow extends AbstractWindow {
 
         if (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z) {
             int itemNumber = keyCode - KeyEvent.VK_A;
-            this.callback.accept(itemNumber);
-            frontend.close();
+            if (itemNumber >= 0 && itemNumber < items.size() &&
+                    enabled.apply(items.get(itemNumber))) {
+                this.callback.accept(itemNumber);
+                frontend.close();
+            }
         }
     }
 
@@ -74,7 +75,7 @@ public class ItemChoiceWindow extends AbstractWindow {
             int textY = y + 20;
             graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
             graphics.drawString(label, MARGIN, textY);
-            graphics.drawString(TextUtils.format(item.name, item.count, false), 60, textY);
+            graphics.drawString(item.stringWithInfo(), 60, textY);
 
             idx++;
             y += TILE_SIZE;
