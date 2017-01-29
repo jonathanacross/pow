@@ -8,7 +8,7 @@ long sword	& long sword~	long sword	long sword	weapon			51	80	0	16	attack:x	4d7	
 broad sword	& broad sword~	broad sword	broad sword	weapon			61	90	0	20	attack:x	5d10	0	
 blade of chaos	& blade~ of chaos	blade of chaos	blade of chaos	weapon			71	90	0	32	attack:x	8d12	0	
 # bows														
-short bow	& short bow~	short bow	short bow	bow			1	30	0	2	attack:x	1	0	
+short bow	& short bow~	short bow	short bow	bow			1	30	0	2	attack:x	1d1	0	
 long bow	& long bow~	long bow	long bow	bow			21	50	0	2	attack:x	1d3	0	
 gold longbow	& gold longbow~	gold longbow	gold longbow	bow			41	60	0	3	attack:x	3d2	0	
 crossbow	& crossbow~	crossbow	crossbow	bow			51	70	0	4	attack:x	4d3	0	

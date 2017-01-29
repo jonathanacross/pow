@@ -1,5 +1,6 @@
 package pow.backend.actors;
 
+import pow.backend.AttackData;
 import pow.backend.GameBackend;
 import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonObject;
@@ -13,10 +14,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public int maxHealth;
     public int health;
-    public int dexterity;  // chance of hitting is related to dexterity and defense
-    public int defense;
-    public int toHit;
-    public DieRoll attackDamage;
+    public int defense; // chance of hitting is related to toHit and defense
+    public AttackData attack;
     public ItemList inventory;
 
     public boolean friendly; // friendly to the player
@@ -34,17 +33,15 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public static class Params {
         public int maxHealth;
-        public int dexterity;
         public int defense;
-        public DieRoll attackDamage;
+        public AttackData attack;
         public boolean friendly; // friendly to the player
         public int speed;
 
-        public Params(int maxHealth, int dexterity, int defense, DieRoll attackDamage, boolean friendly, int speed) {
+        public Params(int maxHealth, int defense, AttackData attack, boolean friendly, int speed) {
             this.maxHealth = maxHealth;
-            this.dexterity = dexterity;
             this.defense = defense;
-            this.attackDamage = attackDamage;
+            this.attack = attack;
             this.friendly = friendly;
             this.speed = speed;
         }
@@ -55,10 +52,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.energy = new Energy();
         this.health = actorParams.maxHealth;
         this.maxHealth = actorParams.maxHealth;
-        this.dexterity = actorParams.dexterity;
         this.defense = actorParams.defense;
-        this.toHit = actorParams.dexterity;
-        this.attackDamage = actorParams.attackDamage;
+        this.attack = actorParams.attack;
         this.friendly = actorParams.friendly;
         this.speed = actorParams.speed;
         this.inventory = new ItemList(20, 99);

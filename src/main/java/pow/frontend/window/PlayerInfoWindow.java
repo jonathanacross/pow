@@ -49,13 +49,14 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("Level:     " + player.level);
         lines.add("Gold:      ");
         lines.add("");
-        lines.add("Str:       " + player.cStr);
-        lines.add("Dex:       " + player.cDex);
-        lines.add("Int:       " + player.cInt);
-        lines.add("Con:       " + player.cCon);
+        lines.add("Str:       " + player.currStats.strength);
+        lines.add("Dex:       " + player.currStats.dexterity);
+        lines.add("Int:       " + player.currStats.intelligence);
+        lines.add("Con:       " + player.currStats.constitution);
         lines.add("");
-        lines.add("Attack:    " + player.attackDamage);
-        lines.add("Defense:   " + player.defense);
+        lines.add("Attack:    " + player.attack);   // 2d4 (+3, +1)
+        lines.add("Bow:       " + player.bowAttack);  // 1d2 (+2, +0)
+        lines.add("Defense:   " + player.defense); // [19, +5]
         lines.add("Speed:     " + player.speed);
         lines.add("");
 
@@ -79,12 +80,12 @@ public class PlayerInfoWindow extends AbstractWindow {
                 slotData.put(DungeonItem.Slot.GLOVES, new SlotData("Gloves",8));
                 slotData.put(DungeonItem.Slot.BOOTS, new SlotData("Boots", 9));
         for (SlotData sd : slotData.values()) {
-            graphics.drawString(sd.name, 220, TILE_SIZE * sd.position + 30);
+            graphics.drawString(sd.name, 245, TILE_SIZE * sd.position + 30);
         }
         for (DungeonItem item: player.equipment) {
             int position = slotData.get(item.slot).position;
-            ImageController.drawTile(graphics, item.image, 270, TILE_SIZE * position + MARGIN);
-            graphics.drawString(item.stringWithInfo(), 310, TILE_SIZE * position + 30);
+            ImageController.drawTile(graphics, item.image, 295, TILE_SIZE * position + MARGIN);
+            graphics.drawString(item.stringWithInfo(), 335, TILE_SIZE * position + 30);
         }
     }
 

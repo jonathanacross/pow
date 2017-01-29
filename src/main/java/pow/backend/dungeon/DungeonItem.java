@@ -129,8 +129,8 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         i = slot.compareTo(other.slot);
         if (i != 0) return i;
 
-        int thisAttackValue = attack != null ? (attack.die * 10000) + (attack.roll * 100) + attack.plus : -1;
-        int otherAttackValue = other.attack != null ? (other.attack.die * 10000) + (other.attack.roll * 100) + other.attack.plus : -1;
+        int thisAttackValue = attack != null ? (attack.die * 1000) + attack.roll : -1;
+        int otherAttackValue = other.attack != null ? (other.attack.die * 1000) + other.attack.roll : -1;
         i = Integer.compare(thisAttackValue, otherAttackValue);
         if (i != 0) return i;
 
@@ -150,6 +150,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         else { return "+" + x; }
     }
 
+    // TODO: see if I can use the Attack toString to simplify this.
     private static String formatGroupBonus(int[] bonusAmts, String[] names) {
         // simple case - see if all 0
         int numNonZero = 0;
@@ -191,7 +192,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
         sb.append(TextUtils.format(name, count, false));
 
-        if (attack != null && (attack.die + attack.plus + attack.roll > 0)) {
+        if (attack != null && (attack.die + attack.roll > 0)) {
             sb.append(" (" + attack.toString() + ")");
             sb.append(" (" + formatBonus(bonuses[TO_HIT_IDX]) + "," + formatBonus(bonuses[TO_DAM_IDX]) + ")");
         } else if ((bonuses[TO_HIT_IDX] != 0) || (bonuses[TO_DAM_IDX] != 0)) {

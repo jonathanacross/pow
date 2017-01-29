@@ -1,5 +1,5 @@
 # area is unused, just a reminder for roughly where the monsters will be. Remove it later											
-#area*	id	name	image	description	hp	attacks[]	dexterity	defense	experience	speed	flags[]
+#area*	id	name	image	description	hp	attacks[]	toHit	defense	experience	speed	flags[]
 basement.L1	green mushrooms	green mushrooms	green mushrooms	They are dark green, with tall brown stems.	3	1d1	1	0	1	0	stationary
 basement.L1.L2	black ant	black ant	black ant	A large black ant.	2	1d1	1	1	1	0	erratic
 basement.L2.L3	white rat	white rat	white rat	It looks like a cute lab rat, but it has sharp teeth.	4	1d2	2	2	2	0	
