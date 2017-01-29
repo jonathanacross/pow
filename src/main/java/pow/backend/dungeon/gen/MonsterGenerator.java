@@ -117,7 +117,7 @@ public class MonsterGenerator {
             AttackData attackData = new AttackData(attack, toHit, 0);
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
-                    new Actor.Params(instanceHP, defense, attackData, false, speed),
+                    new Actor.Params(instanceHP, defense, experience, attackData, false, speed),
                     flags);
         }
     }

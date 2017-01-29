@@ -5,7 +5,6 @@ import pow.backend.GameBackend;
 import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
-import pow.util.DieRoll;
 
 import java.io.Serializable;
 
@@ -14,6 +13,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public int maxHealth;
     public int health;
+    public int experience;
     public int defense; // chance of hitting is related to toHit and defense
     public AttackData attack;
     public ItemList inventory;
@@ -31,16 +31,20 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.health -= damage;
     }
 
+    public void gainExperience(int exp) {} // overridden in player
+
     public static class Params {
         public int maxHealth;
         public int defense;
+        public int experience;
         public AttackData attack;
         public boolean friendly; // friendly to the player
         public int speed;
 
-        public Params(int maxHealth, int defense, AttackData attack, boolean friendly, int speed) {
+        public Params(int maxHealth, int defense, int experience, AttackData attack, boolean friendly, int speed) {
             this.maxHealth = maxHealth;
             this.defense = defense;
+            this.experience = experience;
             this.attack = attack;
             this.friendly = friendly;
             this.speed = speed;
@@ -52,6 +56,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.energy = new Energy();
         this.health = actorParams.maxHealth;
         this.maxHealth = actorParams.maxHealth;
+        this.experience = actorParams.experience;
         this.defense = actorParams.defense;
         this.attack = actorParams.attack;
         this.friendly = actorParams.friendly;

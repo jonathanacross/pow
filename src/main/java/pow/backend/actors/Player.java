@@ -20,6 +20,20 @@ import java.util.Queue;
 
 public class Player extends Actor implements Serializable, LightSource {
 
+    public static class GainRatios implements Serializable {
+        public double strRatio;
+        public double dexRatio;
+        public double intRatio;
+        public double conRatio;
+
+        public GainRatios(double strRatio, double dexRatio, double intRatio, double conRatio) {
+            this.strRatio = strRatio;
+            this.dexRatio = dexRatio;
+            this.intRatio = intRatio;
+            this.conRatio = conRatio;
+        }
+    }
+
     // TODO: see if this should be shared with items.
     public static class Stats implements Serializable {
         public int strength;
@@ -45,21 +59,6 @@ public class Player extends Actor implements Serializable, LightSource {
             this.bowToDam = 0;
             this.speed = 0;
         }
-
-        public Stats(int strength, int dexterity, int intelligence,
-                     int constitution, int defense, int weaponToHit,
-                     int weaponToDam, int bowToHit, int bowToDam, int speed) {
-            this.strength = strength;
-            this.dexterity = dexterity;
-            this.intelligence = intelligence;
-            this.constitution = constitution;
-            this.defense = defense;
-            this.weaponToHit = weaponToHit;
-            this.weaponToDam = weaponToDam;
-            this.bowToHit = bowToHit;
-            this.bowToDam = bowToDam;
-            this.speed = speed;
-        }
     }
 
     private Queue<Action> actionQueue;
@@ -67,11 +66,12 @@ public class Player extends Actor implements Serializable, LightSource {
     public int viewRadius;
     public int lightRadius;
     public List<DungeonItem> equipment;
-    public Stats innateStats;
+    private GainRatios gainRatios;
+    private Stats innateStats;
     public Stats currStats;
 
-    public AttackData innateAttack;
-    public AttackData weaponAttack;
+    private AttackData innateAttack;
+    //public AttackData weaponAttack;  // part of Actor
     public AttackData bowAttack;
     public int experience;
     public int level;
@@ -111,32 +111,22 @@ public class Player extends Actor implements Serializable, LightSource {
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
                 30, // maxHealth
-                new Stats(
-                        1, // strength;
-                        1, // dexterity;
-                        1, // intelligence;
-                        1, // constitution;
-                        0, // defense;
-                        0, // weaponToHit;
-                        0, // weaponToDam;
-                        0, // bowToHit;
-                        0, // bowToDam;
-                        0 // speed;
-                ),
+                new GainRatios(1.0, 1.0, 1.0, 1.0),
                 new AttackData(new DieRoll(2, 2), 0, 0)
         );
     }
 
     public Player(DungeonObject.Params objectParams,
                   int maxHealth,
-                  Stats innateStats,
+                  GainRatios gainRatios,
                   AttackData innateAttack ) {
-        super(objectParams, new Actor.Params(maxHealth, -99, null, true, 0));
+        super(objectParams, new Actor.Params(maxHealth, -99, 0, null, true, 0));
         this.actionQueue = new LinkedList<>();
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
         this.equipment = new ArrayList<>();
-        this.innateStats = innateStats;
+        this.innateStats = new Stats();
+        this.gainRatios = gainRatios;
         this.innateAttack = innateAttack;
         this.bowAttack = null;
         this.experience = 0;
@@ -259,5 +249,61 @@ public class Player extends Actor implements Serializable, LightSource {
         DungeonItem item = equipment.remove(idx);
         updateStats();
         return item;
+    }
+
+    @Override
+    public void gainExperience(int exp) {
+        this.experience += exp;
+        checkIncreaseCharLevel();
+    }
+
+    private void checkIncreaseCharLevel() {
+        int targetLevel = getTargetLevel();
+        while (level <= targetLevel) {
+            gainLevel();
+        }
+    }
+
+    // gets the experience level the character should have
+    // based on experience alone.
+    private int getTargetLevel() {
+        int targetLevel = 0;
+        for (int i = 0; i < levelBreakpoints.length; i += 1) {
+            if (experience >= levelBreakpoints[i]) {
+                targetLevel = i;
+            }
+        }
+        return targetLevel;
+    }
+
+    public int getExpToNextLevel() {
+        int nextLevel = getTargetLevel() + 1;
+        int expBreak = levelBreakpoints[nextLevel];
+        return expBreak - experience;
+    }
+
+    private void gainLevel() {
+        //TODO: give reference to the backend for each actor?
+        System.out.println("Gained a level!");
+        //game.messageHandler.log("congrats, you gained a level!");
+        this.innateStats.strength += gainStat(this.gainRatios.strRatio, level);
+        this.innateStats.dexterity += gainStat(this.gainRatios.dexRatio, level);
+        this.innateStats.intelligence += gainStat(this.gainRatios.intRatio, level);
+        this.innateStats.constitution += gainStat(this.gainRatios.conRatio, level);
+
+        int hpIncrease = gainStat(this.gainRatios.conRatio*5, level);
+        //int mpIncrease = gainStat(this.gainRatios.intRatio*5, level);
+        health += hpIncrease;
+        maxHealth += hpIncrease;
+//        mp += mpIncrease;
+//        maxMp += mpIncrease;
+        level += 1;
+        updateStats();
+    }
+
+    private int gainStat(double ratio, int level) {
+        int currBase = (int) Math.round(ratio * level);
+        int nextBase = (int) Math.round(ratio * (level+1));
+        return nextBase - currBase;
     }
 }

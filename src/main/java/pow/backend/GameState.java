@@ -52,6 +52,7 @@ public class GameState implements Serializable {
                 new Actor.Params(
                         20, // maxHealth
                         3, // defense
+                        0, // experience
                         new AttackData(new DieRoll(1, 4), 4, 0),
                         true, // friendly to player
                         0) // speed
