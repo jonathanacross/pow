@@ -108,7 +108,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
         DungeonItem that = (DungeonItem) o;
 
-        if (count != that.count) return false;
         if (!name.equals(that.name)) return false;
         return Arrays.equals(bonuses, that.bonuses);
     }
@@ -117,7 +116,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + Arrays.hashCode(bonuses);
-        result = 31 * result + count;
         return result;
     }
 

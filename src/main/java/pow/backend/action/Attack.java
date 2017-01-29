@@ -48,6 +48,7 @@ public class Attack implements Action {
                         gs.gameInProgress = false;
                         events.add(GameEvent.LostGame());
                     } else {
+                        attacker.gainExperience(defender.experience);
                         // Only remove the actor if it's NOT the player,
                         // so that the player won't disappear from the map.
                         gs.world.currentMap.removeActor(defender);
@@ -61,9 +62,7 @@ public class Attack implements Action {
         return ActionResult.Succeeded(events);
     }
 
-    public static double hitProb(int dex, int defense) {
-        return 1.0 / (1.0 + Math.exp(-(dex - defense) * 0.2));
-    }
+    public static double hitProb(int toHit, int defense) { return 1.0 / (1.0 + Math.exp(-(toHit - defense) * 0.2)); }
 
     @Override
     public ActionResult process(GameBackend backend) {
