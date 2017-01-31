@@ -46,7 +46,7 @@ public class MonsterGenerator {
 
     private MonsterGenerator() throws IOException {
         //Get file from resources folder
-        InputStream tsvStream = this.getClass().getResourceAsStream("/data/monsters.txt");
+        InputStream tsvStream = this.getClass().getResourceAsStream("/data/monsters.tsv");
         TsvReader reader = new TsvReader(tsvStream);
 
         generatorMap = new HashMap<>();
