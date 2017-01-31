@@ -23,7 +23,7 @@ public class ModifyTerrain implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        GameMap map = backend.getGameState().world.currentMap;
+        GameMap map = backend.getGameState().getCurrentMap();
         map.map[loc.x][loc.y].terrain = newTerrain;
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());

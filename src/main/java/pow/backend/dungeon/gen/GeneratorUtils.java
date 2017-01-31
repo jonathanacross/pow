@@ -1,6 +1,7 @@
 package pow.backend.dungeon.gen;
 
 import pow.backend.ActionParams;
+import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonItem;
@@ -212,7 +213,10 @@ public class GeneratorUtils {
 
     // Generates from a subset of monsters.
     // If monsterIds == null, then generate from all possible monsters
-    public static List<Actor> createMonsters(DungeonSquare[][] dungeonMap, int numMonsters, List<String> monsterIds, Random rng) {
+    public static List<Actor> createMonsters(DungeonSquare[][] dungeonMap,
+                                             int numMonsters,
+                                             List<String> monsterIds,
+                                             Random rng) {
         List<Actor> actors = new ArrayList<>();
         int width = Array2D.width(dungeonMap);
         int height = Array2D.height(dungeonMap);
@@ -239,6 +243,14 @@ public class GeneratorUtils {
             monsterAt[location.x][location.y] = true;
         }
         return actors;
+    }
+
+    // note: this also removes the player and pet from the map!
+    public static void regenMonstersForCurrentMap(GameMap map, Random rng) {
+        int width = Array2D.width(map.map);
+        int height = Array2D.height(map.map);
+        int numMonsters = (width - 1)*(height-1) / 100;
+        map.actors = createMonsters(map.map, numMonsters, map.genMonsterIds, rng);
     }
 
     // debug method: puts one of every type of monster in the level

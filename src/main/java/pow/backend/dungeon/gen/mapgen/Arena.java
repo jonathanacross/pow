@@ -51,11 +51,7 @@ public class Arena implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
-        // Add monsters
-        int numMonsters = (this.width - 1) * (this.height - 1) / 100;
-        List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, this.monsterIds, rng);
-
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsters);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds);
         return map;
     }
 

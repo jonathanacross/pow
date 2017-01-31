@@ -17,7 +17,7 @@ public class GameState implements Serializable {
     public GameWorld world;
     public Random rng;
 
-    // character attributes
+    // character data
     public Player player;
     public Pet pet;
 
@@ -25,6 +25,11 @@ public class GameState implements Serializable {
     public MessageLog log;
 
     public boolean gameInProgress;
+
+    // convenience method
+    public GameMap getCurrentMap() {
+        return world.recentMaps.getCurrentMap();
+    }
 
     // makes a partial gamestate useful when not playing the actual game..
     public GameState() {

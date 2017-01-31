@@ -2,13 +2,12 @@ package pow.backend;
 
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
+import pow.backend.dungeon.RecentMaps;
 import pow.backend.dungeon.gen.mapgen.TestArea;
 import pow.backend.dungeon.gen.worldgen.GenOverworldTopology;
 import pow.backend.dungeon.gen.MapConnection;
-import pow.backend.dungeon.gen.ProtoTranslator;
 import pow.backend.dungeon.gen.mapgen.MapGenerator;
 import pow.backend.dungeon.gen.mapgen.RecursiveInterpolation;
-import pow.backend.dungeon.gen.mapgen.ShapeDLA;
 import pow.util.DebugLogger;
 import pow.util.Point;
 import pow.util.direction.DirectionSets;
@@ -18,7 +17,7 @@ import java.util.*;
 
 public class GameWorld implements Serializable {
     public Map<String, GameMap> world;
-    public GameMap currentMap; // the area where the player currently is
+    public RecentMaps recentMaps;
 
     public GameWorld(Random rng, Player player, Pet pet) {
         //genTestWorld(rng, player, pet);
@@ -70,7 +69,8 @@ public class GameWorld implements Serializable {
         world.put("area2", area2);
         world.put("area3", area3);
 
-        currentMap = area1;
+        recentMaps = new RecentMaps();
+        recentMaps.setMap(area1);
         Point playerLoc = area1.findRandomOpenSquare(rng);
         area1.placePlayerAndPet(player, playerLoc, pet);
     }
@@ -199,10 +199,10 @@ public class GameWorld implements Serializable {
 
         world.put(TEST_DUNGEON_ID, dungeon1);
 
-
         // set up the player at the start
         GameMap startArea = world.get(AREA_NAME + "0");
-        currentMap = startArea;
+        recentMaps = new RecentMaps();
+        recentMaps.setMap(startArea);
         Point playerLoc = startArea.findRandomOpenSquare(rng);
         startArea.placePlayerAndPet(player, playerLoc, pet);
     }

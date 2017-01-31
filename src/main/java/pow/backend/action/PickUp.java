@@ -34,7 +34,7 @@ public class PickUp implements Action {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());
 
-        DungeonSquare square = gs.world.currentMap.map[actor.loc.x][actor.loc.y];
+        DungeonSquare square = gs.getCurrentMap().map[actor.loc.x][actor.loc.y];
         if (square.items.size() == 0) {
             backend.logMessage(actor.getPronoun() + " can't pick up anything here.");
             return ActionResult.Failed(null);

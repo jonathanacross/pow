@@ -33,7 +33,7 @@ public class Drop implements Action {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());
 
-        DungeonSquare square = gs.world.currentMap.map[actor.loc.x][actor.loc.y];
+        DungeonSquare square = gs.getCurrentMap().map[actor.loc.x][actor.loc.y];
         DungeonItem item = actor.inventory.items.get(itemNum);
         if (numToDrop == item.count) {
             // dropping all of this item

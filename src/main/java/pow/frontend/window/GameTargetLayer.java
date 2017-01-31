@@ -59,7 +59,7 @@ public class GameTargetLayer extends AbstractWindow {
         cursorPosition.y = MathUtils.clamp(cursorPosition.y + dy, mapView.rowMin, mapView.rowMax);
         frontend.messages.pop();
         frontend.messages.push(makeMessage());
-        Actor selectedActor = backend.getGameState().world.currentMap.actorAt(cursorPosition.x, cursorPosition.y);
+        Actor selectedActor = backend.getGameState().getCurrentMap().actorAt(cursorPosition.x, cursorPosition.y);
         frontend.monsterInfoWindow.setActor(selectedActor);
         frontend.monsterInfoWindow.visible = selectedActor != null;
         frontend.setDirty(true);
@@ -76,10 +76,10 @@ public class GameTargetLayer extends AbstractWindow {
         int x = cursorPosition.x;
         int y = cursorPosition.y;
         GameState gs = backend.getGameState();
-        DungeonSquare square = gs.world.currentMap.map[x][y];
+        DungeonSquare square = gs.getCurrentMap().map[x][y];
 
         if (gs.player.canSee(gs, cursorPosition)) {
-            Actor actor = gs.world.currentMap.actorAt(x,y);
+            Actor actor = gs.getCurrentMap().actorAt(x,y);
             if (actor != null) {
                 return "you see " + TextUtils.format(actor.name, 1, false);
             }

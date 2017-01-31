@@ -142,7 +142,7 @@ public class Player extends Actor implements Serializable, LightSource {
     public boolean canSee(GameState gs, Point point) {
         // must be within the player's view radius, and must be lit
         return ((MathUtils.dist2(loc, point) <= Circle.getRadiusSquared(viewRadius)) &&
-                (gs.world.currentMap.map[point.x][point.y].brightness > 0));
+                (gs.getCurrentMap().map[point.x][point.y].brightness > 0));
     }
 
     @Override
@@ -257,15 +257,16 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     @Override
-    public void gainExperience(int exp) {
+    public void gainExperience(GameBackend backend, int exp) {
+        super.gainExperience(backend, exp);
         this.experience += exp;
-        checkIncreaseCharLevel();
+        checkIncreaseCharLevel(backend);
     }
 
-    private void checkIncreaseCharLevel() {
+    private void checkIncreaseCharLevel(GameBackend backend) {
         int targetLevel = getTargetLevel();
         while (level <= targetLevel) {
-            gainLevel();
+            gainLevel(backend);
         }
     }
 
@@ -287,10 +288,8 @@ public class Player extends Actor implements Serializable, LightSource {
         return expBreak - experience;
     }
 
-    private void gainLevel() {
-        //TODO: give reference to the backend for each actor?
-        System.out.println("Gained a level!");
-        //game.messageHandler.log("congrats, you gained a level!");
+    private void gainLevel(GameBackend backend) {
+        backend.logMessage("congrats, you gained a level!");
         this.innateStats.strength += gainStat(this.gainRatios.strRatio, level);
         this.innateStats.dexterity += gainStat(this.gainRatios.dexRatio, level);
         this.innateStats.intelligence += gainStat(this.gainRatios.intRatio, level);

@@ -48,10 +48,16 @@ public class Attack implements Action {
                         gs.gameInProgress = false;
                         events.add(GameEvent.LostGame());
                     } else {
-                        attacker.gainExperience(defender.experience);
+                        attacker.gainExperience(backend, defender.experience);
+
+                        // defender needs to drop all items they carry; additionally,
+                        // they have some chance of dropping another item.
+                        // Or, perhaps generate an item at monster creation time?
+
                         // Only remove the actor if it's NOT the player,
                         // so that the player won't disappear from the map.
-                        gs.world.currentMap.removeActor(defender);
+                        gs.getCurrentMap().removeActor(defender);
+
                     }
                     if (defender == gs.pet) {
                         gs.pet = null;

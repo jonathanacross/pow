@@ -31,7 +31,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.health -= damage;
     }
 
-    public void gainExperience(int exp) {} // overridden in player
+    public void gainExperience(GameBackend backend, int exp) {} // overridden in player
 
     public static class Params {
         public int maxHealth;

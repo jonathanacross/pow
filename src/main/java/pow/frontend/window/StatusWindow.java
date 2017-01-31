@@ -82,9 +82,10 @@ public class StatusWindow extends AbstractWindow {
         int y = 10;
         int textX = TILE_SIZE + 2*MARGIN;
         drawActorSummary(graphics, gs.player, MARGIN, y, true); y += 4*FONT_SIZE;
-        graphics.drawString("Exp:", textX, y); y += FONT_SIZE;
-        graphics.drawString("Level:", textX, y); y += FONT_SIZE;
-        graphics.drawString("Gold:", textX, y); y += FONT_SIZE;
+        graphics.drawString("Exp:       " + gs.player.experience, textX, y); y += FONT_SIZE;
+        graphics.drawString("Exp next:  " + gs.player.getExpToNextLevel(), textX, y); y += FONT_SIZE;
+        graphics.drawString("Level:     " + gs.player.level, textX, y); y += FONT_SIZE;
+        graphics.drawString("Gold:      ", textX, y); y += FONT_SIZE;
 
         if (gs.pet != null && gs.player.canSee(gs, gs.pet.loc)) {
             y += 5;
@@ -97,7 +98,7 @@ public class StatusWindow extends AbstractWindow {
         graphics.setColor(Color.WHITE);
         y += FONT_SIZE;
 
-        for (Actor a: gs.world.currentMap.actors) {
+        for (Actor a: gs.getCurrentMap().actors) {
             if (a == gs.player || a == gs.pet) continue;
             if (!gs.player.canSee(gs, a.loc)) continue;
             drawActorSummary(graphics, a, MARGIN, y, false); y += 40;

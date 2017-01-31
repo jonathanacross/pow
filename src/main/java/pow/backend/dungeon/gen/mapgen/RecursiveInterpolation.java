@@ -126,13 +126,7 @@ public class RecursiveInterpolation implements MapGenerator {
         int numItems = (w - 1) * (h - 1) / 100;
         GeneratorUtils.addItems(level, squares, numItems, rng);
 
-        // add the monsters
-        //int numMonsters = 0;
-        int numMonsters = (w - 1) * (h - 1) / 100;
-        List<Actor> monsters = GeneratorUtils.createMonsters(squares, numMonsters, style.monsterIds, rng);
-
-
-        GameMap map = new GameMap(name, level, squares, keyLocations, monsters);
+        GameMap map = new GameMap(name, level, squares, keyLocations, style.monsterIds);
         return map;
     }
 
