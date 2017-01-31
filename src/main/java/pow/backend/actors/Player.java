@@ -76,29 +76,29 @@ public class Player extends Actor implements Serializable, LightSource {
     public int experience;
     public int level;
 
+    // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
-            0, // level 1
+            0,
             10,
-            25,
-            47,
-            80,
-            130,
-            205,
-            318,
-            488,
-            744,
-            1128,
-            1704,
-            2568,
-            3865,
-            5811,
-            8730,
-            13108,
-            19676,
-            29528,
-            44306,
-            66474,
-            99726};
+            27,
+            54,
+            99,
+            173,
+            295,
+            497,
+            830,
+            1379,
+            2285,
+            3781,
+            6249,
+            10321,
+            17040,
+            28126,
+            46418,
+            76600,
+            126400,
+            208570,
+            344150 };
 
     // default player
     public Player() {
@@ -168,6 +168,10 @@ public class Player extends Actor implements Serializable, LightSource {
         return this.lightRadius;
     }
 
+    private static int getMaxHP(int con) {
+        return (int) Math.round(0.7 * con * con + 1.6 * con + 7.7);
+    }
+
     // update our stats, plus toHit, defense to include current equipped items and other bonuses.
     private void updateStats() {
         currStats.strength = innateStats.strength;
@@ -205,6 +209,7 @@ public class Player extends Actor implements Serializable, LightSource {
         int overallBowToDam = currStats.bowToDam + currStats.strength;
         defense = currStats.defense + currStats.dexterity;
         speed = currStats.speed;
+        maxHealth = getMaxHP(currStats.constitution);
 
         // Compute attack damage.
         // use innate attack by default
@@ -290,15 +295,8 @@ public class Player extends Actor implements Serializable, LightSource {
         this.innateStats.dexterity += gainStat(this.gainRatios.dexRatio, level);
         this.innateStats.intelligence += gainStat(this.gainRatios.intRatio, level);
         this.innateStats.constitution += gainStat(this.gainRatios.conRatio, level);
-
-        int hpIncrease = gainStat(this.gainRatios.conRatio*5, level);
-        //int mpIncrease = gainStat(this.gainRatios.intRatio*5, level);
-        health += hpIncrease;
-        maxHealth += hpIncrease;
-//        mp += mpIncrease;
-//        maxMp += mpIncrease;
         level += 1;
-        updateStats();
+        updateStats();  // will update MaxHP,
     }
 
     private int gainStat(double ratio, int level) {

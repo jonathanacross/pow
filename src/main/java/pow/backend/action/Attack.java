@@ -62,7 +62,13 @@ public class Attack implements Action {
         return ActionResult.Succeeded(events);
     }
 
-    public static double hitProb(int toHit, int defense) { return 1.0 / (1.0 + Math.exp(-(toHit - defense) * 0.2)); }
+    public static double hitProb(int toHit, int defense) {
+        // add smoothing, so that a player with 0 toHit can still hit something
+        // or 0 defense doesn't mean 100% chance of getting hit.
+        double smooth = 5.0;
+        double z = (toHit + smooth) / (toHit + defense + 2*smooth);
+        return z;
+    }
 
     @Override
     public ActionResult process(GameBackend backend) {
