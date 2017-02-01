@@ -460,14 +460,17 @@ public class GeneratorUtils {
                 y = rng.nextInt(height);
             } while (squares[x][y].blockGround() || squares[x][y].feature != null || squares[x][y].items.size() > 0);
 
-            int perturbedLevel = (int) Math.round(2 * rng.nextGaussian() + level);
-
-            List<String> possibleItemIds = ItemGenerator.getItemIdsForLevel(perturbedLevel);
-            String itemId = possibleItemIds.get(rng.nextInt(possibleItemIds.size()));
-            DungeonItem item = ItemGenerator.genItem(itemId, perturbedLevel, rng);
-
+            DungeonItem item = getRandomItemForLevel(level, rng);
             squares[x][y].items.add(item);
         }
+    }
+
+    public static DungeonItem getRandomItemForLevel(int level, Random rng) {
+        int perturbedLevel = (int) Math.round(2 * rng.nextGaussian() + level);
+        List<String> possibleItemIds = ItemGenerator.getItemIdsForLevel(perturbedLevel);
+        String itemId = possibleItemIds.get(rng.nextInt(possibleItemIds.size()));
+        DungeonItem item = ItemGenerator.genItem(itemId, perturbedLevel, rng);
+        return item;
     }
 
 }

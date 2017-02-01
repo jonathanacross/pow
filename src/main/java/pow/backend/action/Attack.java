@@ -1,8 +1,12 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
+import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
+import pow.backend.dungeon.DungeonItem;
+import pow.backend.dungeon.gen.GeneratorUtils;
+import pow.backend.dungeon.gen.ItemGenerator;
 import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
@@ -50,13 +54,18 @@ public class Attack implements Action {
                     } else {
                         attacker.gainExperience(backend, defender.experience);
 
-                        // defender needs to drop all items they carry; additionally,
-                        // they have some chance of dropping another item.
-                        // Or, perhaps generate an item at monster creation time?
+                        GameMap map = gs.getCurrentMap();
+
+                        // with some probability, have the monster drop a random item.
+                        if (gs.rng.nextInt(8) == 0) {
+                            int difficultyLevel = map.level;
+                            DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
+                            map.map[defender.loc.x][defender.loc.y].items.add(item);
+                        }
 
                         // Only remove the actor if it's NOT the player,
                         // so that the player won't disappear from the map.
-                        gs.getCurrentMap().removeActor(defender);
+                        map.removeActor(defender);
 
                     }
                     if (defender == gs.pet) {

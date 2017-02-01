@@ -140,8 +140,9 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     public boolean canSee(GameState gs, Point point) {
-        // must be within the player's view radius, and must be lit
-        return ((MathUtils.dist2(loc, point) <= Circle.getRadiusSquared(viewRadius)) &&
+        // must be on the map, within the player's view radius, and must be lit
+        return (gs.getCurrentMap().isOnMap(point.x, point.y) &&
+                (MathUtils.dist2(loc, point) <= Circle.getRadiusSquared(viewRadius)) &&
                 (gs.getCurrentMap().map[point.x][point.y].brightness > 0));
     }
 
