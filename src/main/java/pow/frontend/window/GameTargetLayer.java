@@ -3,7 +3,6 @@ package pow.frontend.window;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.ItemList;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
@@ -14,6 +13,8 @@ import pow.util.TextUtils;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameTargetLayer extends AbstractWindow {
 
@@ -72,15 +73,28 @@ public class GameTargetLayer extends AbstractWindow {
         parent.removeLayer();
     }
 
-    private String makeItemListString(ItemList items) {
+    // makes a list of things into an English list:
+    // {a} -> a
+    // {a,b} -> a and b
+    // {a,b,c} -> a, b, and c
+    // {a,b,c,d} -> a, b, c, and d
+    private String makeListString(List<String> items) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < items.items.size(); i++) {
-            String join = null;
-            if (i == 0) { join = ""; }
-            else if (i < items.size() - 1) { join = ", "; }
-            else { join = " and "; }
+        for (int i = 0; i < items.size(); i++) {
+            String join;
+            if (i == 0) {
+                join = "";
+            } else if (i < items.size() - 1) {
+                join = ", ";
+            } else {
+                if (items.size() == 2) {
+                    join = " and ";
+                } else {
+                    join = ", and ";
+                }
+            }
             sb.append(join);
-            sb.append(items.items.get(i).stringWithInfo());
+            sb.append(items.get(i));
         }
         return sb.toString();
     }
@@ -102,15 +116,21 @@ public class GameTargetLayer extends AbstractWindow {
             StringBuilder sb = new StringBuilder();
             sb.append("you see ");
 
+            List<String> interestingThings = new ArrayList<>();
             Actor actor = gs.getCurrentMap().actorAt(x,y);
             if (actor != null) {
-                sb.append(TextUtils.format(actor.name, 1, false));
+                interestingThings.add(TextUtils.format(actor.name, 1, false));
+            }
+            if (square.items != null) {
+                for (int i = 0; i < square.items.size(); i++) {
+                    interestingThings.add(square.items.items.get(i).stringWithInfo());
+                }
+            }
+            if (!interestingThings.isEmpty()) {
+                sb.append(makeListString(interestingThings));
                 sb.append(" on ");
             }
-            if (square.items != null && square.items.size() > 0) {
-                sb.append(makeItemListString(square.items));
-                sb.append(" on ");
-            }
+
             sb.append(featureOrTerrain(square));
             return sb.toString();
         }
