@@ -110,17 +110,15 @@ public class Player extends Actor implements Serializable, LightSource {
                         "yourself", // description
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
-                30, // maxHealth
                 new GainRatios(1.0, 1.0, 1.0, 1.0),
                 new AttackData(new DieRoll(2, 2), 0, 0)
         );
     }
 
     public Player(DungeonObject.Params objectParams,
-                  int maxHealth,
                   GainRatios gainRatios,
                   AttackData innateAttack ) {
-        super(objectParams, new Actor.Params(maxHealth, -99, 0, null, true, 0));
+        super(objectParams, new Actor.Params(-1, -99, 0, null, true, 0));
         this.actionQueue = new LinkedList<>();
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
@@ -133,6 +131,7 @@ public class Player extends Actor implements Serializable, LightSource {
         this.level = 1;
         this.currStats = new Stats();
         updateStats();  // updates current stats, defense, and attack, bowAttack
+        this.health = this.maxHealth;
     }
 
     public void addCommand(Action request) {
@@ -170,7 +169,7 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private static int getMaxHP(int con) {
-        return (int) Math.round(0.7 * con * con + 1.6 * con + 7.7);
+        return (int) Math.round(0.7 * con * con + 1.6 * con + 9.7);
     }
 
     // update our stats, plus toHit, defense to include current equipped items and other bonuses.
