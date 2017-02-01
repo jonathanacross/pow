@@ -2,8 +2,8 @@ package pow.frontend.window;
 
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
-import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.ItemList;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
@@ -72,6 +72,26 @@ public class GameTargetLayer extends AbstractWindow {
         parent.removeLayer();
     }
 
+    private String makeItemListString(ItemList items) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < items.items.size(); i++) {
+            String join = null;
+            if (i == 0) { join = ""; }
+            else if (i < items.size() - 1) { join = ", "; }
+            else { join = " and "; }
+            sb.append(join);
+            sb.append(items.items.get(i).stringWithInfo());
+        }
+        return sb.toString();
+    }
+
+    private String featureOrTerrain(DungeonSquare square) {
+        if (square.feature != null) {
+            return TextUtils.format(square.feature.name, 1, false);
+        }
+        return TextUtils.format(square.terrain.name, 1, false);
+    }
+
     private String makeMessage() {
         int x = cursorPosition.x;
         int y = cursorPosition.y;
@@ -79,28 +99,24 @@ public class GameTargetLayer extends AbstractWindow {
         DungeonSquare square = gs.getCurrentMap().map[x][y];
 
         if (gs.player.canSee(gs, cursorPosition)) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("you see ");
+
             Actor actor = gs.getCurrentMap().actorAt(x,y);
             if (actor != null) {
-                return "you see " + TextUtils.format(actor.name, 1, false);
+                sb.append(TextUtils.format(actor.name, 1, false));
+                sb.append(" on ");
             }
             if (square.items != null && square.items.size() > 0) {
-                // TODO: improve to handle multiple items, features, monsters
-                DungeonItem item = square.items.items.get(0);
-                // TODO: temporarily showing detailed string for debugging. remove later.
-                return "you see " + item.stringWithInfo();
-                //return "you see " + TextUtils.format(item.name, item.count, false);
+                sb.append(makeItemListString(square.items));
+                sb.append(" on ");
             }
-            if (square.feature != null) {
-                return "you see " + TextUtils.format(square.feature.name, 1, false);
-            }
-            return "you see " + TextUtils.format(square.terrain.name, 1, false);
+            sb.append(featureOrTerrain(square));
+            return sb.toString();
         }
         else {
             if (square.seen) {
-                if (square.feature != null) {
-                    return TextUtils.format(square.feature.name, 1, false);
-                }
-                return TextUtils.format(square.terrain.name, 1, false);
+                return featureOrTerrain(square);
             } else {
                 return "";  // skip squares the player can't see
             }
