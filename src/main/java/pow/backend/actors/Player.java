@@ -32,6 +32,13 @@ public class Player extends Actor implements Serializable, LightSource {
             this.intRatio = intRatio;
             this.conRatio = conRatio;
         }
+
+        // TODO: put these in data files, eventually
+        public static GainRatios getMage() { return new GainRatios(0.9, 0.9, 1.3, 0.9); }
+        public static GainRatios getAdventurer() { return new GainRatios(1.0, 1.0, 1.0, 1.0); }
+        public static GainRatios getWarrior() { return new GainRatios( 1.1, 1.1, 0.7, 1.1); }
+        public static GainRatios getRogue() { return new GainRatios(0.9, 1.1, 1.0, 1.0); }
+        public static GainRatios getDragonMaster() { return new GainRatios(1.1, 1.2, 0.9, 1.2); }
     }
 
     // TODO: see if this should be shared with items.
@@ -67,7 +74,6 @@ public class Player extends Actor implements Serializable, LightSource {
     public int lightRadius;
     public List<DungeonItem> equipment;
     private GainRatios gainRatios;
-    private Stats innateStats;
     public Stats currStats;
 
     private AttackData innateAttack;
@@ -110,8 +116,8 @@ public class Player extends Actor implements Serializable, LightSource {
                         "yourself", // description
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
-                new GainRatios(1.0, 1.0, 1.0, 1.0),
-                new AttackData(new DieRoll(2, 2), 0, 0)
+                GainRatios.getAdventurer(),
+                new AttackData(new DieRoll(1, 1), 0, 0)
         );
     }
 
@@ -123,15 +129,15 @@ public class Player extends Actor implements Serializable, LightSource {
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
         this.equipment = new ArrayList<>();
-        this.innateStats = new Stats();
         this.gainRatios = gainRatios;
         this.innateAttack = innateAttack;
         this.bowAttack = null;
         this.experience = 0;
         this.level = 1;
         this.currStats = new Stats();
-        updateStats();  // updates current stats, defense, and attack, bowAttack
+        updateStats();  // updates current stats (above), defense, and attack, bowAttack
         this.health = this.maxHealth;
+        this.mana = this.maxMana;
     }
 
     public void addCommand(Action request) {
@@ -174,62 +180,87 @@ public class Player extends Actor implements Serializable, LightSource {
 
     // update our stats, plus toHit, defense to include current equipped items and other bonuses.
     private void updateStats() {
-        currStats.strength = innateStats.strength;
-        currStats.dexterity = innateStats.dexterity;
-        currStats.intelligence = innateStats.intelligence;
-        currStats.constitution = innateStats.constitution;
-        currStats.defense = innateStats.defense;
-        currStats.weaponToHit = innateStats.weaponToHit;
-        currStats.weaponToDam = innateStats.weaponToDam;
-        currStats.bowToHit = innateStats.bowToHit;
-        currStats.bowToDam = innateStats.bowToDam;
-        currStats.speed = innateStats.speed;
+
+        // first, get our baseline/innate stats
+        int innateStr = (int) Math.round(gainRatios.strRatio * (level + 10));
+        int innateDex = (int) Math.round(gainRatios.dexRatio * (level + 10));
+        int innateInt = (int) Math.round(gainRatios.intRatio * (level + 10));
+        int innateCon = (int) Math.round(gainRatios.conRatio * (level + 10));
+        int innateSpd = 0;
+
+        // second, add equipment bonuses for these
+        int strBonus = 0;
+        int dexBonus = 0;
+        int intBonus = 0;
+        int conBonus = 0;
+        int spdBonus = 0;
+        for (DungeonItem item : equipment) {
+            strBonus += item.bonuses[DungeonItem.STR_IDX];
+            dexBonus += item.bonuses[DungeonItem.DEX_IDX];
+            intBonus += item.bonuses[DungeonItem.INT_IDX];
+            conBonus += item.bonuses[DungeonItem.CON_IDX];
+            spdBonus += item.bonuses[DungeonItem.SPEED_IDX];
+        }
+
+        currStats.strength = innateStr + strBonus;
+        currStats.dexterity = innateDex + dexBonus;
+        currStats.intelligence = innateInt + intBonus;
+        currStats.constitution = innateCon + conBonus;
+        currStats.speed = innateSpd + spdBonus;
+
+        // third, compute baseline dependent stats
+
+        DieRoll baseAttackDieRoll = innateAttack.dieRoll;  // will be used if player doesn't wear a weapon
+        DieRoll baseBowDieRoll = new DieRoll(0,0);  // will be used if player doesn't wear a bow
+        int baseDefense = 2 * this.currStats.dexterity;
+        int baseWeaponToHit = 2 * this.currStats.dexterity;
+        int baseWeaponToDam = this.currStats.strength;
+        int baseBowToHit = (int) Math.round(1.5 * this.currStats.dexterity);
+        int baseBowToDam = (int) Math.round(0.75 * this.currStats.strength);
+
+        // fourth, add equipment bonuses
+        int defBonus = 0;
+        int weapToHitBonus = 0;
+        int weapToDamBonus = 0;
+        int bowToHitBonus = 0;
+        int bowToDamBonus = 0;
 
         for (DungeonItem item : equipment) {
-            currStats.strength += item.bonuses[DungeonItem.STR_IDX];
-            currStats.dexterity += item.bonuses[DungeonItem.DEX_IDX];
-            currStats.intelligence += item.bonuses[DungeonItem.INT_IDX];
-            currStats.constitution += item.bonuses[DungeonItem.CON_IDX];
-            currStats.defense += item.defense + item.bonuses[DungeonItem.DEF_IDX];
-            currStats.speed += item.bonuses[DungeonItem.SPEED_IDX];
+            defBonus += item.defense + item.bonuses[DungeonItem.DEF_IDX];
+            spdBonus += item.bonuses[DungeonItem.SPEED_IDX];
             // Only add non bow/weapon (i.e. from rings/amulets) for toHit/toDam bonuses.
             // The weapon and bow bonuses will be applied to the weapon and bow, separately, later.
             if (item.slot != DungeonItem.Slot.BOW && item.slot != DungeonItem.Slot.WEAPON) {
-                currStats.weaponToHit += item.bonuses[DungeonItem.TO_HIT_IDX];
-                currStats.weaponToDam += item.bonuses[DungeonItem.TO_DAM_IDX];
-                currStats.bowToHit += item.bonuses[DungeonItem.TO_HIT_IDX];
-                currStats.bowToDam += item.bonuses[DungeonItem.TO_DAM_IDX];
+                // toHit, toDam applies to both bow and weapon for
+                weapToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
+                weapToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
+                bowToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
+                bowToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
             }
-        }
-
-        // compute toHit, toDam, defense
-        int overallWeaponToHit = currStats.weaponToHit + currStats.dexterity;
-        int overallWeaponToDam = currStats.weaponToDam + currStats.strength;
-        int overallBowToHit = currStats.bowToHit + currStats.dexterity;
-        int overallBowToDam = currStats.bowToDam + currStats.strength;
-        defense = currStats.defense + currStats.dexterity;
-        speed = currStats.speed;
-        maxHealth = getMaxHP(currStats.constitution);
-
-        // Compute attack damage.
-        // use innate attack by default
-        attack = new AttackData(innateAttack.dieRoll,
-                innateAttack.plusToHit + overallWeaponToHit,
-                innateAttack.plusToDam + overallWeaponToDam);
-        bowAttack = new AttackData(new DieRoll(0,0), overallBowToHit, overallBowToDam);
-        for (DungeonItem item : equipment) {
             // if we have a bow/sword, then use that attack instead of our innate attack
             if (item.slot == DungeonItem.Slot.WEAPON) {
-                attack = new AttackData(item.attack,
-                        item.bonuses[DungeonItem.TO_HIT_IDX] + overallWeaponToHit,
-                        item.bonuses[DungeonItem.TO_DAM_IDX] + overallWeaponToDam );
+                weapToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
+                weapToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
+                baseAttackDieRoll = item.attack;
             }
             if (item.slot == DungeonItem.Slot.BOW) {
-                bowAttack = new AttackData(item.attack,
-                        item.bonuses[DungeonItem.TO_HIT_IDX] + overallBowToHit,
-                        item.bonuses[DungeonItem.TO_DAM_IDX] + overallBowToDam );
+                bowToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
+                bowToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
+                baseBowDieRoll = item.attack;
             }
         }
+        this.defense = baseDefense + defBonus;
+        this.attack = new AttackData(baseAttackDieRoll,
+                baseWeaponToHit + weapToHitBonus,
+                baseWeaponToDam + weapToDamBonus);
+        this.bowAttack = new AttackData(baseBowDieRoll,
+                baseBowToHit + bowToHitBonus,
+                baseBowToDam + bowToDamBonus);
+
+        int s = this.currStats.strength;
+        int i = this.currStats.intelligence;
+        this.maxHealth = (int) Math.round(0.5 * s * s - 7 * s + 30);
+        this.maxMana = (int) Math.round(0.5 * i * i - 7 * i + 30);
     }
 
     // returns the old item, if any
@@ -288,19 +319,24 @@ public class Player extends Actor implements Serializable, LightSource {
         return expBreak - experience;
     }
 
+    // stat gain formulas: here are initial scale constants
+    //        mage    adventurer    warrior    dragm    rogue
+    // str    0.9    1    1.1    1.1    0.9
+    // dex    0.9    1    1.1    1.2    1.1
+    // int    1.3    1    0.7    0.9    1
+    // con    0.9    1    1.1    1.2    1
+    // total    4    4    4    4.4    4
+    //
+    // Then, stat = scale*(level + 10)
+    // from here, can get  HP/MP by one of:
+    // innate HP = 0.55 str^2 - 6.94*str + 23  (nice quadratic, like it better than exponential)
+    // innate MP = 0.51 int^2 - 8.00*int + 37
+    // hp or mp = 0.5 * stat^2 - 7*stat + 30  <- pretty nice, and works all right for both
+
+
     private void gainLevel(GameBackend backend) {
         backend.logMessage("congrats, you gained a level!");
-        this.innateStats.strength += gainStat(this.gainRatios.strRatio, level);
-        this.innateStats.dexterity += gainStat(this.gainRatios.dexRatio, level);
-        this.innateStats.intelligence += gainStat(this.gainRatios.intRatio, level);
-        this.innateStats.constitution += gainStat(this.gainRatios.conRatio, level);
         level += 1;
         updateStats();  // will update MaxHP,
-    }
-
-    private int gainStat(double ratio, int level) {
-        int currBase = (int) Math.round(ratio * level);
-        int nextBase = (int) Math.round(ratio * (level+1));
-        return nextBase - currBase;
     }
 }
