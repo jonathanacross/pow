@@ -29,7 +29,7 @@ public class AiUtils {
     public static Actor findNearestTarget(Actor actor, GameState gs) {
         int bestDist = Integer.MAX_VALUE;
         Actor closestMonster = null;
-        for (Actor m : gs.world.currentMap.actors) {
+        for (Actor m : gs.getCurrentMap().actors) {
             if (actor.friendly != m.friendly) {
                 int d2 = MathUtils.dist2(actor.loc, m.loc);
                 if (closestMonster == null || d2 < bestDist) {
@@ -42,7 +42,7 @@ public class AiUtils {
     }
 
     private static Action moveOrWait(Actor actor, GameState gs, int dx, int dy) {
-        if (!gs.world.currentMap.isBlocked(actor.loc.x + dx, actor.loc.y + dy)) {
+        if (!gs.getCurrentMap().isBlocked(actor.loc.x + dx, actor.loc.y + dy)) {
             return new Move(actor, dx, dy);
         } else {
             return new Move(actor, 0, 0);

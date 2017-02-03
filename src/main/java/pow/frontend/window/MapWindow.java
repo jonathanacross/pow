@@ -41,11 +41,11 @@ public class MapWindow extends AbstractWindow {
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
             for (int x = mapView.colMin; x <= mapView.colMax; x++) {
                 // only draw squares we've seen
-                if (! gs.world.currentMap.map[x][y].seen) {
+                if (! gs.getCurrentMap().map[x][y].seen) {
                     continue;
                 }
 
-                DungeonSquare square = gs.world.currentMap.map[x][y];
+                DungeonSquare square = gs.getCurrentMap().map[x][y];
                 mapView.drawBlock(graphics, ImageController.getColor(square.terrain.image), x, y);
 //                mapView.drawTile(graphics, square.terrain.image, x, y);
                 if (square.feature != null) {
@@ -56,7 +56,7 @@ public class MapWindow extends AbstractWindow {
         }
 
         // draw monsters, player, pets
-        for (Actor actor : gs.world.currentMap.actors) {
+        for (Actor actor : gs.getCurrentMap().actors) {
             if (! gs.player.canSee(gs, actor.loc)) {
                 continue;
             }
@@ -75,11 +75,11 @@ public class MapWindow extends AbstractWindow {
         graphics.setFont(font);
         // cheap way of drawing an outline
         graphics.setColor(Color.BLACK);
-        graphics.drawString(gs.world.currentMap.name, MARGIN - 1, MARGIN + FONT_SIZE - 1);
-        graphics.drawString(gs.world.currentMap.name, MARGIN - 1, MARGIN + FONT_SIZE + 1);
-        graphics.drawString(gs.world.currentMap.name, MARGIN + 1, MARGIN + FONT_SIZE - 1);
-        graphics.drawString(gs.world.currentMap.name, MARGIN + 1, MARGIN + FONT_SIZE + 1);
+        graphics.drawString(gs.getCurrentMap().name, MARGIN - 1, MARGIN + FONT_SIZE - 1);
+        graphics.drawString(gs.getCurrentMap().name, MARGIN - 1, MARGIN + FONT_SIZE + 1);
+        graphics.drawString(gs.getCurrentMap().name, MARGIN + 1, MARGIN + FONT_SIZE - 1);
+        graphics.drawString(gs.getCurrentMap().name, MARGIN + 1, MARGIN + FONT_SIZE + 1);
         graphics.setColor(Color.WHITE);
-        graphics.drawString(gs.world.currentMap.name, MARGIN, MARGIN + FONT_SIZE);
+        graphics.drawString(gs.getCurrentMap().name, MARGIN, MARGIN + FONT_SIZE);
     }
 }

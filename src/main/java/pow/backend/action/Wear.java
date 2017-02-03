@@ -35,7 +35,7 @@ public class Wear implements Action {
             if (numCanAdd == 0) {
                 // put on the ground
                 backend.logMessage(player.getPronoun() + " drop " + TextUtils.format(item.name, 1, false));
-                gs.world.currentMap.map[player.loc.x][player.loc.y].items.add(oldItem);
+                gs.getCurrentMap().map[player.loc.x][player.loc.y].items.add(oldItem);
             } else {
                 // save in inventory
                 player.inventory.add(oldItem);

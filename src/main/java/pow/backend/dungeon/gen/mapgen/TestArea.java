@@ -6,6 +6,7 @@ import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.gen.*;
 import pow.util.Point;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -44,11 +45,7 @@ public class TestArea implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
-        // place monsters
-        int numMonsters = 10;
-        List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, null, rng);
-
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsters);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null);
         return map;
     }
 
@@ -91,11 +88,7 @@ public class TestArea implements MapGenerator {
             }
         }
 
-        // place monsters
-        int numMonsters = 0;
-        List<Actor> monsters = GeneratorUtils.createMonsters(dungeonSquares, numMonsters, null, rng);
-
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsters);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null);
         return map;
     }
 

@@ -29,7 +29,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void tryPickup(GameState gs) {
         Point playerLoc = gs.player.loc;
-        ItemList items = gs.world.currentMap.map[playerLoc.x][playerLoc.y].items;
+        ItemList items = gs.getCurrentMap().map[playerLoc.x][playerLoc.y].items;
 
         if (items.size() == 0) {
             backend.logMessage("Nothing here to pick up.");
@@ -164,8 +164,8 @@ public class GameMainLayer extends AbstractWindow {
         // draw the map
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
             for (int x = mapView.colMin; x <= mapView.colMax; x++) {
-                DungeonSquare square = gs.world.currentMap.map[x][y];
-                if (!gs.world.currentMap.map[x][y].seen) {
+                DungeonSquare square = gs.getCurrentMap().map[x][y];
+                if (!gs.getCurrentMap().map[x][y].seen) {
                     continue;
                 }
                 mapView.drawTile(graphics, square.terrain.image, x, y);
@@ -181,7 +181,7 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         // draw monsters, player, pets
-        for (Actor actor : gs.world.currentMap.actors) {
+        for (Actor actor : gs.getCurrentMap().actors) {
             if (gs.player.canSee(gs, actor.loc)) {
                 mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y);
             }
@@ -199,11 +199,11 @@ public class GameMainLayer extends AbstractWindow {
         // add shadow
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
             for (int x = mapView.colMin; x <= mapView.colMax; x++) {
-                if (!gs.world.currentMap.map[x][y].seen) {
+                if (!gs.getCurrentMap().map[x][y].seen) {
                     continue;
                 }
                 int maxDarkness = 220;
-                double darknessD = 1.0 - (gs.world.currentMap.map[x][y].brightness / (double) gs.world.currentMap.MAX_BRIGHTNESS);
+                double darknessD = 1.0 - (gs.getCurrentMap().map[x][y].brightness / (double) gs.getCurrentMap().MAX_BRIGHTNESS);
                 // Assign max darkness if we can't see it; alternatively, we could paint
                 // in gray, or something.  Or just not show it at all?
                 if (!gs.player.canSee(gs, new Point(x,y))) {

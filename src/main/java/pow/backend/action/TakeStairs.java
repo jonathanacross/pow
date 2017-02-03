@@ -36,7 +36,7 @@ public class TakeStairs implements Action {
             return ActionResult.Failed(null);
         }
 
-        DungeonFeature feature = gs.world.currentMap.map[actor.loc.x][actor.loc.y].feature;
+        DungeonFeature feature = gs.getCurrentMap().map[actor.loc.x][actor.loc.y].feature;
         if ((feature == null) ||
             (!feature.flags.stairsUp && this.up) ||
             (!feature.flags.stairsDown && !this.up)) {

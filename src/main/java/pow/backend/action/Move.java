@@ -32,7 +32,7 @@ public class Move implements Action {
 
         // temporary custom code to demonstrate winning/losing
         if (actor == gs.player) {
-            DungeonFeature feature = gs.world.currentMap.map[actor.loc.x][actor.loc.y].feature;
+            DungeonFeature feature = gs.getCurrentMap().map[actor.loc.x][actor.loc.y].feature;
             if (feature != null && feature.id.equals("wintile")) {
                 backend.logMessage("you won!");
                 events.add(GameEvent.WonGame());
@@ -64,10 +64,10 @@ public class Move implements Action {
         // Check that the target location is valid.  The ONLY case where it is
         // valid to move off the map is if the actor == player, and the 
         // player is on a tile that lets them go to another area.
-        if (!gs.world.currentMap.isOnMap(newx, newy)) {
+        if (!gs.getCurrentMap().isOnMap(newx, newy)) {
             // check for player changing maps
             if (actor == gs.player) {
-                DungeonTerrain currSquareTerrain = gs.world.currentMap.map[actor.loc.x][actor.loc.y].terrain;
+                DungeonTerrain currSquareTerrain = gs.getCurrentMap().map[actor.loc.x][actor.loc.y].terrain;
                 if (currSquareTerrain.flags.teleport) {
                     DungeonExit exit = new DungeonExit(currSquareTerrain.actionParams.name);
                     String targetArea = exit.areaId;
@@ -81,7 +81,7 @@ public class Move implements Action {
         }
 
         // Check if we should attack
-        Actor defender = gs.world.currentMap.actorAt(newx, newy);
+        Actor defender = gs.getCurrentMap().actorAt(newx, newy);
         if (defender != null) {
             if (!defender.friendly)  {
                 // attack
@@ -93,7 +93,7 @@ public class Move implements Action {
             }
         }
 
-        DungeonTerrain terrain = gs.world.currentMap.map[newx][newy].terrain;
+        DungeonTerrain terrain = gs.getCurrentMap().map[newx][newy].terrain;
         if (terrain.flags.actOnStep) {
             Point loc = new Point(newx, newy);
             ActionParams params = terrain.actionParams.clone();
@@ -102,7 +102,7 @@ public class Move implements Action {
             return ActionResult.Failed(newAction);
         }
 
-        DungeonFeature feature = gs.world.currentMap.map[newx][newy].feature;
+        DungeonFeature feature = gs.getCurrentMap().map[newx][newy].feature;
         if (feature != null && feature.flags.actOnStep) {
             Point loc = new Point(newx, newy);
             ActionParams params = feature.actionParams.clone();
@@ -111,12 +111,12 @@ public class Move implements Action {
             return ActionResult.Failed(newAction);
         }
 
-        if (! gs.world.currentMap.isBlocked(newx, newy)) {
+        if (! gs.getCurrentMap().isBlocked(newx, newy)) {
             // move
             actor.loc.x = newx;
             actor.loc.y = newy;
             if (actor == gs.player) {
-                gs.world.currentMap.updatePlayerVisibilityData(gs.player);
+                gs.getCurrentMap().updatePlayerVisibilityData(gs.player);
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {
