@@ -212,11 +212,11 @@ public class Player extends Actor implements Serializable, LightSource {
 
         DieRoll baseAttackDieRoll = innateAttack.dieRoll;  // will be used if player doesn't wear a weapon
         DieRoll baseBowDieRoll = new DieRoll(0,0);  // will be used if player doesn't wear a bow
-        int baseDefense = 2 * this.currStats.dexterity;
-        int baseWeaponToHit = 2 * this.currStats.dexterity;
-        int baseWeaponToDam = this.currStats.strength;
-        int baseBowToHit = (int) Math.round(1.5 * this.currStats.dexterity);
-        int baseBowToDam = (int) Math.round(0.75 * this.currStats.strength);
+        int baseDefense = this.currStats.dexterity - 7;
+        int baseWeaponToHit = this.currStats.dexterity - 7;
+        int baseWeaponToDam = this.currStats.strength - 7;
+        int baseBowToHit = (int) Math.round(0.75 * (this.currStats.dexterity - 7));
+        int baseBowToDam = (int) Math.round(0.75 * (this.currStats.strength - 7));
 
         // fourth, add equipment bonuses
         int defBonus = 0;

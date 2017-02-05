@@ -287,7 +287,7 @@ public class GeneratorUtils {
 
     public static Point findStairsLocation(DungeonSquare[][] squares, Random rng) {
         int width = Array2D.width(squares);
-        int height = Array2D.width(squares);
+        int height = Array2D.height(squares);
         int x;
         int y;
         do {

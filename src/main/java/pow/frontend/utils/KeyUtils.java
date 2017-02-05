@@ -71,6 +71,13 @@ public class KeyUtils {
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.QUAFF;
             case KeyEvent.VK_W:
                 return hasShift(event) ? KeyInput.TAKE_OFF : KeyInput.WEAR;
+
+            // debugging commands
+            case KeyEvent.VK_EQUALS:
+                return hasShift(event) ? KeyInput.DEBUG_INCR_CHAR_LEVEL : KeyInput.UNKNOWN;
+            case KeyEvent.VK_1:
+                return hasShift(event) ? KeyInput.DEBUG_HEAL_CHAR : KeyInput.UNKNOWN;
+
             default:
                 return KeyInput.UNKNOWN;
         }

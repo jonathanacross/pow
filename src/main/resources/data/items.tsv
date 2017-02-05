@@ -1,63 +1,63 @@
 # id	# name	image	description	slot	flags	action	min level	max level	min bonus	max bonus	bonus stats	attack	defense	extra
 # weapons														
-dagger	& dagger~	dagger	dagger	weapon			1	30	0	4	attack:x	1d2	0	
-main gauche	& main gauche~	main gauche	main gauche	weapon			11	40	0	4	attack:x	1d5	0	
-short sword	& short sword~	short sword	short sword	weapon			31	60	0	8	attack:x	2d4	0	
-scimitar	& scimitar~	cutlass	scimitar	weapon			41	70	0	12	attack:x	3d5	0	
-long sword	& long sword~	long sword	long sword	weapon			51	80	0	16	attack:x	4d7	0	
-broad sword	& broad sword~	broad sword	broad sword	weapon			61	90	0	20	attack:x	5d10	0	
-blade of chaos	& blade~ of chaos	blade of chaos	blade of chaos	weapon			71	90	0	32	attack:x	8d12	0	
+dagger	& dagger~	dagger	dagger	weapon			1	30	0	2	attack:x	1d2	0	
+main gauche	& main gauche~	main gauche	main gauche	weapon			11	40	0	2	attack:x	1d5	0	
+short sword	& short sword~	short sword	short sword	weapon			31	60	0	4	attack:x	2d4	0	
+scimitar	& scimitar~	cutlass	scimitar	weapon			41	70	0	6	attack:x	3d5	0	
+long sword	& long sword~	long sword	long sword	weapon			51	80	0	8	attack:x	4d7	0	
+broad sword	& broad sword~	broad sword	broad sword	weapon			61	90	0	10	attack:x	5d10	0	
+blade of chaos	& blade~ of chaos	blade of chaos	blade of chaos	weapon			71	90	0	16	attack:x	8d12	0	
 # bows														
-short bow	& short bow~	short bow	short bow	bow			1	30	0	2	attack:x	1d1	0	
+short bow	& short bow~	short bow	short bow	bow			1	30	0	1	attack:x	1d1	0	
 long bow	& long bow~	long bow	long bow	bow			21	50	0	2	attack:x	1d3	0	
 gold longbow	& gold longbow~	gold longbow	gold longbow	bow			41	60	0	3	attack:x	3d2	0	
-crossbow	& crossbow~	crossbow	crossbow	bow			51	70	0	4	attack:x	4d3	0	
+crossbow	& crossbow~	crossbow	crossbow	bow			51	70	0	5	attack:x	4d3	0	
 large crossbow	& large crossbow~	large crossbow	large crossbow	bow			61	80	0	8	attack:x	5d6	0	
-gold crossbow	& gold crossbow~	gold crossbow	gold crossbow	bow			81	90	0	16	attack:x	6d10	0	
+gold crossbow	& gold crossbow~	gold crossbow	gold crossbow	bow			81	90	0	11	attack:x	6d10	0	
 # hats														
-leather cap	& leather cap~	leather cap	leather cap	headgear			1	30	0	4	def:x	0	1	
-hard leather cap	& hard leather cap~	hard leather cap	hard leather cap	headgear			21	50	0	4	def:x	0	2	
-iron helmet	& iron helmet~	iron helmet	iron helmet	headgear			41	60	0	4	def:x	0	3	
-steel helmet	& steel helmet~	steel helmet	steel helmet	headgear			51	80	0	4	def:x	0	6	
-golden helmet	& golden helmet~	golden helmet	golden helmet	headgear			71	90	0	5	def:x,int:1	0	10	+1 int
+leather cap	& leather cap~	leather cap	leather cap	headgear			1	30	0	1	def:x	0	1	
+hard leather cap	& hard leather cap~	hard leather cap	hard leather cap	headgear			21	50	0	1	def:x	0	2	
+iron helmet	& iron helmet~	iron helmet	iron helmet	headgear			41	60	0	2	def:x	0	3	
+steel helmet	& steel helmet~	steel helmet	steel helmet	headgear			51	80	0	2	def:x	0	4	
+golden helmet	& golden helmet~	golden helmet	golden helmet	headgear			71	90	0	2	def:x,int:1	0	5	+1 int
 # gloves														
-thin leather gloves	thin leather gloves	gloves	thin leather gloves	gloves			1	30	0	2	def:x	0	1	
-heavy leather gloves	heavy leather gloves	heavy gloves	heavy leather gloves	gloves			21	50	0	5	def:x	0	3	
-adept’s gloves	adept’s gloves	green gloves	adept’s gloves	gloves			31	60	0	4	def:x	0	3	no spell penalty
-iron gloves	iron gloves	iron gloves	iron gloves	gloves			41	70	0	7	def:x	0	6	
-crystal gloves	crystal gloves	blue gloves	crystal gloves	gloves			51	80	0	15	def:x	0	10	
-gold gloves	gold gloves	gold gloves	gold gloves	gloves			71	90	0	12	def:x	0	10	no spell penalty
+thin leather gloves	thin leather gloves	gloves	thin leather gloves	gloves			1	30	0	0	def:x	0	1	
+heavy leather gloves	heavy leather gloves	heavy gloves	heavy leather gloves	gloves			21	50	0	1	def:x	0	2	
+adept’s gloves	adept’s gloves	green gloves	adept’s gloves	gloves			31	60	0	1	def:x	0	2	no spell penalty
+iron gloves	iron gloves	iron gloves	iron gloves	gloves			41	70	0	2	def:x	0	3	
+crystal gloves	crystal gloves	blue gloves	crystal gloves	gloves			51	80	0	2	def:x	0	4	
+gold gloves	gold gloves	gold gloves	gold gloves	gloves			71	90	0	2	def:x	0	4	no spell penalty
 # boots														
-soft leather boots	soft leather boots	soft leather boots	soft leather boots	boots			1	30	0	2	def:x	0	1	
-hard leather boots	hard leather boots	hard leather boots	hard leather boots	boots			21	50	0	5	def:x	0	3	
-steel boots	steel boots	steel boots	steel boots	boots			41	70	0	8	def:x	0	6	
-adventurer’s boots	adventurer’s boots	blue boots	adventurer’s boots	boots			51	80	0	10	def:x	0	8	res acid + elec
-adept’s boots	adept’s boots	green boots	adept’s boots	boots			51	80	0	8	def:x	0	6	no spell penalty
-gold boots	gold boots	gold boots	gold boots	boots			81	90	0	12	def:x	0	10	no spell penalty
+soft leather boots	soft leather boots	soft leather boots	soft leather boots	boots			1	30	0	0	def:x	0	1	
+hard leather boots	hard leather boots	hard leather boots	hard leather boots	boots			21	50	0	1	def:x	0	2	
+steel boots	steel boots	steel boots	steel boots	boots			41	70	0	1	def:x	0	3	
+adventurer’s boots	adventurer’s boots	blue boots	adventurer’s boots	boots			51	80	0	2	def:x	0	3	res acid + elec
+adept’s boots	adept’s boots	green boots	adept’s boots	boots			51	80	0	2	def:x	0	2	no spell penalty
+gold boots	gold boots	gold boots	gold boots	boots			81	90	0	2	def:x	0	4	no spell penalty
 # cloaks														
-cloak	& cloak~	cloak	cloak	cloak			1	30	0	2	def:x	0	1	
-fur cloak	& fur cloak~	fur cloak	fur cloak	cloak			31	60	0	4	def:x	0	3	
-shadow cloak	& shadow cloak~	blue cloak	shadow cloak	cloak			61	90	0	8	def:x,dex:1	0	6	+1 dex
-wizard cloak	& wizard cloak~	purple cloak	wizard cloak	cloak			61	90	0	8	def:x,int:1	0	6	+1 int
-etherial cloak	& etherial cloak~	light blue cloak	etherial cloak	cloak			71	90	0	12	def:x	0	10	
+cloak	& cloak~	cloak	cloak	cloak			1	30	0	0	def:x	0	1	
+fur cloak	& fur cloak~	fur cloak	fur cloak	cloak			31	60	0	1	def:x	0	2	
+shadow cloak	& shadow cloak~	blue cloak	shadow cloak	cloak			61	90	0	2	def:x,dex:1	0	3	+1 dex
+wizard cloak	& wizard cloak~	purple cloak	wizard cloak	cloak			61	90	0	3	def:x,int:1	0	3	+1 int
+etherial cloak	& etherial cloak~	light blue cloak	etherial cloak	cloak			71	90	0	3	def:x	0	4	
 # shields														
-small wood shield	& small wood shield~	leather shield	small wood shield	shield			1	30	0	1	def:x	0	2	
-large wood shield	& large wood shield~	large shield	large wood shield	shield			11	50	0	2	def:x	0	3	
-metal buckler	& metal buckler~	buckler	metal buckler	shield			31	70	0	3	def:x	0	7	
-diamond shield	& diamond shield~	crystal shield	diamond shield	shield			51	80	0	7	def:x	0	12	
-golden shield	& golden shield~	golden shield	golden shield	shield			71	90	0	12	def:x,con:1	0	19	+1 con
-shield of death	& shield~ of death	death shield	shield of death	shield			81	90	0	19	def:x	0	30	reflect damage
+small wood shield	& small wood shield~	leather shield	small wood shield	shield			1	30	0	1	def:x	0	1	
+large wood shield	& large wood shield~	large shield	large wood shield	shield			11	50	0	2	def:x	0	2	
+metal buckler	& metal buckler~	buckler	metal buckler	shield			31	70	0	3	def:x	0	4	
+diamond shield	& diamond shield~	crystal shield	diamond shield	shield			51	80	0	4	def:x	0	6	
+golden shield	& golden shield~	golden shield	golden shield	shield			71	90	0	4	def:x,con:1	0	7	+1 con
+shield of death	& shield~ of death	death shield	shield of death	shield			81	90	0	5	def:x	0	8	reflect damage
 # armor														
-robe	& robe~	robe	robe	armor			1	20	0	2	def:x	0	2	
-soft leather armor	& soft leather armor~	soft leather armor	soft leather armor	armor			11	40	0	3	def:x	0	5	
-studded leather armor	& studded leather armor~	hard leather armor	studded leather armor	armor			31	60	0	5	def:x	0	8	
-chain mail	chain mail~	chain mail	chain mail	armor			41	70	0	8	def:x	0	13	
-plate mail	plate mail~	plate mail	plate mail	armor			51	80	0	13	def:x	0	21	
-augmented mail	augmented mail~	augmented mail	augmented mail	armor			61	90	0	21	def:x,int:1	0	34	+1 int
-ceramic armor	ceramic armor~	ceramic mail	ceramic armor	armor			71	90	0	34	def:x,con:1	0	55	+1 con
-dragon scale mail	dragon scale mail~	dragon scale mail	dragon scale mail	armor			81	90	0	55	def:x,str:1	0	89	+1 str
+robe	& robe~	robe	robe	armor			1	20	0	1	def:x	0	1	
+soft leather armor	& soft leather armor~	soft leather armor	soft leather armor	armor			11	40	0	1	def:x	0	2	
+studded leather armor	& studded leather armor~	hard leather armor	studded leather armor	armor			31	60	0	2	def:x	0	4	
+chain mail	chain mail~	chain mail	chain mail	armor			41	70	0	3	def:x	0	6	
+plate mail	plate mail~	plate mail	plate mail	armor			51	80	0	5	def:x	0	8	
+augmented mail	augmented mail~	augmented mail	augmented mail	armor			61	90	0	8	def:x,int:1	0	12	+1 int
+ceramic armor	ceramic armor~	ceramic mail	ceramic armor	armor			71	90	0	12	def:x,con:1	0	16	+1 con
+dragon scale mail	dragon scale mail~	dragon scale mail	dragon scale mail	armor			81	90	0	16	def:x,str:1	0	22	+1 str
 # rings														
-ring of defense	& ring~ of defense	copper ring	ring of defense	ring			1	30	1	30	def:x	0	0	
+ring of defense	& ring~ of defense	copper ring	ring of defense	ring			1	30	1	12	def:x	0	0	
 ring of attack	& ring~ of attack	silver ring	ring of attack	ring			11	80	1	20	attack:x	0	0	
 ring of intelligence	& ring~ of intelligence	goldgreen ring	ring of intelligence	ring			21	60	1	4	int:x	0	0	
 ring of dexterity	& ring~ of dexterity	goldblue ring	ring of dexterity	ring			21	60	1	4	dex:x	0	0	
@@ -71,7 +71,7 @@ ring of poison	& ring~ of poison	green ring	ring of poison	ring			51	80	0	0		0	0
 ring of power	& ring~ of power	gold ring	ring of power	ring			85	90	1	3	str:x,int:x,dex:x,con:x	0	0	
 # amulets														
 amulet of wealth	& amulet~ of wealth	onyx amulet	amulet of wealth	amulet			1	30	0	0		0	0	better gold drops
-amulet of defense	& amulet~ of defense	coral amulet	amulet of defense	amulet			11	80	1	40	def:x	0	0	
+amulet of defense	& amulet~ of defense	coral amulet	amulet of defense	amulet			11	80	1	15	def:x	0	0	
 amulet of insulation	& amulet~ of insulation	amber amulet	amulet of insulation	amulet			31	50	0	0		0	0	res fire + cold
 amulet of chemistry	& amulet~ of chemistry	sapphire amulet	amulet of chemistry	amulet			41	60	0	0		0	0	res acid, elec, pois
 amulet of resistance	& amulet~ of resistance	stone amulet	amulet of resistance	amulet			61	90	0	0		0	0	res all
