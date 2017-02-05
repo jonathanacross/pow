@@ -80,31 +80,30 @@ public class Player extends Actor implements Serializable, LightSource {
     //public AttackData weaponAttack;  // part of Actor
     public AttackData bowAttack;
     public int experience;
-    public int level;
 
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
             0,
             10,
-            27,
-            54,
-            99,
-            173,
-            295,
-            497,
-            830,
-            1379,
-            2285,
-            3781,
-            6249,
-            10321,
-            17040,
-            28126,
-            46418,
-            76600,
-            126400,
-            208570,
-            344150 };
+            14,
+            19,
+            26,
+            35,
+            48,
+            66,
+            91,
+            124,
+            170,
+            233,
+            319,
+            437,
+            599,
+            821,
+            1124,
+            1540,
+            2110,
+            2890,
+            3960 };
 
     // default player
     public Player() {
@@ -124,7 +123,7 @@ public class Player extends Actor implements Serializable, LightSource {
     public Player(DungeonObject.Params objectParams,
                   GainRatios gainRatios,
                   AttackData innateAttack ) {
-        super(objectParams, new Actor.Params(-1, -99, 0, null, true, 0));
+        super(objectParams, new Actor.Params(1, -1, -99, 0, null, true, 0));
         this.actionQueue = new LinkedList<>();
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
@@ -133,7 +132,6 @@ public class Player extends Actor implements Serializable, LightSource {
         this.innateAttack = innateAttack;
         this.bowAttack = null;
         this.experience = 0;
-        this.level = 1;
         this.currStats = new Stats();
         updateStats();  // updates current stats (above), defense, and attack, bowAttack
         this.health = this.maxHealth;
@@ -213,7 +211,7 @@ public class Player extends Actor implements Serializable, LightSource {
         DieRoll baseAttackDieRoll = innateAttack.dieRoll;  // will be used if player doesn't wear a weapon
         DieRoll baseBowDieRoll = new DieRoll(0,0);  // will be used if player doesn't wear a bow
         int baseDefense = this.currStats.dexterity - 7;
-        int baseWeaponToHit = this.currStats.dexterity - 7;
+        int baseWeaponToHit = 2*(this.currStats.dexterity - 7);
         int baseWeaponToDam = this.currStats.strength - 7;
         int baseBowToHit = (int) Math.round(0.75 * (this.currStats.dexterity - 7));
         int baseBowToDam = (int) Math.round(0.75 * (this.currStats.strength - 7));

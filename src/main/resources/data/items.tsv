@@ -1,19 +1,19 @@
 # id	# name	image	description	slot	flags	action	min level	max level	min bonus	max bonus	bonus stats	attack	defense	extra
 # weapons														
-dagger	& dagger~	dagger	dagger	weapon			1	30	0	2	attack:x	1d2	0	
-main gauche	& main gauche~	main gauche	main gauche	weapon			11	40	0	2	attack:x	1d5	0	
-short sword	& short sword~	short sword	short sword	weapon			31	60	0	4	attack:x	2d4	0	
-scimitar	& scimitar~	cutlass	scimitar	weapon			41	70	0	6	attack:x	3d5	0	
-long sword	& long sword~	long sword	long sword	weapon			51	80	0	8	attack:x	4d7	0	
-broad sword	& broad sword~	broad sword	broad sword	weapon			61	90	0	10	attack:x	5d10	0	
-blade of chaos	& blade~ of chaos	blade of chaos	blade of chaos	weapon			71	90	0	16	attack:x	8d12	0	
+dagger	& dagger~	dagger	dagger	weapon			1	30	0	4	attack:x	1d2	0	
+main gauche	& main gauche~	main gauche	main gauche	weapon			11	40	0	6	attack:x	1d5	0	
+short sword	& short sword~	short sword	short sword	weapon			31	60	0	9	attack:x	2d4	0	
+scimitar	& scimitar~	cutlass	scimitar	weapon			41	70	0	13	attack:x	3d5	0	
+long sword	& long sword~	long sword	long sword	weapon			51	80	0	18	attack:x	4d7	0	
+broad sword	& broad sword~	broad sword	broad sword	weapon			61	90	0	24	attack:x	5d10	0	
+blade of chaos	& blade~ of chaos	blade of chaos	blade of chaos	weapon			71	90	0	31	attack:x	8d12	0	
 # bows														
-short bow	& short bow~	short bow	short bow	bow			1	30	0	1	attack:x	1d1	0	
-long bow	& long bow~	long bow	long bow	bow			21	50	0	2	attack:x	1d3	0	
-gold longbow	& gold longbow~	gold longbow	gold longbow	bow			41	60	0	3	attack:x	3d2	0	
-crossbow	& crossbow~	crossbow	crossbow	bow			51	70	0	5	attack:x	4d3	0	
-large crossbow	& large crossbow~	large crossbow	large crossbow	bow			61	80	0	8	attack:x	5d6	0	
-gold crossbow	& gold crossbow~	gold crossbow	gold crossbow	bow			81	90	0	11	attack:x	6d10	0	
+short bow	& short bow~	short bow	short bow	bow			1	30	0	3	attack:x	1d1	0	
+long bow	& long bow~	long bow	long bow	bow			21	50	0	5	attack:x	1d3	0	
+gold longbow	& gold longbow~	gold longbow	gold longbow	bow			41	60	0	8	attack:x	3d2	0	
+crossbow	& crossbow~	crossbow	crossbow	bow			51	70	0	12	attack:x	4d3	0	
+large crossbow	& large crossbow~	large crossbow	large crossbow	bow			61	80	0	18	attack:x	5d6	0	
+gold crossbow	& gold crossbow~	gold crossbow	gold crossbow	bow			81	90	0	25	attack:x	6d10	0	
 # hats														
 leather cap	& leather cap~	leather cap	leather cap	headgear			1	30	0	1	def:x	0	1	
 hard leather cap	& hard leather cap~	hard leather cap	hard leather cap	headgear			21	50	0	1	def:x	0	2	

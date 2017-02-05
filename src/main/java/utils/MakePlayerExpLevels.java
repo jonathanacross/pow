@@ -5,7 +5,7 @@ public class MakePlayerExpLevels {
         // probably want this higher than the factor in baseHP for monster health, in makeMonsterStats
         // but not so much that it's a grind..
         int firstLevelNeeded = 10;
-        double increaseRate = 1.65;
+        double increaseRate = 1.37;
         int numLevels = 21;
 
         int[] amountToReachNextLevel = new int[numLevels];

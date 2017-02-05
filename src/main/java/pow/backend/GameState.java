@@ -56,6 +56,7 @@ public class GameState implements Serializable {
                         new Point(-1, -1), // location -- will be updated
                         true), // solid
                 new Actor.Params(
+                        1,
                         20, // maxHealth
                         3, // defense
                         0, // experience
