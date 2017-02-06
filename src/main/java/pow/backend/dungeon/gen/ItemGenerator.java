@@ -42,6 +42,8 @@ public class ItemGenerator {
     private Map<Integer, List<String>> levelToItemIds;
     private int minLevel;
     private int maxLevel;
+    private int minCount;
+    private int maxCount;
 
     static {
         try {
@@ -97,6 +99,7 @@ public class ItemGenerator {
         int maxLevel;
         int minBonus;
         int maxBonus;
+        MinMax count; // number to generate
         int[] bonuses;
         DieRoll attack;
         int defense;
@@ -106,16 +109,20 @@ public class ItemGenerator {
             String[] tokens = text.split(",", -1);
 
             boolean potion = false;
+            boolean money = false;
+            boolean arrow = false;
             for (String t : tokens) {
                 switch (t) {
                     case "": break;  // will happen if we have an empty string
                     case "potion": potion = true; break;
+                    case "money": money = true; break;
+                    case "arrow": arrow = true; break;
                     default:
                         throw new IllegalArgumentException("unknown item flag '" + t + "'");
                 }
             }
 
-            return new DungeonItem.Flags(potion);
+            return new DungeonItem.Flags(potion, money, arrow);
         }
 
         // TODO: duplicate code in TerrainData
@@ -175,28 +182,51 @@ public class ItemGenerator {
             return bonuses;
         }
 
+        public static class MinMax {
+            public int min;
+            public int max;
+
+            public MinMax(String text) {
+                if (text.isEmpty()) {
+                    min = 1;
+                    max = 1;
+                    return;
+                }
+
+                String[] parts = text.split(":", 2);
+                min = Integer.parseInt(parts[0]);
+                max = Integer.parseInt(parts[1]);
+            }
+        }
+
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificItemGenerator(String[] line) {
-            if (line.length != 15) {
+            if (line.length != 16) {
                 throw new IllegalArgumentException("Expected 15 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
-            id = line[0];
-            name = line[1];
-            image = line[2];
-            description = line[3];
-            slot = DungeonItem.Slot.valueOf(line[4].toUpperCase());
-            flags = parseFlags(line[5]);
-            actionParams = parseActionParams(line[6]);
-            minLevel = Integer.parseInt(line[7]);
-            maxLevel = Integer.parseInt(line[8]);
-            minBonus = Integer.parseInt(line[9]);
-            maxBonus = Integer.parseInt(line[10]);
-            bonuses = parseBonuses(line[11]);
-            attack = DieRoll.parseDieRoll(line[12]);
-            defense = Integer.parseInt(line[13]);
-            extra = line[14];
+
+            try {
+                id = line[0];
+                name = line[1];
+                image = line[2];
+                description = line[3];
+                slot = DungeonItem.Slot.valueOf(line[4].toUpperCase());
+                flags = parseFlags(line[5]);
+                actionParams = parseActionParams(line[6]);
+                count = new MinMax(line[7]);
+                minLevel = Integer.parseInt(line[8]);
+                maxLevel = Integer.parseInt(line[9]);
+                minBonus = Integer.parseInt(line[10]);
+                maxBonus = Integer.parseInt(line[11]);
+                bonuses = parseBonuses(line[12]);
+                attack = DieRoll.parseDieRoll(line[13]);
+                defense = Integer.parseInt(line[14]);
+                extra = line[15];
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line));
+            }
 
             if (maxLevel < minLevel) {
                 throw new IllegalArgumentException("maxLevel < minLevel. Fields = \n" + String.join(",", line));
@@ -224,8 +254,10 @@ public class ItemGenerator {
                 specificItemBonuses[DungeonItem.TO_DAM_IDX] = totalAttack - specificItemBonuses[DungeonItem.TO_HIT_IDX];
             }
 
+            int itemCount = rng.nextInt(count.max + 1 - count.min);
+
             return new DungeonItem(name, image, description, slot, flags, specificItemBonuses, attack,
-                    defense, 1, actionParams);
+                    defense, itemCount, actionParams);
         }
     }
 

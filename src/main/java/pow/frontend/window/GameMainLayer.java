@@ -41,7 +41,9 @@ public class GameMainLayer extends AbstractWindow {
             frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Pick up which item?",
                         items.items, (DungeonItem item) -> true,
-                        (int itemNum) -> {backend.tellPlayer(new PickUp(gs.player, itemNum, items.size())); }));
+                        (int itemNum) -> {
+                    backend.tellPlayer(new PickUp(gs.player, itemNum, items.items.get(itemNum).count));
+                }));
         }
     }
 

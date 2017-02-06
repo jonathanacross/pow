@@ -9,22 +9,18 @@ import java.util.*;
 
 public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
-    // TODO: does genMultiple belong here?
     public static class Flags implements Serializable {
-//        public boolean genMultiple;
         public boolean potion;
-//        public boolean money;
-//        public boolean arrow;
+        public boolean money;
+        public boolean arrow;
 
         public Flags(
-//                boolean genMultiple,
-                boolean potion) {
-//                boolean money,
-//                boolean arrow) {
-//            this.genMultiple = genMultiple;
+                boolean potion,
+                boolean money,
+                boolean arrow) {
             this.potion = potion;
-//            this.money = money;
-//            this.arrow = arrow;
+            this.money = money;
+            this.arrow = arrow;
         }
     }
 
