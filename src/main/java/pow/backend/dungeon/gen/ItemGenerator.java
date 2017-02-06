@@ -224,7 +224,7 @@ public class ItemGenerator {
                 defense = Integer.parseInt(line[14]);
                 extra = line[15];
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line));
+                throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
             }
 
             if (maxLevel < minLevel) {

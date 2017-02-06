@@ -77,7 +77,7 @@ public class ImageController {
         InputStream imageStream = this.getClass().getResourceAsStream("/images/32x32.png");
         this.tileImage = ImageIO.read(imageStream);
         this.grayTileImage = ImageUtils.makeGrayscale(this.tileImage);
-        this.tileData = readDataFile("/data/32x32.txt");
+        this.tileData = readDataFile("/data/32x32.tsv");
         this.colorData = initColorsFromTiles(this.tileImage, this.tileData, TILE_SIZE);
     }
 

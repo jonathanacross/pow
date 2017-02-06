@@ -43,6 +43,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         ARMOR,
         CLOAK,
         RING,
+        BRACELET,
         AMULET,
         GLOVES,
         BOOTS;
