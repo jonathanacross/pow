@@ -23,6 +23,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public boolean friendly; // friendly to the player
     public int speed;
     public int level;
+    public int gold;
 
     public abstract Action act(GameBackend backend);
 
@@ -70,5 +71,6 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.inventory = new ItemList(20, 99);
         this.maxMana = 0;
         this.mana = 0;
+        this.gold = 0;
     }
 }

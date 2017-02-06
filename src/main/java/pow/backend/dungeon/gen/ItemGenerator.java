@@ -4,6 +4,7 @@ import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonItem;
 import pow.util.DebugLogger;
 import pow.util.DieRoll;
+import pow.util.MathUtils;
 import pow.util.TsvReader;
 
 import java.io.IOException;
@@ -42,8 +43,6 @@ public class ItemGenerator {
     private Map<Integer, List<String>> levelToItemIds;
     private int minLevel;
     private int maxLevel;
-    private int minCount;
-    private int maxCount;
 
     static {
         try {
@@ -233,8 +232,13 @@ public class ItemGenerator {
             }
         }
 
+        private int getMoneyForLevel(double level, Random rng) {
+            // made up; have to tune this later once money means something
+            int maxAmt = Math.max((int) Math.round(Math.pow(1.1, level) * 10), 10);
+            return rng.nextInt(maxAmt) + 1;
+        }
+
         // resolves level to get a specific item instance
-        // TODO: add quantity (e.g., for arrows, money)
         public DungeonItem genItem(double level, Random rng) {
             // compute general bonus given the level
             double ratio = (level - minLevel) / (double) (maxLevel - minLevel);
@@ -254,7 +258,9 @@ public class ItemGenerator {
                 specificItemBonuses[DungeonItem.TO_DAM_IDX] = totalAttack - specificItemBonuses[DungeonItem.TO_HIT_IDX];
             }
 
-            int itemCount = rng.nextInt(count.max + 1 - count.min);
+            int itemCount = flags.money
+                    ? getMoneyForLevel(level, rng)
+                    : rng.nextInt(count.max + 1 - count.min) + count.min;
 
             return new DungeonItem(name, image, description, slot, flags, specificItemBonuses, attack,
                     defense, itemCount, actionParams);

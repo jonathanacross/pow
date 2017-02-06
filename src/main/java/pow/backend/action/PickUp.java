@@ -41,6 +41,13 @@ public class PickUp implements Action {
         }
 
         DungeonItem item = square.items.items.get(itemNum);
+        // special case for money
+        if (item.flags.money) {
+            actor.gold += item.count;
+            square.items.items.remove(itemNum);
+            return ActionResult.Succeeded(events);
+        }
+
         int numCanGet = Math.min(actor.inventory.numCanAdd(item), item.count);
         if (numCanGet <= 0) {
             backend.logMessage(actor.getPronoun() + " can't hold any more.");

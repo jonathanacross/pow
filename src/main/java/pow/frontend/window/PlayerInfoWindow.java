@@ -47,7 +47,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("Exp:       " + player.experience);
         lines.add("Exp next:  " + player.getExpToNextLevel());
         lines.add("Level:     " + player.level);
-        lines.add("Gold:      ");
+        lines.add("Gold:      " + player.gold);
         lines.add("");
         lines.add("Str:       " + player.currStats.strength);
         lines.add("Dex:       " + player.currStats.dexterity);

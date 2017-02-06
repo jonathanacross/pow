@@ -87,7 +87,7 @@ public class StatusWindow extends AbstractWindow {
         graphics.drawString("Exp:       " + gs.player.experience, textX, y); y += FONT_SIZE;
         graphics.drawString("Exp next:  " + gs.player.getExpToNextLevel(), textX, y); y += FONT_SIZE;
         graphics.drawString("Level:     " + gs.player.level, textX, y); y += FONT_SIZE;
-        graphics.drawString("Gold:      ", textX, y); y += FONT_SIZE;
+        graphics.drawString("Gold:      " + gs.player.gold, textX, y); y += FONT_SIZE;
 
         if (gs.pet != null && gs.player.canSee(gs, gs.pet.loc)) {
             y += 5;
