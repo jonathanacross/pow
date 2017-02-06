@@ -83,27 +83,27 @@ public class Player extends Actor implements Serializable, LightSource {
 
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
-            0,
-            10,
-            14,
-            19,
-            26,
-            35,
-            48,
-            66,
-            91,
-            124,
-            170,
-            233,
-            319,
-            437,
-            599,
-            821,
-            1124,
-            1540,
-            2110,
-            2890,
-            3960 };
+            44,
+            175,
+            461,
+            999,
+            1918,
+            3392,
+            5646,
+            8968,
+            13720,
+            20355,
+            29432,
+            41632,
+            57782,
+            78878,
+            106110,
+            140894,
+            184905,
+            240112,
+            308823,
+            393731
+    };
 
     // default player
     public Player() {
@@ -205,6 +205,7 @@ public class Player extends Actor implements Serializable, LightSource {
         currStats.intelligence = innateInt + intBonus;
         currStats.constitution = innateCon + conBonus;
         currStats.speed = innateSpd + spdBonus;
+        this.speed = currStats.speed;
 
         // third, compute baseline dependent stats
 
@@ -213,7 +214,7 @@ public class Player extends Actor implements Serializable, LightSource {
         int baseDefense = this.currStats.dexterity - 7;
         int baseWeaponToHit = 2*(this.currStats.dexterity - 7);
         int baseWeaponToDam = this.currStats.strength - 7;
-        int baseBowToHit = (int) Math.round(0.75 * (this.currStats.dexterity - 7));
+        int baseBowToHit = (int) Math.round(1.50 * (this.currStats.dexterity - 7));
         int baseBowToDam = (int) Math.round(0.75 * (this.currStats.strength - 7));
 
         // fourth, add equipment bonuses
@@ -225,7 +226,6 @@ public class Player extends Actor implements Serializable, LightSource {
 
         for (DungeonItem item : equipment) {
             defBonus += item.defense + item.bonuses[DungeonItem.DEF_IDX];
-            spdBonus += item.bonuses[DungeonItem.SPEED_IDX];
             // Only add non bow/weapon (i.e. from rings/amulets) for toHit/toDam bonuses.
             // The weapon and bow bonuses will be applied to the weapon and bow, separately, later.
             if (item.slot != DungeonItem.Slot.BOW && item.slot != DungeonItem.Slot.WEAPON) {
