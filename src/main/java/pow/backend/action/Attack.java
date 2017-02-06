@@ -56,6 +56,8 @@ public class Attack implements Action {
 
                         GameMap map = gs.getCurrentMap();
 
+                        // TODO: drop any gold that the monster holds
+
                         // with some probability, have the monster drop a random item.
                         if (gs.rng.nextInt(8) == 0) {
                             int difficultyLevel = map.level;

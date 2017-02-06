@@ -35,13 +35,15 @@ public class GameMainLayer extends AbstractWindow {
             backend.logMessage("Nothing here to pick up.");
         } else if (items.size() == 1) {
             // no ambiguity, just pick up the one item
-            backend.tellPlayer(new PickUp(gs.player, 0, items.size()));
+            backend.tellPlayer(new PickUp(gs.player, 0, items.items.get(0).count));
         } else {
             // ask the user to pick which item
             frontend.open(
-                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Pick up which item?",
-                        items.items, (DungeonItem item) -> true,
-                        (int itemNum) -> {backend.tellPlayer(new PickUp(gs.player, itemNum, items.size())); }));
+                    new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Pick up which item?",
+                            items.items, (DungeonItem item) -> true,
+                            (int itemNum) -> {
+                                backend.tellPlayer(new PickUp(gs.player, itemNum, items.items.get(itemNum).count));
+                            }));
         }
     }
 
