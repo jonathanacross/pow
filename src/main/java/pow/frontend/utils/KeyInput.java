@@ -44,5 +44,8 @@ public enum KeyInput {
     TARGET,
     TARGET_FLOOR,
 
+    DEBUG_INCR_CHAR_LEVEL, // debugging keys, remove at some point
+    DEBUG_HEAL_CHAR,
+
     UNKNOWN // user types something unknown
 }

@@ -58,6 +58,7 @@ public class MonsterGenerator {
 
     // helper class to generate a specific type of monster
     private static class SpecificMonsterGenerator {
+        int level;
         String id;
         String name;
         String image;
@@ -98,6 +99,7 @@ public class MonsterGenerator {
                 + ". Fields = \n" + String.join(",", line));
             }
 
+            level = Integer.parseInt(line[0]);
             id = line[1];
             name = line[2];
             image = line[3];
@@ -117,7 +119,7 @@ public class MonsterGenerator {
             AttackData attackData = new AttackData(attack, toHit, 0);
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
-                    new Actor.Params(instanceHP, defense, experience, attackData, false, speed),
+                    new Actor.Params(level, instanceHP, defense, experience, attackData, false, speed),
                     flags);
         }
     }

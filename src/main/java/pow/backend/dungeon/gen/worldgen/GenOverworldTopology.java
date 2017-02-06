@@ -179,7 +179,7 @@ public class GenOverworldTopology {
     // adds new level to the map, in the current group
     private RoomConnection addLevel(int x, int y) {
         RoomConnection room = new RoomConnection(x, y);
-        room.level = this.currLevel;
+        room.level = this.currLevel * 2;
         this.currLevel++;
         this.connections[x][y] = room;
         this.rooms.add(room);

@@ -78,10 +78,9 @@ public class Attack implements Action {
     }
 
     public static double hitProb(int toHit, int defense) {
-        // add smoothing, so that a player with 0 toHit can still hit something
-        // or 0 defense doesn't mean 100% chance of getting hit.
-        double smooth = 5.0;
-        double z = (toHit + smooth) / (toHit + defense + 2*smooth);
+        // squaring everything pushes away from 50% probability faster,
+        // so changes between toHit and defense are more significant.
+        double z = (double) (toHit * toHit) / (toHit * toHit + defense * defense);
         return z;
     }
 

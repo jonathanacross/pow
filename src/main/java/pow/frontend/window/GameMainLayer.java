@@ -150,6 +150,8 @@ public class GameMainLayer extends AbstractWindow {
             case WEAR: tryWear(gs); break;
             case TAKE_OFF: tryTakeOff(gs); break;
             case HELP: frontend.open(frontend.helpWindow); break;
+            case DEBUG_INCR_CHAR_LEVEL: backend.tellPlayer(new DebugAction(DebugAction.What.INCREASE_CHAR_LEVEL)); break;
+            case DEBUG_HEAL_CHAR: backend.tellPlayer(new DebugAction(DebugAction.What.HEAL)); break;
         }
     }
 

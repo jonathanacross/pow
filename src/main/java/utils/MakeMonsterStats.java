@@ -5,6 +5,7 @@ import pow.util.TsvReader;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.*;
 
 // Utility for filling in fields of monsters.tsv automatically.
@@ -22,7 +23,7 @@ public class MakeMonsterStats {
     }
 
     public static int getHP(int area, String type, Set<String> flags) {
-        double baseHP = 6.0 * Math.pow(1.583, area);
+        double baseHP = 6.0 * Math.pow(1.25, area);
 
         double scaleFactor;
         switch (type) {
@@ -60,7 +61,8 @@ public class MakeMonsterStats {
     }
 
     public static double getAttackTarget(int area, String type, Set<String> flags) {
-        double baseAttack = 1.0 * Math.pow(1.63, area);
+        //double baseAttack = 1.0 * Math.pow(1.63, area);
+        double baseAttack = 0.125*area*area + 3;
         double scaleFactor;
         switch (type) {
             case "fungus": scaleFactor = 0.60; break;
@@ -114,9 +116,7 @@ public class MakeMonsterStats {
     }
 
     public static int getDefense(int area, String type, Set<String> flags) {
-        // should be 1 for med monsters level 0
-        // estimate should be 30 for med monsters on level 9
-        double baseDef = 1.0 * Math.pow(1.46, area);
+        double baseDef = 0.12*area*area + area + 5;
 
         double scaleFactor;
         switch (type) {
@@ -142,9 +142,7 @@ public class MakeMonsterStats {
     }
 
     public static int getToHit(int area, String type, Set<String> flags) {
-        // should be be about 3 for med monsters level 0
-        // estimate should be ~200 for med monsters on level 9
-        double baseToHit = 3.0 * Math.pow(1.59, area);
+        double baseToHit = 0.12*area*area + area + 5;
 
         double scaleFactor;
         switch (type) {
@@ -186,7 +184,9 @@ public class MakeMonsterStats {
 
         List<String[]> data = reader.getData();
 
-        System.out.println(
+        PrintWriter writer = new PrintWriter("src/main/resources/data/monsters.tsv", "UTF-8");
+
+        writer.println(
                 "#area" + "\t" +
                         "id" + "\t" +
                         "name" + "\t" +
@@ -229,8 +229,7 @@ public class MakeMonsterStats {
 //                    + "\t" + attackAvg + "\t" + id);
 //            System.out.println(area + "\t" + attackAvg + "\t" + defense + "\t" + toHit + "\t" + speed + "\t" + experience + "\t" + id);
 
-            // TODO: save directly to monsters.tsv?
-            System.out.println(
+            writer.println(
                     area + "\t" +
                     id + "\t" +
                     name + "\t" +
@@ -245,5 +244,8 @@ public class MakeMonsterStats {
                     gameFlagsStr);
 
         }
+        writer.close();
+
+        System.out.println("Done updating monsters.tsv");
     }
 }

@@ -43,7 +43,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add(player.name);
         lines.add("");
         lines.add("HP:        " + player.health + "/" + player.maxHealth);
-        lines.add("MP:        ");
+        lines.add("MP:        " + player.mana + "/" + player.maxMana);
         lines.add("Exp:       " + player.experience);
         lines.add("Exp next:  " + player.getExpToNextLevel());
         lines.add("Level:     " + player.level);
