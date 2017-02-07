@@ -8,6 +8,7 @@ public class DungeonFeature implements Serializable {
 
     public static class Flags implements Serializable {
         public boolean blockGround;
+        public boolean blockAir;
         public boolean glowing;
         public boolean actOnStep;
         public boolean stairsUp;
@@ -15,12 +16,14 @@ public class DungeonFeature implements Serializable {
         public boolean openDoor;
 
         public Flags(boolean blockGround,
+                     boolean blockAir,
                      boolean glowing,
                      boolean actOnStep,
                      boolean stairsUp,
                      boolean stairsDown,
                      boolean openDoor) {
             this.blockGround = blockGround;
+            this.blockAir = blockAir;
             this.glowing = glowing;
             this.actOnStep = actOnStep;
             this.stairsUp = stairsUp;

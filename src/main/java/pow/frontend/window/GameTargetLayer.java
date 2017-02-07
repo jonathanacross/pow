@@ -87,7 +87,7 @@ public class GameTargetLayer extends AbstractWindow {
                 for (Point p : ray) {
                     if (!gs.player.canSee(gs, p)) break;
                     mapView.drawCircle(graphics, Color.GREEN, p.x, p.y);
-                    if (gs.getCurrentMap().map[p.x][p.y].blockGround()) break;
+                    if (gs.getCurrentMap().map[p.x][p.y].blockAir()) break;
                 }
             }
         }
