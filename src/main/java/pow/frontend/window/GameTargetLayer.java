@@ -85,14 +85,10 @@ public class GameTargetLayer extends AbstractWindow {
             if (!cursorPosition.equals(gs.player.loc)) {
                 List<Point> ray = Bresenham.makeRay(gs.player.loc, cursorPosition, radius + 1);
                 for (Point p : ray) {
+                    if (!gs.player.canSee(gs, p)) break;
                     mapView.drawCircle(graphics, Color.GREEN, p.x, p.y);
-                    // TODO: implement blocking
-//                    if (game.dungeon.map.data[p.x][p.y].blockAir()) {
-//                        break;
-//                    }
+                    if (gs.getCurrentMap().map[p.x][p.y].blockGround()) break;
                 }
-
-                mapView.drawCircle(graphics, Color.GREEN, cursorPosition.x, cursorPosition.y);
             }
         }
     }

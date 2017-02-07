@@ -75,6 +75,52 @@ public class Targeting {
         return points;
     }
 
+    // field of vew targeting, used for some spell effects
+//    List<Point> getFOVTargets(GameState gameState) {
+//        GameMap map = gameState.getCurrentMap();
+//
+//        int rowMin = Math.max(0, center.y - radius);
+//        int rowMax = Math.min(map.height - 1, center.y + radius);
+//        int colMin = Math.max(0, center.x - radius);
+//        int colMax = Math.min(map.width - 1, center.x + radius);
+//
+//        boolean[][] blockMap = new boolean[colMax - colMin + 1][rowMax - rowMin + 1];
+//        for (int x = colMin; x <= colMax; x++) {
+//            for (int y = rowMin; y <= rowMax; y++) {
+//                blockMap[x - colMin][y - rowMin] = map.map[x][y].blockAir();
+//            }
+//        }
+//        FieldOfView fov = new FieldOfView(blockMap, center.x - colMin, center.y - rowMin, radius, metric);
+//        boolean[][] visible = fov.getFOV();
+//
+//        List<Point> points = new ArrayList<>();
+//        for (int x = colMin; x <= colMax; x++) {
+//            for (int y = rowMin; y <= rowMax; y++) {
+//                if (visible[x - colMin][y - rowMin] && !map.map[x][y].blockAir()) {
+//                    points.add(new Point(x, y));
+//                }
+//            }
+//        }
+//        TargetingUtils.orderPointsByDistance(center, points);
+//
+//        return points;
+//    }
+
+    // default for center is the player
+//    public List<Point> getMonsterFOVSquares(GameState gameState, Metric.MetricFunction metric, Point center) {
+//        GameMap map = gameState.getCurrentMap();
+//
+//        List<Point> squares = getFovTargets(radius, metric, center);
+//        List<Point> msquares = new ArrayList<>();
+//        for (Point square : squares) {
+//            if (map.actorAt(square.x, square.y) != null) {
+//                msquares.add(square);
+//            }
+//        }
+//        TargetingUtils.orderPointsByDistance(center, msquares);
+//
+//        return msquares;
+
     // --------- other utilities
 
     // sort the points by distance to a given square, so that we can do things like
