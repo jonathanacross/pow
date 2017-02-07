@@ -86,6 +86,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
+            0,
             44,
             175,
             461,
@@ -175,10 +176,6 @@ public class Player extends Actor implements Serializable, LightSource {
     @Override
     public int getLightRadius() {
         return this.lightRadius;
-    }
-
-    private static int getMaxHP(int con) {
-        return (int) Math.round(0.7 * con * con + 1.6 * con + 9.7);
     }
 
     // update our stats, plus toHit, defense to include current equipped items and other bonuses.
@@ -298,6 +295,8 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private void checkIncreaseCharLevel(GameBackend backend) {
+        if (level >= levelBreakpoints.length) return;
+
         int targetLevel = getTargetLevel();
         while (level <= targetLevel) {
             gainLevel(backend);
@@ -308,7 +307,7 @@ public class Player extends Actor implements Serializable, LightSource {
     // based on experience alone.
     private int getTargetLevel() {
         int targetLevel = 0;
-        for (int i = 0; i < levelBreakpoints.length; i += 1) {
+        for (int i = 0; i < levelBreakpoints.length; i++) {
             if (experience >= levelBreakpoints[i]) {
                 targetLevel = i;
             }
@@ -317,6 +316,8 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     public int getExpToNextLevel() {
+        if (level >= levelBreakpoints.length) return 0;
+
         int nextLevel = getTargetLevel() + 1;
         int expBreak = levelBreakpoints[nextLevel];
         return expBreak - experience;
