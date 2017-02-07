@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
+import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.util.TextUtils;
 
@@ -24,7 +25,7 @@ public class ItemChoiceWindow extends AbstractWindow {
                             List<DungeonItem> items,
                             Function<DungeonItem, Boolean> enabled,
                             IntConsumer callback) {
-        super(x, y, 350, 35 + 32 * items.size(), true, backend, frontend);
+        super(new WindowDim(x, y, 350, 35 + 32 * items.size()), true, backend, frontend);
         this.message = message;
         this.items = items;
         this.enabled = enabled;
@@ -57,7 +58,7 @@ public class ItemChoiceWindow extends AbstractWindow {
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, width, height);
+        graphics.fillRect(0, 0, dim.width, dim.height);
 
         Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
         graphics.setFont(font);

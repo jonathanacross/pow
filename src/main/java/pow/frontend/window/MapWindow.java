@@ -6,6 +6,7 @@ import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.Frontend;
 import pow.frontend.utils.ImageController;
+import pow.frontend.WindowDim;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -20,8 +21,8 @@ public class MapWindow extends AbstractWindow {
     private static final Color PLAYER_COLOR = Color.YELLOW;
     private static final Color PET_COLOR = new Color(153, 192, 255);
 
-    public MapWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
-        super(x, y, width, height, visible, backend, frontend);
+    public MapWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
+        super(dim, visible, backend, frontend);
     }
 
     @Override
@@ -32,10 +33,10 @@ public class MapWindow extends AbstractWindow {
     public void drawContents(Graphics graphics) {
 
         GameState gs = backend.getGameState();
-        MapView mapView = new MapView(width, height, TILE_SIZE, backend.getGameState());
+        MapView mapView = new MapView(dim.width, dim.height, TILE_SIZE, backend.getGameState());
 
         graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, width, height);
+        graphics.fillRect(0, 0, dim.width, dim.height);
 
         // draw the map
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {

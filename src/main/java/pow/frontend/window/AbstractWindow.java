@@ -2,38 +2,33 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
+import pow.frontend.WindowDim;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 public abstract class AbstractWindow {
-    protected int x;
-    protected int y;
-    protected int width;
-    protected int height;
+    WindowDim dim;
     protected boolean visible;
     protected GameBackend backend;
     protected Frontend frontend;
 
-    public AbstractWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    public AbstractWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
+        this.dim = dim;
         this.visible = visible;
         this.backend = backend;
         this.frontend = frontend;
     }
 
     public void resize(int width, int height) {
-        this.width = width;
-        this.height = height;
+        this.dim.width = width;
+        this.dim.height = height;
     }
 
     public void move(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.dim.x = x;
+        this.dim.y = y;
     }
 
     // to be filled out by subclasses
@@ -44,13 +39,13 @@ public abstract class AbstractWindow {
     void drawFrame(Graphics graphics) {
         int margin = 1;
         graphics.setColor(Color.DARK_GRAY);
-        graphics.drawRect(x - margin, y - margin, width + margin, height + margin);
+        graphics.drawRect(dim.x - margin, dim.y - margin, dim.width + margin, dim.height + margin);
     }
 
     public void draw(Graphics graphics) {
         if (this.visible) {
             drawFrame(graphics);
-            Graphics contentGraphics = graphics.create(x, y, width, height);
+            Graphics contentGraphics = graphics.create(dim.x, dim.y, dim.width, dim.height);
             drawContents(contentGraphics);
         }
     }
