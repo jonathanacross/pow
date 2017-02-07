@@ -308,7 +308,7 @@ public class GeneratorUtils {
         // TODO: pull out magic strings somewhere
         params.actionName = "gotoArea";
         params.name = connection.destination.toString();
-        DungeonFeature.Flags flags =  new DungeonFeature.Flags(false, false, false, up, !up) ;
+        DungeonFeature.Flags flags =  new DungeonFeature.Flags(false, false, false, up, !up, false) ;
         DungeonFeature feature = new DungeonFeature(
                 featureTemplate.id,
                 featureTemplate.name,

@@ -24,6 +24,10 @@ public class GotoArea implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
 
+        // clear any targets
+        gs.player.floorTarget = null;
+        gs.player.monsterTarget = null;
+
         // remove player and pet from current area
         gs.getCurrentMap().removeActor(gs.player);
         if (gs.pet != null) {

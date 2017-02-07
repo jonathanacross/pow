@@ -188,6 +188,9 @@ public class Frontend {
         graphics2D.setRenderingHint(
                 RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        graphics2D.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
 
         graphics.setColor(BACKGROUND_COLOR);
         graphics.fillRect(0, 0, width, height);

@@ -33,7 +33,7 @@ public class TerrainData {
 
     private TerrainData() throws IOException {
         //Get file from resources folder
-        InputStream tsvStream = this.getClass().getResourceAsStream("/data/terrain.txt");
+        InputStream tsvStream = this.getClass().getResourceAsStream("/data/terrain.tsv");
         TsvReader reader = new TsvReader(tsvStream);
 
         terrainMap = new HashMap<>();
@@ -97,7 +97,7 @@ public class TerrainData {
                 case "blockLava": break;
                 case "blockWater": break;
                 case "diggable": diggable = true; break;
-                case "teleport": teleport = true;
+                case "teleport": teleport = true; break;
                 default:
                     throw new IllegalArgumentException("unknown terrain flag '" + t + "'");
             }

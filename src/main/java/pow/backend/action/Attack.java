@@ -69,6 +69,10 @@ public class Attack implements Action {
                         // so that the player won't disappear from the map.
                         map.removeActor(defender);
 
+                        if (defender == gs.player.monsterTarget) {
+                            gs.player.monsterTarget = null;
+                        }
+
                     }
                     if (defender == gs.pet) {
                         gs.pet = null;

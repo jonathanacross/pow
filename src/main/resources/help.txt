@@ -8,15 +8,14 @@ You can also use the arrow keys, though diagonal movement
 is not possible.  The keys . or number pad 5 indicate to stay still.
 
     Key    Action
-    ===    ========================
+    ===    ===========================
       .    Stay still
       <    Go upstairs
       >    Go downstairs
       ?    See help
-      C    Character description
-      W    Take off equipment
       b    Walk southwest
       c    Close door
+      C    Character description
       d    Drop an item
       f    Fire
       g    Get objects on the floor
@@ -28,8 +27,11 @@ is not possible.  The keys . or number pad 5 indicate to stay still.
       n    Walk southeast
       q    Quaff a potion
       s    Save
+      t    Target a monster
+      T    Target a spot on the ground
       u    Walk northeast
       w    Wear/wield equipment
+      W    Take off equipment
       x    Examine nearby things
       y    Walk northwest
 
