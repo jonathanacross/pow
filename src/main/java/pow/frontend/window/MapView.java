@@ -68,11 +68,11 @@ public class MapView {
         int radius = (int) Math.round((double) tileSize / 6.4);
         int diam = 2*radius;
 
-        g2.setStroke(new BasicStroke(3));
+        g2.setStroke(new BasicStroke(4));
         graphics.setColor(Color.BLACK);
         graphics.drawOval(tileCenterX - radius, tileCenterY - radius, diam, diam);
 
-        g2.setStroke(new BasicStroke(1));
+        g2.setStroke(new BasicStroke(2));
         graphics.setColor(color);
         graphics.drawOval(tileCenterX - radius, tileCenterY - radius, diam, diam);
     }

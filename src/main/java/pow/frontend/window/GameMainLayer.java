@@ -3,7 +3,6 @@ package pow.frontend.window;
 import pow.backend.GameState;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
-import pow.backend.actors.Monster;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.ItemList;
@@ -11,9 +10,7 @@ import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
-import pow.frontend.utils.targeting.MonsterTargeting;
-import pow.frontend.utils.targeting.TargetingMode;
-import pow.frontend.utils.targeting.LookTargeting;
+import pow.frontend.utils.Targeting;
 import pow.util.Point;
 
 import java.awt.Color;
@@ -148,7 +145,8 @@ public class GameMainLayer extends AbstractWindow {
             case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
             case SAVE: backend.tellPlayer(new Save()); break;
             case LOOK: startLooking(gs); break;
-            case TARGET: startTargeting(gs); break;
+            case TARGET: startMonsterTargeting(gs); break;
+            case TARGET_FLOOR: startFloorTargeting(gs); break;
             case INVENTORY: showInventory(gs); break;
             case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;
@@ -233,15 +231,13 @@ public class GameMainLayer extends AbstractWindow {
 
     private void startLooking(GameState gameState) {
         MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gameState);
-        TargetingMode targeter = new LookTargeting(gameState, mapView.colMin, mapView.colMax, mapView.rowMin, mapView.rowMax);
-        List<Point> targetableSquares = targeter.targetableSquares();
+        List<Point> targetableSquares = Targeting.getLookTargets(gameState, mapView);
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.LOOK, Point -> {}));
     }
 
-    private void startTargeting(GameState gameState) {
+    private void startMonsterTargeting(GameState gameState) {
         MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gameState);
-        TargetingMode targeter = new MonsterTargeting(gameState, mapView.colMin, mapView.colMax, mapView.rowMin, mapView.rowMax);
-        List<Point> targetableSquares = targeter.targetableSquares();
+        List<Point> targetableSquares = Targeting.getMonsterTargets(gameState, mapView);
         if (targetableSquares.isEmpty()) {
             backend.logMessage("no monsters to target");
             return;
@@ -254,6 +250,21 @@ public class GameMainLayer extends AbstractWindow {
                     if (!m.friendly) {
                         gameState.player.monsterTarget = m;
                     }
+                }
+        ));
+    }
+
+    private void startFloorTargeting(GameState gameState) {
+        MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gameState);
+        List<Point> targetableSquares = Targeting.getVisibleLookTargets(gameState, mapView);
+        if (targetableSquares.isEmpty()) {
+            backend.logMessage("you can't see anything!");
+            return;
+        }
+        parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,
+                (Point p) -> {
+                    gameState.player.monsterTarget = null;
+                    gameState.player.floorTarget = p;
                 }
         ));
     }

@@ -6,7 +6,8 @@ import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
-import pow.frontend.utils.targeting.TargetingUtils;
+import pow.frontend.utils.Targeting;
+import pow.util.Bresenham;
 import pow.util.Point;
 import pow.util.TextUtils;
 import pow.util.direction.Direction;
@@ -76,13 +77,27 @@ public class GameTargetLayer extends AbstractWindow {
         Point cursorPosition = targetableSquares.get(targetIdx);
         mapView.frameRect(graphics, Color.YELLOW, cursorPosition.x, cursorPosition.y);
         if (mode == TargetMode.TARGET) {
-            mapView.drawCircle(graphics, Color.GREEN, cursorPosition.x, cursorPosition.y);
+
+            GameState gs = backend.getGameState();
+            int radius = gs.player.viewRadius;
+            if (!cursorPosition.equals(gs.player.loc)) {
+                List<Point> ray = Bresenham.makeRay(gs.player.loc, cursorPosition, radius + 1);
+                for (Point p : ray) {
+                    mapView.drawCircle(graphics, Color.GREEN, p.x, p.y);
+                    // TODO: implement blocking
+//                    if (game.dungeon.map.data[p.x][p.y].blockAir()) {
+//                        break;
+//                    }
+                }
+
+                mapView.drawCircle(graphics, Color.GREEN, cursorPosition.x, cursorPosition.y);
+            }
         }
     }
 
     private void moveCursor(int dx, int dy) {
         Direction dir = new Direction(dx, dy);
-        this.targetIdx = TargetingUtils.pickTarget(targetIdx, dir, targetableSquares);
+        this.targetIdx = Targeting.pickTarget(targetIdx, dir, targetableSquares);
         update();
     }
 
