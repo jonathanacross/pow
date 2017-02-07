@@ -7,7 +7,6 @@ import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 import pow.frontend.utils.targeting.TargetingUtils;
-import pow.util.MathUtils;
 import pow.util.Point;
 import pow.util.TextUtils;
 import pow.util.direction.Direction;
@@ -17,23 +16,29 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class GameTargetLayer extends AbstractWindow {
 
     public enum TargetMode {
-        LOOK;
+        LOOK,
+        TARGET;
     }
 
     private GameWindow parent;
     private int targetIdx;
     private List<Point> targetableSquares;
     MapView mapView;
+    TargetMode mode;
+    Consumer<Point> callback;
 
-    public GameTargetLayer(GameWindow parent, List<Point> targetableSquares, TargetMode mode) {
+    public GameTargetLayer(GameWindow parent, List<Point> targetableSquares, TargetMode mode, Consumer<Point> callback) {
         super(parent.x, parent.y, parent.width, parent.height, parent.visible, parent.backend, parent.frontend);
         this.parent = parent;
         this.targetableSquares = targetableSquares;
         this.targetIdx = 0;  // start with the first point in 'targetableSquares'
+        this.mode = mode;
+        this.callback = callback;
         GameState gs = backend.getGameState();
         mapView = new MapView(width, height, ImageController.TILE_SIZE, gs);
 
@@ -54,9 +59,15 @@ public class GameTargetLayer extends AbstractWindow {
             case SOUTH_WEST: moveCursor(-1, 1); break;
             case SOUTH_EAST: moveCursor(1, 1); break;
             case CYCLE: cycleCursor(); break;
+            case CANCEL: stopLooking(); break;
             case OKAY:
-            case CANCEL:
-            case LOOK: stopLooking(); break;
+            case LOOK:
+            case TARGET:
+            case TARGET_FLOOR:
+                stopLooking();
+                Point cursorPosition = targetableSquares.get(targetIdx);
+                callback.accept(cursorPosition);
+                break;
         }
     }
 
@@ -64,6 +75,9 @@ public class GameTargetLayer extends AbstractWindow {
     public void drawContents(Graphics graphics) {
         Point cursorPosition = targetableSquares.get(targetIdx);
         mapView.frameRect(graphics, Color.YELLOW, cursorPosition.x, cursorPosition.y);
+        if (mode == TargetMode.TARGET) {
+            mapView.drawCircle(graphics, Color.GREEN, cursorPosition.x, cursorPosition.y);
+        }
     }
 
     private void moveCursor(int dx, int dy) {

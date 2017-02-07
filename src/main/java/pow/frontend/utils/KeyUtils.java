@@ -72,6 +72,8 @@ public class KeyUtils {
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.QUAFF;
             case KeyEvent.VK_W:
                 return hasShift(event) ? KeyInput.TAKE_OFF : KeyInput.WEAR;
+            case KeyEvent.VK_T:
+                return hasShift(event) ? KeyInput.TARGET_FLOOR : KeyInput.TARGET;
 
             // debugging commands
             case KeyEvent.VK_EQUALS:

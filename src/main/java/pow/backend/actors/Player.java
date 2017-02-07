@@ -82,7 +82,7 @@ public class Player extends Actor implements Serializable, LightSource {
     public int experience;
 
     public Point floorTarget;
-    public Monster monsterTarget;
+    public Actor monsterTarget;
 
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {

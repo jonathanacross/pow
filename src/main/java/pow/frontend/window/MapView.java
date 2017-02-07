@@ -4,8 +4,7 @@ import pow.backend.GameState;
 import pow.frontend.utils.ImageController;
 import pow.util.MathUtils;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 
 // A utility class to aid in drawing map-related views.
 public class MapView {
@@ -60,6 +59,22 @@ public class MapView {
     public void drawBlock(Graphics graphics, Color color, int x, int y) {
         graphics.setColor(color);
         graphics.fillRect(gameXToPixelX(x), gameYToPixelY(y), tileSize, tileSize);
+    }
+
+    public void drawCircle(Graphics graphics, Color color, int x, int y) {
+        Graphics2D g2 = (Graphics2D) graphics;
+        int tileCenterX = gameXToPixelX(x) + tileSize / 2;
+        int tileCenterY = gameYToPixelY(y) + tileSize / 2;
+        int radius = (int) Math.round((double) tileSize / 6.4);
+        int diam = 2*radius;
+
+        g2.setStroke(new BasicStroke(3));
+        graphics.setColor(Color.BLACK);
+        graphics.drawOval(tileCenterX - radius, tileCenterY - radius, diam, diam);
+
+        g2.setStroke(new BasicStroke(1));
+        graphics.setColor(color);
+        graphics.drawOval(tileCenterX - radius, tileCenterY - radius, diam, diam);
     }
 
     // darkness = 0 -> no shadow, darkness 255 -> all black
