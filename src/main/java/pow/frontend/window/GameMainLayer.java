@@ -10,6 +10,8 @@ import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
+import pow.frontend.utils.targeting.TargetingMode;
+import pow.frontend.utils.targeting.LookTargeting;
 import pow.util.Point;
 
 import java.awt.Color;
@@ -143,7 +145,7 @@ public class GameMainLayer extends AbstractWindow {
             case REST: backend.tellPlayer(new Move(gs.player, 0, 0)); break;
             case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
             case SAVE: backend.tellPlayer(new Save()); break;
-            case LOOK: startLooking(); break;
+            case LOOK: startLooking(gs); break;
             case INVENTORY: showInventory(gs); break;
             case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;
@@ -219,7 +221,10 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
-    private void startLooking() {
-        parent.addLayer(new GameTargetLayer(parent));
+    private void startLooking(GameState gameState) {
+        MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gameState);
+        TargetingMode targeter = new LookTargeting(gameState, mapView.colMin, mapView.colMax, mapView.rowMin, mapView.rowMax);
+        List<Point> targetableSquares = targeter.targetableSquares();
+        parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.LOOK));
     }
 }

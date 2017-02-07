@@ -6,9 +6,11 @@ import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
+import pow.frontend.utils.targeting.TargetingUtils;
 import pow.util.MathUtils;
 import pow.util.Point;
 import pow.util.TextUtils;
+import pow.util.direction.Direction;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -18,18 +20,25 @@ import java.util.List;
 
 public class GameTargetLayer extends AbstractWindow {
 
+    public enum TargetMode {
+        LOOK;
+    }
+
     private GameWindow parent;
-    private Point cursorPosition;
+    private int targetIdx;
+    private List<Point> targetableSquares;
     MapView mapView;
 
-    public GameTargetLayer(GameWindow parent) {
+    public GameTargetLayer(GameWindow parent, List<Point> targetableSquares, TargetMode mode) {
         super(parent.x, parent.y, parent.width, parent.height, parent.visible, parent.backend, parent.frontend);
         this.parent = parent;
+        this.targetableSquares = targetableSquares;
+        this.targetIdx = 0;  // start with the first point in 'targetableSquares'
         GameState gs = backend.getGameState();
-        Point playerLoc = gs.player.getLocation();
-        cursorPosition = new Point(playerLoc.x, playerLoc.y);
         mapView = new MapView(width, height, ImageController.TILE_SIZE, gs);
+
         frontend.messages.push("");
+        update();
     }
 
     @Override
@@ -44,6 +53,7 @@ public class GameTargetLayer extends AbstractWindow {
             case NORTH_EAST: moveCursor(1, -1); break;
             case SOUTH_WEST: moveCursor(-1, 1); break;
             case SOUTH_EAST: moveCursor(1, 1); break;
+            case CYCLE: cycleCursor(); break;
             case OKAY:
             case CANCEL:
             case LOOK: stopLooking(); break;
@@ -52,12 +62,24 @@ public class GameTargetLayer extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
+        Point cursorPosition = targetableSquares.get(targetIdx);
         mapView.frameRect(graphics, Color.YELLOW, cursorPosition.x, cursorPosition.y);
     }
 
     private void moveCursor(int dx, int dy) {
-        cursorPosition.x = MathUtils.clamp(cursorPosition.x + dx, mapView.colMin, mapView.colMax);
-        cursorPosition.y = MathUtils.clamp(cursorPosition.y + dy, mapView.rowMin, mapView.rowMax);
+        Direction dir = new Direction(dx, dy);
+        this.targetIdx = TargetingUtils.pickTarget(targetIdx, dir, targetableSquares);
+        update();
+    }
+
+    private void cycleCursor() {
+        this.targetIdx = (this.targetIdx + 1) % targetableSquares.size();
+        update();
+    }
+
+    private void update() {
+        Point cursorPosition = targetableSquares.get(targetIdx);
+
         frontend.messages.pop();
         frontend.messages.push(makeMessage());
         Actor selectedActor = backend.getGameState().getCurrentMap().actorAt(cursorPosition.x, cursorPosition.y);
@@ -107,6 +129,7 @@ public class GameTargetLayer extends AbstractWindow {
     }
 
     private String makeMessage() {
+        Point cursorPosition = targetableSquares.get(targetIdx);
         int x = cursorPosition.x;
         int y = cursorPosition.y;
         GameState gs = backend.getGameState();

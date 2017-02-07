@@ -4,6 +4,7 @@ package pow.frontend.utils;
 public enum KeyInput {
     OKAY,
     CANCEL,
+    CYCLE,
 
     NORTH,
     NORTH_EAST,

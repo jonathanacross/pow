@@ -81,6 +81,9 @@ public class Player extends Actor implements Serializable, LightSource {
     public AttackData bowAttack;
     public int experience;
 
+    public Point floorTarget;
+    public Monster monsterTarget;
+
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
             44,
@@ -136,6 +139,8 @@ public class Player extends Actor implements Serializable, LightSource {
         updateStats();  // updates current stats (above), defense, and attack, bowAttack
         this.health = this.maxHealth;
         this.mana = this.maxMana;
+        this.floorTarget = null;
+        this.monsterTarget = null;
     }
 
     public void addCommand(Action request) {

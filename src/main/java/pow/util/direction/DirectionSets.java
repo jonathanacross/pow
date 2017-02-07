@@ -15,5 +15,16 @@ public class DirectionSets {
         public static String getName(int dirIdx) { return NAMES[dirIdx]; }
     }
 
+    public static class Diagonal {
+        private static final Direction[] DIRECTIONS = {Direction.NE, Direction.SE, Direction.NW, Direction.SW};
+        public static Direction[] getDirections() { return DIRECTIONS; }
+    }
+
+    public static class All {
+        private static final Direction[] DIRECTIONS = {
+                Direction.N, Direction.NE, Direction.E, Direction.SE,
+                Direction.S, Direction.SW, Direction.W, Direction.NW };
+        public static Direction[] getDirections() { return DIRECTIONS; }
+    }
 
 }

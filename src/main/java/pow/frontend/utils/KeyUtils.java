@@ -15,8 +15,9 @@ public class KeyUtils {
             case KeyEvent.VK_ENTER:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.OKAY;
             case KeyEvent.VK_ESCAPE:
-            case KeyEvent.VK_SPACE:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.CANCEL;
+            case KeyEvent.VK_SPACE:
+                return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.CYCLE;
             case KeyEvent.VK_SLASH:
                 return KeyInput.HELP;
             case KeyEvent.VK_RIGHT:
