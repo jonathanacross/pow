@@ -39,7 +39,7 @@ public class FeatureData {
 
     private FeatureData() throws IOException {
         //Get file from resources folder
-        InputStream tsvStream = this.getClass().getResourceAsStream("/data/features.txt");
+        InputStream tsvStream = this.getClass().getResourceAsStream("/data/features.tsv");
         TsvReader reader = new TsvReader(tsvStream);
 
         featureMap = new HashMap<>();
@@ -74,6 +74,7 @@ public class FeatureData {
         boolean glowing = false;
         boolean stairsUp = false;
         boolean stairsDown = false;
+        boolean openDoor = false;
 
         for (String t : tokens) {
             switch (t) {
@@ -86,7 +87,7 @@ public class FeatureData {
                 case "blockWater": break;
                 case "closedDoor": break;
                 case "downstairs": stairsDown = true; break;
-                case "openDoor": break;
+                case "openDoor": openDoor = true; break;
                 case "smallLight": glowing = true; break;
                 case "upstairs": stairsUp = true; break;
                 default:
@@ -94,7 +95,7 @@ public class FeatureData {
             }
         }
 
-        return new DungeonFeature.Flags(blockGround, glowing, actOnStep, stairsUp, stairsDown);
+        return new DungeonFeature.Flags(blockGround, glowing, actOnStep, stairsUp, stairsDown, openDoor);
     }
 
     // TODO: duplicate code in TerrainData, ItemGenerator

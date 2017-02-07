@@ -3,9 +3,11 @@ package pow.frontend.utils;
 import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
+import pow.backend.dungeon.DungeonFeature;
 import pow.frontend.window.MapView;
 import pow.util.Point;
 import pow.util.direction.Direction;
+import pow.util.direction.DirectionSets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +27,13 @@ public class Targeting {
         return points;
     }
 
-    public static List<Point> getVisibleLookTargets(GameState gameState, MapView mapView) {
+    public static List<Point> getFloorTargets(GameState gameState, MapView mapView) {
         List<Point> points = new ArrayList<>();
+        GameMap map = gameState.getCurrentMap();
         for (int x = mapView.colMin; x <= mapView.colMax; x++) {
             for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
                 if (!gameState.player.canSee(gameState, new Point(x, y))) continue;
+                if (map.map[x][y].blockGround()) continue;
                 points.add(new Point(x, y));
             }
         }
@@ -53,10 +57,23 @@ public class Targeting {
         return points;
     }
 
+    public static List<Point> getCloseDoorTargets(GameState gameState) {
+        Point playerLoc = gameState.player.loc;
+        GameMap map = gameState.getCurrentMap();
 
-
-
-
+        List<Point> points = new ArrayList<>();
+        for (Direction dir : DirectionSets.All.getDirections()) {
+            int x = playerLoc.x + dir.dx;
+            int y = playerLoc.y + dir.dy;
+            if (!map.isOnMap(x,y)) continue;
+            DungeonFeature feature = map.map[x][y].feature;
+            if (feature != null && feature.flags.openDoor) {
+                points.add(new Point(x, y));
+            }
+        }
+        orderPointsByDistance(playerLoc, points);
+        return points;
+    }
 
     // --------- other utilities
 

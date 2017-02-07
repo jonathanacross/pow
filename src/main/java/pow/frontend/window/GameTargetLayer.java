@@ -23,7 +23,8 @@ public class GameTargetLayer extends AbstractWindow {
 
     public enum TargetMode {
         LOOK,
-        TARGET;
+        TARGET,
+        CLOSE_DOOR;
     }
 
     private GameWindow parent;
@@ -63,6 +64,7 @@ public class GameTargetLayer extends AbstractWindow {
             case CANCEL: stopLooking(); break;
             case OKAY:
             case LOOK:
+            case CLOSE_DOOR:
             case TARGET:
             case TARGET_FLOOR:
                 stopLooking();

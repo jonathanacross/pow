@@ -22,7 +22,8 @@ public class TestArea implements MapGenerator {
     public GameMap genMap(String name,
                           List<MapConnection> connections,
                           Random rng) {
-        return genItemMap(name, connections, rng);
+        //return genItemMap(name, connections, rng);
+        return genPremadeMap(name, connections, rng);
     }
 
     private GameMap genPremadeMap(String name,
@@ -101,8 +102,8 @@ public class TestArea implements MapGenerator {
                 "#..%............%..#",
                 "#..%............%..#",
                 "#..%%%%%%+%%%%%%%..#",
-                "#..%............%..#",
-                "#..%............%..#",
+                "#..%....+.+.....%..#",
+                "#..%#####+######%..#",
                 "#..%............%..#",
                 "#..%............%..#",
                 "#..%............%..#",

@@ -3,9 +3,11 @@ package pow.frontend.window;
 import pow.backend.GameState;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
+import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.ItemList;
+import pow.backend.dungeon.gen.FeatureData;
 import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
@@ -145,6 +147,7 @@ public class GameMainLayer extends AbstractWindow {
             case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
             case SAVE: backend.tellPlayer(new Save()); break;
             case LOOK: startLooking(gs); break;
+            case CLOSE_DOOR: tryCloseDoor(gs); break;
             case TARGET: startMonsterTargeting(gs); break;
             case TARGET_FLOOR: startFloorTargeting(gs); break;
             case INVENTORY: showInventory(gs); break;
@@ -229,6 +232,29 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
+    private void closeDoor(GameState gameState, Point p) {
+        DungeonSquare square = gameState.getCurrentMap().map[p.x][p.y];
+        String closedDoorId = square.feature.actionParams.name;
+        DungeonFeature closedDoor = FeatureData.getFeature(closedDoorId);
+        backend.tellPlayer(new ModifyFeature(gameState.player, p, closedDoor));
+    }
+
+    private void tryCloseDoor(GameState gameState) {
+        List<Point> targetableSquares = Targeting.getCloseDoorTargets(gameState);
+
+        if (targetableSquares.isEmpty()) {
+            backend.logMessage("no doors here you can close.");
+            return;
+        } else if (targetableSquares.size() == 1) {
+            // only one door to close.  Just close it
+            closeDoor(gameState, targetableSquares.get(0));
+        } else {
+            // several doors; prompt user to pick which one
+            parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.CLOSE_DOOR,
+                    (Point p) -> { closeDoor(gameState, p); }));
+        }
+    }
+
     private void startLooking(GameState gameState) {
         MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getLookTargets(gameState, mapView);
@@ -256,7 +282,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void startFloorTargeting(GameState gameState) {
         MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gameState);
-        List<Point> targetableSquares = Targeting.getVisibleLookTargets(gameState, mapView);
+        List<Point> targetableSquares = Targeting.getFloorTargets(gameState, mapView);
         if (targetableSquares.isEmpty()) {
             backend.logMessage("you can't see anything!");
             return;
