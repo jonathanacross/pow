@@ -40,7 +40,9 @@ public class FireArrow implements Action {
 
         List<Point> ray = Bresenham.makeRay(gs.player.loc, target, FIRE_RANGE + 1);
         ray.remove(0); // remove the attacker from the path of the arrow.
+        Point lastPoint = null;
         for (Point p : ray) {
+            lastPoint = p;
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
                 boolean hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.defense);
@@ -54,6 +56,7 @@ public class FireArrow implements Action {
             }
             if (map.map[p.x][p.y].blockAir()) break;
         }
+        events.add(GameEvent.Arrow(attacker, lastPoint));
         if (attacker == gs.player) {
             DungeonItem arrows = gs.player.findArrows();
             int count = arrows.count - 1;

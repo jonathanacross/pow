@@ -3,6 +3,7 @@ package pow.frontend;
 import pow.backend.GameBackend;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
+import pow.frontend.effect.ArrowEffect;
 import pow.frontend.effect.Effect;
 import pow.frontend.effect.RocketEffect;
 import pow.frontend.window.*;
@@ -174,6 +175,7 @@ public class Frontend {
                 case WON_GAME: open(this.winWindow); break;
                 case LOST_GAME: open(this.loseWindow); break;
                 case ROCKET: this.effects.add(new RocketEffect(event.actor)); break;
+                case ARROW: this.effects.add(new ArrowEffect(event.actor, event.point)); break;
             }
         }
     }
