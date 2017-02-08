@@ -32,7 +32,7 @@ public class Attack implements Action {
         if (gs.rng.nextDouble() > hitProb(attacker.attack.plusToHit, defender.defense)) {
             backend.logMessage(attacker.getPronoun() + " misses " + defender.getPronoun());
         } else {
-            int damage = attacker.attack.dieRoll.rollDice(gs.rng);
+            int damage = attacker.attack.dieRoll.rollDice(gs.rng) + attacker.attack.plusToDam;
             if (damage == 0) {
                 backend.logMessage(attacker.getPronoun() + " misses " + defender.getPronoun());
             } else {

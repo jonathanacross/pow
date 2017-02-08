@@ -26,7 +26,7 @@ public class GameMainLayer extends AbstractWindow {
     private GameWindow parent;
 
     public GameMainLayer(GameWindow parent) {
-        super(parent.x, parent.y, parent.width, parent.height, parent.visible, parent.backend, parent.frontend);
+        super(parent.dim, parent.visible, parent.backend, parent.frontend);
         this.parent = parent;
     }
 
@@ -166,10 +166,10 @@ public class GameMainLayer extends AbstractWindow {
     @Override
     public void drawContents(Graphics graphics) {
         GameState gs = backend.getGameState();
-        MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, backend.getGameState());
+        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, backend.getGameState());
 
         graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, width, height);
+        graphics.fillRect(0, 0, dim.width, dim.height);
 
         // draw the map
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
@@ -256,13 +256,13 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startLooking(GameState gameState) {
-        MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getLookTargets(gameState, mapView);
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.LOOK, Point -> {}));
     }
 
     private void startMonsterTargeting(GameState gameState) {
-        MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getMonsterTargets(gameState, mapView);
         if (targetableSquares.isEmpty()) {
             backend.logMessage("no monsters to target");
@@ -281,7 +281,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startFloorTargeting(GameState gameState) {
-        MapView mapView = new MapView(width, height, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getFloorTargets(gameState, mapView);
         if (targetableSquares.isEmpty()) {
             backend.logMessage("you can't see anything!");

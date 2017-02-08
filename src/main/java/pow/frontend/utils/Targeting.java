@@ -33,7 +33,7 @@ public class Targeting {
         for (int x = mapView.colMin; x <= mapView.colMax; x++) {
             for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
                 if (!gameState.player.canSee(gameState, new Point(x, y))) continue;
-                if (map.map[x][y].blockGround()) continue;
+                if (map.map[x][y].blockAir()) continue;
                 points.add(new Point(x, y));
             }
         }

@@ -23,8 +23,8 @@ public class Frontend {
 
     private Stack<AbstractWindow> windows;
 
-    private int width;
-    private int height;
+    public int width;
+    public int height;
     private GameWindow gameWindow;
     private WelcomeWindow welcomeWindow;
     private WinWindow winWindow;
@@ -68,21 +68,21 @@ public class Frontend {
 
         gameBackend = new GameBackend();
         // dialogs
-        welcomeWindow = new WelcomeWindow(50, 50, 600, 600, true, gameBackend, this);
-        winWindow = new WinWindow(15, 100, 580, 200, true, gameBackend, this);
-        loseWindow = new LoseWindow(15, 100, 480, 200, true, gameBackend, this);
-        createCharWindow = new CreateCharWindow(15, 100, 480, 200, true, gameBackend, this);
-        openGameWindow = new OpenGameWindow(15, 100, 380, 300, true, gameBackend, this);
+        welcomeWindow = new WelcomeWindow(WindowDim.center(600, 600, this.width, this.height), true, gameBackend, this);
+        winWindow = new WinWindow(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
+        loseWindow = new LoseWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
+        createCharWindow = new CreateCharWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
+        openGameWindow = new OpenGameWindow(WindowDim.center(380, 300, this.width, this.height), true, gameBackend, this);
         // main game
-        statusWindow = new StatusWindow(5, 5, 200, 707, true, gameBackend, this);
-        gameWindow = new GameWindow(210, 5, 672, 672, true, gameBackend, this);
-        mapWindow = new MapWindow(887, 5, 300, 250, true, gameBackend, this);
-        logWindow = new LogWindow(887, 260, 300, 452, true, gameBackend, this);
-        messageWindow = new MessageWindow(210, 682, 672, 30, true, gameBackend, this);
+        statusWindow = new StatusWindow(new WindowDim(5, 5, 200, 707), true, gameBackend, this);
+        gameWindow = new GameWindow(new WindowDim(210, 5, 672, 672), true, gameBackend, this);
+        mapWindow = new MapWindow(new WindowDim(887, 5, 300, 250), true, gameBackend, this);
+        logWindow = new LogWindow(new WindowDim(887, 260, 300, 452), true, gameBackend, this);
+        messageWindow = new MessageWindow(new WindowDim(210, 682, 672, 30), true, gameBackend, this);
         // popups in main game
-        monsterInfoWindow = new MonsterInfoWindow(887, 260,300,350, false, gameBackend, this);
-        playerInfoWindow = new PlayerInfoWindow(100, 100,625,382, true, gameBackend, this);
-        helpWindow = new HelpWindow(210, 5,672,672, true, gameBackend, this);
+        monsterInfoWindow = new MonsterInfoWindow(new WindowDim(887, 260,300,350), false, gameBackend, this);
+        playerInfoWindow = new PlayerInfoWindow(new WindowDim(100, 100,625,382), true, gameBackend, this);
+        helpWindow = new HelpWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
 
         windows = new Stack<>();
         setState(State.WELCOME);

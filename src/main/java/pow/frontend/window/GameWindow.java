@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
+import pow.frontend.WindowDim;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -13,8 +14,8 @@ public class GameWindow extends AbstractWindow {
 
     private GameMainLayer mainLayer;
 
-    public GameWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
-        super(x, y, width, height, visible, backend, frontend);
+    public GameWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
+        super(dim, visible, backend, frontend);
         mainLayer = new GameMainLayer(this);
         layers = new Stack<>();
         layers.add(mainLayer);

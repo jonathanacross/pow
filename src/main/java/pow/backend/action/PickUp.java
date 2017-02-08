@@ -45,6 +45,7 @@ public class PickUp implements Action {
         if (item.flags.money) {
             actor.gold += item.count;
             square.items.items.remove(itemNum);
+            backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true));
             return ActionResult.Succeeded(events);
         }
 

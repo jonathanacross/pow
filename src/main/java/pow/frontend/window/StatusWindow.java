@@ -4,6 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.frontend.Frontend;
+import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 
 import java.awt.*;
@@ -12,8 +13,8 @@ import java.awt.event.KeyEvent;
 
 public class StatusWindow extends AbstractWindow {
 
-    public StatusWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
-        super(x, y, width, height, visible, backend, frontend);
+    public StatusWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
+        super(dim, visible, backend, frontend);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class StatusWindow extends AbstractWindow {
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, width, height);
+        graphics.fillRect(0, 0, dim.width, dim.height);
 
         Font f = new Font("Courier", Font.PLAIN, FONT_SIZE);
         graphics.setFont(f);
@@ -96,7 +97,7 @@ public class StatusWindow extends AbstractWindow {
 
         y += 5;
         graphics.setColor(Color.DARK_GRAY);
-        graphics.drawLine(MARGIN, y, width - MARGIN, y);
+        graphics.drawLine(MARGIN, y, dim.width - MARGIN, y);
         graphics.setColor(Color.WHITE);
         y += FONT_SIZE;
 

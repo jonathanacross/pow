@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
+import pow.frontend.WindowDim;
 import pow.frontend.utils.HelpController;
 
 import java.awt.*;
@@ -9,8 +10,8 @@ import java.awt.event.KeyEvent;
 
 public class HelpWindow extends AbstractWindow {
 
-    public HelpWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
-        super(x, y, width, height, visible, backend, frontend);
+    public HelpWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
+        super(dim, visible, backend, frontend);
     }
 
     @Override
@@ -24,7 +25,7 @@ public class HelpWindow extends AbstractWindow {
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, width, height);
+        graphics.fillRect(0, 0, dim.width, dim.height);
 
         Font font = new Font("Courier", Font.PLAIN, TEXT_SIZE);
         graphics.setFont(font);

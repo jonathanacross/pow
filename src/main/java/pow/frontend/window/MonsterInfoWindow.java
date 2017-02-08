@@ -6,6 +6,7 @@ import pow.backend.actors.Actor;
 import pow.frontend.Frontend;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ImageUtils;
+import pow.frontend.WindowDim;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -19,8 +20,8 @@ public class MonsterInfoWindow extends AbstractWindow {
 
     Actor actor;
 
-    public MonsterInfoWindow(int x, int y, int width, int height, boolean visible, GameBackend backend, Frontend frontend) {
-        super(x, y, width, height, visible, backend, frontend);
+    public MonsterInfoWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
+        super(dim, visible, backend, frontend);
         this.actor = null;
     }
 
@@ -50,7 +51,7 @@ public class MonsterInfoWindow extends AbstractWindow {
 
         // figure out the description; it's a multi-line mess
         Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        int textWidth = width - 3*MARGIN - TILE_SIZE;
+        int textWidth = dim.width - 3*MARGIN - TILE_SIZE;
 
         graphics.setFont(font);
         FontMetrics textMetrics = graphics.getFontMetrics(font);
@@ -74,7 +75,7 @@ public class MonsterInfoWindow extends AbstractWindow {
 
         // actual drawing here
         graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, width, height);
+        graphics.fillRect(0, 0, dim.width, dim.height);
 
         ImageController.drawTile(graphics, actor.image, MARGIN, MARGIN);
 

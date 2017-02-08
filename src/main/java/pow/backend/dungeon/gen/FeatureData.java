@@ -71,6 +71,7 @@ public class FeatureData {
 
         boolean actOnStep = false;
         boolean blockGround = false;
+        boolean blockAir = false;
         boolean glowing = false;
         boolean stairsUp = false;
         boolean stairsDown = false;
@@ -81,7 +82,7 @@ public class FeatureData {
                 // TODO: fix names to agree: stairsDown, stairsUp, glowing
                 case "": break;  // will happen if we have an empty string
                 case "actOnStep": actOnStep = true; break;
-                case "blockAir": break;
+                case "blockAir": blockAir = true; break;
                 case "blockGround": blockGround = true; break;
                 case "blockLava": break;
                 case "blockWater": break;
@@ -95,7 +96,7 @@ public class FeatureData {
             }
         }
 
-        return new DungeonFeature.Flags(blockGround, glowing, actOnStep, stairsUp, stairsDown, openDoor);
+        return new DungeonFeature.Flags(blockGround, blockAir, glowing, actOnStep, stairsUp, stairsDown, openDoor);
     }
 
     // TODO: duplicate code in TerrainData, ItemGenerator

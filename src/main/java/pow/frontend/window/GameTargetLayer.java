@@ -35,14 +35,14 @@ public class GameTargetLayer extends AbstractWindow {
     Consumer<Point> callback;
 
     public GameTargetLayer(GameWindow parent, List<Point> targetableSquares, TargetMode mode, Consumer<Point> callback) {
-        super(parent.x, parent.y, parent.width, parent.height, parent.visible, parent.backend, parent.frontend);
+        super(parent.dim, parent.visible, parent.backend, parent.frontend);
         this.parent = parent;
         this.targetableSquares = targetableSquares;
         this.targetIdx = 0;  // start with the first point in 'targetableSquares'
         this.mode = mode;
         this.callback = callback;
         GameState gs = backend.getGameState();
-        mapView = new MapView(width, height, ImageController.TILE_SIZE, gs);
+        mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gs);
 
         frontend.messages.push("");
         update();
@@ -87,7 +87,7 @@ public class GameTargetLayer extends AbstractWindow {
                 for (Point p : ray) {
                     if (!gs.player.canSee(gs, p)) break;
                     mapView.drawCircle(graphics, Color.GREEN, p.x, p.y);
-                    if (gs.getCurrentMap().map[p.x][p.y].blockGround()) break;
+                    if (gs.getCurrentMap().map[p.x][p.y].blockAir()) break;
                 }
             }
         }

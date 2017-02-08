@@ -32,4 +32,8 @@ public class DungeonSquare implements Serializable {
         return terrain.flags.blockGround || (feature != null && feature.flags.blockGround);
     }
 
+    public boolean blockAir() {
+        return terrain.flags.blockAir || (feature != null && feature.flags.blockAir);
+    }
+
 }
