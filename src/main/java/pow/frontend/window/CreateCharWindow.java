@@ -3,14 +3,15 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
+import pow.frontend.save.SaveUtils;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.List;
 
-// TODO: either check to make sure that this is not an existing character, or
-// delete characters on death.
 public class CreateCharWindow extends AbstractWindow {
 
     private String name;
@@ -24,28 +25,56 @@ public class CreateCharWindow extends AbstractWindow {
         name = "";
     }
 
+
+    private void startNewGame() {
+        backend.newGame(name);
+        frontend.setState(Frontend.State.GAME);
+    }
+
+    // Start the game if
+    // (1) it's a new character name, or
+    // (2) an existing character name and user has confirmed they want to overwrite.
+    private void tryToStartNewGame(String name) {
+        // see if there's already a character with this name
+        List<File> existingFiles = SaveUtils.findSaveFiles();
+        boolean alreadyExists = false;
+        for (File f : existingFiles) {
+            if (f.getName().equals(name)) {
+                alreadyExists = true;
+            }
+        }
+
+        if (alreadyExists) {
+            WindowDim dim = WindowDim.center(600, 120, frontend.width, frontend.height);
+            frontend.open(new ConfirmWindow(dim, true, this.backend, this.frontend,
+                    "The character '" + name + "' already exists.  Do you want to overwrite it?",
+                    "Overwrite", "Cancel",
+                    () -> {
+                        startNewGame();
+                    }));
+        } else {
+            startNewGame();
+        }
+    }
+
     @Override
     public void processKey(KeyEvent e) {
         char c = e.getKeyChar();
         if (Character.isLetterOrDigit(c) || c == ' ') {
             name = name + c;
             frontend.setDirty(true);
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_DELETE) {
+        } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_DELETE) {
             if (name.length() > 0) {
                 name = name.substring(0, name.length() - 1);
                 frontend.setDirty(true);
             }
         } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (! name.trim().equals("")) {
-                backend.newGame(name);
-                frontend.setState(Frontend.State.GAME);
-            } else {
-                name = name.trim();
+            name = name.trim();
+            if (!name.isEmpty()) {
+                tryToStartNewGame(name);
             }
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             frontend.setState(Frontend.State.OPEN_GAME);
-
         }
     }
 

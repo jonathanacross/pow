@@ -23,8 +23,8 @@ public class Frontend {
 
     private Stack<AbstractWindow> windows;
 
-    private int width;
-    private int height;
+    public int width;
+    public int height;
     private GameWindow gameWindow;
     private WelcomeWindow welcomeWindow;
     private WinWindow winWindow;
