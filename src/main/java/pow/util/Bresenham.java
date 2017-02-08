@@ -22,7 +22,7 @@ public class Bresenham {
         int currentX = start.x;
         int currentY = start.y;
 
-        for (int len = 0; len < length; len += 1) {
+        for (int len = 0; len < length; len++) {
             line.add(new Point(currentX, currentY));
 
             e2 = 2 * err;

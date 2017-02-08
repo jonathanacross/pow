@@ -38,7 +38,7 @@ public class DirectionNames {
     public static final int[] DIAGONALS = {NE, SE, NW, SW};
     public static final int[] ALL_DIRECTIONS = {N, NE, E, SE, S, SW, W, NW};
 
-    static int getDirName(Point src, Point dst) {
+    public static int getDirName(Point src, Point dst) {
         int dx = dst.x - src.x;
         int dy = dst.y - src.y;
 

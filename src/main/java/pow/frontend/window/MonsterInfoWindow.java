@@ -1,7 +1,7 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
-import pow.backend.action.Attack;
+import pow.backend.action.AttackUtils;
 import pow.backend.actors.Actor;
 import pow.frontend.Frontend;
 import pow.frontend.utils.ImageController;
@@ -70,8 +70,8 @@ public class MonsterInfoWindow extends AbstractWindow {
         lines.add("Speed:  " + actor.speed);
         lines.add("Exp.:   " + actor.experience);
         lines.add("");
-        lines.add("Can hit you " + toPercentString(Attack.hitProb(actor.attack.plusToHit, player.defense)) + "% of the time");
-        lines.add("You can hit " + toPercentString(Attack.hitProb(player.attack.plusToHit, actor.defense)) + "% of the time");
+        lines.add("Can hit you " + toPercentString(AttackUtils.hitProb(actor.attack.plusToHit, player.defense)) + "% of the time");
+        lines.add("You can hit " + toPercentString(AttackUtils.hitProb(player.attack.plusToHit, actor.defense)) + "% of the time");
 
         // actual drawing here
         graphics.setColor(Color.BLACK);

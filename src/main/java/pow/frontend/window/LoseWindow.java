@@ -3,6 +3,8 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
+import pow.frontend.utils.KeyInput;
+import pow.frontend.utils.KeyUtils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,7 +19,10 @@ public class LoseWindow extends AbstractWindow {
 
     @Override
     public void processKey(KeyEvent e) {
-        frontend.setState(Frontend.State.OPEN_GAME);
+        KeyInput input = KeyUtils.getKeyInput(e);
+        if (input == KeyInput.OKAY) {
+            frontend.setState(Frontend.State.OPEN_GAME);
+        }
     }
 
     @Override
@@ -34,6 +39,6 @@ public class LoseWindow extends AbstractWindow {
         f = new Font("Courier", Font.PLAIN, squareSize);
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press any key to continue.", 30, 150);
+        graphics.drawString("Press enter to continue.", 30, 150);
     }
 }

@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameState;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
+import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
@@ -144,7 +145,7 @@ public class GameMainLayer extends AbstractWindow {
             case UP_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, true)); break;
             case DOWN_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, false)); break;
             case REST: backend.tellPlayer(new Move(gs.player, 0, 0)); break;
-            case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
+            //case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
             case SAVE: backend.tellPlayer(new Save()); break;
             case LOOK: startLooking(gs); break;
             case CLOSE_DOOR: tryCloseDoor(gs); break;
@@ -153,6 +154,7 @@ public class GameMainLayer extends AbstractWindow {
             case INVENTORY: showInventory(gs); break;
             case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;
+            case FIRE: tryFire(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
             case QUAFF: tryQuaff(gs); break;
             case WEAR: tryWear(gs); break;
@@ -253,6 +255,34 @@ public class GameMainLayer extends AbstractWindow {
             parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.CLOSE_DOOR,
                     (Point p) -> { closeDoor(gameState, p); }));
         }
+    }
+
+    private void tryFire(GameState gameState) {
+        Player player = gameState.player;
+
+        // make sure the player has a bow and arrows
+        if (!player.hasBowEquipped()) {
+            backend.logMessage("you do not have a bow equipped.");
+            return;
+        }
+        if (player.findArrows() == null) {
+            backend.logMessage("you do not have any arrows.");
+            return;
+        }
+
+        // make sure there's a target
+        Point target;
+        if (player.floorTarget != null) {
+            target = player.floorTarget;
+        }
+        else if (player.monsterTarget != null) {
+            target = player.monsterTarget.loc;
+        } else {
+            backend.logMessage("no target selected.");
+            return;
+        }
+
+        backend.tellPlayer(new FireArrow(gameState.player, target));
     }
 
     private void startLooking(GameState gameState) {
