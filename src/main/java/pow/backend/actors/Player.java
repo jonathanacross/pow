@@ -343,4 +343,18 @@ public class Player extends Actor implements Serializable, LightSource {
         level += 1;
         updateStats();  // will update MaxHP,
     }
+
+    public boolean hasBowEquipped() {
+        for (DungeonItem item : equipment)  {
+            if (item.slot.equals(DungeonItem.Slot.BOW)) return true;
+        }
+        return false;
+    }
+
+    public DungeonItem findArrows() {
+        for (DungeonItem item : inventory.items)  {
+            if (item.flags.arrow) return item;
+        }
+        return null;
+    }
 }

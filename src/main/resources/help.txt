@@ -17,7 +17,7 @@ is not possible.  The keys . or number pad 5 indicate to stay still.
       c    Close door
       C    Character description
       d    Drop an item
-      f    Fire
+      f    Fire an arrow
       g    Get objects on the floor
       h    Walk west
       i    Inventory list
