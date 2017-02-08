@@ -56,7 +56,9 @@ public class FireArrow implements Action {
         }
         if (attacker == gs.player) {
             DungeonItem arrows = gs.player.findArrows();
+            int count = arrows.count - 1;
             gs.player.inventory.removeOneItem(arrows);
+            backend.logMessage("you have " + count + " arrows left");
         }
 
         return ActionResult.Succeeded(events);
