@@ -1,4 +1,9 @@
 #area	id	type	gen flags	game flags	relative speed	name	image	description
+0	farmer	archer		friendly	0	farmer	farmer	A sociable farmer.
+0	mangy leper	rogue		friendly	0	mangy leper	gray dress person	A mangy leper.
+0	jester	mage		friendly	0	jester	jester	A court jester.
+0	beggar	rogue		friendly	0	beggar	brown woman	A pitiful beggar.
+0	salesman	warrior		friendly	0	salesman	blonde man	A used car salesman -- beware!
 1	green mushrooms	fungus		stationary	0	green mushrooms	green mushrooms	They are dark green, with tall brown stems.
 1	black ant	insect		erratic	0	black ant	black ant	A large black ant.
 1	white rat	mammal			0	white rat	white rat	It looks like a cute lab rat, but it has sharp teeth.

@@ -125,6 +125,10 @@ public class GeneratorUtils {
                 case Constants.FEATURE_LOSE_TILE: return 'L';
                 case Constants.FEATURE_UP_STAIRS: return '<';
                 case Constants.FEATURE_DOWN_STAIRS: return '>';
+                case Constants.FEATURE_FOUNTAIN: return 'f';
+                case Constants.FEATURE_INN_DOOR: return '1';
+                case Constants.FEATURE_WEAPON_STORE_DOOR: return '2';
+                case Constants.FEATURE_MAGIC_STORE_DOOR: return '3';
                 default: throw new IllegalArgumentException("unknown feature " + feature);
             }
         } else {

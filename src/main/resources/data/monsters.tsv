@@ -1,4 +1,9 @@
 #area	id	name	image	description	hp	attacks	toHit	defense	experience	speed	flags
+0	farmer	farmer	farmer	A sociable farmer.	5	1d4	5	5	3	0	friendly
+0	mangy leper	mangy leper	gray dress person	A mangy leper.	5	1d4	5	5	3	0	friendly
+0	jester	jester	jester	A court jester.	4	1d3	4	4	2	0	friendly
+0	beggar	beggar	brown woman	A pitiful beggar.	5	1d4	5	5	3	0	friendly
+0	salesman	salesman	blonde man	A used car salesman -- beware!	6	2d2	5	5	3	0	friendly
 1	green mushrooms	green mushrooms	green mushrooms	They are dark green, with tall brown stems.	4	1d3	5	4	1	0	stationary
 1	black ant	black ant	black ant	A large black ant.	5	1d3	6	5	2	0	erratic
 1	white rat	white rat	white rat	It looks like a cute lab rat, but it has sharp teeth.	8	2d2	6	6	4	0	

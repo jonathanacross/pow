@@ -16,6 +16,10 @@ public class Constants {
     public static final int FEATURE_CANDLE = 3 << 8;
     public static final int FEATURE_UP_STAIRS = 4 << 8;
     public static final int FEATURE_DOWN_STAIRS = 5 << 8;
+    public static final int FEATURE_FOUNTAIN = 6 << 8;
+    public static final int FEATURE_INN_DOOR = 7 << 8;
+    public static final int FEATURE_MAGIC_STORE_DOOR = 8 << 8;
+    public static final int FEATURE_WEAPON_STORE_DOOR = 9 << 8;
     public static final int FEATURE_WIN_TILE = 98 << 8;
     public static final int FEATURE_LOSE_TILE = 99 << 8;
 
