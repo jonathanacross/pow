@@ -1,6 +1,8 @@
 package pow.frontend;
 
 import pow.backend.GameBackend;
+import pow.backend.ShopData;
+import pow.backend.action.RestAtInn;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
 import pow.frontend.effect.ArrowEffect;
@@ -176,7 +178,24 @@ public class Frontend {
                 case LOST_GAME: open(this.loseWindow); break;
                 case ROCKET: this.effects.add(new RocketEffect(event.actor)); break;
                 case ARROW: this.effects.add(new ArrowEffect(event.actor, event.point)); break;
+                case IN_STORE: processShopEntry(); break;
             }
+        }
+    }
+
+    private void processShopEntry() {
+        ShopData shopData = gameBackend.getGameState().getCurrentMap().shopData;
+        switch (shopData.state) {
+            case INN:
+                WindowDim dim = WindowDim.center(600, 120, width, height);
+                int cost = gameBackend.getGameState().getCurrentMap().shopData.innCost;
+                open(new ConfirmWindow(dim, true, gameBackend, this,
+                        "Do you want to rest at the inn? It costs " + cost + " gold.",
+                        "Rest", "Cancel",
+                        () -> { gameBackend.tellPlayer(new RestAtInn()); }));
+                break;
+            default:
+                System.out.println("entered a shop of type " + shopData.state);
         }
     }
 

@@ -20,9 +20,11 @@ public class ShopData implements Serializable {
     }
 
     public ShopState state;
+    public int innCost;
 
     public ShopData() {
         this.state = ShopState.NONE;
+        this.innCost = 5;
     }
 }
 
