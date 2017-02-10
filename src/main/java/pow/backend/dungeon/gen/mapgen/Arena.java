@@ -1,7 +1,6 @@
 package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
-import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.gen.Constants;
 import pow.backend.dungeon.gen.GeneratorUtils;

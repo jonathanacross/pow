@@ -18,17 +18,10 @@ public class Town implements MapGenerator {
 
     private int level;
     private List<String> monsterIds;
-    private String upstairsFeatureId;
-    private String downstairsFeatureId;
 
-    public Town(int level, List<String> monsterIds,
-                String upstairsFeatureId,
-                String downstairsFeatureId
-    ) {
+    public Town(int level, List<String> monsterIds) {
         this.level = level;
         this.monsterIds = monsterIds;
-        this.upstairsFeatureId = upstairsFeatureId;
-        this.downstairsFeatureId = downstairsFeatureId;
     }
 
     @Override

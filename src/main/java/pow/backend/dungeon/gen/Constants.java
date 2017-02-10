@@ -3,14 +3,14 @@ package pow.backend.dungeon.gen;
 // Constants to store terrain/feature data while constructing a map.
 public class Constants {
 
-    public static final int TERRAIN_WALL = 0;
-    public static final int TERRAIN_FLOOR = 1;
-    public static final int TERRAIN_DIGGABLE_WALL = 2;
+    public static final int TERRAIN_WALL = 1;
+    public static final int TERRAIN_FLOOR = 2;
+    public static final int TERRAIN_DIGGABLE_WALL = 3;
     public static final int TERRAIN_LAVA = 6;
     public static final int TERRAIN_WATER = 7;
     public static final int TERRAIN_DEBUG = 99;
 
-    public static final int FEATURE_NONE = 0 << 8;
+    public static final int FEATURE_NONE = 0;
     public static final int FEATURE_CLOSED_DOOR = 1 << 8;
     public static final int FEATURE_OPEN_DOOR = 2 << 8;
     public static final int FEATURE_CANDLE = 3 << 8;

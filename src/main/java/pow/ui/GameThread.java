@@ -8,11 +8,11 @@ import java.awt.event.KeyEvent;
 import java.util.Queue;
 
 public class GameThread implements Runnable {
-    public Frontend gameFrontend;
+    private Frontend gameFrontend;
     private Queue<KeyEvent> queue;
     private Observer observer;
 
-    public static final int ANIMATION_DELAY_MILLIS = 10;
+    private static final int ANIMATION_DELAY_MILLIS = 10;
 
 
     public GameThread(Frontend gameFrontend, Queue<KeyEvent> queue, Observer observer) {

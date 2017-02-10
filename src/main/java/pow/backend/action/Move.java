@@ -5,19 +5,17 @@ import pow.backend.actors.Actor;
 import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
-import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.event.GameEvent;
-import pow.util.Array2D;
 import pow.util.Point;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Move implements Action {
-    int dx;
-    int dy;
-    Actor actor;
+    private int dx;
+    private int dy;
+    private Actor actor;
 
     public Move(Actor actor, int dx, int dy) {
         this.actor = actor;

@@ -36,7 +36,7 @@ public abstract class AbstractWindow {
     public abstract void processKey(KeyEvent e);
     public abstract void drawContents(Graphics graphics);
 
-    void drawFrame(Graphics graphics) {
+    private void drawFrame(Graphics graphics) {
         int margin = 1;
         graphics.setColor(Color.DARK_GRAY);
         graphics.drawRect(dim.x - margin, dim.y - margin, dim.width + margin, dim.height + margin);

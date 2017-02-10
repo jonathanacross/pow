@@ -29,10 +29,10 @@ public class GeneratorUtils {
     }
 
     // adapted from http://lodev.org/cgtutor/floodfill.html
-    public static int[][] floodFill(int[][] data, int lx, int ly, int newColor, int oldColor) {
+    public static void floodFill(int[][] data, int lx, int ly, int newColor, int oldColor) {
 
         if (oldColor == newColor) {
-            return data;
+            return;
         }
 
         int w = Array2D.width(data);
@@ -44,8 +44,7 @@ public class GeneratorUtils {
         while (stack.size() > 0) {
             Point loc = stack.pop();
             int x = loc.x;
-            int y = loc.y;
-            int y1 = y;
+            int y1 = loc.y;
             while (y1 >= 0 && data[x][y1] == oldColor) {
                 y1--;
             }
@@ -69,8 +68,6 @@ public class GeneratorUtils {
                 y1++;
             }
         }
-
-        return data;
     }
 
     public static Point findOpenSpace(int[][] data) {
@@ -265,9 +262,6 @@ public class GeneratorUtils {
 
         // to make sure we don't put monsters on top of each other
         boolean[][] monsterAt = new boolean[width][height];
-
-        List<String> monsterIds = new ArrayList<>();
-        monsterIds.addAll(MonsterGenerator.getMonsterIds());
 
         int x = 0;
         int y = 0;

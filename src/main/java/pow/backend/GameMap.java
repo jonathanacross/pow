@@ -23,7 +23,7 @@ public class GameMap implements Serializable {
     public int height;
     public List<String> genMonsterIds;  // monsters to generate for this level
     public List<Actor> actors;
-    public List<LightSource> lightSources;
+    private List<LightSource> lightSources;
     public Map<String, Point> keyLocations;  // useful for joining areas together
     public String name; // name of the area
     public int level;  // difficulty level
@@ -141,7 +141,7 @@ public class GameMap implements Serializable {
         return actors.get(currActorIdx);
     }
 
-    public void addActor(Actor a) {
+    private void addActor(Actor a) {
         actors.add(a);
     }
 
@@ -177,7 +177,7 @@ public class GameMap implements Serializable {
     // This assumes that there is at least one open square.
     public Point findClosestOpenSquare(Point start) {
         int i = 0;
-        Point loc = null;
+        Point loc;
         do {
             loc = Spiral.position(i);
             loc.shiftBy(start);

@@ -3,10 +3,10 @@ package pow.util;
 // adapted from http://staffwww.itn.liu.se/~stegu/simplexnoise/SimplexNoise.java
 
 public class SimplexNoise {
-    private static Grad grad3[] = {
-            new Grad(1, 1, 0), new Grad(-1, 1, 0), new Grad(1, -1, 0), new Grad(-1, -1, 0),
-            new Grad(1, 0, 1), new Grad(-1, 0, 1), new Grad(1, 0, -1), new Grad(-1, 0, -1),
-            new Grad(0, 1, 1), new Grad(0, -1, 1), new Grad(0, 1, -1), new Grad(0, -1, -1)};
+    private static Grad grad[] = {
+            new Grad(1, 1), new Grad(-1, 1), new Grad(1, -1), new Grad(-1, -1),
+            new Grad(1, 0), new Grad(-1, 0), new Grad(1, 0), new Grad(-1, 0),
+            new Grad(0, 1), new Grad(0, -1), new Grad(0, 1), new Grad(0, -1)};
 
     private static short p[] = {
             151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7,
@@ -97,19 +97,19 @@ public class SimplexNoise {
         if (t0 < 0) n0 = 0.0;
         else {
             t0 *= t0;
-            n0 = t0 * t0 * dot(grad3[gi0], x0, y0);  // (x,y) of grad3 used for 2D gradient
+            n0 = t0 * t0 * dot(grad[gi0], x0, y0);
         }
         double t1 = 0.5 - x1 * x1 - y1 * y1;
         if (t1 < 0) n1 = 0.0;
         else {
             t1 *= t1;
-            n1 = t1 * t1 * dot(grad3[gi1], x1, y1);
+            n1 = t1 * t1 * dot(grad[gi1], x1, y1);
         }
         double t2 = 0.5 - x2 * x2 - y2 * y2;
         if (t2 < 0) n2 = 0.0;
         else {
             t2 *= t2;
-            n2 = t2 * t2 * dot(grad3[gi2], x2, y2);
+            n2 = t2 * t2 * dot(grad[gi2], x2, y2);
         }
         // Add contributions from each corner to get the final noise value.
         // The result is scaled to return values in the interval [-1,1].
@@ -119,12 +119,11 @@ public class SimplexNoise {
 
     // Inner class to speed up gradient computations
     private static class Grad {
-        double x, y, z;
+        double x, y;
 
-        Grad(double x, double y, double z) {
+        Grad(double x, double y) {
             this.x = x;
             this.y = y;
-            this.z = z;
         }
     }
 }

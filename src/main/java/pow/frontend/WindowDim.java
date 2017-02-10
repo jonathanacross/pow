@@ -17,8 +17,6 @@ public class WindowDim {
     public static WindowDim center(int windowWidth, int windowHeight, int screenWidth, int screenHeight) {
         int x = (screenWidth - windowWidth) / 2;
         int y = (screenHeight - windowHeight) / 3; // don't vertically center perfectly; weight toward the top
-        int width = windowWidth;
-        int height = windowHeight;
-        return new WindowDim(x, y, width, height);
+        return new WindowDim(x, y, windowWidth, windowHeight);
     }
 }

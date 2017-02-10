@@ -1,7 +1,6 @@
 package pow.backend.dungeon;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class DungeonSquare implements Serializable {
     public DungeonTerrain terrain;

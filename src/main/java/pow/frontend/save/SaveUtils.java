@@ -1,6 +1,5 @@
 package pow.frontend.save;
 
-import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.util.DebugLogger;
 
@@ -8,8 +7,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static java.lang.System.exit;
 
 public class SaveUtils {
 
@@ -24,13 +21,22 @@ public class SaveUtils {
     public static List<File> findSaveFiles() {
         makeSaveDir();
         File[] files = SAVE_DIR.listFiles();
+        if (files == null) {
+            RuntimeException e = new RuntimeException("Error: save directory is a file!?  Please remove " + SAVE_DIR + ".");
+            DebugLogger.fatal(e);
+            throw e;
+        }
         Arrays.sort(files);
-        return new ArrayList(Arrays.asList(files));
+        return new ArrayList<>(Arrays.asList(files));
     }
 
     private static void makeSaveDir() {
         if (!SAVE_DIR.exists()) {
-            SAVE_DIR.mkdirs();
+            if (!SAVE_DIR.mkdirs()) {
+                RuntimeException e = new RuntimeException("Error: could not create save directory.  You will not be able to save your games.");
+                DebugLogger.fatal(e);
+                throw e;
+            }
         }
     }
 
@@ -40,7 +46,7 @@ public class SaveUtils {
         try (
                 InputStream fis = new FileInputStream(file);
                 InputStream bis = new BufferedInputStream(fis);
-                ObjectInput input = new ObjectInputStream(bis);
+                ObjectInput input = new ObjectInputStream(bis)
         ) {
             state = (GameState) input.readObject();
         } catch (Exception ex) {
@@ -55,7 +61,7 @@ public class SaveUtils {
         try (
                 OutputStream fos = new FileOutputStream(file);
                 OutputStream bos = new BufferedOutputStream(fos);
-                ObjectOutput output = new ObjectOutputStream(bos);
+                ObjectOutput output = new ObjectOutputStream(bos)
         ) {
             output.writeObject(state);
         } catch (IOException ex) {

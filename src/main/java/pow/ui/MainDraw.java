@@ -19,8 +19,8 @@ public class MainDraw extends JPanel implements Observer, ComponentListener {
     public static final int PANEL_WIDTH = 1200;
     public static final int PANEL_HEIGHT = 740;
 
-    Frontend frontend;
-    Queue<KeyEvent> keyEventQueue;
+    private Frontend frontend;
+    private Queue<KeyEvent> keyEventQueue;
 
     public MainDraw() {
         keyEventQueue = new ConcurrentLinkedQueue<>();
@@ -52,7 +52,7 @@ public class MainDraw extends JPanel implements Observer, ComponentListener {
         } catch (Exception e) { DebugLogger.info("Graphics context error: " + e); }
     }
 
-    public void render() {
+    private void render() {
         if (dbImage == null) {
             dbImage = createImage(getWidth(), getHeight());
         }

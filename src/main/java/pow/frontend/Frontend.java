@@ -74,7 +74,7 @@ public class Frontend {
         welcomeWindow = new WelcomeWindow(WindowDim.center(600, 600, this.width, this.height), true, gameBackend, this);
         winWindow = new WinWindow(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
         loseWindow = new LoseWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
-        createCharWindow = new CreateCharWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
+        createCharWindow = new CreateCharWindow(WindowDim.center(480, 200, this.width, this.height), gameBackend, this);
         openGameWindow = new OpenGameWindow(WindowDim.center(380, 300, this.width, this.height), true, gameBackend, this);
         // main game
         statusWindow = new StatusWindow(new WindowDim(5, 5, 200, 707), true, gameBackend, this);
@@ -163,7 +163,7 @@ public class Frontend {
         this.keyEvents.add(e);
     }
 
-    public void processKey(KeyEvent e) {
+    private void processKey(KeyEvent e) {
         if (!windows.isEmpty()) {
             windows.peek().processKey(e);
         }
@@ -192,7 +192,7 @@ public class Frontend {
                 open(new ConfirmWindow(dim, true, gameBackend, this,
                         "Do you want to rest at the inn? It costs " + cost + " gold.",
                         "Rest", "Cancel",
-                        () -> { gameBackend.tellPlayer(new RestAtInn()); }));
+                        () -> gameBackend.tellPlayer(new RestAtInn())));
                 break;
             default:
                 System.out.println("entered a shop of type " + shopData.state);

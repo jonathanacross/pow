@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemList implements Serializable {
-    public int maxItems;
-    public int maxPerSlot;
+    private int maxItems;
+    private int maxPerSlot;
     public List<DungeonItem> items;
 
     public ItemList() {

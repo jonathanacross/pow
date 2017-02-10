@@ -12,7 +12,7 @@ import java.util.*;
 // Numbers in here are heuristic, and can be fiddled with to improve game balance.
 public class MakeMonsterStats {
 
-    public static int getSpeed(int area, int relativeSpeed) {
+    private static int getSpeed(int area, int relativeSpeed) {
         int baseSpeed = 0;
         if (area == 6) baseSpeed = 1;
         if (area == 7) baseSpeed = 2;
@@ -22,7 +22,7 @@ public class MakeMonsterStats {
         return baseSpeed + relativeSpeed;
     }
 
-    public static int getHP(int area, String type, Set<String> flags) {
+    private static int getHP(int area, String type, Set<String> flags) {
         double baseHP = 6.0 * Math.pow(1.25, area);
 
         double scaleFactor;
@@ -48,7 +48,7 @@ public class MakeMonsterStats {
         return (int) Math.round(baseHP * scaleFactor);
     }
 
-    public static int getExperience(int area, String type, Set<String> flags, int hp, int speed) {
+    private static int getExperience(int area, String type, Set<String> flags, int hp, int speed) {
         double experience = hp/2.0;
 
         double scaleFactor = 1.0;
@@ -60,7 +60,7 @@ public class MakeMonsterStats {
         return (int) Math.round(experience * scaleFactor * speedExpFactor);
     }
 
-    public static double getAttackTarget(int area, String type, Set<String> flags) {
+    private static double getAttackTarget(int area, String type, Set<String> flags) {
         //double baseAttack = 1.0 * Math.pow(1.63, area);
         double baseAttack = 0.125*area*area + 3;
         double scaleFactor;
@@ -86,7 +86,7 @@ public class MakeMonsterStats {
         return baseAttack * scaleFactor;
     }
 
-    public static DieRoll findClosestDieRoll(double value) {
+    private static DieRoll findClosestDieRoll(double value) {
         // build possible die rolls
         List<DieRoll> dieRolls = new ArrayList<>();
         for (int roll = 1; roll <= 15; roll++) {
@@ -115,7 +115,7 @@ public class MakeMonsterStats {
         return bestDieRoll;
     }
 
-    public static int getDefense(int area, String type, Set<String> flags) {
+    private static int getDefense(int area, String type, Set<String> flags) {
         double baseDef = 0.12*area*area + area + 5;
 
         double scaleFactor;
@@ -141,7 +141,7 @@ public class MakeMonsterStats {
         return (int) Math.round(baseDef * scaleFactor);
     }
 
-    public static int getToHit(int area, String type, Set<String> flags) {
+    private static int getToHit(int area, String type, Set<String> flags) {
         double baseToHit = 0.12*area*area + area + 5;
 
         double scaleFactor;
@@ -167,7 +167,7 @@ public class MakeMonsterStats {
         return (int) Math.round(baseToHit * scaleFactor);
     }
 
-    public static Set<String> getFlags(String field) {
+    private static Set<String> getFlags(String field) {
         String[] fields = field.split(",");
         Set<String> flags = new HashSet<>();
         for (String tok : fields) {

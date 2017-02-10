@@ -8,11 +8,9 @@ public class DirectionSets {
         public static final int W = 3;
         private static final int[] OPPOSITES = {2,3,0,1};
         private static final Direction[] DIRECTIONS = {Direction.N, Direction.E, Direction.S, Direction.W};
-        private static final String[] NAMES = {"north", "east", "south", "west"};
         public static int size() { return 4; }
         public static int getOpposite(int dirIdx) { return OPPOSITES[dirIdx]; }
         public static Direction getDirection(int dirIdx) { return DIRECTIONS[dirIdx]; }
-        public static String getName(int dirIdx) { return NAMES[dirIdx]; }
     }
 
     public static class Diagonal {

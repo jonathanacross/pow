@@ -1,6 +1,5 @@
 package pow.util;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class TextUtils {

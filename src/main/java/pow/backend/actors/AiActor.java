@@ -33,9 +33,9 @@ public abstract class AiActor extends Actor {
         }
     }
 
-    protected int stateTurnCount; // how long have we been in this state?
-    protected ActorState state;
-    protected Flags flags;
+    private int stateTurnCount; // how long have we been in this state?
+    private ActorState state;
+    private Flags flags;
 
     public AiActor(DungeonObject.Params objectParams, Actor.Params actorParams, Flags flags) {
         super(objectParams, actorParams);

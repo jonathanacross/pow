@@ -13,8 +13,8 @@ import java.util.List;
 // looks a little odd if you swap with a pet and then it moves;
 // it essentially got a free move!
 public class Swap implements Action {
-    Actor first;
-    Actor second;
+    private Actor first;
+    private Actor second;
 
     public Swap(Actor first, Actor second) {
         this.first = first;

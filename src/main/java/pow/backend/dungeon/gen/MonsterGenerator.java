@@ -32,7 +32,7 @@ public class MonsterGenerator {
         return generator.genMonster(rng, location);
     }
 
-    public static MonsterGenerator instance;
+    private static MonsterGenerator instance;
     private Map<String, SpecificMonsterGenerator> generatorMap;
 
     static {

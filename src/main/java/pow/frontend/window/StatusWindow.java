@@ -8,7 +8,6 @@ import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 
 import java.awt.*;
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 public class StatusWindow extends AbstractWindow {

@@ -2,7 +2,6 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
-import pow.backend.GameWorld;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.event.GameEvent;

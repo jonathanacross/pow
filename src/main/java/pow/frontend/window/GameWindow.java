@@ -12,11 +12,9 @@ public class GameWindow extends AbstractWindow {
 
     private Stack<AbstractWindow> layers;
 
-    private GameMainLayer mainLayer;
-
     public GameWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
-        mainLayer = new GameMainLayer(this);
+        GameMainLayer mainLayer = new GameMainLayer(this);
         layers = new Stack<>();
         layers.add(mainLayer);
     }

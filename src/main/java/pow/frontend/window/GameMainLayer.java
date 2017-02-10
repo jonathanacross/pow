@@ -1,5 +1,6 @@
 package pow.frontend.window;
 
+import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
@@ -45,9 +46,7 @@ public class GameMainLayer extends AbstractWindow {
             frontend.open(
                     new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Pick up which item?",
                             items.items, (DungeonItem item) -> true,
-                            (int itemNum) -> {
-                                backend.tellPlayer(new PickUp(gs.player, itemNum, items.items.get(itemNum).count));
-                            }));
+                            (int itemNum) -> backend.tellPlayer(new PickUp(gs.player, itemNum, items.items.get(itemNum).count))));
         }
     }
 
@@ -78,9 +77,7 @@ public class GameMainLayer extends AbstractWindow {
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Drop which item?",
                         gs.player.inventory.items, droppable,
-                        (int itemNum) -> {
-                            backend.tellPlayer(new Drop(gs.player, itemNum, gs.player.inventory.items.get(itemNum).count));
-                        }));
+                        (int itemNum) -> backend.tellPlayer(new Drop(gs.player, itemNum, gs.player.inventory.items.get(itemNum).count))));
     }
 
     private void tryQuaff(GameState gs) {
@@ -93,9 +90,7 @@ public class GameMainLayer extends AbstractWindow {
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Quaff which potion?",
                         gs.player.inventory.items, quaffable,
-                        (int itemNum) -> {
-                            backend.tellPlayer(new Quaff(gs.player, itemNum));
-                        }));
+                        (int itemNum) -> backend.tellPlayer(new Quaff(gs.player, itemNum))));
     }
 
     private void tryWear(GameState gs) {
@@ -108,9 +103,7 @@ public class GameMainLayer extends AbstractWindow {
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Wear which item?",
                         gs.player.inventory.items, wearable,
-                        (int itemNum) -> {
-                            backend.tellPlayer(new Wear(gs.player, itemNum));
-                        }));
+                        (int itemNum) -> backend.tellPlayer(new Wear(gs.player, itemNum))));
     }
 
     private void tryTakeOff(GameState gs) {
@@ -123,9 +116,7 @@ public class GameMainLayer extends AbstractWindow {
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Take off which item?",
                         gs.player.equipment, removable,
-                        (int itemNum) -> {
-                            backend.tellPlayer(new TakeOff(gs.player, itemNum));
-                        }));
+                        (int itemNum) -> backend.tellPlayer(new TakeOff(gs.player, itemNum))));
     }
 
     @Override
@@ -222,7 +213,7 @@ public class GameMainLayer extends AbstractWindow {
                     continue;
                 }
                 int maxDarkness = 220;
-                double darknessD = 1.0 - (gs.getCurrentMap().map[x][y].brightness / (double) gs.getCurrentMap().MAX_BRIGHTNESS);
+                double darknessD = 1.0 - (gs.getCurrentMap().map[x][y].brightness / (double) GameMap.MAX_BRIGHTNESS);
                 // Assign max darkness if we can't see it; alternatively, we could paint
                 // in gray, or something.  Or just not show it at all?
                 if (!gs.player.canSee(gs, new Point(x, y))) {
@@ -246,14 +237,13 @@ public class GameMainLayer extends AbstractWindow {
 
         if (targetableSquares.isEmpty()) {
             backend.logMessage("no doors here you can close.");
-            return;
         } else if (targetableSquares.size() == 1) {
             // only one door to close.  Just close it
             closeDoor(gameState, targetableSquares.get(0));
         } else {
             // several doors; prompt user to pick which one
             parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.CLOSE_DOOR,
-                    (Point p) -> { closeDoor(gameState, p); }));
+                    (Point p) -> closeDoor(gameState, p)));
         }
     }
 

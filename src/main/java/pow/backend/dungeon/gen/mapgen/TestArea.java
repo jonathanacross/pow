@@ -1,12 +1,10 @@
 package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
-import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.gen.*;
 import pow.util.Point;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;

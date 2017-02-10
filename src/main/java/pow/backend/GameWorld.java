@@ -179,7 +179,7 @@ public class GameWorld implements Serializable {
         List<String> dungeon1Monsters = Arrays.asList("farmer", "mangy leper", "jester", "beggar", "salesman");
 //        MapGenerator dungeon1Gen = new ShapeDLA(dungeon1Style, dungeon1Monsters, 50, 50, 5);
         //MapGenerator dungeon1Gen = new TestArea(0);
-        MapGenerator dungeon1Gen = new Town(0, dungeon1Monsters, STAIRS_UP, STAIRS_DOWN );
+        MapGenerator dungeon1Gen = new Town(0, dungeon1Monsters);
         GameMap dungeon1 = dungeon1Gen.genMap(TEST_DUNGEON_ID, dungeon1Connections, rng);
 
         world = new HashMap<>();

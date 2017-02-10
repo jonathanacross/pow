@@ -71,7 +71,7 @@ public class Player extends Actor implements Serializable, LightSource {
     private Queue<Action> actionQueue;
 
     public int viewRadius;
-    public int lightRadius;
+    private int lightRadius;
     public List<DungeonItem> equipment;
     private GainRatios gainRatios;
     public Stats currStats;
@@ -124,7 +124,7 @@ public class Player extends Actor implements Serializable, LightSource {
         );
     }
 
-    public Player(DungeonObject.Params objectParams,
+    private Player(DungeonObject.Params objectParams,
                   GainRatios gainRatios,
                   AttackData innateAttack ) {
         super(objectParams, new Actor.Params(1, -1, -99, 0, null, true, 0));

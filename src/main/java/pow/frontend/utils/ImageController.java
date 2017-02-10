@@ -97,8 +97,6 @@ public class ImageController {
     }
 
     private Map<String, Point> readDataFile(String name) throws DataFormatException, IOException {
-        StringBuilder result = new StringBuilder("");
-
         //Get file from resources folder
         InputStream tsvStream = this.getClass().getResourceAsStream(name);
         TsvReader reader = new TsvReader(tsvStream);

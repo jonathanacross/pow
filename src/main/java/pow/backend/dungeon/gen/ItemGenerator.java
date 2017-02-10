@@ -4,7 +4,6 @@ import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonItem;
 import pow.util.DebugLogger;
 import pow.util.DieRoll;
-import pow.util.MathUtils;
 import pow.util.TsvReader;
 
 import java.io.IOException;
@@ -38,7 +37,7 @@ public class ItemGenerator {
         return generator.genItem(level, rng);
     }
 
-    public static ItemGenerator instance;
+    private static ItemGenerator instance;
     private Map<String, SpecificItemGenerator> generatorMap;
     private Map<Integer, List<String>> levelToItemIds;
     private int minLevel;

@@ -25,7 +25,7 @@ public class TextUtilsTest {
         }
     }
 
-    List<TestCase> examples = Arrays.asList(
+    private List<TestCase> examples = Arrays.asList(
             new TestCase("!Bladeturner", "Bladeturner", "Bladeturner", "Bladeturner", "Bladeturner"),
             new TestCase("!The Star of Elendil", "The Star of Elendil", "The Star of Elendil", "The Star of Elendil", "The Star of Elendil"),
             new TestCase("!The one Ring", "The one Ring", "The one Ring", "The one Ring", "The one Ring"),

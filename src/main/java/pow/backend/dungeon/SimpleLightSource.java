@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class SimpleLightSource implements LightSource, Serializable {
     private Point location;
-    public int radius;
+    private int radius;
 
     public SimpleLightSource(Point location, int radius) {
         this.location = location;

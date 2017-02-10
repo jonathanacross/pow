@@ -12,7 +12,7 @@ public class ActionResult {
     public boolean done;
     public Action alternate;
 
-    public ActionResult(List<GameEvent> events, boolean succeeded, boolean done, Action alternate) {
+    private ActionResult(List<GameEvent> events, boolean succeeded, boolean done, Action alternate) {
         this.events = events;
         this.succeeded = succeeded;
         this.done = done;

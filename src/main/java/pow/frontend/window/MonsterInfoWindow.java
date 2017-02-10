@@ -18,7 +18,7 @@ import java.util.List;
 
 public class MonsterInfoWindow extends AbstractWindow {
 
-    Actor actor;
+    private Actor actor;
 
     public MonsterInfoWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
@@ -30,8 +30,7 @@ public class MonsterInfoWindow extends AbstractWindow {
     }
 
     @Override
-    public void processKey(KeyEvent e) {
-    }
+    public void processKey(KeyEvent e) { }
 
     final private int TILE_SIZE = 32;
     final private int MARGIN = 10;
