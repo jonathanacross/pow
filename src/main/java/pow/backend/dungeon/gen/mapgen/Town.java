@@ -70,7 +70,7 @@ public class Town implements MapGenerator {
         }
 
         // build 3 rectangles for buildings
-        int[] doorTypes = {Constants.FEATURE_INN_DOOR, Constants.FEATURE_WEAPON_STORE_DOOR, Constants.FEATURE_MAGIC_STORE_DOOR};
+        int[] doorTypes = {Constants.FEATURE_INN_DOOR, Constants.FEATURE_WEAPON_SHOP_DOOR, Constants.FEATURE_MAGIC_SHOP_DOOR};
         List<Rectangle> buildings = getBuildingLocations(map, rng, 3);
         for (int i = 0; i < 3; i++) {
             Rectangle building = buildings.get(i);

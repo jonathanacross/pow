@@ -48,6 +48,6 @@ dark pebbles	dark pebbles	dark pebbles
 water 2	water 2	water 2		
 water 4	water 4	water 4		
 fountain	fountain	fountain		
-inn	inn	inn		
-weapon store	weapon store	weapon store		
-magic store	magic store	magic store		
+inn	inn	inn	actOnStep,blockWater,blockLava,blockAir,blockGround	enterShop::inn
+weapon shop	weapon shop	weapon shop	actOnStep,blockWater,blockLava,blockAir,blockGround	enterShop::weaponShop
+magic shop	magic shop	magic shop	actOnStep,blockWater,blockLava,blockAir,blockGround	enterShop::magicShop

@@ -21,6 +21,7 @@ public class FeatureData {
         if (instance.featureMap.containsKey(id)) {
             return instance.featureMap.get(id);
         } else {
+            System.out.println("error: can't find feature with id '" + id + "'");
             return instance.featureMap.get("debug");
         }
     }

@@ -42,8 +42,8 @@ public class ProtoTranslator {
     private static DungeonFeature CANDLE = FeatureData.getFeature("candle");
     private static DungeonFeature FOUNTAIN = FeatureData.getFeature("fountain");
     private static DungeonFeature INN_DOOR = FeatureData.getFeature("inn");
-    private static DungeonFeature WEAPON_STORE_DOOR = FeatureData.getFeature("weapon store");
-    private static DungeonFeature MAGIC_STORE_DOOR = FeatureData.getFeature("magic store");
+    private static DungeonFeature WEAPON_SHOP_DOOR = FeatureData.getFeature("weapon shop");
+    private static DungeonFeature MAGIC_SHOP_DOOR = FeatureData.getFeature("magic shop");
 
     private void initStandard() {
         terrainMap = new HashMap<>();
@@ -62,8 +62,8 @@ public class ProtoTranslator {
         featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("closed door"));
         featureMap.put(Constants.FEATURE_CANDLE, CANDLE);
         featureMap.put(Constants.FEATURE_FOUNTAIN, FOUNTAIN);
-        featureMap.put(Constants.FEATURE_WEAPON_STORE_DOOR, WEAPON_STORE_DOOR);
-        featureMap.put(Constants.FEATURE_MAGIC_STORE_DOOR, MAGIC_STORE_DOOR);
+        featureMap.put(Constants.FEATURE_WEAPON_SHOP_DOOR, WEAPON_SHOP_DOOR);
+        featureMap.put(Constants.FEATURE_MAGIC_SHOP_DOOR, MAGIC_SHOP_DOOR);
         featureMap.put(Constants.FEATURE_INN_DOOR, INN_DOOR);
     }
 
@@ -84,8 +84,8 @@ public class ProtoTranslator {
         featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("ivy stone closed door"));
         featureMap.put(Constants.FEATURE_CANDLE, CANDLE);
         featureMap.put(Constants.FEATURE_FOUNTAIN, FOUNTAIN);
-        featureMap.put(Constants.FEATURE_WEAPON_STORE_DOOR, WEAPON_STORE_DOOR);
-        featureMap.put(Constants.FEATURE_MAGIC_STORE_DOOR, MAGIC_STORE_DOOR);
+        featureMap.put(Constants.FEATURE_WEAPON_SHOP_DOOR, WEAPON_SHOP_DOOR);
+        featureMap.put(Constants.FEATURE_MAGIC_SHOP_DOOR, MAGIC_SHOP_DOOR);
         featureMap.put(Constants.FEATURE_INN_DOOR, INN_DOOR);
     }
 
@@ -106,8 +106,8 @@ public class ProtoTranslator {
         featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("brown stone closed door"));
         featureMap.put(Constants.FEATURE_CANDLE, CANDLE);
         featureMap.put(Constants.FEATURE_FOUNTAIN, FOUNTAIN);
-        featureMap.put(Constants.FEATURE_WEAPON_STORE_DOOR, WEAPON_STORE_DOOR);
-        featureMap.put(Constants.FEATURE_MAGIC_STORE_DOOR, MAGIC_STORE_DOOR);
+        featureMap.put(Constants.FEATURE_WEAPON_SHOP_DOOR, WEAPON_SHOP_DOOR);
+        featureMap.put(Constants.FEATURE_MAGIC_SHOP_DOOR, MAGIC_SHOP_DOOR);
         featureMap.put(Constants.FEATURE_INN_DOOR, INN_DOOR);
     }
 
@@ -128,8 +128,8 @@ public class ProtoTranslator {
         featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("closed door"));
         featureMap.put(Constants.FEATURE_CANDLE, CANDLE);
         featureMap.put(Constants.FEATURE_FOUNTAIN, FOUNTAIN);
-        featureMap.put(Constants.FEATURE_WEAPON_STORE_DOOR, WEAPON_STORE_DOOR);
-        featureMap.put(Constants.FEATURE_MAGIC_STORE_DOOR, MAGIC_STORE_DOOR);
+        featureMap.put(Constants.FEATURE_WEAPON_SHOP_DOOR, WEAPON_SHOP_DOOR);
+        featureMap.put(Constants.FEATURE_MAGIC_SHOP_DOOR, MAGIC_SHOP_DOOR);
         featureMap.put(Constants.FEATURE_INN_DOOR, INN_DOOR);
     }
 }

@@ -27,6 +27,7 @@ public class GameMap implements Serializable {
     public Map<String, Point> keyLocations;  // useful for joining areas together
     public String name; // name of the area
     public int level;  // difficulty level
+    public ShopData shopData; // for stores contained in this map
 
     public void updatePlayerVisibilityData(Player player) {
         updateBrightness(player);
@@ -99,6 +100,7 @@ public class GameMap implements Serializable {
         this.genMonsterIds = genMonsterIds;
         this.actors = new ArrayList<>();
         initLightSources();
+        this.shopData = new ShopData();
     }
 
     // Call when a player enters a level.
