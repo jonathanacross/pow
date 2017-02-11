@@ -185,14 +185,26 @@ public class Frontend {
 
     private void processShopEntry() {
         ShopData shopData = gameBackend.getGameState().getCurrentMap().shopData;
+        WindowDim dim;
+        List<ShopData.ShopEntry> entries;
         switch (shopData.state) {
             case INN:
-                WindowDim dim = WindowDim.center(600, 120, width, height);
-                int cost = gameBackend.getGameState().getCurrentMap().shopData.innCost;
+                dim = WindowDim.center(600, 120, width, height);
+                int cost = shopData.innCost;
                 open(new ConfirmWindow(dim, true, gameBackend, this,
                         "Do you want to rest at the inn? It costs " + cost + " gold.",
                         "Rest", "Cancel",
                         () -> gameBackend.tellPlayer(new RestAtInn())));
+                break;
+            case WEAPON_SHOP:
+                dim = WindowDim.center(400, 500, width, height);
+                entries = shopData.weaponItems;
+                open(new ShopWindow(dim, true, gameBackend, this, entries));
+                break;
+            case MAGIC_SHOP:
+                dim = WindowDim.center(400, 500, width, height);
+                entries = shopData.magicItems;
+                open(new ShopWindow(dim, true, gameBackend, this, entries));
                 break;
             default:
                 System.out.println("entered a shop of type " + shopData.state);

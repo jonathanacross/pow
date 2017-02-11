@@ -50,7 +50,7 @@ public class Arena implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);
         return map;
     }
 

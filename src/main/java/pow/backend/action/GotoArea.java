@@ -4,6 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.gen.GeneratorUtils;
+import pow.backend.dungeon.gen.ShopGenerator;
 import pow.backend.event.GameEvent;
 import pow.util.Point;
 
@@ -33,10 +34,11 @@ public class GotoArea implements Action {
             gs.getCurrentMap().removeActor(gs.pet);
         }
 
-        // set the new area, add monsters if needed
+        // set the new area, update monsters/shops if needed
         boolean needsRegen = gs.world.recentMaps.setMap(gs.world.world.get(areaName));
         if (needsRegen) {
             GeneratorUtils.regenMonstersForCurrentMap(gs.getCurrentMap(), gs.rng);
+            gs.getCurrentMap().shopData = ShopGenerator.genShop(gs.getCurrentMap().level, gs.rng);
         }
 
         // set up player/pet in the new area

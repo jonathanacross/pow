@@ -44,7 +44,7 @@ public class TestArea implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null, null);
         return map;
     }
 
@@ -87,7 +87,7 @@ public class TestArea implements MapGenerator {
             }
         }
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null, null);
         return map;
     }
 

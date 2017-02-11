@@ -90,7 +90,12 @@ public class GameMap implements Serializable {
         addBrightness(player);
     }
 
-    public GameMap(String name, int level, DungeonSquare[][] map, Map<String, Point> keyLocations, List<String> genMonsterIds) {
+    public GameMap(String name,
+                   int level,
+                   DungeonSquare[][] map,
+                   Map<String, Point> keyLocations,
+                   List<String> genMonsterIds,
+                   ShopData shopData) {
         this.name = name;
         this.level = level;
         this.map = map;
@@ -99,8 +104,8 @@ public class GameMap implements Serializable {
         this.keyLocations = keyLocations;
         this.genMonsterIds = genMonsterIds;
         this.actors = new ArrayList<>();
+        this.shopData = shopData;
         initLightSources();
-        this.shopData = new ShopData();
     }
 
     // Call when a player enters a level.

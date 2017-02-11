@@ -1,11 +1,9 @@
 package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
+import pow.backend.ShopData;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.gen.Constants;
-import pow.backend.dungeon.gen.GeneratorUtils;
-import pow.backend.dungeon.gen.MapConnection;
-import pow.backend.dungeon.gen.ProtoTranslator;
+import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -42,8 +40,9 @@ public class Town implements MapGenerator {
                 upstairsFeatureId,
                 downstairsFeatureId,
                 rng);
+        ShopData shopData = ShopGenerator.genShop(0, rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsterIds);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsterIds, shopData);
         return map;
     }
 
