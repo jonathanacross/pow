@@ -26,7 +26,6 @@ public class ArrowEffect implements Effect {
         List<Point> ray = Bresenham.makeRay(actor.loc, point, 100);
         points = new ArrayList<>();
         // remove starting point of actor, and remove all points after 'point'
-        // TODO: currently disabled, since we need at least one point in the path.
         ray.remove(0);
         for (Point p : ray) {
             points.add(p);
@@ -60,7 +59,6 @@ public class ArrowEffect implements Effect {
     @Override
     public List<GlyphLoc> render() {
         List<GlyphLoc> glyphLocs = new ArrayList<>();
-        // TODO: Got exception thrown here.. with points.size = 0, idx=0.
         Point p = points.get(idx);
         glyphLocs.add(new GlyphLoc(p.x, p.y, glyphName));
         return glyphLocs;
