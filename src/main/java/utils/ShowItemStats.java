@@ -10,7 +10,7 @@ public class ShowItemStats {
 
     // supposing that we find k random items of this slot, and take the best
     // what is the defense?
-    public static int getSlotDefenseFromBestOfK(List<DungeonItem> items, int k, Random rng) {
+    private static int getSlotDefenseFromBestOfK(List<DungeonItem> items, int k, Random rng) {
         if (items == null || items.size() == 0) {
             return 0;
         }
@@ -35,8 +35,8 @@ public class ShowItemStats {
             // get list of items for this level
             List<String> itemIds = ItemGenerator.getItemIdsForLevel(level);
             List<DungeonItem> items = new ArrayList<>();
-            for (int id = 0; id < itemIds.size(); id++) {
-                items.add(ItemGenerator.genItem(itemIds.get(id), level, rng));
+            for (String itemId : itemIds) {
+                items.add(ItemGenerator.genItem(itemId, level, rng));
             }
 
             // group by slot

@@ -14,29 +14,29 @@ public class DirectionNames {
     public static final int NW = 7;
 
 
-    private static final int[] OPPOSITES = {4, 5, 6, 7, 0, 1, 2, 3};
-    public static int getOpposite(int dirName) {
-        return OPPOSITES[dirName];
-    }
+//    private static final int[] OPPOSITES = {4, 5, 6, 7, 0, 1, 2, 3};
+//    public static int getOpposite(int dirName) {
+//        return OPPOSITES[dirName];
+//    }
 
     // must match above order
-    private static final Direction[] DIRECTIONS = {
-            new Direction(0,-1),
-            new Direction(1, -1),
-            new Direction(0,1),
-            new Direction(1,1),
-            new Direction(0,1),
-            new Direction(-1, 1),
-            new Direction(-1,0),
-            new Direction(-1,-1)
-    };
-    public static Direction getDirection(int dirName) {
-        return DIRECTIONS[dirName];
-    }
+//    private static final Direction[] DIRECTIONS = {
+//            new Direction(0,-1),
+//            new Direction(1, -1),
+//            new Direction(0,1),
+//            new Direction(1,1),
+//            new Direction(0,1),
+//            new Direction(-1, 1),
+//            new Direction(-1,0),
+//            new Direction(-1,-1)
+//    };
+//    public static Direction getDirection(int dirName) {
+//        return DIRECTIONS[dirName];
+//    }
 
-    public static final int[] CARDINALS = {N, E, S, W};
-    public static final int[] DIAGONALS = {NE, SE, NW, SW};
-    public static final int[] ALL_DIRECTIONS = {N, NE, E, SE, S, SW, W, NW};
+//    public static final int[] CARDINALS = {N, E, S, W};
+//    public static final int[] DIAGONALS = {NE, SE, NW, SW};
+//    public static final int[] ALL_DIRECTIONS = {N, NE, E, SE, S, SW, W, NW};
 
     public static int getDirName(Point src, Point dst) {
         int dx = dst.x - src.x;

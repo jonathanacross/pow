@@ -25,14 +25,12 @@ public class ActionParams implements Serializable {
         this.name = null;
     }
 
-    public ActionParams clone() {
-        ActionParams params = new ActionParams();
-        params.actionName = this.actionName;
-        params.point = this.point;
-        params.dir = this.dir;
-        params.number = this.number;
-        params.name = this.name;
-        return params;
+    public ActionParams(ActionParams other) {
+        this.actionName = other.actionName;
+        this.point = other.point;
+        this.dir = other.dir;
+        this.number = other.number;
+        this.name = other.name;
     }
 
     public static Action buildAction(Actor actor, ActionParams params) {
@@ -42,6 +40,7 @@ public class ActionParams implements Serializable {
             case "modifyFeature": return new ModifyFeature(actor, params.point, FeatureData.getFeature(params.name));
             case "gotoArea": return new GotoArea(params.name, params.point );
             case "heal": return new Heal(actor, params.number);
+            case "enterShop": return new EnterShop(actor, ShopData.ShopState.parseFromString(params.name));
 //            case "restoreMana": return new RestoreManaAction(params.number);
             default: throw new RuntimeException("unknown action name " + params.actionName);
         }

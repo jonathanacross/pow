@@ -47,7 +47,9 @@ public class OpenGameWindow extends AbstractWindow {
                 break;
             case KeyEvent.VK_D:
                 if (! files.isEmpty()) {
-                    files.get(selectIndex).delete();
+                    if (!files.get(selectIndex).delete()) {
+                        System.out.println("could not delete " + files.get(selectIndex));
+                    }
                     files.remove(selectIndex);
                     frontend.setDirty(true);
                 }

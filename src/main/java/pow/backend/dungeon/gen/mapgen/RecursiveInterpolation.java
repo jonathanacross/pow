@@ -1,7 +1,6 @@
 package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
-import pow.backend.actors.Actor;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
@@ -126,7 +125,7 @@ public class RecursiveInterpolation implements MapGenerator {
         int numItems = (w - 1) * (h - 1) / 100;
         GeneratorUtils.addItems(level, squares, numItems, rng);
 
-        GameMap map = new GameMap(name, level, squares, keyLocations, style.monsterIds);
+        GameMap map = new GameMap(name, level, squares, keyLocations, style.monsterIds, null);
         return map;
     }
 

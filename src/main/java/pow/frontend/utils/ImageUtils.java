@@ -42,7 +42,7 @@ public class ImageUtils {
     //X from 0 to  95.047
     //Y from 0 to 100.000
     //Z from 0 to 108.883
-    public static void RGBToXYZ(int[] rgb, double[] xyz) {
+    private static void RGBToXYZ(int[] rgb, double[] xyz) {
         double var_R = ( rgb[0] / 255.0 );        //R from 0 to 255
         double var_G = ( rgb[1] / 255.0 );        //G from 0 to 255
         double var_B = ( rgb[2] / 255.0 );        //B from 0 to 255
@@ -65,7 +65,7 @@ public class ImageUtils {
     }
 
     // adapted from http://www.easyrgb.com/index.php?X=MATH&H=01#text1
-    public static void XYZToRGB(double[] xyz, int[] rgb) {
+    private static void XYZToRGB(double[] xyz, int[] rgb) {
         double var_X = xyz[0] / 100;        //X from 0 to  95.047
         double var_Y = xyz[1] / 100;        //Y from 0 to 100.000
         double var_Z = xyz[2] / 100;        //Z from 0 to 108.883
@@ -133,8 +133,7 @@ public class ImageUtils {
     }
 
     public static List<String> wrapText(String text, FontMetrics textMetrics, int width) {
-        String textToDraw = text;
-        String[] words = textToDraw.split(" ");
+        String[] words = text.split(" ");
         int nIndex = 0;
         List<String> lines = new ArrayList<>();
         while (nIndex < words.length) {

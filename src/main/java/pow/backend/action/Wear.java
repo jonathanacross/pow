@@ -2,12 +2,10 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
-import pow.backend.GameWorld;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.event.GameEvent;
-import pow.util.Point;
 import pow.util.TextUtils;
 
 import java.util.ArrayList;

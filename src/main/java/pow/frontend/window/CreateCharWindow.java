@@ -16,8 +16,8 @@ public class CreateCharWindow extends AbstractWindow {
 
     private String name;
 
-    public CreateCharWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
-        super(dim, visible, backend, frontend);
+    public CreateCharWindow(WindowDim dim, GameBackend backend, Frontend frontend) {
+        super(dim, true, backend, frontend);
         resetName();
     }
 
@@ -49,9 +49,7 @@ public class CreateCharWindow extends AbstractWindow {
             frontend.open(new ConfirmWindow(dim, true, this.backend, this.frontend,
                     "The character '" + name + "' already exists.  Do you want to overwrite it?",
                     "Overwrite", "Cancel",
-                    () -> {
-                        startNewGame();
-                    }));
+                    this::startNewGame));
         } else {
             startNewGame();
         }

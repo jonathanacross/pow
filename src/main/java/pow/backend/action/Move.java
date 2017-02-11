@@ -5,19 +5,17 @@ import pow.backend.actors.Actor;
 import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
-import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.event.GameEvent;
-import pow.util.Array2D;
 import pow.util.Point;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Move implements Action {
-    int dx;
-    int dy;
-    Actor actor;
+    private int dx;
+    private int dy;
+    private Actor actor;
 
     public Move(Actor actor, int dx, int dy) {
         this.actor = actor;
@@ -96,7 +94,7 @@ public class Move implements Action {
         DungeonTerrain terrain = gs.getCurrentMap().map[newx][newy].terrain;
         if (terrain.flags.actOnStep) {
             Point loc = new Point(newx, newy);
-            ActionParams params = terrain.actionParams.clone();
+            ActionParams params = new ActionParams(terrain.actionParams);
             params.point = loc;
             Action newAction = ActionParams.buildAction(this.actor, params);
             return ActionResult.Failed(newAction);
@@ -105,7 +103,7 @@ public class Move implements Action {
         DungeonFeature feature = gs.getCurrentMap().map[newx][newy].feature;
         if (feature != null && feature.flags.actOnStep) {
             Point loc = new Point(newx, newy);
-            ActionParams params = feature.actionParams.clone();
+            ActionParams params = new ActionParams(feature.actionParams);
             params.point = loc;
             Action newAction = ActionParams.buildAction(this.actor, params);
             return ActionResult.Failed(newAction);

@@ -33,8 +33,8 @@ public class LogWindow extends AbstractWindow {
 
         List<MessageLog.Message> messages = backend.getGameState().log.getLastN(20);
         int row = 0;
-        for (int idx = 0; idx < messages.size(); idx++) {
-            graphics.drawString(messages.get(idx).toString(), 10, row*squareSize + 20);
+        for (MessageLog.Message message : messages) {
+            graphics.drawString(message.toString(), 10, row * squareSize + 20);
             row++;
         }
     }

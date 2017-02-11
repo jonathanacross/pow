@@ -17,7 +17,7 @@ public class TerrainData {
         return instance.terrainMap.keySet();
     }
 
-    public static TerrainData instance;
+    private static TerrainData instance;
     private Map<String, DungeonTerrain> terrainMap;
 
     public static DungeonTerrain getTerrain(String id) { return instance.terrainMap.get(id); }

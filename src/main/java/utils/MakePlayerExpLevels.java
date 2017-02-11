@@ -21,7 +21,7 @@ public class MakePlayerExpLevels {
     // consider Angband's approach: compute monster exp by multiplying
     // by the factor of monster level / char level.
 
-    public static double getAvgExperience(List<Monster> monsters) {
+    private static double getAvgExperience(List<Monster> monsters) {
         double expTotal = 0.0;
         int count = 0;
         for (Monster m: monsters) {
@@ -54,7 +54,7 @@ public class MakePlayerExpLevels {
         }
     }
 
-    public static void makeCharacterExperienceTable() {
+    private static void makeCharacterExperienceTable() {
         // probably want this higher than the factor in baseHP for monster health, in makeMonsterStats
         // but not so much that it's a grind..
 //        int firstLevelNeeded = 10;

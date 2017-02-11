@@ -11,7 +11,7 @@ import java.util.*;
 public class GameBackend {
 
     private GameState gameState;
-    public Deque<Action> commandQueue = new LinkedList<>();
+    private Deque<Action> commandQueue = new LinkedList<>();
 
     public GameState getGameState() {
         return gameState;

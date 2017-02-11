@@ -24,15 +24,15 @@ public class GameTargetLayer extends AbstractWindow {
     public enum TargetMode {
         LOOK,
         TARGET,
-        CLOSE_DOOR;
+        CLOSE_DOOR
     }
 
     private GameWindow parent;
     private int targetIdx;
     private List<Point> targetableSquares;
-    MapView mapView;
-    TargetMode mode;
-    Consumer<Point> callback;
+    private MapView mapView;
+    private TargetMode mode;
+    private Consumer<Point> callback;
 
     public GameTargetLayer(GameWindow parent, List<Point> targetableSquares, TargetMode mode, Consumer<Point> callback) {
         super(parent.dim, parent.visible, parent.backend, parent.frontend);

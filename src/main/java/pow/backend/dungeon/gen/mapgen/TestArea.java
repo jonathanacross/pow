@@ -1,12 +1,10 @@
 package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
-import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.gen.*;
 import pow.util.Point;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -46,7 +44,7 @@ public class TestArea implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null, null);
         return map;
     }
 
@@ -89,7 +87,7 @@ public class TestArea implements MapGenerator {
             }
         }
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null, null);
         return map;
     }
 

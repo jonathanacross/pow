@@ -23,10 +23,11 @@ public class GameMap implements Serializable {
     public int height;
     public List<String> genMonsterIds;  // monsters to generate for this level
     public List<Actor> actors;
-    public List<LightSource> lightSources;
+    private List<LightSource> lightSources;
     public Map<String, Point> keyLocations;  // useful for joining areas together
     public String name; // name of the area
     public int level;  // difficulty level
+    public ShopData shopData; // for stores contained in this map
 
     public void updatePlayerVisibilityData(Player player) {
         updateBrightness(player);
@@ -89,7 +90,12 @@ public class GameMap implements Serializable {
         addBrightness(player);
     }
 
-    public GameMap(String name, int level, DungeonSquare[][] map, Map<String, Point> keyLocations, List<String> genMonsterIds) {
+    public GameMap(String name,
+                   int level,
+                   DungeonSquare[][] map,
+                   Map<String, Point> keyLocations,
+                   List<String> genMonsterIds,
+                   ShopData shopData) {
         this.name = name;
         this.level = level;
         this.map = map;
@@ -98,6 +104,7 @@ public class GameMap implements Serializable {
         this.keyLocations = keyLocations;
         this.genMonsterIds = genMonsterIds;
         this.actors = new ArrayList<>();
+        this.shopData = shopData;
         initLightSources();
     }
 
@@ -139,7 +146,7 @@ public class GameMap implements Serializable {
         return actors.get(currActorIdx);
     }
 
-    public void addActor(Actor a) {
+    private void addActor(Actor a) {
         actors.add(a);
     }
 
@@ -175,7 +182,7 @@ public class GameMap implements Serializable {
     // This assumes that there is at least one open square.
     public Point findClosestOpenSquare(Point start) {
         int i = 0;
-        Point loc = null;
+        Point loc;
         do {
             loc = Spiral.position(i);
             loc.shiftBy(start);

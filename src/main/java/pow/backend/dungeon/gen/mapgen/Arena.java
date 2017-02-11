@@ -1,7 +1,6 @@
 package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
-import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.gen.Constants;
 import pow.backend.dungeon.gen.GeneratorUtils;
@@ -51,7 +50,7 @@ public class Arena implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);
         return map;
     }
 

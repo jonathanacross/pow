@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 
 public class KeyUtils {
-    public static boolean hasShift(KeyEvent event) {
+    private static boolean hasShift(KeyEvent event) {
         int onMask = SHIFT_DOWN_MASK;
         return (event.getModifiersEx() & onMask) == onMask;
     }

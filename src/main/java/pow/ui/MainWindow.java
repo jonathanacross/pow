@@ -1,6 +1,6 @@
 package pow.ui;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -27,7 +27,7 @@ public class MainWindow extends JFrame implements KeyListener {
         setResizable(true);
         setSize(MainDraw.PANEL_WIDTH, MainDraw.PANEL_HEIGHT);
         setMinimumSize(new Dimension(MainDraw.PANEL_WIDTH, MainDraw.PANEL_HEIGHT));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         draw = new MainDraw();
         getContentPane().add(draw);
         pack();

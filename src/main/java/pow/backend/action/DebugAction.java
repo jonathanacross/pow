@@ -14,9 +14,9 @@ public class DebugAction implements Action {
 
     private What what;
 
-    public static enum What {
+    public enum What {
         INCREASE_CHAR_LEVEL,
-        HEAL;
+        HEAL
     }
 
     public DebugAction(What what) {
@@ -28,7 +28,6 @@ public class DebugAction implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        GameState gs = backend.getGameState();
         Player player = backend.getGameState().player;
 
         switch (what) {

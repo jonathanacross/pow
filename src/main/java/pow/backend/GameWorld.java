@@ -4,6 +4,7 @@ import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.RecentMaps;
 import pow.backend.dungeon.gen.mapgen.TestArea;
+import pow.backend.dungeon.gen.mapgen.Town;
 import pow.backend.dungeon.gen.worldgen.GenOverworldTopology;
 import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.mapgen.MapGenerator;
@@ -175,8 +176,10 @@ public class GameWorld implements Serializable {
         dungeon1Connections.add(new MapConnection(UP_LOC_NAME, MapConnection.Direction.U, "area0", DOWN_LOC_NAME));
 //        ProtoTranslator dungeon1Style = new ProtoTranslator(1);
 //        List<String> dungeon1Monsters = Arrays.asList("yellow snake", "scruffy dog", "yellow mushrooms", "floating eye", "bat", "green worm mass", "brown imp");
+        List<String> dungeon1Monsters = Arrays.asList("farmer", "mangy leper", "jester", "beggar", "salesman");
 //        MapGenerator dungeon1Gen = new ShapeDLA(dungeon1Style, dungeon1Monsters, 50, 50, 5);
-        MapGenerator dungeon1Gen = new TestArea(0);
+        //MapGenerator dungeon1Gen = new TestArea(0);
+        MapGenerator dungeon1Gen = new Town(0, dungeon1Monsters);
         GameMap dungeon1 = dungeon1Gen.genMap(TEST_DUNGEON_ID, dungeon1Connections, rng);
 
         world = new HashMap<>();

@@ -1,7 +1,6 @@
 package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
-import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.gen.Constants;
 import pow.backend.dungeon.gen.GeneratorUtils;
@@ -73,7 +72,7 @@ public class ShapeDLA implements MapGenerator {
         int numItems = (this.width - 1) * (this.height - 1) / 100;
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);
         return map;
     }
 
@@ -170,7 +169,7 @@ public class ShapeDLA implements MapGenerator {
         }
     }
 
-    public int[][] genMap(int width, int height, Random rng) {
+    private int[][] genMap(int width, int height, Random rng) {
 
         // initialize the map to all walls
         int[][] map = GeneratorUtils.solidMap(width, height);

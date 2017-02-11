@@ -49,15 +49,12 @@ public class AtlasMaker {
     private static List<AtlasEntry> readAtlas(InputStream stream)
             throws IOException {
         List<AtlasEntry> entries = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        try {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(stream))) {
             String line;
             while ((line = br.readLine()) != null) {
                 AtlasEntry entry = new AtlasEntry(line);
                 entries.add(entry);
             }
-        } finally {
-            br.close();
         }
 
         return (entries);

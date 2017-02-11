@@ -1,6 +1,5 @@
 package pow.frontend.effect;
 
-import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 
 import java.util.ArrayList;

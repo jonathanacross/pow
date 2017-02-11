@@ -52,9 +52,8 @@ public class GenOverworldTopology {
         this.numRooms = numGroups * roomsPerGroup;
         this.roomGridSize = 3 * (int) Math.sqrt(numRooms);
 
-        while (!genWorldTopology(rng)) {
-            // theoretically could loop endlessly here, but in practice, succeeds after a few times (avg = 1.2).
-        }
+        // theoretically could loop endlessly here, but in practice, succeeds after a few times (avg = 1.2).
+        while (!genWorldTopology(rng)) ;
     }
 
     public List<RoomConnection> getRooms() {
@@ -99,7 +98,7 @@ public class GenOverworldTopology {
         int x;
         int y;
         int dir;
-        RoomConnection randRoom = null;
+        RoomConnection randRoom;
         do {
             randRoom = getRandomRoom(rng, newGroup);
 

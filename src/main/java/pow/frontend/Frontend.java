@@ -1,6 +1,8 @@
 package pow.frontend;
 
 import pow.backend.GameBackend;
+import pow.backend.ShopData;
+import pow.backend.action.RestAtInn;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
 import pow.frontend.effect.ArrowEffect;
@@ -72,7 +74,7 @@ public class Frontend {
         welcomeWindow = new WelcomeWindow(WindowDim.center(600, 600, this.width, this.height), true, gameBackend, this);
         winWindow = new WinWindow(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
         loseWindow = new LoseWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
-        createCharWindow = new CreateCharWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
+        createCharWindow = new CreateCharWindow(WindowDim.center(480, 200, this.width, this.height), gameBackend, this);
         openGameWindow = new OpenGameWindow(WindowDim.center(380, 300, this.width, this.height), true, gameBackend, this);
         // main game
         statusWindow = new StatusWindow(new WindowDim(5, 5, 200, 707), true, gameBackend, this);
@@ -161,7 +163,7 @@ public class Frontend {
         this.keyEvents.add(e);
     }
 
-    public void processKey(KeyEvent e) {
+    private void processKey(KeyEvent e) {
         if (!windows.isEmpty()) {
             windows.peek().processKey(e);
         }
@@ -176,7 +178,36 @@ public class Frontend {
                 case LOST_GAME: open(this.loseWindow); break;
                 case ROCKET: this.effects.add(new RocketEffect(event.actor)); break;
                 case ARROW: this.effects.add(new ArrowEffect(event.actor, event.point)); break;
+                case IN_STORE: processShopEntry(); break;
             }
+        }
+    }
+
+    private void processShopEntry() {
+        ShopData shopData = gameBackend.getGameState().getCurrentMap().shopData;
+        WindowDim dim;
+        List<ShopData.ShopEntry> entries;
+        switch (shopData.state) {
+            case INN:
+                dim = WindowDim.center(600, 120, width, height);
+                int cost = shopData.innCost;
+                open(new ConfirmWindow(dim, true, gameBackend, this,
+                        "Do you want to rest at the inn? It costs " + cost + " gold.",
+                        "Rest", "Cancel",
+                        () -> gameBackend.tellPlayer(new RestAtInn())));
+                break;
+            case WEAPON_SHOP:
+                dim = WindowDim.center(400, 500, width, height);
+                entries = shopData.weaponItems;
+                open(new ShopWindow(dim, true, gameBackend, this, entries));
+                break;
+            case MAGIC_SHOP:
+                dim = WindowDim.center(400, 500, width, height);
+                entries = shopData.magicItems;
+                open(new ShopWindow(dim, true, gameBackend, this, entries));
+                break;
+            default:
+                System.out.println("entered a shop of type " + shopData.state);
         }
     }
 

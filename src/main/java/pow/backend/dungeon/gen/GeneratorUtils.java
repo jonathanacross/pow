@@ -29,10 +29,10 @@ public class GeneratorUtils {
     }
 
     // adapted from http://lodev.org/cgtutor/floodfill.html
-    public static int[][] floodFill(int[][] data, int lx, int ly, int newColor, int oldColor) {
+    public static void floodFill(int[][] data, int lx, int ly, int newColor, int oldColor) {
 
         if (oldColor == newColor) {
-            return data;
+            return;
         }
 
         int w = Array2D.width(data);
@@ -44,8 +44,7 @@ public class GeneratorUtils {
         while (stack.size() > 0) {
             Point loc = stack.pop();
             int x = loc.x;
-            int y = loc.y;
-            int y1 = y;
+            int y1 = loc.y;
             while (y1 >= 0 && data[x][y1] == oldColor) {
                 y1--;
             }
@@ -69,8 +68,6 @@ public class GeneratorUtils {
                 y1++;
             }
         }
-
-        return data;
     }
 
     public static Point findOpenSpace(int[][] data) {
@@ -125,6 +122,10 @@ public class GeneratorUtils {
                 case Constants.FEATURE_LOSE_TILE: return 'L';
                 case Constants.FEATURE_UP_STAIRS: return '<';
                 case Constants.FEATURE_DOWN_STAIRS: return '>';
+                case Constants.FEATURE_FOUNTAIN: return 'f';
+                case Constants.FEATURE_INN_DOOR: return '1';
+                case Constants.FEATURE_WEAPON_SHOP_DOOR: return '2';
+                case Constants.FEATURE_MAGIC_SHOP_DOOR: return '3';
                 default: throw new IllegalArgumentException("unknown feature " + feature);
             }
         } else {
@@ -261,9 +262,6 @@ public class GeneratorUtils {
 
         // to make sure we don't put monsters on top of each other
         boolean[][] monsterAt = new boolean[width][height];
-
-        List<String> monsterIds = new ArrayList<>();
-        monsterIds.addAll(MonsterGenerator.getMonsterIds());
 
         int x = 0;
         int y = 0;

@@ -48,6 +48,7 @@ public class ImageController {
     public static void drawTile(Graphics graphics, String tileName, int x, int y, boolean gray) {
         Point srcLoc;
         if (!instance.tileData.containsKey(tileName)) {
+            System.out.println("error - couldn't find tile with name '" + tileName + "'");
             srcLoc = instance.tileData.get("debug");
         } else {
             srcLoc = instance.tileData.get(tileName);
@@ -62,6 +63,7 @@ public class ImageController {
     public static void drawTile(Graphics graphics, String tileName, int x, int y, boolean gray, int size) {
         Point srcLoc;
         if (!instance.tileData.containsKey(tileName)) {
+            System.out.println("error - couldn't find tile with name '" + tileName + "'");
             srcLoc = instance.tileData.get("debug");
         } else {
             srcLoc = instance.tileData.get(tileName);
@@ -95,8 +97,6 @@ public class ImageController {
     }
 
     private Map<String, Point> readDataFile(String name) throws DataFormatException, IOException {
-        StringBuilder result = new StringBuilder("");
-
         //Get file from resources folder
         InputStream tsvStream = this.getClass().getResourceAsStream(name);
         TsvReader reader = new TsvReader(tsvStream);

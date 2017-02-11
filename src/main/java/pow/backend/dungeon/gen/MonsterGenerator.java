@@ -32,7 +32,7 @@ public class MonsterGenerator {
         return generator.genMonster(rng, location);
     }
 
-    public static MonsterGenerator instance;
+    private static MonsterGenerator instance;
     private Map<String, SpecificMonsterGenerator> generatorMap;
 
     static {
@@ -68,14 +68,25 @@ public class MonsterGenerator {
         int toHit;
         int defense;
         int speed;
-        AiActor.Flags flags;
+        AllFlags flags;
         int experience;
 
-        private AiActor.Flags parseFlags(String text) {
+        public static class AllFlags {
+            AiActor.Flags aiActorFlags;
+            boolean friendly;
+
+            public AllFlags(AiActor.Flags aiActorFlags, boolean friendly) {
+                this.aiActorFlags = aiActorFlags;
+                this.friendly = friendly;
+            }
+        }
+
+        private AllFlags parseFlags(String text) {
             String[] tokens = text.split(",", -1);
 
             boolean stationary = false;
             boolean erratic = false;
+            boolean friendly = false;
             for (String t : tokens) {
                 switch (t) {
                     case "": break;  // will happen if we have an empty string
@@ -83,12 +94,13 @@ public class MonsterGenerator {
                     case "erratic": erratic = true; break;
                     case "knightmove": break;
                     case "boss": break;
+                    case "friendly": friendly = true; break;
                     default:
                         throw new IllegalArgumentException("unknown monster flag '" + t + "'");
                 }
             }
 
-            return new AiActor.Flags(stationary, erratic);
+            return new AllFlags(new AiActor.Flags(stationary, erratic), friendly);
         }
 
         // Parses the generator from text.
@@ -119,8 +131,8 @@ public class MonsterGenerator {
             AttackData attackData = new AttackData(attack, toHit, 0);
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
-                    new Actor.Params(level, instanceHP, defense, experience, attackData, false, speed),
-                    flags);
+                    new Actor.Params(level, instanceHP, defense, experience, attackData, flags.friendly, speed),
+                    flags.aiActorFlags);
         }
     }
 }

@@ -6,7 +6,6 @@ import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
-import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.event.GameEvent;
 import pow.util.Bresenham;
 import pow.util.Point;
@@ -15,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FireArrow implements Action {
-    Actor attacker;
-    Point target;
+    private Actor attacker;
+    private Point target;
 
     private static final int FIRE_RANGE = 5; // how far can arrows be shot?
 
@@ -24,11 +23,14 @@ public class FireArrow implements Action {
         this.attacker = attacker;
         this.target = target;
     }
+
+    @Override
     public Actor getActor() {
         return this.attacker;
     }
 
-    public static ActionResult doAttack(GameBackend backend, Actor attacker, Point target) {
+    @Override
+    public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
@@ -65,11 +67,6 @@ public class FireArrow implements Action {
         }
 
         return ActionResult.Succeeded(events);
-    }
-
-    @Override
-    public ActionResult process(GameBackend backend) {
-        return doAttack(backend, this.attacker, this.target);
     }
 
     @Override

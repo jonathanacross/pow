@@ -1,21 +1,15 @@
 package pow.backend.action;
 
-import pow.backend.ActionParams;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
-import pow.backend.dungeon.DungeonTerrain;
-import pow.backend.event.GameEvent;
 import pow.util.Point;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TakeStairs implements Action {
-    Actor actor;
-    boolean up;
+    private Actor actor;
+    private boolean up;
 
     public TakeStairs(Actor actor, boolean up) {
         this.actor = actor;

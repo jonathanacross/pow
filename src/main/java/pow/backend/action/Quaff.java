@@ -2,10 +2,8 @@ package pow.backend.action;
 
 import pow.backend.ActionParams;
 import pow.backend.GameBackend;
-import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
-import pow.backend.dungeon.DungeonSquare;
 import pow.backend.event.GameEvent;
 import pow.util.DebugLogger;
 import pow.util.TextUtils;
@@ -29,9 +27,6 @@ public class Quaff implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
-
         DungeonItem item = actor.inventory.items.get(itemIdx);
         if (!item.flags.potion) {
             DebugLogger.fatal(new RuntimeException(actor.name + " tried to quaff a non-potion, " + item.name));

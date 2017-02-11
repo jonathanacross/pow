@@ -46,7 +46,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         BRACELET,
         AMULET,
         GLOVES,
-        BOOTS;
+        BOOTS
     }
 
     public String name; // english name, e.g., "& axe~"

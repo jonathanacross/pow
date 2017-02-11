@@ -17,7 +17,7 @@ public class GameEvent {
         IN_STORE,
         HEALED,
         DUNGEON_UPDATED,  // possibly make this more granular: dig, unlocked....
-        ROCKET;  // demo effect to show animation
+        ROCKET  // demo effect to show animation
     }
 
     // TODO: fill out this class.. what's needed? can I simplify?
@@ -25,7 +25,7 @@ public class GameEvent {
     public Actor actor; // may be null for some events
     public Point point; // may be null for many events
 
-    public GameEvent(EventType eventType, Actor actor, Point point) {
+    private GameEvent(EventType eventType, Actor actor, Point point) {
         this.eventType = eventType;
         this.actor = actor;
         this.point = point;
