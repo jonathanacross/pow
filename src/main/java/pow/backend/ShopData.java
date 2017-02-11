@@ -22,7 +22,7 @@ public class ShopData implements Serializable {
         }
     }
 
-    public static class ShopEntry {
+    public static class ShopEntry implements Serializable {
         public DungeonItem item;
         public int price;  // per item
 

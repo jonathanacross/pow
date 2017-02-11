@@ -24,12 +24,12 @@ public class ArrowEffect implements Effect {
 
         // get the path of the arrow
         List<Point> ray = Bresenham.makeRay(actor.loc, point, 100);
-        // remove starting point of actor, and remove all points after 'point'
         points = new ArrayList<>();
+        // remove starting point of actor, and remove all points after 'point'
         ray.remove(0);
         for (Point p : ray) {
-            if (p.equals(point)) break;
             points.add(p);
+            if (p.equals(point)) break;
         }
 
         // figure out the glyph to use
@@ -59,7 +59,6 @@ public class ArrowEffect implements Effect {
     @Override
     public List<GlyphLoc> render() {
         List<GlyphLoc> glyphLocs = new ArrayList<>();
-        // TODO: Got exception thrown here.. with points.size = 0, idx=0.
         Point p = points.get(idx);
         glyphLocs.add(new GlyphLoc(p.x, p.y, glyphName));
         return glyphLocs;

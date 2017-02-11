@@ -4,12 +4,8 @@ import pow.backend.ActionParams;
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
-import pow.backend.event.GameEvent;
 import pow.util.DebugLogger;
 import pow.util.TextUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Quaff implements Action {
     private Actor actor;
