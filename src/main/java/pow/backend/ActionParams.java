@@ -25,14 +25,12 @@ public class ActionParams implements Serializable {
         this.name = null;
     }
 
-    public ActionParams clone() {
-        ActionParams params = new ActionParams();
-        params.actionName = this.actionName;
-        params.point = this.point;
-        params.dir = this.dir;
-        params.number = this.number;
-        params.name = this.name;
-        return params;
+    public ActionParams(ActionParams other) {
+        this.actionName = other.actionName;
+        this.point = other.point;
+        this.dir = other.dir;
+        this.number = other.number;
+        this.name = other.name;
     }
 
     public static Action buildAction(Actor actor, ActionParams params) {
