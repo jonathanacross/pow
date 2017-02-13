@@ -5,6 +5,7 @@ import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.gen.*;
 import pow.util.Point;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -20,15 +21,15 @@ public class TestArea implements MapGenerator {
     public GameMap genMap(String name,
                           List<MapConnection> connections,
                           Random rng) {
-        return genItemMap(name, connections, rng);
-        //return genPremadeMap(name, connections, rng);
+        //return genItemMap(name, connections, rng);
+        return genPremadeMap(name, RUN_TEST, connections, rng);
     }
 
     private GameMap genPremadeMap(String name,
-                          List<MapConnection> connections,
-                          Random rng) {
-
-        int[][] data = genMapPremade();
+                                  String[] charData,
+                                  List<MapConnection> connections,
+                                  Random rng) {
+        int[][] data = genMapPremade(charData);
         ProtoTranslator translator = new ProtoTranslator(0);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, translator);
 
@@ -44,7 +45,8 @@ public class TestArea implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null, null);
+        List<String> monsterIds = Arrays.asList("farmer", "mangy leper", "jester", "beggar", "salesman");
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsterIds, null);
         return map;
     }
 
@@ -91,29 +93,7 @@ public class TestArea implements MapGenerator {
         return map;
     }
 
-    private int[][] genMapPremade() {
-        String[] map = {
-                "####################",
-                "#..................#",
-                "#..................#",
-                "#..c%%%%%'%%%%%%%..#",
-                "#..%............%..#",
-                "#..%............%..#",
-                "#..%%%%%%+%%%%%%%..#",
-                "#..%....+.+.....%..#",
-                "#..%#####+######%..#",
-                "#..%............%..#",
-                "#..%............%..#",
-                "#..%............%..#",
-                "#..%%%%%%+%%%%%%%..#",
-                "#..%wwww....~~~~%..#",
-                "#..%w.w......~.~%..#",
-                "#..%%%%%%'%%%%%%c..#",
-                "#..................#",
-                "#..................#",
-                "####################"
-        };
-
+    private int[][] genMapPremade(String[] map) {
         int w = map[0].length();
         int h = map.length;
 
@@ -139,4 +119,58 @@ public class TestArea implements MapGenerator {
 
         return data;
     }
+
+    private static final String[] TERRAIN_TYPES_TEST = {
+            "####################",
+            "#..................#",
+            "#..................#",
+            "#..c%%%%%'%%%%%%%..#",
+            "#..%............%..#",
+            "#..%............%..#",
+            "#..%%%%%%+%%%%%%%..#",
+            "#..%....+.+.....%..#",
+            "#..%#####+######%..#",
+            "#..%............%..#",
+            "#..%............%..#",
+            "#..%............%..#",
+            "#..%%%%%%+%%%%%%%..#",
+            "#..%wwww....~~~~%..#",
+            "#..%w.w......~.~%..#",
+            "#..%%%%%%'%%%%%%c..#",
+            "#..................#",
+            "#..................#",
+            "####################"
+    };
+
+    private static final String[] RUN_TEST = {
+            "####################################",
+            "#..................................#",
+            "#..................................#",
+            "#...###########.........########...#",
+            "#...#...................#......#...#",
+            "#...#.#########.........#.####.#...#",
+            "#...#.#.................#.#....#...#",
+            "#...#.#########....######.######...#",
+            "#...#..............................#",
+            "#...###########....#############...#",
+            "#..................................#",
+            "#..................................#",
+            "#...######+#####...#.##...#####....#",
+            "#...#..........#...##.##.##........#",
+            "#...#.########.#....##.###.####....#",
+            "#...#.#......#.#.....##.#.##.......#",
+            "#...#.########.#......##.##........#",
+            "#...#..........#.......###.........#",
+            "#...############...................#",
+            "#..................................#",
+            "#....................##########....#",
+            "#...##c#####%+%%######........##...#",
+            "#.....................########.#...#",
+            "#...#####c#########c##......##.#...#",
+            "#.....~~~~~~~~~~~.....#######.##...#",
+            "#............................###...#",
+            "#.........######################...#",
+            "#..................................#",
+            "####################################"
+    };
 }

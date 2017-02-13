@@ -4,35 +4,32 @@ Use the following keys to move, attack, or open adjacent doors:
      h     l      4     6
      b  j  n      1  2  3
 
-You can also use the arrow keys, though diagonal movement 
-is not possible.  The keys . or number pad 5 indicate to stay still.
+You can also use the arrow keys, though diagonal movement is not possible.
+Holding down shift while pressing the direction keys will run.
+The keys . or number pad 5 indicate to stay still.
 
-    Key    Action
-    ===    ===========================
-      .    Stay still
-      <    Go upstairs
-      >    Go downstairs
-      ?    See help
-      b    Walk southwest
-      c    Close door
-      C    Character description
+    Key    Action                        Key    Action
+    ===    =========================     ===    ==========================
+      .    Stay still                      >    Go downstairs
+                                           <    Go upstairs
+                                           ?    See help
+      b    Walk southwest                  B    Run southwest
+      c    Close door                      C    Character description
       d    Drop an item
       f    Fire an arrow
       g    Get objects on the floor
-      h    Walk west
+      h    Walk west                       H    Run west
       i    Inventory list
-      j    Walk south
-      k    Walk north
-      l    Walk east
-      n    Walk southeast
+      j    Walk south                      J    Run south
+      k    Walk north                      K    Run north
+      l    Walk east                       L    Run east
+      n    Walk southeast                  N    Run southeast
       q    Quaff a potion
       s    Save
-      t    Target a monster
-      T    Target a spot on the ground
-      u    Walk northeast
-      w    Wear/wield equipment
-      W    Take off equipment
+      t    Target a monster                T    Target a spot on the ground
+      u    Walk northeast                  U    Run northeast
+      w    Wear/wield equipment            W    Take off equipment
       x    Examine nearby things
-      y    Walk northwest
+      y    Walk northwest                  Y    Run northwest
 
 Press any key to continue.
