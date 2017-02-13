@@ -31,7 +31,7 @@ public class LogWindow extends AbstractWindow {
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
 
-        List<MessageLog.Message> messages = backend.getGameState().log.getLastN(20);
+        List<MessageLog.Message> messages = backend.getGameState().log.getLastN(30);
         int row = 0;
         for (MessageLog.Message message : messages) {
             graphics.drawString(message.toString(), 10, row * squareSize + 20);

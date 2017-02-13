@@ -17,7 +17,7 @@ public class FireArrow implements Action {
     private Actor attacker;
     private Point target;
 
-    private static final int FIRE_RANGE = 5; // how far can arrows be shot?
+    private static final int FIRE_RANGE = 6; // how far can arrows be shot?
 
     public FireArrow(Actor attacker, Point target) {
         this.attacker = attacker;

@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.frontend.Frontend;
 import pow.frontend.save.SaveUtils;
 import pow.frontend.WindowDim;
+import pow.frontend.utils.KeyUtils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -46,7 +47,7 @@ public class OpenGameWindow extends AbstractWindow {
                 }
                 break;
             case KeyEvent.VK_D:
-                if (! files.isEmpty()) {
+                if (KeyUtils.hasShift(e) && !files.isEmpty()) {
                     if (!files.get(selectIndex).delete()) {
                         System.out.println("could not delete " + files.get(selectIndex));
                     }
@@ -79,7 +80,7 @@ public class OpenGameWindow extends AbstractWindow {
         graphics.drawString("Select your game.", 30, 30);
 
         graphics.setFont(new Font("Courier", Font.PLAIN, 12));
-        graphics.drawString("up/down to select, d to delete, n for new game", 30, 50);
+        graphics.drawString("up/down to select, D to delete, n for new game", 30, 50);
 
         graphics.setFont(font);
         int y = 90;
