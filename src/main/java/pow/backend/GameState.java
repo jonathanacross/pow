@@ -34,7 +34,7 @@ public class GameState implements Serializable {
     // makes a partial gamestate useful when not playing the actual game..
     public GameState() {
         this.world = null;
-        this.rng = new Random(123);
+        this.rng = new Random();
         this.gameInProgress = false;
         this.player = new Player();
         this.pet = null;
@@ -44,7 +44,6 @@ public class GameState implements Serializable {
     public GameState(String name) {
         this.gameInProgress = false;
         this.rng = new Random();
-        //this.rng = new Random(123);
         this.player = new Player();
         this.player.name = name;
         this.pet = new Pet(

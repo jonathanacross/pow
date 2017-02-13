@@ -94,4 +94,17 @@ public class TextUtils {
                 .replaceAll("~", "s");
         return replaceCustomPlural(simplePlural);
     }
+
+    public static String repeat(String s, int count) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+
+    public static String capitalize(String input) {
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
+    }
+
 }

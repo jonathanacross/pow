@@ -1,6 +1,7 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
+import pow.backend.dungeon.gen.NameGenerator;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.save.SaveUtils;
@@ -58,7 +59,10 @@ public class CreateCharWindow extends AbstractWindow {
     @Override
     public void processKey(KeyEvent e) {
         char c = e.getKeyChar();
-        if (Character.isLetterOrDigit(c) || c == ' ') {
+        if (c == '*') {
+            name = NameGenerator.getRandomName(backend.getGameState().rng);
+            frontend.setDirty(true);
+        } else if (Character.isLetterOrDigit(c) || c == ' ') {
             name = name + c;
             frontend.setDirty(true);
         } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_DELETE) {
@@ -76,17 +80,20 @@ public class CreateCharWindow extends AbstractWindow {
         }
     }
 
+    private static final int FONT_SIZE = 18;
+    private static final int MARGIN = 20;
+
+
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        int squareSize = 18;
-        Font f = new Font("Courier", Font.PLAIN, squareSize);
-        graphics.setFont(f);
+        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
+        graphics.setFont(font);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Enter the name of your character.", 30, 50);
-
-        graphics.drawString(name, 30, 70);
+        graphics.drawString("Enter the name of your character,", MARGIN, MARGIN + FONT_SIZE);
+        graphics.drawString("or press * for a random name", MARGIN, MARGIN + 2*FONT_SIZE);
+        graphics.drawString(name, MARGIN, MARGIN + 4*FONT_SIZE);
     }
 }
