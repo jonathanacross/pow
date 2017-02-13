@@ -4,6 +4,7 @@ import pow.backend.action.Log;
 import pow.backend.actors.Actor;
 import pow.backend.action.ActionResult;
 import pow.backend.action.Action;
+import pow.backend.behavior.Behavior;
 import pow.backend.event.GameResult;
 
 import java.util.*;
@@ -22,6 +23,7 @@ public class GameBackend {
     public void tellPlayer(Action request) {
         gameState.player.addCommand(request);
     }
+    public void tellPlayer(Behavior behavior) { gameState.player.behavior = behavior; }
 
     public void setGameInProgress(boolean gameInProgress) {
         gameState.gameInProgress = gameInProgress;
@@ -76,7 +78,7 @@ public class GameBackend {
                 Actor actor = gameState.getCurrentMap().getCurrentActor();
 
                 // if waiting for input, just return
-                if (actor.energy.canTakeTurn() && actor.needsInput()) {
+                if (actor.energy.canTakeTurn() && actor.needsInput(gameState)) {
                     return gameResult;
                     //return new GameResult(madeProgress, new ArrayList<>());
                 }
@@ -84,7 +86,7 @@ public class GameBackend {
                 if (actor.energy.canTakeTurn() || actor.energy.gain(actor.speed)) {
                     // If the actor can move now, but needs input from the user, just
                     // return so we can wait for it.
-                    if (actor.needsInput()) {
+                    if (actor.needsInput(gameState)) {
                         return gameResult;
                         //return new GameResult(madeProgress, new ArrayList<>());
                     }

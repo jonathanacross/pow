@@ -1,5 +1,6 @@
 package pow.backend.actors;
 
+import pow.backend.GameState;
 import pow.backend.dungeon.DungeonObject;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ public class Monster extends AiActor implements Serializable {
     }
 
     @Override
-    public boolean needsInput() {
+    public boolean needsInput(GameState gameState) {
         return false;
     }
 }

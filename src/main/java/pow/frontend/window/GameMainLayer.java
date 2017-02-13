@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
+import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
@@ -16,6 +17,7 @@ import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 import pow.frontend.utils.Targeting;
 import pow.util.Point;
+import pow.util.direction.Direction;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -133,6 +135,16 @@ public class GameMainLayer extends AbstractWindow {
             case NORTH_EAST: backend.tellPlayer(new Move(gs.player, 1, -1)); break;
             case SOUTH_WEST: backend.tellPlayer(new Move(gs.player, -1, 1)); break;
             case SOUTH_EAST: backend.tellPlayer(new Move(gs.player, 1, 1)); break;
+
+            case RUN_EAST: backend.tellPlayer(new RunBehavior(gs.player, 1, 0)); break;
+            case RUN_WEST: backend.tellPlayer(new RunBehavior(gs.player, -1, 0)); break;
+            case RUN_SOUTH: backend.tellPlayer(new RunBehavior(gs.player, 0, 1)); break;
+            case RUN_NORTH: backend.tellPlayer(new RunBehavior(gs.player, 0, -1)); break;
+            case RUN_NORTH_WEST: backend.tellPlayer(new RunBehavior(gs.player, -1, -1)); break;
+            case RUN_NORTH_EAST: backend.tellPlayer(new RunBehavior(gs.player, 1, -1)); break;
+            case RUN_SOUTH_WEST: backend.tellPlayer(new RunBehavior(gs.player, -1, 1)); break;
+            case RUN_SOUTH_EAST: backend.tellPlayer(new RunBehavior(gs.player, 1, 1)); break;
+
             case UP_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, true)); break;
             case DOWN_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, false)); break;
             case REST: backend.tellPlayer(new Move(gs.player, 0, 0)); break;
