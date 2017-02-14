@@ -17,7 +17,7 @@ import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 import pow.frontend.utils.Targeting;
 import pow.util.Point;
-import pow.util.direction.Direction;
+import pow.util.Direction;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -136,14 +136,14 @@ public class GameMainLayer extends AbstractWindow {
             case SOUTH_WEST: backend.tellPlayer(new Move(gs.player, -1, 1)); break;
             case SOUTH_EAST: backend.tellPlayer(new Move(gs.player, 1, 1)); break;
 
-            case RUN_EAST: backend.tellPlayer(new RunBehavior(gs.player, 1, 0)); break;
-            case RUN_WEST: backend.tellPlayer(new RunBehavior(gs.player, -1, 0)); break;
-            case RUN_SOUTH: backend.tellPlayer(new RunBehavior(gs.player, 0, 1)); break;
-            case RUN_NORTH: backend.tellPlayer(new RunBehavior(gs.player, 0, -1)); break;
-            case RUN_NORTH_WEST: backend.tellPlayer(new RunBehavior(gs.player, -1, -1)); break;
-            case RUN_NORTH_EAST: backend.tellPlayer(new RunBehavior(gs.player, 1, -1)); break;
-            case RUN_SOUTH_WEST: backend.tellPlayer(new RunBehavior(gs.player, -1, 1)); break;
-            case RUN_SOUTH_EAST: backend.tellPlayer(new RunBehavior(gs.player, 1, 1)); break;
+            case RUN_EAST: backend.tellPlayer(new RunBehavior(gs.player, Direction.E)); break;
+            case RUN_WEST: backend.tellPlayer(new RunBehavior(gs.player, Direction.W)); break;
+            case RUN_SOUTH: backend.tellPlayer(new RunBehavior(gs.player, Direction.S)); break;
+            case RUN_NORTH: backend.tellPlayer(new RunBehavior(gs.player, Direction.N)); break;
+            case RUN_NORTH_WEST: backend.tellPlayer(new RunBehavior(gs.player, Direction.NW)); break;
+            case RUN_NORTH_EAST: backend.tellPlayer(new RunBehavior(gs.player, Direction.NE)); break;
+            case RUN_SOUTH_WEST: backend.tellPlayer(new RunBehavior(gs.player, Direction.SW)); break;
+            case RUN_SOUTH_EAST: backend.tellPlayer(new RunBehavior(gs.player, Direction.SE)); break;
 
             case UP_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, true)); break;
             case DOWN_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, false)); break;

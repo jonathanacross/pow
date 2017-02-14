@@ -3,6 +3,7 @@ package pow.backend.dungeon.gen.worldgen;
 import pow.backend.GameMap;
 import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.mapgen.MapGenerator;
+import pow.util.Direction;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +30,7 @@ public class MapTopology {
         return world;
     }
 
-    public void makeConnection( String area1id, MapConnection.Direction dir, String area2id) { }
+    public void makeConnection(String area1id, Direction dir, String area2id) { }
 
     public void addAreas(MapTopology other) {
         // copy all areas from other to this

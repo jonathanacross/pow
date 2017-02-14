@@ -1,29 +1,21 @@
 package pow.backend.dungeon.gen.worldgen;
 
-import pow.util.direction.DirectionSets;
-import pow.util.direction.Direction;
+import pow.util.Direction;
 
-import java.util.Arrays;
-import java.util.Random;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 // generates the topology of rooms/levels in the outside/overworld
 public class GenOverworldTopology {
 
     public static class RoomConnection {
         public int level;
-        public boolean[] connect;
-        public int[] adjroomIdx;  // index (level) of rooms in the cardinal directions
+        public Map<Direction, Integer> dirToRoomIdx;
         public int x;
         public int y;
 
         public RoomConnection(int x, int y) {
             level = -1;
-            int numDirs = DirectionSets.Cardinal.size();
-            connect = new boolean[numDirs];
-            adjroomIdx = new int[numDirs];
-            Arrays.fill(adjroomIdx, -1);
+            dirToRoomIdx = new HashMap<>();
             this.x = x;
             this.y = y;
         }
@@ -33,7 +25,6 @@ public class GenOverworldTopology {
     private int roomsPerGroup;
     private double probMakeCycle;
 
-    private int numRooms;
     private int roomGridSize;
     private RoomConnection[][] connections;
     private List<RoomConnection> rooms;
@@ -49,7 +40,7 @@ public class GenOverworldTopology {
         this.roomsPerGroup = roomsPerGroup;
         this.probMakeCycle = probMakeCycle;
 
-        this.numRooms = numGroups * roomsPerGroup;
+        int numRooms = numGroups * roomsPerGroup;
         this.roomGridSize = 3 * (int) Math.sqrt(numRooms);
 
         // theoretically could loop endlessly here, but in practice, succeeds after a few times (avg = 1.2).
@@ -80,9 +71,9 @@ public class GenOverworldTopology {
     private static class NewConnectedRoomLocation {
         public int x;  // desired coordinates
         public int y;
-        public int dir;  // direction from previous room to this one.
+        public Direction dir;  // direction from previous room to this one.
 
-        public NewConnectedRoomLocation(int x, int y, int directionFrom) {
+        public NewConnectedRoomLocation(int x, int y, Direction directionFrom) {
             this.x = x;
             this.y = y;
             this.dir = directionFrom;
@@ -97,16 +88,15 @@ public class GenOverworldTopology {
         // add new room to current group
         int x;
         int y;
-        int dir;
+        Direction dir;
         RoomConnection randRoom;
         do {
             randRoom = getRandomRoom(rng, newGroup);
 
             // pick random direction from this room
-            dir = rng.nextInt(DirectionSets.Cardinal.size());
-            Direction d = DirectionSets.Cardinal.getDirection(dir);
-            x = randRoom.x + d.dx;
-            y = randRoom.y + d.dy;
+            dir = Direction.CARDINALS[rng.nextInt(Direction.CARDINALS.length)];
+            x = randRoom.x + dir.dx;
+            y = randRoom.y + dir.dy;
             attempts++;
         } while (attempts < maxAttempts && (!inGrid(x, y) || connections[x][y] != null));
 
@@ -194,23 +184,20 @@ public class GenOverworldTopology {
     // Connects a newly placed room with adjacent rooms.
     // One direction (to the previous room) is forced to make
     // a connection; other connections are made with probMakeCycle.
-    // connectDirIdx is the direction from the previous room to this
+    // connectDir is the direction from the previous room to this
     // new room.
-    private void connectToPrevious(RoomConnection newRoom, int connectDirIdx, Random rng) {
-        for (int dirIndex = 0; dirIndex < DirectionSets.Cardinal.size(); dirIndex++) {
-            int oppDirIndex = DirectionSets.Cardinal.getOpposite(dirIndex);
-            double probConnect = (connectDirIdx == oppDirIndex) ? 1.0 : probMakeCycle;
-            Direction d = DirectionSets.Cardinal.getDirection(dirIndex);
-            int nx = newRoom.x + d.dx;
-            int ny = newRoom.y + d.dy;
+    private void connectToPrevious(RoomConnection newRoom, Direction connectDir, Random rng) {
+        for (Direction dir: Direction.CARDINALS) {
+            Direction oppDir = dir.opposite;
+            double probConnect = (connectDir == oppDir) ? 1.0 : probMakeCycle;
+            int nx = newRoom.x + dir.dx;
+            int ny = newRoom.y + dir.dy;
             if (!inGrid(nx, ny)) continue;
             if (connections[nx][ny] == null) continue;
             RoomConnection adjRoom = connections[nx][ny];
             if (rng.nextDouble() <= probConnect) {
-                newRoom.connect[dirIndex] = true;
-                adjRoom.connect[oppDirIndex] = true;
-                newRoom.adjroomIdx[dirIndex] = adjRoom.level;
-                adjRoom.adjroomIdx[oppDirIndex] = newRoom.level;
+                newRoom.dirToRoomIdx.put(dir, adjRoom.level);
+                adjRoom.dirToRoomIdx.put(oppDir, newRoom.level);
             }
         }
     }
@@ -238,10 +225,10 @@ public class GenOverworldTopology {
                     }
                     debugArea[3 * x + 1][2*y + 1] = roomChar1;
                     debugArea[3 * x + 2][2*y + 1] = roomChar0;
-                    if (room.connect[DirectionSets.Cardinal.N]) debugArea[3*x + 2][2*y  ] = '|';
-                    if (room.connect[DirectionSets.Cardinal.S]) debugArea[3*x + 2][2*y+2] = '|';
-                    if (room.connect[DirectionSets.Cardinal.W]) debugArea[3*x    ][2*y+1] = '-';
-                    if (room.connect[DirectionSets.Cardinal.E]) debugArea[3*x + 3][2*y+1] = '-';
+                    if (room.dirToRoomIdx.containsKey(Direction.N)) debugArea[3*x + 2][2*y  ] = '|';
+                    if (room.dirToRoomIdx.containsKey(Direction.S)) debugArea[3*x + 2][2*y+2] = '|';
+                    if (room.dirToRoomIdx.containsKey(Direction.W)) debugArea[3*x    ][2*y+1] = '-';
+                    if (room.dirToRoomIdx.containsKey(Direction.E)) debugArea[3*x + 3][2*y+1] = '-';
                 }
             }
         }

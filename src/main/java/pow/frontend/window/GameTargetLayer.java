@@ -10,7 +10,7 @@ import pow.frontend.utils.Targeting;
 import pow.util.Bresenham;
 import pow.util.Point;
 import pow.util.TextUtils;
-import pow.util.direction.Direction;
+import pow.util.Direction;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -94,7 +94,7 @@ public class GameTargetLayer extends AbstractWindow {
     }
 
     private void moveCursor(int dx, int dy) {
-        Direction dir = new Direction(dx, dy);
+        Direction dir = Direction.getDir(dx, dy);
         this.targetIdx = Targeting.pickTarget(targetIdx, dir, targetableSquares);
         update();
     }

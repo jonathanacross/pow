@@ -3,7 +3,7 @@ package pow.frontend.effect;
 import pow.backend.actors.Actor;
 import pow.util.Bresenham;
 import pow.util.Point;
-import pow.util.direction.DirectionNames;
+import pow.util.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +33,8 @@ public class ArrowEffect implements Effect {
         }
 
         // figure out the glyph to use
-        int dir = DirectionNames.getDirName(actor.loc, point);
-        String[] arrowGlyphIds = {
-                "N arrow",
-                "NE arrow",
-                "E arrow",
-                "SE arrow",
-                "S arrow",
-                "SW arrow",
-                "W arrow",
-                "NW arrow"
-        };
-        glyphName = arrowGlyphIds[dir];
+        Direction dir = Direction.getDir(actor.loc, point);
+        glyphName = dir.toString() + " arrow";
     }
 
     @Override
