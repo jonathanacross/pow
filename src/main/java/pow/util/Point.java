@@ -33,4 +33,8 @@ public class Point implements Serializable {
         result = 31 * result + y;
         return result;
     }
+
+    public Point add(Direction direction) {
+        return new Point(x + direction.dx, y + direction.dy);
+    }
 }
