@@ -4,14 +4,13 @@ import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.RecentMaps;
 import pow.backend.dungeon.gen.mapgen.TestArea;
-import pow.backend.dungeon.gen.mapgen.Town;
 import pow.backend.dungeon.gen.worldgen.GenOverworldTopology;
 import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.mapgen.MapGenerator;
 import pow.backend.dungeon.gen.mapgen.RecursiveInterpolation;
 import pow.util.DebugLogger;
 import pow.util.Point;
-import pow.util.direction.DirectionSets;
+import pow.util.Direction;
 
 import java.io.Serializable;
 import java.util.*;
@@ -36,8 +35,8 @@ public class GameWorld implements Serializable {
 
         // area 1.
         List<MapConnection> area1Connections = new ArrayList<>();
-        area1Connections.add(new MapConnection("east", MapConnection.Direction.E, "area2", "west"));
-        area1Connections.add(new MapConnection("south", MapConnection.Direction.S, "area3", "north"));
+        area1Connections.add(new MapConnection("east", Direction.E, "area2", "west"));
+        area1Connections.add(new MapConnection("south", Direction.S, "area3", "north"));
         RecursiveInterpolation.MapStyle area1Style = new RecursiveInterpolation.MapStyle(
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree")),
@@ -47,7 +46,7 @@ public class GameWorld implements Serializable {
 
         // area 2.
         List<MapConnection> area2Connections = new ArrayList<>();
-        area1Connections.add(new MapConnection("west", MapConnection.Direction.W, "area1", "east"));
+        area1Connections.add(new MapConnection("west", Direction.W, "area1", "east"));
         RecursiveInterpolation.MapStyle area2Style = new RecursiveInterpolation.MapStyle(
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
@@ -57,7 +56,7 @@ public class GameWorld implements Serializable {
 
         // area 3.
         List<MapConnection> area3Connections = new ArrayList<>();
-        area1Connections.add(new MapConnection("north", MapConnection.Direction.N, "area1", "south"));
+        area1Connections.add(new MapConnection("north", Direction.N, "area1", "south"));
         RecursiveInterpolation.MapStyle area3Style = new RecursiveInterpolation.MapStyle(
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                 Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
@@ -80,22 +79,12 @@ public class GameWorld implements Serializable {
 
     private List<MapConnection> getConnections(GenOverworldTopology.RoomConnection roomConnection) {
         List<MapConnection> connections = new ArrayList<>();
-        for (int d = 0; d < DirectionSets.Cardinal.size(); d++) {
-            if (roomConnection.adjroomIdx[d] >= 0) {
-                int adjId = roomConnection.adjroomIdx[d];
-                String destAreaId = AREA_NAME + adjId;
-                // TODO: see if it's worth refactoring RoomConnection to use MapConnection.Direction
-                MapConnection.Direction dir = null;
-                switch (d) {
-                    case DirectionSets.Cardinal.N: dir = MapConnection.Direction.N; break;
-                    case DirectionSets.Cardinal.E: dir = MapConnection.Direction.E; break;
-                    case DirectionSets.Cardinal.S: dir = MapConnection.Direction.S; break;
-                    case DirectionSets.Cardinal.W: dir = MapConnection.Direction.W; break;
-                }
-                String locName = dir.name();
-                String destLocName = dir.opposite().name();
-                connections.add( new MapConnection(locName, dir, destAreaId, destLocName) );
-            }
+        for (Direction dir: roomConnection.dirToRoomIdx.keySet()) {
+            int adjId = roomConnection.dirToRoomIdx.get(dir);
+            String destAreaId = AREA_NAME + adjId;
+            String locName = dir.name();
+            String destLocName = dir.opposite.name();
+            connections.add( new MapConnection(locName, dir, destAreaId, destLocName) );
         }
 
         return connections;
@@ -173,13 +162,13 @@ public class GameWorld implements Serializable {
         final String TEST_DUNGEON_ID = "D1L1";
 
         List<MapConnection> dungeon1Connections = new ArrayList<>();
-        dungeon1Connections.add(new MapConnection(UP_LOC_NAME, MapConnection.Direction.U, "area0", DOWN_LOC_NAME));
+        dungeon1Connections.add(new MapConnection(UP_LOC_NAME, Direction.U, "area0", DOWN_LOC_NAME));
 //        ProtoTranslator dungeon1Style = new ProtoTranslator(1);
 //        List<String> dungeon1Monsters = Arrays.asList("yellow snake", "scruffy dog", "yellow mushrooms", "floating eye", "bat", "green worm mass", "brown imp");
         List<String> dungeon1Monsters = Arrays.asList("farmer", "mangy leper", "jester", "beggar", "salesman");
 //        MapGenerator dungeon1Gen = new ShapeDLA(dungeon1Style, dungeon1Monsters, 50, 50, 5);
-        //MapGenerator dungeon1Gen = new TestArea(0);
-        MapGenerator dungeon1Gen = new Town(0, dungeon1Monsters);
+        MapGenerator dungeon1Gen = new TestArea(0);
+        // MapGenerator dungeon1Gen = new Town(0, dungeon1Monsters);
         GameMap dungeon1 = dungeon1Gen.genMap(TEST_DUNGEON_ID, dungeon1Connections, rng);
 
         world = new HashMap<>();
@@ -192,7 +181,7 @@ public class GameWorld implements Serializable {
                 GenOverworldTopology.RoomConnection roomConnection = roomConnections.get(levelIdx);
                 List<MapConnection> connections = getConnections(roomConnection);
                 if (group == 0 && room == 0) {
-                    connections.add(new MapConnection(DOWN_LOC_NAME, MapConnection.Direction.D, TEST_DUNGEON_ID, UP_LOC_NAME));
+                    connections.add(new MapConnection(DOWN_LOC_NAME, Direction.D, TEST_DUNGEON_ID, UP_LOC_NAME));
                 }
 
                 GameMap area = mapGenerator.genMap("area " + levelIdx, connections, rng);

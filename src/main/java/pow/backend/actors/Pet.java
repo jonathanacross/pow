@@ -23,7 +23,7 @@ public class Pet extends Actor implements Serializable {
     }
 
     @Override
-    public boolean needsInput() {
+    public boolean needsInput(GameState gameState) {
         return false;
     }
 

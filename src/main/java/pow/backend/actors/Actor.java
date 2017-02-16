@@ -2,6 +2,7 @@ package pow.backend.actors;
 
 import pow.backend.AttackData;
 import pow.backend.GameBackend;
+import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
@@ -27,7 +28,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public abstract Action act(GameBackend backend);
 
-    public abstract boolean needsInput();
+    public abstract boolean needsInput(GameState gameState);
 
     public abstract String getPronoun();
 

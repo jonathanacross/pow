@@ -10,6 +10,7 @@ import pow.backend.dungeon.DungeonTerrain;
 import pow.util.Array2D;
 import pow.util.DebugLogger;
 import pow.util.Point;
+import pow.util.Direction;
 
 import java.util.*;
 
@@ -297,7 +298,7 @@ public class GeneratorUtils {
 
     // makes a feature for up/down stairs (or into dungeon)
     public static DungeonFeature buildStairsFeature(String upFeatureId, String downFeatureId, MapConnection connection) {
-        boolean up = connection.dir == MapConnection.Direction.U;
+        boolean up = connection.dir == Direction.U;
         String featureId = up ? upFeatureId : downFeatureId;
         DungeonFeature featureTemplate = FeatureData.getFeature(featureId);
         // Set the flags in case not set in the file. We may even be able to remove such
@@ -306,7 +307,15 @@ public class GeneratorUtils {
         // TODO: pull out magic strings somewhere
         params.actionName = "gotoArea";
         params.name = connection.destination.toString();
-        DungeonFeature.Flags flags =  new DungeonFeature.Flags(false, false, false, false, up, !up, false) ;
+        DungeonFeature.Flags flags =  new DungeonFeature.Flags(
+                false,
+                false,
+                false,
+                false,
+                up,
+                !up,
+                false,
+                true);
         DungeonFeature feature = new DungeonFeature(
                 featureTemplate.id,
                 featureTemplate.name,
@@ -374,7 +383,7 @@ public class GeneratorUtils {
     // square from the edge.
     public static Point findExitCoordinates(
             DungeonSquare[][] squares,
-            MapConnection.Direction direction,
+            Direction direction,
             Random rng) {
         int width = Array2D.width(squares);
         int height = Array2D.height(squares);
@@ -426,8 +435,8 @@ public class GeneratorUtils {
             Random rng) {
         Map<String, Point> keyLocations = new HashMap<>();
         for (MapConnection connection : connections) {
-            if (connection.dir == MapConnection.Direction.U ||
-                    connection.dir == MapConnection.Direction.D) {
+            if (connection.dir == Direction.U ||
+                    connection.dir == Direction.D) {
                 // up or down
                 DungeonFeature stairs = GeneratorUtils.buildStairsFeature(upstairsFeatureId, downstairsFeatureId, connection);
                 Point loc = GeneratorUtils.findStairsLocation(squares, rng);

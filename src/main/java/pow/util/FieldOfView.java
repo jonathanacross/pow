@@ -3,9 +3,6 @@ package pow.util;
 // Implements field of view using recursive shadowcasting.  Adapted from
 // http://www.roguebasin.com/index.php?title=Improved_Shadowcasting_in_Java
 
-import pow.util.direction.Direction;
-import pow.util.direction.DirectionSets;
-
 public class FieldOfView {
     private boolean[][] blockMap;
     private boolean[][] lightMap;
@@ -36,7 +33,7 @@ public class FieldOfView {
         }
 
         lightMap[startX][startY] = true; // light the starting cell
-        for (Direction d : DirectionSets.Diagonal.getDirections()) {
+        for (Direction d : Direction.DIAGONALS) {
             castLight(1, 1.0, 0.0, 0, d.dx, d.dy, 0);
             castLight(1, 1.0, 0.0, d.dx, 0, 0, d.dy);
         }

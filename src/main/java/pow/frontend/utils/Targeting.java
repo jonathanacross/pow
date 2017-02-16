@@ -6,8 +6,7 @@ import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.frontend.window.MapView;
 import pow.util.Point;
-import pow.util.direction.Direction;
-import pow.util.direction.DirectionSets;
+import pow.util.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class Targeting {
         GameMap map = gameState.getCurrentMap();
 
         List<Point> points = new ArrayList<>();
-        for (Direction dir : DirectionSets.All.getDirections()) {
+        for (Direction dir : Direction.ALL) {
             int x = playerLoc.x + dir.dx;
             int y = playerLoc.y + dir.dy;
             if (!map.isOnMap(x,y)) continue;

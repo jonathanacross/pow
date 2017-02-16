@@ -4,6 +4,8 @@ import pow.backend.AttackData;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.Action;
+import pow.backend.behavior.ActionBehavior;
+import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.LightSource;
@@ -14,9 +16,7 @@ import pow.util.Point;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class Player extends Actor implements Serializable, LightSource {
 
@@ -68,8 +68,6 @@ public class Player extends Actor implements Serializable, LightSource {
         }
     }
 
-    private Queue<Action> actionQueue;
-
     public int viewRadius;
     private int lightRadius;
     public List<DungeonItem> equipment;
@@ -83,6 +81,8 @@ public class Player extends Actor implements Serializable, LightSource {
 
     public Point floorTarget;
     public Actor monsterTarget;
+
+    public Behavior behavior;
 
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
@@ -128,7 +128,6 @@ public class Player extends Actor implements Serializable, LightSource {
                   GainRatios gainRatios,
                   AttackData innateAttack ) {
         super(objectParams, new Actor.Params(1, -1, -99, 0, null, true, 0));
-        this.actionQueue = new LinkedList<>();
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
         this.equipment = new ArrayList<>();
@@ -142,10 +141,11 @@ public class Player extends Actor implements Serializable, LightSource {
         this.mana = this.maxMana;
         this.floorTarget = null;
         this.monsterTarget = null;
+        this.behavior = null;
     }
 
     public void addCommand(Action request) {
-        this.actionQueue.add(request);
+        this.behavior = new ActionBehavior(this, request);
     }
 
     public boolean canSee(GameState gs, Point point) {
@@ -161,13 +161,20 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     @Override
-    public boolean needsInput() {
-        return actionQueue.isEmpty();
+    public boolean needsInput(GameState gameState) {
+        if (this.behavior != null && !this.behavior.canPerform(gameState)) {
+            waitForInput();
+        }
+        return behavior == null;
+    }
+
+    public void waitForInput() {
+        this.behavior = null;
     }
 
     @Override
     public Action act(GameBackend backend) {
-        return this.actionQueue.poll();
+        return behavior.getAction();
     }
 
     @Override

@@ -5,7 +5,7 @@ import pow.backend.actors.Actor;
 import pow.backend.dungeon.gen.FeatureData;
 import pow.backend.dungeon.gen.TerrainData;
 import pow.util.Point;
-import pow.util.direction.Direction;
+import pow.util.Direction;
 
 import java.io.Serializable;
 

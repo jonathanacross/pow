@@ -77,6 +77,7 @@ public class FeatureData {
         boolean stairsUp = false;
         boolean stairsDown = false;
         boolean openDoor = false;
+        boolean interesting = false;
 
         for (String t : tokens) {
             switch (t) {
@@ -88,6 +89,7 @@ public class FeatureData {
                 case "blockLava": break;
                 case "blockWater": break;
                 case "closedDoor": break;
+                case "interesting": interesting = true; break;
                 case "downstairs": stairsDown = true; break;
                 case "openDoor": openDoor = true; break;
                 case "smallLight": glowing = true; break;
@@ -97,7 +99,7 @@ public class FeatureData {
             }
         }
 
-        return new DungeonFeature.Flags(blockGround, blockAir, glowing, actOnStep, stairsUp, stairsDown, openDoor);
+        return new DungeonFeature.Flags(blockGround, blockAir, glowing, actOnStep, stairsUp, stairsDown, openDoor, interesting);
     }
 
     // TODO: duplicate code in TerrainData, ItemGenerator

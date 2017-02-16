@@ -1,27 +1,9 @@
 package pow.backend.dungeon.gen;
 
 import pow.backend.dungeon.DungeonExit;
+import pow.util.Direction;
 
 public class MapConnection {
-    public enum Direction {
-        N, S, E, W, U, D;
-
-        private Direction opposite;
-
-        static {
-            N.opposite = S;
-            S.opposite = N;
-            E.opposite = W;
-            W.opposite = E;
-            U.opposite = D;
-            D.opposite = U;
-        }
-
-        public Direction opposite() {
-            return this.opposite;
-        }
-    }
-
     // Location name in the starting map where the exit is;
     // will be added as a key location in the map so that
     // it's possible to return to this location.
@@ -33,7 +15,6 @@ public class MapConnection {
 
     // Area + location where this exit goes to.
     public DungeonExit destination;
-
 
     public MapConnection(String locName, Direction dir, String destAreaId, String destLocName) {
         this.name = locName;
