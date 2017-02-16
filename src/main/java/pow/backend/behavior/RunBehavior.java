@@ -6,6 +6,7 @@ import pow.backend.action.Action;
 import pow.backend.action.Move;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
+import pow.backend.dungeon.DungeonFeature;
 import pow.util.Point;
 import pow.util.Direction;
 
@@ -147,16 +148,16 @@ public class RunBehavior implements Behavior {
 
     private List<Direction> getOpenDirs(GameState gs, boolean include90Degree) {
         List<Direction> dirs = include90Degree ?
-                new ArrayList<>(Arrays.asList(
+                Arrays.asList(
                         direction.rotateLeft90,
                         direction.rotateLeft45,
                         direction,
                         direction.rotateRight45,
-                        direction.rotateRight90)) :
-                new ArrayList<>(Arrays.asList(
+                        direction.rotateRight90) :
+                Arrays.asList(
                         direction.rotateLeft45,
                         direction,
-                        direction.rotateRight45));
+                        direction.rotateRight45);
 
         List<Direction> openDirs = new ArrayList<>();
         for (Direction d : dirs) {
@@ -192,11 +193,8 @@ public class RunBehavior implements Behavior {
         for (Direction d : newAdjacentDirs) {
             Point adj = gs.player.loc.add(d);
             if (map.actorAt(adj.x, adj.y) != null) return true;
-            // TODO: right now, any feature is interesting, which may be a bit too loose,
-            // especially for outdoors, where there are trees/different types of water.
-            // Perhaps add a flag for a feature to be "interesting" -- set for doors,
-            // stairs, and possibly other special game things.
-            if (map.map[adj.x][adj.y].feature != null) return true;
+            DungeonFeature feature = map.map[adj.x][adj.y].feature;
+            if (feature != null && feature.flags.interesting) return true;
             if (!map.map[adj.x][adj.y].items.items.isEmpty()) return true;
         }
 
