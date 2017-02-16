@@ -34,26 +34,10 @@ public class ProtoTranslator {
     private static DungeonTerrain LAVA  = TerrainData.getTerrain("lava");
 
     private static DungeonFeature WIN_TILE = new DungeonFeature("wintile", "way to win", "orange pearl",
-            new DungeonFeature.Flags(
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    true),
+            new DungeonFeature.Flags( false, false, false, false, false, false, false, true),
             new ActionParams());
     private static DungeonFeature LOSE_TILE = new DungeonFeature("losetile", "death", "cobra",
-            new DungeonFeature.Flags(
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    true),
+            new DungeonFeature.Flags( false, false, false, false, false, false, false, true),
             new ActionParams());
     private static DungeonFeature CANDLE = FeatureData.getFeature("candle");
     private static DungeonFeature FOUNTAIN = FeatureData.getFeature("fountain");
