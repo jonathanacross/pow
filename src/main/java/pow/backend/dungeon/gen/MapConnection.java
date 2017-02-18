@@ -3,6 +3,7 @@ package pow.backend.dungeon.gen;
 import pow.backend.dungeon.DungeonExit;
 import pow.util.Direction;
 
+// TODO: rename to avoid name conflict with worldgen.MapConnection
 public class MapConnection {
     // Location name in the starting map where the exit is;
     // will be added as a key location in the map so that
@@ -10,7 +11,7 @@ public class MapConnection {
     public String name;
 
     // Direction gives a hint while generating the dungeon where to put this
-    // exit. E.g., if dir = S, then put the exit on the south side of th map.
+    // exit. E.g., if dir = S, then put the exit on the south side of the map.
     public Direction dir;
 
     // Area + location where this exit goes to.

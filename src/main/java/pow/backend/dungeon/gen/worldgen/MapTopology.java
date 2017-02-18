@@ -10,11 +10,14 @@ public class MapTopology {
 
     private Map<Point3D, MapGenData> roomLocs;
     private Set<MapConnection> connections;
+    private String firstMapId;
 
     public Map<Point3D, MapGenData> getRoomLocs() { return roomLocs; }
     public Set<MapConnection> getConnections() { return connections; }
+    public String getFirstMapId() { return firstMapId; }
 
     public MapTopology(List<MapGenData> mapGenDataList, Random rng, double probConnect) {
+        firstMapId = mapGenDataList.get(0).id;
         int attempts = 0;
         while (!tryBuildMapTopology(mapGenDataList, rng, probConnect)) {
             attempts++;
@@ -25,6 +28,7 @@ public class MapTopology {
 
         System.out.println(this.toString());
     }
+
 
     // Makes a string to show the topology; useful for debugging, primarily.
     // Only shows the rooms where z = 0, since 3d is hard.
@@ -103,6 +107,8 @@ public class MapTopology {
         }
         return sb.toString();
     }
+
+
 
     // -------------- private implementation -------------
 

@@ -19,7 +19,8 @@ public class ProtoTranslator {
         return featureMap.get(Constants.getFeature(x));
     }
 
-    // TODO: initialize all data from files
+
+    // TODO: remove this code path.  Also see if it's possible to handle just maps of integer -> string?
     public ProtoTranslator(int mode) {
         switch (mode) {
             case 0: initBuilding(); break;
@@ -27,6 +28,11 @@ public class ProtoTranslator {
             case 2: initCrypt(); break;
             case 3: initTown(); break;
         }
+    }
+
+    public ProtoTranslator(Map<Integer, DungeonTerrain> terrainMap, Map<Integer, DungeonFeature> featureMap) {
+        this.terrainMap = terrainMap;
+        this.featureMap = featureMap;
     }
 
     // hardcoded features for things that don't change

@@ -198,7 +198,7 @@ public class GeneratorUtils {
     public static DungeonSquare[][] convertToDungeonSquares(int[][] squares, ProtoTranslator translator) {
         int w = Array2D.width(squares);
         int h = Array2D.height(squares);
-        DebugLogger.info(GeneratorUtils.getMapString(squares));
+        //DebugLogger.info(GeneratorUtils.getMapString(squares));
 
         DungeonSquare[][] dungeonMap = new DungeonSquare[w][h];
 
