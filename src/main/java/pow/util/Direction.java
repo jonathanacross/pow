@@ -1,28 +1,30 @@
 package pow.util;
 
 public enum Direction {
-    N(0, -1),
-    NE(1, -1),
-    E(1, 0),
-    SE(1, 1),
-    S(0, 1),
-    SW(-1, 1),
-    W(-1, 0),
-    NW(-1, -1),
-    U(0, 0),
-    D(0, 0);
+    N(0, -1, 0),
+    NE(1, -1, 0),
+    E(1, 0, 0),
+    SE(1, 1, 0),
+    S(0, 1, 0),
+    SW(-1, 1, 0),
+    W(-1, 0, 0),
+    NW(-1, -1, 0),
+    U(0, 0, 1),
+    D(0, 0, -1);
 
     public int dx;
     public int dy;
+    public int dz;
     public Direction opposite;
     public Direction rotateLeft90;
     public Direction rotateLeft45;
     public Direction rotateRight45;
     public Direction rotateRight90;
 
-    Direction(int dx, int dy) {
+    Direction(int dx, int dy, int dz) {
         this.dx = dx;
         this.dy = dy;
+        this.dz = dz;
     }
 
     public static final Direction[] CARDINALS = {N, E, S, W};

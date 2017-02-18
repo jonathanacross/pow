@@ -1,0 +1,18 @@
+#id	level	group	possible dirs	from groups	from id
+town1	0	1			
+grassyfields1	1	1	N,E,S,W	1	
+grassyfields2	2	1	N,E,S,W	1	
+grassyfields3	3	1	N,E,S,W	1	
+d1l1	4		D		grassyfields3
+d1l2	5		D		d1l1
+d1l3	6		D		d1l2
+desert1	7	2	N,E,S,W	1	
+desert2	8	2	N,E,S,W	2	
+desert3	9	2	N,E,S,W	2	
+d2l1	10		D		desert3
+d2l2	11		D		d2l1
+d2l3	12		D		d2l2
+woods1	13	3	N,E,S,W	1,2	
+woods2	14	3	N,E,S,W	3	
+woods3	15	3	N,E,S,W	3	
+town2	16	3	N,E,S,W	3	
