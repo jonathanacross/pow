@@ -1,0 +1,5 @@
+#id	level	group	possible dirs	from groups	from id	generator	genParams	monsters
+terrain test	0					terrain test	basement	
+run test	1		E		terrain test	run test	dungeon	farmer,mangy leper,jester,beggar,salesman
+item test	2		W		terrain test	item test	crypt	
+arena	99		S		terrain test	arena	dungeon	:all:

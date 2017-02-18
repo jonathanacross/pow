@@ -198,7 +198,6 @@ public class GeneratorUtils {
     public static DungeonSquare[][] convertToDungeonSquares(int[][] squares, ProtoTranslator translator) {
         int w = Array2D.width(squares);
         int h = Array2D.height(squares);
-        //DebugLogger.info(GeneratorUtils.getMapString(squares));
 
         DungeonSquare[][] dungeonMap = new DungeonSquare[w][h];
 
@@ -214,12 +213,18 @@ public class GeneratorUtils {
     }
 
     // Generates from a subset of monsters.
-    // If monsterIds == null, then generate from all possible monsters
+    // If monsterIds is empty, then generate no monsters.
+    // If monsterIds == null, then generate using all possible monsters.
     public static List<Actor> createMonsters(DungeonSquare[][] dungeonMap,
                                              int numMonsters,
                                              List<String> monsterIds,
                                              Random rng) {
         List<Actor> actors = new ArrayList<>();
+        if (monsterIds != null && monsterIds.isEmpty()) {
+            // if empty list, then should be no monsters.
+            return actors;
+        }
+
         int width = Array2D.width(dungeonMap);
         int height = Array2D.height(dungeonMap);
 

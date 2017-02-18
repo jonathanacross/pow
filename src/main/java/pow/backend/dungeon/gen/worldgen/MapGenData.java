@@ -7,10 +7,7 @@ import pow.backend.dungeon.gen.Constants;
 import pow.backend.dungeon.gen.FeatureData;
 import pow.backend.dungeon.gen.ProtoTranslator;
 import pow.backend.dungeon.gen.TerrainData;
-import pow.backend.dungeon.gen.mapgen.MapGenerator;
-import pow.backend.dungeon.gen.mapgen.RecursiveInterpolation;
-import pow.backend.dungeon.gen.mapgen.ShapeDLA;
-import pow.backend.dungeon.gen.mapgen.Town;
+import pow.backend.dungeon.gen.mapgen.*;
 import pow.util.Direction;
 import pow.util.TsvReader;
 
@@ -78,7 +75,7 @@ public class MapGenData {
 
         String generatorName = line[6];
         String generatorParams = line[7];
-        List<String> monsterIds = splitField(line[8]);
+        List<String> monsterIds = getMonsterIds(line[8]);
         MapGenerator generator = buildGenerator(generatorName, generatorParams, level, monsterIds);
 
         return new MapGenData(id, level, group, directions, fromGroups, fromIds, generator);
@@ -88,7 +85,7 @@ public class MapGenData {
     // - first room isn't connected to anything
     // - every other room connects either to an id or a group, but not both
     public static List<MapGenData> readLinkData() throws IOException {
-        InputStream tsvStream = GenTopoTest.class.getResourceAsStream("/data/levels.tsv");
+        InputStream tsvStream = GenTopoTest.class.getResourceAsStream("/data/test-levels.tsv");
         TsvReader reader = new TsvReader(tsvStream);
 
         List<MapGenData> roomLinkDataList = new ArrayList<>();
@@ -100,7 +97,10 @@ public class MapGenData {
         return roomLinkDataList;
     }
 
-    private static List<String> splitField(String field) {
+    private static List<String> getMonsterIds(String field) {
+        if (field.equals(":all:")) {
+            return null;
+        }
         if (field.isEmpty()) {
             return new ArrayList<>();
         }
@@ -118,7 +118,12 @@ public class MapGenData {
             case "town": return buildTownGenerator(params, difficulty, monsterIds);
             case "recursiveInterpolation": return buildRecursiveInterpolationGenerator(params, difficulty, monsterIds);
             case "shapeDLA": return shapeDLAGenerator(params, difficulty, monsterIds);
-            default: return null;
+            case "terrain test":
+            case "run test":
+            case "item test":
+            case "arena":
+                return buildTestGenerator(generatorType, params, difficulty, monsterIds);
+            default: throw new RuntimeException("unknown generator type '" + generatorType + "'");
         }
     }
 
@@ -176,7 +181,7 @@ public class MapGenData {
                 featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("ivy stone open door"));
                 featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("ivy stone closed door"));
                 break;
-            case "building":
+            case "basement":
                 terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("wood floor"));
                 terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("brown stone wall"));
                 terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable brown stone wall"));
@@ -203,12 +208,18 @@ public class MapGenData {
     }
 
     private static MapGenerator buildTownGenerator(String params, int difficulty, List<String> monsterIds) {
-        return new Town(difficulty, monsterIds);
+        ProtoTranslator style = getProtoTranslator(params);
+        return new Town(difficulty, style, monsterIds);
     }
 
     private static MapGenerator shapeDLAGenerator(String params, int difficulty, List<String> monsterIds) {
         ProtoTranslator style = getProtoTranslator(params);
         return new ShapeDLA(style, monsterIds, 50, 50, difficulty);
+    }
+
+    private static MapGenerator buildTestGenerator(String type, String params, int difficulty, List<String> monsterIds) {
+        ProtoTranslator style = getProtoTranslator(params);
+        return new TestArea(difficulty, type, style, monsterIds);
     }
 
     private static MapGenerator buildRecursiveInterpolationGenerator(String params, int difficulty, List<String> monsterIds) {
