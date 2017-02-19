@@ -8,6 +8,7 @@ public class Constants {
     public static final int TERRAIN_DIGGABLE_WALL = 3;
     public static final int TERRAIN_LAVA = 6;
     public static final int TERRAIN_WATER = 7;
+    public static final int TERRAIN_TEMP = 98;
     public static final int TERRAIN_DEBUG = 99;
 
     public static final int FEATURE_NONE = 0;

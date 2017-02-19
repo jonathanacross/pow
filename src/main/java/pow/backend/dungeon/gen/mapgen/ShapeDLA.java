@@ -19,13 +19,13 @@ import java.util.Random;
 // Note that this may not work well for very non-square dungeons.
 public class ShapeDLA implements MapGenerator {
 
-    private ProtoTranslator translator;
-    private List<String> monsterIds;
     private int width;
     private int height;
+    private int level;
+    private ProtoTranslator translator;
+    private List<String> monsterIds;
     private int minRoomSize;
     private int maxRoomSize;
-    private int level;
 
     public ShapeDLA(int width, int height, int level, ProtoTranslator translator, List<String> monsterIds) {
         this.width = width;

@@ -25,6 +25,7 @@ public class WorldDataGen {
 
     private static final DungeonTerrain WATER = TerrainData.getTerrain("water 1");
     private static final DungeonTerrain LAVA  = TerrainData.getTerrain("lava");
+    private static final DungeonTerrain DEBUG  = TerrainData.getTerrain("debug");
 
     private static final DungeonFeature NONE = null;
     private static final DungeonFeature WIN_TILE = new DungeonFeature("wintile", "way to win", "orange pearl",
@@ -131,7 +132,8 @@ public class WorldDataGen {
         switch (generatorType) {
             case "town": return buildTownGenerator(params, difficulty, monsterIds);
             case "recursiveInterpolation": return buildRecursiveInterpolationGenerator(params, difficulty, monsterIds);
-            case "shapeDLA": return shapeDLAGenerator(params, difficulty, monsterIds);
+            case "shapeDLA": return buildShapeDLAGenerator(params, difficulty, monsterIds);
+            case "cellularAutomata": return buildCellularAutomataGenerator(params, difficulty, monsterIds);
             case "terrain test":
             case "run test":
             case "item test":
@@ -147,6 +149,8 @@ public class WorldDataGen {
         Map<Integer, DungeonTerrain> terrainMap = new HashMap<>();
         terrainMap.put(Constants.TERRAIN_WATER, WATER);
         terrainMap.put(Constants.TERRAIN_LAVA, LAVA);
+        terrainMap.put(Constants.TERRAIN_TEMP, DEBUG);
+        terrainMap.put(Constants.TERRAIN_DEBUG, DEBUG);
 
         Map<Integer, DungeonFeature> featureMap = new HashMap<>();
         featureMap.put(Constants.FEATURE_NONE, NONE);
@@ -159,29 +163,17 @@ public class WorldDataGen {
         featureMap.put(Constants.FEATURE_INN_DOOR, INN_DOOR);
 
         switch (name) {
-            case "dungeon":
+            case "town":  // towns
                 terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("floor"));
-                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("big stone wall"));
-                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable big stone wall"));
-                terrainMap.put(Constants.TERRAIN_WATER, WATER);
-                terrainMap.put(Constants.TERRAIN_LAVA, LAVA);
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("small stone wall"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable small stone wall"));
 
                 featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("stairs up"));
                 featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("stairs down"));
                 featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("open door"));
                 featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("closed door"));
                 break;
-            case "crypt":
-                terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("charcoal floor"));
-                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("ivy stone wall"));
-                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable ivy stone wall"));
-
-                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("ivy stone stairs up"));
-                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("ivy stone stairs down"));
-                featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("ivy stone open door"));
-                featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("ivy stone closed door"));
-                break;
-            case "basement":
+            case "basement":  // basement of first town
                 terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("wood floor"));
                 terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("brown stone wall"));
                 terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable brown stone wall"));
@@ -191,15 +183,75 @@ public class WorldDataGen {
                 featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("brown stone open door"));
                 featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("brown stone closed door"));
                 break;
-            case "town":
+            case "dungeon":  // e.g,. dungeons 1, 3, 5
                 terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("floor"));
-                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("small stone wall"));
-                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable small stone wall"));
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("big stone wall"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable big stone wall"));
 
                 featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("stairs up"));
                 featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("stairs down"));
                 featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("open door"));
                 featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("closed door"));
+                break;
+            case "desert cave":  // dungeon 2
+                terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("dark sand"));
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("green moss wall"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable green moss wall"));
+
+                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("green moss stairs up"));
+                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("green moss stairs down"));
+                featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("green moss open door"));
+                featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("green moss closed door"));
+                break;
+            case "ice cave": // dungeon 4
+                terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("ice"));
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("ice wall"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable ice wall"));
+
+                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("ice stairs up"));
+                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("ice stairs down"));
+                featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("ice open door"));
+                featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("ice closed door"));
+                break;
+            case "crypt":  // dungeon 6
+                terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("charcoal floor"));
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("ivy stone wall"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable ivy stone wall"));
+
+                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("ivy stone stairs up"));
+                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("ivy stone stairs down"));
+                featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("ivy stone open door"));
+                featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("ivy stone closed door"));
+                break;
+            case "brown cave":  // dungeon 7
+                terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("dark sand"));
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("brown stone wall"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable brown stone wall"));
+
+                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("brown stone stairs up"));
+                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("brown stone stairs down"));
+                featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("brown stone open door"));
+                featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("brown stone closed door"));
+                break;
+            case "lava cave":  // dungeon 8
+                terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("cold lava floor"));
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("hot stone wall"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable hot stone wall"));
+
+                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("hot stone stairs up"));
+                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("hot stone stairs down"));
+                featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("hot stone open door"));
+                featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("hot stone closed door"));
+                break;
+            case "blue":  // dungeon 9
+                terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("blue floor"));
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("blue wall"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable blue wall"));
+
+                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("blue stairs up"));
+                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("blue stairs down"));
+                featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("blue open door"));
+                featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("blue closed door"));
                 break;
             default:
                 throw new RuntimeException("unknown ProtoTranslator '" + name + "'");
@@ -212,9 +264,17 @@ public class WorldDataGen {
         return new Town(difficulty, style, monsterIds);
     }
 
-    private static MapGenerator shapeDLAGenerator(String params, int difficulty, List<String> monsterIds) {
+    private static MapGenerator buildShapeDLAGenerator(String params, int difficulty, List<String> monsterIds) {
         ProtoTranslator style = getProtoTranslator(params);
         return new ShapeDLA(50, 50, difficulty, style, monsterIds);
+    }
+
+    private static MapGenerator buildCellularAutomataGenerator(String params, int difficulty, List<String> monsterIds) {
+        String[] subParams = params.split(",");
+        int layers = Integer.parseInt(subParams[0]);
+        boolean makeLakes = Boolean.parseBoolean(subParams[1]);
+        ProtoTranslator style = getProtoTranslator(subParams[2]);
+        return new CellularAutomata(50, 50, layers, makeLakes, difficulty, style, monsterIds);
     }
 
     private static MapGenerator buildTestGenerator(String type, String params, int difficulty, List<String> monsterIds) {
