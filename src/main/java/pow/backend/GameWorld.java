@@ -1,12 +1,15 @@
 package pow.backend;
 
+import com.sun.xml.internal.fastinfoset.algorithm.BuiltInEncodingAlgorithm;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.RecentMaps;
 import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.mapgen.MapGenerator;
-import pow.backend.dungeon.gen.worldgen.MapGenData;
+import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.backend.dungeon.gen.worldgen.MapTopology;
+import pow.backend.dungeon.gen.worldgen.SpacialConnection;
+import pow.backend.dungeon.gen.worldgen.WorldDataGen;
 import pow.util.Point;
 import pow.util.Point3D;
 
@@ -23,7 +26,7 @@ public class GameWorld implements Serializable {
 
     public List<MapConnection> getConnections(MapTopology topology, Point3D fromLoc) {
         List<MapConnection> namedConnections = new ArrayList<>();
-        for (pow.backend.dungeon.gen.worldgen.MapConnection connection : topology.getConnections()) {
+        for (SpacialConnection connection : topology.getConnections()) {
             if (connection.fromLoc.equals(fromLoc)) {
                 Point3D toLoc = connection.fromLoc.plus(connection.dir);
                 String destAreaId = topology.getRoomLocs().get(toLoc).id;
@@ -37,18 +40,12 @@ public class GameWorld implements Serializable {
 
     private void genMapWorld(Random rng, Player player, Pet pet) {
         // 1. generate overall structure of the world
-        MapTopology topology;
-        // TODO: put this in private constructor or instance of MapGenData
-        try {
-            List<MapGenData> data = MapGenData.readLinkData();
-            topology = new MapTopology(data, rng, 0.25);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        List<MapPoint> data = WorldDataGen.getTestMapPoints();  // or, getTestMapPoints();
+        MapTopology topology = new MapTopology(data, rng, 0.25);
 
         // 2. generate each area
         world = new HashMap<>();
-        for (Map.Entry<Point3D, MapGenData> entry : topology.getRoomLocs().entrySet()) {
+        for (Map.Entry<Point3D, MapPoint> entry : topology.getRoomLocs().entrySet()) {
             MapGenerator mapGenerator = entry.getValue().mapGenerator;
             String id = entry.getValue().id;
             List<MapConnection> connections = getConnections(topology, entry.getKey());

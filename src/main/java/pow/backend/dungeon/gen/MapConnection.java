@@ -3,7 +3,7 @@ package pow.backend.dungeon.gen;
 import pow.backend.dungeon.DungeonExit;
 import pow.util.Direction;
 
-// TODO: rename to avoid name conflict with worldgen.MapConnection
+// TODO: rename to avoid name conflict with worldgen.SpacialConnection
 public class MapConnection {
     // Location name in the starting map where the exit is;
     // will be added as a key location in the map so that

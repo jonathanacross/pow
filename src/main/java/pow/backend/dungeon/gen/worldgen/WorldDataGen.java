@@ -8,6 +8,7 @@ import pow.backend.dungeon.gen.FeatureData;
 import pow.backend.dungeon.gen.ProtoTranslator;
 import pow.backend.dungeon.gen.TerrainData;
 import pow.backend.dungeon.gen.mapgen.*;
+import pow.util.DebugLogger;
 import pow.util.Direction;
 import pow.util.TsvReader;
 
@@ -15,33 +16,57 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-public class MapGenData {
-    public String id;
-    public int level;
-    public int group;
-    public List<Direction> fromDirs;
-    public Set<Integer> fromGroups;
-    public Set<String> fromIds;
-    public MapGenerator mapGenerator;
+public class WorldDataGen {
 
-    public MapGenData(String id,
-                      int level,
-                      int group,
-                      List<Direction> fromDirs,
-                      Set<Integer> fromGroups,
-                      Set<String> fromIds,
-                      MapGenerator mapGenerator) {
-        this.id = id;
-        this.level = level;
-        this.group = group;
-        this.fromDirs = fromDirs;
-        this.fromGroups = fromGroups;
-        this.fromIds = fromIds;
-        this.mapGenerator = mapGenerator;
+    private static WorldDataGen instance;
+    private static WorldDataGen testInstance;
+    private List<MapPoint> mapPoints;
+
+    public static List<MapPoint> getMapPoints() { return instance.mapPoints; }
+    public static List<MapPoint> getTestMapPoints() { return testInstance.mapPoints; }
+
+
+    private static final DungeonTerrain WATER = TerrainData.getTerrain("water 1");
+    private static final DungeonTerrain LAVA  = TerrainData.getTerrain("lava");
+
+    private static final DungeonFeature NONE = null;
+    private static final DungeonFeature WIN_TILE = new DungeonFeature("wintile", "way to win", "orange pearl",
+            new DungeonFeature.Flags( false, false, false, false, false, false, false, true),
+            new ActionParams());
+    private static final DungeonFeature LOSE_TILE = new DungeonFeature("losetile", "death", "cobra",
+            new DungeonFeature.Flags( false, false, false, false, false, false, false, true),
+            new ActionParams());
+    private static final DungeonFeature CANDLE = FeatureData.getFeature("candle");
+    private static final DungeonFeature FOUNTAIN = FeatureData.getFeature("fountain");
+    private static final DungeonFeature INN_DOOR = FeatureData.getFeature("inn");
+    private static final DungeonFeature WEAPON_SHOP_DOOR = FeatureData.getFeature("weapon shop");
+    private static final DungeonFeature MAGIC_SHOP_DOOR = FeatureData.getFeature("magic shop");
+    static {
+        try {
+            instance = new WorldDataGen("/data/levels.tsv");
+            testInstance = new WorldDataGen("/data/test-levels.tsv");
+        } catch (Exception e) {
+            DebugLogger.fatal(e);
+            throw new RuntimeException(e); // so intellij won't complain
+        }
     }
 
-    public static MapGenData parseMapLinkData(String[] line) {
-        // TODO: check line length
+    private WorldDataGen(String fileName) throws IOException {
+        InputStream tsvStream = this.getClass().getResourceAsStream(fileName);
+        TsvReader reader = new TsvReader(tsvStream);
+
+        this.mapPoints = new ArrayList<>();
+        for (String[] line : reader.getData()) {
+            MapPoint roomLinkData = parseMapLinkData(line);
+            mapPoints.add(roomLinkData);
+        }
+    }
+
+    private static MapPoint parseMapLinkData(String[] line) {
+        if (line.length != 9) {
+            throw new RuntimeException("error: expected 9 fields in line.");
+        }
+
         String id = line[0];
 
         int level = Integer.parseInt(line[1]);
@@ -78,23 +103,7 @@ public class MapGenData {
         List<String> monsterIds = getMonsterIds(line[8]);
         MapGenerator generator = buildGenerator(generatorName, generatorParams, level, monsterIds);
 
-        return new MapGenData(id, level, group, directions, fromGroups, fromIds, generator);
-    }
-
-    // TODO: add consistency checks to the input file:
-    // - first room isn't connected to anything
-    // - every other room connects either to an id or a group, but not both
-    public static List<MapGenData> readLinkData() throws IOException {
-        InputStream tsvStream = GenTopoTest.class.getResourceAsStream("/data/test-levels.tsv");
-        TsvReader reader = new TsvReader(tsvStream);
-
-        List<MapGenData> roomLinkDataList = new ArrayList<>();
-        for (String[] line : reader.getData()) {
-            MapGenData roomLinkData = parseMapLinkData(line);
-            roomLinkDataList.add(roomLinkData);
-        }
-
-        return roomLinkDataList;
+        return new MapPoint(id, level, group, directions, fromGroups, fromIds, generator);
     }
 
     private static List<String> getMonsterIds(String field) {
@@ -127,21 +136,6 @@ public class MapGenData {
         }
     }
 
-    private static DungeonTerrain WATER = TerrainData.getTerrain("water 1");
-    private static DungeonTerrain LAVA  = TerrainData.getTerrain("lava");
-
-    private static DungeonFeature WIN_TILE = new DungeonFeature("wintile", "way to win", "orange pearl",
-            new DungeonFeature.Flags( false, false, false, false, false, false, false, true),
-            new ActionParams());
-    private static DungeonFeature LOSE_TILE = new DungeonFeature("losetile", "death", "cobra",
-            new DungeonFeature.Flags( false, false, false, false, false, false, false, true),
-            new ActionParams());
-    private static DungeonFeature CANDLE = FeatureData.getFeature("candle");
-    private static DungeonFeature FOUNTAIN = FeatureData.getFeature("fountain");
-    private static DungeonFeature INN_DOOR = FeatureData.getFeature("inn");
-    private static DungeonFeature WEAPON_SHOP_DOOR = FeatureData.getFeature("weapon shop");
-    private static DungeonFeature MAGIC_SHOP_DOOR = FeatureData.getFeature("magic shop");
-
 
     private static ProtoTranslator getProtoTranslator(String name) {
         // make common entries
@@ -150,6 +144,7 @@ public class MapGenData {
         terrainMap.put(Constants.TERRAIN_LAVA, LAVA);
 
         Map<Integer, DungeonFeature> featureMap = new HashMap<>();
+        featureMap.put(Constants.FEATURE_NONE, NONE);
         featureMap.put(Constants.FEATURE_WIN_TILE, WIN_TILE);
         featureMap.put(Constants.FEATURE_LOSE_TILE, LOSE_TILE);
         featureMap.put(Constants.FEATURE_CANDLE, CANDLE);
@@ -224,75 +219,65 @@ public class MapGenData {
 
     private static MapGenerator buildRecursiveInterpolationGenerator(String params, int difficulty, List<String> monsterIds) {
         RecursiveInterpolation.MapStyle style = null;
-        // TODO: refactor out monsterIds from MapStyle
         switch (params) {
             case "grass":
                 style = new RecursiveInterpolation.MapStyle(
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree")),
-                        monsterIds,
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "desert":
                 style = new RecursiveInterpolation.MapStyle(
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
-                        monsterIds,
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "forest":
                 style = new RecursiveInterpolation.MapStyle(
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "big tree", "pine tree")),
-                        monsterIds,
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "water":
                 style = new RecursiveInterpolation.MapStyle(
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("waves", null, null)),
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("water 3", null, "water 4")),
-                        monsterIds,
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "snow":
                 style = new RecursiveInterpolation.MapStyle(
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("snowy rock", null, null)),
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("snow", "snowy pine tree", "white small tree")),
-                        monsterIds,
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "swamp":
                 style = new RecursiveInterpolation.MapStyle(
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
-                        monsterIds,
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "haunted forest":
                 style = new RecursiveInterpolation.MapStyle(
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "berry bush", "pine tree")),
-                        monsterIds,
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "volcano":
                 style = new RecursiveInterpolation.MapStyle(
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("cold lava floor", null, "dark pebbles")),
-                        monsterIds,
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "gold desert":
                 style = new RecursiveInterpolation.MapStyle(
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "gold tree", "light pebbles")),
-                        monsterIds,
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             default:
                 throw new RuntimeException("Unknown MapStyle '" + params + "'");
         }
 
-        return new RecursiveInterpolation(6, 3, style, difficulty);
+        return new RecursiveInterpolation(6, 3, style, monsterIds, difficulty);
     }
 }

@@ -8,18 +8,18 @@ import java.util.*;
 
 public class MapTopology {
 
-    private Map<Point3D, MapGenData> roomLocs;
-    private Set<MapConnection> connections;
+    private Map<Point3D, MapPoint> roomLocs;
+    private Set<SpacialConnection> connections;
     private String firstMapId;
 
-    public Map<Point3D, MapGenData> getRoomLocs() { return roomLocs; }
-    public Set<MapConnection> getConnections() { return connections; }
+    public Map<Point3D, MapPoint> getRoomLocs() { return roomLocs; }
+    public Set<SpacialConnection> getConnections() { return connections; }
     public String getFirstMapId() { return firstMapId; }
 
-    public MapTopology(List<MapGenData> mapGenDataList, Random rng, double probConnect) {
-        firstMapId = mapGenDataList.get(0).id;
+    public MapTopology(List<MapPoint> mapPointList, Random rng, double probConnect) {
+        firstMapId = mapPointList.get(0).id;
         int attempts = 0;
-        while (!tryBuildMapTopology(mapGenDataList, rng, probConnect)) {
+        while (!tryBuildMapTopology(mapPointList, rng, probConnect)) {
             attempts++;
         }
         if (attempts > 100) {
@@ -61,7 +61,7 @@ public class MapTopology {
         }
 
         // draw rooms
-        for (Map.Entry<Point3D, MapGenData> entry : roomLocs.entrySet()) {
+        for (Map.Entry<Point3D, MapPoint> entry : roomLocs.entrySet()) {
             Point3D p = entry.getKey();
             int x = p.x - xmin;
             int y = p.y - ymin;
@@ -79,16 +79,16 @@ public class MapTopology {
         }
 
         // draw connections
-        for (MapConnection mapConnection : connections) {
-            Point3D p = mapConnection.fromLoc;
+        for (SpacialConnection spacialConnection : connections) {
+            Point3D p = spacialConnection.fromLoc;
             if (p.z != 0) continue;
             int x = p.x - xmin;
             int y = p.y - ymin;
             int dx;
             int dy;
             char c;
-            if (mapConnection.dir == Direction.D || mapConnection.dir == Direction.U) continue;
-            switch (mapConnection.dir) {
+            if (spacialConnection.dir == Direction.D || spacialConnection.dir == Direction.U) continue;
+            switch (spacialConnection.dir) {
                 case N: c = '|'; dx = 4 * x + 1; dy = 2 * y - 1; break;
                 case S: c = '|'; dx = 4 * x + 1; dy = 2 * y + 1; break;
                 case E: c = '-'; dx = 4 * x + 3; dy = 2 * y; break;
@@ -114,22 +114,22 @@ public class MapTopology {
 
     // Attempts to build the topology between maps; this fills in roomLocs and connections.
     // Returns true if success.
-    private boolean tryBuildMapTopology(List<MapGenData> mapGenDataList, Random rng, double probConnect) {
+    private boolean tryBuildMapTopology(List<MapPoint> mapPointList, Random rng, double probConnect) {
         this.roomLocs = new HashMap<>();
-        List<MapConnection> baseConnections = new ArrayList<>();
+        List<SpacialConnection> baseConnections = new ArrayList<>();
 
-        roomLocs.put(new Point3D(0, 0, 0), mapGenDataList.get(0));
+        roomLocs.put(new Point3D(0, 0, 0), mapPointList.get(0));
 
-        for (int i = 1; i < mapGenDataList.size(); i++) {
-            MapConnection connection = findConnection(rng, roomLocs, mapGenDataList.get(i));
+        for (int i = 1; i < mapPointList.size(); i++) {
+            SpacialConnection connection = findConnection(rng, roomLocs, mapPointList.get(i));
             if (connection == null) {
                 return false;
             }
 
             Point3D newLoc = connection.fromLoc.plus(connection.dir);
-            roomLocs.put(newLoc, mapGenDataList.get(i));
+            roomLocs.put(newLoc, mapPointList.get(i));
             baseConnections.add(connection);
-            baseConnections.add(new MapConnection(newLoc, connection.dir.opposite));
+            baseConnections.add(new SpacialConnection(newLoc, connection.dir.opposite));
         }
 
         this.connections = extendConnections(roomLocs, baseConnections, rng, probConnect);
@@ -140,14 +140,14 @@ public class MapTopology {
     // connected originally. This will make it so the map will be more 
     // interesting than just be a big tree. Note that we only connect 
     // rooms that are on the same z-plane.
-    private static Set<MapConnection> extendConnections(
-            Map<Point3D, MapGenData> roomLocs,
-            List<MapConnection> connections, Random rng, double probConnect) {
+    private static Set<SpacialConnection> extendConnections(
+            Map<Point3D, MapPoint> roomLocs,
+            List<SpacialConnection> connections, Random rng, double probConnect) {
 
         List<Point3D> locs = new ArrayList<>();
         locs.addAll(roomLocs.keySet());
 
-        Set<MapConnection> allConnections = new HashSet<>();
+        Set<SpacialConnection> allConnections = new HashSet<>();
         allConnections.addAll(connections);
 
         for (int i = 0; i < locs.size(); i++) {
@@ -159,8 +159,8 @@ public class MapTopology {
                     Point locI2D = new Point(locI.x, locI.y);
                     Point locJ2D = new Point(locJ.x, locJ.y);
                     Direction dir = Direction.getDir(locI2D, locJ2D);
-                    allConnections.add(new MapConnection(locI, dir));
-                    allConnections.add(new MapConnection(locJ, dir.opposite));
+                    allConnections.add(new SpacialConnection(locI, dir));
+                    allConnections.add(new SpacialConnection(locJ, dir.opposite));
                 }
             }
         }
@@ -168,11 +168,11 @@ public class MapTopology {
         return allConnections;
     }
 
-    private static List<Point3D> findConnectingLocations(Map<Point3D, MapGenData> roomLocs, MapGenData roomLinkData) {
+    private static List<Point3D> findConnectingLocations(Map<Point3D, MapPoint> roomLocs, MapPoint roomLinkData) {
         List<Point3D> connectLocs = new ArrayList<>();
         boolean useIds = !roomLinkData.fromIds.isEmpty();
 
-        for (Map.Entry<Point3D, MapGenData> entry : roomLocs.entrySet()) {
+        for (Map.Entry<Point3D, MapPoint> entry : roomLocs.entrySet()) {
             if ((useIds && roomLinkData.fromIds.contains(entry.getValue().id)) ||
                     (!useIds && roomLinkData.fromGroups.contains(entry.getValue().group))) {
                 connectLocs.add(entry.getKey());
@@ -184,9 +184,9 @@ public class MapTopology {
         return connectLocs;
     }
 
-    private static MapConnection findConnection(Random rng,
-                                                Map<Point3D, MapGenData> roomLocs,
-                                                MapGenData room) {
+    private static SpacialConnection findConnection(Random rng,
+                                                    Map<Point3D, MapPoint> roomLocs,
+                                                    MapPoint room) {
         int attempts = 0;
         final int maxAttempts = 100;
 
@@ -204,7 +204,7 @@ public class MapTopology {
         if (attempts >= maxAttempts) {
             return null;
         } else {
-            return new MapConnection(fromLoc, dir);
+            return new SpacialConnection(fromLoc, dir);
         }
     }
 

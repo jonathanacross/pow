@@ -3,11 +3,11 @@ package pow.backend.dungeon.gen.worldgen;
 import pow.util.Direction;
 import pow.util.Point3D;
 
-public class MapConnection {
+public class SpacialConnection {
     public Point3D fromLoc;
     public Direction dir;
 
-    public MapConnection(Point3D fromLoc, Direction dir) {
+    public SpacialConnection(Point3D fromLoc, Direction dir) {
         this.fromLoc = fromLoc;
         this.dir = dir;
     }
@@ -17,7 +17,7 @@ public class MapConnection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MapConnection that = (MapConnection) o;
+        SpacialConnection that = (SpacialConnection) o;
 
         if (!fromLoc.equals(that.fromLoc)) return false;
         return dir == that.dir;

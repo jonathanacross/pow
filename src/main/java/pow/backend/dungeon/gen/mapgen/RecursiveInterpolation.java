@@ -35,18 +35,15 @@ public class RecursiveInterpolation implements MapGenerator {
     public static class MapStyle {
         public List<TerrainFeatureTriplet> borders;
         public List<TerrainFeatureTriplet> interiors;
-        public List<String> monsterIds;
         public String upstairsFeatureId;
         public String downstairsFeatureId;
 
         public MapStyle(List<TerrainFeatureTriplet> borders,
                         List<TerrainFeatureTriplet> interiors,
-                        List<String> monsterIds,
                         String upstairsFeatureId,
                         String downstairsFeatureId) {
             this.borders = borders;
             this.interiors = interiors;
-            this.monsterIds = monsterIds;
             this.upstairsFeatureId = upstairsFeatureId;
             this.downstairsFeatureId = downstairsFeatureId;
         }
@@ -56,17 +53,23 @@ public class RecursiveInterpolation implements MapGenerator {
     private int numInterpolationSteps;
     private MapStyle mapStyle;
     private int level;
-    public RecursiveInterpolation(int sourceSize, int numInterpolationSteps, MapStyle mapStyle, int level) {
+    private List<String> monsterIds;
+    public RecursiveInterpolation(int sourceSize,
+                                  int numInterpolationSteps,
+                                  MapStyle mapStyle,
+                                  List<String> monsterIds,
+                                  int level) {
         this.sourceSize = sourceSize;
         this.numInterpolationSteps = numInterpolationSteps;
         this.mapStyle = mapStyle;
+        this.monsterIds = monsterIds;
         this.level = level;
     }
 
     public GameMap genMap(String name,
                           List<MapConnection> connections,
                           Random rng) {
-        return genMap(name, level, sourceSize, sourceSize, numInterpolationSteps, mapStyle, connections, rng);
+        return genMap(name, level, sourceSize, sourceSize, numInterpolationSteps, mapStyle, monsterIds, connections, rng);
     }
 
     private static GameMap genMap(
@@ -76,6 +79,7 @@ public class RecursiveInterpolation implements MapGenerator {
             int height,
             int numInterpolationSteps,
             MapStyle style,
+            List<String> monsterIds,
             List<MapConnection> connections,
             Random rng) {
 
@@ -125,7 +129,7 @@ public class RecursiveInterpolation implements MapGenerator {
         int numItems = (w - 1) * (h - 1) / 100;
         GeneratorUtils.addItems(level, squares, numItems, rng);
 
-        GameMap map = new GameMap(name, level, squares, keyLocations, style.monsterIds, null);
+        GameMap map = new GameMap(name, level, squares, keyLocations, monsterIds, null);
         return map;
     }
 

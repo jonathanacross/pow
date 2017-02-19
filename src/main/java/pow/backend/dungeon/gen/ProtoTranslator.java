@@ -11,12 +11,8 @@ public class ProtoTranslator {
     private Map<Integer, DungeonTerrain> terrainMap;
     private Map<Integer, DungeonFeature> featureMap;
 
-    public DungeonTerrain getTerrain(int x) {
-        return terrainMap.get(Constants.getTerrain(x));
-    }
-    public DungeonFeature getFeature(int x) {
-        return featureMap.get(Constants.getFeature(x));
-    }
+    public DungeonTerrain getTerrain(int x) { return terrainMap.get(Constants.getTerrain(x)); }
+    public DungeonFeature getFeature(int x) { return featureMap.get(Constants.getFeature(x)); }
 
     public ProtoTranslator(Map<Integer, DungeonTerrain> terrainMap, Map<Integer, DungeonFeature> featureMap) {
         this.terrainMap = terrainMap;
