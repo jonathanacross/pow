@@ -10,19 +10,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-// generates a test area.  Not designed to be configurable.
+// generates various types of test areas.
 public class TestArea implements MapGenerator {
-    private int level;
 
-    public TestArea(int level) {
+    private int level;
+    private String type;
+    private ProtoTranslator translator;
+    private List<String> monsterIds;
+
+    public TestArea(String type, int level, ProtoTranslator translator, List<String> monsterIds) {
+        this.type = type;
         this.level = level;
+        this.translator = translator;
+        this.monsterIds = monsterIds;
     }
 
+    @Override
     public GameMap genMap(String name,
                           List<MapConnection> connections,
                           Random rng) {
-        //return genItemMap(name, connections, rng);
-        return genPremadeMap(name, RUN_TEST, connections, rng);
+        switch (type) {
+            case "run test":
+                return genPremadeMap(name, RUN_TEST, connections, rng);
+            case "terrain test":
+                return genPremadeMap(name, TERRAIN_TYPES_TEST, connections, rng);
+            case "item test":
+                return genItemMap(name, connections, rng);
+            case "arena":
+                return genArena(name, connections, rng);
+            default:
+                throw new RuntimeException("unknown test area type '" + type + "'");
+        }
     }
 
     private GameMap genPremadeMap(String name,
@@ -30,7 +48,6 @@ public class TestArea implements MapGenerator {
                                   List<MapConnection> connections,
                                   Random rng) {
         int[][] data = genMapPremade(charData);
-        ProtoTranslator translator = new ProtoTranslator(0);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, translator);
 
         // place the exits and get key locations
@@ -51,10 +68,10 @@ public class TestArea implements MapGenerator {
     }
 
     // Creates a map showing all items for all levels.
-    public GameMap genItemMap(String name,
+    private GameMap genItemMap(String name,
             List<MapConnection> connections,
             Random rng) {
-        int width = 100;
+        int width = 50;
         int height = 100;
         int[][] data = new int[width][height];
         for (int x = 0; x < width; x++) {
@@ -66,7 +83,6 @@ public class TestArea implements MapGenerator {
             }
         }
 
-        ProtoTranslator translator = new ProtoTranslator(1);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, translator);
 
         // place the exits and get key locations
@@ -89,7 +105,7 @@ public class TestArea implements MapGenerator {
             }
         }
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, null, null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsterIds, null);
         return map;
     }
 
@@ -173,4 +189,37 @@ public class TestArea implements MapGenerator {
             "#..................................#",
             "####################################"
     };
+
+    private GameMap genArena(String name,
+                          List<MapConnection> connections,
+                          Random rng) {
+
+        final int width = 60;
+        final int height = 60;
+        int[][] data = new int[width][height];
+
+        for (int c = 0; c < width; c++) {
+            for (int r = 0; r < height; r++) {
+                data[c][r] = (c == 0 || r == 0 || c == width - 1 || r == height - 1) ?
+                        Constants.TERRAIN_WALL :
+                        Constants.TERRAIN_FLOOR;
+            }
+        }
+
+        DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, this.translator);
+
+        String upstairsFeatureId = translator.getFeature(Constants.FEATURE_UP_STAIRS).id;
+        String downstairsFeatureId =  translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
+        String floorTerrainId = translator.getTerrain(Constants.TERRAIN_FLOOR).id;
+        Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
+                connections,
+                dungeonSquares,
+                floorTerrainId,
+                upstairsFeatureId,
+                downstairsFeatureId,
+                rng);
+
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);
+        return map;
+    }
 }

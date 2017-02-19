@@ -15,10 +15,12 @@ import java.util.Random;
 public class Town implements MapGenerator {
 
     private int level;
+    private ProtoTranslator translator;
     private List<String> monsterIds;
 
-    public Town(int level, List<String> monsterIds) {
+    public Town(int level, ProtoTranslator translator, List<String> monsterIds) {
         this.level = level;
+        this.translator = translator;
         this.monsterIds = monsterIds;
     }
 
@@ -26,7 +28,6 @@ public class Town implements MapGenerator {
     public GameMap genMap(String name, List<MapConnection> connections, Random rng) {
         int[][] data = genMap(rng);
 
-        ProtoTranslator translator = new ProtoTranslator(3);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, translator);
 
         // Add exits
