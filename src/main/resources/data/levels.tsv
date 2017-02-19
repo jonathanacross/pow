@@ -27,8 +27,8 @@ water2	31	4	N,E,S,W	4		recursiveInterpolation	water	goldfish,green fish,eel,pink
 water3	31	4	N,E,S,W	4		recursiveInterpolation	water	goldfish,green fish,eel,pink jellyfish
 snow1	32	5	N,E,S,W	4		recursiveInterpolation	snow	dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
 snow2	33	5	N,E,S,W	5		recursiveInterpolation	snow	dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
-d4l1	35		D		snow2	shapeDLA	ice cave	dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
-d4l2	36		D		d4l1	shapeDLA	ice cave	dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
+d4l1	35		D		snow2	delve	ice cave	dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
+d4l2	36		D		d4l1	delve	ice cave	dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
 swamp1	40	6	N,E,S,W	4		recursiveInterpolation	swamp	orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
 swamp2	41	6	N,E,S,W	6		recursiveInterpolation	swamp	orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
 swamp3	42	6	N,E,S,W	6		recursiveInterpolation	swamp	orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
