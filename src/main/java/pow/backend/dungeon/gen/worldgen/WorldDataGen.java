@@ -3,10 +3,7 @@ package pow.backend.dungeon.gen.worldgen;
 import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonTerrain;
-import pow.backend.dungeon.gen.Constants;
-import pow.backend.dungeon.gen.FeatureData;
-import pow.backend.dungeon.gen.ProtoTranslator;
-import pow.backend.dungeon.gen.TerrainData;
+import pow.backend.dungeon.gen.*;
 import pow.backend.dungeon.gen.mapgen.*;
 import pow.util.DebugLogger;
 import pow.util.Direction;
@@ -113,8 +110,16 @@ public class WorldDataGen {
         if (field.isEmpty()) {
             return new ArrayList<>();
         }
-        String[] parts = field.split(",");
-        return new ArrayList<>(Arrays.asList(parts));
+        String[] monsterIds = field.split(",");
+        // validate! important otherwise we might not detect a crashing error until late in the game
+        Set<String> allMonsterIds = MonsterGenerator.getMonsterIds();
+        for (String monsterId: monsterIds) {
+            if (!allMonsterIds.contains(monsterId)) {
+                throw new RuntimeException("error: when reading levels: unknown monster id '" + monsterId + "'");
+            }
+        }
+
+        return new ArrayList<>(Arrays.asList(monsterIds));
     }
 
     private static final String STAIRS_UP = "stairs up";
@@ -209,16 +214,16 @@ public class WorldDataGen {
 
     private static MapGenerator shapeDLAGenerator(String params, int difficulty, List<String> monsterIds) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new ShapeDLA(style, monsterIds, 50, 50, difficulty);
+        return new ShapeDLA(50, 50, difficulty, style, monsterIds);
     }
 
     private static MapGenerator buildTestGenerator(String type, String params, int difficulty, List<String> monsterIds) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new TestArea(difficulty, type, style, monsterIds);
+        return new TestArea(type, difficulty, style, monsterIds);
     }
 
     private static MapGenerator buildRecursiveInterpolationGenerator(String params, int difficulty, List<String> monsterIds) {
-        RecursiveInterpolation.MapStyle style = null;
+        RecursiveInterpolation.MapStyle style;
         switch (params) {
             case "grass":
                 style = new RecursiveInterpolation.MapStyle(
@@ -278,6 +283,6 @@ public class WorldDataGen {
                 throw new RuntimeException("Unknown MapStyle '" + params + "'");
         }
 
-        return new RecursiveInterpolation(6, 3, style, monsterIds, difficulty);
+        return new RecursiveInterpolation(6, 3, difficulty, style, monsterIds);
     }
 }

@@ -1,13 +1,15 @@
 package pow.backend;
 
+import pow.backend.action.Action;
+import pow.backend.action.ActionResult;
 import pow.backend.action.Log;
 import pow.backend.actors.Actor;
-import pow.backend.action.ActionResult;
-import pow.backend.action.Action;
 import pow.backend.behavior.Behavior;
 import pow.backend.event.GameResult;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class GameBackend {
 

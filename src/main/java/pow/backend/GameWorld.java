@@ -1,6 +1,5 @@
 package pow.backend;
 
-import com.sun.xml.internal.fastinfoset.algorithm.BuiltInEncodingAlgorithm;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.RecentMaps;
@@ -40,7 +39,7 @@ public class GameWorld implements Serializable {
 
     private void genMapWorld(Random rng, Player player, Pet pet) {
         // 1. generate overall structure of the world
-        List<MapPoint> data = WorldDataGen.getTestMapPoints();  // or, getTestMapPoints();
+        List<MapPoint> data = WorldDataGen.getMapPoints();  // or, getTestMapPoints();
         MapTopology topology = new MapTopology(data, rng, 0.25);
 
         // 2. generate each area

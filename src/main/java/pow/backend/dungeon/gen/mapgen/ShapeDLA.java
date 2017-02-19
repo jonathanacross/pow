@@ -9,7 +9,9 @@ import pow.backend.dungeon.gen.ProtoTranslator;
 import pow.util.Array2D;
 import pow.util.Point;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 
 // generates a dungeon using rectangle diffusion limited aggregation
@@ -25,14 +27,14 @@ public class ShapeDLA implements MapGenerator {
     private int maxRoomSize;
     private int level;
 
-    public ShapeDLA(ProtoTranslator translator, List<String> monsterIds, int width, int height, int level) {
-        this.translator = translator;
-        this.monsterIds = monsterIds;
+    public ShapeDLA(int width, int height, int level, ProtoTranslator translator, List<String> monsterIds) {
         this.width = width;
         this.height = height;
+        this.level = level;
+        this.translator = translator;
+        this.monsterIds = monsterIds;
         this.minRoomSize = 3;
         this.maxRoomSize = 15;
-        this.level = level;
     }
 
     private static class Shape {

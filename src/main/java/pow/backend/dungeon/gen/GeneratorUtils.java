@@ -8,9 +8,8 @@ import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.util.Array2D;
-import pow.util.DebugLogger;
-import pow.util.Point;
 import pow.util.Direction;
+import pow.util.Point;
 
 import java.util.*;
 

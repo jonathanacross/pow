@@ -3,12 +3,11 @@ package pow.backend;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
-import pow.backend.dungeon.*;
-import pow.util.Array2D;
-import pow.util.Circle;
-import pow.util.MathUtils;
-import pow.util.Point;
-import pow.util.Spiral;
+import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.LightSource;
+import pow.backend.dungeon.SimpleLightSource;
+import pow.util.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -18,9 +18,9 @@ public class TestArea implements MapGenerator {
     private ProtoTranslator translator;
     private List<String> monsterIds;
 
-    public TestArea(int level, String type, ProtoTranslator translator, List<String> monsterIds) {
-        this.level = level;
+    public TestArea(String type, int level, ProtoTranslator translator, List<String> monsterIds) {
         this.type = type;
+        this.level = level;
         this.translator = translator;
         this.monsterIds = monsterIds;
     }
