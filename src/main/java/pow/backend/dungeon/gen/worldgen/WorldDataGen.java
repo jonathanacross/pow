@@ -135,6 +135,7 @@ public class WorldDataGen {
             case "shapeDLA": return buildShapeDLAGenerator(params, difficulty, monsterIds);
             case "delve": return buildDelveGenerator(params, difficulty, monsterIds);
             case "cellularAutomata": return buildCellularAutomataGenerator(params, difficulty, monsterIds);
+            case "premade": return buildPremadeGenerator(params, difficulty, monsterIds);
             case "terrain test":
             case "run test":
             case "item test":
@@ -286,6 +287,13 @@ public class WorldDataGen {
     private static MapGenerator buildTestGenerator(String type, String params, int difficulty, List<String> monsterIds) {
         ProtoTranslator style = getProtoTranslator(params);
         return new TestArea(type, difficulty, style, monsterIds);
+    }
+
+    private static MapGenerator buildPremadeGenerator(String params, int difficulty, List<String> monsterIds) {
+        String[] subParams = params.split(",");
+        PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.getLevel(subParams[0]);
+        ProtoTranslator style = getProtoTranslator(subParams[1]);
+        return new PremadeGenerator(mapInfo, difficulty, style, monsterIds);
     }
 
     private static MapGenerator buildRecursiveInterpolationGenerator(String params, int difficulty, List<String> monsterIds) {

@@ -1,7 +1,7 @@
 #id	level	group	possible dirs	from groups	from id	generator	genParams	monsters
 town1	0	1				town	town	farmer,mangy leper,jester,beggar,salesman
-basement1	1		D		town1	shapeDLA	basement	green mushrooms,black ant,white rat,brown beetle,crawling moss
-basement2	2		D		basement1	shapeDLA	basement	green mushrooms,black ant,white rat,brown beetle,crawling moss,giant salamander
+basement1	1		D		town1	premade	basementl1,basement	green mushrooms,black ant,white rat,brown beetle,crawling moss
+basement2	2		D		basement1	premade	basementl2,basement	green mushrooms,black ant,white rat,brown beetle,crawling moss,giant salamander
 grassyfields1	1	1	N,E,S,W	1		recursiveInterpolation	grass	bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
 grassyfields2	2	1	N,E,S,W	1		recursiveInterpolation	grass	bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
 grassyfields3	3	1	N,E,S,W	1		recursiveInterpolation	grass	bit,bot,yellow ant,pigeon,yellow snake,scruffy dog

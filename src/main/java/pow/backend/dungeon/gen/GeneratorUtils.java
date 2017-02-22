@@ -103,44 +103,11 @@ public class GeneratorUtils {
         StringBuilder sb = new StringBuilder();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                sb.append(getChar(map[x][y]));
+                sb.append(Constants.getChar(map[x][y]));
             }
             sb.append("\n");
         }
         return sb.toString();
-    }
-
-    private static char getChar(int x) {
-        int feature = Constants.getFeature(x);
-        // if there's a feature, draw it
-        if (feature != Constants.FEATURE_NONE) {
-            switch (feature) {
-                case Constants.FEATURE_CLOSED_DOOR: return '+';
-                case Constants.FEATURE_OPEN_DOOR: return '\'';
-                case Constants.FEATURE_CANDLE: return 'c';
-                case Constants.FEATURE_WIN_TILE: return 'W';
-                case Constants.FEATURE_LOSE_TILE: return 'L';
-                case Constants.FEATURE_UP_STAIRS: return '<';
-                case Constants.FEATURE_DOWN_STAIRS: return '>';
-                case Constants.FEATURE_FOUNTAIN: return 'f';
-                case Constants.FEATURE_INN_DOOR: return '1';
-                case Constants.FEATURE_WEAPON_SHOP_DOOR: return '2';
-                case Constants.FEATURE_MAGIC_SHOP_DOOR: return '3';
-                default: throw new IllegalArgumentException("unknown feature " + feature);
-            }
-        } else {
-            // draw the terrain
-            int terrain = Constants.getTerrain(x);
-            switch (terrain) {
-                case Constants.TERRAIN_WALL: return '#';
-                case Constants.TERRAIN_FLOOR: return '.';
-                case Constants.TERRAIN_DIGGABLE_WALL: return '%';
-                case Constants.TERRAIN_LAVA: return '~';
-                case Constants.TERRAIN_WATER: return 'w';
-                case Constants.TERRAIN_DEBUG: return '?';
-                default: throw new IllegalArgumentException("unknown terrain " + terrain);
-            }
-        }
     }
 
     // Finds the location of 'value' in the array.
