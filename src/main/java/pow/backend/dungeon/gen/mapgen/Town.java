@@ -136,7 +136,7 @@ public class Town implements MapGenerator {
         int height = Array2D.height(map);
 
         List<Rectangle> buildings = new ArrayList<>();
-        // TODO: verify that this doesn't fail (loop forever) with reasonable parameters.
+        int attempts = 0;
         do {
             int buildingWidth = 6 + rng.nextInt(3);
             int buildingHeight = 5 + rng.nextInt(3);
@@ -155,6 +155,13 @@ public class Town implements MapGenerator {
             if (valid) {
                 buildings.add(r);
             }
+
+            // TOOD: this fails sometimes.  Need to replace algorithm
+            attempts++;
+            if (attempts > 1000) {
+                throw new RuntimeException("getBuildingLocations - failed to find rooms");
+            }
+
         } while (buildings.size() < numBuildings);
 
         return buildings;

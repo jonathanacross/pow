@@ -43,7 +43,7 @@ public class GameState implements Serializable {
 
     public GameState(String name) {
         this.gameInProgress = false;
-        this.rng = new Random();
+        this.rng = new Random(128);
         this.player = new Player();
         this.player.name = name;
         this.pet = new Pet(

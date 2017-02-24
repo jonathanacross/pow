@@ -78,6 +78,7 @@ public class Delve implements MapGenerator {
                           List<MapConnection> connections,
                           Random rng) {
         int[][] data = genMap(width, height, rng);
+        data = GeneratorUtils.trimMap(data);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, this.translator);
 
         // place the exits and get key locations

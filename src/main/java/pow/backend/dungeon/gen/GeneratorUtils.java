@@ -316,8 +316,46 @@ public class GeneratorUtils {
         return square;
     }
 
+    // Removes extra borders of impassible stuff -- makes the map smaller, and
+    // makes it so we won't have to "tunnel" to the nearest exit.
+    // This is necessary to call before using findExitCoordinate.
+    public static int[][] trimMap(int[][] squares) {
+        System.out.println(getMapString(squares));
+        int width = Array2D.width(squares);
+        int height = Array2D.height(squares);
+
+        int minInteriorX = width - 1;
+        int maxInteriorX = 0;
+        int minInteriorY = height - 1;
+        int maxInteriorY = 0;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (Constants.getTerrain(squares[x][y]) != Constants.TERRAIN_WALL) {
+                    minInteriorX = Math.min(minInteriorX, x);
+                    maxInteriorX = Math.max(maxInteriorX, x);
+                    minInteriorY = Math.min(minInteriorY, y);
+                    maxInteriorY = Math.max(maxInteriorY, y);
+                }
+            }
+        }
+
+        int newWidth = maxInteriorX - minInteriorX + 3;
+        int newHeight = maxInteriorY - minInteriorY + 3;
+        System.out.println();
+        System.out.println("minInteriorX = " + minInteriorX + "  maxInteriorX = " + maxInteriorX + "  width = " + width + "   newWidth = " + newWidth);
+        System.out.println("minInteriorY = " + minInteriorY + "  maxInteriorY = " + maxInteriorY + "  height= " + height +"   newHeight= " + newHeight);
+        int[][] croppedLayout = new int[newWidth][newHeight];
+        for (int x = minInteriorX - 1; x <= maxInteriorX + 1; x++) {
+            for (int y = minInteriorY - 1; y <= maxInteriorY + 1; y++) {
+                croppedLayout[x - minInteriorX + 1][y - minInteriorY + 1] = squares[x][y];
+            }
+        }
+        return croppedLayout;
+    }
+
     private static boolean isOpen(DungeonSquare square) {
-        return !square.terrain.flags.blockGround;// && square.feature == null;
+        return !square.terrain.flags.blockGround || square.terrain.flags.diggable;
     }
 
     // Given a row or column to search, this returns a coordinate where there is some
@@ -406,8 +444,7 @@ public class GeneratorUtils {
             Random rng) {
         Map<String, Point> keyLocations = new HashMap<>();
         for (MapConnection connection : connections) {
-            if (connection.dir == Direction.U ||
-                    connection.dir == Direction.D) {
+            if (connection.dir == Direction.U || connection.dir == Direction.D) {
                 // up or down
                 DungeonFeature stairs = GeneratorUtils.buildStairsFeature(upstairsFeatureId, downstairsFeatureId, connection);
                 Point loc = GeneratorUtils.findStairsLocation(squares, rng);

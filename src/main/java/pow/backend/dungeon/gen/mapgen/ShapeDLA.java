@@ -56,6 +56,7 @@ public class ShapeDLA implements MapGenerator {
                           Random rng) {
 
         int[][] data = genMap(this.width, this.height, rng);
+        data = GeneratorUtils.trimMap(data);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, this.translator);
 
         // place the exits and get key locations

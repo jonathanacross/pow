@@ -155,7 +155,7 @@ public class MapTopology {
                 Point3D locI = locs.get(i);
                 Point3D locJ = locs.get(j);
                 int dist2 = locI.distSquared(locJ);
-                if (dist2 == 1 && rng.nextDouble() <= probConnect && locI.z == locJ.z) {
+                if (dist2 == 1 && rng.nextDouble() <= probConnect && locI.z == locJ.z && locI.z == 0) {
                     Point locI2D = new Point(locI.x, locI.y);
                     Point locJ2D = new Point(locJ.x, locJ.y);
                     Direction dir = Direction.getDir(locI2D, locJ2D);
