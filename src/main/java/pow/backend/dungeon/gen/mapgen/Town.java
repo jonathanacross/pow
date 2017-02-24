@@ -156,10 +156,13 @@ public class Town implements MapGenerator {
                 buildings.add(r);
             }
 
-            // TOOD: this fails sometimes.  Need to replace algorithm
+            // Theoretically we may not stop (with probability of measure 0), but
+            // the chance of success is fairly high, so we terminate quickly.
             attempts++;
-            if (attempts > 1000) {
-                throw new RuntimeException("getBuildingLocations - failed to find rooms");
+            if (attempts > 100) {
+                // force a restart
+                buildings.clear();
+                attempts = 0;
             }
 
         } while (buildings.size() < numBuildings);

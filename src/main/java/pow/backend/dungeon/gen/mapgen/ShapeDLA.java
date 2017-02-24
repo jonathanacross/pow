@@ -84,8 +84,8 @@ public class ShapeDLA implements MapGenerator {
         int height = rng.nextInt(maxRoomSize - minRoomSize) + minRoomSize;
         int locxmin = 1;
         int locymin = 1;
-        int locxmax = dungeonWidth - width;
-        int locymax = dungeonHeight - height;
+        int locxmax = dungeonWidth - width - 1;
+        int locymax = dungeonHeight - height - 1;
         int xmin = rng.nextInt(locxmax - locxmin) + locxmin;
         int ymin = rng.nextInt(locymax - locymin) + locymin;
 

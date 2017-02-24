@@ -320,7 +320,6 @@ public class GeneratorUtils {
     // makes it so we won't have to "tunnel" to the nearest exit.
     // This is necessary to call before using findExitCoordinate.
     public static int[][] trimMap(int[][] squares) {
-        System.out.println(getMapString(squares));
         int width = Array2D.width(squares);
         int height = Array2D.height(squares);
 
@@ -342,9 +341,6 @@ public class GeneratorUtils {
 
         int newWidth = maxInteriorX - minInteriorX + 3;
         int newHeight = maxInteriorY - minInteriorY + 3;
-        System.out.println();
-        System.out.println("minInteriorX = " + minInteriorX + "  maxInteriorX = " + maxInteriorX + "  width = " + width + "   newWidth = " + newWidth);
-        System.out.println("minInteriorY = " + minInteriorY + "  maxInteriorY = " + maxInteriorY + "  height= " + height +"   newHeight= " + newHeight);
         int[][] croppedLayout = new int[newWidth][newHeight];
         for (int x = minInteriorX - 1; x <= maxInteriorX + 1; x++) {
             for (int y = minInteriorY - 1; y <= maxInteriorY + 1; y++) {
