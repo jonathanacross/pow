@@ -19,13 +19,13 @@ import java.util.Random;
 // Note that this may not work well for very non-square dungeons.
 public class ShapeDLA implements MapGenerator {
 
-    private ProtoTranslator translator;
-    private List<String> monsterIds;
     private int width;
     private int height;
+    private int level;
+    private ProtoTranslator translator;
+    private List<String> monsterIds;
     private int minRoomSize;
     private int maxRoomSize;
-    private int level;
 
     public ShapeDLA(int width, int height, int level, ProtoTranslator translator, List<String> monsterIds) {
         this.width = width;
@@ -56,6 +56,7 @@ public class ShapeDLA implements MapGenerator {
                           Random rng) {
 
         int[][] data = genMap(this.width, this.height, rng);
+        data = GeneratorUtils.trimMap(data);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, this.translator);
 
         // place the exits and get key locations
@@ -83,8 +84,8 @@ public class ShapeDLA implements MapGenerator {
         int height = rng.nextInt(maxRoomSize - minRoomSize) + minRoomSize;
         int locxmin = 1;
         int locymin = 1;
-        int locxmax = dungeonWidth - width;
-        int locymax = dungeonHeight - height;
+        int locxmax = dungeonWidth - width - 1;
+        int locymax = dungeonHeight - height - 1;
         int xmin = rng.nextInt(locxmax - locxmin) + locxmin;
         int ymin = rng.nextInt(locymax - locymin) + locymin;
 

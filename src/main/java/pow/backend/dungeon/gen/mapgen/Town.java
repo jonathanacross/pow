@@ -136,7 +136,7 @@ public class Town implements MapGenerator {
         int height = Array2D.height(map);
 
         List<Rectangle> buildings = new ArrayList<>();
-        // TODO: verify that this doesn't fail (loop forever) with reasonable parameters.
+        int attempts = 0;
         do {
             int buildingWidth = 6 + rng.nextInt(3);
             int buildingHeight = 5 + rng.nextInt(3);
@@ -155,6 +155,16 @@ public class Town implements MapGenerator {
             if (valid) {
                 buildings.add(r);
             }
+
+            // Theoretically we may not stop (with probability of measure 0), but
+            // the chance of success is fairly high, so we terminate quickly.
+            attempts++;
+            if (attempts > 100) {
+                // force a restart
+                buildings.clear();
+                attempts = 0;
+            }
+
         } while (buildings.size() < numBuildings);
 
         return buildings;

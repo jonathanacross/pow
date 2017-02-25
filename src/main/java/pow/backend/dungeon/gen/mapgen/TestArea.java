@@ -47,24 +47,9 @@ public class TestArea implements MapGenerator {
                                   String[] charData,
                                   List<MapConnection> connections,
                                   Random rng) {
-        int[][] data = genMapPremade(charData);
-        DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, translator);
-
-        // place the exits and get key locations
-        String upstairsFeatureId = translator.getFeature(Constants.FEATURE_UP_STAIRS).id;
-        String downstairsFeatureId =  translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
-        String floorTerrainId = translator.getTerrain(Constants.TERRAIN_FLOOR).id;
-        Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
-                connections,
-                dungeonSquares,
-                floorTerrainId,
-                upstairsFeatureId,
-                downstairsFeatureId,
-                rng);
-
-        List<String> monsterIds = Arrays.asList("farmer", "mangy leper", "jester", "beggar", "salesman");
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsterIds, null);
-        return map;
+        PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.parseMapInfo(Arrays.asList(charData));
+        PremadeGenerator generator = new PremadeGenerator(mapInfo, level, translator, monsterIds);
+        return generator.genMap(name, connections, rng);
     }
 
     // Creates a map showing all items for all levels.
@@ -109,34 +94,8 @@ public class TestArea implements MapGenerator {
         return map;
     }
 
-    private int[][] genMapPremade(String[] map) {
-        int w = map[0].length();
-        int h = map.length;
-
-        // start with an empty room
-        int[][] data = new int[w][h];
-        for (int x = 0; x < w; x++) {
-            for (int y = 0; y < h; y++) {
-                switch (map[y].charAt(x)) {
-                    case '#': data[x][y] = Constants.TERRAIN_WALL; break;
-                    case 'c': data[x][y] = Constants.TERRAIN_WALL | Constants.FEATURE_CANDLE; break;
-                    case 'w': data[x][y] = Constants.TERRAIN_WATER; break;
-                    case '~': data[x][y] = Constants.TERRAIN_LAVA; break;
-                    case '.': data[x][y] = Constants.TERRAIN_FLOOR; break;
-                    case '%': data[x][y] = Constants.TERRAIN_DIGGABLE_WALL; break;
-                    case '+': data[x][y] = Constants.TERRAIN_FLOOR | Constants.FEATURE_CLOSED_DOOR; break;
-                    case '\'': data[x][y] = Constants.TERRAIN_FLOOR | Constants.FEATURE_OPEN_DOOR; break;
-//                    case '>': data[x][y] = Constants.TERRAIN_FLOOR | Constants.FEATURE_DOWN_STAIRS; break;
-//                    case '<': data[x][y] = Constants.TERRAIN_FLOOR | Constants.FEATURE_UP_STAIRS; break;
-                    default: data[x][y] = Constants.TERRAIN_DEBUG; break;
-                }
-            }
-        }
-
-        return data;
-    }
-
     private static final String[] TERRAIN_TYPES_TEST = {
+            "terrain types",
             "####################",
             "#..................#",
             "#..................#",
@@ -159,6 +118,7 @@ public class TestArea implements MapGenerator {
     };
 
     private static final String[] RUN_TEST = {
+            "run around in here!",
             "####################################",
             "#..................................#",
             "#..................................#",
