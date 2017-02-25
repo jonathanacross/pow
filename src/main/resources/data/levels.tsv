@@ -20,7 +20,7 @@ d2l3	17		D		d2l2	cellularAutomata	1,true,desert cave	brown scorpion
 forest1	20	3	N,E,S,W	1,2		recursiveInterpolation	forest	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass,yellow schweinhund
 forest2	21	3	N,E,S,W	3		recursiveInterpolation	forest	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass,yellow schweinhund
 forest3	22	3	N,E,S,W	3		recursiveInterpolation	forest	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass,yellow schweinhund
-d3l1	25		D		forest3	shapeDLA	dungeon	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass,yellow schweinhund
+d3l1	25		D		forest3	rogue	0,dungeon	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass,yellow schweinhund
 town2	0	4	N,E,S,W	3		town	town	farmer,mangy leper,jester,beggar,salesman
 water1	30	4	N,E,S,W	4		recursiveInterpolation	water	goldfish,green fish,eel,pink jellyfish
 water2	31	4	N,E,S,W	4		recursiveInterpolation	water	goldfish,green fish,eel,pink jellyfish
@@ -32,8 +32,8 @@ d4l2	36		D		d4l1	delve	ice cave	dark elf mage,dark elf warrior,dark elf archer,d
 swamp1	40	6	N,E,S,W	4		recursiveInterpolation	swamp	orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
 swamp2	41	6	N,E,S,W	6		recursiveInterpolation	swamp	orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
 swamp3	42	6	N,E,S,W	6		recursiveInterpolation	swamp	orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
-d5l1	45		D		swamp3	shapeDLA	dungeon	orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
-d5l2	46		D		d5l1	shapeDLA	dungeon	orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
+d5l1	45		D		swamp3	rogue	1,dungeon	orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
+d5l2	46		D		d5l1	rogue	1,dungeon	orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
 haunted1	50	7	N,E,S,W	5,6		recursiveInterpolation	haunted forest	skeleton mage,skeleton warrior,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire,evil eye,floating skull,vampire bat
 haunted2	51	7	N,E,S,W	7		recursiveInterpolation	haunted forest	skeleton mage,skeleton warrior,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire,evil eye,floating skull,vampire bat
 haunted3	52	7	N,E,S,W	7		recursiveInterpolation	haunted forest	skeleton mage,skeleton warrior,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire,evil eye,floating skull,vampire bat
@@ -53,4 +53,5 @@ d8l1	78		D		volcano3	cellularAutomata	3,false,lava cave	demon mage,demon warrior
 golden desert1	80	11	N,E,S,W	10		recursiveInterpolation	gold desert	alien mage,alien warrior,alien archer,alien rogue,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind,djinn,spike dog
 golden desert2	81	11	N,E,S,W	11		recursiveInterpolation	gold desert	alien mage,alien warrior,alien archer,alien rogue,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind,djinn,spike dog
 golden desert3	81	11	N,E,S,W	11		recursiveInterpolation	gold desert	alien mage,alien warrior,alien archer,alien rogue,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind,djinn,spike dog
-d9l1	85		D		golden desert3	shapeDLA	blue	alien mage,alien warrior,alien archer,alien rogue,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind,djinn,spike dog
+d9l1	85		D		golden desert3	rogue	2,blue	alien mage,alien warrior,alien archer,alien rogue,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind,djinn,spike dog
+d9l2	86		D		d9l1	rogue	2,blue	alien mage,alien warrior,alien archer,alien rogue,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind,djinn,spike dog

@@ -95,6 +95,7 @@ public class TestArea implements MapGenerator {
     }
 
     private static final String[] TERRAIN_TYPES_TEST = {
+            "terrain types",
             "####################",
             "#..................#",
             "#..................#",
@@ -117,6 +118,7 @@ public class TestArea implements MapGenerator {
     };
 
     private static final String[] RUN_TEST = {
+            "run around in here!",
             "####################################",
             "#..................................#",
             "#..................................#",

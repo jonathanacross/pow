@@ -136,6 +136,7 @@ public class WorldDataGen {
             case "delve": return buildDelveGenerator(params, difficulty, monsterIds);
             case "cellularAutomata": return buildCellularAutomataGenerator(params, difficulty, monsterIds);
             case "premade": return buildPremadeGenerator(params, difficulty, monsterIds);
+            case "rogue": return buildRogueGenerator(params, difficulty, monsterIds);
             case "terrain test":
             case "run test":
             case "item test":
@@ -268,7 +269,14 @@ public class WorldDataGen {
 
     private static MapGenerator buildShapeDLAGenerator(String params, int difficulty, List<String> monsterIds) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new ShapeDLA(50, 50, difficulty, style, monsterIds);
+        return new ShapeDLA(60, 60, difficulty, style, monsterIds);
+    }
+
+    private static MapGenerator buildRogueGenerator(String params, int difficulty, List<String> monsterIds) {
+        String[] subParams = params.split(",");
+        int vaultLevel = Integer.parseInt(subParams[0]);
+        ProtoTranslator style = getProtoTranslator(subParams[1]);
+        return new RogueGenerator(60, 60, vaultLevel, difficulty, style, monsterIds);
     }
 
     private static MapGenerator buildDelveGenerator(String params, int difficulty, List<String> monsterIds) {
@@ -281,7 +289,7 @@ public class WorldDataGen {
         int layers = Integer.parseInt(subParams[0]);
         boolean makeLakes = Boolean.parseBoolean(subParams[1]);
         ProtoTranslator style = getProtoTranslator(subParams[2]);
-        return new CellularAutomata(50, 50, layers, makeLakes, difficulty, style, monsterIds);
+        return new CellularAutomata(60, 60, layers, makeLakes, difficulty, style, monsterIds);
     }
 
     private static MapGenerator buildTestGenerator(String type, String params, int difficulty, List<String> monsterIds) {
