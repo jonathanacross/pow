@@ -9,26 +9,46 @@ import pow.frontend.utils.ImageController;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.IntConsumer;
 
 public class ItemChoiceWindow extends AbstractWindow {
 
+    public static class ItemChoice {
+        public boolean useSecondList;
+        public int itemIdx;
+
+        public ItemChoice(boolean useSecondList, int itemIdx) {
+            this.useSecondList = useSecondList;
+            this.itemIdx = itemIdx;
+        }
+    }
+
     private String message;
+    private String altMessage;
     private List<DungeonItem> items;
+    private List<DungeonItem> altItems;
+    private boolean useSecondList;
     private Function<DungeonItem, Boolean> enabled;
-    private IntConsumer callback;
+    private Consumer<ItemChoice> callback;
 
     public ItemChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
                             String message,
+                            String altMessage,
                             List<DungeonItem> items,
+                            List<DungeonItem> altItems,
                             Function<DungeonItem, Boolean> enabled,
-                            IntConsumer callback) {
-        super(new WindowDim(x, y, 350, 35 + 32 * items.size()), true, backend, frontend);
+                            Consumer<ItemChoice> callback) {
+        super(new WindowDim(x, y, 350,
+                35 + 32 * Math.max(items.size(), altItems == null ? 0 : altItems.size())),
+                true, backend, frontend);
         this.message = message;
+        this.altMessage = altMessage;
         this.items = items;
+        this.altItems = altItems;
         this.enabled = enabled;
         this.callback = callback;
+        this.useSecondList = false;
     }
 
     @Override
@@ -40,11 +60,18 @@ public class ItemChoiceWindow extends AbstractWindow {
             return;
         }
 
+        if (keyCode == KeyEvent.VK_EQUALS && this.altItems != null) {
+            useSecondList = !useSecondList;
+            frontend.setDirty(true);
+            return;
+        }
+
+        List<DungeonItem> currItems = useSecondList ? altItems : items;
         if (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z) {
             int itemNumber = keyCode - KeyEvent.VK_A;
-            if (itemNumber >= 0 && itemNumber < items.size() &&
-                    enabled.apply(items.get(itemNumber))) {
-                this.callback.accept(itemNumber);
+            if (itemNumber >= 0 && itemNumber < currItems.size() &&
+                    enabled.apply(currItems.get(itemNumber))) {
+                this.callback.accept(new ItemChoice(useSecondList, itemNumber));
                 frontend.close();
             }
         }
@@ -56,18 +83,21 @@ public class ItemChoiceWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
+        String currMessage = this.useSecondList ? this.altMessage : this.message;
+        List<DungeonItem> currItems = this.useSecondList ? this.altItems : this.items;
+
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
-        graphics.drawString(this.message, MARGIN, MARGIN + FONT_SIZE);
+
+        graphics.drawString(currMessage, MARGIN, MARGIN + FONT_SIZE);
 
         int y = 30;
-
         int idx = 0;
-        for (DungeonItem item : this.items) {
+        for (DungeonItem item : currItems) {
             boolean isEnabled = enabled.apply(item);
             ImageController.drawTile(graphics, item.image, 25, y, !isEnabled);
 

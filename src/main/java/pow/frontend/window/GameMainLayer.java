@@ -46,17 +46,19 @@ public class GameMainLayer extends AbstractWindow {
         } else {
             // ask the user to pick which item
             frontend.open(
-                    new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Pick up which item?",
-                            items.items, (DungeonItem item) -> true,
-                            (int itemNum) -> backend.tellPlayer(new PickUp(gs.player, itemNum, items.items.get(itemNum).count))));
+                    new ItemChoiceWindow(632, 25, this.backend, this.frontend,
+                            "Pick up which item?", null,
+                            items.items, null, (DungeonItem item) -> true,
+                            (ItemChoiceWindow.ItemChoice choice) ->
+                                    backend.tellPlayer(new PickUp(gs.player, choice.itemIdx, items.items.get(choice.itemIdx).count))));
         }
     }
 
     private void showInventory(GameState gs) {
         frontend.open(
-                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Inventory:",
-                        gs.player.inventory.items, (DungeonItem item) -> true, (int x) -> {
-                }));
+                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Inventory:", null,
+                        gs.player.inventory.items, null, (DungeonItem item) -> true,
+                        (ItemChoiceWindow.ItemChoice choice) -> { }));
     }
 
     private int countLegalItems(List<DungeonItem> items, Function<DungeonItem, Boolean> isLegal) {
@@ -78,8 +80,10 @@ public class GameMainLayer extends AbstractWindow {
 
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Drop which item?",
-                        gs.player.inventory.items, droppable,
-                        (int itemNum) -> backend.tellPlayer(new Drop(gs.player, itemNum, gs.player.inventory.items.get(itemNum).count))));
+                        null,
+                        gs.player.inventory.items, null, droppable,
+                        (ItemChoiceWindow.ItemChoice choice) -> backend.tellPlayer(new Drop(gs.player, choice.itemIdx,
+                                gs.player.inventory.items.get(choice.itemIdx).count))));
     }
 
     private void tryQuaff(GameState gs) {
@@ -89,10 +93,21 @@ public class GameMainLayer extends AbstractWindow {
             return;
         }
 
+        Point loc = gs.player.loc;
+        ItemList floorItems = gs.getCurrentMap().map[loc.x][loc.y].items;
+        boolean canUseFloor = floorItems != null && countLegalItems(floorItems.items, quaffable) > 0;
+        String message = canUseFloor ? "Quaff which potion? (Press = to show floor.)" : "Quaff which potion?";
+        String altMessage = canUseFloor ? "Quaff which potion? (Press = to show inventory.)" : null;
+
         frontend.open(
-                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Quaff which potion?",
-                        gs.player.inventory.items, quaffable,
-                        (int itemNum) -> backend.tellPlayer(new Quaff(gs.player, itemNum))));
+                new ItemChoiceWindow(632, 25, this.backend, this.frontend, message, altMessage,
+                        gs.player.inventory.items, floorItems.items, quaffable,
+                        (ItemChoiceWindow.ItemChoice choice) ->
+                                backend.tellPlayer(new Quaff(
+                                        gs.player,
+                                        choice.useSecondList ? floorItems : gs.player.inventory,
+                                        choice.itemIdx))));
+
     }
 
     private void tryWear(GameState gs) {
@@ -102,10 +117,20 @@ public class GameMainLayer extends AbstractWindow {
             return;
         }
 
+        Point loc = gs.player.loc;
+        ItemList floorItems = gs.getCurrentMap().map[loc.x][loc.y].items;
+        boolean canUseFloor = floorItems != null && countLegalItems(floorItems.items, wearable) > 0;
+        String message = canUseFloor ? "Wear which item? (Press = to show floor.)" : "Wear which item?";
+        String altMessage = canUseFloor ? "Wear which item? (Press = to show inventory.)" : null;
+
         frontend.open(
-                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Wear which item?",
-                        gs.player.inventory.items, wearable,
-                        (int itemNum) -> backend.tellPlayer(new Wear(gs.player, itemNum))));
+                new ItemChoiceWindow(632, 25, this.backend, this.frontend, message, altMessage,
+                        gs.player.inventory.items, floorItems.items, wearable,
+                        (ItemChoiceWindow.ItemChoice choice) ->
+                                backend.tellPlayer(new Wear(
+                                        gs.player,
+                                        choice.useSecondList ? floorItems : gs.player.inventory,
+                                        choice.itemIdx))));
     }
 
     private void tryTakeOff(GameState gs) {
@@ -116,9 +141,9 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         frontend.open(
-                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Take off which item?",
-                        gs.player.equipment, removable,
-                        (int itemNum) -> backend.tellPlayer(new TakeOff(gs.player, itemNum))));
+                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Take off which item?", null,
+                        gs.player.equipment, null, removable,
+                        (ItemChoiceWindow.ItemChoice choice) -> backend.tellPlayer(new TakeOff(gs.player, choice.itemIdx))));
     }
 
     @Override

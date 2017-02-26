@@ -4,15 +4,20 @@ import pow.backend.ActionParams;
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
+import pow.backend.dungeon.ItemList;
 import pow.util.DebugLogger;
 import pow.util.TextUtils;
 
+import java.util.List;
+
 public class Quaff implements Action {
     private Actor actor;
+    private ItemList itemList;
     private int itemIdx;
 
-    public Quaff(Actor actor, int itemIdx) {
+    public Quaff(Actor actor, ItemList itemList, int itemIdx) {
         this.actor = actor;
+        this.itemList = itemList;
         this.itemIdx = itemIdx;
     }
 
@@ -23,7 +28,7 @@ public class Quaff implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        DungeonItem item = actor.inventory.items.get(itemIdx);
+        DungeonItem item = itemList.items.get(itemIdx);
         if (!item.flags.potion) {
             DebugLogger.fatal(new RuntimeException(actor.name + " tried to quaff a non-potion, " + item.name));
             return ActionResult.Failed(null);
@@ -31,7 +36,7 @@ public class Quaff implements Action {
 
         // get the real action from the potion and do it
         backend.logMessage(actor.getPronoun() + " quaffed " + TextUtils.format(item.name, 1, false));
-        actor.inventory.removeOneItemAt(itemIdx);
+        itemList.removeOneItemAt(itemIdx);
         Action action = ActionParams.buildAction(this.actor, item.actionParams);
         return action.process(backend);
     }
