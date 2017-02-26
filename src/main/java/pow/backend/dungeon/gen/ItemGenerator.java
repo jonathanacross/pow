@@ -156,6 +156,7 @@ public class ItemGenerator {
             keyToBonusIdx.put("int", DungeonItem.INT_IDX);
             keyToBonusIdx.put("con", DungeonItem.CON_IDX);
             keyToBonusIdx.put("speed", DungeonItem.SPEED_IDX);
+            keyToBonusIdx.put("wealth", DungeonItem.WEALTH_IDX);
         }
 
         private int[] parseBonuses(String text) {

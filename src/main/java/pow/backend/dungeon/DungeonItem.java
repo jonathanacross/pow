@@ -32,7 +32,8 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     public static final int INT_IDX = 5;
     public static final int CON_IDX = 6;
     public static final int SPEED_IDX = 7;
-    public static final int NUM_BONUSES = 8;
+    public static final int WEALTH_IDX = 8;
+    public static final int NUM_BONUSES = 9;
 
     public enum Slot {
         NONE,
@@ -204,10 +205,10 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
         if ((bonuses[STR_IDX] != 0) || (bonuses[DEX_IDX] != 0) ||
                 (bonuses[INT_IDX] != 0) || (bonuses[CON_IDX] != 0) ||
-                (bonuses[SPEED_IDX] != 0)) {
+                (bonuses[SPEED_IDX] != 0) || (bonuses[WEALTH_IDX] != 0)) {
             sb.append(" {" + formatGroupBonus(
-                    new int[] {bonuses[STR_IDX], bonuses[DEX_IDX], bonuses[INT_IDX], bonuses[CON_IDX], bonuses[SPEED_IDX]},
-                    new String[] {"Str", "Dex", "Int", "Con", "Speed"}
+                    new int[] {bonuses[STR_IDX], bonuses[DEX_IDX], bonuses[INT_IDX], bonuses[CON_IDX], bonuses[SPEED_IDX], bonuses[WEALTH_IDX]},
+                    new String[] {"Str", "Dex", "Int", "Con", "Speed", "Wealth"}
                     ) + "}");
         }
         return sb.toString();

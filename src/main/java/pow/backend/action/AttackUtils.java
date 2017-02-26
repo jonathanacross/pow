@@ -42,9 +42,15 @@ public class AttackUtils {
                 // TODO: drop any gold that the monster holds
 
                 // with some probability, have the monster drop a random item.
-                if (gs.rng.nextInt(8) == 0) {
+                int dropChance = gs.player.increaseWealth ? 2 : 4;
+                if (gs.rng.nextInt(dropChance) == 0) {
                     int difficultyLevel = map.level;
                     DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
+                    if (item.flags.money) {
+                        if (gs.player.increaseWealth) {
+                            item.count *= 3;
+                        }
+                    }
                     map.map[defender.loc.x][defender.loc.y].items.add(item);
                 }
 

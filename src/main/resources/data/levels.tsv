@@ -1,5 +1,5 @@
 #id	level	group	possible dirs	from groups	from id	generator	genParams	monsters
-town1	0	1				town	town	farmer,mangy leper,jester,beggar,salesman
+town1	1	1				town	town	farmer,mangy leper,jester,beggar,salesman
 basement1	1		D		town1	premade	basementl1,basement	green mushrooms,black ant,white rat,brown beetle,crawling moss
 basement2	2		D		basement1	premade	basementl2,basement	green mushrooms,black ant,white rat,brown beetle,crawling moss,giant salamander
 grassyfields1	1	1	N,E,S,W	1		recursiveInterpolation	grass	bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
@@ -21,7 +21,7 @@ forest1	20	3	N,E,S,W	1,2		recursiveInterpolation	forest	rabbit mage,rabbit warri
 forest2	21	3	N,E,S,W	3		recursiveInterpolation	forest	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass,yellow schweinhund
 forest3	22	3	N,E,S,W	3		recursiveInterpolation	forest	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass,yellow schweinhund
 d3l1	25		D		forest3	rogue	0,dungeon	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass,yellow schweinhund
-town2	0	4	N,E,S,W	3		town	town	farmer,mangy leper,jester,beggar,salesman
+town2	30	4	N,E,S,W	3		town	town	farmer,mangy leper,jester,beggar,salesman
 water1	30	4	N,E,S,W	4		recursiveInterpolation	water	goldfish,green fish,eel,pink jellyfish
 water2	31	4	N,E,S,W	4		recursiveInterpolation	water	goldfish,green fish,eel,pink jellyfish
 water3	31	4	N,E,S,W	4		recursiveInterpolation	water	goldfish,green fish,eel,pink jellyfish
@@ -39,6 +39,7 @@ haunted2	51	7	N,E,S,W	7		recursiveInterpolation	haunted forest	skeleton mage,ske
 haunted3	52	7	N,E,S,W	7		recursiveInterpolation	haunted forest	skeleton mage,skeleton warrior,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire,evil eye,floating skull,vampire bat
 d6l1	55		D		haunted3	shapeDLA	crypt	skeleton mage,skeleton warrior,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire,evil eye,floating skull,vampire bat
 d6l2	56		D		d6l1	shapeDLA	crypt	skeleton mage,skeleton warrior,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire,evil eye,floating skull,vampire bat
+town3	60	4	N,E,S,W	7		town	town	farmer,mangy leper,jester,beggar,salesman
 dig desert1	60	8	N,E,S,W	6,7		recursiveInterpolation	desert	troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 dig desert2	61	8	N,E,S,W	8		recursiveInterpolation	desert	troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 dig desert3	61	8	N,E,S,W	8		recursiveInterpolation	desert	troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
