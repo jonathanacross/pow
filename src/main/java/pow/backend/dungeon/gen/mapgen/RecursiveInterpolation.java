@@ -26,8 +26,8 @@ public class RecursiveInterpolation implements MapGenerator {
             this.feature2 = feature2;
         }
 
-        @Override
         // just a rough thing for debugging
+        @Override
         public String toString() {
             char t = terrain == null ? '_' : terrain.charAt(0);
             char f1 = feature1 == null ? '_' : feature1.charAt(0);
@@ -129,7 +129,7 @@ public class RecursiveInterpolation implements MapGenerator {
                 rng);
 
         // add items
-        int numItems = (w - 1) * (h - 1) / 100;
+        int numItems = GeneratorUtils.getDefaultNumItems(w, h, rng);
         GeneratorUtils.addItems(level, squares, numItems, rng);
 
         GameMap map = new GameMap(name, level, squares, keyLocations, monsterIds, null);

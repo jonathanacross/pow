@@ -72,7 +72,7 @@ public class ShapeDLA implements MapGenerator {
                 rng);
 
         // add items
-        int numItems = (this.width - 1) * (this.height - 1) / 100;
+        int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
         GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);

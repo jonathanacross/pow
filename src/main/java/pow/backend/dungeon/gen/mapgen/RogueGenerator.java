@@ -55,7 +55,7 @@ public class RogueGenerator implements MapGenerator {
                 rng);
 
         // add items
-        int numItems = (width - 1) * (height - 1) / 100;
+        int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
         GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);

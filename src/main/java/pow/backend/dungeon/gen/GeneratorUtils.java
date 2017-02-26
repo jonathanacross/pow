@@ -316,6 +316,19 @@ public class GeneratorUtils {
         return square;
     }
 
+    public static int getDefaultNumItems(int width, int height, Random rng) {
+        int area = width * height;
+        double meanNumItems = area / 400.0;
+
+        int numItems = (int) Math.round(3 * rng.nextGaussian() + meanNumItems);
+        numItems = Math.max(0, numItems);
+        return numItems;
+    }
+
+    public static int getDefaultNumItems(int[][] squares, Random rng) {
+        return getDefaultNumItems( Array2D.width(squares), Array2D.height(squares), rng);
+    }
+
     // Removes extra borders of impassible stuff -- makes the map smaller, and
     // makes it so we won't have to "tunnel" to the nearest exit.
     // This is necessary to call before using findExitCoordinate.

@@ -47,9 +47,7 @@ public class PremadeGenerator implements MapGenerator {
                 rng);
 
         // add items
-        int width = Array2D.width(premadeMapInfo.data);
-        int height = Array2D.height(premadeMapInfo.data);
-        int numItems = (width - 1) * (height - 1) / 100;
+        int numItems = GeneratorUtils.getDefaultNumItems(premadeMapInfo.data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
         GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsterIds, null);
