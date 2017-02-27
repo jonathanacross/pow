@@ -119,16 +119,16 @@ public class ShapeDLA implements MapGenerator {
         int midy = height / 2;
 
         // if the shape is at the edge, force the direction to move
-        if (shape.xmin == 1) {
+        if (shape.xmin <= 1) {
             dx = 1;
         }
-        if (shape.ymin == 1) {
+        if (shape.ymin <= 1) {
             dy = 1;
         }
-        if (shape.xmax == width) {
+        if (shape.xmax >= width - 1) {
             dx = -1;
         }
-        if (shape.ymax == height) {
+        if (shape.ymax >= height - 1) {
             dy = -1;
         }
 
