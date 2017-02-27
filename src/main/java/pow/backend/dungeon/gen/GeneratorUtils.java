@@ -3,10 +3,7 @@ package pow.backend.dungeon.gen;
 import pow.backend.ActionParams;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
-import pow.backend.dungeon.DungeonFeature;
-import pow.backend.dungeon.DungeonItem;
-import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.DungeonTerrain;
+import pow.backend.dungeon.*;
 import pow.util.Array2D;
 import pow.util.Direction;
 import pow.util.Point;
@@ -178,16 +175,43 @@ public class GeneratorUtils {
         return dungeonMap;
     }
 
-    // Generates from a subset of monsters.
-    // If monsterIds is empty, then generate no monsters.
-    // If monsterIds == null, then generate using all possible monsters.
+    // Gets a list of monster ids to create.
+    public static List<String> getIdsFromMonsterIdGroup(MonsterIdGroup monsterIdGroup, int numMonsters, Random rng) {
+        List<String> idsToGen = new ArrayList<>();
+
+        // add boss, if needed
+        if (monsterIdGroup.canGenBoss) {
+            idsToGen.add(monsterIdGroup.bossId);
+            monsterIdGroup.canGenBoss = false;
+        }
+
+        List<String> idSet;
+        if (monsterIdGroup.monsterIds != null) {
+            idSet = monsterIdGroup.monsterIds;
+        } else {
+            idSet = new ArrayList<>();
+            if (!monsterIdGroup.monsterIds.isEmpty()) {
+                idSet.addAll(MonsterGenerator.getMonsterIds());
+            }
+        }
+
+        for (int i = 0; i < numMonsters; i++) {
+            String id = idSet.get(rng.nextInt(idSet.size()));
+            idsToGen.add(id);
+        }
+
+        return idsToGen;
+    }
+
+    // Generates monsters from the selection in monsterIdGroup
     public static List<Actor> createMonsters(DungeonSquare[][] dungeonMap,
                                              int numMonsters,
-                                             List<String> monsterIds,
+                                             MonsterIdGroup monsterIdGroup,
                                              Random rng) {
+        List<String> idsToGen = getIdsFromMonsterIdGroup(monsterIdGroup, numMonsters, rng);
+
         List<Actor> actors = new ArrayList<>();
-        if (monsterIds != null && monsterIds.isEmpty()) {
-            // if empty list, then should be no monsters.
+        if (idsToGen.isEmpty()) {
             return actors;
         }
 
@@ -197,12 +221,7 @@ public class GeneratorUtils {
         // to make sure we don't put monsters on top of each other
         boolean[][] monsterAt = new boolean[width][height];
 
-        if (monsterIds == null) {
-            monsterIds = new ArrayList<>();
-            monsterIds.addAll(MonsterGenerator.getMonsterIds());
-        }
-
-        for (int i = 0; i < numMonsters; i++) {
+        for (String id: idsToGen) {
             int x;
             int y;
             do {
@@ -211,10 +230,10 @@ public class GeneratorUtils {
             } while (dungeonMap[x][y].blockGround() || monsterAt[x][y]);
             Point location = new Point(x,y);
 
-            String id = monsterIds.get(rng.nextInt(monsterIds.size()));
             actors.add(MonsterGenerator.genMonster(id, rng, location));
             monsterAt[location.x][location.y] = true;
         }
+
         return actors;
     }
 

@@ -2,8 +2,8 @@ package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
-import pow.util.Array2D;
 import pow.util.Point;
 
 import java.util.List;
@@ -14,15 +14,15 @@ import java.util.Random;
 public class PremadeGenerator implements MapGenerator {
 
     PremadeMapData.PremadeMapInfo premadeMapInfo;
-    private int level;
     private ProtoTranslator translator;
-    private List<String> monsterIds;
+    private int level;
+    MonsterIdGroup monsterIds;
 
-    public PremadeGenerator(PremadeMapData.PremadeMapInfo premadeMapInfo, int level, ProtoTranslator translator, List<String> monsterIds) {
+    public PremadeGenerator(PremadeMapData.PremadeMapInfo premadeMapInfo, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.premadeMapInfo = premadeMapInfo;
-        this.level = level;
         this.translator = translator;
         this.monsterIds = monsterIds;
+        this.level = level;
     }
 
     @Override

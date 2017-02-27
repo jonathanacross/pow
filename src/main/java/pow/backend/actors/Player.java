@@ -360,7 +360,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
     private void gainLevel(GameBackend backend) {
         backend.logMessage("congrats, you gained a level!");
-        level += 1;
+        level++;
         updateStats();  // will update MaxHP,
     }
 

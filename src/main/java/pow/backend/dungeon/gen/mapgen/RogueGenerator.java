@@ -2,6 +2,7 @@ package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
 import pow.util.MathUtils;
@@ -17,21 +18,21 @@ public class RogueGenerator implements MapGenerator {
     private int vaultLevel;
     private int width;
     private int height;
-    private int level;
     private ProtoTranslator translator;
-    private List<String> monsterIds;
     private List<String> vaultIds;
     private List<String> greatVaultIds;
+    private int level;
+    private MonsterIdGroup monsterIds;
 
-    public RogueGenerator(int width, int height, int vaultLevel, int level, ProtoTranslator translator, List<String> monsterIds) {
+    public RogueGenerator(int width, int height, int vaultLevel, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.width = width;
         this.height = height;
         this.vaultLevel = vaultLevel;
-        this.level = level;
         this.translator = translator;
-        this.monsterIds = monsterIds;
         this.vaultIds = new ArrayList<>(PremadeMapData.getRoomIds());
         this.greatVaultIds = new ArrayList<>(PremadeMapData.getVaultIds());
+        this.monsterIds = monsterIds;
+        this.level = level;
     }
 
     @Override

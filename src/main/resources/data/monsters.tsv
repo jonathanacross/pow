@@ -21,7 +21,7 @@
 2	bat	bat	bat	A gray bat, fluttering around the air.	9	2d3	7	7	6	2	
 2	green worm mass	green worm mass	green worm mass	It is a large slimy mass of green worms.	7	1d3	6	3	4	0	
 2	brown imp	brown imp	brown imp	A fast, mischievous creature.	5	2d2	6	4	4	2	
-2	green kimodo	green kimodo	green kimodo	A giant Komodo dragon. It is about 10 feet long and has a venomous bite.	21	2d4	12	13	11	0	boss
+2	green komodo	green komodo	green komodo	A giant Komodo dragon. It is about 10 feet long and has a venomous bite.	21	2d4	12	13	11	0	boss
 2	purple spider	purple spider	purple spider	A large and powerful amathyst spider with bright yellow eyes.	11	2d2	10	7	6	0	boss
 3	novice mage	novice mage	novice mage	He is fumbling with his spell books.	8	2d2	6	6	4	0	
 3	novice warrior	novice warrior	novice warrior	An inexperienced but tough warrior.	12	2d3	9	9	6	0	

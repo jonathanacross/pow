@@ -3,6 +3,7 @@ package pow.backend.dungeon.gen.mapgen;
 import pow.backend.GameMap;
 import pow.backend.ShopData;
 import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
 import pow.util.Point;
@@ -14,14 +15,14 @@ import java.util.Random;
 
 public class Town implements MapGenerator {
 
-    private int level;
     private ProtoTranslator translator;
-    private List<String> monsterIds;
+    private MonsterIdGroup monsterIds;
+    private int level;
 
-    public Town(int level, ProtoTranslator translator, List<String> monsterIds) {
-        this.level = level;
+    public Town(ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.translator = translator;
         this.monsterIds = monsterIds;
+        this.level = level;
     }
 
     @Override

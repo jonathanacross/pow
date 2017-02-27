@@ -15,7 +15,7 @@ public class DieRoll implements Serializable {
     // TODO: put in random class
     public int rollDice(Random rng) {
         int sum = 0;
-        for (int i = 0; i < roll; i += 1) {
+        for (int i = 0; i < roll; i++) {
             sum += 1 + rng.nextInt(die);
         }
         return sum;

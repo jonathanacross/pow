@@ -4,10 +4,8 @@ import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
-import pow.backend.dungeon.gen.FeatureData;
-import pow.backend.dungeon.gen.GeneratorUtils;
-import pow.backend.dungeon.gen.MapConnection;
-import pow.backend.dungeon.gen.TerrainData;
+import pow.backend.dungeon.MonsterIdGroup;
+import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -58,17 +56,18 @@ public class RecursiveInterpolation implements MapGenerator {
     private int numInterpolationSteps;
     private MapStyle mapStyle;
     private int level;
-    private List<String> monsterIds;
+    private MonsterIdGroup monsterIds;
+
     public RecursiveInterpolation(int sourceSize,
                                   int numInterpolationSteps,
-                                  int level,
                                   MapStyle mapStyle,
-                                  List<String> monsterIds) {
+                                  MonsterIdGroup monsterIds,
+                                  int level) {
         this.sourceSize = sourceSize;
         this.numInterpolationSteps = numInterpolationSteps;
-        this.level = level;
         this.mapStyle = mapStyle;
         this.monsterIds = monsterIds;
+        this.level = level;
     }
 
     public GameMap genMap(String name, List<MapConnection> connections, Random rng) {
@@ -82,7 +81,7 @@ public class RecursiveInterpolation implements MapGenerator {
             int height,
             int numInterpolationSteps,
             MapStyle style,
-            List<String> monsterIds,
+            MonsterIdGroup monsterIds,
             List<MapConnection> connections,
             Random rng) {
 

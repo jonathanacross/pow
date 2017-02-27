@@ -2,10 +2,8 @@ package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.gen.Constants;
-import pow.backend.dungeon.gen.GeneratorUtils;
-import pow.backend.dungeon.gen.MapConnection;
-import pow.backend.dungeon.gen.ProtoTranslator;
+import pow.backend.dungeon.MonsterIdGroup;
+import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -21,20 +19,20 @@ public class ShapeDLA implements MapGenerator {
 
     private int width;
     private int height;
-    private int level;
     private ProtoTranslator translator;
-    private List<String> monsterIds;
     private int minRoomSize;
     private int maxRoomSize;
+    private int level;
+    private MonsterIdGroup monsterIds;
 
-    public ShapeDLA(int width, int height, int level, ProtoTranslator translator, List<String> monsterIds) {
+    public ShapeDLA(int width, int height, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.width = width;
         this.height = height;
-        this.level = level;
         this.translator = translator;
-        this.monsterIds = monsterIds;
         this.minRoomSize = 3;
         this.maxRoomSize = 15;
+        this.monsterIds = monsterIds;
+        this.level = level;
     }
 
     private static class Shape {
