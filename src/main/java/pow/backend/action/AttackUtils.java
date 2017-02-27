@@ -22,6 +22,7 @@ public class AttackUtils {
     public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender, int damage) {
 
         GameState gs = backend.getGameState();
+        GameMap map = gs.getCurrentMap();
         List<GameEvent> events = new ArrayList<>();
 
         backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + damage + " damage");
@@ -37,10 +38,12 @@ public class AttackUtils {
             } else {
                 attacker.gainExperience(backend, defender.experience);
 
-                GameMap map = gs.getCurrentMap();
+                // see if this is a boss; if so, update the map so it won't regenerate
+                if (map.genMonsterIds.canGenBoss && map.genMonsterIds.bossId.equals(defender.id)) {
+                    map.genMonsterIds.canGenBoss = false;
+                }
 
                 // TODO: drop any gold that the monster holds
-
                 // with some probability, have the monster drop a random item.
                 int dropChance = gs.player.increaseWealth ? 2 : 4;
                 if (gs.rng.nextInt(dropChance) == 0) {

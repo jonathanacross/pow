@@ -56,6 +56,7 @@ public class FireArrow implements Action {
                     break;
                 }
             }
+            if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
             if (map.map[p.x][p.y].blockAir()) break;
         }
         events.add(GameEvent.Arrow(attacker, lastPoint));

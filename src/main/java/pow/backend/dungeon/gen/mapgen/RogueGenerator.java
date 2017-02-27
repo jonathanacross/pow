@@ -225,7 +225,9 @@ public class RogueGenerator implements MapGenerator {
             RoomInfo room = genRoom(vaultLevel, width, height, rng);
             rooms.add(room);
         }
-        while (area < 0.25 * width * height) {
+        int attempts = 0;
+        while (area < 0.25 * width * height && attempts < 1000) {
+            attempts++;
             RoomInfo room;
             if (vaultLevel >= 1 && rng.nextInt(5) == 0) {
                 room = genRoom(1, width, height, rng);

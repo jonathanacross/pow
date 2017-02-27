@@ -182,22 +182,24 @@ public class GeneratorUtils {
         // add boss, if needed
         if (monsterIdGroup.canGenBoss) {
             idsToGen.add(monsterIdGroup.bossId);
-            monsterIdGroup.canGenBoss = false;
         }
 
+        // monsterIdGroup.monsterIds == null --> use all monsters
+        // monsterIdGroup.monsterIds is empty --> no monsters
+        // monsterIdGroup.monsterIds is nonempty --> use monsterIds
         List<String> idSet;
         if (monsterIdGroup.monsterIds != null) {
             idSet = monsterIdGroup.monsterIds;
         } else {
             idSet = new ArrayList<>();
-            if (!monsterIdGroup.monsterIds.isEmpty()) {
-                idSet.addAll(MonsterGenerator.getMonsterIds());
-            }
+            idSet.addAll(MonsterGenerator.getMonsterIds());
         }
 
-        for (int i = 0; i < numMonsters; i++) {
-            String id = idSet.get(rng.nextInt(idSet.size()));
-            idsToGen.add(id);
+        if (!idSet.isEmpty()) {
+            for (int i = 0; i < numMonsters; i++) {
+                String id = idSet.get(rng.nextInt(idSet.size()));
+                idsToGen.add(id);
+            }
         }
 
         return idsToGen;

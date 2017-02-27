@@ -1,8 +1,9 @@
 package pow.backend.dungeon;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MonsterIdGroup {
+public class MonsterIdGroup implements Serializable {
     // Monsters possible to generate.  If empty, then no monsters will be
     // made.  If null, then *any* monsters may be generated (this case is
     // mostly for debugging.)
