@@ -2,10 +2,8 @@ package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.gen.Constants;
-import pow.backend.dungeon.gen.GeneratorUtils;
-import pow.backend.dungeon.gen.MapConnection;
-import pow.backend.dungeon.gen.ProtoTranslator;
+import pow.backend.dungeon.MonsterIdGroup;
+import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -21,20 +19,20 @@ public class ShapeDLA implements MapGenerator {
 
     private int width;
     private int height;
-    private int level;
     private ProtoTranslator translator;
-    private List<String> monsterIds;
     private int minRoomSize;
     private int maxRoomSize;
+    private int level;
+    private MonsterIdGroup monsterIds;
 
-    public ShapeDLA(int width, int height, int level, ProtoTranslator translator, List<String> monsterIds) {
+    public ShapeDLA(int width, int height, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.width = width;
         this.height = height;
-        this.level = level;
         this.translator = translator;
-        this.monsterIds = monsterIds;
         this.minRoomSize = 3;
         this.maxRoomSize = 15;
+        this.monsterIds = monsterIds;
+        this.level = level;
     }
 
     private static class Shape {
@@ -72,7 +70,7 @@ public class ShapeDLA implements MapGenerator {
                 rng);
 
         // add items
-        int numItems = (this.width - 1) * (this.height - 1) / 100;
+        int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
         GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);
@@ -121,16 +119,16 @@ public class ShapeDLA implements MapGenerator {
         int midy = height / 2;
 
         // if the shape is at the edge, force the direction to move
-        if (shape.xmin == 1) {
+        if (shape.xmin <= 1) {
             dx = 1;
         }
-        if (shape.ymin == 1) {
+        if (shape.ymin <= 1) {
             dy = 1;
         }
-        if (shape.xmax == width) {
+        if (shape.xmax >= width - 1) {
             dx = -1;
         }
-        if (shape.ymax == height) {
+        if (shape.ymax >= height - 1) {
             dy = -1;
         }
 

@@ -73,6 +73,7 @@ public class Player extends Actor implements Serializable, LightSource {
     public List<DungeonItem> equipment;
     private GainRatios gainRatios;
     public Stats currStats;
+    public boolean increaseWealth;
 
     private AttackData innateAttack;
     //public AttackData weaponAttack;  // part of Actor
@@ -142,6 +143,7 @@ public class Player extends Actor implements Serializable, LightSource {
         this.floorTarget = null;
         this.monsterTarget = null;
         this.behavior = null;
+        this.increaseWealth = false;
     }
 
     public void addCommand(Action request) {
@@ -268,6 +270,17 @@ public class Player extends Actor implements Serializable, LightSource {
         int i = this.currStats.intelligence;
         this.maxHealth = (int) Math.round(0.5 * s * s - 7 * s + 30);
         this.maxMana = (int) Math.round(0.5 * i * i - 7 * i + 30);
+
+        updateWealthStatus();
+    }
+
+    private void updateWealthStatus() {
+        this.increaseWealth = false;
+        for (DungeonItem item : equipment) {
+            if (item.bonuses[DungeonItem.WEALTH_IDX] > 0) {
+                this.increaseWealth = true;
+            }
+        }
     }
 
     // returns the old item, if any
@@ -347,7 +360,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
     private void gainLevel(GameBackend backend) {
         backend.logMessage("congrats, you gained a level!");
-        level += 1;
+        level++;
         updateStats();  // will update MaxHP,
     }
 

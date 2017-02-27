@@ -49,7 +49,7 @@ public class ItemList implements Serializable {
             // find where to put the new item
             int newLoc = 0;
             while (newLoc < items.size() && items.get(newLoc).compareTo(item) < 0) {
-                newLoc += 1;
+                newLoc++;
             }
             items.add(newLoc, item);
         }

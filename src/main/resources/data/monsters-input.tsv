@@ -21,7 +21,7 @@
 2	bat	mammal			2	bat	bat	A gray bat, fluttering around the air.
 2	green worm mass	jelly			0	green worm mass	green worm mass	It is a large slimy mass of green worms.
 2	brown imp	mammal	weak		2	brown imp	brown imp	A fast, mischievous creature.
-2	green kimodo	reptile		boss	0	green kimodo	green kimodo	A giant Komodo dragon. It is about 10 feet long and has a venomous bite.
+2	green komodo	reptile		boss	0	green komodo	green komodo	A giant Komodo dragon. It is about 10 feet long and has a venomous bite.
 2	purple spider	insect		boss	0	purple spider	purple spider	A large and powerful amathyst spider with bright yellow eyes.
 3	novice mage	mage			0	novice mage	novice mage	He is fumbling with his spell books.
 3	novice warrior	warrior			0	novice warrior	novice warrior	An inexperienced but tough warrior.

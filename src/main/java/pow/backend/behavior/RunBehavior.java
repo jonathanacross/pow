@@ -78,7 +78,7 @@ public class RunBehavior implements Behavior {
                 openRight = isDirectionOpen(gs.getCurrentMap(), gs.player.loc, direction.rotateRight90);
             }
         } else {  // >= 2 steps
-            // sanity check in case we have some running bug or player is in some pathogical path.
+            // sanity check in case we have some running bug or player is in some pathological path.
             if (stepCount > 500) return false;
 
             if (!openLeft && !openRight) {

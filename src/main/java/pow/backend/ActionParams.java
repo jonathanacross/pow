@@ -40,6 +40,7 @@ public class ActionParams implements Serializable {
             case "modifyFeature": return new ModifyFeature(actor, params.point, FeatureData.getFeature(params.name));
             case "gotoArea": return new GotoArea(params.name, params.point );
             case "heal": return new Heal(actor, params.number);
+            case "restore": return new Restore(actor, params.number);
             case "enterShop": return new EnterShop(actor, ShopData.ShopState.parseFromString(params.name));
 //            case "restoreMana": return new RestoreManaAction(params.number);
             default: throw new RuntimeException("unknown action name " + params.actionName);

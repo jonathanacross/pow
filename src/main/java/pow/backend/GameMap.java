@@ -7,6 +7,7 @@ import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.LightSource;
 import pow.backend.dungeon.SimpleLightSource;
+import pow.backend.dungeon.MonsterIdGroup;
 import pow.util.*;
 
 import java.io.Serializable;
@@ -20,7 +21,7 @@ public class GameMap implements Serializable {
 
     public int width;
     public int height;
-    public List<String> genMonsterIds;  // monsters to generate for this level
+    public MonsterIdGroup genMonsterIds;  // monsters to generate for this level
     public List<Actor> actors;
     private List<LightSource> lightSources;
     public Map<String, Point> keyLocations;  // useful for joining areas together
@@ -93,7 +94,7 @@ public class GameMap implements Serializable {
                    int level,
                    DungeonSquare[][] map,
                    Map<String, Point> keyLocations,
-                   List<String> genMonsterIds,
+                   MonsterIdGroup genMonsterIds,
                    ShopData shopData) {
         this.name = name;
         this.level = level;

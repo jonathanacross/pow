@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
+import pow.backend.dungeon.ItemList;
 import pow.backend.event.GameEvent;
 import pow.util.TextUtils;
 
@@ -13,18 +14,20 @@ import java.util.List;
 
 public class Wear implements Action {
     private Player player;
-    private int index;  // index in inventory
+    private ItemList itemList;
+    private int index;
 
-    public Wear(Player player, int index) {
+    public Wear(Player player, ItemList itemList, int index) {
         this.player = player;
+        this.itemList = itemList;
         this.index = index;
     }
 
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        DungeonItem item = player.inventory.items.get(index);
-        player.inventory.removeOneItemAt(index);
+        DungeonItem item = itemList.items.get(index);
+        itemList.removeOneItemAt(index);
         backend.logMessage(player.getPronoun() + " wear " + TextUtils.format(item.name, 1, true));
         DungeonItem oldItem = player.wear(item);
         // put the old item somewhere

@@ -79,7 +79,7 @@ bracelet of acid	& bracelet~ of acid	black bracelet	bracelet of acid	bracelet			
 bracelet of reflection	& bracelet~ of reflection	purple bracelet	bracelet of reflection	bracelet				70	90	0	0		0	0	reflect x% (0-35) dam
 bracelet of power	& bracelet~ of power	gold bracelet	bracelet of power	bracelet				81	90	1	4	str:x,int:x,dex:x,con:x	0	0	
 # amulets															
-amulet of wealth	& amulet~ of wealth	onyx amulet	amulet of wealth	amulet				1	30	0	0		0	0	better gold drops
+amulet of wealth	& amulet~ of wealth	onyx amulet	amulet of wealth	amulet				1	30	0	0	wealth:1	0	0	better gold drops
 amulet of defense	& amulet~ of defense	coral amulet	amulet of defense	amulet				11	80	1	15	def:x	0	0	
 amulet of insulation	& amulet~ of insulation	amber amulet	amulet of insulation	amulet				31	50	0	0		0	0	res fire + cold
 amulet of chemistry	& amulet~ of chemistry	sapphire amulet	amulet of chemistry	amulet				41	60	0	0		0	0	res acid, elec, pois
@@ -103,6 +103,6 @@ root beer	root beer~	bubbly potion	root beer	none				0	30	0	0		0	0
 health potion	& health potion~	red potion	health potion	none	potion	heal:15:		1	90	0	0		0	0	
 gatorade	gatorade~	green potion	gatorade	none				0	30	0	0		0	0	
 speed potion	& speed potion~	swirl potion	speed potion	none				51	90	0	0		0	0	
-restore potion	& restore potion~	purple potion	restores mana and health	none				21	90	0	0		0	0	
+restore potion	& restore potion~	purple potion	restores mana and health	none	potion	restore:75:		21	90	0	0		0	0	
 # other stuff															
 arrow	& arrow~	arrow	arrows	none	arrow		15:45	1	90	0	0		0	0	

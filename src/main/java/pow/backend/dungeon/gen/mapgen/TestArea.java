@@ -2,6 +2,7 @@ package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
 import pow.util.Point;
 
@@ -13,16 +14,16 @@ import java.util.Random;
 // generates various types of test areas.
 public class TestArea implements MapGenerator {
 
-    private int level;
     private String type;
     private ProtoTranslator translator;
-    private List<String> monsterIds;
+    private int level;
+    private MonsterIdGroup monsterIds;
 
-    public TestArea(String type, int level, ProtoTranslator translator, List<String> monsterIds) {
+    public TestArea(String type, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.type = type;
-        this.level = level;
         this.translator = translator;
         this.monsterIds = monsterIds;
+        this.level = level;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class TestArea implements MapGenerator {
                                   List<MapConnection> connections,
                                   Random rng) {
         PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.parseMapInfo(Arrays.asList(charData));
-        PremadeGenerator generator = new PremadeGenerator(mapInfo, level, translator, monsterIds);
+        PremadeGenerator generator = new PremadeGenerator(mapInfo, translator, monsterIds, level);
         return generator.genMap(name, connections, rng);
     }
 

@@ -2,6 +2,7 @@ package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
+import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
 import pow.util.MathUtils;
@@ -17,21 +18,21 @@ public class RogueGenerator implements MapGenerator {
     private int vaultLevel;
     private int width;
     private int height;
-    private int level;
     private ProtoTranslator translator;
-    private List<String> monsterIds;
     private List<String> vaultIds;
     private List<String> greatVaultIds;
+    private int level;
+    private MonsterIdGroup monsterIds;
 
-    public RogueGenerator(int width, int height, int vaultLevel, int level, ProtoTranslator translator, List<String> monsterIds) {
+    public RogueGenerator(int width, int height, int vaultLevel, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.width = width;
         this.height = height;
         this.vaultLevel = vaultLevel;
-        this.level = level;
         this.translator = translator;
-        this.monsterIds = monsterIds;
         this.vaultIds = new ArrayList<>(PremadeMapData.getRoomIds());
         this.greatVaultIds = new ArrayList<>(PremadeMapData.getVaultIds());
+        this.monsterIds = monsterIds;
+        this.level = level;
     }
 
     @Override
@@ -55,7 +56,7 @@ public class RogueGenerator implements MapGenerator {
                 rng);
 
         // add items
-        int numItems = (width - 1) * (height - 1) / 100;
+        int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
         GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);
@@ -224,7 +225,9 @@ public class RogueGenerator implements MapGenerator {
             RoomInfo room = genRoom(vaultLevel, width, height, rng);
             rooms.add(room);
         }
-        while (area < 0.25 * width * height) {
+        int attempts = 0;
+        while (area < 0.25 * width * height && attempts < 1000) {
+            attempts++;
             RoomInfo room;
             if (vaultLevel >= 1 && rng.nextInt(5) == 0) {
                 room = genRoom(1, width, height, rng);

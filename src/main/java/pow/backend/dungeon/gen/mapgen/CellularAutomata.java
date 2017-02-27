@@ -2,10 +2,8 @@ package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.gen.Constants;
-import pow.backend.dungeon.gen.GeneratorUtils;
-import pow.backend.dungeon.gen.MapConnection;
-import pow.backend.dungeon.gen.ProtoTranslator;
+import pow.backend.dungeon.MonsterIdGroup;
+import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -19,19 +17,19 @@ public class CellularAutomata implements MapGenerator {
     private int height;
     private int layers;
     private boolean makeLakes;
-    private int level;
     private ProtoTranslator translator;
-    private List<String> monsterIds;
+    private int level;
+    private MonsterIdGroup monsterIds;
 
-    public CellularAutomata(int width, int height, int layers, boolean makeLakes, int level,
-                            ProtoTranslator translator, List<String> monsterIds) {
+    public CellularAutomata(int width, int height, int layers, boolean makeLakes,
+                            ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.width = width;
         this.height = height;
         this.layers = layers;
         this.makeLakes = makeLakes;
-        this.level = level;
         this.translator = translator;
         this.monsterIds = monsterIds;
+        this.level = level;
     }
 
     @Override
@@ -55,7 +53,7 @@ public class CellularAutomata implements MapGenerator {
                 rng);
 
         // add items
-        int numItems = (width - 1) * (height - 1) / 100;
+        int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
         GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);
@@ -69,8 +67,8 @@ public class CellularAutomata implements MapGenerator {
         int[][] data = GeneratorUtils.solidMap(width, height);
 
         // setup passable/impassible on the interior randomly
-        for (int x = 1; x < width - 1; x += 1) {
-            for (int y = 1; y < height - 1; y += 1) {
+        for (int x = 1; x < width - 1; x++) {
+            for (int y = 1; y < height - 1; y++) {
                 if (rng.nextDouble() < floorProb) {
                     data[x][y] = Constants.TERRAIN_FLOOR;
                 }
@@ -86,8 +84,8 @@ public class CellularAutomata implements MapGenerator {
         int height = Array2D.height(data);
         int[][] newdata = new int[width][height];
 
-        for (int x = 0; x < width; x += 1) {
-            for (int y = 0; y < height; y += 1) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 // put a wall on the border
                 if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
                     newdata[x][y] = Constants.TERRAIN_WALL;
@@ -97,22 +95,22 @@ public class CellularAutomata implements MapGenerator {
                     int numAdjWallsR2;
 
                     numAdjWallsR1 = 0;
-                    for (int i = x - 1; i <= x + 1; i += 1) {
-                        for (int j = y - 1; j <= y + 1; j += 1) {
+                    for (int i = x - 1; i <= x + 1; i++) {
+                        for (int j = y - 1; j <= y + 1; j++) {
                             if (data[i][j] == Constants.TERRAIN_WALL) {
-                                numAdjWallsR1 += 1;
+                                numAdjWallsR1++;
                             }
                         }
                     }
 
                     numAdjWallsR2 = 0;
-                    for (int i = x - 2; i <= x + 2; i += 1) {
-                        for (int j = y - 2; j <= y + 2; j += 1) {
+                    for (int i = x - 2; i <= x + 2; i++) {
+                        for (int j = y - 2; j <= y + 2; j++) {
                             if ((i < 0) || (i >= width) || (j < 0) || (j >= height)) {
                                 // count off the map as a wall
-                                numAdjWallsR2 += 1;
+                                numAdjWallsR2++;
                             } else if (data[i][j] == Constants.TERRAIN_WALL) {
-                                numAdjWallsR2 += 1;
+                                numAdjWallsR2++;
                             }
                         }
                     }
@@ -137,10 +135,10 @@ public class CellularAutomata implements MapGenerator {
             data = genRandom(width, height, 0.55, rng);
 
             // run the cellular automaton for a few generations
-            for (int i = 0; i < 5; i += 1) {
+            for (int i = 0; i < 5; i++) {
                 data = generation(data, 5, 3);
             }
-            for (int i = 0; i < 3; i += 1) {
+            for (int i = 0; i < 3; i++) {
                 data = generation(data, 5, -1);
             }
 
@@ -155,11 +153,11 @@ public class CellularAutomata implements MapGenerator {
             // remove regions not connected to main region, and measure the
             // size of the main region
             connSize = 0;
-            for (int x = 1; x < width - 1; x += 1) {
-                for (int y = 1; y < height - 1; y += 1) {
+            for (int x = 1; x < width - 1; x++) {
+                for (int y = 1; y < height - 1; y++) {
                     if (data[x][y] == Constants.TERRAIN_TEMP) {
                         data[x][y] = Constants.TERRAIN_FLOOR;
-                        connSize += 1;
+                        connSize++;
                     } else if (data[x][y] == Constants.TERRAIN_FLOOR) {
                         data[x][y] = Constants.TERRAIN_WALL;
                     }
@@ -195,12 +193,12 @@ public class CellularAutomata implements MapGenerator {
             // do the CA directly
             int[][] wallData = genRandom(width, height, 0.55, rng);
 
-            for (int i = 0; i < 10; i += 1) {
+            for (int i = 0; i < 10; i++) {
                 wallData = generation(wallData, 5, -1);
             }
 
-            for (int x = 0; x < width; x += 1) {
-                for (int y = 0; y < height; y += 1) {
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
                     if ((connData[x][y] == Constants.TERRAIN_FLOOR) && (wallData[x][y] == Constants.TERRAIN_WALL)) {
                         connData[x][y] = Constants.TERRAIN_DIGGABLE_WALL;
                     }

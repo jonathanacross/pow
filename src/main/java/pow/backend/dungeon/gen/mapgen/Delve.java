@@ -2,10 +2,8 @@ package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.gen.Constants;
-import pow.backend.dungeon.gen.GeneratorUtils;
-import pow.backend.dungeon.gen.MapConnection;
-import pow.backend.dungeon.gen.ProtoTranslator;
+import pow.backend.dungeon.MonsterIdGroup;
+import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -23,9 +21,9 @@ public class Delve implements MapGenerator {
     private int neighborMin;  // 1 <= neighborMin <= 3
     private int neighborMax;  // neighborMin <= neighborMax <= 8
     private int connChance;   // 0 <= connChance <= 100
-    private int level;
     private ProtoTranslator translator;
-    private List<String> monsterIds;
+    private int level;
+    private MonsterIdGroup monsterIds;
 
     // TODO: clean up naming: no _'s for starting variables, constants in all caps.
     static final Point[] _offsets = {
@@ -52,13 +50,13 @@ public class Delve implements MapGenerator {
             1, 1, 2, 1, 2, 1, 2, 1, 2, 2, 3, 2, 2, 1, 2, 1,   // e0
             1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1};  // f0
 
-    public Delve(int width, int height, int level, ProtoTranslator translator, List<String> monsterIds) {
+    public Delve(int width, int height, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         // reasonable defaults for this game
-        this(width, height, 1, 8, 5, level, translator, monsterIds);
+        this(width, height, 1, 8, 5, translator, monsterIds, level);
     }
 
     public Delve(int width, int height, int neighborMin, int neighborMax, int connChance,
-                 int level, ProtoTranslator translator, List<String> monsterIds) {
+                 ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         assert(1 <= neighborMin && neighborMin <= 3);
         assert(neighborMin <= neighborMax && neighborMax <= 8);
         assert(0 <= connChance && connChance <= 100);
@@ -68,9 +66,9 @@ public class Delve implements MapGenerator {
         this.neighborMin = neighborMin;
         this.neighborMax = neighborMax;
         this.connChance = connChance;
-        this.level = level;
         this.translator = translator;
         this.monsterIds = monsterIds;
+        this.level = level;
     }
 
     @Override
@@ -94,7 +92,7 @@ public class Delve implements MapGenerator {
                 rng);
 
         // add items
-        int numItems = (width - 1) * (height - 1) / 100;
+        int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
         GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);
