@@ -55,29 +55,9 @@ public class TerrainData {
         String name = line[1];
         String image = line[2];
         DungeonTerrain.Flags flags = parseFlags(line[3]);
-        ActionParams actionParams = parseActionParams(line[4]);
+        ActionParams actionParams = ParseUtils.parseActionParams(line[4]);
 
         return new DungeonTerrain(id, name, image, flags, actionParams);
-    }
-
-    private ActionParams parseActionParams(String text) {
-        ActionParams params = new ActionParams();
-        if (text.isEmpty()) {
-            return params;
-        }
-        String[] tokens = text.split(":", 3);
-
-        params.actionName = tokens[0];
-
-        if (!tokens[1].isEmpty()) {
-            params.number = Integer.parseInt(tokens[1]);
-        }
-
-        if (!tokens[2].isEmpty()) {
-            params.name = tokens[2];
-        }
-
-        return params;
     }
 
     private DungeonTerrain.Flags parseFlags(String text) {

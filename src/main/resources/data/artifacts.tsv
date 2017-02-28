@@ -1,0 +1,10 @@
+# id	# name	image	description	slot	flags	action	bonus stats	attack	defense	extra
+lantern	& lantern	lantern	lantern	none					0	
+pearl 1	& pearl	redorange pearl	pearl from dungeon 1	none					0	
+pearl 2	& pearl	orange pearl	pearl from dungeon 2	none					0	
+pearl 3	& pearl	yellow pearl	pearl from dungeon 3	none					0	
+pearl 4	& pearl	green pearl	pearl from dungeon 4	none					0	
+pearl 5	& pearl	blue pearl	pearl from dungeon 5	none					0	
+pearl 6	& pearl	indigo pearl	pearl from dungeon 6	none					0	
+pearl 7	& pearl	violet pearl	pearl from dungeon 7	none					0	
+pearl 8	& pearl	rose pearl	pearl from dungeon 8	none					0	

@@ -50,6 +50,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         BOOTS
     }
 
+    public String id; // for internal reference
     public String name; // english name, e.g., "& axe~"
     public String image; // for display
     public String description;
@@ -63,7 +64,8 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     public ActionParams actionParams;
 
-    public DungeonItem(String name,
+    public DungeonItem(String id,
+                       String name,
                        String image,
                        String description,
                        Slot slot,
@@ -73,6 +75,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
                        int defense,
                        int count,
                        ActionParams actionParams) {
+        this.id = id;
         this.name = name;
         this.image = image;
         this.description = description;
@@ -87,6 +90,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     // copy/clone constructor
     public DungeonItem(DungeonItem other) {
+        this.id = other.id;
         this.name = other.name;
         this.image = other.image;
         this.description = other.description;
@@ -119,7 +123,10 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     @Override
     public int compareTo(DungeonItem other) {
-        int i = name.compareTo(other.name);
+        int i = id.compareTo(other.id);
+        if (i != 0) return i;
+
+        i = name.compareTo(other.name);
         if (i != 0) return i;
 
         i = slot.compareTo(other.slot);

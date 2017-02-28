@@ -199,7 +199,7 @@ public class MakeMonsterStats {
                         "experience" + "\t" +
                         "speed" + "\t" +
                         "flags" + "\t" +
-                        "uniqueItemDrops" + "\t" +
+                        "artifactDrops" + "\t" +
                         "numDropChances");
 
         for (String[] entry : data) {
