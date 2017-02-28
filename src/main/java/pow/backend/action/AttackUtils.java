@@ -43,18 +43,19 @@ public class AttackUtils {
                     map.genMonsterIds.canGenBoss = false;
                 }
 
-                // TODO: drop any gold that the monster holds
-                // with some probability, have the monster drop a random item.
-                int dropChance = gs.player.increaseWealth ? 2 : 4;
-                if (gs.rng.nextInt(dropChance) == 0) {
-                    int difficultyLevel = map.level;
-                    DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
-                    if (item.flags.money) {
-                        if (gs.player.increaseWealth) {
-                            item.count *= 3;
+                // with some probability, have the monster drop some random items
+                for (int attempt = 0; attempt < defender.numDropAttempts; attempt++) {
+                    double dropChance = gs.player.increaseWealth ? 0.75 : 0.5;
+                    if (gs.rng.nextDouble() <= dropChance) {
+                        int difficultyLevel = map.level;
+                        DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
+                        if (item.flags.money) {
+                            if (gs.player.increaseWealth) {
+                                item.count *= 3;
+                            }
                         }
+                        map.map[defender.loc.x][defender.loc.y].items.add(item);
                     }
-                    map.map[defender.loc.x][defender.loc.y].items.add(item);
                 }
 
                 // Only remove the actor if it's NOT the player,

@@ -25,6 +25,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public int speed;
     public int level;
     public int gold;
+    public String requiredItemDrops;
+    public int numDropAttempts; // number of attempts of dropping an item
 
     public abstract Action act(GameBackend backend);
 
@@ -46,8 +48,18 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public AttackData attack;
         public boolean friendly; // friendly to the player
         public int speed;
+        public String requiredItemDrops;
+        public int numDropAttempts;
 
-        public Params(int level, int maxHealth, int defense, int experience, AttackData attack, boolean friendly, int speed) {
+        public Params(int level,
+                      int maxHealth,
+                      int defense,
+                      int experience,
+                      AttackData attack,
+                      boolean friendly,
+                      int speed,
+                      String requiredItemDrops,
+                      int numDropAttempts) {
             this.level = level;
             this.maxHealth = maxHealth;
             this.defense = defense;
@@ -55,6 +67,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
             this.attack = attack;
             this.friendly = friendly;
             this.speed = speed;
+            this.requiredItemDrops = requiredItemDrops;
+            this.numDropAttempts = numDropAttempts;
         }
     }
 
@@ -69,6 +83,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.attack = actorParams.attack;
         this.friendly = actorParams.friendly;
         this.speed = actorParams.speed;
+        this.requiredItemDrops = actorParams.requiredItemDrops;
+        this.numDropAttempts = actorParams.numDropAttempts;
         this.inventory = new ItemList(20, 99);
         this.maxMana = 0;
         this.mana = 0;

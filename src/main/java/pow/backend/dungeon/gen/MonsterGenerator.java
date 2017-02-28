@@ -12,10 +12,7 @@ import pow.util.TsvReader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class MonsterGenerator {
 
@@ -70,6 +67,8 @@ public class MonsterGenerator {
         int speed;
         AllFlags flags;
         int experience;
+        String requiredItemDrops;
+        int numDropAttempts;
 
         public static class AllFlags {
             AiActor.Flags aiActorFlags;
@@ -106,8 +105,8 @@ public class MonsterGenerator {
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificMonsterGenerator(String[] line) {
-            if (line.length != 12) {
-                throw new IllegalArgumentException("Expected 12 fields, but had " + line.length
+            if (line.length != 14) {
+                throw new IllegalArgumentException("Expected 14 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
 
@@ -123,6 +122,8 @@ public class MonsterGenerator {
             experience = Integer.parseInt(line[9]);
             speed = Integer.parseInt(line[10]);
             flags = parseFlags(line[11]);
+            requiredItemDrops = line[12];
+            numDropAttempts = Integer.parseInt(line[13]);
         }
 
         // resolves die rolls, location to get a specific monster instance
@@ -131,7 +132,8 @@ public class MonsterGenerator {
             AttackData attackData = new AttackData(attack, toHit, 0);
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
-                    new Actor.Params(level, instanceHP, defense, experience, attackData, flags.friendly, speed),
+                    new Actor.Params(level, instanceHP, defense, experience, attackData,
+                            flags.friendly, speed, requiredItemDrops, numDropAttempts),
                     flags.aiActorFlags);
         }
     }

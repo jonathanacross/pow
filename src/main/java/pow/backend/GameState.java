@@ -64,6 +64,8 @@ public class GameState implements Serializable {
                         0, // experience
                         new AttackData(new DieRoll(1, 4), 4, 0),
                         true, // friendly to player
+                        0,
+                        "",
                         0) // speed
         );
         this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet

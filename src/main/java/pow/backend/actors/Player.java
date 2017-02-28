@@ -128,7 +128,7 @@ public class Player extends Actor implements Serializable, LightSource {
     private Player(DungeonObject.Params objectParams,
                   GainRatios gainRatios,
                   AttackData innateAttack ) {
-        super(objectParams, new Actor.Params(1, -1, -99, 0, null, true, 0));
+        super(objectParams, new Actor.Params(1, -1, -99, 0, null, true, 0, "", 0));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
         this.equipment = new ArrayList<>();
