@@ -4,6 +4,7 @@ import pow.backend.AttackData;
 import pow.backend.actors.Actor;
 import pow.backend.actors.AiActor;
 import pow.backend.actors.Monster;
+import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.DebugLogger;
 import pow.util.DieRoll;
@@ -67,7 +68,7 @@ public class MonsterGenerator {
         int speed;
         AllFlags flags;
         int experience;
-        String requiredItemDrops;
+        String artifactDrops;  // slight misnomer.. can only handle 1 artifact right now
         int numDropAttempts;
 
         public static class AllFlags {
@@ -102,6 +103,19 @@ public class MonsterGenerator {
             return new AllFlags(new AiActor.Flags(stationary, erratic), friendly);
         }
 
+        private static String parseArtifact(String text) {
+            if (text.isEmpty()) {
+                return null;
+            }
+
+            // Validate that the artifact specified in the file actually exists
+            DungeonItem checkArtifact = ArtifactData.getArtifact(text);
+            if (checkArtifact == null) {
+                DebugLogger.fatal(new RuntimeException("error: unknown artifact " + text));
+            }
+            return text;
+        }
+
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificMonsterGenerator(String[] line) {
@@ -122,7 +136,7 @@ public class MonsterGenerator {
             experience = Integer.parseInt(line[9]);
             speed = Integer.parseInt(line[10]);
             flags = parseFlags(line[11]);
-            requiredItemDrops = line[12];
+            artifactDrops = parseArtifact(line[12]);
             numDropAttempts = Integer.parseInt(line[13]);
         }
 
@@ -133,7 +147,7 @@ public class MonsterGenerator {
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
                     new Actor.Params(level, instanceHP, defense, experience, attackData,
-                            flags.friendly, speed, requiredItemDrops, numDropAttempts),
+                            flags.friendly, speed, artifactDrops, numDropAttempts),
                     flags.aiActorFlags);
         }
     }

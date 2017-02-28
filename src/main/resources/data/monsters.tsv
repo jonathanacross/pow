@@ -22,7 +22,7 @@
 2	green worm mass	green worm mass	green worm mass	It is a large slimy mass of green worms.	7	1d3	6	3	4	0			0
 2	brown imp	brown imp	brown imp	A fast, mischievous creature.	5	2d2	6	4	4	2			1
 2	green komodo	green komodo	green komodo	A giant Komodo dragon. It is about 10 feet long and has a venomous bite.	21	2d4	12	13	11	0	boss		4
-2	purple spider	purple spider	purple spider	A large and powerful amathyst spider with bright yellow eyes.	11	2d2	10	7	6	0	boss	orb 1	4
+2	purple spider	purple spider	purple spider	A large and powerful amathyst spider with bright yellow eyes.	11	2d2	10	7	6	0	boss	pearl 1	4
 3	novice mage	novice mage	novice mage	He is fumbling with his spell books.	8	2d2	6	6	4	0			1
 3	novice warrior	novice warrior	novice warrior	An inexperienced but tough warrior.	12	2d3	9	9	6	0			1
 3	novice archer	novice archer	novice archer	He just completed archery training.	9	2d3	8	8	5	0			1
@@ -36,7 +36,7 @@
 4	brown scorpion	brown scorpion	brown scorpion	It is a large scorpion with a sharp stinger.	9	2d3	10	9	5	0			0
 4	blue ooze	blue ooze	blue ooze	It’s blue and it’s oozing.	11	2d2	9	4	3	-3			1
 4	great turtle	great turtle	great turtle	A thunderous and ancient tortoise, with a strong carapace and surprising agility.	32	2d6	18	18	13	-1	boss		4
-4	minotaur	minotaur	minotaur	A cross between a human and a bull. He has the skulls of other adventurers around his belt.	39	3d5	18	16	23	1	boss	orb 2	6
+4	minotaur	minotaur	minotaur	A cross between a human and a bull. He has the skulls of other adventurers around his belt.	39	3d5	18	16	23	1	boss	pearl 2	6
 6	rabbit mage	rabbit mage	rabbit mage	This rabbit humanoid is a sly magician.	15	2d4	11	11	9	1			1
 6	rabbit warrior	rabbit warrior	rabbit warrior	It is a rabbit humanoid versed in the art of war.	23	3d4	15	15	14	1			1
 6	rabbit archer	rabbit archer	rabbit archer	It is a rabbit humanoid ready with bow and arrows.	18	2d6	14	14	11	1			1
@@ -49,7 +49,7 @@
 6	rock lizard	rock lizard	rock lizard	A lizard with a hardened hide.	23	3d4	15	15	14	1			0
 6	yellow worm mass	yellow worm mass	yellow worm mass	It is a large slimy mass of green worms.	17	2d4	13	6	10	1			0
 6	yellow schweinhund	yellow schweinhund	yellow schweinhund	A yellow schweinhund with sharp fangs and a long tail.	46	3d5	23	18	33	2	boss		4
-6	Balthazar the Great	Balthazar the Great	Balthazar the Great	Balthazar is one of the world’s greatest kobold swordsmen, known for his feats at the battle of Arignor.	61	3d8	25	22	37	1	boss	orb 3	6
+6	Balthazar the Great	Balthazar the Great	Balthazar the Great	Balthazar is one of the world’s greatest kobold swordsmen, known for his feats at the battle of Arignor.	61	3d8	25	22	37	1	boss	pearl 3	6
 8	dark elf mage	dark elf mage	dark elf mage	A dark elven figure, dressed all in black, hurling spells at you.	24	3d4	14	14	21	3			1
 8	dark elf warrior	dark elf warrior	dark elf warrior	A dark elven figure in armour and ready with his sword.	36	3d6	21	21	31	3			1
 8	dark elf archer	dark elf archer	dark elf archer	A dark elven figure armed with a longbow.	29	3d6	19	19	25	3			1
@@ -63,7 +63,7 @@
 8	big red spiny	big red spiny	big red spiny	A great lizard with a horn, sharp spines, and a spiked tail.	36	3d6	21	21	31	3			0
 8	frost giant	frost giant	frost giant	A twelve foot tall giant covered in furs.	48	4d7	23	25	35	2			2
 8	Hagar the Merciless	Hagar the Merciless	Hagar the Merciless	Hagar, warrior-king from the East, is legendary for his skill in combat and excessive cruelty.	95	4d9	34	30	82	3	boss		4
-8	ice creature	ice creature	ice creature	It is a towering glacier of ice, moving inexorably towards you.	95	4d9	34	30	82	3	boss	orb 4	4
+8	ice creature	ice creature	ice creature	It is a towering glacier of ice, moving inexorably towards you.	95	4d9	34	30	82	3	boss	pearl 4	4
 10	orc mage	orc mage	orc mage	An orc dressed in skins who gestures wildly.	37	3d6	19	19	19	0			1
 10	orc warrior	orc warrior	orc warrior	An armoured orc with an air of authority.	56	4d7	27	27	28	0			1
 10	orc archer	orc archer	orc archer	An orc archer who moves with confidence.	45	4d6	24	24	23	0			1
@@ -77,7 +77,7 @@
 10	chess knight	chess knight	chess knight	This strange creature always moves in the shape of an L, jumping over obstacles.	56	4d7	27	27	28	0	knightmove		1
 10	copperhead snake	copperhead snake	copperhead snake	It has a copper head and sharp venomous fangs.	61	4d8	30	38	21	-2			1
 10	Lor the Betrayer	Lor the Betrayer	Lor the Betrayer	Lor, heir to the throne of Undor, killed his father and betrayed his kingdom for his lust for gold.	149	5d10	45	39	129	3	boss		6
-10	basilisk	basilisk	basilisk	A vile reptile that preys on unsuspecting travellers. Its eyes stare deeply at you and your soul starts to wilt!	123	5d8	45	45	74	1	boss	orb 5	6
+10	basilisk	basilisk	basilisk	A vile reptile that preys on unsuspecting travellers. Its eyes stare deeply at you and your soul starts to wilt!	123	5d8	45	45	74	1	boss	pearl 5	6
 12	skeleton mage	skeleton mage	skeleton mage	A skeleton mage. Power seems to crackle from his frame.	58	4d6	24	24	29	0			1
 12	skeleton warrior	skeleton warrior	skeleton warrior	A skeleton warrior of considerable skill.	87	4d9	34	34	44	0			1
 12	skeleton archer	skeleton archer	skeleton archer	A skeleton archer wielding arrows tipped with rusty iron.	70	4d8	31	31	35	0			1
@@ -90,7 +90,7 @@
 12	floating skull	floating skull	floating skull	A glowing skull possessed by sorcerous power. It need not move, but merely blast you with mighty magic as it speaks the words of power.	87	4d9	34	34	31	2	stationary		0
 12	vampire bat	vampire bat	vampire bat	A blood-sucking bat that flies at your neck hungrily.	87	4d9	34	34	53	3	erratic		0
 12	red spider	red spider	red spider	It is a vast red spider whose bulbous body is bloated with poison. Cunning and evil, it seeks to taste your juicy insides.	105	4d8	46	33	91	3	boss		6
-12	skeletal dragon	skeletal dragon	skeletal dragon	The skeletal form of a once-great dragon, enchanted by magic most perilous. Its animated form strikes with speed and wrath.	262	5d11	62	53	189	2	boss	orb 6	10
+12	skeletal dragon	skeletal dragon	skeletal dragon	The skeletal form of a once-great dragon, enchanted by magic most perilous. Its animated form strikes with speed and wrath.	262	5d11	62	53	189	2	boss	pearl 6	10
 14	troll mage	troll mage	troll mage	A stout troll who is adept at hurling spells as easily as crunching your bones.	91	4d9	30	30	46	0			1
 14	troll warrior	troll warrior	troll warrior	This troll's great strength and size make it a fearsome foe.	136	5d10	43	43	68	0			1
 14	troll archer	troll archer	troll archer	A powerful troll versed in the art of archery.	109	5d9	38	38	55	0			1
@@ -103,7 +103,7 @@
 16	red cobra	red cobra	red cobra	A great cobra with ruby scales.	234	6d13	57	72	98	-1			0
 16	sandworm	sandworm	sand worm	An enormous worm with a fearsome array of crystalline teeth.	234	6d13	57	72	81	-2			1
 16	two headed ogre	two headed ogre	two headed ogre	A giant orc-like figure with a two heads and an awesomely muscled frame. It regrows it heads as fast as you chop them off.	568	7d17	85	74	284	0	boss		4
-16	oliphant	oliphant	oliphant	A giant elephantine creature with four tusks, sharp teeth, and a foul temper.	426	6d13	78	62	178	-1	boss	orb 7	6
+16	oliphant	oliphant	oliphant	A giant elephantine creature with four tusks, sharp teeth, and a foul temper.	426	6d13	78	62	178	-1	boss	pearl 7	6
 17	demon mage	demon mage	demon mage	A fearsome opponent. His spells are lethal and his combat blows crushingly hard.	178	5d10	40	40	89	0			1
 17	demon warrior	demon warrior	demon warrior	A demon wielding a massive sword. Feared by all when it flies into one of its berserk rages, it will cut down anything in its path.	266	6d12	57	57	133	0			1
 17	demon archer	demon archer	demon archer	A demon wielding a deadly bow which he fires with deadly efficiency.	213	6d11	51	51	107	0			1
@@ -117,7 +117,7 @@
 18	fire vortex	fire vortex	fire vortex	A towering fire vortex, burning everything beyond recognition.	333	6d13	62	62	200	1			0
 18	lava dragon	lava dragon	lava dragon	An immense dragon capable of awesome destruction that dwells within pools of lava. Fire leaps continuously from its huge form. You have never felt such extreme heat, or witnessed such a scorching stare.	500	7d14	74	80	250	0			8
 18	phoenix	phoenix	phoenix	A massive glowing eagle bathed in flames. The searing heat chars your skin and melts your armour.	666	7d14	93	74	575	3	boss		10
-18	Maeglor	Maeglor	Maeglor	Lord of the underworld, Maeglor is a massive humanoid demon wreathed in flames. His power and evil are undeniable - darkness itself recoils from his touch as he leaves a trail of death and destruction. Mighty claws rend reality as he annihilates all in his path to your soul!	888	9d16	102	89	921	4	boss	orb 8	14
+18	Maeglor	Maeglor	Maeglor	Lord of the underworld, Maeglor is a massive humanoid demon wreathed in flames. His power and evil are undeniable - darkness itself recoils from his touch as he leaves a trail of death and destruction. Mighty claws rend reality as he annihilates all in his path to your soul!	888	9d16	102	89	921	4	boss	pearl 8	14
 19	alien mage	alien mage	alien mage	A great mage, incanting horribly as he advances toward you. Power seems to crackle from his slender frame.	278	6d10	47	47	139	0			1
 19	alien warrior	alien warrior	alien warrior	A mighty warrior wearing armour and radiating evil power. He moves with lightning speed.	416	7d13	67	67	208	0			1
 19	alien archer	alien archer	alien archer	A legendary archer who fires arrows with terrifying speed and accuracy.	333	6d13	61	61	167	0			1

@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
+import pow.backend.dungeon.gen.ArtifactData;
 import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.event.GameEvent;
 
@@ -41,6 +42,13 @@ public class AttackUtils {
                 // see if this is a boss; if so, update the map so it won't regenerate
                 if (map.genMonsterIds.canGenBoss && map.genMonsterIds.bossId.equals(defender.id)) {
                     map.genMonsterIds.canGenBoss = false;
+                }
+
+                // drop any artifacts
+                String artifactId = defender.requiredItemDrops;
+                if (artifactId != null) {
+                    DungeonItem item = ArtifactData.getArtifact(artifactId);
+                    map.map[defender.loc.x][defender.loc.y].items.add(item);
                 }
 
                 // with some probability, have the monster drop some random items
