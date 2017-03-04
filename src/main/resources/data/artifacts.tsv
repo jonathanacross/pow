@@ -1,10 +1,24 @@
-# id	# name	image	description	slot	flags	action	bonus stats	attack	defense	extra
-lantern	& lantern	lantern	lantern	none					0	
-pearl 1	& pearl	redorange pearl	pearl from dungeon 1	none					0	
-pearl 2	& pearl	orange pearl	pearl from dungeon 2	none					0	
-pearl 3	& pearl	yellow pearl	pearl from dungeon 3	none					0	
-pearl 4	& pearl	green pearl	pearl from dungeon 4	none					0	
-pearl 5	& pearl	blue pearl	pearl from dungeon 5	none					0	
-pearl 6	& pearl	indigo pearl	pearl from dungeon 6	none					0	
-pearl 7	& pearl	violet pearl	pearl from dungeon 7	none					0	
-pearl 8	& pearl	rose pearl	pearl from dungeon 8	none					0	
+# id	# name	image	description	artifact slot	defense
+pearl 1	& pearl	redorange pearl	pearl from dungeon 1	pearl1	0
+pearl 2	& pearl	orange pearl	pearl from dungeon 2	pearl2	0
+pearl 3	& pearl	yellow pearl	pearl from dungeon 3	pearl3	0
+pearl 4	& pearl	green pearl	pearl from dungeon 4	pearl4	0
+pearl 5	& pearl	blue pearl	pearl from dungeon 5	pearl5	0
+pearl 6	& pearl	indigo pearl	pearl from dungeon 6	pearl6	0
+pearl 7	& pearl	violet pearl	pearl from dungeon 7	pearl7	0
+pearl 8	& pearl	rose pearl	pearl from dungeon 8	pearl8	0
+# main dungeon items					
+lantern	lantern	lantern	lantern	lantern	0
+magic key	magic key	magic key	magic key	key	0
+water float	water float	magic sailboat	water float	float	0
+gas mask	gas mask	gas mask	gas mask	gasmask	0
+glasses	glasses	glasses	glasses	glasses	0
+magic pickaxe	magic pickaxe	magic pickaxe	magic pickaxe	pickaxe	0
+heat suit	heat suit	heat suit	heat suit	heatsuit	10
+magic feather	magic feather	magic feather	magic feather	feather	0
+# optional items					
+pet statue	pet statue	magic statue	pet statue	petstatue	0
+#quiver	quiver	TODO	quiver	quiver	0
+#create wall wand	wand of create wall	TODO	wand of create wall	wallwand	0
+#bright lantern	bright lantern	TODO	bright lantern	lantern	0
+#overworld map	map	TODO	map	map	0

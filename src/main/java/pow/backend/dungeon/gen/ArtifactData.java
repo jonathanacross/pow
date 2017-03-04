@@ -1,6 +1,5 @@
 package pow.backend.dungeon.gen;
 
-import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonItem;
 import pow.util.DebugLogger;
 import pow.util.DieRoll;
@@ -20,6 +19,7 @@ public class ArtifactData {
     public static DungeonItem getArtifact(String id) {
         if (!instance.artifacts.containsKey(id)) {
             DebugLogger.error("unknown artifact id '" + id + "'");
+            throw new RuntimeException("unknown artifact id '" + id + "'");
         }
         return instance.artifacts.get(id);
     }
@@ -53,16 +53,11 @@ public class ArtifactData {
         String name;
         String image;
         String description;
-        DungeonItem.Slot slot;
-        DungeonItem.Flags flags;
-        ActionParams actionParams;
-        int[] bonuses;
-        DieRoll attack;
+        DungeonItem.ArtifactSlot artifactSlot;
         int defense;
-        String extra;
 
-        if (line.length != 11) {
-            throw new IllegalArgumentException("Expected 11 fields, but had " + line.length
+        if (line.length != 6) {
+            throw new IllegalArgumentException("Expected 6 fields, but had " + line.length
                     + ". Fields = \n" + String.join(",", line));
         }
 
@@ -71,16 +66,12 @@ public class ArtifactData {
             name = line[1];
             image = line[2];
             description = line[3];
-            slot = DungeonItem.Slot.valueOf(line[4].toUpperCase());
-            flags = ParseUtils.parseFlags(line[5]);
-            actionParams = ParseUtils.parseActionParams(line[6]);
-            bonuses = ParseUtils.parseBonuses(line[7]);
-            attack = DieRoll.parseDieRoll(line[8]);
-            defense = Integer.parseInt(line[9]);
-            extra = line[10];
+            artifactSlot = DungeonItem.ArtifactSlot.valueOf(line[4].toUpperCase());
+            defense = Integer.parseInt(line[5]);
 
-            return new DungeonItem(id, name, image, description, slot, flags, bonuses, attack,
-                    defense, 1, actionParams);
+            return new DungeonItem( id, name, image, description, DungeonItem.Slot.NONE, artifactSlot,
+                    ParseUtils.parseFlags(""), ParseUtils.parseBonuses(""),
+                    new DieRoll(0,0), defense, 1, ParseUtils.parseActionParams(""));
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
         }

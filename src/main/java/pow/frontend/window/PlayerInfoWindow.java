@@ -6,15 +6,13 @@ import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
+import pow.util.Point;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerInfoWindow extends AbstractWindow {
 
@@ -89,6 +87,30 @@ public class PlayerInfoWindow extends AbstractWindow {
             ImageController.drawTile(graphics, item.image, 295, TILE_SIZE * position + MARGIN);
             graphics.drawString(item.stringWithInfo(), 335, TILE_SIZE * position + 30);
         }
+
+        // draw artifacts
+        List<DungeonItem> pearls = new ArrayList<>();
+        List<DungeonItem> otherArtifacts = new ArrayList<>();
+        for (DungeonItem item : player.artifacts.values()) {
+            if (item.artifactSlot.toString().startsWith("PEARL")) {
+                pearls.add(item);
+            } else {
+                otherArtifacts.add(item);
+            }
+        }
+        Collections.sort(pearls);
+        Collections.sort(otherArtifacts);
+        int i = 0;
+        for (DungeonItem item: pearls) {
+            ImageController.drawTile(graphics, item.image, TILE_SIZE * i + 15, 370);
+            i++;
+        }
+        i = 0;
+        for (DungeonItem item: otherArtifacts) {
+            ImageController.drawTile(graphics, item.image, TILE_SIZE * i + 15, 370 + TILE_SIZE);
+            i++;
+        }
+
     }
 
     private static class SlotData {

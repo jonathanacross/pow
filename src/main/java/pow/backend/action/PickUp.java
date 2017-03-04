@@ -6,6 +6,7 @@ import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.event.GameEvent;
+import pow.util.DebugLogger;
 import pow.util.TextUtils;
 
 import java.util.ArrayList;
@@ -43,6 +44,19 @@ public class PickUp implements Action {
         // special case for money
         if (item.flags.money) {
             actor.gold += item.count;
+            square.items.items.remove(itemNum);
+            backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true));
+            return ActionResult.Succeeded(events);
+        }
+
+        // special case for artifacts
+        if (item.artifactSlot != DungeonItem.ArtifactSlot.NONE) {
+            if (actor != gs.player) {
+                // don't let another monster pick up key game items. :)
+                return ActionResult.Failed(null);
+            }
+            // at this point we know that it's the player picking up the artifact
+            gs.player.artifacts.put(item.artifactSlot, item);
             square.items.items.remove(itemNum);
             backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true));
             return ActionResult.Succeeded(events);

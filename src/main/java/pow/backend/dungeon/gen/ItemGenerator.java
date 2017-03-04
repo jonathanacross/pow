@@ -205,8 +205,8 @@ public class ItemGenerator {
                     ? getMoneyForLevel(level, rng)
                     : rng.nextInt(count.max + 1 - count.min) + count.min;
 
-            return new DungeonItem(id, name, image, description, slot, flags, specificItemBonuses, attack,
-                    defense, itemCount, actionParams);
+            return new DungeonItem(id, name, image, description, slot, DungeonItem.ArtifactSlot.NONE,
+                    flags, specificItemBonuses, attack, defense, itemCount, actionParams);
         }
     }
 

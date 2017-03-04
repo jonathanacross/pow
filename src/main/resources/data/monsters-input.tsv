@@ -9,7 +9,7 @@
 1	white rat	mammal			0		0	white rat	white rat	It looks like a cute lab rat, but it has sharp teeth.
 1	brown beetle	insect		erratic	1		0	brown beetle	brown beetle	It is a giant brown beetle with a hard exoskeleton.
 1	crawling moss	fungus			-1		0	crawling moss	crawling moss	A mass of sickly green vegetation. It’s crawling around slowly.
-1	giant salamander	reptile		boss	0	lantern	3	giant salamander	giant salamander	A giant green salamander. Watch out!
+1	giant salamander	reptile		boss	0	pet statue	3	giant salamander	giant salamander	A giant green salamander. Watch out!
 2	bit	jelly	weak		0		1	bit	bit	A small creature that looks like a red gumdrop.
 2	bot	jelly			0		1	bot	bot	A small creature that looks like a blue gumdrop.
 2	yellow ant	insect		erratic	0		0	yellow ant	yellow ant	A large yellow ant; it is about 2 feet long.
@@ -21,7 +21,7 @@
 2	bat	mammal			2		0	bat	bat	A gray bat, fluttering around the air.
 2	green worm mass	jelly			0		0	green worm mass	green worm mass	It is a large slimy mass of green worms.
 2	brown imp	mammal	weak		2		1	brown imp	brown imp	A fast, mischievous creature.
-2	green komodo	reptile		boss	0		4	green komodo	green komodo	A giant Komodo dragon. It is about 10 feet long and has a venomous bite.
+2	green komodo	reptile		boss	0	lantern	4	green komodo	green komodo	A giant Komodo dragon. It is about 10 feet long and has a venomous bite.
 2	purple spider	insect		boss	0	pearl 1	4	purple spider	purple spider	A large and powerful amathyst spider with bright yellow eyes.
 3	novice mage	mage			0		1	novice mage	novice mage	He is fumbling with his spell books.
 3	novice warrior	warrior			0		1	novice warrior	novice warrior	An inexperienced but tough warrior.
@@ -35,7 +35,7 @@
 4	jackal	mammal			1		0	jackal	jackal	It is a yapping snarling dog, dangerous when in a pack.
 4	brown scorpion	insect			0		0	brown scorpion	brown scorpion	It is a large scorpion with a sharp stinger.
 4	blue ooze	jelly			-3		1	blue ooze	blue ooze	It’s blue and it’s oozing.
-4	great turtle	reptile		boss	-1		4	great turtle	great turtle	A thunderous and ancient tortoise, with a strong carapace and surprising agility.
+4	great turtle	reptile		boss	-1	magic key	4	great turtle	great turtle	A thunderous and ancient tortoise, with a strong carapace and surprising agility.
 4	minotaur	giant		boss	1	pearl 2	6	minotaur	minotaur	A cross between a human and a bull. He has the skulls of other adventurers around his belt.
 6	rabbit mage	mage			0		1	rabbit mage	rabbit mage	This rabbit humanoid is a sly magician.
 6	rabbit warrior	warrior			0		1	rabbit warrior	rabbit warrior	It is a rabbit humanoid versed in the art of war.
@@ -48,7 +48,7 @@
 6	small red spiny	mammal			0		0	small red spiny	small red spiny	An unusual lizard with a horn, covered with sharp spines.
 6	rock lizard	lizard			0		0	rock lizard	rock lizard	A lizard with a hardened hide.
 6	yellow worm mass	jelly			0		0	yellow worm mass	yellow worm mass	It is a large slimy mass of green worms.
-6	yellow schweinhund	mammal		boss	1		4	yellow schweinhund	yellow schweinhund	A yellow schweinhund with sharp fangs and a long tail.
+6	yellow schweinhund	mammal		boss	1	water float	4	yellow schweinhund	yellow schweinhund	A yellow schweinhund with sharp fangs and a long tail.
 6	Balthazar the Great	giant		boss	0	pearl 3	6	Balthazar the Great	Balthazar the Great	Balthazar is one of the world’s greatest kobold swordsmen, known for his feats at the battle of Arignor.
 8	dark elf mage	mage			0		1	dark elf mage	dark elf mage	A dark elven figure, dressed all in black, hurling spells at you.
 8	dark elf warrior	warrior			0		1	dark elf warrior	dark elf warrior	A dark elven figure in armour and ready with his sword.
@@ -62,7 +62,7 @@
 8	white wolf	mammal			2		0	white wolf	white wolf	A large and muscled wolf from the northern wastes. Its breath is cold and icy and its fur coated in frost.
 8	big red spiny	mammal			0		0	big red spiny	big red spiny	A great lizard with a horn, sharp spines, and a spiked tail.
 8	frost giant	giant			-1		2	frost giant	frost giant	A twelve foot tall giant covered in furs.
-8	Hagar the Merciless	giant		boss	0		4	Hagar the Merciless	Hagar the Merciless	Hagar, warrior-king from the East, is legendary for his skill in combat and excessive cruelty.
+8	Hagar the Merciless	giant		boss	0	gas mask	4	Hagar the Merciless	Hagar the Merciless	Hagar, warrior-king from the East, is legendary for his skill in combat and excessive cruelty.
 8	ice creature	giant		boss	0	pearl 4	4	ice creature	ice creature	It is a towering glacier of ice, moving inexorably towards you.
 10	orc mage	mage			0		1	orc mage	orc mage	An orc dressed in skins who gestures wildly.
 10	orc warrior	warrior			0		1	orc warrior	orc warrior	An armoured orc with an air of authority.
@@ -76,7 +76,7 @@
 10	griffin	bird			0		1	griffin	griffin	A legendary creature with the body, and back legs of a lion and the head and wings of an eagle.
 10	chess knight	magical		knightmove	0		1	chess knight	chess knight	This strange creature always moves in the shape of an L, jumping over obstacles.
 10	copperhead snake	reptile			-2		1	copperhead snake	copperhead snake	It has a copper head and sharp venomous fangs.
-10	Lor the Betrayer	giant		boss	3		6	Lor the Betrayer	Lor the Betrayer	Lor, heir to the throne of Undor, killed his father and betrayed his kingdom for his lust for gold.
+10	Lor the Betrayer	giant		boss	3	glasses	6	Lor the Betrayer	Lor the Betrayer	Lor, heir to the throne of Undor, killed his father and betrayed his kingdom for his lust for gold.
 10	basilisk	reptile		boss	1	pearl 5	6	basilisk	basilisk	A vile reptile that preys on unsuspecting travellers. Its eyes stare deeply at you and your soul starts to wilt!
 12	skeleton mage	mage			0		1	skeleton mage	skeleton mage	A skeleton mage. Power seems to crackle from his frame.
 12	skeleton warrior	warrior			0		1	skeleton warrior	skeleton warrior	A skeleton warrior of considerable skill.
@@ -89,7 +89,7 @@
 12	evil eye	undead			1		0	evil eye	evil eye	A globular body with a large toothy mouth, a large central eye, and three smaller eyes on stalks protruding from the top of its body.
 12	floating skull	undead		stationary	2		0	floating skull	floating skull	A glowing skull possessed by sorcerous power. It need not move, but merely blast you with mighty magic as it speaks the words of power.
 12	vampire bat	mammal		erratic	3		0	vampire bat	vampire bat	A blood-sucking bat that flies at your neck hungrily.
-12	red spider	insect		boss	3		6	red spider	red spider	It is a vast red spider whose bulbous body is bloated with poison. Cunning and evil, it seeks to taste your juicy insides.
+12	red spider	insect		boss	3	magic pickaxe	6	red spider	red spider	It is a vast red spider whose bulbous body is bloated with poison. Cunning and evil, it seeks to taste your juicy insides.
 12	skeletal dragon	dragon		boss	2	pearl 6	10	skeletal dragon	skeletal dragon	The skeletal form of a once-great dragon, enchanted by magic most perilous. Its animated form strikes with speed and wrath.
 14	troll mage	mage			0		1	troll mage	troll mage	A stout troll who is adept at hurling spells as easily as crunching your bones.
 14	troll warrior	warrior			0		1	troll warrior	troll warrior	This troll's great strength and size make it a fearsome foe.
@@ -102,7 +102,7 @@
 16	zombie	warrior		erratic	-2		2	zombie	zombie	A humanoid form encased in mouldy wrappings, the result of some unspeakable spell that left him wandering the earth forever.
 16	red cobra	reptile			-1		0	red cobra	red cobra	A great cobra with ruby scales.
 16	sandworm	reptile			-2		1	sandworm	sand worm	An enormous worm with a fearsome array of crystalline teeth.
-16	two headed ogre	giant		boss	0		4	two headed ogre	two headed ogre	A giant orc-like figure with a two heads and an awesomely muscled frame. It regrows it heads as fast as you chop them off.
+16	two headed ogre	giant		boss	0	heat suit	4	two headed ogre	two headed ogre	A giant orc-like figure with a two heads and an awesomely muscled frame. It regrows it heads as fast as you chop them off.
 16	oliphant	mammal		boss	-1	pearl 7	6	oliphant	oliphant	A giant elephantine creature with four tusks, sharp teeth, and a foul temper.
 17	demon mage	mage			0		1	demon mage	demon mage	A fearsome opponent. His spells are lethal and his combat blows crushingly hard.
 17	demon warrior	warrior			0		1	demon warrior	demon warrior	A demon wielding a massive sword. Feared by all when it flies into one of its berserk rages, it will cut down anything in its path.
@@ -116,7 +116,7 @@
 18	iron golem	giant			0		2	iron golem	iron golem	It is a massive metal statue that moves steadily towards you
 18	fire vortex	magical			1		0	fire vortex	fire vortex	A towering fire vortex, burning everything beyond recognition.
 18	lava dragon	dragon			0		8	lava dragon	lava dragon	An immense dragon capable of awesome destruction that dwells within pools of lava. Fire leaps continuously from its huge form. You have never felt such extreme heat, or witnessed such a scorching stare.
-18	phoenix	bird		boss	3		10	phoenix	phoenix	A massive glowing eagle bathed in flames. The searing heat chars your skin and melts your armour.
+18	phoenix	bird		boss	3	magic feather	10	phoenix	phoenix	A massive glowing eagle bathed in flames. The searing heat chars your skin and melts your armour.
 18	Maeglor	giant		boss	4	pearl 8	14	Maeglor	Maeglor	Lord of the underworld, Maeglor is a massive humanoid demon wreathed in flames. His power and evil are undeniable - darkness itself recoils from his touch as he leaves a trail of death and destruction. Mighty claws rend reality as he annihilates all in his path to your soul!
 19	alien mage	mage			0		1	alien mage	alien mage	A great mage, incanting horribly as he advances toward you. Power seems to crackle from his slender frame.
 19	alien warrior	warrior			0		1	alien warrior	alien warrior	A mighty warrior wearing armour and radiating evil power. He moves with lightning speed.
