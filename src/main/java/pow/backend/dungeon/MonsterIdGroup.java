@@ -22,4 +22,13 @@ public class MonsterIdGroup implements Serializable {
         this.canGenBoss = canGenBoss;
         this.bossId = bossId;
     }
+
+    // copy/clone constructor -- this is needed since we want to read in whether
+    // a boss could be generated once per program run, but need to reset the
+    // canGenBoss field once per game.
+    public MonsterIdGroup(MonsterIdGroup other) {
+        this.monsterIds = other.monsterIds;
+        this.canGenBoss = other.canGenBoss;
+        this.bossId = other.bossId;
+    }
 }
