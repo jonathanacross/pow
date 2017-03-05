@@ -1,5 +1,6 @@
 package pow.backend.dungeon.gen;
 
+import pow.backend.ActionParams;
 import pow.backend.ShopData;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.ItemList;
@@ -74,9 +75,9 @@ public class ShopGenerator {
             1000 * sqr(item.bonuses[DungeonItem.SPEED_IDX]) +
             20 * sqr(item.bonuses[DungeonItem.WEALTH_IDX]) +
             1 * (item.flags.arrow ? 1 : 0) +
-            8 * (item.actionParams.actionName != null && item.actionParams.actionName.equals("heal") ? 1 : 0) +
-            7 * (item.actionParams.actionName != null && item.actionParams.actionName.equals("restoreMana") ? 1 : 0) +
-            100 * (item.actionParams.actionName != null && item.actionParams.actionName.equals("restore") ? 1 : 0);
+            8 * (item.actionParams.actionName == ActionParams.ActionName.HEAL_ACTION ? 1 : 0) +
+            7 * (item.actionParams.actionName == ActionParams.ActionName.RESTORE_MANA_ACTION ? 1 : 0) +
+            100 * (item.actionParams.actionName == ActionParams.ActionName.RESTORE_ACTION ? 1 : 0);
 
         double slotScaleFactor = 1.0;
         switch (item.slot) {

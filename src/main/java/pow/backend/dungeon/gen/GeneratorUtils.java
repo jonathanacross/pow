@@ -296,8 +296,7 @@ public class GeneratorUtils {
         // Set the flags in case not set in the file. We may even be able to remove such
         // flags from the file.
         ActionParams params = new ActionParams();
-        // TODO: pull out magic strings somewhere
-        params.actionName = "gotoArea";
+        params.actionName = ActionParams.ActionName.MOVE_TO_AREA_ACTION;
         params.name = connection.destination.toString();
         DungeonFeature.Flags flags =  new DungeonFeature.Flags(
                 false,
@@ -322,8 +321,7 @@ public class GeneratorUtils {
         DungeonTerrain terrainTemplate = TerrainData.getTerrain(terrainTemplateName);
 
         ActionParams params = new ActionParams();
-        // TODO: pull out magic strings somewhere
-        params.actionName = "gotoArea";
+        params.actionName = ActionParams.ActionName.MOVE_TO_AREA_ACTION;
         params.name = target;
         DungeonTerrain.Flags flags = new DungeonTerrain.Flags(false, false, false, false, true);
         DungeonTerrain terrain = new DungeonTerrain(
