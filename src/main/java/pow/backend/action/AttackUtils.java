@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
+import pow.backend.dungeon.gen.ArtifactData;
 import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.event.GameEvent;
 
@@ -43,18 +44,26 @@ public class AttackUtils {
                     map.genMonsterIds.canGenBoss = false;
                 }
 
-                // TODO: drop any gold that the monster holds
-                // with some probability, have the monster drop a random item.
-                int dropChance = gs.player.increaseWealth ? 2 : 4;
-                if (gs.rng.nextInt(dropChance) == 0) {
-                    int difficultyLevel = map.level;
-                    DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
-                    if (item.flags.money) {
-                        if (gs.player.increaseWealth) {
-                            item.count *= 3;
-                        }
-                    }
+                // drop any artifacts
+                String artifactId = defender.requiredItemDrops;
+                if (artifactId != null) {
+                    DungeonItem item = ArtifactData.getArtifact(artifactId);
                     map.map[defender.loc.x][defender.loc.y].items.add(item);
+                }
+
+                // with some probability, have the monster drop some random items
+                for (int attempt = 0; attempt < defender.numDropAttempts; attempt++) {
+                    double dropChance = gs.player.increaseWealth ? 0.75 : 0.5;
+                    if (gs.rng.nextDouble() <= dropChance) {
+                        int difficultyLevel = map.level;
+                        DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
+                        if (item.flags.money) {
+                            if (gs.player.increaseWealth) {
+                                item.count *= 3;
+                            }
+                        }
+                        map.map[defender.loc.x][defender.loc.y].items.add(item);
+                    }
                 }
 
                 // Only remove the actor if it's NOT the player,

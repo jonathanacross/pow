@@ -20,8 +20,8 @@ d2l3	17		D		d2l2	cellularAutomata	1,true,desert cave	minotaur	brown scorpion
 forest1	20	3	N,E,S,W	1,2		recursiveInterpolation	forest		rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass
 forest2	21	3	N,E,S,W	3		recursiveInterpolation	forest		rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass
 forest3	22	3	N,E,S,W	3		recursiveInterpolation	forest		rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass
-d3l1	25		D		forest3	rogue	0,dungeon	yellow schweinhund	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass,yellow schweinhund
-d3l2	27		D		d3l1	rogue	0,dungeon	Balthazar the Great	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass,yellow schweinhund
+d3l1	25		D		forest3	rogue	0,dungeon	yellow schweinhund	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass
+d3l2	27		D		d3l1	rogue	0,dungeon	Balthazar the Great	rabbit mage,rabbit warrior,rabbit archer,rabbit rogue,purple beetle,blue snake,black spider,green imp,small red spiny,rock lizard,yellow worm mass
 town2	30	4	N,E,S,W	3		town	town		farmer,mangy leper,jester,beggar,salesman
 water1	30	4	N,E,S,W	4		recursiveInterpolation	water		goldfish,green fish,eel,pink jellyfish
 water2	31	4	N,E,S,W	4		recursiveInterpolation	water		goldfish,green fish,eel,pink jellyfish
@@ -30,7 +30,7 @@ snow1	32	5	N,E,S,W	4		recursiveInterpolation	snow		dark elf mage,dark elf warrio
 snow2	33	5	N,E,S,W	5		recursiveInterpolation	snow		dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
 d4l1	35		D		snow2	delve	ice cave		dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
 d4l2	36		D		d4l1	delve	ice cave	Hagar the Merciless	dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
-d4l2	38		D		d4l2	delve	ice cave	ice creature	dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
+d4l3	38		D		d4l2	delve	ice cave	ice creature	dark elf mage,dark elf warrior,dark elf archer,dark elf rogue,baby blue dragon,baby yellow dragon,blue beetle,gray wolf,bear,white wolf,big red spiny,frost giant
 swamp1	40	6	N,E,S,W	4		recursiveInterpolation	swamp		orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
 swamp2	41	6	N,E,S,W	6		recursiveInterpolation	swamp		orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake
 swamp3	42	6	N,E,S,W	6		recursiveInterpolation	swamp		orc mage,orc warrior,orc archer,orc rogue,baby green dragon,baby red dragon,gold dragonfly,purple worms,golem,griffin,chess knight,copperhead snake

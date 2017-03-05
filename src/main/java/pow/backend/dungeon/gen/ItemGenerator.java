@@ -123,63 +123,6 @@ public class ItemGenerator {
             return new DungeonItem.Flags(potion, money, arrow);
         }
 
-        // TODO: duplicate code in TerrainData
-        private ActionParams parseActionParams(String text) {
-            ActionParams params = new ActionParams();
-            if (text.isEmpty()) {
-                return params;
-            }
-            String[] tokens = text.split(":", 3);
-
-            params.actionName = tokens[0];
-
-            if (!tokens[1].isEmpty()) {
-                params.number = Integer.parseInt(tokens[1]);
-            }
-
-            if (!tokens[2].isEmpty()) {
-                params.name = tokens[2];
-            }
-
-            return params;
-        }
-
-        private static final int ATTACK_IDX = DungeonItem.TO_HIT_IDX;
-        private static final int MATCH_BONUS = -99999;
-        private static final Map<String, Integer> keyToBonusIdx;
-        static {
-            keyToBonusIdx = new HashMap<>();
-            keyToBonusIdx.put("attack", ATTACK_IDX);
-            keyToBonusIdx.put("def", DungeonItem.DEF_IDX);
-            keyToBonusIdx.put("str", DungeonItem.STR_IDX);
-            keyToBonusIdx.put("dex", DungeonItem.DEX_IDX);
-            keyToBonusIdx.put("int", DungeonItem.INT_IDX);
-            keyToBonusIdx.put("con", DungeonItem.CON_IDX);
-            keyToBonusIdx.put("speed", DungeonItem.SPEED_IDX);
-            keyToBonusIdx.put("wealth", DungeonItem.WEALTH_IDX);
-        }
-
-        private int[] parseBonuses(String text) {
-            int[] bonuses = new int[DungeonItem.NUM_BONUSES];
-            if (text.isEmpty()) {
-                return bonuses;
-            }
-
-            String[] statBonuses = text.split(",");
-            for (String statBonus: statBonuses) {
-                String[] tokens = statBonus.split(":", 2);
-                // x indicates that we'll use the bounus calculated based on the level
-                int bonusAmt = (tokens[1].charAt(0) == 'x') ? MATCH_BONUS : Integer.parseInt(tokens[1]);
-                String stat = tokens[0];
-                if (keyToBonusIdx.containsKey(stat)) {
-                    bonuses[keyToBonusIdx.get(stat)] = bonusAmt;
-                } else {
-                    throw new RuntimeException("error: couldn't parse item stat bonus: " + stat);
-                }
-            }
-
-            return bonuses;
-        }
 
         public static class MinMax {
             public int min;
@@ -213,13 +156,13 @@ public class ItemGenerator {
                 description = line[3];
                 slot = DungeonItem.Slot.valueOf(line[4].toUpperCase());
                 flags = parseFlags(line[5]);
-                actionParams = parseActionParams(line[6]);
+                actionParams = ParseUtils.parseActionParams(line[6]);
                 count = new MinMax(line[7]);
                 minLevel = Integer.parseInt(line[8]);
                 maxLevel = Integer.parseInt(line[9]);
                 minBonus = Integer.parseInt(line[10]);
                 maxBonus = Integer.parseInt(line[11]);
-                bonuses = parseBonuses(line[12]);
+                bonuses = ParseUtils.parseBonuses(line[12]);
                 attack = DieRoll.parseDieRoll(line[13]);
                 defense = Integer.parseInt(line[14]);
                 extra = line[15];
@@ -247,10 +190,10 @@ public class ItemGenerator {
             // convert to item bonuses
             int[] specificItemBonuses = new int[DungeonItem.NUM_BONUSES];
             for (int i = 0; i < DungeonItem.NUM_BONUSES; i++) {
-                specificItemBonuses[i] = (bonuses[i] == MATCH_BONUS) ? bonus : bonuses[i];
+                specificItemBonuses[i] = (bonuses[i] == ParseUtils.MATCH_BONUS) ? bonus : bonuses[i];
             }
             // split up attack into toHit, toDam.
-            int totalAttack = specificItemBonuses[ATTACK_IDX];
+            int totalAttack = specificItemBonuses[ParseUtils.ATTACK_IDX];
             specificItemBonuses[DungeonItem.TO_HIT_IDX] = 0;
             specificItemBonuses[DungeonItem.TO_DAM_IDX] = 0;
             if (totalAttack > 0) {
@@ -262,8 +205,8 @@ public class ItemGenerator {
                     ? getMoneyForLevel(level, rng)
                     : rng.nextInt(count.max + 1 - count.min) + count.min;
 
-            return new DungeonItem(name, image, description, slot, flags, specificItemBonuses, attack,
-                    defense, itemCount, actionParams);
+            return new DungeonItem(id, name, image, description, slot, DungeonItem.ArtifactSlot.NONE,
+                    flags, specificItemBonuses, attack, defense, itemCount, actionParams);
         }
     }
 

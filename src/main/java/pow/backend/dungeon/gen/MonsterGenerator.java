@@ -4,6 +4,7 @@ import pow.backend.AttackData;
 import pow.backend.actors.Actor;
 import pow.backend.actors.AiActor;
 import pow.backend.actors.Monster;
+import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.DebugLogger;
 import pow.util.DieRoll;
@@ -12,10 +13,7 @@ import pow.util.TsvReader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class MonsterGenerator {
 
@@ -70,6 +68,8 @@ public class MonsterGenerator {
         int speed;
         AllFlags flags;
         int experience;
+        String artifactDrops;  // slight misnomer.. can only handle 1 artifact right now
+        int numDropAttempts;
 
         public static class AllFlags {
             AiActor.Flags aiActorFlags;
@@ -103,11 +103,24 @@ public class MonsterGenerator {
             return new AllFlags(new AiActor.Flags(stationary, erratic), friendly);
         }
 
+        private static String parseArtifact(String text) {
+            if (text.isEmpty()) {
+                return null;
+            }
+
+            // Validate that the artifact specified in the file actually exists
+            DungeonItem checkArtifact = ArtifactData.getArtifact(text);
+            if (checkArtifact == null) {
+                DebugLogger.fatal(new RuntimeException("error: unknown artifact " + text));
+            }
+            return text;
+        }
+
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificMonsterGenerator(String[] line) {
-            if (line.length != 12) {
-                throw new IllegalArgumentException("Expected 12 fields, but had " + line.length
+            if (line.length != 14) {
+                throw new IllegalArgumentException("Expected 14 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
 
@@ -123,6 +136,8 @@ public class MonsterGenerator {
             experience = Integer.parseInt(line[9]);
             speed = Integer.parseInt(line[10]);
             flags = parseFlags(line[11]);
+            artifactDrops = parseArtifact(line[12]);
+            numDropAttempts = Integer.parseInt(line[13]);
         }
 
         // resolves die rolls, location to get a specific monster instance
@@ -131,7 +146,8 @@ public class MonsterGenerator {
             AttackData attackData = new AttackData(attack, toHit, 0);
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
-                    new Actor.Params(level, instanceHP, defense, experience, attackData, flags.friendly, speed),
+                    new Actor.Params(level, instanceHP, defense, experience, attackData,
+                            flags.friendly, speed, artifactDrops, numDropAttempts),
                     flags.aiActorFlags);
         }
     }

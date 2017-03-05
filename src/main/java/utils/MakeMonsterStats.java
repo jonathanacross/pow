@@ -198,7 +198,9 @@ public class MakeMonsterStats {
                         "defense" + "\t" +
                         "experience" + "\t" +
                         "speed" + "\t" +
-                        "flags");
+                        "flags" + "\t" +
+                        "artifactDrops" + "\t" +
+                        "numDropChances");
 
         for (String[] entry : data) {
             int area = Integer.parseInt(entry[0]);
@@ -207,9 +209,11 @@ public class MakeMonsterStats {
             String genFlagsStr = entry[3];  // ideally, these will be removed, eventually made into good game flags
             String gameFlagsStr = entry[4];
             int relativeSpeed = Integer.parseInt(entry[5]);
-            String name = entry[6];
-            String image = entry[7];
-            String description = entry[8];
+            String uniqueItemDrops = entry[6];
+            int numDropChances = Integer.parseInt(entry[7]);
+            String name = entry[8];
+            String image = entry[9];
+            String description = entry[10];
 
             Set<String> genFlags = getFlags(genFlagsStr);
             Set<String> gameFlags = getFlags(gameFlagsStr);
@@ -241,7 +245,9 @@ public class MakeMonsterStats {
                     defense + "\t" +
                     experience + "\t" +
                     speed + "\t" +
-                    gameFlagsStr);
+                    gameFlagsStr + "\t" +
+                    uniqueItemDrops + "\t" +
+                    numDropChances);
 
         }
         writer.close();

@@ -8,6 +8,7 @@ import pow.backend.behavior.ActionBehavior;
 import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
+import pow.backend.dungeon.ItemList;
 import pow.backend.dungeon.LightSource;
 import pow.util.Circle;
 import pow.util.DieRoll;
@@ -16,7 +17,9 @@ import pow.util.Point;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Player extends Actor implements Serializable, LightSource {
 
@@ -71,6 +74,7 @@ public class Player extends Actor implements Serializable, LightSource {
     public int viewRadius;
     private int lightRadius;
     public List<DungeonItem> equipment;
+    public Map<DungeonItem.ArtifactSlot, DungeonItem> artifacts;
     private GainRatios gainRatios;
     public Stats currStats;
     public boolean increaseWealth;
@@ -128,10 +132,11 @@ public class Player extends Actor implements Serializable, LightSource {
     private Player(DungeonObject.Params objectParams,
                   GainRatios gainRatios,
                   AttackData innateAttack ) {
-        super(objectParams, new Actor.Params(1, -1, -99, 0, null, true, 0));
+        super(objectParams, new Actor.Params( 1, -1, -99, 0, null, true, 0, null, 0));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
         this.equipment = new ArrayList<>();
+        this.artifacts = new HashMap<>();
         this.gainRatios = gainRatios;
         this.innateAttack = innateAttack;
         this.bowAttack = null;

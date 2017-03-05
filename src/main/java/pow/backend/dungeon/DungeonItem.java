@@ -50,11 +50,37 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         BOOTS
     }
 
+    public enum ArtifactSlot {
+        NONE,
+        PEARL1,
+        PEARL2,
+        PEARL3,
+        PEARL4,
+        PEARL5,
+        PEARL6,
+        PEARL7,
+        PEARL8,
+        LANTERN,
+        KEY,
+        FLOAT,
+        GASMASK,
+        GLASSES,
+        PICKAXE,
+        HEATSUIT,
+        FEATHER,
+        PETSTATUE,
+        QUIVER,
+        WALLWAND,
+        MAP
+    }
+
+    public String id; // for internal reference
     public String name; // english name, e.g., "& axe~"
     public String image; // for display
     public String description;
     public Flags flags;
     public Slot slot;
+    public ArtifactSlot artifactSlot;
     public DieRoll attack;
     public int defense;
     public int[] bonuses;
@@ -63,20 +89,24 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     public ActionParams actionParams;
 
-    public DungeonItem(String name,
+    public DungeonItem(String id,
+                       String name,
                        String image,
                        String description,
                        Slot slot,
+                       ArtifactSlot artifactSlot,
                        Flags flags,
                        int[] bonuses,
                        DieRoll attack,
                        int defense,
                        int count,
                        ActionParams actionParams) {
+        this.id = id;
         this.name = name;
         this.image = image;
         this.description = description;
         this.slot = slot;
+        this.artifactSlot = artifactSlot;
         this.flags = flags;
         this.bonuses = bonuses;
         this.attack = attack;
@@ -87,10 +117,12 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     // copy/clone constructor
     public DungeonItem(DungeonItem other) {
+        this.id = other.id;
         this.name = other.name;
         this.image = other.image;
         this.description = other.description;
         this.slot = other.slot;
+        this.artifactSlot = other.artifactSlot;
         this.flags = other.flags;
         this.attack = other.attack;
         this.defense = other.defense;
@@ -119,10 +151,16 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     @Override
     public int compareTo(DungeonItem other) {
-        int i = name.compareTo(other.name);
+        int i = id.compareTo(other.id);
+        if (i != 0) return i;
+
+        i = name.compareTo(other.name);
         if (i != 0) return i;
 
         i = slot.compareTo(other.slot);
+        if (i != 0) return i;
+
+        i = artifactSlot.compareTo(other.artifactSlot);
         if (i != 0) return i;
 
         int thisAttackValue = attack != null ? (attack.die * 1000) + attack.roll : -1;
