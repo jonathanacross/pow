@@ -6,7 +6,6 @@ import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
-import pow.util.Point;
 
 import java.awt.Color;
 import java.awt.Font;

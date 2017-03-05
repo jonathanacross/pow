@@ -8,7 +8,6 @@ import pow.backend.dungeon.ItemList;
 import pow.util.DebugLogger;
 import pow.util.TextUtils;
 
-import java.util.List;
 
 public class Quaff implements Action {
     private Actor actor;

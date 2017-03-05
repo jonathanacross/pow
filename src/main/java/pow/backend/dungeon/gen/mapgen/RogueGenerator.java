@@ -175,11 +175,11 @@ public class RogueGenerator implements MapGenerator {
     // ###....###
     // ###....###
     // ##########
-    private boolean isMovingAlongsideRoom(List<RoomInfo> rooms, int x, int y, int dx, int dy) {
+    private boolean isNotMovingAlongsideRoom(List<RoomInfo> rooms, int x, int y, int dx, int dy) {
         if (dx == 0) {
-            return (!isInRoom(rooms, x, y) && (isInRoom(rooms, x + 1, y) || isInRoom(rooms, x - 1, y)));
+            return (isInRoom(rooms, x, y) || (!isInRoom(rooms, x + 1, y) && !isInRoom(rooms, x - 1, y)));
         } else {
-            return (!isInRoom(rooms, x, y) && (isInRoom(rooms, x, y - 1) || isInRoom(rooms, x, y + 1)));
+            return (isInRoom(rooms, x, y) || (!isInRoom(rooms, x, y - 1) && !isInRoom(rooms, x, y + 1)));
         }
     }
 
@@ -189,7 +189,7 @@ public class RogueGenerator implements MapGenerator {
         int dy = MathUtils.sign(newy - oldy);
 
         for (int x = oldx; x != newx; x += dx) {
-            if (!isMovingAlongsideRoom(rooms, x, oldy, dx, 0)) {
+            if (isNotMovingAlongsideRoom(rooms, x, oldy, dx, 0)) {
                 data[x][oldy] = Constants.TERRAIN_FLOOR;
             }
             if (isEnteringOrLeavingRoom(rooms, x, oldy, dx, 0)) {
@@ -197,7 +197,7 @@ public class RogueGenerator implements MapGenerator {
             }
         }
         for (int y = oldy; y != newy; y += dy) {
-            if (!isMovingAlongsideRoom(rooms, newx, y, 0, dy)) {
+            if (isNotMovingAlongsideRoom(rooms, newx, y, 0, dy)) {
                 data[newx][y] = Constants.TERRAIN_FLOOR;
             }
             if (isEnteringOrLeavingRoom(rooms, newx, y, 0, dy)) {

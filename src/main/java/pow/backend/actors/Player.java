@@ -8,7 +8,6 @@ import pow.backend.behavior.ActionBehavior;
 import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
-import pow.backend.dungeon.ItemList;
 import pow.backend.dungeon.LightSource;
 import pow.util.Circle;
 import pow.util.DieRoll;
