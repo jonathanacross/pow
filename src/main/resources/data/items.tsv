@@ -98,7 +98,7 @@ rubies	rubies	rubies	rubies	none				11	90	1	5		0	0
 diamonds	diamonds	diamonds	diamonds	none				11	90	1	5		0	0	
 emeralds	emeralds	emeralds	emeralds	none				11	90	1	5		0	0	
 # potions (need major work)															
-mana potion	& mana potion~	blue potion	mana potion	none				1	90	0	0		0	0	
+mana potion	& mana potion~	blue potion	mana potion	none	potion	restoreMana:15:		1	90	0	0		0	0	
 root beer	root beer~	bubbly potion	root beer	none				0	30	0	0		0	0	
 health potion	& health potion~	red potion	health potion	none	potion	heal:15:		1	90	0	0		0	0	
 gatorade	gatorade~	green potion	gatorade	none				0	30	0	0		0	0	

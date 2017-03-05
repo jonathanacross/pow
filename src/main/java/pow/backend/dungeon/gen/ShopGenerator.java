@@ -75,6 +75,7 @@ public class ShopGenerator {
             20 * sqr(item.bonuses[DungeonItem.WEALTH_IDX]) +
             1 * (item.flags.arrow ? 1 : 0) +
             8 * (item.actionParams.actionName != null && item.actionParams.actionName.equals("heal") ? 1 : 0) +
+            7 * (item.actionParams.actionName != null && item.actionParams.actionName.equals("restoreMana") ? 1 : 0) +
             100 * (item.actionParams.actionName != null && item.actionParams.actionName.equals("restore") ? 1 : 0);
 
         double slotScaleFactor = 1.0;
