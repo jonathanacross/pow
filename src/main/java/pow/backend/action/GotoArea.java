@@ -39,6 +39,11 @@ public class GotoArea implements Action {
         if (needsRegen) {
             GeneratorUtils.regenMonstersForCurrentMap(gs.getCurrentMap(), gs.rng);
             gs.getCurrentMap().shopData = ShopGenerator.genShop(gs.getCurrentMap().level, gs.rng);
+        } else {
+            // Even if we don't have to completely regen everything, still
+            // refill monsters HP/MP, so the player can't abuse by going up stairs
+            // and resting.
+            GeneratorUtils.healAllMonsters(gs.getCurrentMap());
         }
 
         // set up player/pet in the new area

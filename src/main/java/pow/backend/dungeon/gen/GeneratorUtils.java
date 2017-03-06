@@ -247,6 +247,15 @@ public class GeneratorUtils {
         map.actors = createMonsters(map.map, numMonsters, map.genMonsterIds, rng);
     }
 
+    public static void healAllMonsters(GameMap map) {
+        for (Actor a : map.actors) {
+            if (!a.friendly) {
+                a.mana = a.maxMana;
+                a.health = a.maxHealth;
+            }
+        }
+    }
+
     // debug method: puts one of every type of monster in the level
     public static List<Actor> createMonstersOrdered(DungeonSquare[][] dungeonMap, Random rng) {
         List<Actor> actors = new ArrayList<>();
