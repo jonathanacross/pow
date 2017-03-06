@@ -25,14 +25,14 @@ public class Delve implements MapGenerator {
     private int level;
     private MonsterIdGroup monsterIds;
 
-    // TODO: clean up naming: no _'s for starting variables, constants in all caps.
-    static final Point[] _offsets = {
-            new Point(1, 0), new Point(1, 1), new Point(0, 1), new Point(-1, 1), new Point(-1, 0), new Point(-1, -1), new Point(0, -1), new Point(1, -1)};
+    private static final Point[] OFFSETS = {
+            new Point(1, 0), new Point(1, 1), new Point(0, 1), new Point(-1, 1),
+            new Point(-1, 0), new Point(-1, -1), new Point(0, -1), new Point(1, -1)};
 
     // Number of groups of '1's in the 8 neighbours around a central cell.
     // The encoding is binary, lsb is to the right, then clockwise.
-    static int[] _neighborGrpTable = {
-            // 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+    private static int[] NEIGHBOR_GROUP_TABLE = {
+         // 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
             0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1,   // 00
             1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1,   // 10
             1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 2, 2, 2, 2,   // 20
@@ -57,9 +57,9 @@ public class Delve implements MapGenerator {
 
     public Delve(int width, int height, int neighborMin, int neighborMax, int connChance,
                  ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
-        assert(1 <= neighborMin && neighborMin <= 3);
-        assert(neighborMin <= neighborMax && neighborMax <= 8);
-        assert(0 <= connChance && connChance <= 100);
+        assert (1 <= neighborMin && neighborMin <= 3);
+        assert (neighborMin <= neighborMax && neighborMax <= 8);
+        assert (0 <= connChance && connChance <= 100);
 
         this.width = width;
         this.height = height;
@@ -81,7 +81,7 @@ public class Delve implements MapGenerator {
 
         // place the exits and get key locations
         String upstairsFeatureId = translator.getFeature(Constants.FEATURE_UP_STAIRS).id;
-        String downstairsFeatureId =  translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
+        String downstairsFeatureId = translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
         String floorTerrainId = translator.getTerrain(Constants.TERRAIN_FLOOR).id;
         Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
                 connections,
@@ -95,8 +95,7 @@ public class Delve implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);
-        return map;
+        return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), null);
     }
 
 
@@ -105,9 +104,9 @@ public class Delve implements MapGenerator {
         // initialize the map to all walls
         int[][] map = GeneratorUtils.solidMap(width, height);
 
-        int desiredNumCellsToDig = _estimateCellsToDig(width * height, this.neighborMin, this.neighborMax);
+        int desiredNumCellsToDig = estimateCellsToDig(width * height, this.neighborMin, this.neighborMax);
 
-        int numDugcells = _cavern(map, width / 2, height / 2,
+        int numDugcells = cavern(map, width / 2, height / 2,
                 this.neighborMin, this.neighborMax, this.connChance, desiredNumCellsToDig,
                 Constants.TERRAIN_FLOOR, Constants.TERRAIN_WALL, rng);
 
@@ -116,7 +115,7 @@ public class Delve implements MapGenerator {
 
     // generates a permutation of 0 ... length-1
     // using the standard Knuth shuffle
-    int[] _randomPermutation(int length, Random rng) {
+    private int[] randomPermutation(int length, Random rng) {
         int[] permutation = new int[length];
         for (int i = 0; i < length; i++) {
             permutation[i] = i;
@@ -131,19 +130,19 @@ public class Delve implements MapGenerator {
     }
 
     // Is the location within the borders - with 1 cell margin
-    boolean _interior(int[][] map, int x, int y) {
+    private boolean interior(int[][] map, int x, int y) {
         int width = Array2D.width(map);
         int height = Array2D.height(map);
         return ((x >= 1) && (x < width - 1) && (y >= 1) && (y < height - 1));
     }
 
     // Count neighbours of the given cells that contain terrain 'terrain'
-    int _countNeighbors(int[][] map, int x, int y, int terrain) {
+    private int countNeighbors(int[][] map, int x, int y, int terrain) {
         int count = 0;
-        for (int i = 0; i < _offsets.length; i++) {
-            int px = x + _offsets[i].x;
-            int py = y + _offsets[i].y;
-            if (_interior(map, px, py) && (map[px][py] == terrain)) {
+        for (Point offset : OFFSETS) {
+            int px = x + offset.x;
+            int py = y + offset.y;
+            if (interior(map, px, py) && (map[px][py] == terrain)) {
                 count++;
             }
         }
@@ -153,136 +152,137 @@ public class Delve implements MapGenerator {
     // Examine the 8 neigbours of the given cell, and count the number
     // of separate groups of terrain cells. A groups contains cells that are
     // of the same type (terrain) and are adjacent, including diagonals.
-    int _countGroups(int[][] map, int x, int y, int terrain) {
+    private int countGroups(int[][] map, int x, int y, int terrain) {
 
         int bitmap = 0; // lowest bit is the cell to the right, then clockwise
 
-        for (int i = 0; i < _offsets.length; i++) {
+        for (Point offset : OFFSETS) {
             bitmap >>= 1;
-            int px = x + _offsets[i].x;
-            int py = y + _offsets[i].y;
-            if (_interior(map, px, py) && (map[px][py] == terrain)) {
+            int px = x + offset.x;
+            int py = y + offset.y;
+            if (interior(map, px, py) && (map[px][py] == terrain)) {
                 bitmap |= 0x80;
             }
         }
 
-        return _neighborGrpTable[bitmap];
+        return NEIGHBOR_GROUP_TABLE[bitmap];
     }
 
     // Dig out an ava cell to flo and store its ava neighbours in
     // random order.
-    int _digCell(int[][] map, CellStore cstore, int x, int y, int flo, int ava, Random rng) {
+    private int digCell(int[][] map, CellStore cellStore, int x, int y, int flo, int ava, Random rng) {
 
-        if ((!_interior(map, x, y)) || (map[x][y] != ava)) {
+        if ((!interior(map, x, y)) || (map[x][y] != ava)) {
             return 0; // did nothing
         }
 
         map[x][y] = flo;
 
-        int[] pi = _randomPermutation(_offsets.length, rng);
+        int[] pi = randomPermutation(OFFSETS.length, rng);
 
-        for (int i = 0; i < _offsets.length; i++) {
+        for (int i = 0; i < OFFSETS.length; i++) {
             int j = pi[i];
-            int px = x + _offsets[j].x;
-            int py = y + _offsets[j].y;
-            if (_interior(map, px, py) && (map[px][py] == ava)) {
-                cstore.store(px, py);
+            int px = x + OFFSETS[j].x;
+            int py = y + OFFSETS[j].y;
+            if (interior(map, px, py) && (map[px][py] == ava)) {
+                cellStore.store(px, py);
             }
         }
 
         return 1; // dug 1 cell
     }
 
-    // Continue digging until cellnum or no more cells in store. Digging is
+    // Continue digging until cellNum or no more cells in store. Digging is
     // allowed if the terrain in the cell is 'ava'ilable, cell has from
-    // ngb_min to ngb_max flo neighbours, and digging won't open new
+    // nbrMin to nbrMax flo neighbours, and digging won't open new
     // connections; the last condition is ignored with percent chance
-    // connchance.
+    // connChance.
     // returns number of cells dug
-    int _delveOn(int[][] map, CellStore cstore, int ngb_min, int ngb_max, int connchance, int cellnum, int flo, int ava, Random rng) {
+    private int delveOn(int[][] map, CellStore cellStore, int nbrMin, int nbrMax, int connChance, int cellNum, int flo, int ava, Random rng) {
 
         int count = 0;
 
-        while ((count < cellnum) && !cstore.isEmpty()) {
-            Point p = cstore.getRandomCell(rng);
+        while ((count < cellNum) && cellStore.isNotEmpty()) {
+            Point p = cellStore.getRandomCell(rng);
             int x = p.x;
             int y = p.y;
-            int ngb_count = _countNeighbors(map, x, y, flo);
-            int ngb_groups = _countGroups(map, x, y, flo);
+            int nbrCount = countNeighbors(map, x, y, flo);
+            int ngb_groups = countGroups(map, x, y, flo);
 
-            if (_interior(map, x, y) && (map[x][y] == ava) && (ngb_count >= ngb_min) && (ngb_count <= ngb_max) && ((ngb_groups <= 1) || (rng.nextInt(100) < connchance))) {
-                count += _digCell(map, cstore, x, y, flo, ava, rng);
+            if (interior(map, x, y) && (map[x][y] == ava) && (nbrCount >= nbrMin) && (nbrCount <= nbrMax) && ((ngb_groups <= 1) || (rng.nextInt(100) < connChance))) {
+                count += digCell(map, cellStore, x, y, flo, ava, rng);
             }
         }
 
         return count;
     }
 
-    // Generate a random cavern of cellnum cells.
-    int _cavern(int[][] map, int xorig, int yorig, int ngb_min, int ngb_max, int connchance, int cellnum, int flo, int ava, Random rng) {
-        CellStore cstore = new CellStore();
+    // Generate a random cavern of cellNum cells.
+    private int cavern(int[][] map, int xOrig, int yOrig, int nbrMin, int nbrMax, int connChance, int cellNum, int flo, int ava, Random rng) {
+        CellStore cellStore = new CellStore();
         int count = 0;
 
-        cstore.store(xorig, yorig);
+        cellStore.store(xOrig, yOrig);
 
-        while ((count < 2 * ngb_min) && (count < cellnum) && !cstore.isEmpty()) {
-            Point p = cstore.getRandomCell(rng);
+        while ((count < 2 * nbrMin) && (count < cellNum) && cellStore.isNotEmpty()) {
+            Point p = cellStore.getRandomCell(rng);
             int x = p.x;
             int y = p.y;
-            int ngb_count = _countNeighbors(map, x, y, flo);
-            int ngb_groups = _countGroups(map, x, y, flo);
+            int nbrCount = countNeighbors(map, x, y, flo);
+            int ngb_groups = countGroups(map, x, y, flo);
 
-            // stay close to origin, ignore ngb_min
-            if (_interior(map, x, y) && (map[x][y] == ava) &&
-                    (Math.abs(x - xorig) < 2) && (Math.abs(y - yorig) < 2) &&
-                    (ngb_count <= ngb_max) &&
-                    ((ngb_groups <= 1) || (rng.nextInt(100) < connchance))) {
-                count += _digCell(map, cstore, x, y, flo, ava, rng);
+            // stay close to origin, ignore nbrMin
+            if (interior(map, x, y) && (map[x][y] == ava) &&
+                    (Math.abs(x - xOrig) < 2) && (Math.abs(y - yOrig) < 2) &&
+                    (nbrCount <= nbrMax) &&
+                    ((ngb_groups <= 1) || (rng.nextInt(100) < connChance))) {
+                count += digCell(map, cellStore, x, y, flo, ava, rng);
             }
         }
 
-        if (count < cellnum) {
-            count += _delveOn(map, cstore, ngb_min, ngb_max, connchance, cellnum - count, flo, ava, rng);
+        if (count < cellNum) {
+            count += delveOn(map, cellStore, nbrMin, nbrMax, connChance, cellNum - count, flo, ava, rng);
         }
 
         return count;
     }
 
-    // Estimate a sensible number of cells for given ngb_min, ngb_max.
-    int _estimateCellsToDig(int totalcells, int ngb_min, int ngb_max) {
+    // Estimate a sensible number of cells for given nbrMin, nbrMax.
+    private int estimateCellsToDig(int totalCells, int nbrMin, int nbrMax) {
         // (first two entries are not used)
         int[] denom = {8, 8, 8, 7, 6, 5, 5, 4, 4, 4, 3, 3};
-        return totalcells / denom[ngb_min + ngb_max];
+        return totalCells / denom[nbrMin + nbrMax];
     }
 
- private static class CellStore {
+    private static class CellStore {
 
-    List<Point> cells;
+        List<Point> cells;
 
-    CellStore() {
-        cells = new ArrayList<>();
-    }
-
-    void store(int x, int y) {
-        cells.add(new Point(x, y));
-    }
-
-    boolean isEmpty() {return  cells.isEmpty(); }
-
-    // Remove a cell randomly from the store
-    Point getRandomCell(Random rng) {
-        int index;
-        if (cells.size() < 125) {
-            index = rng.nextInt(cells.size());
-        } else {
-            // makes the pattern more "fluffy"
-            index = cells.size() - rng.nextInt(25 * (int) Math.round(Math.pow(cells.size(), 0.33))) - 1;
+        CellStore() {
+            cells = new ArrayList<>();
         }
 
-        Point cell = cells.remove(index);
-        return cell;
+        void store(int x, int y) {
+            cells.add(new Point(x, y));
+        }
+
+        boolean isNotEmpty() {
+            return !cells.isEmpty();
+        }
+
+        // Remove a cell randomly from the store
+        Point getRandomCell(Random rng) {
+            int index;
+            if (cells.size() < 125) {
+                index = rng.nextInt(cells.size());
+            } else {
+                // makes the pattern more "fluffy"
+                index = cells.size() - rng.nextInt(25 * (int) Math.round(Math.pow(cells.size(), 0.33))) - 1;
+            }
+
+            return cells.remove(index);
+        }
     }
-}
 
 }
 

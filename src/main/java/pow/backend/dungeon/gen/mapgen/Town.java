@@ -44,7 +44,7 @@ public class Town implements MapGenerator {
                 rng);
         ShopData shopData = ShopGenerator.genShop(level, rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsterIds, shopData);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), shopData);
         return map;
     }
 

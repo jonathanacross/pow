@@ -131,7 +131,7 @@ public class RecursiveInterpolation implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(w, h, rng);
         GeneratorUtils.addItems(level, squares, numItems, rng);
 
-        GameMap map = new GameMap(name, level, squares, keyLocations, monsterIds, null);
+        GameMap map = new GameMap(name, level, squares, keyLocations, new MonsterIdGroup(monsterIds), null);
         return map;
     }
 

@@ -87,49 +87,66 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void tryQuaff(GameState gs) {
+        Point loc = gs.player.loc;
+        ItemList inventoryItems = gs.player.inventory;
+        ItemList floorItems = gs.getCurrentMap().map[loc.x][loc.y].items;
         Function<DungeonItem, Boolean> quaffable = (DungeonItem item) -> item.flags.potion;
-        if (countLegalItems(gs.player.inventory.items, quaffable) == 0) {
-            backend.logMessage("You have no potions to quaff.");
+
+        boolean doInventory = countLegalItems(inventoryItems.items, quaffable) > 0;
+        boolean doFloor = floorItems != null && countLegalItems(floorItems.items, quaffable) > 0;
+
+        if (!doFloor && !doInventory) {
+            backend.logMessage("There are no potions to quaff here.");
             return;
         }
 
-        Point loc = gs.player.loc;
-        ItemList floorItems = gs.getCurrentMap().map[loc.x][loc.y].items;
-        boolean canUseFloor = floorItems != null && countLegalItems(floorItems.items, quaffable) > 0;
-        String message = canUseFloor ? "Quaff which potion? (Press = to show floor.)" : "Quaff which potion?";
-        String altMessage = canUseFloor ? "Quaff which potion? (Press = to show inventory.)" : null;
+        final String message = doFloor && doInventory ? "Quaff which potion? (Press = to show floor.)" : "Quaff which potion?";
+        final String altMessage = doFloor && doInventory ? "Quaff which potion? (Press = to show inventory.)" : null;
+        final ItemList mainItemList = doInventory ? inventoryItems : floorItems;
+        final ItemList altItemList = doFloor && doInventory ? floorItems : null;
+        final List<DungeonItem> altItems = doFloor && doInventory ? floorItems.items : null;
 
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, message, altMessage,
-                        gs.player.inventory.items, floorItems.items, quaffable,
+                        mainItemList.items, altItems, quaffable,
                         (ItemChoiceWindow.ItemChoice choice) ->
                                 backend.tellPlayer(new Quaff(
                                         gs.player,
-                                        choice.useSecondList ? floorItems : gs.player.inventory,
+                                        choice.useSecondList ? altItemList : mainItemList,
                                         choice.itemIdx))));
-
     }
 
     private void tryWear(GameState gs) {
+        Point loc = gs.player.loc;
+        ItemList inventoryItems = gs.player.inventory;
+        ItemList floorItems = gs.getCurrentMap().map[loc.x][loc.y].items;
         Function<DungeonItem, Boolean> wearable = (DungeonItem item) -> item.slot != DungeonItem.Slot.NONE;
-        if (countLegalItems(gs.player.inventory.items, wearable) == 0) {
-            backend.logMessage("You have nothing you can equip/wear.");
+
+        boolean doInventory = countLegalItems(inventoryItems.items, wearable) > 0;
+        boolean doFloor = floorItems != null && countLegalItems(floorItems.items, wearable) > 0;
+
+        // easy case -- nothing to wear
+        if (!doFloor && !doInventory) {
+            backend.logMessage("There is nothing you can equip/wear.");
             return;
         }
 
-        Point loc = gs.player.loc;
-        ItemList floorItems = gs.getCurrentMap().map[loc.x][loc.y].items;
-        boolean canUseFloor = floorItems != null && countLegalItems(floorItems.items, wearable) > 0;
-        String message = canUseFloor ? "Wear which item? (Press = to show floor.)" : "Wear which item?";
-        String altMessage = canUseFloor ? "Wear which item? (Press = to show inventory.)" : null;
+        // Figure out how to display to the user --
+        // if there's only wearables on floor or in inventory, just show those as options,
+        // else, allow user to swap back and forth between them.
+        final String message = doFloor && doInventory ? "Wear which item? (Press = to show floor.)" : "Wear which item?";
+        final String altMessage = doFloor && doInventory ? "Wear which item? (Press = to show inventory.)" : null;
+        final ItemList mainItemList = doInventory ? inventoryItems : floorItems;
+        final ItemList altItemList = doFloor && doInventory ? floorItems : null;
+        final List<DungeonItem> altItems = doFloor && doInventory ? floorItems.items : null;
 
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, message, altMessage,
-                        gs.player.inventory.items, floorItems.items, wearable,
+                        mainItemList.items, altItems, wearable,
                         (ItemChoiceWindow.ItemChoice choice) ->
                                 backend.tellPlayer(new Wear(
                                         gs.player,
-                                        choice.useSecondList ? floorItems : gs.player.inventory,
+                                        choice.useSecondList ? altItemList : mainItemList,
                                         choice.itemIdx))));
     }
 

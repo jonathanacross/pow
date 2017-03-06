@@ -6,7 +6,6 @@ import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.event.GameEvent;
-import pow.util.DebugLogger;
 import pow.util.TextUtils;
 
 import java.util.ArrayList;

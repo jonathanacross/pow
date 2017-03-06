@@ -11,14 +11,25 @@ import java.io.Serializable;
 
 public class ActionParams implements Serializable {
 
-    public String actionName;
+    public enum ActionName {
+        NO_ACTION,
+        MODIFY_TERRAIN_ACTION,
+        MODIFY_FEATURE_ACTION,
+        MOVE_TO_AREA_ACTION,
+        HEAL_ACTION,
+        RESTORE_MANA_ACTION,
+        RESTORE_ACTION,
+        ENTER_SHOP_ACTION
+    }
+
+    public ActionName actionName;
     public Point point;
     public Direction dir;
     public int number;
     public String name;
 
     public ActionParams() {
-        this.actionName = null;
+        this.actionName = ActionName.NO_ACTION;
         this.point = null;
         this.dir = null;
         this.number = -1;
@@ -35,15 +46,14 @@ public class ActionParams implements Serializable {
 
     public static Action buildAction(Actor actor, ActionParams params) {
         switch (params.actionName) {
-            //TODO:change dig->modifyTerrain
-            case "dig": return new ModifyTerrain(actor, params.point, TerrainData.getTerrain(params.name));
-            case "modifyFeature": return new ModifyFeature(actor, params.point, FeatureData.getFeature(params.name));
-            case "gotoArea": return new GotoArea(params.name, params.point );
-            case "heal": return new Heal(actor, params.number);
-            case "restore": return new Restore(actor, params.number);
-            case "enterShop": return new EnterShop(actor, ShopData.ShopState.parseFromString(params.name));
-//            case "restoreMana": return new RestoreManaAction(params.number);
-            default: throw new RuntimeException("unknown action name " + params.actionName);
+            case MODIFY_TERRAIN_ACTION: return new ModifyTerrain(actor, params.point, TerrainData.getTerrain(params.name));
+            case MODIFY_FEATURE_ACTION: return new ModifyFeature(actor, params.point, FeatureData.getFeature(params.name));
+            case MOVE_TO_AREA_ACTION: return new GotoArea(params.name, params.point );
+            case HEAL_ACTION: return new Heal(actor, params.number);
+            case RESTORE_MANA_ACTION: return new RestoreMana(actor, params.number);
+            case RESTORE_ACTION: return new Restore(actor, params.number);
+            case ENTER_SHOP_ACTION: return new EnterShop(actor, ShopData.ShopState.parseFromString(params.name));
+            default: throw new RuntimeException("tried to create unknown action: " + params.actionName);
         }
     }
 }

@@ -91,7 +91,7 @@ public class TestArea implements MapGenerator {
             }
         }
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, monsterIds, null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), null);
         return map;
     }
 
@@ -180,7 +180,7 @@ public class TestArea implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, this.monsterIds, null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), null);
         return map;
     }
 }
