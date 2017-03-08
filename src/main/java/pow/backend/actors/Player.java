@@ -223,7 +223,6 @@ public class Player extends Actor implements Serializable, LightSource {
         this.speed = currStats.speed;
 
         // third, compute baseline dependent stats
-
         DieRoll baseAttackDieRoll = innateAttack.dieRoll;  // will be used if player doesn't wear a weapon
         DieRoll baseBowDieRoll = new DieRoll(0,0);  // will be used if player doesn't wear a bow
         int baseDefense = this.currStats.dexterity - 7;

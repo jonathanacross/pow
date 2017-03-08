@@ -69,7 +69,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         HEATSUIT,
         FEATHER,
         PETSTATUE,
-        QUIVER,
+        BAG,
         WALLWAND,
         MAP
     }

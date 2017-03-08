@@ -6,10 +6,7 @@ import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
 import pow.util.Point;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 // generates various types of test areas.
 public class TestArea implements MapGenerator {
@@ -89,6 +86,13 @@ public class TestArea implements MapGenerator {
             for (int id = 0; id < itemIds.size(); id++) {
                 dungeonSquares[id+1][level+1].items.add(ItemGenerator.genItem(itemIds.get(id), level, rng));
             }
+        }
+
+        // add the artifacts
+        List<String> artifactIds = new ArrayList<>(ArtifactData.getArtifactIds());
+        for (int idx = 0; idx < artifactIds.size(); idx++) {
+            String id = artifactIds.get(idx);
+            dungeonSquares[width-2][idx+1].items.add(ArtifactData.getArtifact(id));
         }
 
         GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), null);

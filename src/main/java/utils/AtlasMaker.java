@@ -99,6 +99,10 @@ public class AtlasMaker {
 
             // draw the tile
             if (!entry.source.equals(":null:")) {
+                File imgFile = new File(entry.source + ".png");
+                if (!imgFile.exists()) {
+                    throw new IOException("Error: " + imgFile.getAbsolutePath() + " doesn't exist");
+                }
                 BufferedImage inputImg = ImageIO.read(new File(entry.source + ".png"));
                 BufferedImage tile = inputImg.getSubimage(entry.x * tileSize,
                         entry.y * tileSize, tileSize, tileSize);

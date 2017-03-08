@@ -97,12 +97,24 @@ sapphires	sapphires	sapphires	sapphires	none				11	90	1	5		0	0	weapon/armor upgr
 rubies	rubies	rubies	rubies	none				11	90	1	5		0	0	
 diamonds	diamonds	diamonds	diamonds	none				11	90	1	5		0	0	
 emeralds	emeralds	emeralds	emeralds	none				11	90	1	5		0	0	
-# potions (need major work)															
-mana potion	& mana potion~	blue potion	mana potion	none	potion	restoreMana:15:		1	90	0	0		0	0	
-root beer	root beer~	bubbly potion	root beer	none				0	30	0	0		0	0	
-health potion	& health potion~	red potion	health potion	none	potion	heal:15:		1	90	0	0		0	0	
-gatorade	gatorade~	green potion	gatorade	none				0	30	0	0		0	0	
-speed potion	& speed potion~	swirl potion	speed potion	none				51	90	0	0		0	0	
-restore potion	& restore potion~	purple potion	restores mana and health	none	potion	restore:75:		21	90	0	0		0	0	
+amythests	amythests	amythests	amythests	none				11	90	1	5		0	0	
+# potions															
+small mana potion	& small mana potion~	small blue potion	small mana potion	none	potion	restoreMana:10:		1	30	0	0		0	0	
+small health potion	& small health potion~	small red potion	small health potion	none	potion	heal:10:		1	30	0	0		0	0	
+small restore potion	& small restore potion~	small purple potion	small restore potion	none	potion	restore:15:		11	40	0	0		0	0	
+mana potion	& mana potion~	medium blue potion	mana potion	none	potion	restoreMana:40:		31	60	0	0		0	0	
+health potion	& health potion~	medium red potion	health potion	none	potion	heal:40:		31	60	0	0		0	0	
+restore potion	& restore potion~	medium purple potion	restore potion	none	potion	restore:60:		41	70	0	0		0	0	
+large mana potion	& large mana potion~	large blue potion	large mana potion	none	potion	restoreMana:160:		61	90	0	0		0	0	
+large health potion	& large health potion~	large red potion	large health potion	none	potion	heal:160:		61	90	0	0		0	0	
+large restore potion	& large restore potion~	large purple potion	large restore potion	none	potion	restore:240:		71	90	0	0		0	0	
+#mountain dew potion	& potion~ of mountain dew	small green potion	mountain dew	none	potion	boostSpeed:1:		0	60	0	0		0	0	30 turns?
+#speed potion	& speed potion~	large green potion	speed potion	none	potion	boostSpeed:3:		51	90	0	0		0	0	30 turns
+#heroism potion	& potion~ of heroism	small orange potion	potion of heroism	none	potion	heroism:8:		11	60	0	0		0	0	+str, con 
+#might potion	& potion~ of might	large orange potion	potion of might	none	potion	heroism:16:		51	90	0	0		0	0	+str, con 
+#nimbleness potion	& potion~ of nimbleness	small yellow potion	potion of nimbleness	none	potion	agility:8:		11	60	0	0		0	0	+ to dex
+#agility potion	& potion~ of agility	large yellow potion	potion of agility	none	potion	agility:16:		51	90	0	0		0	0	+ to dex
+#insulation potion	& potion~ of insulation	dark gray potion	potion of insulation	none	potion	insulation::		41	90	0	0		0	0	res cold/fire
+#chemistry potion	& potion~ of chemistry	white potion	potion of chemistry	none	potion	chemistry::		41	90	0	0		0	0	res acid/elec/pois
 # other stuff															
 arrow	& arrow~	arrow	arrows	none	arrow		15:45	1	90	0	0		0	0	
