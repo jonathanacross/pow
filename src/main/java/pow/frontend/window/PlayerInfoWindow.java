@@ -55,7 +55,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("Attack:    " + player.attack);   // 2d4 (+3, +1)
         lines.add("Bow:       " + player.bowAttack);  // 1d2 (+2, +0)
         lines.add("Defense:   " + player.defense); // [19, +5]
-        lines.add("Speed:     " + player.speed);
+        lines.add("Speed:     " + player.getSpeed());
         lines.add("");
 
         Font f = new Font("Courier", Font.PLAIN, FONT_SIZE);

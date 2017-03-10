@@ -15,6 +15,7 @@ public class ActionParams implements Serializable {
         NO_ACTION,
         MODIFY_TERRAIN_ACTION,
         MODIFY_FEATURE_ACTION,
+        MODIFY_SPEED_ACTION,
         MOVE_TO_AREA_ACTION,
         HEAL_ACTION,
         RESTORE_MANA_ACTION,
@@ -48,6 +49,7 @@ public class ActionParams implements Serializable {
         switch (params.actionName) {
             case MODIFY_TERRAIN_ACTION: return new ModifyTerrain(actor, params.point, TerrainData.getTerrain(params.name));
             case MODIFY_FEATURE_ACTION: return new ModifyFeature(actor, params.point, FeatureData.getFeature(params.name));
+            case MODIFY_SPEED_ACTION: return new ModifySpeed(actor, 30, params.number);
             case MOVE_TO_AREA_ACTION: return new GotoArea(params.name, params.point );
             case HEAL_ACTION: return new Heal(actor, params.number);
             case RESTORE_MANA_ACTION: return new RestoreMana(actor, params.number);

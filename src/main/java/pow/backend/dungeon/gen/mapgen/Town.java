@@ -157,7 +157,7 @@ public class Town implements MapGenerator {
                 buildings.add(r);
             }
 
-            // Theoretically we may not stop (with probability of measure 0), but
+            // Theoretically we may not end (with probability of measure 0), but
             // the chance of success is fairly high, so we terminate quickly.
             attempts++;
             if (attempts > 100) {

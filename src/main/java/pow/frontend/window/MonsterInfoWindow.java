@@ -66,7 +66,7 @@ public class MonsterInfoWindow extends AbstractWindow {
         lines.add("Level:  " + actor.level);
         lines.add("Attack: " + actor.attack);
         lines.add("Def:    " + actor.defense);
-        lines.add("Speed:  " + actor.speed);
+        lines.add("Speed:  " + actor.getSpeed());
         lines.add("Exp.:   " + actor.experience);
         lines.add("");
         lines.add("Can hit you " + toPercentString(AttackUtils.hitProb(actor.attack.plusToHit, player.defense)) + "% of the time");

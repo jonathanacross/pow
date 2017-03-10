@@ -179,6 +179,9 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     @Override
+    protected int getBaseSpeed() { return this.currStats.speed; }
+
+    @Override
     public Action act(GameBackend backend) {
         return behavior.getAction();
     }
@@ -220,7 +223,7 @@ public class Player extends Actor implements Serializable, LightSource {
         currStats.intelligence = innateInt + intBonus;
         currStats.constitution = innateCon + conBonus;
         currStats.speed = innateSpd + spdBonus;
-        this.speed = currStats.speed;
+        //this.speed = currStats.speed;
 
         // third, compute baseline dependent stats
         DieRoll baseAttackDieRoll = innateAttack.dieRoll;  // will be used if player doesn't wear a weapon
@@ -269,9 +272,9 @@ public class Player extends Actor implements Serializable, LightSource {
                 baseBowToHit + bowToHitBonus,
                 baseBowToDam + bowToDamBonus);
 
-        int s = this.currStats.strength;
+        int c = this.currStats.constitution;
         int i = this.currStats.intelligence;
-        this.maxHealth = (int) Math.round(0.5 * s * s - 7 * s + 30);
+        this.maxHealth = (int) Math.round(0.5 * c * c - 7 * c + 30);
         this.maxMana = (int) Math.round(0.5 * i * i - 7 * i + 30);
 
         updateWealthStatus();

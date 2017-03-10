@@ -4,6 +4,7 @@ import pow.backend.ActionParams;
 import pow.backend.ShopData;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.ItemList;
+import pow.util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,12 @@ public class ShopGenerator {
     }
 
     private static int priceItem(DungeonItem item) {
+        // bonus for potions of speed
+        int speedBonus = 0;
+        if (item.actionParams.actionName == ActionParams.ActionName.MODIFY_SPEED_ACTION) {
+            speedBonus = (int)Math.pow(10, item.actionParams.number);
+        }
+
         // Very arbitrary now.  Have to balance this.
         // While arbitrary, scalars here are fractional so that prices of
         // items don't all look the same.
@@ -77,7 +84,8 @@ public class ShopGenerator {
             1 * (item.flags.arrow ? 1 : 0) +
             8 * (item.actionParams.actionName == ActionParams.ActionName.HEAL_ACTION ? 1 : 0) +
             7 * (item.actionParams.actionName == ActionParams.ActionName.RESTORE_MANA_ACTION ? 1 : 0) +
-            100 * (item.actionParams.actionName == ActionParams.ActionName.RESTORE_ACTION ? 1 : 0);
+            100 * (item.actionParams.actionName == ActionParams.ActionName.RESTORE_ACTION ? 1 : 0) +
+            10 * speedBonus;
 
         double slotScaleFactor = 1.0;
         switch (item.slot) {
@@ -94,6 +102,8 @@ public class ShopGenerator {
 
         if (price <= 0) {
             price = 99999; // setting price to this should be a hint that something was amiss.
+            System.out.println("Warning: " + TextUtils.format(item.name, 1, true) +
+                    " is not priced correctly in stores");
         }
         return (int) Math.round(price);
     }

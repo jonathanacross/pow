@@ -13,9 +13,15 @@ import static pow.util.MathUtils.dist2;
 
 public class Pet extends Actor implements Serializable {
 
+    private int baseSpeed;
+
     public Pet(DungeonObject.Params objectParams, Actor.Params actorParams) {
         super(objectParams, actorParams);
+        this.baseSpeed = actorParams.speed;
     }
+
+    @Override
+    protected int getBaseSpeed() { return this.baseSpeed; }
 
     @Override
     public String getPronoun() {

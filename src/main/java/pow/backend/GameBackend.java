@@ -85,7 +85,7 @@ public class GameBackend {
                     //return new GameResult(madeProgress, new ArrayList<>());
                 }
 
-                if (actor.energy.canTakeTurn() || actor.energy.gain(actor.speed)) {
+                if (actor.energy.canTakeTurn() || actor.energy.gain(actor.getSpeed())) {
                     // If the actor can move now, but needs input from the user, just
                     // return so we can wait for it.
                     if (actor.needsInput(gameState)) {
@@ -94,6 +94,7 @@ public class GameBackend {
                     }
 
                     commandQueue.add(actor.act(this));
+                    actor.conditions.update(this);
                 } else {
                     // This actor doesn't have enough energy yet, so move on to the next.
                     gameState.getCurrentMap().advanceActor();
