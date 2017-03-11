@@ -2,8 +2,12 @@ package pow.backend.conditions;
 
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
+import pow.backend.event.GameEvent;
 
-public class Poison extends Condition {
+import java.io.Serializable;
+import java.util.List;
+
+public class Poison extends Condition implements Serializable {
     public Poison(Actor actor) {
         super(actor);
     }
@@ -19,7 +23,7 @@ public class Poison extends Condition {
     }
 
     @Override
-    protected void updateImpl(GameBackend backend) {
-        actor.takeDamage(backend, getIntensity());
+    protected List<GameEvent> updateImpl(GameBackend backend) {
+        return actor.takeDamage(backend, getIntensity());
     }
 }

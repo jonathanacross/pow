@@ -109,6 +109,7 @@ large mana potion	& large mana potion~	large blue potion	large mana potion	none	
 large health potion	& large health potion~	large red potion	large health potion	none	potion	heal:160:		61	90	0	0		0	0	
 large restore potion	& large restore potion~	large purple potion	large restore potion	none	potion	restore:240:		71	90	0	0		0	0	
 mountain dew potion	& potion~ of mountain dew	small green potion	mountain dew	none	potion	modifySpeed:1:		0	60	0	0		0	0	30 turns?
+test poison potion	& potion~ of poison	white potion	poison	none	potion	poison:1:		0	60	0	0		0	0	30 turns?
 speed potion	& speed potion~	large green potion	speed potion	none	potion	modifySpeed:3:		51	90	0	0		0	0	30 turns
 #heroism potion	& potion~ of heroism	small orange potion	potion of heroism	none	potion	heroism:8:		11	60	0	0		0	0	+str, con 
 #might potion	& potion~ of might	large orange potion	potion of might	none	potion	heroism:16:		51	90	0	0		0	0	+str, con 

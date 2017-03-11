@@ -78,6 +78,7 @@ public class ParseUtils {
             case "modifyTerrain": params.actionName = ActionParams.ActionName.MODIFY_TERRAIN_ACTION; break;
             case "modifyFeature": params.actionName = ActionParams.ActionName.MODIFY_FEATURE_ACTION; break;
             case "modifySpeed": params.actionName = ActionParams.ActionName.MODIFY_SPEED_ACTION; break;
+            case "poison": params.actionName = ActionParams.ActionName.POISON_ACTION; break;
             case "moveToArea": params.actionName = ActionParams.ActionName.MOVE_TO_AREA_ACTION; break;
             case "heal": params.actionName = ActionParams.ActionName.HEAL_ACTION; break;
             case "restoreMana": params.actionName = ActionParams.ActionName.RESTORE_MANA_ACTION; break;

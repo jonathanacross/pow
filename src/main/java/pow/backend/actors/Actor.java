@@ -4,18 +4,22 @@ import pow.backend.AttackData;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.Action;
+import pow.backend.action.AttackUtils;
 import pow.backend.conditions.Condition;
 import pow.backend.conditions.Health;
 import pow.backend.conditions.Poison;
 import pow.backend.conditions.Speed;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
+import pow.backend.event.GameEvent;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Actor extends DungeonObject implements Serializable {
 
-    public class Conditions {
+    public class Conditions implements Serializable {
         public Health health;
         public Poison poison;
         public Speed speed;
@@ -26,10 +30,12 @@ public abstract class Actor extends DungeonObject implements Serializable {
             speed = new Speed(actor);
         }
 
-        public void update(GameBackend backend) {
-            health.update(backend);
-            poison.update(backend);
-            speed.update(backend);
+        public List<GameEvent> update(GameBackend backend) {
+            List<GameEvent> events = new ArrayList<>();
+            events.addAll(health.update(backend));
+            events.addAll(poison.update(backend));
+            events.addAll(speed.update(backend));
+            return events;
         }
     }
 
@@ -64,8 +70,12 @@ public abstract class Actor extends DungeonObject implements Serializable {
     protected abstract int getBaseSpeed();
     public int getSpeed() { return getBaseSpeed() + conditions.speed.getIntensity(); }
 
-    public void takeDamage(GameBackend backend, int damage) {
+    public List<GameEvent> takeDamage(GameBackend backend, int damage) {
         this.health -= damage;
+        if (this.health < 0) {
+            return AttackUtils.doDie(backend, this);
+        }
+        return new ArrayList<>();
     }
 
     public void gainExperience(GameBackend backend, int exp) {} // overridden in player

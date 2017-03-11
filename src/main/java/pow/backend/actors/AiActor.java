@@ -1,14 +1,21 @@
 package pow.backend.actors;
 
 import pow.backend.GameBackend;
+import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
 import pow.backend.action.Move;
+import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
+import pow.backend.dungeon.gen.ArtifactData;
+import pow.backend.dungeon.gen.GeneratorUtils;
+import pow.backend.event.GameEvent;
 import pow.util.MathUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 // TODO: see if it makes sense to have a separate class for this (do pets need it?)
 // otherwise, merge this logic directly into the monster class.
@@ -50,12 +57,12 @@ public abstract class AiActor extends Actor {
     }
 
     @Override
-    public void takeDamage(GameBackend backend, int damage) {
-        super.takeDamage(backend, damage);
+    public List<GameEvent> takeDamage(GameBackend backend, int damage) {
         if (this.state == ActorState.SLEEPING) {
             backend.logMessage("the " + this.name + " wakes up!");
             this.state = ActorState.AWAKE;
         }
+        return super.takeDamage(backend, damage);
     }
 
     private Action doAwake(GameBackend backend) {

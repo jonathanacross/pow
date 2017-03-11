@@ -77,6 +77,11 @@ public class GameBackend {
             // at this point, we've processed all pending actions, so advance
             // the time.
             while (commandQueue.isEmpty()) {
+
+                if (!gameState.gameInProgress) {
+                    return gameResult;
+                }
+
                 Actor actor = gameState.getCurrentMap().getCurrentActor();
 
                 // if waiting for input, just return
@@ -94,7 +99,7 @@ public class GameBackend {
                     }
 
                     commandQueue.add(actor.act(this));
-                    actor.conditions.update(this);
+                    gameResult.addEvents(actor.conditions.update(this));
                 } else {
                     // This actor doesn't have enough energy yet, so move on to the next.
                     gameState.getCurrentMap().advanceActor();
@@ -106,7 +111,6 @@ public class GameBackend {
 //                    trySpawnMonster();
 //                }
             }
-
         }
     }
 

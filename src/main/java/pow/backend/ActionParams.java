@@ -2,6 +2,7 @@ package pow.backend;
 
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
+import pow.backend.conditions.Poison;
 import pow.backend.dungeon.gen.FeatureData;
 import pow.backend.dungeon.gen.TerrainData;
 import pow.util.Direction;
@@ -17,6 +18,7 @@ public class ActionParams implements Serializable {
         MODIFY_FEATURE_ACTION,
         MODIFY_SPEED_ACTION,
         MOVE_TO_AREA_ACTION,
+        POISON_ACTION,
         HEAL_ACTION,
         RESTORE_MANA_ACTION,
         RESTORE_ACTION,
@@ -49,8 +51,9 @@ public class ActionParams implements Serializable {
         switch (params.actionName) {
             case MODIFY_TERRAIN_ACTION: return new ModifyTerrain(actor, params.point, TerrainData.getTerrain(params.name));
             case MODIFY_FEATURE_ACTION: return new ModifyFeature(actor, params.point, FeatureData.getFeature(params.name));
-            case MODIFY_SPEED_ACTION: return new ModifySpeed(actor, 30, params.number);
+            case MODIFY_SPEED_ACTION: return new StartCondition(actor, StartCondition.ConditionType.SPEED, 30, params.number);
             case MOVE_TO_AREA_ACTION: return new GotoArea(params.name, params.point );
+            case POISON_ACTION: return new StartCondition(actor, StartCondition.ConditionType.POISON, 5, params.number);
             case HEAL_ACTION: return new Heal(actor, params.number);
             case RESTORE_MANA_ACTION: return new RestoreMana(actor, params.number);
             case RESTORE_ACTION: return new Restore(actor, params.number);

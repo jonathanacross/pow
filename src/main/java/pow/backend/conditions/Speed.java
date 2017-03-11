@@ -2,7 +2,9 @@ package pow.backend.conditions;
 
 import pow.backend.actors.Actor;
 
-public class Speed extends Condition {
+import java.io.Serializable;
+
+public class Speed extends Condition implements Serializable {
     public Speed(Actor actor) {
         super(actor);
     }
