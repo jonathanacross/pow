@@ -54,7 +54,7 @@ public class TestArea implements MapGenerator {
     private GameMap genItemMap(String name,
             List<MapConnection> connections,
             Random rng) {
-        int width = 50;
+        int width = 70;
         int height = 100;
         int[][] data = new int[width][height];
         for (int x = 0; x < width; x++) {

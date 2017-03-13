@@ -60,17 +60,17 @@ public class MonsterInfoWindow extends AbstractWindow {
         lines.add(actor.name);
         lines.addAll(descriptionLines);
         lines.add("");
-        lines.add("HP:     " + actor.health + "/" + actor.maxHealth);
+        lines.add("HP:     " + actor.health + "/" + actor.getMaxHealth());
         lines.add("MP:     " + actor.mana + "/" + actor.maxMana);
         lines.add("");
         lines.add("Level:  " + actor.level);
         lines.add("Attack: " + actor.attack);
-        lines.add("Def:    " + actor.defense);
+        lines.add("Def:    " + actor.getDefense());
         lines.add("Speed:  " + actor.getSpeed());
         lines.add("Exp.:   " + actor.experience);
         lines.add("");
-        lines.add("Can hit you " + toPercentString(AttackUtils.hitProb(actor.attack.plusToHit, player.defense)) + "% of the time");
-        lines.add("You can hit " + toPercentString(AttackUtils.hitProb(player.attack.plusToHit, actor.defense)) + "% of the time");
+        lines.add("Can hit you " + toPercentString(AttackUtils.hitProb(actor.attack.plusToHit, player.getDefense())) + "% of the time");
+        lines.add("You can hit " + toPercentString(AttackUtils.hitProb(player.attack.plusToHit, actor.getDefense())) + "% of the time");
 
         // actual drawing here
         graphics.setColor(Color.BLACK);

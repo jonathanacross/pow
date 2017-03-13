@@ -40,7 +40,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         List<String> lines = new ArrayList<>();
         lines.add(player.name);
         lines.add("");
-        lines.add("HP:        " + player.health + "/" + player.maxHealth);
+        lines.add("HP:        " + player.health + "/" + player.getMaxHealth());
         lines.add("MP:        " + player.mana + "/" + player.maxMana);
         lines.add("Exp:       " + player.experience);
         lines.add("Exp next:  " + player.getExpToNextLevel());
@@ -54,7 +54,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("");
         lines.add("Attack:    " + player.attack);   // 2d4 (+3, +1)
         lines.add("Bow:       " + player.bowAttack);  // 1d2 (+2, +0)
-        lines.add("Defense:   " + player.defense); // [19, +5]
+        lines.add("Defense:   " + player.getDefense()); // [19, +5]
         lines.add("Speed:     " + player.getSpeed());
         lines.add("");
 

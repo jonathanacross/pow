@@ -251,7 +251,7 @@ public class GeneratorUtils {
         for (Actor a : map.actors) {
             if (!a.friendly) {
                 a.mana = a.maxMana;
-                a.health = a.maxHealth;
+                a.health = a.getMaxHealth();
             }
         }
     }

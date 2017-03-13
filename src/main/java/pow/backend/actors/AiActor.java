@@ -42,8 +42,8 @@ public abstract class AiActor extends Actor {
 
     private int stateTurnCount; // how long have we been in this state?
     private int baseSpeed;
-    @Override
-    protected int getBaseSpeed() { return baseSpeed; }
+
+    @Override protected int getBaseSpeed() { return baseSpeed; }
     private ActorState state;
     private Flags flags;
 

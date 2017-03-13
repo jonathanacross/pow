@@ -19,7 +19,7 @@ public class RestAtInn implements Action {
 
         if (player.gold >= shopData.innCost) {
             player.gold -= shopData.innCost;
-            player.health = player.maxHealth;
+            player.health = player.getMaxHealth();
             player.mana = player.maxMana;
             backend.logMessage("You feel refreshed.");
             List<GameEvent> events = new ArrayList<>();

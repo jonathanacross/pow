@@ -26,7 +26,7 @@ public class Attack implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
-        if (gs.rng.nextDouble() > AttackUtils.hitProb(attacker.attack.plusToHit, target.defense)) {
+        if (gs.rng.nextDouble() > AttackUtils.hitProb(attacker.attack.plusToHit, target.getDefense())) {
             backend.logMessage(attacker.getPronoun() + " misses " + target.getPronoun());
         } else {
             int damage = attacker.attack.dieRoll.rollDice(gs.rng) + attacker.attack.plusToDam;

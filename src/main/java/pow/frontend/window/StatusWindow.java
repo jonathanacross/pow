@@ -55,7 +55,7 @@ public class StatusWindow extends AbstractWindow {
         // draw bars
         Color healthColor = Color.RED;
         Color manaColor = Color.BLUE;
-        drawBar(graphics, textX, y + FONT_SIZE, BAR_WIDTH, FONT_SIZE-1, healthColor, a.health, a.maxHealth);
+        drawBar(graphics, textX, y + FONT_SIZE, BAR_WIDTH, FONT_SIZE-1, healthColor, a.health, a.getMaxHealth());
         if (a.maxMana > 0) {
             drawBar(graphics, textX, y + 2 * FONT_SIZE, BAR_WIDTH, FONT_SIZE - 1, manaColor, a.mana, a.maxMana);
         }
@@ -64,7 +64,7 @@ public class StatusWindow extends AbstractWindow {
         ImageController.drawTile(graphics, a.image, x, y);
         graphics.drawString(a.name, textX, y + FONT_SIZE);
         if (showExact) {
-            graphics.drawString("HP:" + a.health + "/" + a.maxHealth, textX, y + 2*FONT_SIZE);
+            graphics.drawString("HP:" + a.health + "/" + a.getMaxHealth(), textX, y + 2*FONT_SIZE);
         }
         if (showExact && a.maxMana > 0) {
             graphics.drawString("MP:", textX, y + 3*FONT_SIZE);

@@ -26,7 +26,7 @@ public class Restore implements Action {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Healed());
 
-        int hpAmount = Math.min(this.amount, actor.maxHealth - actor.health);
+        int hpAmount = Math.min(this.amount, actor.getMaxHealth() - actor.health);
         actor.health += hpAmount;
         int mpAmount = Math.min(this.amount, actor.maxMana - actor.mana);
         actor.mana += mpAmount;

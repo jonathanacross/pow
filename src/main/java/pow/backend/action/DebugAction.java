@@ -39,7 +39,7 @@ public class DebugAction implements Action {
                 break;
             case HEAL:
                 backend.logMessage("DEBUG: healing player");
-                player.health = player.maxHealth;
+                player.health = player.getMaxHealth();
                 player.mana = player.maxMana;
                 break;
         }

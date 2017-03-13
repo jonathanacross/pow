@@ -47,7 +47,7 @@ public class FireArrow implements Action {
             lastPoint = p;
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
-                boolean hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.defense);
+                boolean hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
                 int damage = attacker.attack.dieRoll.rollDice(gs.rng) + attacker.attack.plusToDam;
                 if (hitsTarget && damage > 0) {
                     backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());

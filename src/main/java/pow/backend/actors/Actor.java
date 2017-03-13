@@ -5,10 +5,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.AttackUtils;
-import pow.backend.conditions.Condition;
-import pow.backend.conditions.Health;
-import pow.backend.conditions.Poison;
-import pow.backend.conditions.Speed;
+import pow.backend.conditions.Conditions;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
 import pow.backend.event.GameEvent;
@@ -19,15 +16,21 @@ import java.util.List;
 
 public abstract class Actor extends DungeonObject implements Serializable {
 
-    public class Conditions implements Serializable {
-        public Health health;
-        public Poison poison;
-        public Speed speed;
+    public class ConditionSet implements Serializable {
+        public Conditions.Health health;
+        public Conditions.Poison poison;
+        public Conditions.Speed speed;
+        public Conditions.ToHit toHit;
+        public Conditions.ToDam toDam;
+        public Conditions.Defense defense;
 
-        public Conditions(Actor actor) {
-            health = new Health(actor);
-            poison = new Poison(actor);
-            speed = new Speed(actor);
+        public ConditionSet(Actor actor) {
+            health = new Conditions.Health(actor);
+            poison = new Conditions.Poison(actor);
+            speed = new Conditions.Speed(actor);
+            toHit = new Conditions.ToHit(actor);
+            toDam = new Conditions.ToDam(actor);
+            defense = new Conditions.Defense(actor);
         }
 
         public List<GameEvent> update(GameBackend backend) {
@@ -35,19 +38,44 @@ public abstract class Actor extends DungeonObject implements Serializable {
             events.addAll(health.update(backend));
             events.addAll(poison.update(backend));
             events.addAll(speed.update(backend));
+            events.addAll(toHit.update(backend));
+            events.addAll(toDam.update(backend));
+            events.addAll(defense.update(backend));
             return events;
         }
     }
 
+    // Holds stats for actors; these control how actors interact with each
+    // other and the world. Note that these may be derived from other
+    // quantities, e.g., the player's maxHealth may depend on their
+    // constitution + equipment, whereas a monster's may just be set at
+    // initialization time.
+    //
+    // Values of these at any particular time may be modified via
+    // conditions, which might have temporary changes at any given turn
+    //
+    // TODO: Should this be an interface? (might be annoying to set health..)
+//    public class ActorStats implements Serializable {
+//        public int maxHealth;
+//        public int health;
+//        public int maxMana;
+//        public int mana;
+//        public int defense;
+//        public int toHit;
+//        public int toDam;
+//        public int speed;
+//        // resistances here as well
+//    }
+
     public Energy energy;
 
-    public int maxHealth;
+    protected int maxHealth;
     public int health;
     public int maxMana;
     public int mana;
     public int experience;
-    public int defense; // chance of hitting is related to toHit and defense
-    public Conditions conditions;
+    protected int defense; // chance of hitting is related to attack/toHit and defense
+    public ConditionSet conditions; // TODO: better name for ConditionSet
     public AttackData attack;
     public ItemList inventory;
 
@@ -69,6 +97,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public abstract String getPronoun();
     protected abstract int getBaseSpeed();
     public int getSpeed() { return getBaseSpeed() + conditions.speed.getIntensity(); }
+    public int getMaxHealth() { return maxHealth + conditions.health.getIntensity(); }
+    public int getDefense() { return defense + conditions.defense.getIntensity(); }
 
     public List<GameEvent> takeDamage(GameBackend backend, int damage) {
         this.health -= damage;
@@ -125,7 +155,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         //this.speed = actorParams.speed;
         this.requiredItemDrops = actorParams.requiredItemDrops;
         this.numDropAttempts = actorParams.numDropAttempts;
-        this.conditions = new Conditions(this);
+        this.conditions = new ConditionSet(this);
         this.inventory = new ItemList(20, 99);
         this.maxMana = 0;
         this.mana = 0;

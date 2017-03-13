@@ -44,9 +44,9 @@ public abstract class Condition implements Serializable {
 
     public List<GameEvent> end(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.addAll(endImpl(backend));
         this.turnsRemaining = 0;
         this.intensity = 0;
+        events.addAll(endImpl(backend));
         backend.logMessage(getEndMessage());
         return events;
     }
