@@ -250,7 +250,7 @@ public class GeneratorUtils {
     public static void healAllMonsters(GameMap map) {
         for (Actor a : map.actors) {
             if (!a.friendly) {
-                a.mana = a.maxMana;
+                a.mana = a.getMaxMana();
                 a.health = a.getMaxHealth();
             }
         }

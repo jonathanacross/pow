@@ -33,7 +33,7 @@ public class Conditions {
 
         @Override
         protected List<GameEvent> endImpl(GameBackend backend) {
-            actor.health = Math.min(actor.health, actor.getMaxHealth());
+            actor.health = Math.min(actor.getHealth(), actor.getMaxHealth());
             return Arrays.asList(GameEvent.DungeonUpdated());
         }
     }

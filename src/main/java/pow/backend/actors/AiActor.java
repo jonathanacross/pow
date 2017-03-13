@@ -41,9 +41,7 @@ public abstract class AiActor extends Actor {
     }
 
     private int stateTurnCount; // how long have we been in this state?
-    private int baseSpeed;
 
-    @Override protected int getBaseSpeed() { return baseSpeed; }
     private ActorState state;
     private Flags flags;
 
@@ -53,7 +51,7 @@ public abstract class AiActor extends Actor {
         this.state = ActorState.SLEEPING;
         this.flags = flags;
 
-        this.baseSpeed = actorParams.speed;
+        this.baseStats.speed = actorParams.speed;
     }
 
     @Override

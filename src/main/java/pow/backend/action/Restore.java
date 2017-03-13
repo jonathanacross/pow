@@ -26,9 +26,9 @@ public class Restore implements Action {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Healed());
 
-        int hpAmount = Math.min(this.amount, actor.getMaxHealth() - actor.health);
+        int hpAmount = Math.min(this.amount, actor.getMaxHealth() - actor.getHealth());
         actor.health += hpAmount;
-        int mpAmount = Math.min(this.amount, actor.maxMana - actor.mana);
+        int mpAmount = Math.min(this.amount, actor.getMaxMana() - actor.getMana());
         actor.mana += mpAmount;
         backend.logMessage(actor.getPronoun() + " restored " + hpAmount + " health and " + mpAmount + " mana");
         return ActionResult.Succeeded(events);

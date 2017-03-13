@@ -142,8 +142,8 @@ public class Player extends Actor implements Serializable, LightSource {
         this.experience = 0;
         this.currStats = new Stats();
         updateStats();  // updates current stats (above), defense, and attack, bowAttack
-        this.health = this.maxHealth;
-        this.mana = this.maxMana;
+        this.baseStats.health = this.baseStats.maxHealth;
+        this.baseStats.mana = this.baseStats.maxMana;
         this.floorTarget = null;
         this.monsterTarget = null;
         this.behavior = null;
@@ -177,9 +177,6 @@ public class Player extends Actor implements Serializable, LightSource {
     public void waitForInput() {
         this.behavior = null;
     }
-
-    @Override
-    protected int getBaseSpeed() { return this.currStats.speed; }
 
     @Override
     public Action act(GameBackend backend) {
@@ -223,6 +220,7 @@ public class Player extends Actor implements Serializable, LightSource {
         currStats.intelligence = innateInt + intBonus;
         currStats.constitution = innateCon + conBonus;
         currStats.speed = innateSpd + spdBonus;
+        this.baseStats.speed = currStats.speed; // TODO: combine/move currStats -> baseStats
         //this.speed = currStats.speed;
 
         // third, compute baseline dependent stats
@@ -264,7 +262,7 @@ public class Player extends Actor implements Serializable, LightSource {
                 baseBowDieRoll = item.attack;
             }
         }
-        this.defense = baseDefense + defBonus;
+        this.baseStats.defense = baseDefense + defBonus;
         this.attack = new AttackData(baseAttackDieRoll,
                 baseWeaponToHit + weapToHitBonus,
                 baseWeaponToDam + weapToDamBonus);
@@ -274,8 +272,8 @@ public class Player extends Actor implements Serializable, LightSource {
 
         int c = this.currStats.constitution;
         int i = this.currStats.intelligence;
-        this.maxHealth = (int) Math.round(0.5 * c * c - 7 * c + 30);
-        this.maxMana = (int) Math.round(0.5 * i * i - 7 * i + 30);
+        this.baseStats.maxHealth = (int) Math.round(0.5 * c * c - 7 * c + 30);
+        this.baseStats.maxMana = (int) Math.round(0.5 * i * i - 7 * i + 30);
 
         updateWealthStatus();
     }

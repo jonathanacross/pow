@@ -40,7 +40,7 @@ public class DebugAction implements Action {
             case HEAL:
                 backend.logMessage("DEBUG: healing player");
                 player.health = player.getMaxHealth();
-                player.mana = player.maxMana;
+                player.mana = player.getMaxMana();
                 break;
         }
         List<GameEvent> events = new ArrayList<>();
