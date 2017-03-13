@@ -6,6 +6,7 @@ import pow.backend.event.GameEvent;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Conditions {
@@ -28,14 +29,14 @@ public class Conditions {
         @Override
         protected List<GameEvent> startImpl(GameBackend backend) {
             actor.increaseHealth(getIntensity());
-            return Arrays.asList(GameEvent.DungeonUpdated());
+            return Collections.singletonList(GameEvent.DungeonUpdated());
         }
 
         @Override
         protected List<GameEvent> endImpl(GameBackend backend) {
             // force update of health to stay within limit
             actor.increaseHealth(getIntensity());
-            return Arrays.asList(GameEvent.DungeonUpdated());
+            return Collections.singletonList(GameEvent.DungeonUpdated());
         }
     }
 

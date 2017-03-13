@@ -22,59 +22,56 @@ public class AttackUtils {
 
     // TODO: given the cases here, this should eventually be moved into an internal
     // die method within each type of actor
-    public static List<GameEvent> doDie(GameBackend backend, Actor actor) {
+    public static GameEvent doDie(GameBackend backend, Actor actor) {
         GameState gs = backend.getGameState();
         GameMap map = gs.getCurrentMap();
-        List<GameEvent> events = new ArrayList<>();
 
         backend.logMessage(actor.getPronoun() + " died");
 
         if (actor == gs.player) {
             gs.gameInProgress = false;
-            events.add(GameEvent.LostGame());
-        } else {
-            events.add(GameEvent.Killed());
+            return GameEvent.LostGame();
+        }
 
-            // see if this is a boss; if so, update the map so it won't regenerate
-            if (map.genMonsterIds.canGenBoss && map.genMonsterIds.bossId.equals(actor.id)) {
-                map.genMonsterIds.canGenBoss = false;
-            }
+        // see if this is a boss; if so, update the map so it won't regenerate
+        if (map.genMonsterIds.canGenBoss && map.genMonsterIds.bossId.equals(actor.id)) {
+            map.genMonsterIds.canGenBoss = false;
+        }
 
-            // drop any artifacts
-            String artifactId = actor.requiredItemDrops;
-            if (artifactId != null) {
-                DungeonItem item = ArtifactData.getArtifact(artifactId);
+        // drop any artifacts
+        String artifactId = actor.requiredItemDrops;
+        if (artifactId != null) {
+            DungeonItem item = ArtifactData.getArtifact(artifactId);
+            map.map[actor.loc.x][actor.loc.y].items.add(item);
+        }
+
+        // with some probability, have the monster drop some random items
+        for (int attempt = 0; attempt < actor.numDropAttempts; attempt++) {
+            double dropChance = gs.player.increaseWealth ? 0.75 : 0.5;
+            if (gs.rng.nextDouble() <= dropChance) {
+                int difficultyLevel = map.level;
+                DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
+                if (item.flags.money) {
+                    if (gs.player.increaseWealth) {
+                        item.count *= 3;
+                    }
+                }
                 map.map[actor.loc.x][actor.loc.y].items.add(item);
             }
+        }
 
-            // with some probability, have the monster drop some random items
-            for (int attempt = 0; attempt < actor.numDropAttempts; attempt++) {
-                double dropChance = gs.player.increaseWealth ? 0.75 : 0.5;
-                if (gs.rng.nextDouble() <= dropChance) {
-                    int difficultyLevel = map.level;
-                    DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
-                    if (item.flags.money) {
-                        if (gs.player.increaseWealth) {
-                            item.count *= 3;
-                        }
-                    }
-                    map.map[actor.loc.x][actor.loc.y].items.add(item);
-                }
-            }
+        // Only remove the actor if it's NOT the player,
+        // so that the player won't disappear from the map.
+        map.removeActor(actor);
 
-            // Only remove the actor if it's NOT the player,
-            // so that the player won't disappear from the map.
-            map.removeActor(actor);
-
-            if (actor == gs.player.monsterTarget) {
-                gs.player.monsterTarget = null;
-            }
+        if (actor == gs.player.monsterTarget) {
+            gs.player.monsterTarget = null;
         }
         if (actor == gs.pet) {
             gs.pet = null;
         }
 
-        return events;
+        return GameEvent.Killed();
     }
 
     public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender, int damage) {
@@ -82,11 +79,11 @@ public class AttackUtils {
         backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + damage + " damage");
         events.add(GameEvent.Attacked());
         List<GameEvent> damageEvents = defender.takeDamage(backend, damage);
-        // TODO: this isn't working yet
-        if (damageEvents.contains(GameEvent.Killed())) {
-            attacker.gainExperience(backend, defender.experience);
+        for (GameEvent event : damageEvents) {
+            if (event.eventType == GameEvent.EventType.KILLED) {
+                attacker.gainExperience(backend, defender.experience);
+            }
         }
-
         events.addAll(damageEvents);
         return events;
     }

@@ -165,11 +165,12 @@ public abstract class Actor extends DungeonObject implements Serializable {
     }
 
     public List<GameEvent> takeDamage(GameBackend backend, int damage) {
+        List<GameEvent> events = new ArrayList<>();
         this.baseStats.health -= damage;
         if (this.baseStats.health < 0) {
-            return AttackUtils.doDie(backend, this);
+            events.add(AttackUtils.doDie(backend, this));
         }
-        return new ArrayList<>();
+        return events;
     }
 
     public void gainExperience(GameBackend backend, int exp) {} // overridden in player

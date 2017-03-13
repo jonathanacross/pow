@@ -5,6 +5,7 @@ import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Log implements Action {
 
@@ -12,7 +13,7 @@ public class Log implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        return ActionResult.Succeeded(Arrays.asList(GameEvent.LogUpdate()));
+        return ActionResult.Succeeded(Collections.singletonList(GameEvent.LogUpdate()));
     }
 
     @Override
