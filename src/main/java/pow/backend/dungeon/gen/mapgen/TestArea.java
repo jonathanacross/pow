@@ -11,10 +11,10 @@ import java.util.*;
 // generates various types of test areas.
 public class TestArea implements MapGenerator {
 
-    private String type;
-    private ProtoTranslator translator;
-    private int level;
-    private MonsterIdGroup monsterIds;
+    private final String type;
+    private final ProtoTranslator translator;
+    private final int level;
+    private final MonsterIdGroup monsterIds;
 
     public TestArea(String type, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.type = type;

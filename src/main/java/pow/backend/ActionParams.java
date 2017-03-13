@@ -28,7 +28,7 @@ public class ActionParams implements Serializable {
 
     public ActionName actionName;
     public Point point;
-    public Direction dir;
+    private final Direction dir;
     public int number;
     public String name;
 

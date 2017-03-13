@@ -37,7 +37,7 @@ public class ItemGenerator {
         return generator.genItem(level, rng);
     }
 
-    private static ItemGenerator instance;
+    private static final ItemGenerator instance;
     private Map<String, SpecificItemGenerator> generatorMap;
     private Map<Integer, List<String>> levelToItemIds;
     private int minLevel;
@@ -125,8 +125,8 @@ public class ItemGenerator {
 
 
         public static class MinMax {
-            public int min;
-            public int max;
+            public final int min;
+            public final int max;
 
             public MinMax(String text) {
                 if (text.isEmpty()) {

@@ -12,9 +12,9 @@ import java.util.function.IntConsumer;
 public class GetCountWindow extends AbstractWindow {
 
     private String countString;
-    private String message;
-    private int maxNum;
-    private IntConsumer callback;
+    private final String message;
+    private final int maxNum;
+    private final IntConsumer callback;
 
     public GetCountWindow(WindowDim dim, GameBackend backend, Frontend frontend, String message, int maxNum, IntConsumer callback) {
         super(dim, true, backend, frontend);

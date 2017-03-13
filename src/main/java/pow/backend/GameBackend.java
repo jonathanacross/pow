@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class GameBackend {
 
     private GameState gameState;
-    private Deque<Action> commandQueue = new LinkedList<>();
+    private final Deque<Action> commandQueue = new LinkedList<>();
 
     public GameState getGameState() {
         return gameState;

@@ -16,8 +16,8 @@ import java.util.*;
 
 public class WorldDataGen {
 
-    private static WorldDataGen instance;
-    private static WorldDataGen testInstance;
+    private static final WorldDataGen instance;
+    private static final WorldDataGen testInstance;
     private List<MapPoint> mapPoints;
 
     public static List<MapPoint> getMapPoints() { return instance.mapPoints; }

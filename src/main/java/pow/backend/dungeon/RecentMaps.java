@@ -9,7 +9,7 @@ import java.util.LinkedList;
 // When the player goes to an area that isn't in most recent 2 levels,
 // then monsters need to be regenerated.
 public class RecentMaps implements Serializable {
-    private LinkedList<GameMap> recentLocations;
+    private final LinkedList<GameMap> recentLocations;
     private static final int NUM_RECENT_LOCS_BEFORE_REGEN = 2;
 
     public RecentMaps() {

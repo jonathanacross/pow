@@ -16,8 +16,8 @@ import java.util.List;
 public class ArrowEffect implements Effect {
 
     private int idx;
-    private List<Point> points;
-    private String glyphName;
+    private final List<Point> points;
+    private final String glyphName;
 
     public ArrowEffect(Actor actor, Point point) {
         this.idx = 0;

@@ -10,9 +10,9 @@ import pow.util.TextUtils;
 
 
 public class Quaff implements Action {
-    private Actor actor;
-    private ItemList itemList;
-    private int itemIdx;
+    private final Actor actor;
+    private final ItemList itemList;
+    private final int itemIdx;
 
     public Quaff(Actor actor, ItemList itemList, int itemIdx) {
         this.actor = actor;

@@ -27,12 +27,12 @@ public class GameTargetLayer extends AbstractWindow {
         CLOSE_DOOR
     }
 
-    private GameWindow parent;
+    private final GameWindow parent;
     private int targetIdx;
-    private List<Point> targetableSquares;
-    private MapView mapView;
-    private TargetMode mode;
-    private Consumer<Point> callback;
+    private final List<Point> targetableSquares;
+    private final MapView mapView;
+    private final TargetMode mode;
+    private final Consumer<Point> callback;
 
     public GameTargetLayer(GameWindow parent, List<Point> targetableSquares, TargetMode mode, Consumer<Point> callback) {
         super(parent.dim, parent.visible, parent.backend, parent.frontend);

@@ -1,9 +1,9 @@
 package pow.util;
 
 public class Point3D {
-    public int x;
-    public int y;
-    public int z;
+    public final int x;
+    public final int y;
+    public final int z;
 
     public Point3D(int x, int y, int z) {
         this.x = x;

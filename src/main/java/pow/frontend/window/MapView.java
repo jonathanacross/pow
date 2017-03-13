@@ -11,16 +11,16 @@ public class MapView {
 
     // These variables are useful to restrict what tiles to draw
     // (e.g., anything outside of these bounds will not appear in the view).
-    public int colMin;
-    public int colMax;
-    public int rowMin;
-    public int rowMax;
+    public final int colMin;
+    public final int colMax;
+    public final int rowMin;
+    public final int rowMax;
 
-    private int tileSize;
-    private int windowShiftX;
-    private int windowShiftY;
-    private int cameraDx;
-    private int cameraDy;
+    private final int tileSize;
+    private final int windowShiftX;
+    private final int windowShiftY;
+    private final int cameraDx;
+    private final int cameraDy;
 
     // width, height are for the size of the view, in pixels
     public MapView(int width, int height, int tileSize, GameState gs) {

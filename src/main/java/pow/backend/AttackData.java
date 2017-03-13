@@ -5,9 +5,9 @@ import pow.util.DieRoll;
 import java.io.Serializable;
 
 public class AttackData implements Serializable {
-    public DieRoll dieRoll;
-    public int plusToHit;
-    public int plusToDam;
+    public final DieRoll dieRoll;
+    public final int plusToHit;
+    public final int plusToDam;
 
     public AttackData(DieRoll dieRoll, int plusToHit, int plusToDam) {
         this.dieRoll = dieRoll;

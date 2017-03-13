@@ -23,7 +23,7 @@ public class GameWorld implements Serializable {
         genMapWorld(rng, player, pet);
     }
 
-    public List<MapConnection> getConnections(MapTopology topology, Point3D fromLoc) {
+    private List<MapConnection> getConnections(MapTopology topology, Point3D fromLoc) {
         List<MapConnection> namedConnections = new ArrayList<>();
         for (SpacialConnection connection : topology.getConnections()) {
             if (connection.fromLoc.equals(fromLoc)) {

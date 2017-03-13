@@ -7,8 +7,8 @@ package pow.backend.dungeon;
 public class DungeonExit {
 
     // information about where the exit goes to.
-    public String areaId;
-    public String locName;
+    public final String areaId;
+    public final String locName;
 
     public DungeonExit(String areaId, String locName) {
         this.areaId = areaId;

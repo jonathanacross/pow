@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class DungeonSquare implements Serializable {
     public DungeonTerrain terrain;
     public DungeonFeature feature;
-    public ItemList items;
+    public final ItemList items;
 
     // These hold information for player visibility; must be updated every time
     // the player moves.

@@ -21,9 +21,9 @@ public class GameEvent {
     }
 
     // TODO: fill out this class.. what's needed? can I simplify?
-    public EventType eventType;
-    public Actor actor; // may be null for some events
-    public Point point; // may be null for many events
+    public final EventType eventType;
+    public final Actor actor; // may be null for some events
+    public final Point point; // may be null for many events
 
     private GameEvent(EventType eventType, Actor actor, Point point) {
         this.eventType = eventType;

@@ -15,9 +15,9 @@ import java.util.Random;
 
 public class Town implements MapGenerator {
 
-    private ProtoTranslator translator;
-    private MonsterIdGroup monsterIds;
-    private int level;
+    private final ProtoTranslator translator;
+    private final MonsterIdGroup monsterIds;
+    private final int level;
 
     public Town(ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.translator = translator;
@@ -112,10 +112,10 @@ public class Town implements MapGenerator {
     }
 
     private class Rectangle {
-        public int left;
-        public int top;
-        public int width;
-        public int height;
+        public final int left;
+        public final int top;
+        public final int width;
+        public final int height;
 
         public Rectangle(int left, int top, int width, int height) {
             this.left = left;

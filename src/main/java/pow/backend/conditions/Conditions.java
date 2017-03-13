@@ -27,13 +27,14 @@ public class Conditions {
 
         @Override
         protected List<GameEvent> startImpl(GameBackend backend) {
-            actor.health += getIntensity();
+            actor.increaseHealth(getIntensity());
             return Arrays.asList(GameEvent.DungeonUpdated());
         }
 
         @Override
         protected List<GameEvent> endImpl(GameBackend backend) {
-            actor.health = Math.min(actor.getHealth(), actor.getMaxHealth());
+            // force update of health to stay within limit
+            actor.increaseHealth(getIntensity());
             return Arrays.asList(GameEvent.DungeonUpdated());
         }
     }

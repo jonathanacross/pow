@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModifyFeature implements Action {
-    private Actor actor;
-    private DungeonFeature newFeature;
-    private Point loc;
+    private final Actor actor;
+    private final DungeonFeature newFeature;
+    private final Point loc;
 
     public ModifyFeature(Actor actor, Point loc, DungeonFeature newFeature) {
         this.actor = actor;

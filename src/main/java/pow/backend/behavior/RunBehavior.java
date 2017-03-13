@@ -16,7 +16,7 @@ import java.util.List;
 
 public class RunBehavior implements Behavior {
 
-    private Player player;
+    private final Player player;
     private Direction direction;
     private int stepCount;
     private boolean openLeft;

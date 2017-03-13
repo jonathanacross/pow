@@ -15,14 +15,14 @@ import java.util.Random;
 
 public class RogueGenerator implements MapGenerator {
 
-    private int vaultLevel;
-    private int width;
-    private int height;
-    private ProtoTranslator translator;
-    private List<String> vaultIds;
-    private List<String> greatVaultIds;
-    private int level;
-    private MonsterIdGroup monsterIds;
+    private final int vaultLevel;
+    private final int width;
+    private final int height;
+    private final ProtoTranslator translator;
+    private final List<String> vaultIds;
+    private final List<String> greatVaultIds;
+    private final int level;
+    private final MonsterIdGroup monsterIds;
 
     public RogueGenerator(int width, int height, int vaultLevel, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.width = width;
@@ -290,16 +290,16 @@ public class RogueGenerator implements MapGenerator {
     }
 
     private static class RoomInfo {
-        double xRadius;
-        double yRadius;
-        int x;
-        int y;
-        PremadeMapData.PremadeMapInfo vault; // make a VaultClass?
+        final double xRadius;
+        final double yRadius;
+        final int x;
+        final int y;
+        final PremadeMapData.PremadeMapInfo vault; // make a VaultClass?
 
-        int xlo;
-        int xhi;
-        int ylo;
-        int yhi;
+        final int xlo;
+        final int xhi;
+        final int ylo;
+        final int yhi;
 
         public RoomInfo(double xRadius, double yRadius, int x, int y, PremadeMapData.PremadeMapInfo vault) {
             this.xRadius = xRadius;

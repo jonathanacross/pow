@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModifyTerrain implements Action {
-    private Actor actor;
-    private DungeonTerrain newTerrain;
-    private Point loc;
+    private final Actor actor;
+    private final DungeonTerrain newTerrain;
+    private final Point loc;
 
     public ModifyTerrain(Actor actor, Point loc, DungeonTerrain newTerrain) {
         this.actor = actor;

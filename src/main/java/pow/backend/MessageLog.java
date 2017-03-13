@@ -7,7 +7,7 @@ import java.util.List;
 public class MessageLog implements Serializable {
 
     public static class Message implements Serializable {
-        public String message;
+        public final String message;
         public int count;
 
         public Message(String message) {
@@ -29,8 +29,8 @@ public class MessageLog implements Serializable {
         }
     }
 
-    private List<Message> messages;
-    private int maxSize;
+    private final List<Message> messages;
+    private final int maxSize;
 
     public MessageLog(int maxSize) {
         this.maxSize = maxSize;

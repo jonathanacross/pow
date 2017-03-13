@@ -4,12 +4,12 @@ package pow.util;
 // http://www.roguebasin.com/index.php?title=Improved_Shadowcasting_in_Java
 
 public class FieldOfView {
-    private boolean[][] blockMap;
-    private boolean[][] lightMap;
-    private int startX;
-    private int startY;
-    private double radius;
-    private Metric.MetricFunction metric;
+    private final boolean[][] blockMap;
+    private final boolean[][] lightMap;
+    private final int startX;
+    private final int startY;
+    private final double radius;
+    private final Metric.MetricFunction metric;
 
     public FieldOfView(
             boolean[][] blockMap,

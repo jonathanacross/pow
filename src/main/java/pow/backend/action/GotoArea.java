@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GotoArea implements Action {
-    private String areaName;
-    private Point loc;
+    private final String areaName;
+    private final Point loc;
 
     public GotoArea(String areaName, Point loc) {
         this.areaName = areaName;

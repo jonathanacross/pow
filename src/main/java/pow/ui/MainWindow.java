@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 
 
 public class MainWindow extends JFrame implements KeyListener {
-    private MainDraw draw;
+    private final MainDraw draw;
 
     public void keyPressed(KeyEvent e) {
         draw.processKey(e);

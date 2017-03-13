@@ -7,11 +7,11 @@ import java.io.Serializable;
 public class DungeonTerrain implements Serializable {
 
     public static class Flags implements Serializable {
-        public boolean blockGround;
-        public boolean blockAir;
-        public boolean diggable;
-        public boolean actOnStep;
-        public boolean teleport;  // teleports you to another area
+        public final boolean blockGround;
+        public final boolean blockAir;
+        public final boolean diggable;
+        public final boolean actOnStep;
+        public final boolean teleport;  // teleports you to another area
 
         public Flags(boolean blockGround,
                      boolean blockAir,
@@ -26,11 +26,11 @@ public class DungeonTerrain implements Serializable {
         }
     }
 
-    public String id;
-    public String image;
-    public String name;
-    public Flags flags;
-    public ActionParams actionParams;
+    public final String id;
+    public final String image;
+    public final String name;
+    public final Flags flags;
+    public final ActionParams actionParams;
 
     public DungeonTerrain(String id, String name, String image, Flags flags, ActionParams actionParams) {
         this.id = id;

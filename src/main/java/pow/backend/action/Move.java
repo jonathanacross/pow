@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Move implements Action {
-    private int dx;
-    private int dy;
-    private Actor actor;
+    private final int dx;
+    private final int dy;
+    private final Actor actor;
 
     public Move(Actor actor, int dx, int dy) {
         this.actor = actor;

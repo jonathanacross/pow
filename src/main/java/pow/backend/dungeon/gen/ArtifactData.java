@@ -24,7 +24,7 @@ public class ArtifactData {
         return instance.artifacts.get(id);
     }
 
-    private static ArtifactData instance;
+    private static final ArtifactData instance;
     private Map<String, DungeonItem> artifacts;
 
     static {

@@ -10,9 +10,9 @@ import java.util.*;
 public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     public static class Flags implements Serializable {
-        public boolean potion;
-        public boolean money;
-        public boolean arrow;
+        public final boolean potion;
+        public final boolean money;
+        public final boolean arrow;
 
         public Flags(
                 boolean potion,
@@ -74,20 +74,20 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         MAP
     }
 
-    public String id; // for internal reference
-    public String name; // english name, e.g., "& axe~"
-    public String image; // for display
-    public String description;
-    public Flags flags;
-    public Slot slot;
-    public ArtifactSlot artifactSlot;
-    public DieRoll attack;
-    public int defense;
-    public int[] bonuses;
+    public final String id; // for internal reference
+    public final String name; // english name, e.g., "& axe~"
+    public final String image; // for display
+    public final String description;
+    public final Flags flags;
+    public final Slot slot;
+    public final ArtifactSlot artifactSlot;
+    public final DieRoll attack;
+    public final int defense;
+    public final int[] bonuses;
 
     public int count;  // e.g. for 2 gold coins, or 23 arrows
 
-    public ActionParams actionParams;
+    public final ActionParams actionParams;
 
     public DungeonItem(String id,
                        String name,

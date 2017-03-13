@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public class FireRocket implements Action {
 
-    private Actor actor;
+    private final Actor actor;
 
     public FireRocket(Actor actor) {
        this.actor = actor;

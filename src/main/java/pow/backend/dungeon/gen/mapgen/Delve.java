@@ -31,7 +31,7 @@ public class Delve implements MapGenerator {
 
     // Number of groups of '1's in the 8 neighbours around a central cell.
     // The encoding is binary, lsb is to the right, then clockwise.
-    private static int[] NEIGHBOR_GROUP_TABLE = {
+    private static final int[] NEIGHBOR_GROUP_TABLE = {
          // 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
             0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1,   // 00
             1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1,   // 10
@@ -55,7 +55,7 @@ public class Delve implements MapGenerator {
         this(width, height, 1, 8, 5, translator, monsterIds, level);
     }
 
-    public Delve(int width, int height, int neighborMin, int neighborMax, int connChance,
+    private Delve(int width, int height, int neighborMin, int neighborMax, int connChance,
                  ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         assert (1 <= neighborMin && neighborMin <= 3);
         assert (neighborMin <= neighborMax && neighborMax <= 8);
@@ -256,7 +256,7 @@ public class Delve implements MapGenerator {
 
     private static class CellStore {
 
-        List<Point> cells;
+        final List<Point> cells;
 
         CellStore() {
             cells = new ArrayList<>();

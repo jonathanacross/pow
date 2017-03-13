@@ -14,15 +14,15 @@ import java.util.Random;
 // so we can save/load properly
 public class GameState implements Serializable {
 
-    public GameWorld world;
-    public Random rng;
+    public final GameWorld world;
+    public final Random rng;
 
     // character data
-    public Player player;
+    public final Player player;
     public Pet pet;
 
     // logging
-    public MessageLog log;
+    public final MessageLog log;
 
     public boolean gameInProgress;
 

@@ -7,14 +7,14 @@ import java.io.Serializable;
 public class DungeonFeature implements Serializable {
 
     public static class Flags implements Serializable {
-        public boolean blockGround;
-        public boolean blockAir;
-        public boolean glowing;
-        public boolean actOnStep;
-        public boolean stairsUp;
-        public boolean stairsDown;
-        public boolean openDoor;
-        public boolean interesting;
+        public final boolean blockGround;
+        public final boolean blockAir;
+        public final boolean glowing;
+        public final boolean actOnStep;
+        public final boolean stairsUp;
+        public final boolean stairsDown;
+        public final boolean openDoor;
+        public final boolean interesting;
 
         public Flags(boolean blockGround,
                      boolean blockAir,
@@ -35,11 +35,11 @@ public class DungeonFeature implements Serializable {
         }
     }
 
-    public String id;   // program id, e.g., "axe"
-    public String name; // english name, e.g., "& axe~"
-    public String image; // name for display
-    public Flags flags;
-    public ActionParams actionParams;
+    public final String id;   // program id, e.g., "axe"
+    public final String name; // english name, e.g., "& axe~"
+    public final String image; // name for display
+    public final Flags flags;
+    public final ActionParams actionParams;
 
     public DungeonFeature(String id, String name, String image, Flags flags, ActionParams actionParams) {
         this.id = id;

@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class Condition implements Serializable {
     private int turnsRemaining;
     private int intensity;
-    protected Actor actor; // actor associated with this condition
+    protected final Actor actor; // actor associated with this condition
 
     abstract String getStartMessage();
     abstract String getEndMessage();
@@ -42,7 +42,7 @@ public abstract class Condition implements Serializable {
         return events;
     }
 
-    public List<GameEvent> end(GameBackend backend) {
+    private List<GameEvent> end(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
         this.turnsRemaining = 0;
         this.intensity = 0;

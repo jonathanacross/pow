@@ -4,8 +4,8 @@ import pow.util.Direction;
 import pow.util.Point3D;
 
 public class SpacialConnection {
-    public Point3D fromLoc;
-    public Direction dir;
+    public final Point3D fromLoc;
+    public final Direction dir;
 
     public SpacialConnection(Point3D fromLoc, Direction dir) {
         this.fromLoc = fromLoc;

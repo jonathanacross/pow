@@ -7,10 +7,10 @@ import java.util.List;
 
 public class ActionResult {
     // TODO: make getters
-    public List<GameEvent> events;
-    public boolean succeeded;
-    public boolean done;
-    public Action alternate;
+    public final List<GameEvent> events;
+    public final boolean succeeded;
+    public final boolean done;
+    public final Action alternate;
 
     private ActionResult(List<GameEvent> events, boolean succeeded, boolean done, Action alternate) {
         this.events = events;

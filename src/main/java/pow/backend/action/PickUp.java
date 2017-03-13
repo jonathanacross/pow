@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PickUp implements Action {
-    private Actor actor;
-    private int itemNum;
+    private final Actor actor;
+    private final int itemNum;
     private int numToAdd;
 
     public PickUp(Actor actor, int itemNum, int numToAdd) {

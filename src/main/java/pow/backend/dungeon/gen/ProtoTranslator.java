@@ -8,8 +8,8 @@ import java.util.Map;
 public class ProtoTranslator {
 
     // TODO: see if it's possible to handle just maps of integer -> string?
-    private Map<Integer, DungeonTerrain> terrainMap;
-    private Map<Integer, DungeonFeature> featureMap;
+    private final Map<Integer, DungeonTerrain> terrainMap;
+    private final Map<Integer, DungeonFeature> featureMap;
 
     public DungeonTerrain getTerrain(int x) { return terrainMap.get(Constants.getTerrain(x)); }
     public DungeonFeature getFeature(int x) { return featureMap.get(Constants.getFeature(x)); }

@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Attack implements Action {
-    private Actor attacker;
-    private Actor target;
+    private final Actor attacker;
+    private final Actor target;
 
     public Attack(Actor attacker, Actor target) {
         this.attacker = attacker;
@@ -26,10 +26,10 @@ public class Attack implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
-        if (gs.rng.nextDouble() > AttackUtils.hitProb(attacker.attack.plusToHit, target.getDefense())) {
+        if (gs.rng.nextDouble() > AttackUtils.hitProb(attacker.getPrimaryAttack().plusToHit, target.getDefense())) {
             backend.logMessage(attacker.getPronoun() + " misses " + target.getPronoun());
         } else {
-            int damage = attacker.attack.dieRoll.rollDice(gs.rng) + attacker.attack.plusToDam;
+            int damage = attacker.getPrimaryAttack().dieRoll.rollDice(gs.rng) + attacker.getPrimaryAttack().plusToDam;
             if (damage == 0) {
                 backend.logMessage(attacker.getPronoun() + " misses " + target.getPronoun());
             } else {

@@ -33,6 +33,8 @@ public class AttackUtils {
             gs.gameInProgress = false;
             events.add(GameEvent.LostGame());
         } else {
+            events.add(GameEvent.Killed());
+
             // see if this is a boss; if so, update the map so it won't regenerate
             if (map.genMonsterIds.canGenBoss && map.genMonsterIds.bossId.equals(actor.id)) {
                 map.genMonsterIds.canGenBoss = false;
@@ -67,7 +69,6 @@ public class AttackUtils {
             if (actor == gs.player.monsterTarget) {
                 gs.player.monsterTarget = null;
             }
-
         }
         if (actor == gs.pet) {
             gs.pet = null;
@@ -80,7 +81,13 @@ public class AttackUtils {
         List<GameEvent> events = new ArrayList<>();
         backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + damage + " damage");
         events.add(GameEvent.Attacked());
-        events.addAll(defender.takeDamage(backend, damage));
+        List<GameEvent> damageEvents = defender.takeDamage(backend, damage);
+        // TODO: this isn't working yet
+        if (damageEvents.contains(GameEvent.Killed())) {
+            attacker.gainExperience(backend, defender.experience);
+        }
+
+        events.addAll(damageEvents);
         return events;
     }
 }

@@ -11,7 +11,7 @@ import java.util.*;
 // adapted from http://www.roguebasin.com/index.php?title=Names_from_a_high_order_Markov_Process_and_a_simplified_Katz_back-off_scheme
 public class NameGenerator {
 
-    private static NameGenerator instance;
+    private static final NameGenerator instance;
 
     static {
         try {
@@ -59,7 +59,7 @@ public class NameGenerator {
     }
 
     private class CategoricalRandomVariable {
-        private Map<String, Double> frequencies;
+        private final Map<String, Double> frequencies;
         private double total;
 
         public CategoricalRandomVariable() {
@@ -104,10 +104,10 @@ public class NameGenerator {
 
         // something not in any name to mark the beginning/end
         private static final String BOUNDARY_SYMBOL = "_";
-        public int order;
-        public String prefix;
-        public String suffix;
-        public Map<String, CategoricalRandomVariable> counts;
+        public final int order;
+        public final String prefix;
+        public final String suffix;
+        public final Map<String, CategoricalRandomVariable> counts;
 
 
         public MarkovModel(int order) {

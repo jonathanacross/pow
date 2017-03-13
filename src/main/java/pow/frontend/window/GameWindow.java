@@ -10,7 +10,7 @@ import java.util.Stack;
 
 public class GameWindow extends AbstractWindow {
 
-    private Stack<AbstractWindow> layers;
+    private final Stack<AbstractWindow> layers;
 
     public GameWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);

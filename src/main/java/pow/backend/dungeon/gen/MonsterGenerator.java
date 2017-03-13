@@ -2,7 +2,6 @@ package pow.backend.dungeon.gen;
 
 import pow.backend.AttackData;
 import pow.backend.actors.Actor;
-import pow.backend.actors.AiActor;
 import pow.backend.actors.Monster;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
@@ -30,7 +29,7 @@ public class MonsterGenerator {
         return generator.genMonster(rng, location);
     }
 
-    private static MonsterGenerator instance;
+    private static final MonsterGenerator instance;
     private Map<String, SpecificMonsterGenerator> generatorMap;
 
     static {
@@ -72,10 +71,10 @@ public class MonsterGenerator {
         int numDropAttempts;
 
         public static class AllFlags {
-            AiActor.Flags aiActorFlags;
-            boolean friendly;
+            final Monster.Flags aiActorFlags;
+            final boolean friendly;
 
-            public AllFlags(AiActor.Flags aiActorFlags, boolean friendly) {
+            public AllFlags(Monster.Flags aiActorFlags, boolean friendly) {
                 this.aiActorFlags = aiActorFlags;
                 this.friendly = friendly;
             }
@@ -100,7 +99,7 @@ public class MonsterGenerator {
                 }
             }
 
-            return new AllFlags(new AiActor.Flags(stationary, erratic), friendly);
+            return new AllFlags(new Monster.Flags(stationary, erratic), friendly);
         }
 
         private static String parseArtifact(String text) {

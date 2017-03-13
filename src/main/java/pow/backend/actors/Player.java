@@ -23,10 +23,10 @@ import java.util.Map;
 public class Player extends Actor implements Serializable, LightSource {
 
     public static class GainRatios implements Serializable {
-        public double strRatio;
-        public double dexRatio;
-        public double intRatio;
-        public double conRatio;
+        public final double strRatio;
+        public final double dexRatio;
+        public final double intRatio;
+        public final double conRatio;
 
         public GainRatios(double strRatio, double dexRatio, double intRatio, double conRatio) {
             this.strRatio = strRatio;
@@ -43,44 +43,30 @@ public class Player extends Actor implements Serializable, LightSource {
         public static GainRatios getDragonMaster() { return new GainRatios(1.1, 1.2, 0.9, 1.2); }
     }
 
-    // TODO: see if this should be shared with items.
-    public static class Stats implements Serializable {
+    // extra stats specific to players
+    public static class PlayerStats implements Serializable {
         public int strength;
         public int dexterity;
         public int intelligence;
         public int constitution;
-        public int defense;
-        public int weaponToHit;
-        public int weaponToDam;
-        public int bowToHit;
-        public int bowToDam;
-        public int speed;
 
-        public Stats() {
+        public PlayerStats() {
             this.strength = 0;
             this.dexterity = 0;
             this.intelligence = 0;
             this.constitution = 0;
-            this.defense = 0;
-            this.weaponToHit = 0;
-            this.weaponToDam = 0;
-            this.bowToHit = 0;
-            this.bowToDam = 0;
-            this.speed = 0;
         }
     }
 
-    public int viewRadius;
-    private int lightRadius;
-    public List<DungeonItem> equipment;
-    public Map<DungeonItem.ArtifactSlot, DungeonItem> artifacts;
-    private GainRatios gainRatios;
-    public Stats currStats;
+    public final int viewRadius;
+    private final int lightRadius;
+    public final List<DungeonItem> equipment;
+    public final Map<DungeonItem.ArtifactSlot, DungeonItem> artifacts;
+    private final GainRatios gainRatios;
+    public final PlayerStats playerStats;
     public boolean increaseWealth;
 
-    private AttackData innateAttack;
-    //public AttackData weaponAttack;  // part of Actor
-    public AttackData bowAttack;
+    private final AttackData innateAttack; // attack to use if nothing is wielded.
     public int experience;
 
     public Point floorTarget;
@@ -131,17 +117,16 @@ public class Player extends Actor implements Serializable, LightSource {
     private Player(DungeonObject.Params objectParams,
                   GainRatios gainRatios,
                   AttackData innateAttack ) {
-        super(objectParams, new Actor.Params( 1, -1, -99, 0, null, true, 0, null, 0));
+        super(objectParams, new Actor.Params( 1, -1, -99, 0, innateAttack, true, 0, null, 0));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
         this.equipment = new ArrayList<>();
         this.artifacts = new HashMap<>();
         this.gainRatios = gainRatios;
         this.innateAttack = innateAttack;
-        this.bowAttack = null;
         this.experience = 0;
-        this.currStats = new Stats();
-        updateStats();  // updates current stats (above), defense, and attack, bowAttack
+        this.playerStats = new PlayerStats();
+        updateStats();  // updates currentPlayer stats, as well as much of actor baseStats
         this.baseStats.health = this.baseStats.maxHealth;
         this.baseStats.mana = this.baseStats.maxMana;
         this.floorTarget = null;
@@ -215,22 +200,20 @@ public class Player extends Actor implements Serializable, LightSource {
             spdBonus += item.bonuses[DungeonItem.SPEED_IDX];
         }
 
-        currStats.strength = innateStr + strBonus;
-        currStats.dexterity = innateDex + dexBonus;
-        currStats.intelligence = innateInt + intBonus;
-        currStats.constitution = innateCon + conBonus;
-        currStats.speed = innateSpd + spdBonus;
-        this.baseStats.speed = currStats.speed; // TODO: combine/move currStats -> baseStats
-        //this.speed = currStats.speed;
+        playerStats.strength = innateStr + strBonus;
+        playerStats.dexterity = innateDex + dexBonus;
+        playerStats.intelligence = innateInt + intBonus;
+        playerStats.constitution = innateCon + conBonus;
+        baseStats.speed = innateSpd + spdBonus;
 
         // third, compute baseline dependent stats
         DieRoll baseAttackDieRoll = innateAttack.dieRoll;  // will be used if player doesn't wear a weapon
         DieRoll baseBowDieRoll = new DieRoll(0,0);  // will be used if player doesn't wear a bow
-        int baseDefense = this.currStats.dexterity - 7;
-        int baseWeaponToHit = 2*(this.currStats.dexterity - 7);
-        int baseWeaponToDam = this.currStats.strength - 7;
-        int baseBowToHit = (int) Math.round(1.50 * (this.currStats.dexterity - 7));
-        int baseBowToDam = (int) Math.round(0.75 * (this.currStats.strength - 7));
+        int baseDefense = this.playerStats.dexterity - 7;
+        int baseWeaponToHit = 2*(this.playerStats.dexterity - 7);
+        int baseWeaponToDam = this.playerStats.strength - 7;
+        int baseBowToHit = (int) Math.round(1.50 * (this.playerStats.dexterity - 7));
+        int baseBowToDam = (int) Math.round(0.75 * (this.playerStats.strength - 7));
 
         // fourth, add equipment bonuses
         int defBonus = 0;
@@ -262,18 +245,18 @@ public class Player extends Actor implements Serializable, LightSource {
                 baseBowDieRoll = item.attack;
             }
         }
-        this.baseStats.defense = baseDefense + defBonus;
-        this.attack = new AttackData(baseAttackDieRoll,
-                baseWeaponToHit + weapToHitBonus,
-                baseWeaponToDam + weapToDamBonus);
-        this.bowAttack = new AttackData(baseBowDieRoll,
-                baseBowToHit + bowToHitBonus,
-                baseBowToDam + bowToDamBonus);
 
-        int c = this.currStats.constitution;
-        int i = this.currStats.intelligence;
+        int c = this.playerStats.constitution;
+        int i = this.playerStats.intelligence;
         this.baseStats.maxHealth = (int) Math.round(0.5 * c * c - 7 * c + 30);
         this.baseStats.maxMana = (int) Math.round(0.5 * i * i - 7 * i + 30);
+        this.baseStats.defense = baseDefense + defBonus;
+        this.baseStats.meleeDieRoll = baseAttackDieRoll;
+        this.baseStats.meleeToHit = baseWeaponToHit + weapToHitBonus;
+        this.baseStats.meleeToDam = baseWeaponToDam + weapToDamBonus;
+        this.baseStats.rangedDieRoll = baseBowDieRoll;
+        this.baseStats.rangedToHit = baseBowToHit + bowToHitBonus;
+        this.baseStats.rangedToDam = baseBowToDam + bowToDamBonus;
 
         updateWealthStatus();
     }

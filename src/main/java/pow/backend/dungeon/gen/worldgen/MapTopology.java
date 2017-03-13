@@ -10,7 +10,7 @@ public class MapTopology {
 
     private Map<Point3D, MapPoint> roomLocs;
     private Set<SpacialConnection> connections;
-    private String firstMapId;
+    private final String firstMapId;
 
     public Map<Point3D, MapPoint> getRoomLocs() { return roomLocs; }
     public Set<SpacialConnection> getConnections() { return connections; }

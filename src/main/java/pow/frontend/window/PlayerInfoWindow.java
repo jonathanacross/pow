@@ -47,13 +47,13 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("Level:     " + player.level);
         lines.add("Gold:      " + player.gold);
         lines.add("");
-        lines.add("Str:       " + player.currStats.strength);
-        lines.add("Dex:       " + player.currStats.dexterity);
-        lines.add("Int:       " + player.currStats.intelligence);
-        lines.add("Con:       " + player.currStats.constitution);
+        lines.add("Str:       " + player.playerStats.strength);
+        lines.add("Dex:       " + player.playerStats.dexterity);
+        lines.add("Int:       " + player.playerStats.intelligence);
+        lines.add("Con:       " + player.playerStats.constitution);
         lines.add("");
-        lines.add("Attack:    " + player.attack);   // 2d4 (+3, +1)
-        lines.add("Bow:       " + player.bowAttack);  // 1d2 (+2, +0)
+        lines.add("Attack:    " + player.getPrimaryAttack());   // 2d4 (+3, +1)
+        lines.add("Bow:       " + player.getSecondaryAttack());  // 1d2 (+2, +0)
         lines.add("Defense:   " + player.getDefense()); // [19, +5]
         lines.add("Speed:     " + player.getSpeed());
         lines.add("");
@@ -113,8 +113,8 @@ public class PlayerInfoWindow extends AbstractWindow {
     }
 
     private static class SlotData {
-        public String name;
-        public int position;
+        public final String name;
+        public final int position;
 
         public SlotData(String name, int position) {
             this.name = name;
