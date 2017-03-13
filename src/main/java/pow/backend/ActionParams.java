@@ -2,6 +2,7 @@ package pow.backend;
 
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
+import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.gen.FeatureData;
 import pow.backend.dungeon.gen.TerrainData;
 import pow.util.Direction;
@@ -65,19 +66,19 @@ public class ActionParams implements Serializable {
             case RESTORE_ACTION:
                 return new Restore(actor, params.number);
             case POISON_ACTION:
-                return new StartCondition(actor, Collections.singletonList(StartCondition.ConditionType.POISON), 5, params.number);
+                return new StartCondition(actor, Collections.singletonList(ConditionTypes.POISON), 5, params.number);
             case MODIFY_SPEED_ACTION:
-                return new StartCondition(actor, Collections.singletonList(StartCondition.ConditionType.SPEED), 30, params.number);
+                return new StartCondition(actor, Collections.singletonList(ConditionTypes.SPEED), 30, params.number);
             case HEROISM_ACTION:
                 return new StartCondition(
                         actor,
-                        Arrays.asList(StartCondition.ConditionType.HEALTH, StartCondition.ConditionType.TO_DAM),
+                        Arrays.asList(ConditionTypes.HEALTH, ConditionTypes.TO_DAM),
                         30,
                         params.number);
             case AGILITY_ACTION:
                 return new StartCondition(
                         actor,
-                        Arrays.asList(StartCondition.ConditionType.DEFENSE, StartCondition.ConditionType.TO_HIT),
+                        Arrays.asList(ConditionTypes.DEFENSE, ConditionTypes.TO_HIT),
                         30,
                         params.number);
             case ENTER_SHOP_ACTION:

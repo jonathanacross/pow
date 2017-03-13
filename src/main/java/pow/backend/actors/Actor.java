@@ -5,7 +5,8 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.AttackUtils;
-import pow.backend.conditions.Conditions;
+import pow.backend.conditions.Condition;
+import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
 import pow.backend.event.GameEvent;
@@ -13,7 +14,10 @@ import pow.util.DieRoll;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 public abstract class Actor extends DungeonObject implements Serializable {
 
@@ -54,31 +58,25 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     // Class to hold temporary conditions of an actor
     public static class ConditionSet implements Serializable {
-        public final Conditions.Health health;
-        public final Conditions.Poison poison;
-        public final Conditions.Speed speed;
-        public final Conditions.ToHit toHit;
-        public final Conditions.ToDam toDam;
-        public final Conditions.Defense defense;
+        public Map<ConditionTypes, Condition> conditionMap;
 
         public ConditionSet(Actor actor) {
-            health = new Conditions.Health(actor);
-            poison = new Conditions.Poison(actor);
-            speed = new Conditions.Speed(actor);
-            toHit = new Conditions.ToHit(actor);
-            toDam = new Conditions.ToDam(actor);
-            defense = new Conditions.Defense(actor);
+            conditionMap = new HashMap<>();
+            for (ConditionTypes type : ConditionTypes.values()) {
+                conditionMap.put(type, type.getInstance(actor));
+            }
         }
 
         public List<GameEvent> update(GameBackend backend) {
             List<GameEvent> events = new ArrayList<>();
-            events.addAll(health.update(backend));
-            events.addAll(poison.update(backend));
-            events.addAll(speed.update(backend));
-            events.addAll(toHit.update(backend));
-            events.addAll(toDam.update(backend));
-            events.addAll(defense.update(backend));
+            for (Condition condition : conditionMap.values()) {
+                events.addAll(condition.update(backend));
+            }
             return events;
+        }
+
+        public Condition get(ConditionTypes type) {
+            return conditionMap.get(type);
         }
     }
 
@@ -140,28 +138,24 @@ public abstract class Actor extends DungeonObject implements Serializable {
         baseStats.mana += increaseAmount;
         return increaseAmount;
     }
-    public int getMaxHealth() { return baseStats.maxHealth + conditions.health.getIntensity(); }
+    public int getMaxHealth() { return baseStats.maxHealth + conditions.get(ConditionTypes.HEALTH).getIntensity(); }
     public int getHealth() { return baseStats.health; }
     public int getMaxMana() { return baseStats.maxMana; }
     public int getMana() { return baseStats.mana; }
-    public int getDefense() { return baseStats.defense + conditions.defense.getIntensity(); }
-//    public int getMeleeToHit() { return baseStats.meleeToHit + conditions.toHit.getIntensity(); }
-//    public int getMeleeToDam() { return baseStats.meleeToDam + conditions.toDam.getIntensity(); }
-//    public int getRangedToHit() { return baseStats.rangedToHit + conditions.toHit.getIntensity(); }
-//    public int getRangedToDam() { return baseStats.rangedToDam + conditions.toDam.getIntensity(); }
-    public int getSpeed() { return baseStats.speed + conditions.speed.getIntensity(); }
+    public int getDefense() { return baseStats.defense + conditions.get(ConditionTypes.DEFENSE).getIntensity(); }
+    public int getSpeed() { return baseStats.speed + conditions.get(ConditionTypes.SPEED).getIntensity(); }
 
     public AttackData getPrimaryAttack() {
         return new AttackData(
                 baseStats.meleeDieRoll,
-                baseStats.meleeToHit + conditions.toHit.getIntensity(),
-                baseStats.meleeToDam + conditions.toDam.getIntensity());
+                baseStats.meleeToHit + conditions.get(ConditionTypes.TO_HIT).getIntensity(),
+                baseStats.meleeToDam + conditions.get(ConditionTypes.TO_DAM).getIntensity());
     }
     public AttackData getSecondaryAttack() {
         return new AttackData(
                 baseStats.rangedDieRoll,
-                baseStats.rangedToHit + conditions.toHit.getIntensity(),
-                baseStats.rangedToDam + conditions.toDam.getIntensity());
+                baseStats.rangedToHit + conditions.get(ConditionTypes.TO_HIT).getIntensity(),
+                baseStats.rangedToDam + conditions.get(ConditionTypes.TO_DAM).getIntensity());
     }
 
     public List<GameEvent> takeDamage(GameBackend backend, int damage) {

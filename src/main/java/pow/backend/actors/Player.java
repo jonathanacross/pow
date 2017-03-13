@@ -204,7 +204,6 @@ public class Player extends Actor implements Serializable, LightSource {
         playerStats.dexterity = innateDex + dexBonus;
         playerStats.intelligence = innateInt + intBonus;
         playerStats.constitution = innateCon + conBonus;
-        baseStats.speed = innateSpd + spdBonus;
 
         // third, compute baseline dependent stats
         DieRoll baseAttackDieRoll = innateAttack.dieRoll;  // will be used if player doesn't wear a weapon
@@ -257,6 +256,7 @@ public class Player extends Actor implements Serializable, LightSource {
         this.baseStats.rangedDieRoll = baseBowDieRoll;
         this.baseStats.rangedToHit = baseBowToHit + bowToHitBonus;
         this.baseStats.rangedToDam = baseBowToDam + bowToDamBonus;
+        this.baseStats.speed = innateSpd + spdBonus;
 
         updateWealthStatus();
     }

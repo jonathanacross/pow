@@ -15,8 +15,6 @@ public class Pet extends Actor implements Serializable {
 
     public Pet(DungeonObject.Params objectParams, Actor.Params actorParams) {
         super(objectParams, actorParams);
-        // TODO: move to actor?
-        this.baseStats.speed = actorParams.speed;
     }
 
     @Override

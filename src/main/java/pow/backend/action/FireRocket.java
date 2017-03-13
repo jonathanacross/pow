@@ -4,7 +4,6 @@ import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 public class FireRocket implements Action {
