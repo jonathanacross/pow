@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FireArrow implements Action {
-    private Actor attacker;
-    private Point target;
+    private final Actor attacker;
+    private final Point target;
 
     private static final int FIRE_RANGE = 6; // how far can arrows be shot?
 
@@ -35,10 +35,7 @@ public class FireArrow implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        // special case if it's the player who's attacking -- use their bow as the attack
-        AttackData attackData = (attacker == gs.player) ?
-                gs.player.bowAttack :
-                attacker.attack;
+        AttackData attackData = attacker.getSecondaryAttack();
 
         List<Point> ray = Bresenham.makeRay(gs.player.loc, target, FIRE_RANGE + 1);
         ray.remove(0); // remove the attacker from the path of the arrow.
@@ -47,8 +44,8 @@ public class FireArrow implements Action {
             lastPoint = p;
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
-                boolean hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.defense);
-                int damage = attacker.attack.dieRoll.rollDice(gs.rng) + attacker.attack.plusToDam;
+                boolean hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
+                int damage = attackData.dieRoll.rollDice(gs.rng) + attackData.plusToDam;
                 if (hitsTarget && damage > 0) {
                     backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
                     List<GameEvent> hitEvents = AttackUtils.doHit(backend, attacker, defender, damage);

@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Drop implements Action {
-    private Actor actor;
-    private int itemNum;
-    private int numToDrop;
+    private final Actor actor;
+    private final int itemNum;
+    private final int numToDrop;
 
     public Drop(Actor actor, int itemNum, int numToDrop) {
         this.actor = actor;

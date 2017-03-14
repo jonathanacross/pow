@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Wear implements Action {
-    private Player player;
-    private ItemList itemList;
-    private int index;
+    private final Player player;
+    private final ItemList itemList;
+    private final int index;
 
     public Wear(Player player, ItemList itemList, int index) {
         this.player = player;

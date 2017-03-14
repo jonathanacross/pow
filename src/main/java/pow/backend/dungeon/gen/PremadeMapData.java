@@ -13,10 +13,10 @@ import java.util.Set;
 
 public class PremadeMapData {
     public static class PremadeMapInfo {
-        public String name;
-        public int[][] data;
-        public Point upExitLoc;
-        public Point downExitLoc;
+        public final String name;
+        public final int[][] data;
+        public final Point upExitLoc;
+        public final Point downExitLoc;
 
         public PremadeMapInfo(String name, int[][] data, Point upExitLoc, Point downExitLoc) {
             this.name = name;
@@ -52,7 +52,7 @@ public class PremadeMapData {
         }
     }
 
-    private static PremadeMapData instance;
+    private static final PremadeMapData instance;
     private Map<String, PremadeMapInfo> roomMap;
     private Map<String, PremadeMapInfo> vaultMap;
     private Map<String, PremadeMapInfo> levelMap;

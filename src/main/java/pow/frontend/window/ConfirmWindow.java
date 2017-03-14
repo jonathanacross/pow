@@ -13,10 +13,10 @@ import java.awt.event.KeyEvent;
 
 public class ConfirmWindow extends AbstractWindow {
 
-    private String message;
-    private String okayText;
-    private String cancelText;
-    private Runnable action;
+    private final String message;
+    private final String okayText;
+    private final String cancelText;
+    private final Runnable action;
 
     public ConfirmWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend,
                          String message, String okayText, String cancelText, Runnable action) {

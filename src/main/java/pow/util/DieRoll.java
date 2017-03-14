@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Random;
 
 public class DieRoll implements Serializable {
-    public int roll;
-    public int die;
+    public final int roll;
+    public final int die;
 
     public DieRoll(int roll, int die) {
         this.roll = roll;

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Heal implements Action {
-    private Actor actor;
-    private int amount;
+    private final Actor actor;
+    private final int amount;
 
     public Heal(Actor actor, int amount) {
         this.actor = actor;
@@ -26,8 +26,7 @@ public class Heal implements Action {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Healed());
 
-        int healAmount = Math.min(this.amount, actor.maxHealth - actor.health);
-        actor.health += healAmount;
+        int healAmount = actor.increaseHealth(this.amount);
         backend.logMessage(actor.getPronoun() + " healed " + healAmount);
         return ActionResult.Succeeded(events);
     }

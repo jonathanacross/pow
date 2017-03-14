@@ -10,7 +10,7 @@ pearl 8	& pearl	rose pearl	pearl from dungeon 8	pearl8	0
 # main dungeon items					
 lantern	lantern	lantern	lantern	lantern	0
 magic key	magic key	magic key	magic key	key	0
-water float	water float	magic sailboat	water float	float	0
+water float	water float	float	water float	float	0
 gas mask	gas mask	gas mask	gas mask	gasmask	0
 glasses	glasses	glasses	glasses	glasses	0
 magic pickaxe	magic pickaxe	magic pickaxe	magic pickaxe	pickaxe	0
@@ -18,7 +18,7 @@ heat suit	heat suit	heat suit	heat suit	heatsuit	10
 magic feather	magic feather	magic feather	magic feather	feather	0
 # optional items					
 pet statue	pet statue	magic statue	pet statue	petstatue	0
-#quiver	quiver	TODO	quiver	quiver	0
-#create wall wand	wand of create wall	TODO	wand of create wall	wallwand	0
-#bright lantern	bright lantern	TODO	bright lantern	lantern	0
-#overworld map	map	TODO	map	map	0
+magic bag	magic bag	bag	bag	bag	0
+create wall staff	staff of create wall	crooked staff	staff of create wall	wallwand	0
+bright lantern	bright lantern	bright lantern	bright lantern	lantern	0
+magic atlas	magic atlas	magic atlas	magic atlas	map	0

@@ -27,7 +27,7 @@ import java.util.function.Function;
 
 public class GameMainLayer extends AbstractWindow {
 
-    private GameWindow parent;
+    private final GameWindow parent;
 
     public GameMainLayer(GameWindow parent) {
         super(parent.dim, parent.visible, parent.backend, parent.frontend);
@@ -229,10 +229,8 @@ public class GameMainLayer extends AbstractWindow {
                 if (square.feature != null) {
                     mapView.drawTile(graphics, square.feature.image, x, y);
                 }
-                if (square.items != null) {
-                    for (DungeonItem item : square.items.items) {
-                        mapView.drawTile(graphics, item.image, x, y);
-                    }
+                for (DungeonItem item : square.items.items) {
+                    mapView.drawTile(graphics, item.image, x, y);
                 }
             }
         }

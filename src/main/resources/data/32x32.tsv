@@ -152,23 +152,23 @@
 32x32	7	9	rose pearl	misc items
 32x32	8	9	magic statue	misc item
 32x32	9	9	lantern	misc item
-32x32	10	9	magic key	misc item
-32x32	11	9	gas mask	misc item
-32x32	12	9	heat suit	misc item
-32x32	13	9	magic feather	misc item
-32x32	14	9	magic sailboat	misc item
-32x32	15	9	magic pickaxe	misc item
-32x32	0	10	magic atlas	misc item
-32x32	1	10	glasses	misc item
-32x32	2	10	shell	misc item
-32x32	3	10	mac plus	misc item
-32x32	4	10	rye	misc item
-32x32	5	10	beer	misc item
-32x32	6	10	ham	misc item
-32x32	7	10	bread	misc item
-32x32	8	10	-:null:-	:null:
-32x32	9	10	-:null:-	:null:
-32x32	10	10	-:null:-	:null:
+32x32	10	9	bright lantern	misc item
+32x32	11	9	magic key	misc item
+32x32	12	9	gas mask	misc item
+32x32	13	9	heat suit	misc item
+32x32	14	9	magic feather	misc item
+32x32	15	9	float	misc item
+32x32	0	10	magic pickaxe	misc item
+32x32	1	10	magic atlas	misc item
+32x32	2	10	glasses	misc item
+32x32	3	10	bag	misc item
+32x32	4	10	crooked staff	misc item
+32x32	5	10	shell	misc item
+32x32	6	10	mac plus	misc item
+32x32	7	10	rye	misc item
+32x32	8	10	beer	misc item
+32x32	9	10	ham	misc item
+32x32	10	10	bread	misc item
 32x32	11	10	-:null:-	:null:
 32x32	12	10	-:null:-	:null:
 32x32	13	10	-:null:-	:null:
@@ -269,272 +269,288 @@
 32x32	12	16	black ring	ring
 32x32	13	16	white ring	ring
 32x32	14	16	-:null:-	:null:
-32x32	15	16	-:null:-	:null:
-32x32	0	17	copper	money
-32x32	1	17	silver	money
-32x32	2	17	gold	money
-32x32	3	17	platinum	money
-32x32	4	17	adamantium	money
-32x32	5	17	sapphires	money
-32x32	6	17	rubies	money
-32x32	7	17	diamonds	money
-32x32	8	17	emeralds	money
-32x32	9	17	blue potion	potion
-32x32	10	17	bubbly potion	potion
-32x32	11	17	red potion	potion
-32x32	12	17	green potion	potion
-32x32	13	17	swirl potion	potion
-32x32	14	17	purple potion	potion
-32x32	15	17	-:null:-	:null:
-32x32	0	18	human_adventurer	human
-32x32	1	18	human_fighter	human
-32x32	2	18	human_mage	human
-32x32	3	18	human_wizard	human
-32x32	4	18	human_thief	human
-32x32	5	18	dragonmaster	human
-32x32	6	18	farmer	person
-32x32	7	18	gray dress person	person
-32x32	8	18	jester	person
-32x32	9	18	brown woman	person
-32x32	10	18	blonde man	person
+32x32	15	16	dark gray potion	potion
+32x32	0	17	small red potion	potion
+32x32	1	17	medium red potion	potion
+32x32	2	17	large red potion	potion
+32x32	3	17	small blue potion	potion
+32x32	4	17	medium blue potion	potion
+32x32	5	17	large blue potion	potion
+32x32	6	17	small purple potion	potion
+32x32	7	17	medium purple potion	potion
+32x32	8	17	large purple potion	potion
+32x32	9	17	small green potion	potion
+32x32	10	17	large green potion	potion
+32x32	11	17	small orange potion	potion
+32x32	12	17	large orange potion	potion
+32x32	13	17	small yellow potion	potion
+32x32	14	17	large yellow potion	potion
+32x32	15	17	white potion	potion
+32x32	0	18	copper	money
+32x32	1	18	silver	money
+32x32	2	18	gold	money
+32x32	3	18	platinum	money
+32x32	4	18	adamantium	money
+32x32	5	18	sapphires	money
+32x32	6	18	rubies	money
+32x32	7	18	diamonds	money
+32x32	8	18	emeralds	money
+32x32	9	18	amythests	money
+32x32	10	18	-:null:-	:null:
 32x32	11	18	-:null:-	:null:
 32x32	12	18	-:null:-	:null:
 32x32	13	18	-:null:-	:null:
 32x32	14	18	-:null:-	:null:
 32x32	15	18	-:null:-	:null:
-32x32	0	19	green mushrooms	basement
-32x32	1	19	black ant	basement
-32x32	2	19	white rat	basement
-32x32	3	19	brown beetle	basement
-32x32	4	19	crawling moss	basement
-32x32	5	19	-:null:-	:null:
-32x32	6	19	-:null:-	:null:
-32x32	7	19	-:null:-	:null:
-32x32	8	19	-:null:-	:null:
-32x32	9	19	-:null:-	:null:
-32x32	10	19	-:null:-	:null:
+32x32	0	19	human_adventurer	human
+32x32	1	19	human_fighter	human
+32x32	2	19	human_mage	human
+32x32	3	19	human_wizard	human
+32x32	4	19	human_thief	human
+32x32	5	19	dragonmaster	human
+32x32	6	19	farmer	person
+32x32	7	19	gray dress person	person
+32x32	8	19	jester	person
+32x32	9	19	brown woman	person
+32x32	10	19	blonde man	person
 32x32	11	19	-:null:-	:null:
 32x32	12	19	-:null:-	:null:
 32x32	13	19	-:null:-	:null:
-32x32	14	19	giant salamander	basement
+32x32	14	19	-:null:-	:null:
 32x32	15	19	-:null:-	:null:
-32x32	0	20	bit	area1
-32x32	1	20	bot	area1
-32x32	2	20	yellow ant	area1
-32x32	3	20	pigeon	area1
-32x32	4	20	yellow snake	area1
-32x32	5	20	scruffy dog	area1
-32x32	6	20	yellow mushrooms	area1
-32x32	7	20	floating eye	area1
-32x32	8	20	bat	area1
-32x32	9	20	green worm mass	area1
-32x32	10	20	brown imp	area1
+32x32	0	20	green mushrooms	basement
+32x32	1	20	black ant	basement
+32x32	2	20	white rat	basement
+32x32	3	20	brown beetle	basement
+32x32	4	20	crawling moss	basement
+32x32	5	20	-:null:-	:null:
+32x32	6	20	-:null:-	:null:
+32x32	7	20	-:null:-	:null:
+32x32	8	20	-:null:-	:null:
+32x32	9	20	-:null:-	:null:
+32x32	10	20	-:null:-	:null:
 32x32	11	20	-:null:-	:null:
 32x32	12	20	-:null:-	:null:
-32x32	13	20	green komodo	area1
-32x32	14	20	purple spider	area1
+32x32	13	20	-:null:-	:null:
+32x32	14	20	giant salamander	basement
 32x32	15	20	-:null:-	:null:
-32x32	0	21	novice mage	area2
-32x32	1	21	novice warrior	area2
-32x32	2	21	novice archer	area2
-32x32	3	21	novice rogue	area2
-32x32	4	21	red ant	area2
-32x32	5	21	cobra	area2
-32x32	6	21	green centipede	area2
-32x32	7	21	pincer beetle	area2
-32x32	8	21	dust devil	area2
-32x32	9	21	jackal	area2
-32x32	10	21	brown scorpion	area2
-32x32	11	21	blue ooze	area2
+32x32	0	21	bit	area1
+32x32	1	21	bot	area1
+32x32	2	21	yellow ant	area1
+32x32	3	21	pigeon	area1
+32x32	4	21	yellow snake	area1
+32x32	5	21	scruffy dog	area1
+32x32	6	21	yellow mushrooms	area1
+32x32	7	21	floating eye	area1
+32x32	8	21	bat	area1
+32x32	9	21	green worm mass	area1
+32x32	10	21	brown imp	area1
+32x32	11	21	-:null:-	:null:
 32x32	12	21	-:null:-	:null:
-32x32	13	21	great turtle	area2
-32x32	14	21	minotaur	area2
+32x32	13	21	green komodo	area1
+32x32	14	21	purple spider	area1
 32x32	15	21	-:null:-	:null:
-32x32	0	22	rabbit mage	area3
-32x32	1	22	rabbit warrior	area3
-32x32	2	22	rabbit archer	area3
-32x32	3	22	rabbit rogue	area3
-32x32	4	22	purple beetle	area3
-32x32	5	22	blue snake	area3
-32x32	6	22	black spider	area3
-32x32	7	22	green imp	area3
-32x32	8	22	small red spiny	area3
-32x32	9	22	rock lizard	area3
-32x32	10	22	yellow worm mass	area1
-32x32	11	22	-:null:-	:null:
+32x32	0	22	novice mage	area2
+32x32	1	22	novice warrior	area2
+32x32	2	22	novice archer	area2
+32x32	3	22	novice rogue	area2
+32x32	4	22	red ant	area2
+32x32	5	22	cobra	area2
+32x32	6	22	green centipede	area2
+32x32	7	22	pincer beetle	area2
+32x32	8	22	dust devil	area2
+32x32	9	22	jackal	area2
+32x32	10	22	brown scorpion	area2
+32x32	11	22	blue ooze	area2
 32x32	12	22	-:null:-	:null:
-32x32	13	22	yellow schweinhund	area3
-32x32	14	22	Balthazar the Great	area3
+32x32	13	22	great turtle	area2
+32x32	14	22	minotaur	area2
 32x32	15	22	-:null:-	:null:
-32x32	0	23	dark elf mage	area4
-32x32	1	23	dark elf warrior	area4
-32x32	2	23	dark elf archer	area4
-32x32	3	23	dark elf rogue	area4
-32x32	4	23	baby blue dragon	area4
-32x32	5	23	baby yellow dragon	area4
-32x32	6	23	blue beetle	area4
-32x32	7	23	gray wolf	area4
-32x32	8	23	bear	area4
-32x32	9	23	white wolf	area4
-32x32	10	23	big red spiny	area4
-32x32	11	23	frost giant	area4
+32x32	0	23	rabbit mage	area3
+32x32	1	23	rabbit warrior	area3
+32x32	2	23	rabbit archer	area3
+32x32	3	23	rabbit rogue	area3
+32x32	4	23	purple beetle	area3
+32x32	5	23	blue snake	area3
+32x32	6	23	black spider	area3
+32x32	7	23	green imp	area3
+32x32	8	23	small red spiny	area3
+32x32	9	23	rock lizard	area3
+32x32	10	23	yellow worm mass	area1
+32x32	11	23	-:null:-	:null:
 32x32	12	23	-:null:-	:null:
-32x32	13	23	Hagar the Merciless	area4
-32x32	14	23	ice creature	area4
+32x32	13	23	yellow schweinhund	area3
+32x32	14	23	Balthazar the Great	area3
 32x32	15	23	-:null:-	:null:
-32x32	0	24	orc mage	area5
-32x32	1	24	orc warrior	area5
-32x32	2	24	orc archer	area5
-32x32	3	24	orc rogue	area5
-32x32	4	24	baby green dragon	area5
-32x32	5	24	baby red dragon	area5
-32x32	6	24	gold dragonfly	area5
-32x32	7	24	purple worms	area5
-32x32	8	24	golem	area5
-32x32	9	24	griffin	area5
-32x32	10	24	chess knight	area5
-32x32	11	24	copperhead snake	area5
+32x32	0	24	dark elf mage	area4
+32x32	1	24	dark elf warrior	area4
+32x32	2	24	dark elf archer	area4
+32x32	3	24	dark elf rogue	area4
+32x32	4	24	baby blue dragon	area4
+32x32	5	24	baby yellow dragon	area4
+32x32	6	24	blue beetle	area4
+32x32	7	24	gray wolf	area4
+32x32	8	24	bear	area4
+32x32	9	24	white wolf	area4
+32x32	10	24	big red spiny	area4
+32x32	11	24	frost giant	area4
 32x32	12	24	-:null:-	:null:
-32x32	13	24	Lor the Betrayer	area5
-32x32	14	24	basilisk	area5
+32x32	13	24	Hagar the Merciless	area4
+32x32	14	24	ice creature	area4
 32x32	15	24	-:null:-	:null:
-32x32	0	25	skeleton mage	area6
-32x32	1	25	skeleton warrior	area6
-32x32	2	25	skeleton archer	area6
-32x32	3	25	skeleton rogue	area6
-32x32	4	25	mummy	area6
-32x32	5	25	blue ghost	area6
-32x32	6	25	pink ghost	area6
-32x32	7	25	vampire	area6
-32x32	8	25	evil eye	area6
-32x32	9	25	floating skull	monster
-32x32	10	25	vampire bat	monster
-32x32	11	25	-:null:-	:null:
+32x32	0	25	orc mage	area5
+32x32	1	25	orc warrior	area5
+32x32	2	25	orc archer	area5
+32x32	3	25	orc rogue	area5
+32x32	4	25	baby green dragon	area5
+32x32	5	25	baby red dragon	area5
+32x32	6	25	gold dragonfly	area5
+32x32	7	25	purple worms	area5
+32x32	8	25	golem	area5
+32x32	9	25	griffin	area5
+32x32	10	25	chess knight	area5
+32x32	11	25	copperhead snake	area5
 32x32	12	25	-:null:-	:null:
-32x32	13	25	red spider	area6
-32x32	14	25	skeletal dragon	area6
+32x32	13	25	Lor the Betrayer	area5
+32x32	14	25	basilisk	area5
 32x32	15	25	-:null:-	:null:
-32x32	0	26	troll mage	area7
-32x32	1	26	troll warrior	area7
-32x32	2	26	troll archer	area7
-32x32	3	26	troll rogue	area7
-32x32	4	26	blue dragon	area7
-32x32	5	26	yellow dragon	area7
-32x32	6	26	red komodo	area7
-32x32	7	26	giant roc	area7
-32x32	8	26	zombie	area7
-32x32	9	26	red cobra	area7
-32x32	10	26	sand worm	area7
+32x32	0	26	skeleton mage	area6
+32x32	1	26	skeleton warrior	area6
+32x32	2	26	skeleton archer	area6
+32x32	3	26	skeleton rogue	area6
+32x32	4	26	mummy	area6
+32x32	5	26	blue ghost	area6
+32x32	6	26	pink ghost	area6
+32x32	7	26	vampire	area6
+32x32	8	26	evil eye	area6
+32x32	9	26	floating skull	monster
+32x32	10	26	vampire bat	monster
 32x32	11	26	-:null:-	:null:
 32x32	12	26	-:null:-	:null:
-32x32	13	26	two headed ogre	area7
-32x32	14	26	oliphant	area7
+32x32	13	26	red spider	area6
+32x32	14	26	skeletal dragon	area6
 32x32	15	26	-:null:-	:null:
-32x32	0	27	demon mage	area8
-32x32	1	27	demon warrior	area8
-32x32	2	27	demon archer	area8
-32x32	3	27	demon rogue	area8
-32x32	4	27	green dragon	area8
-32x32	5	27	red dragon	area8
-32x32	6	27	creeping magma	area8
-32x32	7	27	lava beetle	area8
-32x32	8	27	mumak	area8
-32x32	9	27	iron golem	area8
-32x32	10	27	fire vortex	area8
-32x32	11	27	lava dragon	area8
+32x32	0	27	troll mage	area7
+32x32	1	27	troll warrior	area7
+32x32	2	27	troll archer	area7
+32x32	3	27	troll rogue	area7
+32x32	4	27	blue dragon	area7
+32x32	5	27	yellow dragon	area7
+32x32	6	27	red komodo	area7
+32x32	7	27	giant roc	area7
+32x32	8	27	zombie	area7
+32x32	9	27	red cobra	area7
+32x32	10	27	sand worm	area7
+32x32	11	27	-:null:-	:null:
 32x32	12	27	-:null:-	:null:
-32x32	13	27	phoenix	area8
-32x32	14	27	Maeglor	area8
+32x32	13	27	two headed ogre	area7
+32x32	14	27	oliphant	area7
 32x32	15	27	-:null:-	:null:
-32x32	0	28	alien mage	area9
-32x32	1	28	alien warrior	area9
-32x32	2	28	alien archer	area9
-32x32	3	28	alien rogue	area9
-32x32	4	28	ancient black dragon	area9
-32x32	5	28	ancient gold dragon	area9
-32x32	6	28	master vampire	area9
-32x32	7	28	beholder	monster
-32x32	8	28	magic whirlwind	area9
-32x32	9	28	djinn	area9
-32x32	10	28	spike dog	area9
-32x32	11	28	-:null:-	:null:
+32x32	0	28	demon mage	area8
+32x32	1	28	demon warrior	area8
+32x32	2	28	demon archer	area8
+32x32	3	28	demon rogue	area8
+32x32	4	28	green dragon	area8
+32x32	5	28	red dragon	area8
+32x32	6	28	creeping magma	area8
+32x32	7	28	lava beetle	area8
+32x32	8	28	mumak	area8
+32x32	9	28	iron golem	area8
+32x32	10	28	fire vortex	area8
+32x32	11	28	lava dragon	area8
 32x32	12	28	-:null:-	:null:
-32x32	13	28	Lugorith	area9
-32x32	14	28	evil incarnate	area9
+32x32	13	28	phoenix	area8
+32x32	14	28	Maeglor	area8
 32x32	15	28	-:null:-	:null:
-32x32	0	29	goldfish	ocean
-32x32	1	29	green fish	ocean
-32x32	2	29	eel	ocean
-32x32	3	29	pink jellyfish	ocean
-32x32	4	29	copper jellyfish	ocean
-32x32	5	29	scaryfish	ocean
-32x32	6	29	water whirlwind	ocean
-32x32	7	29	octopus	ocean
-32x32	8	29	medusa	ocean
-32x32	9	29	sea dragon	ocean
-32x32	10	29	yellow turtle	ocean
-32x32	11	29	red turtle	ocean
+32x32	0	29	alien mage	area9
+32x32	1	29	alien warrior	area9
+32x32	2	29	alien archer	area9
+32x32	3	29	alien rogue	area9
+32x32	4	29	ancient black dragon	area9
+32x32	5	29	ancient gold dragon	area9
+32x32	6	29	master vampire	area9
+32x32	7	29	beholder	monster
+32x32	8	29	magic whirlwind	area9
+32x32	9	29	djinn	area9
+32x32	10	29	spike dog	area9
+32x32	11	29	-:null:-	:null:
 32x32	12	29	-:null:-	:null:
-32x32	13	29	-:null:-	:null:
-32x32	14	29	-:null:-	:null:
+32x32	13	29	Lugorith	area9
+32x32	14	29	evil incarnate	area9
 32x32	15	29	-:null:-	:null:
-32x32	0	30	N arrow	effect
-32x32	1	30	NE arrow	effect
-32x32	2	30	E arrow	effect
-32x32	3	30	SE arrow	effect
-32x32	4	30	S arrow	effect
-32x32	5	30	SW arrow	effect
-32x32	6	30	W arrow	effect
-32x32	7	30	NW arrow	effect
-32x32	8	30	-:null:-	:null:
-32x32	9	30	-:null:-	:null:
-32x32	10	30	-:null:-	:null:
-32x32	11	30	-:null:-	:null:
+32x32	0	30	goldfish	ocean
+32x32	1	30	green fish	ocean
+32x32	2	30	eel	ocean
+32x32	3	30	pink jellyfish	ocean
+32x32	4	30	copper jellyfish	ocean
+32x32	5	30	scaryfish	ocean
+32x32	6	30	water whirlwind	ocean
+32x32	7	30	octopus	ocean
+32x32	8	30	medusa	ocean
+32x32	9	30	sea dragon	ocean
+32x32	10	30	yellow turtle	ocean
+32x32	11	30	red turtle	ocean
 32x32	12	30	-:null:-	:null:
 32x32	13	30	-:null:-	:null:
 32x32	14	30	-:null:-	:null:
 32x32	15	30	-:null:-	:null:
-32x32	0	31	small white ball	effect
-32x32	1	31	small red ball	effect
-32x32	2	31	small orange ball	effect
-32x32	3	31	small yellow ball	effect
-32x32	4	31	small green ball	effect
-32x32	5	31	small blue ball	effect
-32x32	6	31	small purple ball	effect
-32x32	7	31	big white ball	effect
-32x32	8	31	big red ball	effect
-32x32	9	31	big orange ball	effect
-32x32	10	31	big yellow ball	effect
-32x32	11	31	big green ball	effect
-32x32	12	31	big blue ball	effect
-32x32	13	31	big purple ball	effect
+32x32	0	31	N arrow	effect
+32x32	1	31	NE arrow	effect
+32x32	2	31	E arrow	effect
+32x32	3	31	SE arrow	effect
+32x32	4	31	S arrow	effect
+32x32	5	31	SW arrow	effect
+32x32	6	31	W arrow	effect
+32x32	7	31	NW arrow	effect
+32x32	8	31	-:null:-	:null:
+32x32	9	31	-:null:-	:null:
+32x32	10	31	-:null:-	:null:
+32x32	11	31	-:null:-	:null:
+32x32	12	31	-:null:-	:null:
+32x32	13	31	-:null:-	:null:
 32x32	14	31	-:null:-	:null:
 32x32	15	31	-:null:-	:null:
-32x32	0	32	N white bolt	effect
-32x32	1	32	NE white bolt	effect
-32x32	2	32	E white bolt	effect
-32x32	3	32	SE white bolt	effect
-32x32	4	32	N red bolt	effect
-32x32	5	32	NE red bolt	effect
-32x32	6	32	E red bolt	effect
-32x32	7	32	SE red bolt	effect
-32x32	8	32	N orange bolt	effect
-32x32	9	32	NE orange bolt	effect
-32x32	10	32	E orange bolt	effect
-32x32	11	32	SE orange bolt	effect
-32x32	12	32	N yellow bolt	effect
-32x32	13	32	NE yellow bolt	effect
-32x32	14	32	E yellow bolt	effect
-32x32	15	32	SE yellow bolt	effect
-32x32	0	33	N green bolt	effect
-32x32	1	33	NE green bolt	effect
-32x32	2	33	E green bolt	effect
-32x32	3	33	SE green bolt	effect
-32x32	4	33	N blue bolt	effect
-32x32	5	33	NE blue bolt	effect
-32x32	6	33	E blue bolt	effect
-32x32	7	33	SE blue bolt	effect
-32x32	8	33	N purple bolt	effect
-32x32	9	33	NE purple bolt	effect
-32x32	10	33	E purple bolt	effect
-32x32	11	33	SE purple bolt	effect
+32x32	0	32	small white ball	effect
+32x32	1	32	small red ball	effect
+32x32	2	32	small orange ball	effect
+32x32	3	32	small yellow ball	effect
+32x32	4	32	small green ball	effect
+32x32	5	32	small blue ball	effect
+32x32	6	32	small purple ball	effect
+32x32	7	32	big white ball	effect
+32x32	8	32	big red ball	effect
+32x32	9	32	big orange ball	effect
+32x32	10	32	big yellow ball	effect
+32x32	11	32	big green ball	effect
+32x32	12	32	big blue ball	effect
+32x32	13	32	big purple ball	effect
+32x32	14	32	-:null:-	:null:
+32x32	15	32	-:null:-	:null:
+32x32	0	33	N white bolt	effect
+32x32	1	33	NE white bolt	effect
+32x32	2	33	E white bolt	effect
+32x32	3	33	SE white bolt	effect
+32x32	4	33	N red bolt	effect
+32x32	5	33	NE red bolt	effect
+32x32	6	33	E red bolt	effect
+32x32	7	33	SE red bolt	effect
+32x32	8	33	N orange bolt	effect
+32x32	9	33	NE orange bolt	effect
+32x32	10	33	E orange bolt	effect
+32x32	11	33	SE orange bolt	effect
+32x32	12	33	N yellow bolt	effect
+32x32	13	33	NE yellow bolt	effect
+32x32	14	33	E yellow bolt	effect
+32x32	15	33	SE yellow bolt	effect
+32x32	0	34	N green bolt	effect
+32x32	1	34	NE green bolt	effect
+32x32	2	34	E green bolt	effect
+32x32	3	34	SE green bolt	effect
+32x32	4	34	N blue bolt	effect
+32x32	5	34	NE blue bolt	effect
+32x32	6	34	E blue bolt	effect
+32x32	7	34	SE blue bolt	effect
+32x32	8	34	N purple bolt	effect
+32x32	9	34	NE purple bolt	effect
+32x32	10	34	E purple bolt	effect
+32x32	11	34	SE purple bolt	effect

@@ -13,10 +13,10 @@ import java.util.Random;
 // generates various types of test areas.
 public class PremadeGenerator implements MapGenerator {
 
-    PremadeMapData.PremadeMapInfo premadeMapInfo;
-    private ProtoTranslator translator;
-    private int level;
-    MonsterIdGroup monsterIds;
+    private final PremadeMapData.PremadeMapInfo premadeMapInfo;
+    private final ProtoTranslator translator;
+    private final int level;
+    private final MonsterIdGroup monsterIds;
 
     public PremadeGenerator(PremadeMapData.PremadeMapInfo premadeMapInfo, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
         this.premadeMapInfo = premadeMapInfo;

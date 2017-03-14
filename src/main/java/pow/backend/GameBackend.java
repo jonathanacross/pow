@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class GameBackend {
 
     private GameState gameState;
-    private Deque<Action> commandQueue = new LinkedList<>();
+    private final Deque<Action> commandQueue = new LinkedList<>();
 
     public GameState getGameState() {
         return gameState;
@@ -77,6 +77,11 @@ public class GameBackend {
             // at this point, we've processed all pending actions, so advance
             // the time.
             while (commandQueue.isEmpty()) {
+
+                if (!gameState.gameInProgress) {
+                    return gameResult;
+                }
+
                 Actor actor = gameState.getCurrentMap().getCurrentActor();
 
                 // if waiting for input, just return
@@ -85,7 +90,7 @@ public class GameBackend {
                     //return new GameResult(madeProgress, new ArrayList<>());
                 }
 
-                if (actor.energy.canTakeTurn() || actor.energy.gain(actor.speed)) {
+                if (actor.energy.canTakeTurn() || actor.energy.gain(actor.getSpeed())) {
                     // If the actor can move now, but needs input from the user, just
                     // return so we can wait for it.
                     if (actor.needsInput(gameState)) {
@@ -94,6 +99,7 @@ public class GameBackend {
                     }
 
                     commandQueue.add(actor.act(this));
+                    gameResult.addEvents(actor.conditions.update(this));
                 } else {
                     // This actor doesn't have enough energy yet, so move on to the next.
                     gameState.getCurrentMap().advanceActor();
@@ -105,7 +111,6 @@ public class GameBackend {
 //                    trySpawnMonster();
 //                }
             }
-
         }
     }
 

@@ -17,16 +17,16 @@ import java.util.Map;
 import java.util.Random;
 
 public class GameMap implements Serializable {
-    public DungeonSquare[][] map; // indexed by x,y, or c,r
+    public final DungeonSquare[][] map; // indexed by x,y, or c,r
 
-    public int width;
-    public int height;
-    public MonsterIdGroup genMonsterIds;  // monsters to generate for this level
+    public final int width;
+    public final int height;
+    public final MonsterIdGroup genMonsterIds;  // monsters to generate for this level
     public List<Actor> actors;
     private List<LightSource> lightSources;
-    public Map<String, Point> keyLocations;  // useful for joining areas together
-    public String name; // name of the area
-    public int level;  // difficulty level
+    public final Map<String, Point> keyLocations;  // useful for joining areas together
+    public final String name; // name of the area
+    public final int level;  // difficulty level
     public ShopData shopData; // for stores contained in this map
 
     public void updatePlayerVisibilityData(Player player) {
@@ -75,7 +75,7 @@ public class GameMap implements Serializable {
     // For purposes of gameplay, 0 = dark, and anything > 0 is lit
     // (i.e., the player can see).  The gradation 0-100 is primarily
     // a convenience for the frontend to display light in a cool manner.
-    public static int MAX_BRIGHTNESS = 100;
+    public static final int MAX_BRIGHTNESS = 100;
     private void updateBrightness(Player player) {
 
         for (int x = 0; x < width; x++) {
@@ -181,7 +181,7 @@ public class GameMap implements Serializable {
 
     // Finds the closest open square to the starting location.
     // This assumes that there is at least one open square.
-    public Point findClosestOpenSquare(Point start) {
+    private Point findClosestOpenSquare(Point start) {
         int i = 0;
         Point loc;
         do {

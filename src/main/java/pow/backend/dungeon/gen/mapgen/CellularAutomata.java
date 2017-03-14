@@ -13,13 +13,13 @@ import java.util.Random;
 
 public class CellularAutomata implements MapGenerator {
 
-    private int width;
-    private int height;
-    private int layers;
-    private boolean makeLakes;
-    private ProtoTranslator translator;
-    private int level;
-    private MonsterIdGroup monsterIds;
+    private final int width;
+    private final int height;
+    private final int layers;
+    private final boolean makeLakes;
+    private final ProtoTranslator translator;
+    private final int level;
+    private final MonsterIdGroup monsterIds;
 
     public CellularAutomata(int width, int height, int layers, boolean makeLakes,
                             ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {

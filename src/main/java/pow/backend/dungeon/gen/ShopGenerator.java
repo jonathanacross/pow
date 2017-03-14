@@ -1,9 +1,9 @@
 package pow.backend.dungeon.gen;
 
-import pow.backend.ActionParams;
 import pow.backend.ShopData;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.ItemList;
+import pow.util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +58,36 @@ public class ShopGenerator {
         return x*x;
     }
 
+    // Returns an exponential price for x, assuming
+    // that the price for value x1 is y1, and the price for
+    // value x2 is y2.  Model is y = a e^(bx).
+    private static double expFit(int x, int x1, int y1, int x2, int y2) {
+        double b = (Math.log(y2) - Math.log(y1)) / (x2 - x1);
+        double a = y1 / Math.exp(b * x1);
+        return a * Math.exp(b * x);
+    }
+
+    // Fits the model y = ax + b, and evaluates y(x).
+    private static double linFit(int x, int x1, int y1, int x2, int y2) {
+        double a = (double) (y2 - y1) / (x2 - x1);
+        return a * (x - x1) + y1;
+    }
+
+    private static double actionBonus(DungeonItem item) {
+        double bonus;
+        int actionValue = item.actionParams.number;
+        switch (item.actionParams.actionName) {
+            case MODIFY_SPEED_ACTION: bonus = expFit(actionValue, 1, 10, 3, 1000); break;
+            case HEAL_ACTION: bonus = linFit(actionValue, 10, 8, 160, 800); break;
+            case RESTORE_MANA_ACTION: bonus = linFit(actionValue, 10, 6, 160, 600); break;
+            case RESTORE_ACTION: bonus = linFit(actionValue, 15, 24, 240, 2400); break;
+            case HEROISM_ACTION: bonus = expFit(actionValue, 8, 25, 16, 2500); break;
+            case AGILITY_ACTION: bonus = expFit(actionValue, 8, 30, 16, 3000); break;
+            default: bonus = 0; break;
+        }
+        return bonus;
+    }
+
     private static int priceItem(DungeonItem item) {
         // Very arbitrary now.  Have to balance this.
         // While arbitrary, scalars here are fractional so that prices of
@@ -75,9 +105,7 @@ public class ShopGenerator {
             1000 * sqr(item.bonuses[DungeonItem.SPEED_IDX]) +
             20 * sqr(item.bonuses[DungeonItem.WEALTH_IDX]) +
             1 * (item.flags.arrow ? 1 : 0) +
-            8 * (item.actionParams.actionName == ActionParams.ActionName.HEAL_ACTION ? 1 : 0) +
-            7 * (item.actionParams.actionName == ActionParams.ActionName.RESTORE_MANA_ACTION ? 1 : 0) +
-            100 * (item.actionParams.actionName == ActionParams.ActionName.RESTORE_ACTION ? 1 : 0);
+            actionBonus(item);
 
         double slotScaleFactor = 1.0;
         switch (item.slot) {
@@ -94,6 +122,8 @@ public class ShopGenerator {
 
         if (price <= 0) {
             price = 99999; // setting price to this should be a hint that something was amiss.
+            System.out.println("Warning: " + TextUtils.format(item.name, 1, true) +
+                    " is not priced correctly in stores");
         }
         return (int) Math.round(price);
     }

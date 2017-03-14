@@ -24,30 +24,30 @@ import java.util.Stack;
 // TODO: make interface for this
 public class Frontend {
 
-    private Stack<AbstractWindow> windows;
+    private final Stack<AbstractWindow> windows;
 
     public int width;
     public int height;
-    private GameWindow gameWindow;
-    private WelcomeWindow welcomeWindow;
-    private WinWindow winWindow;
-    private LoseWindow loseWindow;
-    private CreateCharWindow createCharWindow;
-    private OpenGameWindow openGameWindow;
-    public MonsterInfoWindow monsterInfoWindow;
-    public PlayerInfoWindow playerInfoWindow;
-    private LogWindow logWindow;
-    private StatusWindow statusWindow;
-    private MapWindow mapWindow;
-    private MessageWindow messageWindow;
-    public HelpWindow helpWindow;
+    private final GameWindow gameWindow;
+    private final WelcomeWindow welcomeWindow;
+    private final WinWindow winWindow;
+    private final LoseWindow loseWindow;
+    private final CreateCharWindow createCharWindow;
+    private final OpenGameWindow openGameWindow;
+    public final MonsterInfoWindow monsterInfoWindow;
+    public final PlayerInfoWindow playerInfoWindow;
+    private final LogWindow logWindow;
+    private final StatusWindow statusWindow;
+    private final MapWindow mapWindow;
+    private final MessageWindow messageWindow;
+    public final HelpWindow helpWindow;
 
-    private GameBackend gameBackend;
-    private Queue<KeyEvent> keyEvents;
+    private final GameBackend gameBackend;
+    private final Queue<KeyEvent> keyEvents;
 
-    private List<Effect> effects;
+    private final List<Effect> effects;
     private boolean dirty;  // need to redraw
-    public Stack<String> messages;  // short messages/help suggestions
+    public final Stack<String> messages;  // short messages/help suggestions
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;

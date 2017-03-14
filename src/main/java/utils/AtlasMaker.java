@@ -16,11 +16,11 @@ import javax.imageio.ImageIO;
 
 public class AtlasMaker {
     public static class AtlasEntry {
-        public String source;
-        public int x;
-        public int y;
-        public String name;
-        public String metadata;
+        public final String source;
+        public final int x;
+        public final int y;
+        public final String name;
+        public final String metadata;
 
         @Override
         public String toString() {
@@ -99,6 +99,10 @@ public class AtlasMaker {
 
             // draw the tile
             if (!entry.source.equals(":null:")) {
+                File imgFile = new File(entry.source + ".png");
+                if (!imgFile.exists()) {
+                    throw new IOException("Error: " + imgFile.getAbsolutePath() + " doesn't exist");
+                }
                 BufferedImage inputImg = ImageIO.read(new File(entry.source + ".png"));
                 BufferedImage tile = inputImg.getSubimage(entry.x * tileSize,
                         entry.y * tileSize, tileSize, tileSize);

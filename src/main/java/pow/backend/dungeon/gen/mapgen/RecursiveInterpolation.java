@@ -14,9 +14,9 @@ import java.util.*;
 public class RecursiveInterpolation implements MapGenerator {
 
     public static class TerrainFeatureTriplet {
-        public String terrain;
-        public String feature1;
-        public String feature2;
+        public final String terrain;
+        public final String feature1;
+        public final String feature2;
 
         public TerrainFeatureTriplet(String terrain, String feature1, String feature2) {
             this.terrain = terrain;
@@ -36,10 +36,10 @@ public class RecursiveInterpolation implements MapGenerator {
 
     // expand/modify this class to make richer areas
     public static class MapStyle {
-        public List<TerrainFeatureTriplet> borders;
-        public List<TerrainFeatureTriplet> interiors;
-        public String upstairsFeatureId;
-        public String downstairsFeatureId;
+        public final List<TerrainFeatureTriplet> borders;
+        public final List<TerrainFeatureTriplet> interiors;
+        public final String upstairsFeatureId;
+        public final String downstairsFeatureId;
 
         public MapStyle(List<TerrainFeatureTriplet> borders,
                         List<TerrainFeatureTriplet> interiors,
@@ -52,11 +52,11 @@ public class RecursiveInterpolation implements MapGenerator {
         }
     }
 
-    private int sourceSize;
-    private int numInterpolationSteps;
-    private MapStyle mapStyle;
-    private int level;
-    private MonsterIdGroup monsterIds;
+    private final int sourceSize;
+    private final int numInterpolationSteps;
+    private final MapStyle mapStyle;
+    private final int level;
+    private final MonsterIdGroup monsterIds;
 
     public RecursiveInterpolation(int sourceSize,
                                   int numInterpolationSteps,
@@ -336,7 +336,6 @@ public class RecursiveInterpolation implements MapGenerator {
 
     private static double[][] makeNoise(int width, int height, int origWidth, int origHeight, int interpolationSteps) {
         int scale = Math.max(origWidth, origHeight) * 2;
-        double[][] noise = fractalNoise(width, height, 1.0, scale, 0.0, interpolationSteps);
-        return noise;
+        return fractalNoise(width, height, 1.0, scale, 0.0, interpolationSteps);
     }
 }

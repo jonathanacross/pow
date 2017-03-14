@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Rest implements Action {
 
-    private Actor actor;
+    private final Actor actor;
 
     public Rest(Actor actor) {
         this.actor = actor;

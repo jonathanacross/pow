@@ -8,8 +8,8 @@ import pow.backend.dungeon.DungeonFeature;
 import pow.util.Point;
 
 public class TakeStairs implements Action {
-    private Actor actor;
-    private boolean up;
+    private final Actor actor;
+    private final boolean up;
 
     public TakeStairs(Actor actor, boolean up) {
         this.actor = actor;

@@ -9,10 +9,10 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 public abstract class AbstractWindow {
-    WindowDim dim;
+    public final WindowDim dim;
     protected boolean visible;
-    protected GameBackend backend;
-    protected Frontend frontend;
+    protected final GameBackend backend;
+    protected final Frontend frontend;
 
     public AbstractWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         this.dim = dim;
@@ -34,7 +34,7 @@ public abstract class AbstractWindow {
     // to be filled out by subclasses
     // TODO: make processKey be a bool -- returns true if there's a backend change
     public abstract void processKey(KeyEvent e);
-    public abstract void drawContents(Graphics graphics);
+    protected abstract void drawContents(Graphics graphics);
 
     private void drawFrame(Graphics graphics) {
         int margin = 1;

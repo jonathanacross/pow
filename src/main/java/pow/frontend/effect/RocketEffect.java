@@ -10,8 +10,8 @@ public class RocketEffect implements Effect {
 
     private int arrowDist;
     private int explodeDist;
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     private final static int DISTANCE = 7;
     private final static int EXPLODE_SIZE = 3;
 

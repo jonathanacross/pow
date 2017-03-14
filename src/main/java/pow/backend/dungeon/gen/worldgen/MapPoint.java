@@ -11,13 +11,13 @@ import java.util.Set;
 // location of maps in the world (via the class MapTopology), and a
 // map generator to create the map.
 public class MapPoint {
-    public String id;
-    public int level;
-    public int group;
-    public List<Direction> fromDirs;
-    public Set<Integer> fromGroups;
-    public Set<String> fromIds;
-    public MapGenerator mapGenerator;
+    public final String id;
+    public final int level;
+    public final int group;
+    public final List<Direction> fromDirs;
+    public final Set<Integer> fromGroups;
+    public final Set<String> fromIds;
+    public final MapGenerator mapGenerator;
 
     public MapPoint(String id,
                     int level,

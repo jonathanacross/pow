@@ -13,9 +13,9 @@ import java.util.List;
 
 public class BuyItem implements Action {
 
-    private List<ShopData.ShopEntry> shopEntries;
-    private int idx;
-    private int count;
+    private final List<ShopData.ShopEntry> shopEntries;
+    private final int idx;
+    private final int count;
 
     public BuyItem(List<ShopData.ShopEntry> shopEntries, int idx, int count) {
         this.shopEntries = shopEntries;

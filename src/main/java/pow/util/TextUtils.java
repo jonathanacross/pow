@@ -31,7 +31,7 @@ public class TextUtils {
         return replaceSingular(removePrefix(name));
     }
 
-    private static Pattern customPluralRegex = Pattern.compile("(.*)\\|(.*)\\|(.*)\\|(.*)");
+    private static final Pattern customPluralRegex = Pattern.compile("(.*)\\|(.*)\\|(.*)\\|(.*)");
 
     private static boolean startsWithVowel(String s) {
         // skip over any '& '

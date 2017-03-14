@@ -40,22 +40,22 @@ public class PlayerInfoWindow extends AbstractWindow {
         List<String> lines = new ArrayList<>();
         lines.add(player.name);
         lines.add("");
-        lines.add("HP:        " + player.health + "/" + player.maxHealth);
-        lines.add("MP:        " + player.mana + "/" + player.maxMana);
+        lines.add("HP:        " + player.getHealth() + "/" + player.getMaxHealth());
+        lines.add("MP:        " + player.getMana() + "/" + player.getMaxMana());
         lines.add("Exp:       " + player.experience);
         lines.add("Exp next:  " + player.getExpToNextLevel());
         lines.add("Level:     " + player.level);
         lines.add("Gold:      " + player.gold);
         lines.add("");
-        lines.add("Str:       " + player.currStats.strength);
-        lines.add("Dex:       " + player.currStats.dexterity);
-        lines.add("Int:       " + player.currStats.intelligence);
-        lines.add("Con:       " + player.currStats.constitution);
+        lines.add("Str:       " + player.playerStats.strength);
+        lines.add("Dex:       " + player.playerStats.dexterity);
+        lines.add("Int:       " + player.playerStats.intelligence);
+        lines.add("Con:       " + player.playerStats.constitution);
         lines.add("");
-        lines.add("Attack:    " + player.attack);   // 2d4 (+3, +1)
-        lines.add("Bow:       " + player.bowAttack);  // 1d2 (+2, +0)
-        lines.add("Defense:   " + player.defense); // [19, +5]
-        lines.add("Speed:     " + player.speed);
+        lines.add("Attack:    " + player.getPrimaryAttack());   // 2d4 (+3, +1)
+        lines.add("Bow:       " + player.getSecondaryAttack());  // 1d2 (+2, +0)
+        lines.add("Defense:   " + player.getDefense()); // [19, +5]
+        lines.add("Speed:     " + player.getSpeed());
         lines.add("");
 
         Font f = new Font("Courier", Font.PLAIN, FONT_SIZE);
@@ -113,8 +113,8 @@ public class PlayerInfoWindow extends AbstractWindow {
     }
 
     private static class SlotData {
-        public String name;
-        public int position;
+        public final String name;
+        public final int position;
 
         public SlotData(String name, int position) {
             this.name = name;

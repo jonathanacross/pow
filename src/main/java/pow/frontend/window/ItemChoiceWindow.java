@@ -15,8 +15,8 @@ import java.util.function.Function;
 public class ItemChoiceWindow extends AbstractWindow {
 
     public static class ItemChoice {
-        public boolean useSecondList;
-        public int itemIdx;
+        public final boolean useSecondList;
+        public final int itemIdx;
 
         public ItemChoice(boolean useSecondList, int itemIdx) {
             this.useSecondList = useSecondList;
@@ -24,13 +24,13 @@ public class ItemChoiceWindow extends AbstractWindow {
         }
     }
 
-    private String message;
-    private String altMessage;
-    private List<DungeonItem> items;
-    private List<DungeonItem> altItems;
+    private final String message;
+    private final String altMessage;
+    private final List<DungeonItem> items;
+    private final List<DungeonItem> altItems;
     private boolean useSecondList;
-    private Function<DungeonItem, Boolean> enabled;
-    private Consumer<ItemChoice> callback;
+    private final Function<DungeonItem, Boolean> enabled;
+    private final Consumer<ItemChoice> callback;
 
     public ItemChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
                             String message,

@@ -6,8 +6,8 @@ import pow.backend.actors.Player;
 
 public class ActionBehavior implements Behavior {
 
-    private Player player;
-    private Action action;
+    private final Player player;
+    private final Action action;
 
     public ActionBehavior(Player player, Action action) {
         this.player = player;

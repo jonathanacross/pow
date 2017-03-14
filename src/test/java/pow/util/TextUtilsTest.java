@@ -10,11 +10,11 @@ import static org.junit.Assert.assertEquals;
 public class TextUtilsTest {
 
     private static class TestCase {
-        public String raw;
-        public String zero;
-        public String oneIndef;
-        public String oneDef;
-        public String two;
+        public final String raw;
+        public final String zero;
+        public final String oneIndef;
+        public final String oneDef;
+        public final String two;
 
         public TestCase(String raw, String zero, String oneIndef, String oneDef, String two) {
             this.raw = raw;
@@ -25,7 +25,7 @@ public class TextUtilsTest {
         }
     }
 
-    private List<TestCase> examples = Arrays.asList(
+    private final List<TestCase> examples = Arrays.asList(
             new TestCase("!Bladeturner", "Bladeturner", "Bladeturner", "Bladeturner", "Bladeturner"),
             new TestCase("!The Star of Elendil", "The Star of Elendil", "The Star of Elendil", "The Star of Elendil", "The Star of Elendil"),
             new TestCase("!The one Ring", "The one Ring", "The one Ring", "The one Ring", "The one Ring"),

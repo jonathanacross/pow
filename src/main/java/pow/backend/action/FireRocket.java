@@ -4,11 +4,11 @@ import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 public class FireRocket implements Action {
 
-    private Actor actor;
+    private final Actor actor;
 
     public FireRocket(Actor actor) {
        this.actor = actor;
@@ -17,7 +17,7 @@ public class FireRocket implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         backend.logMessage(actor.getPronoun() + " fire a rocket");
-        return ActionResult.Succeeded(Arrays.asList(GameEvent.Rocket(actor)));
+        return ActionResult.Succeeded(Collections.singletonList(GameEvent.Rocket(actor)));
     }
 
     @Override

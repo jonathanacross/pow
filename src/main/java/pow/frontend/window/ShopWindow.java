@@ -15,7 +15,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class ShopWindow extends AbstractWindow {
-    private List<ShopData.ShopEntry> entries;
+    private final List<ShopData.ShopEntry> entries;
 
     public ShopWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend,
                       List<ShopData.ShopEntry> entries) {

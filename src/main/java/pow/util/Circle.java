@@ -6,10 +6,10 @@ import java.util.List;
 public class Circle {
 
     // use custom radii for small circles to improve their appearance
-    private static int[] RADII_SQUARED = {0, 2, 5, 10, 18, 26, 38};
-    private static int MAX_CIRCLE_CACHE_SIZE = 15;
+    private static final int[] RADII_SQUARED = {0, 2, 5, 10, 18, 26, 38};
+    private static final int MAX_CIRCLE_CACHE_SIZE = 15;
 
-    private static List<List<Point>> CIRCLE_POINTS;
+    private static final List<List<Point>> CIRCLE_POINTS;
 
     static {
         CIRCLE_POINTS = new ArrayList<>();

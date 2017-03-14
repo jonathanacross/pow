@@ -109,7 +109,7 @@ public class GeneratorUtils {
 
     // Finds the location of 'value' in the array.
     // If it doesn't exist, returns (-1,-1).
-    public static Point findValue(int[][] data, int value) {
+    private static Point findValue(int[][] data, int value) {
         int h = Array2D.height(data);
         int w = Array2D.width(data);
 
@@ -176,7 +176,7 @@ public class GeneratorUtils {
     }
 
     // Gets a list of monster ids to create.
-    public static List<String> getIdsFromMonsterIdGroup(MonsterIdGroup monsterIdGroup, int numMonsters, Random rng) {
+    private static List<String> getIdsFromMonsterIdGroup(MonsterIdGroup monsterIdGroup, int numMonsters, Random rng) {
         List<String> idsToGen = new ArrayList<>();
 
         // add boss, if needed
@@ -206,7 +206,7 @@ public class GeneratorUtils {
     }
 
     // Generates monsters from the selection in monsterIdGroup
-    public static List<Actor> createMonsters(DungeonSquare[][] dungeonMap,
+    private static List<Actor> createMonsters(DungeonSquare[][] dungeonMap,
                                              int numMonsters,
                                              MonsterIdGroup monsterIdGroup,
                                              Random rng) {
@@ -250,8 +250,8 @@ public class GeneratorUtils {
     public static void healAllMonsters(GameMap map) {
         for (Actor a : map.actors) {
             if (!a.friendly) {
-                a.mana = a.maxMana;
-                a.health = a.maxHealth;
+                a.setFullHealth();
+                a.setFullMana();
             }
         }
     }
@@ -285,7 +285,7 @@ public class GeneratorUtils {
 
     // --------------------- related to exits --------------
 
-    public static Point findStairsLocation(DungeonSquare[][] squares, Random rng) {
+    private static Point findStairsLocation(DungeonSquare[][] squares, Random rng) {
         int width = Array2D.width(squares);
         int height = Array2D.height(squares);
         int x;
@@ -298,7 +298,7 @@ public class GeneratorUtils {
     }
 
     // makes a feature for up/down stairs (or into dungeon)
-    public static DungeonFeature buildStairsFeature(String upFeatureId, String downFeatureId, MapConnection connection) {
+    private static DungeonFeature buildStairsFeature(String upFeatureId, String downFeatureId, MapConnection connection) {
         boolean up = connection.dir == Direction.U;
         String featureId = up ? upFeatureId : downFeatureId;
         DungeonFeature featureTemplate = FeatureData.getFeature(featureId);
@@ -316,17 +316,15 @@ public class GeneratorUtils {
                 !up,
                 false,
                 true);
-        DungeonFeature feature = new DungeonFeature(
+        return new DungeonFeature(
                 featureTemplate.id,
                 featureTemplate.name,
                 featureTemplate.image,
                 flags,
                 params);
-
-        return feature;
     }
 
-    public static DungeonSquare buildTeleportTile(String terrainTemplateName, String target) {
+    private static DungeonSquare buildTeleportTile(String terrainTemplateName, String target) {
         DungeonTerrain terrainTemplate = TerrainData.getTerrain(terrainTemplateName);
 
         ActionParams params = new ActionParams();
@@ -340,8 +338,7 @@ public class GeneratorUtils {
                 flags,
                 params);
 
-        DungeonSquare square = new DungeonSquare(terrain, null);
-        return square;
+        return new DungeonSquare(terrain, null);
     }
 
     public static int getDefaultNumItems(int width, int height, Random rng) {
@@ -427,7 +424,7 @@ public class GeneratorUtils {
     // at some point on each side of the map.  It works by picking one of
     // the locations on the side of interest where the interior is one
     // square from the edge.
-    public static Point findExitCoordinates(
+    private static Point findExitCoordinates(
             DungeonSquare[][] squares,
             Direction direction,
             Random rng) {
@@ -521,8 +518,7 @@ public class GeneratorUtils {
         int perturbedLevel = (int) Math.round(2 * rng.nextGaussian() + level);
         List<String> possibleItemIds = ItemGenerator.getItemIdsForLevel(perturbedLevel);
         String itemId = possibleItemIds.get(rng.nextInt(possibleItemIds.size()));
-        DungeonItem item = ItemGenerator.genItem(itemId, perturbedLevel, rng);
-        return item;
+        return ItemGenerator.genItem(itemId, perturbedLevel, rng);
     }
 
 }

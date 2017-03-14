@@ -11,7 +11,7 @@ import java.util.List;
 // class to store all the debugging actions, so they are all in one place.
 public class DebugAction implements Action {
 
-    private What what;
+    private final What what;
 
     public enum What {
         INCREASE_CHAR_LEVEL,
@@ -39,8 +39,8 @@ public class DebugAction implements Action {
                 break;
             case HEAL:
                 backend.logMessage("DEBUG: healing player");
-                player.health = player.maxHealth;
-                player.mana = player.maxMana;
+                player.setFullHealth();
+                player.setFullMana();
                 break;
         }
         List<GameEvent> events = new ArrayList<>();

@@ -16,8 +16,8 @@ import java.util.*;
 
 public class WorldDataGen {
 
-    private static WorldDataGen instance;
-    private static WorldDataGen testInstance;
+    private static final WorldDataGen instance;
+    private static final WorldDataGen testInstance;
     private List<MapPoint> mapPoints;
 
     public static List<MapPoint> getMapPoints() { return instance.mapPoints; }
@@ -92,9 +92,7 @@ public class WorldDataGen {
         Set<String> fromIds = new HashSet<>();
         if (!line[5].isEmpty()) {
             String[] fids = line[5].split(",");
-            for (String fid: fids) {
-                fromIds.add(fid);
-            }
+            Collections.addAll(fromIds, fids);
         }
 
         String generatorName = line[6];
@@ -323,56 +321,56 @@ public class WorldDataGen {
         switch (params) {
             case "grass":
                 style = new RecursiveInterpolation.MapStyle(
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree")),
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "desert":
                 style = new RecursiveInterpolation.MapStyle(
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "forest":
                 style = new RecursiveInterpolation.MapStyle(
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "big tree", "pine tree")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "big tree", "pine tree")),
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "water":
                 style = new RecursiveInterpolation.MapStyle(
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("waves", null, null)),
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("water 3", null, "water 4")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("waves", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("water 3", null, "water 4")),
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "snow":
                 style = new RecursiveInterpolation.MapStyle(
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("snowy rock", null, null)),
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("snow", "snowy pine tree", "white small tree")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("snowy rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("snow", "snowy pine tree", "white small tree")),
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "swamp":
                 style = new RecursiveInterpolation.MapStyle(
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "haunted forest":
                 style = new RecursiveInterpolation.MapStyle(
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "berry bush", "pine tree")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "berry bush", "pine tree")),
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "volcano":
                 style = new RecursiveInterpolation.MapStyle(
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("cold lava floor", null, "dark pebbles")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("cold lava floor", null, "dark pebbles")),
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             case "gold desert":
                 style = new RecursiveInterpolation.MapStyle(
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
-                        Arrays.asList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "gold tree", "light pebbles")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "gold tree", "light pebbles")),
                         STAIRS_UP, DUNGEON_ENTRANCE);
                 break;
             default:

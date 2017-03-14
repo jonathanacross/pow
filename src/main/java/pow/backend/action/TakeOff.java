@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TakeOff implements Action {
-    private Player player;
-    private int index;  // index in equipment
+    private final Player player;
+    private final int index;  // index in equipment
 
     public TakeOff(Player player, int index) {
         this.player = player;

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestoreMana implements Action {
-    private Actor actor;
-    private int amount;
+    private final Actor actor;
+    private final int amount;
 
     public RestoreMana(Actor actor, int amount) {
         this.actor = actor;
@@ -26,8 +26,7 @@ public class RestoreMana implements Action {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Healed());
 
-        int restoreAmount = Math.min(this.amount, actor.maxMana - actor.mana);
-        actor.mana += restoreAmount;
+        int restoreAmount = actor.increaseMana(this.amount);
         backend.logMessage(actor.getPronoun() + " restored " + restoreAmount + " mana");
         return ActionResult.Succeeded(events);
     }

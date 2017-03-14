@@ -26,7 +26,7 @@ public class FeatureData {
         }
     }
 
-    private static FeatureData instance;
+    private static final FeatureData instance;
     private Map<String, DungeonFeature> featureMap;
 
     static {

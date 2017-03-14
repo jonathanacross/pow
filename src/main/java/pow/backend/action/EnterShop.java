@@ -10,8 +10,8 @@ import java.util.List;
 
 public class EnterShop implements Action {
 
-    private Actor actor;
-    private ShopData.ShopState state;
+    private final Actor actor;
+    private final ShopData.ShopState state;
 
     public EnterShop(Actor actor, ShopData.ShopState state) {
         this.actor = actor;

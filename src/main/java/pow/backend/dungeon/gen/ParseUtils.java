@@ -34,7 +34,7 @@ public class ParseUtils {
         String[] statBonuses = text.split(",");
         for (String statBonus : statBonuses) {
             String[] tokens = statBonus.split(":", 2);
-            // x indicates that we'll use the bounus calculated based on the level
+            // x indicates that we'll use the bonus calculated based on the level
             int bonusAmt = (tokens[1].charAt(0) == 'x') ? MATCH_BONUS : Integer.parseInt(tokens[1]);
             String stat = tokens[0];
             if (keyToBonusIdx.containsKey(stat)) {
@@ -77,11 +77,15 @@ public class ParseUtils {
             case "": params.actionName = ActionParams.ActionName.NO_ACTION; break;
             case "modifyTerrain": params.actionName = ActionParams.ActionName.MODIFY_TERRAIN_ACTION; break;
             case "modifyFeature": params.actionName = ActionParams.ActionName.MODIFY_FEATURE_ACTION; break;
+            case "modifySpeed": params.actionName = ActionParams.ActionName.MODIFY_SPEED_ACTION; break;
+            case "poison": params.actionName = ActionParams.ActionName.POISON_ACTION; break;
             case "moveToArea": params.actionName = ActionParams.ActionName.MOVE_TO_AREA_ACTION; break;
             case "heal": params.actionName = ActionParams.ActionName.HEAL_ACTION; break;
             case "restoreMana": params.actionName = ActionParams.ActionName.RESTORE_MANA_ACTION; break;
             case "restore": params.actionName = ActionParams.ActionName.RESTORE_ACTION; break;
             case "enterShop": params.actionName = ActionParams.ActionName.ENTER_SHOP_ACTION; break;
+            case "heroism": params.actionName = ActionParams.ActionName.HEROISM_ACTION; break;
+            case "agility": params.actionName = ActionParams.ActionName.AGILITY_ACTION; break;
             default: throw new IllegalArgumentException("unknown action name " + tokens[0]);
         }
 
