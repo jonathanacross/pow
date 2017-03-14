@@ -55,8 +55,11 @@ public class PickUp implements Action {
                 return ActionResult.Failed(null);
             }
             // at this point we know that it's the player picking up the artifact
-            gs.player.artifacts.put(item.artifactSlot, item);
+            gs.player.addArtifact(item);
             square.items.items.remove(itemNum);
+            // slight hack here.. update the visibility of the game map,
+            // since picking up some artifacts may involve lanterns
+            gs.getCurrentMap().updatePlayerVisibilityData(gs.player);
             backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true));
             return ActionResult.Succeeded(events);
         }

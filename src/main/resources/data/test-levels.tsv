@@ -1,6 +1,6 @@
 #id	level	group	possible dirs	from groups	from id	generator	genParams	boss	monsters
 terrain test	0					terrain test	basement		
-rogue test	25		N		terrain test	rogue	2,blue	white rat	
+rogue test	25		N		terrain test	rogue	2,blue	white rat	blue ghost,pink ghost,evil eye
 run test	1		E		terrain test	run test	dungeon		farmer,mangy leper,jester,beggar,salesman
 item test	2		W		terrain test	item test	crypt		
 arena	99		S		terrain test	arena	dungeon		:all:

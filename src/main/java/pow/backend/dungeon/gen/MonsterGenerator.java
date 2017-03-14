@@ -71,12 +71,14 @@ public class MonsterGenerator {
         int numDropAttempts;
 
         public static class AllFlags {
-            final Monster.Flags aiActorFlags;
+            final Monster.Flags monsterFlags;
             final boolean friendly;
+            final boolean invisible;
 
-            public AllFlags(Monster.Flags aiActorFlags, boolean friendly) {
-                this.aiActorFlags = aiActorFlags;
+            public AllFlags(Monster.Flags monsterFlags, boolean friendly, boolean invisible) {
+                this.monsterFlags = monsterFlags;
                 this.friendly = friendly;
+                this.invisible = invisible;
             }
         }
 
@@ -86,6 +88,7 @@ public class MonsterGenerator {
             boolean stationary = false;
             boolean erratic = false;
             boolean friendly = false;
+            boolean invisible = false;
             for (String t : tokens) {
                 switch (t) {
                     case "": break;  // will happen if we have an empty string
@@ -94,12 +97,13 @@ public class MonsterGenerator {
                     case "knightmove": break;
                     case "boss": break;
                     case "friendly": friendly = true; break;
+                    case "invisible": invisible = true; break;
                     default:
                         throw new IllegalArgumentException("unknown monster flag '" + t + "'");
                 }
             }
 
-            return new AllFlags(new Monster.Flags(stationary, erratic), friendly);
+            return new AllFlags(new Monster.Flags(stationary, erratic), friendly, invisible);
         }
 
         private static String parseArtifact(String text) {
@@ -146,8 +150,8 @@ public class MonsterGenerator {
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
                     new Actor.Params(level, instanceHP, defense, experience, attackData,
-                            flags.friendly, speed, artifactDrops, numDropAttempts),
-                    flags.aiActorFlags);
+                            flags.friendly, flags.invisible, speed, artifactDrops, numDropAttempts),
+                    flags.monsterFlags);
         }
     }
 }

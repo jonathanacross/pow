@@ -31,7 +31,7 @@ public class GameState implements Serializable {
         return world.recentMaps.getCurrentMap();
     }
 
-    // makes a partial gamestate useful when not playing the actual game..
+    // makes a partial GameState useful when not playing the actual game..
     public GameState() {
         this.world = null;
         this.rng = new Random();
@@ -64,6 +64,7 @@ public class GameState implements Serializable {
                         0, // experience
                         new AttackData(new DieRoll(1, 4), 4, 0),
                         true, // friendly to player
+                        false,
                         0,
                         null,
                         0) // speed

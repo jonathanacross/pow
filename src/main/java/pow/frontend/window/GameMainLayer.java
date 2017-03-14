@@ -237,7 +237,7 @@ public class GameMainLayer extends AbstractWindow {
 
         // draw monsters, player, pets
         for (Actor actor : gs.getCurrentMap().actors) {
-            if (gs.player.canSee(gs, actor.loc)) {
+            if (gs.player.canSeeLocation(gs, actor.loc) && gs.player.canSeeActor(actor)) {
                 mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y);
             }
         }
@@ -252,7 +252,7 @@ public class GameMainLayer extends AbstractWindow {
         // draw effects
         if (!frontend.getEffects().isEmpty()) {
             for (GlyphLoc glyphLoc : frontend.getEffects().get(0).render()) {
-                if (gs.player.canSee(gs, glyphLoc.loc)) {
+                if (gs.player.canSeeLocation(gs, glyphLoc.loc)) {
                     mapView.drawTile(graphics, glyphLoc.imageName, glyphLoc.loc.x, glyphLoc.loc.y);
                 }
             }
@@ -268,7 +268,7 @@ public class GameMainLayer extends AbstractWindow {
                 double darknessD = 1.0 - (gs.getCurrentMap().map[x][y].brightness / (double) GameMap.MAX_BRIGHTNESS);
                 // Assign max darkness if we can't see it; alternatively, we could paint
                 // in gray, or something.  Or just not show it at all?
-                if (!gs.player.canSee(gs, new Point(x, y))) {
+                if (!gs.player.canSeeLocation(gs, new Point(x, y))) {
                     darknessD = 1;
                 }
                 int darkness = (int) Math.round(maxDarkness * darknessD);

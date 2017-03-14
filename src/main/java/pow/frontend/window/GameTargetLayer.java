@@ -85,7 +85,7 @@ public class GameTargetLayer extends AbstractWindow {
             if (!cursorPosition.equals(gs.player.loc)) {
                 List<Point> ray = Bresenham.makeRay(gs.player.loc, cursorPosition, radius + 1);
                 for (Point p : ray) {
-                    if (!gs.player.canSee(gs, p)) break;
+                    if (!gs.player.canSeeLocation(gs, p)) break;
                     mapView.drawCircle(graphics, Color.GREEN, p.x, p.y);
                     if (gs.getCurrentMap().map[p.x][p.y].blockAir()) break;
                 }
@@ -106,10 +106,17 @@ public class GameTargetLayer extends AbstractWindow {
 
     private void update() {
         Point cursorPosition = targetableSquares.get(targetIdx);
+        GameState gs = backend.getGameState();
 
         frontend.messages.pop();
         frontend.messages.push(makeMessage());
         Actor selectedActor = backend.getGameState().getCurrentMap().actorAt(cursorPosition.x, cursorPosition.y);
+        // even if there's an actor there, don't show it if the player can't see it
+        if (selectedActor != null) {
+            if (!gs.player.canSeeLocation(gs, selectedActor.loc) || !gs.player.canSeeActor(selectedActor)) {
+                selectedActor = null;
+            }
+        }
         frontend.monsterInfoWindow.setActor(selectedActor);
         frontend.monsterInfoWindow.visible = selectedActor != null;
         frontend.setDirty(true);
@@ -162,13 +169,13 @@ public class GameTargetLayer extends AbstractWindow {
         GameState gs = backend.getGameState();
         DungeonSquare square = gs.getCurrentMap().map[x][y];
 
-        if (gs.player.canSee(gs, cursorPosition)) {
+        if (gs.player.canSeeLocation(gs, cursorPosition)) {
             StringBuilder sb = new StringBuilder();
             sb.append("you see ");
 
             List<String> interestingThings = new ArrayList<>();
             Actor actor = gs.getCurrentMap().actorAt(x,y);
-            if (actor != null) {
+            if (actor != null && gs.player.canSeeActor(actor)) {
                 interestingThings.add(TextUtils.format(actor.name, 1, false));
             }
             if (square.items != null) {

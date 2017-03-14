@@ -61,6 +61,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         PEARL7,
         PEARL8,
         LANTERN,
+        LANTERN2,
         KEY,
         FLOAT,
         GASMASK,
