@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-// Implementations for particular condtions
+// Implementations for particular conditions
 public class Conditions {
     public static class Health extends Condition implements Serializable {
 

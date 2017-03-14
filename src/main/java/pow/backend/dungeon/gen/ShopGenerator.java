@@ -1,6 +1,5 @@
 package pow.backend.dungeon.gen;
 
-import pow.backend.ActionParams;
 import pow.backend.ShopData;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.ItemList;
@@ -59,17 +58,16 @@ public class ShopGenerator {
         return x*x;
     }
 
-    // returns an exponential price for x, assuming
+    // Returns an exponential price for x, assuming
     // that the price for value x1 is y1, and the price for
-    // value x2 is y2.
-    // Model is y = a e^(bx)
+    // value x2 is y2.  Model is y = a e^(bx).
     private static double expFit(int x, int x1, int y1, int x2, int y2) {
         double b = (Math.log(y2) - Math.log(y1)) / (x2 - x1);
         double a = y1 / Math.exp(b * x1);
         return a * Math.exp(b * x);
     }
 
-    // fits the model y = ax + b
+    // Fits the model y = ax + b, and evaluates y(x).
     private static double linFit(int x, int x1, int y1, int x2, int y2) {
         double a = (double) (y2 - y1) / (x2 - x1);
         return a * (x - x1) + y1;

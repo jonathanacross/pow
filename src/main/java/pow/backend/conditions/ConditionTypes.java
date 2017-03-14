@@ -12,7 +12,7 @@ public enum ConditionTypes {
     TO_DAM(Conditions.ToDam::new),
     DEFENSE(Conditions.Defense::new);
 
-    private Function<Actor, Condition> instanceGenerator;
+    private final Function<Actor, Condition> instanceGenerator;
 
     ConditionTypes(Function<Actor, Condition> instanceGenerator) {
        this.instanceGenerator = instanceGenerator;

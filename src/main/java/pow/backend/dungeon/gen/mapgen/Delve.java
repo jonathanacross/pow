@@ -149,7 +149,7 @@ public class Delve implements MapGenerator {
         return count;
     }
 
-    // Examine the 8 neigbours of the given cell, and count the number
+    // Examine the 8 neighbors of the given cell, and count the number
     // of separate groups of terrain cells. A groups contains cells that are
     // of the same type (terrain) and are adjacent, including diagonals.
     private int countGroups(int[][] map, int x, int y, int terrain) {

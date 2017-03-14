@@ -34,7 +34,7 @@ public class ParseUtils {
         String[] statBonuses = text.split(",");
         for (String statBonus : statBonuses) {
             String[] tokens = statBonus.split(":", 2);
-            // x indicates that we'll use the bounus calculated based on the level
+            // x indicates that we'll use the bonus calculated based on the level
             int bonusAmt = (tokens[1].charAt(0) == 'x') ? MATCH_BONUS : Integer.parseInt(tokens[1]);
             String stat = tokens[0];
             if (keyToBonusIdx.containsKey(stat)) {
