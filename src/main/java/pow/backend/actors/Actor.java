@@ -5,7 +5,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.AttackUtils;
-import pow.backend.conditions.Condition;
+import pow.backend.conditions.ConditionGroup;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
@@ -14,9 +14,7 @@ import pow.util.DieRoll;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public abstract class Actor extends DungeonObject implements Serializable {
@@ -56,30 +54,6 @@ public abstract class Actor extends DungeonObject implements Serializable {
         }
     }
 
-    // Class to hold temporary conditions of an actor
-    public static class ConditionSet implements Serializable {
-        public Map<ConditionTypes, Condition> conditionMap;
-
-        public ConditionSet(Actor actor) {
-            conditionMap = new HashMap<>();
-            for (ConditionTypes type : ConditionTypes.values()) {
-                conditionMap.put(type, type.getInstance(actor));
-            }
-        }
-
-        public List<GameEvent> update(GameBackend backend) {
-            List<GameEvent> events = new ArrayList<>();
-            for (Condition condition : conditionMap.values()) {
-                events.addAll(condition.update(backend));
-            }
-            return events;
-        }
-
-        public Condition get(ConditionTypes type) {
-            return conditionMap.get(type);
-        }
-    }
-
     // Holds stats for actors; these control how actors interact with each
     // other and the world. Note that these may be derived from other
     // quantities, e.g., the player's maxHealth may depend on their
@@ -104,7 +78,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     }
 
     protected final ActorStats baseStats;
-    public final ConditionSet conditions; // TODO: better name for ConditionSet
+    public final ConditionGroup conditions;
     public final Energy energy;
     public final int experience;
     public final ItemList inventory;
@@ -190,7 +164,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.friendly = actorParams.friendly;
         this.requiredItemDrops = actorParams.requiredItemDrops;
         this.numDropAttempts = actorParams.numDropAttempts;
-        this.conditions = new ConditionSet(this);
+        this.conditions = new ConditionGroup(this);
         this.inventory = new ItemList(20, 99);
         this.gold = 0;
     }
