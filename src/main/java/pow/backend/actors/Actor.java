@@ -174,7 +174,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.requiredItemDrops = actorParams.requiredItemDrops;
         this.numDropAttempts = actorParams.numDropAttempts;
         this.conditions = new ConditionGroup(this);
-        this.inventory = new ItemList(20, 99);
+        this.inventory = new ItemList(20, 100);
         this.gold = 0;
     }
 }

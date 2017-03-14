@@ -260,6 +260,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
         updateWealthStatus();
         updateLightRadius();
+        updateBagSize();
     }
 
     private void updateWealthStatus() {
@@ -278,6 +279,12 @@ public class Player extends Actor implements Serializable, LightSource {
         }
         if (artifacts.containsKey(DungeonItem.ArtifactSlot.LANTERN2)) {
             this.lightRadius = 11;
+        }
+    }
+
+    private void updateBagSize() {
+        if (this.artifacts.containsKey(DungeonItem.ArtifactSlot.BAG)) {
+            this.inventory.increaseMaxPerSlot(250);
         }
     }
 
