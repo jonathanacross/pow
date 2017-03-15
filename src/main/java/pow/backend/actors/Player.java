@@ -117,7 +117,18 @@ public class Player extends Actor implements Serializable, LightSource {
     private Player(DungeonObject.Params objectParams,
                   GainRatios gainRatios,
                   AttackData innateAttack ) {
-        super(objectParams, new Actor.Params( 1, -1, -99, 0, innateAttack, true, false, 0, null, 0));
+        super(objectParams, new Actor.Params(
+                1,
+                -1,
+                -99,
+                0,
+                innateAttack,
+                true,
+                false,
+                false,
+                0,
+                null,
+                0));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = -1;  // filled in by updateStats
         this.equipment = new ArrayList<>();
@@ -261,6 +272,7 @@ public class Player extends Actor implements Serializable, LightSource {
         updateWealthStatus();
         updateLightRadius();
         updateBagSize();
+        updateAquatic();
     }
 
     private void updateWealthStatus() {
@@ -286,6 +298,10 @@ public class Player extends Actor implements Serializable, LightSource {
         if (this.artifacts.containsKey(DungeonItem.ArtifactSlot.BAG)) {
             this.inventory.increaseMaxPerSlot(250);
         }
+    }
+
+    private void updateAquatic() {
+        this.aquatic = this.artifacts.containsKey(DungeonItem.ArtifactSlot.FLOAT);
     }
 
     // returns the old item, if any

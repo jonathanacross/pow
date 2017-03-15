@@ -119,7 +119,7 @@ public class GameMap implements Serializable {
 
         if (pet != null) {
             addActor(pet);
-            pet.loc = findClosestOpenSquare(playerLoc);
+            pet.loc = findClosestOpenSquare(player, playerLoc);
         }
 
         updatePlayerVisibilityData(player);
@@ -162,9 +162,12 @@ public class GameMap implements Serializable {
         return x >= 0 && y >= 0 && x < width && y < height;
     }
 
-    public boolean isBlocked(int x, int y) {
+    public boolean isBlocked(Actor actor, int x, int y) {
         if (!isOnMap(x,y)) return true;
-        if (map[x][y].blockGround()) return true;
+        boolean terrainMatches =
+                (actor.terrestrial && !map[x][y].blockGround()) ||
+                (actor.aquatic && !map[x][y].blockWater());
+        if (! terrainMatches) return true;
         for (Actor a: this.actors) {
             if (a.loc.x == x && a.loc.y == y && a.solid) return true;
         }
@@ -181,14 +184,14 @@ public class GameMap implements Serializable {
 
     // Finds the closest open square to the starting location.
     // This assumes that there is at least one open square.
-    private Point findClosestOpenSquare(Point start) {
+    private Point findClosestOpenSquare(Actor actor, Point start) {
         int i = 0;
         Point loc;
         do {
             loc = Spiral.position(i);
             loc.shiftBy(start);
             i++;
-        } while (isBlocked(loc.x, loc.y));
+        } while (isBlocked(actor, loc.x, loc.y));
 
         return loc;
     }

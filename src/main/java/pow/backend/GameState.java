@@ -65,6 +65,7 @@ public class GameState implements Serializable {
                         new AttackData(new DieRoll(1, 4), 4, 0),
                         true, // friendly to player
                         false,
+                        false,
                         0,
                         null,
                         0) // speed

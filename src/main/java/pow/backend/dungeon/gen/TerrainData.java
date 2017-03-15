@@ -64,6 +64,7 @@ public class TerrainData {
         String[] tokens = text.split(",", -1);
 
         boolean blockGround = false;
+        boolean blockWater = false;
         boolean blockAir = false;
         boolean diggable = false;
         boolean actOnStep = false;
@@ -76,7 +77,7 @@ public class TerrainData {
                 case "blockAir": blockAir = true; break;
                 case "blockGround": blockGround = true; break;
                 case "blockLava": break;
-                case "blockWater": break;
+                case "blockWater": blockWater = true; break;
                 case "diggable": diggable = true; break;
                 case "teleport": teleport = true; break;
                 default:
@@ -84,6 +85,6 @@ public class TerrainData {
             }
         }
 
-        return new DungeonTerrain.Flags(blockGround, blockAir, diggable, actOnStep, teleport);
+        return new DungeonTerrain.Flags(blockGround, blockWater, blockAir, diggable, actOnStep, teleport);
     }
 }

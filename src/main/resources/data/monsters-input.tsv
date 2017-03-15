@@ -131,15 +131,15 @@
 20	spike dog	mammal			0		0	spike dog	spike dog	A great hound with spines along his back. He growls as you enter his territory, then ferociously lashes his spiked tail.
 20	Lugorith	dragon		boss	4		16	Lugorith	Lugorith	The lord of chaos, Lugorith is a massive dragon of changing form. As you watch, it appears first fair and then foul. Its body is twisted by chaotic forces as it strives to stay real. Its very existence distorts the universe around it.
 20	evil incarnate	giant	strong	boss	5		18	evil incarnate	evil incarnate	A massive form cloaked in flame. His skeletal visage is twisted with evil, as he seeks forever to dominate all that is light and good in the world. He is the origin of man's fear of darkness and has created many foul creatures with his evil powers. He holds a great staff in his hand, and strides forward to destroy you.
-3	goldfish	fish		erratic	0		0	goldfish	goldfish	It looks just like the goldfish you used to keep in a glass bowl when you were a kid, but bigger.
-4	green fish	fish		erratic	1		0	green fish	green fish	Barracuda, known for their large size, fearsome appearance and ferocious behaviour.
-4	eel	fish			0		0	eel	eel	An electric eel slipping through the water.
-4	pink jellyfish	jelly		erratic	-2		0	pink jellyfish	pink jellyfish	A large pink jellyfish. It looks poisonous.
-5	copper jellyfish	jelly		erratic	-2		0	copper jellyfish	copper jellyfish	A copper-colored jellyfish; it has a large bell and long tentacles.
-6	scaryfish	fish			2		1	scaryfish	scaryfish	This fish has long teeth and spiky fins that look like a mohawk.
-15	water whirlwind	magical		erratic	2		0	water whirlwind	water whirlwind	A towering water elemental, sending wave after wave toward your frail body.
-15	octopus	fish			0		1	octopus	octopus	A primeval creature with tentacles 20 feet long.
-15	medusa	magical			0		1	medusa	medusa	A hideous gorgon, with venom dripping from her ghastly mouth.
-15	sea dragon	dragon			1		4	sea dragon	sea dragon	A mighty sea dragon, with great horns and a long tail.
-5	yellow turtle	reptile			-1		1	yellow turtle	yellow turtle	A turtle with a yellow shell.
-5	red turtle	reptile			-1		1	red turtle	red turtle	A turtle with a red shell.
+3	goldfish	fish		erratic,aquatic	0		0	goldfish	goldfish	It looks just like the goldfish you used to keep in a glass bowl when you were a kid, but bigger.
+4	green fish	fish		erratic,aquatic	1		0	green fish	green fish	Barracuda, known for their large size, fearsome appearance and ferocious behaviour.
+4	eel	fish		aquatic	0		0	eel	eel	An electric eel slipping through the water.
+4	pink jellyfish	jelly		erratic,aquatic	-2		0	pink jellyfish	pink jellyfish	A large pink jellyfish. It looks poisonous.
+5	copper jellyfish	jelly		erratic,aquatic	-2		0	copper jellyfish	copper jellyfish	A copper-colored jellyfish; it has a large bell and long tentacles.
+6	scaryfish	fish		aquatic	2		1	scaryfish	scaryfish	This fish has long teeth and spiky fins that look like a mohawk.
+15	water whirlwind	magical		erratic,aquatic	2		0	water whirlwind	water whirlwind	A towering water elemental, sending wave after wave toward your frail body.
+15	octopus	fish		aquatic	0		1	octopus	octopus	A primeval creature with tentacles 20 feet long.
+15	medusa	magical		aquatic	0		1	medusa	medusa	A hideous gorgon, with venom dripping from her ghastly mouth.
+15	sea dragon	dragon		aquatic	1		4	sea dragon	sea dragon	A mighty sea dragon, with great horns and a long tail.
+5	yellow turtle	reptile		aquatic	-1		1	yellow turtle	yellow turtle	A turtle with a yellow shell.
+5	red turtle	reptile		aquatic	-1		1	red turtle	red turtle	A turtle with a red shell.

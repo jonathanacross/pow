@@ -20,9 +20,9 @@ public class WorldDataGen {
     private static final WorldDataGen testInstance;
     private List<MapPoint> mapPoints;
 
-    public static List<MapPoint> getMapPoints() { return instance.mapPoints; }
-    public static List<MapPoint> getTestMapPoints() { return testInstance.mapPoints; }
-
+    public static List<MapPoint> getMapPoints(boolean testWorld) {
+        return testWorld ? testInstance.mapPoints : instance.mapPoints;
+    }
 
     private static final DungeonTerrain WATER = TerrainData.getTerrain("water 1");
     private static final DungeonTerrain LAVA  = TerrainData.getTerrain("lava");
@@ -30,10 +30,10 @@ public class WorldDataGen {
 
     private static final DungeonFeature NONE = null;
     private static final DungeonFeature WIN_TILE = new DungeonFeature("wintile", "way to win", "orange pearl",
-            new DungeonFeature.Flags( false, false, false, false, false, false, false, true),
+            new DungeonFeature.Flags( false, false,false, false, false, false, false, false, true),
             new ActionParams());
     private static final DungeonFeature LOSE_TILE = new DungeonFeature("losetile", "death", "cobra",
-            new DungeonFeature.Flags( false, false, false, false, false, false, false, true),
+            new DungeonFeature.Flags( false, false,false, false, false, false, false, false, true),
             new ActionParams());
     private static final DungeonFeature CANDLE = FeatureData.getFeature("candle");
     private static final DungeonFeature FOUNTAIN = FeatureData.getFeature("fountain");
@@ -119,7 +119,7 @@ public class WorldDataGen {
 
     private static List<String> getMonsterIds(String field) {
         if (field.equals(":all:")) {
-            return null;
+            return new ArrayList<>(MonsterGenerator.getMonsterIds());
         }
         if (field.isEmpty()) {
             return new ArrayList<>();

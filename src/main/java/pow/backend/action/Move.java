@@ -111,7 +111,7 @@ public class Move implements Action {
             return ActionResult.Failed(newAction);
         }
 
-        if (! gs.getCurrentMap().isBlocked(newx, newy)) {
+        if (! gs.getCurrentMap().isBlocked(this.actor, newx, newy)) {
             // move
             actor.loc.x = newx;
             actor.loc.y = newy;

@@ -259,16 +259,20 @@ public class RecursiveInterpolation implements MapGenerator {
                 }
             }
         }
-
-//        for (int y = 0; y < Array2D.height(interpMap); y++) {
-//            String line = "";
-//            for (int x = 0; x < Array2D.width(interpMap); x++) {
-//                line = line + interpMap[x][y] + ' ';
-//            }
-//            System.out.println(line);
-//        }
+//        printMap(interpMap);
 
         return interpMap;
+    }
+
+    private static void printMap(TerrainFeatureTriplet[][] map) {
+        for (int y = 0; y < Array2D.height(map); y++) {
+            String line = "";
+            for (int x = 0; x < Array2D.width(map); x++) {
+                line = line + map[x][y] + ' ';
+            }
+            System.out.println(line);
+        }
+        System.out.println();
     }
 
     private static TerrainFeatureTriplet[][] makeInterpMap(TerrainFeatureTriplet[][] layout, Random rng, int interpolationSteps) {
