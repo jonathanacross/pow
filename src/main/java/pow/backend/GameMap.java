@@ -42,7 +42,7 @@ public class GameMap implements Serializable {
             for (int y = 0; y < height; y++) {
                 DungeonFeature f = map[x][y].feature;
                 if (f != null && f.flags.glowing) {
-                    this.lightSources.add(new SimpleLightSource(new Point(x,y), 3));
+                    this.lightSources.add(new SimpleLightSource(new Point(x,y), GameConstants.CANDLE_LIGHT_RADIUS));
                 }
             }
         }

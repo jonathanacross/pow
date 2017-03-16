@@ -1,6 +1,7 @@
 package pow.backend.dungeon.gen.worldgen;
 
 import pow.backend.ActionParams;
+import pow.backend.GameConstants;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.MonsterIdGroup;
@@ -281,19 +282,24 @@ public class WorldDataGen {
 
     private static MapGenerator buildShapeDLAGenerator(String params, MonsterIdGroup monsterIds, int level) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new ShapeDLA(60, 60, style, monsterIds, level);
+        return new ShapeDLA(GameConstants.DEFAULT_AREA_SIZE, GameConstants.DEFAULT_AREA_SIZE, style, monsterIds, level);
     }
 
     private static MapGenerator buildRogueGenerator(String params, MonsterIdGroup monsterIds, int level) {
         String[] subParams = params.split(",");
         int vaultLevel = Integer.parseInt(subParams[0]);
         ProtoTranslator style = getProtoTranslator(subParams[1]);
-        return new RogueGenerator(60, 60, vaultLevel, style, monsterIds, level);
+        int areaSize = GameConstants.DEFAULT_AREA_SIZE;
+        if (vaultLevel == 2) {
+            // for complex dungeons with huge vaults, make the levels bigger
+            areaSize = (int) Math.round(GameConstants.DEFAULT_AREA_SIZE * 1.5);
+        }
+        return new RogueGenerator(areaSize, areaSize, vaultLevel, style, monsterIds, level);
     }
 
     private static MapGenerator buildDelveGenerator(String params, MonsterIdGroup monsterIds, int level) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new Delve(50, 50, style, monsterIds, level);
+        return new Delve(GameConstants.DELVE_AREA_SIZE, GameConstants.DELVE_AREA_SIZE, style, monsterIds, level);
     }
 
     private static MapGenerator buildCellularAutomataGenerator(String params, MonsterIdGroup monsterIds, int level) {
@@ -301,7 +307,7 @@ public class WorldDataGen {
         int layers = Integer.parseInt(subParams[0]);
         boolean makeLakes = Boolean.parseBoolean(subParams[1]);
         ProtoTranslator style = getProtoTranslator(subParams[2]);
-        return new CellularAutomata(60, 60, layers, makeLakes, style, monsterIds, level);
+        return new CellularAutomata(GameConstants.DEFAULT_AREA_SIZE, GameConstants.DEFAULT_AREA_SIZE, layers, makeLakes, style, monsterIds, level);
     }
 
     private static MapGenerator buildTestGenerator(String type, String params, MonsterIdGroup monsterIds, int level) {
@@ -377,6 +383,7 @@ public class WorldDataGen {
                 throw new RuntimeException("Unknown MapStyle '" + params + "'");
         }
 
-        return new RecursiveInterpolation(6, 3, style, monsterIds, level);
+        return new RecursiveInterpolation(GameConstants.OUTSIDE_AREA_SOURCE_SIZE,
+                GameConstants.OUTSIDE_AREA_NUM_INTERPOLATION_STEPS, style, monsterIds, level);
     }
 }

@@ -1,6 +1,7 @@
 package pow.backend.dungeon.gen;
 
 import pow.backend.ActionParams;
+import pow.backend.GameConstants;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.*;
@@ -238,8 +239,7 @@ public class GeneratorUtils {
 
     // note: this also removes the player and pet from the map!
     public static void regenMonstersForCurrentMap(GameMap map, Random rng) {
-        double density = 0.01;
-        map.actors = createMonsters(map.map, density, map.genMonsterIds, rng);
+        map.actors = createMonsters(map.map, GameConstants.MONSTER_DENSITY, map.genMonsterIds, rng);
     }
 
     public static void healAllMonsters(GameMap map) {
@@ -339,7 +339,7 @@ public class GeneratorUtils {
 
     public static int getDefaultNumItems(int width, int height, Random rng) {
         int area = width * height;
-        double meanNumItems = area / 400.0;
+        double meanNumItems = GameConstants.ITEM_DENSITY * area;
 
         int numItems = (int) Math.round(3 * rng.nextGaussian() + meanNumItems);
         numItems = Math.max(0, numItems);

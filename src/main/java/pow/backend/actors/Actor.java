@@ -2,6 +2,7 @@ package pow.backend.actors;
 
 import pow.backend.AttackData;
 import pow.backend.GameBackend;
+import pow.backend.GameConstants;
 import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.AttackUtils;
@@ -181,7 +182,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.requiredItemDrops = actorParams.requiredItemDrops;
         this.numDropAttempts = actorParams.numDropAttempts;
         this.conditions = new ConditionGroup(this);
-        this.inventory = new ItemList(20, 100);
+        this.inventory = new ItemList(GameConstants.ACTOR_ITEM_LIST_SIZE, GameConstants.ACTOR_DEFAULT_ITEMS_PER_SLOT);
         this.gold = 0;
     }
 }

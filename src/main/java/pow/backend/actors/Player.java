@@ -2,6 +2,7 @@ package pow.backend.actors;
 
 import pow.backend.AttackData;
 import pow.backend.GameBackend;
+import pow.backend.GameConstants;
 import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.behavior.ActionBehavior;
@@ -285,18 +286,18 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private void updateLightRadius() {
-        this.lightRadius = 4; // slightly better than a candle
+        this.lightRadius = GameConstants.PLAYER_SMALL_LIGHT_RADIUS;
         if (artifacts.containsKey(DungeonItem.ArtifactSlot.LANTERN)) {
-            this.lightRadius = 8;
+            this.lightRadius = GameConstants.PLAYER_MED_LIGHT_RADIUS;
         }
         if (artifacts.containsKey(DungeonItem.ArtifactSlot.LANTERN2)) {
-            this.lightRadius = 11;
+            this.lightRadius = GameConstants.PLAYER_LARGE_LIGHT_RADIUS;
         }
     }
 
     private void updateBagSize() {
         if (this.artifacts.containsKey(DungeonItem.ArtifactSlot.BAG)) {
-            this.inventory.increaseMaxPerSlot(250);
+            this.inventory.increaseMaxPerSlot(GameConstants.PLAYER_EXPANDED_ITEMS_PER_SLOT);
         }
     }
 

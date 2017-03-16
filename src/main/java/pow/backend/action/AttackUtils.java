@@ -1,6 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
+import pow.backend.GameConstants;
 import pow.backend.GameState;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
@@ -47,13 +48,13 @@ public class AttackUtils {
 
         // with some probability, have the monster drop some random items
         for (int attempt = 0; attempt < actor.numDropAttempts; attempt++) {
-            double dropChance = gs.player.increaseWealth ? 0.75 : 0.5;
+            double dropChance = gs.player.increaseWealth ? GameConstants.BONUS_MONSTER_DROP_CHANCE : GameConstants.MONSTER_DROP_CHANCE;
             if (gs.rng.nextDouble() <= dropChance) {
                 int difficultyLevel = map.level;
                 DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
                 if (item.flags.money) {
                     if (gs.player.increaseWealth) {
-                        item.count *= 3;
+                        item.count *= GameConstants.BONUS_GOLD_MULTIPLIER;
                     }
                 }
                 map.map[actor.loc.x][actor.loc.y].items.add(item);

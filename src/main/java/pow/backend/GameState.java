@@ -38,7 +38,7 @@ public class GameState implements Serializable {
         this.gameInProgress = false;
         this.player = new Player();
         this.pet = null;
-        this.log = new MessageLog(50);
+        this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
     }
 
     public GameState(String name) {
@@ -71,7 +71,7 @@ public class GameState implements Serializable {
                         0) // speed
         );
         this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
-        this.log = new MessageLog(50);
+        this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         log.add("Welcome to Pearls of Wisdom!");
         log.add("Press ? for help.");
     }
