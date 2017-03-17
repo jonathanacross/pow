@@ -15,12 +15,15 @@ public class TestArea implements MapGenerator {
     private final ProtoTranslator translator;
     private final int level;
     private final MonsterIdGroup monsterIds;
+    private final GameMap.Flags flags;
 
-    public TestArea(String type, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
+    public TestArea(String type, ProtoTranslator translator, MonsterIdGroup monsterIds,
+                    int level, GameMap.Flags flags) {
         this.type = type;
         this.translator = translator;
         this.monsterIds = monsterIds;
         this.level = level;
+        this.flags = flags;
     }
 
     @Override
@@ -46,7 +49,7 @@ public class TestArea implements MapGenerator {
                                   List<MapConnection> connections,
                                   Random rng) {
         PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.parseMapInfo(Arrays.asList(charData));
-        PremadeGenerator generator = new PremadeGenerator(mapInfo, translator, monsterIds, level);
+        PremadeGenerator generator = new PremadeGenerator(mapInfo, translator, monsterIds, level, flags);
         return generator.genMap(name, connections, rng);
     }
 
@@ -95,7 +98,7 @@ public class TestArea implements MapGenerator {
             dungeonSquares[width-2][idx+1].items.add(ArtifactData.getArtifact(id));
         }
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
         return map;
     }
 
@@ -184,7 +187,7 @@ public class TestArea implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
         return map;
     }
 }

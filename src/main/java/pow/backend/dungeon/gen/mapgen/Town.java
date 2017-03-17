@@ -18,11 +18,13 @@ public class Town implements MapGenerator {
     private final ProtoTranslator translator;
     private final MonsterIdGroup monsterIds;
     private final int level;
+    private final GameMap.Flags flags;
 
-    public Town(ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
+    public Town(ProtoTranslator translator, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         this.translator = translator;
         this.monsterIds = monsterIds;
         this.level = level;
+        this.flags = flags;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class Town implements MapGenerator {
                 rng);
         ShopData shopData = ShopGenerator.genShop(level, rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), shopData);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags, shopData);
         return map;
     }
 

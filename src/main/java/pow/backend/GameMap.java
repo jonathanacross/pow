@@ -17,6 +17,21 @@ import java.util.Map;
 import java.util.Random;
 
 public class GameMap implements Serializable {
+
+    public static class Flags {
+        boolean permLight; // should the level always be lit?
+        boolean outside;  // if outside, then we can illuminate based on day/night
+        boolean poisonGas;  // player loses health if not wearing gasmask
+        boolean hot;  // player loses health if not wearing heatsuit
+
+        public Flags(boolean permLight, boolean outside, boolean poisonGas, boolean hot) {
+            this.permLight = permLight;
+            this.outside = outside;
+            this.poisonGas = poisonGas;
+            this.hot = hot;
+        }
+    }
+
     public final DungeonSquare[][] map; // indexed by x,y, or c,r
 
     public final int width;
@@ -28,6 +43,7 @@ public class GameMap implements Serializable {
     public final String name; // name of the area
     public final int level;  // difficulty level
     public ShopData shopData; // for stores contained in this map
+    public final Flags flags;
 
     public void updatePlayerVisibilityData(Player player) {
         updateBrightness(player);
@@ -95,6 +111,7 @@ public class GameMap implements Serializable {
                    DungeonSquare[][] map,
                    Map<String, Point> keyLocations,
                    MonsterIdGroup genMonsterIds,
+                   Flags flags,
                    ShopData shopData) {
         this.name = name;
         this.level = level;
@@ -104,6 +121,7 @@ public class GameMap implements Serializable {
         this.keyLocations = keyLocations;
         this.genMonsterIds = genMonsterIds;
         this.actors = new ArrayList<>();
+        this.flags = flags;
         this.shopData = shopData;
         initLightSources();
     }

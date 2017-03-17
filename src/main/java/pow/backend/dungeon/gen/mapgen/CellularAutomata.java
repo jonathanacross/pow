@@ -20,9 +20,10 @@ public class CellularAutomata implements MapGenerator {
     private final ProtoTranslator translator;
     private final int level;
     private final MonsterIdGroup monsterIds;
+    private final GameMap.Flags flags;
 
     public CellularAutomata(int width, int height, int layers, boolean makeLakes,
-                            ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
+                            ProtoTranslator translator, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         this.width = width;
         this.height = height;
         this.layers = layers;
@@ -30,6 +31,7 @@ public class CellularAutomata implements MapGenerator {
         this.translator = translator;
         this.monsterIds = monsterIds;
         this.level = level;
+        this.flags = flags;
     }
 
     @Override
@@ -56,7 +58,7 @@ public class CellularAutomata implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
         return map;
     }
 

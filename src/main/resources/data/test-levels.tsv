@@ -1,8 +1,8 @@
-#id	level	group	possible dirs	from groups	from id	generator	genParams	boss	monsters
-terrain	0					terrain test	basement		
-water	30		N		terrain	recursiveInterpolation	water		goldfish,green fish,eel,pink jellyfish
-rogue	25		E		water	rogue	2,blue	white rat	blue ghost,pink ghost,evil eye
-run	1		E		terrain	run test	dungeon		farmer,mangy leper,jester,beggar,salesman
-item	2		W		terrain	item test	crypt		
-cave	17		D		terrain	cellularAutomata	1,true,desert cave	minotaur	brown scorpion,goldfish
-arena	99		S		terrain	arena	dungeon		:all:
+#id	level	group	possible dirs	from groups	from id	generator	genParams	flags	boss	monsters
+terrain	0					terrain test	basement	permLight		
+water	30		N		terrain	recursiveInterpolation	water	outside		goldfish,green fish,eel,pink jellyfish
+rogue	25		E		water	rogue	2,blue	hot	white rat	blue ghost,pink ghost,evil eye
+run	1		E		terrain	run test	dungeon			farmer,mangy leper,jester,beggar,salesman
+item	2		W		terrain	item test	crypt			
+cave	17		D		terrain	cellularAutomata	1,true,desert cave	poisonGas	minotaur	brown scorpion,goldfish
+arena	99		S		terrain	arena	dungeon			:all:

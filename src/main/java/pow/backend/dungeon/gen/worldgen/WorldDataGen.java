@@ -2,7 +2,9 @@ package pow.backend.dungeon.gen.worldgen;
 
 import pow.backend.ActionParams;
 import pow.backend.GameConstants;
+import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
@@ -63,8 +65,8 @@ public class WorldDataGen {
     }
 
     private static MapPoint parseMapLinkData(String[] line) {
-        if (line.length != 10) {
-            throw new RuntimeException("error: expected 10 fields in line.");
+        if (line.length != 11) {
+            throw new RuntimeException("error: expected 11 fields in line.");
         }
 
         String id = line[0];
@@ -98,10 +100,11 @@ public class WorldDataGen {
 
         String generatorName = line[6];
         String generatorParams = line[7];
-        String bossId = getBossId(line[8]);
-        List<String> monsterIds = getMonsterIds(line[9]);
+        GameMap.Flags flags = parseFlags(line[8]);
+        String bossId = getBossId(line[9]);
+        List<String> monsterIds = getMonsterIds(line[10]);
         MonsterIdGroup monsterIdGroup = new MonsterIdGroup(monsterIds, bossId != null, bossId);
-        MapGenerator generator = buildGenerator(generatorName, generatorParams, monsterIdGroup, level);
+        MapGenerator generator = buildGenerator(generatorName, generatorParams, monsterIdGroup, level, flags);
 
         return new MapPoint(id, level, group, directions, fromGroups, fromIds, generator);
     }
@@ -141,21 +144,43 @@ public class WorldDataGen {
     private static final String STAIRS_DOWN = "stairs down";
     private static final String DUNGEON_ENTRANCE = "dungeon entrance";
 
+    private static GameMap.Flags parseFlags(String text) {
+        String[] tokens = text.split(",", -1);
 
-    private static MapGenerator buildGenerator(String generatorType, String params, MonsterIdGroup monsterIds, int level) {
+        boolean permLight = false;
+        boolean outside = false;
+        boolean poisonGas = false;
+        boolean hot = false;
+        for (String t : tokens) {
+            switch (t) {
+                case "": break;  // will happen if we have an empty string
+                case "permLight": permLight = true; break;
+                case "outside": outside = true; break;
+                case "poisonGas": poisonGas = true; break;
+                case "hot": hot = true; break;
+                default:
+                    throw new IllegalArgumentException("unknown map flag '" + t + "'");
+            }
+        }
+
+        return new GameMap.Flags(permLight, outside, poisonGas, hot);
+
+    }
+
+    private static MapGenerator buildGenerator(String generatorType, String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         switch (generatorType) {
-            case "town": return buildTownGenerator(params, monsterIds, level);
-            case "recursiveInterpolation": return buildRecursiveInterpolationGenerator(params, monsterIds, level);
-            case "shapeDLA": return buildShapeDLAGenerator(params, monsterIds, level);
-            case "delve": return buildDelveGenerator(params, monsterIds, level);
-            case "cellularAutomata": return buildCellularAutomataGenerator(params, monsterIds, level);
-            case "premade": return buildPremadeGenerator(params, monsterIds, level);
-            case "rogue": return buildRogueGenerator(params, monsterIds, level);
+            case "town": return buildTownGenerator(params, monsterIds, level, flags);
+            case "recursiveInterpolation": return buildRecursiveInterpolationGenerator(params, monsterIds, level, flags);
+            case "shapeDLA": return buildShapeDLAGenerator(params, monsterIds, level, flags);
+            case "delve": return buildDelveGenerator(params, monsterIds, level, flags);
+            case "cellularAutomata": return buildCellularAutomataGenerator(params, monsterIds, level, flags);
+            case "premade": return buildPremadeGenerator(params, monsterIds, level, flags);
+            case "rogue": return buildRogueGenerator(params, monsterIds, level, flags);
             case "terrain test":
             case "run test":
             case "item test":
             case "arena":
-                return buildTestGenerator(generatorType, params, monsterIds, level);
+                return buildTestGenerator(generatorType, params, monsterIds, level, flags);
             default: throw new RuntimeException("unknown generator type '" + generatorType + "'");
         }
     }
@@ -275,17 +300,17 @@ public class WorldDataGen {
         return new ProtoTranslator(terrainMap, featureMap);
     }
 
-    private static MapGenerator buildTownGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildTownGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new Town(style, monsterIds, level);
+        return new Town(style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildShapeDLAGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildShapeDLAGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new ShapeDLA(GameConstants.DEFAULT_AREA_SIZE, GameConstants.DEFAULT_AREA_SIZE, style, monsterIds, level);
+        return new ShapeDLA(GameConstants.DEFAULT_AREA_SIZE, GameConstants.DEFAULT_AREA_SIZE, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildRogueGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildRogueGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         String[] subParams = params.split(",");
         int vaultLevel = Integer.parseInt(subParams[0]);
         ProtoTranslator style = getProtoTranslator(subParams[1]);
@@ -294,35 +319,35 @@ public class WorldDataGen {
             // for complex dungeons with huge vaults, make the levels bigger
             areaSize = (int) Math.round(GameConstants.DEFAULT_AREA_SIZE * 1.5);
         }
-        return new RogueGenerator(areaSize, areaSize, vaultLevel, style, monsterIds, level);
+        return new RogueGenerator(areaSize, areaSize, vaultLevel, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildDelveGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildDelveGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new Delve(GameConstants.DELVE_AREA_SIZE, GameConstants.DELVE_AREA_SIZE, style, monsterIds, level);
+        return new Delve(GameConstants.DELVE_AREA_SIZE, GameConstants.DELVE_AREA_SIZE, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildCellularAutomataGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildCellularAutomataGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         String[] subParams = params.split(",");
         int layers = Integer.parseInt(subParams[0]);
         boolean makeLakes = Boolean.parseBoolean(subParams[1]);
         ProtoTranslator style = getProtoTranslator(subParams[2]);
-        return new CellularAutomata(GameConstants.DEFAULT_AREA_SIZE, GameConstants.DEFAULT_AREA_SIZE, layers, makeLakes, style, monsterIds, level);
+        return new CellularAutomata(GameConstants.DEFAULT_AREA_SIZE, GameConstants.DEFAULT_AREA_SIZE, layers, makeLakes, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildTestGenerator(String type, String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildTestGenerator(String type, String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new TestArea(type, style, monsterIds, level);
+        return new TestArea(type, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildPremadeGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildPremadeGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         String[] subParams = params.split(",");
         PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.getLevel(subParams[0]);
         ProtoTranslator style = getProtoTranslator(subParams[1]);
-        return new PremadeGenerator(mapInfo, style, monsterIds, level);
+        return new PremadeGenerator(mapInfo, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildRecursiveInterpolationGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildRecursiveInterpolationGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         RecursiveInterpolation.MapStyle style;
         switch (params) {
             case "grass":
@@ -384,6 +409,6 @@ public class WorldDataGen {
         }
 
         return new RecursiveInterpolation(GameConstants.OUTSIDE_AREA_SOURCE_SIZE,
-                GameConstants.OUTSIDE_AREA_NUM_INTERPOLATION_STEPS, style, monsterIds, level);
+                GameConstants.OUTSIDE_AREA_NUM_INTERPOLATION_STEPS, style, monsterIds, level, flags);
     }
 }
