@@ -93,7 +93,17 @@ public class GameMap implements Serializable {
     // a convenience for the frontend to display light in a cool manner.
     public static final int MAX_BRIGHTNESS = 100;
     private void updateBrightness(Player player) {
+        if (flags.permLight) {
+            // level completely lit
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    map[x][y].brightness = MAX_BRIGHTNESS;
+                }
+            }
+            return;
+        }
 
+        // level is dark
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 map[x][y].brightness = 0;

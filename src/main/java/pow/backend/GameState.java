@@ -21,6 +21,8 @@ public class GameState implements Serializable {
     public final Player player;
     public Pet pet;
 
+    public int turnCount;
+
     // logging
     public final MessageLog log;
 
@@ -39,6 +41,7 @@ public class GameState implements Serializable {
         this.player = new Player();
         this.pet = null;
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
+        this.turnCount = 0;
     }
 
     public GameState(String name) {
@@ -74,5 +77,6 @@ public class GameState implements Serializable {
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         log.add("Welcome to Pearls of Wisdom!");
         log.add("Press ? for help.");
+        this.turnCount = 0;
     }
 }

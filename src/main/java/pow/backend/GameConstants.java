@@ -85,6 +85,14 @@ public class GameConstants {
     // player is wearing amulet of wealth.
     public final static int BONUS_GOLD_MULTIPLIER = 3;
 
+    // If player doesn't have gas mask, they lose this much
+    // health in certain areas.
+    public final static int POISON_DAMAGE_PER_TURN = 1;
+
+    // If player doesn't have heat suit, they lose this much
+    // health in certain areas.
+    public final static int HEAT_DAMAGE_PER_TURN = 5;
+
     // ------------------- other game constants ---------------
 
     public final static int MESSAGE_LOG_SIZE = 50;

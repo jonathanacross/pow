@@ -398,6 +398,14 @@ public class Player extends Actor implements Serializable, LightSource {
         return false;
     }
 
+    public boolean hasGasMask() {
+        return artifacts.containsKey(DungeonItem.ArtifactSlot.GASMASK);
+    }
+
+    public boolean hasHeatSuit() {
+        return artifacts.containsKey(DungeonItem.ArtifactSlot.HEATSUIT);
+    }
+
     @Override
     public boolean canDig() {
         return artifacts.containsKey(DungeonItem.ArtifactSlot.PICKAXE);
