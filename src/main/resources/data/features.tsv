@@ -29,6 +29,10 @@ blue open door	blue open door	blue open door	openDoor,blockWater,blockLava,inter
 blue closed door	blue closed door	blue closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::blue open door
 blue stairs down	blue stairs down	blue stairs down	downstairs,blockWater,blockLava,interesting	
 blue stairs up	blue stairs up	blue stairs up	upstairs,blockWater,blockLava,interesting	
+rock open door	open rock door	open rock door	openDoor,blockWater,blockLava,interesting	modifyFeature::rock closed door
+rock closed door	closed rock door	closed metal rock door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::rock open door
+key locked rock door	key locked rock door	closed metal key rock door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	unlockDoor:1:rock open door
+pearl locked rock door	pearl locked rock door	closed metal pearl rock door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	unlockDoor:2:rock open door
 candle	candle	candle	smallLight	
 big tree	big tree	big tree		
 sick big tree	sick big tree	sick big tree		

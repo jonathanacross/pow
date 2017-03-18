@@ -7,6 +7,7 @@ import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
 import pow.util.Array2D;
+import pow.util.Direction;
 import pow.util.Point;
 
 import java.util.*;
@@ -40,15 +41,24 @@ public class RecursiveInterpolation implements MapGenerator {
         public final List<TerrainFeatureTriplet> interiors;
         public final String upstairsFeatureId;
         public final String downstairsFeatureId;
+        public final boolean addLockAroundExits;
+        public final TerrainFeatureTriplet surroundingLock;
+        public final TerrainFeatureTriplet mainLock;
 
         public MapStyle(List<TerrainFeatureTriplet> borders,
                         List<TerrainFeatureTriplet> interiors,
                         String upstairsFeatureId,
-                        String downstairsFeatureId) {
+                        String downstairsFeatureId,
+                        boolean addLockAroundExits,
+                        TerrainFeatureTriplet surroundingLock,
+                        TerrainFeatureTriplet mainLock) {
             this.borders = borders;
             this.interiors = interiors;
             this.upstairsFeatureId = upstairsFeatureId;
             this.downstairsFeatureId = downstairsFeatureId;
+            this.addLockAroundExits = addLockAroundExits;
+            this.surroundingLock = surroundingLock;
+            this.mainLock = mainLock;
         }
     }
 
@@ -130,6 +140,11 @@ public class RecursiveInterpolation implements MapGenerator {
                 style.upstairsFeatureId,
                 style.downstairsFeatureId,
                 rng);
+
+        // block the exits, if necessary
+        if (style.addLockAroundExits) {
+            addLockAroundExits(squares, keyLocations, style.mainLock, style.surroundingLock);
+        }
 
         // add items
         int numItems = GeneratorUtils.getDefaultNumItems(w, h, rng);
@@ -345,5 +360,47 @@ public class RecursiveInterpolation implements MapGenerator {
     private static double[][] makeNoise(int width, int height, int origWidth, int origHeight, int interpolationSteps) {
         int scale = Math.max(origWidth, origHeight) * 2;
         return fractalNoise(width, height, 1.0, scale, 0.0, interpolationSteps);
+    }
+
+    private static void addLockAroundExits(DungeonSquare[][] squares,
+                                           Map<String, Point> keyLocations,
+                                           TerrainFeatureTriplet mainLock,
+                                           TerrainFeatureTriplet surroundingLock) {
+        int width = Array2D.width(squares);
+        int height = Array2D.height(squares);
+
+        for (Point location: keyLocations.values()) {
+            boolean onLeft = location.x == 0;
+            boolean onRight = location.x == width - 1;
+            boolean onTop = location.y == 0;
+            boolean onBottom = location.y == height - 1;
+
+            // skip up/down exits
+            if (!onLeft && !onRight && !onBottom && !onTop) {
+                continue;
+            }
+
+            // add walls around the exit..
+            for (Direction direction : Direction.ALL) {
+                Point adj = location.add(direction);
+                if (adj.x >= 0 && adj.y >= 0 && adj.x < width && adj.y < height) {
+                    if (!squares[adj.x][adj.y].blockGround() || !squares[adj.x][adj.y].blockWater()) {
+                        DungeonTerrain terrain = TerrainData.getTerrain(surroundingLock.terrain);
+                        DungeonFeature feature = surroundingLock.feature1 != null ? FeatureData.getFeature(surroundingLock.feature1) : null;
+                        squares[adj.x][adj.y] = new DungeonSquare(terrain, feature);
+                    }
+                }
+            }
+
+            // ..except a door leading into the level
+            Point doorLoc;
+            if (onLeft) doorLoc = location.add(Direction.E);
+            else if (onRight) doorLoc = location.add(Direction.W);
+            else if (onTop)  doorLoc = location.add(Direction.S);
+            else doorLoc = location.add(Direction.N);
+            DungeonTerrain terrain = TerrainData.getTerrain(mainLock.terrain);
+            DungeonFeature feature = mainLock.feature1 != null ? FeatureData.getFeature(mainLock.feature1) : null;
+            squares[doorLoc.x][doorLoc.y] = new DungeonSquare(terrain, feature);
+        }
     }
 }

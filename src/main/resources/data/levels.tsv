@@ -42,9 +42,9 @@ haunted3	52	7	N,E,S,W	7		recursiveInterpolation	haunted forest	outside		skeleton
 d6l1	55		D		haunted3	shapeDLA	crypt		red spider	skeleton mage,skeleton warrior,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire,evil eye,floating skull,vampire bat
 d6l2	56		D		d6l1	shapeDLA	crypt		skeletal dragon	skeleton mage,skeleton warrior,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire,evil eye,floating skull,vampire bat
 town3	60	4	N,E,S,W	7		town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
-dig desert1	60	8	N,E,S,W	6,7		recursiveInterpolation	desert	outside		troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
-dig desert2	61	8	N,E,S,W	8		recursiveInterpolation	desert	outside		troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
-dig desert3	61	8	N,E,S,W	8		recursiveInterpolation	desert	outside		troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
+dig desert1	60	8	N,E,S,W	6,7		recursiveInterpolation	dig desert	outside		troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
+dig desert2	61	8	N,E,S,W	8		recursiveInterpolation	dig desert	outside		troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
+dig desert3	61	8	N,E,S,W	8		recursiveInterpolation	dig desert	outside		troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 d7l1	65		D		dig desert3	cellularAutomata	2,false,brown cave		two headed ogre	troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 d7l2	66		D		d7l1	cellularAutomata	2,false,brown cave		oliphant	troll mage,troll warrior,troll archer,troll rogue,blue dragon,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 ocean1	70	9	N,E,S,W	8		recursiveInterpolation	water	outside		copper jellyfish,scaryfish,water whirlwind,octopus,medusa,sea dragon

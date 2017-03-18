@@ -5,6 +5,7 @@ import pow.backend.GameConstants;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.*;
+import pow.backend.dungeon.gen.mapgen.RecursiveInterpolation;
 import pow.util.Array2D;
 import pow.util.Direction;
 import pow.util.Point;
@@ -519,5 +520,4 @@ public class GeneratorUtils {
         String itemId = possibleItemIds.get(rng.nextInt(possibleItemIds.size()));
         return ItemGenerator.genItem(itemId, perturbedLevel, rng);
     }
-
 }

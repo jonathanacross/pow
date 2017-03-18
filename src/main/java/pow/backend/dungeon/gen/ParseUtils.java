@@ -86,6 +86,7 @@ public class ParseUtils {
             case "enterShop": params.actionName = ActionParams.ActionName.ENTER_SHOP_ACTION; break;
             case "heroism": params.actionName = ActionParams.ActionName.HEROISM_ACTION; break;
             case "agility": params.actionName = ActionParams.ActionName.AGILITY_ACTION; break;
+            case "unlockDoor": params.actionName = ActionParams.ActionName.UNLOCK_DOOR_ACTION; break;
             default: throw new IllegalArgumentException("unknown action name " + tokens[0]);
         }
 
