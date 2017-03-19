@@ -10,6 +10,7 @@ import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.LightSource;
+import pow.backend.event.GameEvent;
 import pow.util.Circle;
 import pow.util.DieRoll;
 import pow.util.MathUtils;
@@ -66,6 +67,7 @@ public class Player extends Actor implements Serializable, LightSource {
     private final GainRatios gainRatios;
     public final PlayerStats playerStats;
     public boolean increaseWealth;
+    private boolean winner;
 
     private final AttackData innateAttack; // attack to use if nothing is wielded.
     public int experience;
@@ -145,6 +147,7 @@ public class Player extends Actor implements Serializable, LightSource {
         this.monsterTarget = null;
         this.behavior = null;
         this.increaseWealth = false;
+        this.winner = false;
     }
 
     public void addCommand(Action request) {
@@ -329,9 +332,18 @@ public class Player extends Actor implements Serializable, LightSource {
         return item;
     }
 
-    public void addArtifact(DungeonItem item) {
+    public List<GameEvent> addArtifact(DungeonItem item) {
         artifacts.put(item.artifactSlot, item);
         updateStats();
+        List<GameEvent> events = new ArrayList<>();
+
+        // check for a win!
+        if (!winner && hasAllPearls()) {
+            winner = true;
+            events.add(GameEvent.WonGame());
+        }
+
+        return events;
     }
 
     @Override
@@ -430,4 +442,6 @@ public class Player extends Actor implements Serializable, LightSource {
         }
         return null;
     }
+
+    public boolean isWinner() { return winner; }
 }

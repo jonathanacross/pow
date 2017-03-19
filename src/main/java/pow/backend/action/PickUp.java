@@ -55,12 +55,19 @@ public class PickUp implements Action {
                 return ActionResult.Failed(null);
             }
             // at this point we know that it's the player picking up the artifact
-            gs.player.addArtifact(item);
+            events.addAll(gs.player.addArtifact(item));
             square.items.items.remove(itemNum);
             // slight hack here.. update the visibility of the game map,
             // since picking up some artifacts may involve lanterns
             gs.getCurrentMap().updatePlayerVisibilityData(gs.player);
             backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true));
+
+            // log if the player won the game
+            for (GameEvent event : events) {
+                if (event.eventType.equals(GameEvent.EventType.WON_GAME)) {
+                    backend.logMessage("Congratulations, you won!");
+                }
+            }
             return ActionResult.Succeeded(events);
         }
 
