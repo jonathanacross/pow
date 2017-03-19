@@ -38,7 +38,8 @@ public class PlayerInfoWindow extends AbstractWindow {
         ImageController.drawTile(graphics, player.image, MARGIN, MARGIN);
 
         List<String> lines = new ArrayList<>();
-        lines.add(player.name);
+        String winnerString = player.isWinner() ? " (Winner!)" : "";
+        lines.add(player.name + winnerString);
         lines.add("");
         lines.add("HP:        " + player.getHealth() + "/" + player.getMaxHealth());
         lines.add("MP:        " + player.getMana() + "/" + player.getMaxMana());

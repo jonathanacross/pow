@@ -42,7 +42,7 @@ public class AiUtils {
     }
 
     private static Action moveOrWait(Actor actor, GameState gs, int dx, int dy) {
-        if (!gs.getCurrentMap().isBlocked(actor.loc.x + dx, actor.loc.y + dy)) {
+        if (!gs.getCurrentMap().isBlocked(actor, actor.loc.x + dx, actor.loc.y + dy)) {
             return new Move(actor, dx, dy);
         } else {
             return new Move(actor, 0, 0);

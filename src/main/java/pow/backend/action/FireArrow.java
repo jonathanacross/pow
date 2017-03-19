@@ -1,9 +1,6 @@
 package pow.backend.action;
 
-import pow.backend.AttackData;
-import pow.backend.GameBackend;
-import pow.backend.GameMap;
-import pow.backend.GameState;
+import pow.backend.*;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.event.GameEvent;
@@ -16,8 +13,6 @@ import java.util.List;
 public class FireArrow implements Action {
     private final Actor attacker;
     private final Point target;
-
-    private static final int FIRE_RANGE = 6; // how far can arrows be shot?
 
     public FireArrow(Actor attacker, Point target) {
         this.attacker = attacker;
@@ -37,7 +32,7 @@ public class FireArrow implements Action {
 
         AttackData attackData = attacker.getSecondaryAttack();
 
-        List<Point> ray = Bresenham.makeRay(gs.player.loc, target, FIRE_RANGE + 1);
+        List<Point> ray = Bresenham.makeRay(gs.player.loc, target, GameConstants.ACTOR_ARROW_FIRE_RANGE + 1);
         ray.remove(0); // remove the attacker from the path of the arrow.
         Point lastPoint = null;
         for (Point p : ray) {

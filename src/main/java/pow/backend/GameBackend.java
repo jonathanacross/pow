@@ -4,12 +4,15 @@ import pow.backend.action.Action;
 import pow.backend.action.ActionResult;
 import pow.backend.action.Log;
 import pow.backend.actors.Actor;
+import pow.backend.actors.Player;
 import pow.backend.behavior.Behavior;
+import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
 
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GameBackend {
 
@@ -61,6 +64,11 @@ public class GameBackend {
                         gameState.getCurrentMap().advanceActor();
                     }
 
+                    // update background things every time player takes a turn
+                    if (command.getActor() == gameState.player) {
+                        gameResult.addEvents(updateBackgroundThings());
+                    }
+
 //                    // refresh every time player takes a turn
 //                    if (command.getActor() == gameState.player) {
 //                        gameResult.addEvents(result.events);
@@ -107,11 +115,25 @@ public class GameBackend {
 
                 // Each time we wrap around, process "idle" things that are ongoing and
                 // speed independent.
-//                if (actor == gameState.player) {
-//                    trySpawnMonster();
-//                }
+                //if (actor == gameState.player) {
+                //    gameResult.addEvents(updateBackgroundThings());
+                //}
             }
         }
+    }
+
+    private List<GameEvent> updateBackgroundThings() {
+        List<GameEvent> events = new ArrayList<>();
+        GameMap map = gameState.getCurrentMap();
+        Player player = gameState.player;
+        if (map.flags.poisonGas && !player.hasGasMask()) {
+            events.addAll(player.takeDamage(this, GameConstants.POISON_DAMAGE_PER_TURN));
+        }
+        if (map.flags.hot && !player.hasHeatSuit()) {
+            events.addAll(player.takeDamage(this, GameConstants.HEAT_DAMAGE_PER_TURN));
+        }
+        gameState.turnCount++;
+        return events;
     }
 
     // NOTE: to make sure that the UI updates, we can't modify gameState.log

@@ -76,7 +76,7 @@ bracelet of fire	& bracelet~ of fire	red bracelet	bracelet of fire	bracelet				6
 bracelet of poison	& bracelet~ of poison	green bracelet	bracelet of poison	bracelet				61	80	0	0		0	0	
 bracelet of cold	& bracelet~ of cold	blue bracelet	bracelet of cold	bracelet				61	80	0	0		0	0	
 bracelet of acid	& bracelet~ of acid	black bracelet	bracelet of acid	bracelet				61	80	0	0		0	0	
-bracelet of reflection	& bracelet~ of reflection	purple bracelet	bracelet of reflection	bracelet				70	90	0	0		0	0	reflect x% (0-35) dam
+#bracelet of reflection	& bracelet~ of reflection	purple bracelet	bracelet of reflection	bracelet				70	90	0	0		0	0	reflect x% (0-35) dam
 bracelet of power	& bracelet~ of power	gold bracelet	bracelet of power	bracelet				81	90	1	4	str:x,int:x,dex:x,con:x	0	0	
 # amulets															
 amulet of wealth	& amulet~ of wealth	onyx amulet	amulet of wealth	amulet				1	30	0	0	wealth:1	0	0	better gold drops

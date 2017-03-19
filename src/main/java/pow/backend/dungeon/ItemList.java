@@ -6,17 +6,22 @@ import java.util.List;
 
 public class ItemList implements Serializable {
     private final int maxItems;
-    private final int maxPerSlot;
+    private int maxPerSlot;
     public final List<DungeonItem> items;
 
-    public ItemList() {
-        this(1000000000, 1000000000);
-    }
+    public ItemList() { this(Integer.MAX_VALUE, Integer.MAX_VALUE); }
 
     public ItemList(int maxItems, int maxPerSlot) {
         this.maxItems = maxItems;
         this.maxPerSlot = maxPerSlot;
         items = new ArrayList<>();
+    }
+
+    public void increaseMaxPerSlot(int newMax) {
+        // only allow increasing, as decreasing would require removing
+        // items from the list.
+        assert(newMax >= this.maxPerSlot);
+        this.maxPerSlot = newMax;
     }
 
     public int size() {

@@ -1,9 +1,11 @@
 package pow.backend.dungeon.gen;
 
 import pow.backend.ActionParams;
+import pow.backend.GameConstants;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.*;
+import pow.backend.dungeon.gen.mapgen.RecursiveInterpolation;
 import pow.util.Array2D;
 import pow.util.Direction;
 import pow.util.Point;
@@ -175,65 +177,62 @@ public class GeneratorUtils {
         return dungeonMap;
     }
 
-    // Gets a list of monster ids to create.
-    private static List<String> getIdsFromMonsterIdGroup(MonsterIdGroup monsterIdGroup, int numMonsters, Random rng) {
-        List<String> idsToGen = new ArrayList<>();
-
-        // add boss, if needed
-        if (monsterIdGroup.canGenBoss) {
-            idsToGen.add(monsterIdGroup.bossId);
-        }
-
-        // monsterIdGroup.monsterIds == null --> use all monsters
-        // monsterIdGroup.monsterIds is empty --> no monsters
-        // monsterIdGroup.monsterIds is nonempty --> use monsterIds
-        List<String> idSet;
-        if (monsterIdGroup.monsterIds != null) {
-            idSet = monsterIdGroup.monsterIds;
-        } else {
-            idSet = new ArrayList<>();
-            idSet.addAll(MonsterGenerator.getMonsterIds());
-        }
-
-        if (!idSet.isEmpty()) {
-            for (int i = 0; i < numMonsters; i++) {
-                String id = idSet.get(rng.nextInt(idSet.size()));
-                idsToGen.add(id);
-            }
-        }
-
-        return idsToGen;
-    }
-
-    // Generates monsters from the selection in monsterIdGroup
     private static List<Actor> createMonsters(DungeonSquare[][] dungeonMap,
-                                             int numMonsters,
+                                             double density,  // # monsters per square
                                              MonsterIdGroup monsterIdGroup,
                                              Random rng) {
-        List<String> idsToGen = getIdsFromMonsterIdGroup(monsterIdGroup, numMonsters, rng);
 
-        List<Actor> actors = new ArrayList<>();
-        if (idsToGen.isEmpty()) {
-            return actors;
-        }
-
+        assert(density < 1);
         int width = Array2D.width(dungeonMap);
         int height = Array2D.height(dungeonMap);
 
-        // to make sure we don't put monsters on top of each other
-        boolean[][] monsterAt = new boolean[width][height];
+        List<Point> availableGroundSquares = new ArrayList<>();
+        List<Point> availableWaterSquares = new ArrayList<>();
+        // Skip outer edge, since we don't want to put monsters right on
+        // exits to other levels, where player may come in.
+        for (int x = 1; x < width - 1; x++) {
+            for (int y = 1; y < height - 1; y++) {
+                if (!dungeonMap[x][y].blockGround()) { availableGroundSquares.add(new Point(x,y)); }
+                if (!dungeonMap[x][y].blockWater()) { availableWaterSquares.add(new Point(x,y)); }
+            }
+        }
 
-        for (String id: idsToGen) {
-            int x;
-            int y;
-            do {
-                x = rng.nextInt(width);
-                y = rng.nextInt(height);
-            } while (dungeonMap[x][y].blockGround() || monsterAt[x][y]);
-            Point location = new Point(x,y);
+        int numGroundMonsters = (int) Math.round(density * availableGroundSquares.size());
+        int numWaterMonsters = (int) Math.round(density * availableWaterSquares.size());
 
+        List<Actor> actors = new ArrayList<>();
+
+        // place the boss, if any.  For now, assuming boss will go on land
+        if (monsterIdGroup.canGenBoss) {
+            int idx = rng.nextInt(availableGroundSquares.size());
+            Point location = availableGroundSquares.get(idx);
+            String id = monsterIdGroup.bossId;
             actors.add(MonsterGenerator.genMonster(id, rng, location));
-            monsterAt[location.x][location.y] = true;
+            availableGroundSquares.remove(idx);
+        }
+
+        // place ground monsters
+        List<String> groundIds = monsterIdGroup.getGroundMonsterIds();
+        if (!groundIds.isEmpty()) {
+            for (int i = 0; i < numGroundMonsters; i++) {
+                int idx = rng.nextInt(availableGroundSquares.size());
+                Point location = availableGroundSquares.get(idx);
+                String id = groundIds.get(rng.nextInt(groundIds.size()));
+                actors.add(MonsterGenerator.genMonster(id, rng, location));
+                availableGroundSquares.remove(idx);
+            }
+        }
+
+        // place water monsters
+        List<String> waterIds = monsterIdGroup.getWaterMonsterIds();
+        if (!waterIds.isEmpty()) {
+            for (int i = 0; i < numWaterMonsters; i++) {
+                int idx = rng.nextInt(availableWaterSquares.size());
+                Point location = availableWaterSquares.get(idx);
+                String id = waterIds.get(rng.nextInt(waterIds.size()));
+                actors.add(MonsterGenerator.genMonster(id, rng, location));
+                availableWaterSquares.remove(idx);
+            }
         }
 
         return actors;
@@ -241,10 +240,7 @@ public class GeneratorUtils {
 
     // note: this also removes the player and pet from the map!
     public static void regenMonstersForCurrentMap(GameMap map, Random rng) {
-        int width = Array2D.width(map.map);
-        int height = Array2D.height(map.map);
-        int numMonsters = (width - 1)*(height-1) / 100;
-        map.actors = createMonsters(map.map, numMonsters, map.genMonsterIds, rng);
+        map.actors = createMonsters(map.map, GameConstants.MONSTER_DENSITY, map.genMonsterIds, rng);
     }
 
     public static void healAllMonsters(GameMap map) {
@@ -312,6 +308,7 @@ public class GeneratorUtils {
                 false,
                 false,
                 false,
+                false,
                 up,
                 !up,
                 false,
@@ -330,7 +327,7 @@ public class GeneratorUtils {
         ActionParams params = new ActionParams();
         params.actionName = ActionParams.ActionName.MOVE_TO_AREA_ACTION;
         params.name = target;
-        DungeonTerrain.Flags flags = new DungeonTerrain.Flags(false, false, false, false, true);
+        DungeonTerrain.Flags flags = new DungeonTerrain.Flags(false, false, false, false, false, true);
         DungeonTerrain terrain = new DungeonTerrain(
                 terrainTemplate.id,
                 terrainTemplate.name,
@@ -343,7 +340,7 @@ public class GeneratorUtils {
 
     public static int getDefaultNumItems(int width, int height, Random rng) {
         int area = width * height;
-        double meanNumItems = area / 400.0;
+        double meanNumItems = GameConstants.ITEM_DENSITY * area;
 
         int numItems = (int) Math.round(3 * rng.nextGaussian() + meanNumItems);
         numItems = Math.max(0, numItems);
@@ -389,7 +386,7 @@ public class GeneratorUtils {
     }
 
     private static boolean isOpen(DungeonSquare square) {
-        return !square.terrain.flags.blockGround || square.terrain.flags.diggable;
+        return !square.terrain.flags.blockGround || !square.terrain.flags.blockWater || square.terrain.flags.diggable;
     }
 
     // Given a row or column to search, this returns a coordinate where there is some
@@ -507,7 +504,10 @@ public class GeneratorUtils {
             do {
                 x = rng.nextInt(width);
                 y = rng.nextInt(height);
-            } while (squares[x][y].blockGround() || squares[x][y].feature != null || squares[x][y].items.size() > 0);
+            } while (
+                    (squares[x][y].blockGround() && squares[x][y].blockWater()) ||     // don't put items where player can't go
+                    squares[x][y].feature != null ||   // don't put items over a feature
+                    squares[x][y].items.size() > 0);   // don't put items on top of items
 
             DungeonItem item = getRandomItemForLevel(level, rng);
             squares[x][y].items.add(item);
@@ -520,5 +520,4 @@ public class GeneratorUtils {
         String itemId = possibleItemIds.get(rng.nextInt(possibleItemIds.size()));
         return ItemGenerator.genItem(itemId, perturbedLevel, rng);
     }
-
 }

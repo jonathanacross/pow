@@ -31,7 +31,7 @@ public class Targeting {
         GameMap map = gameState.getCurrentMap();
         for (int x = mapView.colMin; x <= mapView.colMax; x++) {
             for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
-                if (!gameState.player.canSee(gameState, new Point(x, y))) continue;
+                if (!gameState.player.canSeeLocation(gameState, new Point(x, y))) continue;
                 if (map.map[x][y].blockAir()) continue;
                 points.add(new Point(x, y));
             }
@@ -45,7 +45,7 @@ public class Targeting {
         List<Point> points = new ArrayList<>();
         for (int x = mapView.colMin; x <= mapView.colMax; x++) {
             for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
-                if (!gameState.player.canSee(gameState, new Point(x, y))) continue;
+                if (!gameState.player.canSeeLocation(gameState, new Point(x, y))) continue;
                 Actor a = map.actorAt(x, y);
                 if (a != null && !a.friendly) {
                     points.add(new Point(x, y));

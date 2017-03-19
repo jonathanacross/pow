@@ -26,6 +26,7 @@ public class ActionParams implements Serializable {
         AGILITY_ACTION,
         RESTORE_MANA_ACTION,
         RESTORE_ACTION,
+        UNLOCK_DOOR_ACTION,
         ENTER_SHOP_ACTION
     }
 
@@ -81,6 +82,8 @@ public class ActionParams implements Serializable {
                         Arrays.asList(ConditionTypes.DEFENSE, ConditionTypes.TO_HIT),
                         30,
                         params.number);
+            case UNLOCK_DOOR_ACTION:
+                return new UnlockDoor(actor, params.point, params.number, FeatureData.getFeature(params.name));
             case ENTER_SHOP_ACTION:
                 return new EnterShop(actor, ShopData.ShopState.parseFromString(params.name));
             default:

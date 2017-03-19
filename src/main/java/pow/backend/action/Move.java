@@ -93,11 +93,13 @@ public class Move implements Action {
 
         DungeonTerrain terrain = gs.getCurrentMap().map[newx][newy].terrain;
         if (terrain.flags.actOnStep) {
-            Point loc = new Point(newx, newy);
-            ActionParams params = new ActionParams(terrain.actionParams);
-            params.point = loc;
-            Action newAction = ActionParams.buildAction(this.actor, params);
-            return ActionResult.Failed(newAction);
+            if (!terrain.flags.diggable || actor.canDig()) {
+                Point loc = new Point(newx, newy);
+                ActionParams params = new ActionParams(terrain.actionParams);
+                params.point = loc;
+                Action newAction = ActionParams.buildAction(this.actor, params);
+                return ActionResult.Failed(newAction);
+            }
         }
 
         DungeonFeature feature = gs.getCurrentMap().map[newx][newy].feature;
@@ -109,7 +111,7 @@ public class Move implements Action {
             return ActionResult.Failed(newAction);
         }
 
-        if (! gs.getCurrentMap().isBlocked(newx, newy)) {
+        if (! gs.getCurrentMap().isBlocked(this.actor, newx, newy)) {
             // move
             actor.loc.x = newx;
             actor.loc.y = newy;

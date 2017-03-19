@@ -21,6 +21,8 @@ public class GameState implements Serializable {
     public final Player player;
     public Pet pet;
 
+    public int turnCount;
+
     // logging
     public final MessageLog log;
 
@@ -31,14 +33,15 @@ public class GameState implements Serializable {
         return world.recentMaps.getCurrentMap();
     }
 
-    // makes a partial gamestate useful when not playing the actual game..
+    // makes a partial GameState useful when not playing the actual game..
     public GameState() {
         this.world = null;
         this.rng = new Random();
         this.gameInProgress = false;
         this.player = new Player();
         this.pet = null;
-        this.log = new MessageLog(50);
+        this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
+        this.turnCount = 0;
     }
 
     public GameState(String name) {
@@ -64,13 +67,16 @@ public class GameState implements Serializable {
                         0, // experience
                         new AttackData(new DieRoll(1, 4), 4, 0),
                         true, // friendly to player
+                        false,
+                        false,
                         0,
                         null,
                         0) // speed
         );
         this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
-        this.log = new MessageLog(50);
+        this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         log.add("Welcome to Pearls of Wisdom!");
         log.add("Press ? for help.");
+        this.turnCount = 0;
     }
 }

@@ -53,7 +53,7 @@
 32x32	4	3	blue open door	feature
 32x32	5	3	ice open door	feature
 32x32	6	3	hot stone open door	feature
-32x32	7	3	-:null:-	:null:
+32x32	7	3	open rock door	feature
 32x32	8	3	-:null:-	:null:
 32x32	9	3	-:null:-	:null:
 32x32	10	3	-:null:-	:null:
@@ -69,14 +69,14 @@
 32x32	4	4	blue closed door	feature
 32x32	5	4	ice closed door	feature
 32x32	6	4	hot stone closed door	feature
-32x32	7	4	-:null:-	:null:
-32x32	8	4	dark door	feature
-32x32	9	4	inn	feature
-32x32	10	4	weapon shop	feature
-32x32	11	4	magic shop	feature
-32x32	12	4	-:null:-	:null:
-32x32	13	4	-:null:-	:null:
-32x32	14	4	-:null:-	:null:
+32x32	7	4	closed wood rock door	feature
+32x32	8	4	closed wood key rock door	feature
+32x32	9	4	closed wood pearl rock door	feature
+32x32	10	4	-:null:-	:null:
+32x32	11	4	dark door	feature
+32x32	12	4	inn	feature
+32x32	13	4	weapon shop	feature
+32x32	14	4	magic shop	feature
 32x32	15	4	-:null:-	:null:
 32x32	0	5	stairs up	feature
 32x32	1	5	ivy stone stairs up	feature
@@ -85,9 +85,9 @@
 32x32	4	5	blue stairs up	feature
 32x32	5	5	ice stairs up	feature
 32x32	6	5	hot stone stairs up	feature
-32x32	7	5	-:null:-	:null:
-32x32	8	5	-:null:-	:null:
-32x32	9	5	-:null:-	:null:
+32x32	7	5	closed metal rock door	feature
+32x32	8	5	closed metal key rock door	feature
+32x32	9	5	closed metal pearl rock door	feature
 32x32	10	5	-:null:-	:null:
 32x32	11	5	-:null:-	:null:
 32x32	12	5	-:null:-	:null:

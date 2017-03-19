@@ -2,6 +2,7 @@ package pow.backend.actors;
 
 import pow.backend.AttackData;
 import pow.backend.GameBackend;
+import pow.backend.GameConstants;
 import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.AttackUtils;
@@ -27,6 +28,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public final AttackData attack;
         public final int experience;
         public final boolean friendly; // friendly to the player
+        public final boolean invisible;
+        public final boolean aquatic;
         public final String requiredItemDrops;
         public final int numDropAttempts;
         public final int maxHealth;
@@ -39,6 +42,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
                       int experience,
                       AttackData attack,
                       boolean friendly,
+                      boolean invisible,
+                      boolean aquatic,
                       int speed,
                       String requiredItemDrops,
                       int numDropAttempts) {
@@ -48,6 +53,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
             this.experience = experience;
             this.attack = attack;
             this.friendly = friendly;
+            this.invisible = invisible;
+            this.aquatic = aquatic;
             this.speed = speed;
             this.requiredItemDrops = requiredItemDrops;
             this.numDropAttempts = numDropAttempts;
@@ -83,6 +90,9 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public final int experience;
     public final ItemList inventory;
     public final boolean friendly; // friendly to the player
+    public final boolean invisible;
+    public boolean aquatic;  // can go on water
+    public boolean terrestrial; // can go on land
     public int level;
     public int gold;
     // Ideally, we would make all items for monsters at
@@ -141,7 +151,11 @@ public abstract class Actor extends DungeonObject implements Serializable {
         return events;
     }
 
-    public void gainExperience(GameBackend backend, int exp) {} // overridden in player
+    public boolean canDig() { return false; }  // overridden in Player
+    public boolean canSeeInvisible() { return true; }  // overridden in Player
+    public boolean canSeeActor(Actor a) { return !a.invisible || this.canSeeInvisible(); }
+
+    public void gainExperience(GameBackend backend, int exp) {} // overridden in Player
 
     public Actor(DungeonObject.Params objectParams, Params actorParams) {
         super(objectParams);
@@ -162,10 +176,13 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.baseStats.speed = actorParams.speed;
         this.experience = actorParams.experience;
         this.friendly = actorParams.friendly;
+        this.invisible = actorParams.invisible;
+        this.aquatic = actorParams.aquatic;
+        this.terrestrial = !actorParams.aquatic;
         this.requiredItemDrops = actorParams.requiredItemDrops;
         this.numDropAttempts = actorParams.numDropAttempts;
         this.conditions = new ConditionGroup(this);
-        this.inventory = new ItemList(20, 99);
+        this.inventory = new ItemList(GameConstants.ACTOR_ITEM_LIST_SIZE, GameConstants.ACTOR_DEFAULT_ITEMS_PER_SLOT);
         this.gold = 0;
     }
 }

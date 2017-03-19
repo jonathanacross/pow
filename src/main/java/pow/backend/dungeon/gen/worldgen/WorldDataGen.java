@@ -1,7 +1,10 @@
 package pow.backend.dungeon.gen.worldgen;
 
 import pow.backend.ActionParams;
+import pow.backend.GameConstants;
+import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
@@ -20,9 +23,9 @@ public class WorldDataGen {
     private static final WorldDataGen testInstance;
     private List<MapPoint> mapPoints;
 
-    public static List<MapPoint> getMapPoints() { return instance.mapPoints; }
-    public static List<MapPoint> getTestMapPoints() { return testInstance.mapPoints; }
-
+    public static List<MapPoint> getMapPoints(boolean testWorld) {
+        return testWorld ? testInstance.mapPoints : instance.mapPoints;
+    }
 
     private static final DungeonTerrain WATER = TerrainData.getTerrain("water 1");
     private static final DungeonTerrain LAVA  = TerrainData.getTerrain("lava");
@@ -30,10 +33,10 @@ public class WorldDataGen {
 
     private static final DungeonFeature NONE = null;
     private static final DungeonFeature WIN_TILE = new DungeonFeature("wintile", "way to win", "orange pearl",
-            new DungeonFeature.Flags( false, false, false, false, false, false, false, true),
+            new DungeonFeature.Flags( false, false,false, false, false, false, false, false, true),
             new ActionParams());
     private static final DungeonFeature LOSE_TILE = new DungeonFeature("losetile", "death", "cobra",
-            new DungeonFeature.Flags( false, false, false, false, false, false, false, true),
+            new DungeonFeature.Flags( false, false,false, false, false, false, false, false, true),
             new ActionParams());
     private static final DungeonFeature CANDLE = FeatureData.getFeature("candle");
     private static final DungeonFeature FOUNTAIN = FeatureData.getFeature("fountain");
@@ -62,8 +65,8 @@ public class WorldDataGen {
     }
 
     private static MapPoint parseMapLinkData(String[] line) {
-        if (line.length != 10) {
-            throw new RuntimeException("error: expected 10 fields in line.");
+        if (line.length != 11) {
+            throw new RuntimeException("error: expected 11 fields in line.");
         }
 
         String id = line[0];
@@ -97,10 +100,11 @@ public class WorldDataGen {
 
         String generatorName = line[6];
         String generatorParams = line[7];
-        String bossId = getBossId(line[8]);
-        List<String> monsterIds = getMonsterIds(line[9]);
+        GameMap.Flags flags = parseFlags(line[8]);
+        String bossId = getBossId(line[9]);
+        List<String> monsterIds = getMonsterIds(line[10]);
         MonsterIdGroup monsterIdGroup = new MonsterIdGroup(monsterIds, bossId != null, bossId);
-        MapGenerator generator = buildGenerator(generatorName, generatorParams, monsterIdGroup, level);
+        MapGenerator generator = buildGenerator(generatorName, generatorParams, monsterIdGroup, level, flags);
 
         return new MapPoint(id, level, group, directions, fromGroups, fromIds, generator);
     }
@@ -119,7 +123,7 @@ public class WorldDataGen {
 
     private static List<String> getMonsterIds(String field) {
         if (field.equals(":all:")) {
-            return null;
+            return new ArrayList<>(MonsterGenerator.getMonsterIds());
         }
         if (field.isEmpty()) {
             return new ArrayList<>();
@@ -140,21 +144,43 @@ public class WorldDataGen {
     private static final String STAIRS_DOWN = "stairs down";
     private static final String DUNGEON_ENTRANCE = "dungeon entrance";
 
+    private static GameMap.Flags parseFlags(String text) {
+        String[] tokens = text.split(",", -1);
 
-    private static MapGenerator buildGenerator(String generatorType, String params, MonsterIdGroup monsterIds, int level) {
+        boolean permLight = false;
+        boolean outside = false;
+        boolean poisonGas = false;
+        boolean hot = false;
+        for (String t : tokens) {
+            switch (t) {
+                case "": break;  // will happen if we have an empty string
+                case "permLight": permLight = true; break;
+                case "outside": outside = true; break;
+                case "poisonGas": poisonGas = true; break;
+                case "hot": hot = true; break;
+                default:
+                    throw new IllegalArgumentException("unknown map flag '" + t + "'");
+            }
+        }
+
+        return new GameMap.Flags(permLight, outside, poisonGas, hot);
+
+    }
+
+    private static MapGenerator buildGenerator(String generatorType, String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         switch (generatorType) {
-            case "town": return buildTownGenerator(params, monsterIds, level);
-            case "recursiveInterpolation": return buildRecursiveInterpolationGenerator(params, monsterIds, level);
-            case "shapeDLA": return buildShapeDLAGenerator(params, monsterIds, level);
-            case "delve": return buildDelveGenerator(params, monsterIds, level);
-            case "cellularAutomata": return buildCellularAutomataGenerator(params, monsterIds, level);
-            case "premade": return buildPremadeGenerator(params, monsterIds, level);
-            case "rogue": return buildRogueGenerator(params, monsterIds, level);
+            case "town": return buildTownGenerator(params, monsterIds, level, flags);
+            case "recursiveInterpolation": return buildRecursiveInterpolationGenerator(params, monsterIds, level, flags);
+            case "shapeDLA": return buildShapeDLAGenerator(params, monsterIds, level, flags);
+            case "delve": return buildDelveGenerator(params, monsterIds, level, flags);
+            case "cellularAutomata": return buildCellularAutomataGenerator(params, monsterIds, level, flags);
+            case "premade": return buildPremadeGenerator(params, monsterIds, level, flags);
+            case "rogue": return buildRogueGenerator(params, monsterIds, level, flags);
             case "terrain test":
             case "run test":
             case "item test":
             case "arena":
-                return buildTestGenerator(generatorType, params, monsterIds, level);
+                return buildTestGenerator(generatorType, params, monsterIds, level, flags);
             default: throw new RuntimeException("unknown generator type '" + generatorType + "'");
         }
     }
@@ -274,109 +300,127 @@ public class WorldDataGen {
         return new ProtoTranslator(terrainMap, featureMap);
     }
 
-    private static MapGenerator buildTownGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildTownGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new Town(style, monsterIds, level);
+        return new Town(style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildShapeDLAGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildShapeDLAGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new ShapeDLA(60, 60, style, monsterIds, level);
+        return new ShapeDLA(GameConstants.DEFAULT_AREA_SIZE, GameConstants.DEFAULT_AREA_SIZE, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildRogueGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildRogueGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         String[] subParams = params.split(",");
         int vaultLevel = Integer.parseInt(subParams[0]);
         ProtoTranslator style = getProtoTranslator(subParams[1]);
-        return new RogueGenerator(60, 60, vaultLevel, style, monsterIds, level);
+        int areaSize = GameConstants.DEFAULT_AREA_SIZE;
+        if (vaultLevel == 2) {
+            // for complex dungeons with huge vaults, make the levels bigger
+            areaSize = (int) Math.round(GameConstants.DEFAULT_AREA_SIZE * 1.5);
+        }
+        return new RogueGenerator(areaSize, areaSize, vaultLevel, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildDelveGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildDelveGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new Delve(50, 50, style, monsterIds, level);
+        return new Delve(GameConstants.DELVE_AREA_SIZE, GameConstants.DELVE_AREA_SIZE, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildCellularAutomataGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildCellularAutomataGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         String[] subParams = params.split(",");
         int layers = Integer.parseInt(subParams[0]);
         boolean makeLakes = Boolean.parseBoolean(subParams[1]);
         ProtoTranslator style = getProtoTranslator(subParams[2]);
-        return new CellularAutomata(60, 60, layers, makeLakes, style, monsterIds, level);
+        return new CellularAutomata(GameConstants.DEFAULT_AREA_SIZE, GameConstants.DEFAULT_AREA_SIZE, layers, makeLakes, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildTestGenerator(String type, String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildTestGenerator(String type, String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         ProtoTranslator style = getProtoTranslator(params);
-        return new TestArea(type, style, monsterIds, level);
+        return new TestArea(type, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildPremadeGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildPremadeGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         String[] subParams = params.split(",");
         PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.getLevel(subParams[0]);
         ProtoTranslator style = getProtoTranslator(subParams[1]);
-        return new PremadeGenerator(mapInfo, style, monsterIds, level);
+        return new PremadeGenerator(mapInfo, style, monsterIds, level, flags);
     }
 
-    private static MapGenerator buildRecursiveInterpolationGenerator(String params, MonsterIdGroup monsterIds, int level) {
+    private static MapGenerator buildRecursiveInterpolationGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         RecursiveInterpolation.MapStyle style;
         switch (params) {
             case "grass":
                 style = new RecursiveInterpolation.MapStyle(
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree")),
-                        STAIRS_UP, DUNGEON_ENTRANCE);
+                        STAIRS_UP, DUNGEON_ENTRANCE, false, null, null);
                 break;
             case "desert":
                 style = new RecursiveInterpolation.MapStyle(
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
-                        STAIRS_UP, DUNGEON_ENTRANCE);
+                        STAIRS_UP, DUNGEON_ENTRANCE, false, null, null);
                 break;
             case "forest":
                 style = new RecursiveInterpolation.MapStyle(
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "big tree", "pine tree")),
-                        STAIRS_UP, DUNGEON_ENTRANCE);
+                        STAIRS_UP, DUNGEON_ENTRANCE, true,
+                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
+                        new RecursiveInterpolation.TerrainFeatureTriplet("forest","key locked rock door", null));
                 break;
             case "water":
                 style = new RecursiveInterpolation.MapStyle(
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("waves", null, null)),
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("water 3", null, "water 4")),
-                        STAIRS_UP, DUNGEON_ENTRANCE);
+                        STAIRS_UP, DUNGEON_ENTRANCE, false, null, null);
                 break;
             case "snow":
                 style = new RecursiveInterpolation.MapStyle(
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("snowy rock", null, null)),
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("snow", "snowy pine tree", "white small tree")),
-                        STAIRS_UP, DUNGEON_ENTRANCE);
+                        STAIRS_UP, DUNGEON_ENTRANCE, false, null, null);
                 break;
             case "swamp":
                 style = new RecursiveInterpolation.MapStyle(
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree")),
-                        STAIRS_UP, DUNGEON_ENTRANCE);
+                        STAIRS_UP, DUNGEON_ENTRANCE, false, null, null);
                 break;
             case "haunted forest":
                 style = new RecursiveInterpolation.MapStyle(
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "berry bush", "pine tree")),
-                        STAIRS_UP, DUNGEON_ENTRANCE);
+                        STAIRS_UP, DUNGEON_ENTRANCE, false, null, null);
                 break;
             case "volcano":
                 style = new RecursiveInterpolation.MapStyle(
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("cold lava floor", null, "dark pebbles")),
-                        STAIRS_UP, DUNGEON_ENTRANCE);
+                        STAIRS_UP, DUNGEON_ENTRANCE, false, null, null);
+                break;
+            case "dig desert":
+                style = new RecursiveInterpolation.MapStyle(
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
+                        STAIRS_UP, DUNGEON_ENTRANCE, true,
+                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
+                        new RecursiveInterpolation.TerrainFeatureTriplet("diggable rock", null, null));
                 break;
             case "gold desert":
                 style = new RecursiveInterpolation.MapStyle(
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
                         Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "gold tree", "light pebbles")),
-                        STAIRS_UP, DUNGEON_ENTRANCE);
+                        STAIRS_UP, DUNGEON_ENTRANCE, true,
+                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
+                        new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "pearl locked rock door", null));
                 break;
             default:
                 throw new RuntimeException("Unknown MapStyle '" + params + "'");
         }
 
-        return new RecursiveInterpolation(6, 3, style, monsterIds, level);
+        return new RecursiveInterpolation(GameConstants.OUTSIDE_AREA_SOURCE_SIZE,
+                GameConstants.OUTSIDE_AREA_NUM_INTERPOLATION_STEPS, style, monsterIds, level, flags);
     }
 }

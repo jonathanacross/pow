@@ -17,6 +17,21 @@ import java.util.Map;
 import java.util.Random;
 
 public class GameMap implements Serializable {
+
+    public static class Flags implements Serializable {
+        boolean permLight; // should the level always be lit?
+        boolean outside;  // if outside, then we can illuminate based on day/night
+        boolean poisonGas;  // player loses health if not wearing gasmask
+        boolean hot;  // player loses health if not wearing heatsuit
+
+        public Flags(boolean permLight, boolean outside, boolean poisonGas, boolean hot) {
+            this.permLight = permLight;
+            this.outside = outside;
+            this.poisonGas = poisonGas;
+            this.hot = hot;
+        }
+    }
+
     public final DungeonSquare[][] map; // indexed by x,y, or c,r
 
     public final int width;
@@ -28,6 +43,7 @@ public class GameMap implements Serializable {
     public final String name; // name of the area
     public final int level;  // difficulty level
     public ShopData shopData; // for stores contained in this map
+    public final Flags flags;
 
     public void updatePlayerVisibilityData(Player player) {
         updateBrightness(player);
@@ -42,7 +58,7 @@ public class GameMap implements Serializable {
             for (int y = 0; y < height; y++) {
                 DungeonFeature f = map[x][y].feature;
                 if (f != null && f.flags.glowing) {
-                    this.lightSources.add(new SimpleLightSource(new Point(x,y), 3));
+                    this.lightSources.add(new SimpleLightSource(new Point(x,y), GameConstants.CANDLE_LIGHT_RADIUS));
                 }
             }
         }
@@ -77,7 +93,17 @@ public class GameMap implements Serializable {
     // a convenience for the frontend to display light in a cool manner.
     public static final int MAX_BRIGHTNESS = 100;
     private void updateBrightness(Player player) {
+        if (flags.permLight) {
+            // level completely lit
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    map[x][y].brightness = MAX_BRIGHTNESS;
+                }
+            }
+            return;
+        }
 
+        // level is dark
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 map[x][y].brightness = 0;
@@ -95,6 +121,7 @@ public class GameMap implements Serializable {
                    DungeonSquare[][] map,
                    Map<String, Point> keyLocations,
                    MonsterIdGroup genMonsterIds,
+                   Flags flags,
                    ShopData shopData) {
         this.name = name;
         this.level = level;
@@ -104,6 +131,7 @@ public class GameMap implements Serializable {
         this.keyLocations = keyLocations;
         this.genMonsterIds = genMonsterIds;
         this.actors = new ArrayList<>();
+        this.flags = flags;
         this.shopData = shopData;
         initLightSources();
     }
@@ -119,7 +147,7 @@ public class GameMap implements Serializable {
 
         if (pet != null) {
             addActor(pet);
-            pet.loc = findClosestOpenSquare(playerLoc);
+            pet.loc = findClosestOpenSquare(player, playerLoc);
         }
 
         updatePlayerVisibilityData(player);
@@ -162,9 +190,12 @@ public class GameMap implements Serializable {
         return x >= 0 && y >= 0 && x < width && y < height;
     }
 
-    public boolean isBlocked(int x, int y) {
+    public boolean isBlocked(Actor actor, int x, int y) {
         if (!isOnMap(x,y)) return true;
-        if (map[x][y].blockGround()) return true;
+        boolean terrainMatches =
+                (actor.terrestrial && !map[x][y].blockGround()) ||
+                (actor.aquatic && !map[x][y].blockWater());
+        if (! terrainMatches) return true;
         for (Actor a: this.actors) {
             if (a.loc.x == x && a.loc.y == y && a.solid) return true;
         }
@@ -181,14 +212,14 @@ public class GameMap implements Serializable {
 
     // Finds the closest open square to the starting location.
     // This assumes that there is at least one open square.
-    private Point findClosestOpenSquare(Point start) {
+    private Point findClosestOpenSquare(Actor actor, Point start) {
         int i = 0;
         Point loc;
         do {
             loc = Spiral.position(i);
             loc.shiftBy(start);
             i++;
-        } while (isBlocked(loc.x, loc.y));
+        } while (isBlocked(actor, loc.x, loc.y));
 
         return loc;
     }

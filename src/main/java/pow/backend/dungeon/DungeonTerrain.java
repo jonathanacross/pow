@@ -8,17 +8,20 @@ public class DungeonTerrain implements Serializable {
 
     public static class Flags implements Serializable {
         public final boolean blockGround;
+        public final boolean blockWater;
         public final boolean blockAir;
         public final boolean diggable;
         public final boolean actOnStep;
         public final boolean teleport;  // teleports you to another area
 
         public Flags(boolean blockGround,
+                     boolean blockWater,
                      boolean blockAir,
                      boolean diggable,
                      boolean actOnStep,
                      boolean teleport) {
             this.blockGround = blockGround;
+            this.blockWater = blockWater;
             this.blockAir = blockAir;
             this.diggable = diggable;
             this.actOnStep = actOnStep;

@@ -83,14 +83,14 @@
 12	skeleton archer	skeleton archer	skeleton archer	A skeleton archer wielding arrows tipped with rusty iron.	70	4d8	31	31	35	0			1
 12	skeleton rogue	skeleton rogue	skeleton rogue	A skeleton rogue. He moves stealthily and his eyes gleam with evil intent.	70	4d7	31	31	35	0			1
 12	mummy	mummy	mummy	It is a human form encased in mouldy wrappings.	87	4d9	34	34	36	-1			1
-12	blue ghost	blue ghost	blue ghost	A figure that seems made of void. Its strangely human shape is cloaked in shadow.	87	4d9	34	34	44	0			1
-12	pink ghost	pink ghost	pink ghost	It is a ghostly form with eyes that haunt you, and a shriek that pierces to your bones.	87	4d9	34	34	44	0			1
+12	blue ghost	blue ghost	blue ghost	A figure that seems made of void. Its strangely human shape is cloaked in shadow.	87	4d9	34	34	44	0	invisible		1
+12	pink ghost	pink ghost	pink ghost	It is a ghostly form with eyes that haunt you, and a shriek that pierces to your bones.	87	4d9	34	34	44	0	invisible		1
 12	vampire	vampire	vampire	It is a humanoid with an aura of power. You notice a sharp set of front teeth.	87	4d9	34	34	63	2			1
-12	evil eye	evil eye	evil eye	A globular body with a large toothy mouth, a large central eye, and three smaller eyes on stalks protruding from the top of its body.	87	4d9	34	34	52	1			0
-12	floating skull	floating skull	floating skull	A glowing skull possessed by sorcerous power. It need not move, but merely blast you with mighty magic as it speaks the words of power.	87	4d9	34	34	31	2	stationary		0
+12	evil eye	evil eye	evil eye	A globular body with a large toothy mouth, a large central eye, and three smaller eyes on stalks protruding from the top of its body.	87	4d9	34	34	52	1	invisible		0
+12	floating skull	floating skull	floating skull	A glowing skull possessed by sorcerous power. It need not move, but merely blast you with mighty magic as it speaks the words of power.	87	4d9	34	34	31	2	stationary,invisible		0
 12	vampire bat	vampire bat	vampire bat	A blood-sucking bat that flies at your neck hungrily.	87	4d9	34	34	53	3	erratic		0
 12	red spider	red spider	red spider	It is a vast red spider whose bulbous body is bloated with poison. Cunning and evil, it seeks to taste your juicy insides.	105	4d8	46	33	91	3	boss	magic pickaxe	6
-12	skeletal dragon	skeletal dragon	skeletal dragon	The skeletal form of a once-great dragon, enchanted by magic most perilous. Its animated form strikes with speed and wrath.	262	5d11	62	53	189	2	boss	pearl 6	10
+12	skeletal dragon	skeletal dragon	skeletal dragon	The skeletal form of a once-great dragon, enchanted by magic most perilous. Its animated form strikes with speed and wrath.	262	5d11	62	53	189	2	boss,invisible	pearl 6	10
 14	troll mage	troll mage	troll mage	A stout troll who is adept at hurling spells as easily as crunching your bones.	91	4d9	30	30	46	0			1
 14	troll warrior	troll warrior	troll warrior	This troll's great strength and size make it a fearsome foe.	136	5d10	43	43	68	0			1
 14	troll archer	troll archer	troll archer	A powerful troll versed in the art of archery.	109	5d9	38	38	55	0			1
@@ -118,28 +118,28 @@
 18	lava dragon	lava dragon	lava dragon	An immense dragon capable of awesome destruction that dwells within pools of lava. Fire leaps continuously from its huge form. You have never felt such extreme heat, or witnessed such a scorching stare.	500	7d14	74	80	250	0			8
 18	phoenix	phoenix	phoenix	A massive glowing eagle bathed in flames. The searing heat chars your skin and melts your armour.	666	7d14	93	74	575	3	boss	magic feather	10
 18	Maeglor	Maeglor	Maeglor	Lord of the underworld, Maeglor is a massive humanoid demon wreathed in flames. His power and evil are undeniable - darkness itself recoils from his touch as he leaves a trail of death and destruction. Mighty claws rend reality as he annihilates all in his path to your soul!	888	9d16	102	89	921	4	boss	pearl 8	14
-19	alien mage	alien mage	alien mage	A great mage, incanting horribly as he advances toward you. Power seems to crackle from his slender frame.	278	6d10	47	47	139	0			1
-19	alien warrior	alien warrior	alien warrior	A mighty warrior wearing armour and radiating evil power. He moves with lightning speed.	416	7d13	67	67	208	0			1
-19	alien archer	alien archer	alien archer	A legendary archer who fires arrows with terrifying speed and accuracy.	333	6d13	61	61	167	0			1
-19	alien rogue	alien rogue	alien rogue	A master of camouflage, this thief has great power and shifty speed.	333	6d12	61	61	167	0			1
+19	alien mage	alien mage	alien mage	A great mage, incanting horribly as he advances toward you. Power seems to crackle from his slender frame.	278	6d10	47	47	139	0	invisible		1
+19	alien warrior	alien warrior	alien warrior	A mighty warrior wearing armour and radiating evil power. He moves with lightning speed.	416	7d13	67	67	208	0	invisible		1
+19	alien archer	alien archer	alien archer	A legendary archer who fires arrows with terrifying speed and accuracy.	333	6d13	61	61	167	0	invisible		1
+19	alien rogue	alien rogue	alien rogue	A master of camouflage, this thief has great power and shifty speed.	333	6d12	61	61	167	0	invisible		1
 20	ancient black dragon	ancient black dragon	ancient black dragon	A massive dragon, one of the mightiest of dragonkind. It is thousands of years old and seeks to maintain the Cosmic Balance. It will destroy you.	781	8d15	88	95	562	2			10
 20	ancient gold dragon	ancient gold dragon	ancient gold dragon	A huge draconic form wreathed in a nimbus of light. Its roar stuns and deafens you.	781	8d15	88	95	562	2			10
-20	master vampire	master vampire	master vampire	A terrible robed undead figure, this creature has existed in its unlife for many centuries by stealing the life of others.	520	7d14	73	73	449	3			4
-20	beholder	beholder	beholder	A beholder of great size and age, floating in the air. His gaze seems to shred your soul and his spells crush your will.	520	7d14	73	73	312	1			2
+20	master vampire	master vampire	master vampire	A terrible robed undead figure, this creature has existed in its unlife for many centuries by stealing the life of others.	520	7d14	73	73	449	3	invisible		4
+20	beholder	beholder	beholder	A beholder of great size and age, floating in the air. His gaze seems to shred your soul and his spells crush your will.	520	7d14	73	73	312	1	invisible		2
 20	magic whirlwind	magic whirlwind	magic whirlwind	An awesome vortex of pure magic that twists and tears at the fabric of space.	520	7d14	73	73	262	2	erratic		0
-20	djinn	djinn	djinn	Free from his lamp, this creature uses his powerful magics to exact revenge upon the world for his entrapment.	520	7d14	73	73	312	1			3
+20	djinn	djinn	djinn	Free from his lamp, this creature uses his powerful magics to exact revenge upon the world for his entrapment.	520	7d14	73	73	312	1	invisible		3
 20	spike dog	spike dog	spike dog	A great hound with spines along his back. He growls as you enter his territory, then ferociously lashes his spiked tail.	520	7d14	73	73	260	0			0
 20	Lugorith	Lugorith	Lugorith	The lord of chaos, Lugorith is a massive dragon of changing form. As you watch, it appears first fair and then foul. Its body is twisted by chaotic forces as it strives to stay real. Its very existence distorts the universe around it.	1561	9d16	131	114	1618	4	boss		16
 20	evil incarnate	evil incarnate	evil incarnate	A massive form cloaked in flame. His skeletal visage is twisted with evil, as he seeks forever to dominate all that is light and good in the world. He is the origin of man's fear of darkness and has created many foul creatures with his evil powers. He holds a great staff in his hand, and strides forward to destroy you.	1388	10d23	120	105	1727	5	boss		18
-3	goldfish	goldfish	goldfish	It looks just like the goldfish you used to keep in a glass bowl when you were a kid, but bigger.	12	2d3	9	9	4	0	erratic		0
-4	green fish	green fish	green fish	Barracuda, known for their large size, fearsome appearance and ferocious behaviour.	15	2d4	11	11	6	1	erratic		0
-4	eel	eel	eel	An electric eel slipping through the water.	15	2d4	11	11	8	0			0
-4	pink jellyfish	pink jellyfish	pink jellyfish	A large pink jellyfish. It looks poisonous.	11	2d2	9	4	3	-2	erratic		0
-5	copper jellyfish	copper jellyfish	copper jellyfish	A copper-colored jellyfish; it has a large bell and long tentacles.	14	2d3	11	5	3	-2	erratic		0
-6	scaryfish	scaryfish	scaryfish	This fish has long teeth and spiky fins that look like a mohawk.	23	3d4	15	15	20	3			1
-15	water whirlwind	water whirlwind	water whirlwind	A towering water elemental, sending wave after wave toward your frail body.	171	5d11	47	47	86	2	erratic		0
-15	octopus	octopus	octopus	A primeval creature with tentacles 20 feet long.	171	5d11	47	47	86	0			1
-15	medusa	medusa	medusa	A hideous gorgon, with venom dripping from her ghastly mouth.	171	5d11	47	47	86	0			1
-15	sea dragon	sea dragon	sea dragon	A mighty sea dragon, with great horns and a long tail.	256	6d11	56	61	154	1			4
-5	yellow turtle	yellow turtle	yellow turtle	A turtle with a yellow shell.	20	3d4	14	18	8	-1			1
-5	red turtle	red turtle	red turtle	A turtle with a red shell.	20	3d4	14	18	8	-1			1
+3	goldfish	goldfish	goldfish	It looks just like the goldfish you used to keep in a glass bowl when you were a kid, but bigger.	12	2d3	9	9	4	0	erratic,aquatic		0
+4	green fish	green fish	green fish	Barracuda, known for their large size, fearsome appearance and ferocious behaviour.	15	2d4	11	11	6	1	erratic,aquatic		0
+4	eel	eel	eel	An electric eel slipping through the water.	15	2d4	11	11	8	0	aquatic		0
+4	pink jellyfish	pink jellyfish	pink jellyfish	A large pink jellyfish. It looks poisonous.	11	2d2	9	4	3	-2	erratic,aquatic		0
+5	copper jellyfish	copper jellyfish	copper jellyfish	A copper-colored jellyfish; it has a large bell and long tentacles.	14	2d3	11	5	3	-2	erratic,aquatic		0
+6	scaryfish	scaryfish	scaryfish	This fish has long teeth and spiky fins that look like a mohawk.	23	3d4	15	15	20	3	aquatic		1
+15	water whirlwind	water whirlwind	water whirlwind	A towering water elemental, sending wave after wave toward your frail body.	171	5d11	47	47	86	2	erratic,aquatic		0
+15	octopus	octopus	octopus	A primeval creature with tentacles 20 feet long.	171	5d11	47	47	86	0	aquatic		1
+15	medusa	medusa	medusa	A hideous gorgon, with venom dripping from her ghastly mouth.	171	5d11	47	47	86	0	aquatic		1
+15	sea dragon	sea dragon	sea dragon	A mighty sea dragon, with great horns and a long tail.	256	6d11	56	61	154	1	aquatic		4
+5	yellow turtle	yellow turtle	yellow turtle	A turtle with a yellow shell.	20	3d4	14	18	8	-1	aquatic		1
+5	red turtle	red turtle	red turtle	A turtle with a red shell.	20	3d4	14	18	8	-1	aquatic		1

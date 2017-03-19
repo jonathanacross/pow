@@ -17,12 +17,15 @@ public class PremadeGenerator implements MapGenerator {
     private final ProtoTranslator translator;
     private final int level;
     private final MonsterIdGroup monsterIds;
+    private final GameMap.Flags flags;
 
-    public PremadeGenerator(PremadeMapData.PremadeMapInfo premadeMapInfo, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
+    public PremadeGenerator(PremadeMapData.PremadeMapInfo premadeMapInfo, ProtoTranslator translator,
+                            MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         this.premadeMapInfo = premadeMapInfo;
         this.translator = translator;
         this.monsterIds = monsterIds;
         this.level = level;
+        this.flags = flags;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class PremadeGenerator implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(premadeMapInfo.data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
         return map;
     }
 }

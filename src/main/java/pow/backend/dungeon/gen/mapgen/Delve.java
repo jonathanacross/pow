@@ -24,6 +24,7 @@ public class Delve implements MapGenerator {
     private ProtoTranslator translator;
     private int level;
     private MonsterIdGroup monsterIds;
+    private final GameMap.Flags flags;
 
     private static final Point[] OFFSETS = {
             new Point(1, 0), new Point(1, 1), new Point(0, 1), new Point(-1, 1),
@@ -50,13 +51,14 @@ public class Delve implements MapGenerator {
             1, 1, 2, 1, 2, 1, 2, 1, 2, 2, 3, 2, 2, 1, 2, 1,   // e0
             1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1};  // f0
 
-    public Delve(int width, int height, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
+    public Delve(int width, int height, ProtoTranslator translator, MonsterIdGroup monsterIds,
+                 int level, GameMap.Flags flags) {
         // reasonable defaults for this game
-        this(width, height, 1, 8, 5, translator, monsterIds, level);
+        this(width, height, 1, 8, 5, translator, monsterIds, level, flags);
     }
 
     private Delve(int width, int height, int neighborMin, int neighborMax, int connChance,
-                 ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
+                 ProtoTranslator translator, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         assert (1 <= neighborMin && neighborMin <= 3);
         assert (neighborMin <= neighborMax && neighborMax <= 8);
         assert (0 <= connChance && connChance <= 100);
@@ -69,6 +71,7 @@ public class Delve implements MapGenerator {
         this.translator = translator;
         this.monsterIds = monsterIds;
         this.level = level;
+        this.flags = flags;
     }
 
     @Override
@@ -95,7 +98,7 @@ public class Delve implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
-        return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), null);
+        return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
     }
 
 

@@ -23,8 +23,10 @@ public class RogueGenerator implements MapGenerator {
     private final List<String> greatVaultIds;
     private final int level;
     private final MonsterIdGroup monsterIds;
+    private final GameMap.Flags flags;
 
-    public RogueGenerator(int width, int height, int vaultLevel, ProtoTranslator translator, MonsterIdGroup monsterIds, int level) {
+    public RogueGenerator(int width, int height, int vaultLevel, ProtoTranslator translator,
+                          MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         this.width = width;
         this.height = height;
         this.vaultLevel = vaultLevel;
@@ -33,6 +35,7 @@ public class RogueGenerator implements MapGenerator {
         this.greatVaultIds = new ArrayList<>(PremadeMapData.getVaultIds());
         this.monsterIds = monsterIds;
         this.level = level;
+        this.flags = flags;
     }
 
     @Override
@@ -59,7 +62,7 @@ public class RogueGenerator implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), null);
+        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
         return map;
     }
 

@@ -10,10 +10,10 @@ ice	ice floor	ice	blockWater,blockLava
 dark sand	sand	dark sand	blockWater,blockLava	
 inn	inn	inn	blockGround,blockAir,blockWater,blockLava	
 floor	floor	floor	blockWater,blockLava	
-water 1	shallow water	water 1	blockLava	
-water 2	deep water	water 2	blockLava	
-water 3	deep water	water 3	blockLava	
-water 4	deep water	water 4	blockLava	
+water 1	shallow water	water 1	blockGround,blockLava	
+water 2	deep water	water 2	blockGround,blockLava	
+water 3	deep water	water 3	blockGround,blockLava	
+water 4	deep water	water 4	blockGround,blockLava	
 snow	snow	snow	blockWater,blockLava	
 forest	forest	forest	blockWater,blockLava	
 diggable hot stone wall	diggable hot stone wall	diggable hot stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::cold lava floor

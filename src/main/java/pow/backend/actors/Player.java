@@ -2,6 +2,7 @@ package pow.backend.actors;
 
 import pow.backend.AttackData;
 import pow.backend.GameBackend;
+import pow.backend.GameConstants;
 import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.behavior.ActionBehavior;
@@ -9,6 +10,7 @@ import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.LightSource;
+import pow.backend.event.GameEvent;
 import pow.util.Circle;
 import pow.util.DieRoll;
 import pow.util.MathUtils;
@@ -59,12 +61,13 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     public final int viewRadius;
-    private final int lightRadius;
+    private int lightRadius;
     public final List<DungeonItem> equipment;
     public final Map<DungeonItem.ArtifactSlot, DungeonItem> artifacts;
     private final GainRatios gainRatios;
     public final PlayerStats playerStats;
     public boolean increaseWealth;
+    private boolean winner;
 
     private final AttackData innateAttack; // attack to use if nothing is wielded.
     public int experience;
@@ -117,9 +120,20 @@ public class Player extends Actor implements Serializable, LightSource {
     private Player(DungeonObject.Params objectParams,
                   GainRatios gainRatios,
                   AttackData innateAttack ) {
-        super(objectParams, new Actor.Params( 1, -1, -99, 0, innateAttack, true, 0, null, 0));
+        super(objectParams, new Actor.Params(
+                1,
+                -1,
+                -99,
+                0,
+                innateAttack,
+                true,
+                false,
+                false,
+                0,
+                null,
+                0));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
-        this.lightRadius = 8;  // 3 = candle (starting), 8 = lantern, 13 = bright lantern
+        this.lightRadius = -1;  // filled in by updateStats
         this.equipment = new ArrayList<>();
         this.artifacts = new HashMap<>();
         this.gainRatios = gainRatios;
@@ -133,13 +147,14 @@ public class Player extends Actor implements Serializable, LightSource {
         this.monsterTarget = null;
         this.behavior = null;
         this.increaseWealth = false;
+        this.winner = false;
     }
 
     public void addCommand(Action request) {
         this.behavior = new ActionBehavior(this, request);
     }
 
-    public boolean canSee(GameState gs, Point point) {
+    public boolean canSeeLocation(GameState gs, Point point) {
         // must be on the map, within the player's view radius, and must be lit
         return (gs.getCurrentMap().isOnMap(point.x, point.y) &&
                 (MathUtils.dist2(loc, point) <= Circle.getRadiusSquared(viewRadius)) &&
@@ -259,6 +274,9 @@ public class Player extends Actor implements Serializable, LightSource {
         this.baseStats.speed = innateSpd + spdBonus;
 
         updateWealthStatus();
+        updateLightRadius();
+        updateBagSize();
+        updateAquatic();
     }
 
     private void updateWealthStatus() {
@@ -268,6 +286,26 @@ public class Player extends Actor implements Serializable, LightSource {
                 this.increaseWealth = true;
             }
         }
+    }
+
+    private void updateLightRadius() {
+        this.lightRadius = GameConstants.PLAYER_SMALL_LIGHT_RADIUS;
+        if (artifacts.containsKey(DungeonItem.ArtifactSlot.LANTERN)) {
+            this.lightRadius = GameConstants.PLAYER_MED_LIGHT_RADIUS;
+        }
+        if (artifacts.containsKey(DungeonItem.ArtifactSlot.LANTERN2)) {
+            this.lightRadius = GameConstants.PLAYER_LARGE_LIGHT_RADIUS;
+        }
+    }
+
+    private void updateBagSize() {
+        if (this.artifacts.containsKey(DungeonItem.ArtifactSlot.BAG)) {
+            this.inventory.increaseMaxPerSlot(GameConstants.PLAYER_EXPANDED_ITEMS_PER_SLOT);
+        }
+    }
+
+    private void updateAquatic() {
+        this.aquatic = this.artifacts.containsKey(DungeonItem.ArtifactSlot.FLOAT);
     }
 
     // returns the old item, if any
@@ -292,6 +330,20 @@ public class Player extends Actor implements Serializable, LightSource {
         DungeonItem item = equipment.remove(idx);
         updateStats();
         return item;
+    }
+
+    public List<GameEvent> addArtifact(DungeonItem item) {
+        artifacts.put(item.artifactSlot, item);
+        updateStats();
+        List<GameEvent> events = new ArrayList<>();
+
+        // check for a win!
+        if (!winner && hasAllPearls()) {
+            winner = true;
+            events.add(GameEvent.WonGame());
+        }
+
+        return events;
     }
 
     @Override
@@ -358,10 +410,38 @@ public class Player extends Actor implements Serializable, LightSource {
         return false;
     }
 
+    public boolean hasGasMask() {
+        return artifacts.containsKey(DungeonItem.ArtifactSlot.GASMASK);
+    }
+    public boolean hasHeatSuit() { return artifacts.containsKey(DungeonItem.ArtifactSlot.HEATSUIT); }
+    public boolean hasKey() { return artifacts.containsKey(DungeonItem.ArtifactSlot.KEY); }
+    public boolean hasAllPearls() {
+        return  artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL1) &&
+                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL2) &&
+                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL3) &&
+                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL4) &&
+                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL5) &&
+                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL6) &&
+                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL7) &&
+                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL8);
+    }
+
+    @Override
+    public boolean canDig() {
+        return artifacts.containsKey(DungeonItem.ArtifactSlot.PICKAXE);
+    }
+
+    @Override
+    public boolean canSeeInvisible() {
+        return artifacts.containsKey(DungeonItem.ArtifactSlot.GLASSES);
+    }
+
     public DungeonItem findArrows() {
         for (DungeonItem item : inventory.items)  {
             if (item.flags.arrow) return item;
         }
         return null;
     }
+
+    public boolean isWinner() { return winner; }
 }

@@ -20,6 +20,12 @@ public class MonsterGenerator {
         return instance.generatorMap.keySet();
     }
 
+    // monsters that can walk on ground
+    public static Set<String> getGroundMonsterIds() { return instance.groundMonsterIds; }
+
+    // monsters that can swim in the water
+    public static Set<String> getWaterMonsterIds() { return instance.waterMonsterIds; }
+
     // generates a single monster
     public static Monster genMonster(String id, Random rng, Point location) {
         if (!instance.generatorMap.containsKey(id)) {
@@ -31,6 +37,8 @@ public class MonsterGenerator {
 
     private static final MonsterGenerator instance;
     private Map<String, SpecificMonsterGenerator> generatorMap;
+    private Set<String> groundMonsterIds;
+    private Set<String> waterMonsterIds;
 
     static {
         try {
@@ -47,9 +55,16 @@ public class MonsterGenerator {
         TsvReader reader = new TsvReader(tsvStream);
 
         generatorMap = new HashMap<>();
+        groundMonsterIds = new HashSet<>();
+        waterMonsterIds = new HashSet<>();
         for (String[] line : reader.getData()) {
             SpecificMonsterGenerator smg = new SpecificMonsterGenerator(line);
             generatorMap.put(smg.id, smg);
+            if (smg.flags.aquatic) {
+                waterMonsterIds.add(smg.id);
+            } else {
+                groundMonsterIds.add(smg.id);
+            }
         }
     }
 
@@ -71,12 +86,16 @@ public class MonsterGenerator {
         int numDropAttempts;
 
         public static class AllFlags {
-            final Monster.Flags aiActorFlags;
+            final Monster.Flags monsterFlags;
             final boolean friendly;
+            final boolean invisible;
+            final boolean aquatic;
 
-            public AllFlags(Monster.Flags aiActorFlags, boolean friendly) {
-                this.aiActorFlags = aiActorFlags;
+            public AllFlags(Monster.Flags monsterFlags, boolean friendly, boolean invisible, boolean aquatic) {
+                this.monsterFlags = monsterFlags;
                 this.friendly = friendly;
+                this.invisible = invisible;
+                this.aquatic = aquatic;
             }
         }
 
@@ -86,6 +105,8 @@ public class MonsterGenerator {
             boolean stationary = false;
             boolean erratic = false;
             boolean friendly = false;
+            boolean invisible = false;
+            boolean aquatic = false;
             for (String t : tokens) {
                 switch (t) {
                     case "": break;  // will happen if we have an empty string
@@ -94,12 +115,14 @@ public class MonsterGenerator {
                     case "knightmove": break;
                     case "boss": break;
                     case "friendly": friendly = true; break;
+                    case "invisible": invisible = true; break;
+                    case "aquatic": aquatic = true; break;
                     default:
                         throw new IllegalArgumentException("unknown monster flag '" + t + "'");
                 }
             }
 
-            return new AllFlags(new Monster.Flags(stationary, erratic), friendly);
+            return new AllFlags(new Monster.Flags(stationary, erratic), friendly, invisible, aquatic);
         }
 
         private static String parseArtifact(String text) {
@@ -146,8 +169,9 @@ public class MonsterGenerator {
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
                     new Actor.Params(level, instanceHP, defense, experience, attackData,
-                            flags.friendly, speed, artifactDrops, numDropAttempts),
-                    flags.aiActorFlags);
+                            flags.friendly, flags.invisible, flags.aquatic, speed,
+                            artifactDrops, numDropAttempts),
+                    flags.monsterFlags);
         }
     }
 }
