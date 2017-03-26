@@ -31,8 +31,11 @@ public class RunBehavior implements Behavior {
     @Override
     public boolean canPerform(GameState gs) {
         if (stepCount == 0) {
-            // on the first step, always take a step if possible
-            return canKeepRunning(gs);
+            // On the first step, always allow the player to
+            // try to move this direction; this allows the player
+            // to open doors, dig, change levels, etc., even if
+            // they have the Shift key down for running.
+            return true;
         }
 
         // on the second step, figure out if we're in a corridor and
@@ -204,12 +207,12 @@ public class RunBehavior implements Behavior {
     private boolean isDirectionOpen(GameMap map, Point point, Direction direction) {
         Point loc = point.add(direction);
         if (!map.isOnMap(loc.x, loc.y)) return false;
-        return (!map.map[loc.x][loc.y].blockGround());
+        return (!map.isBlocked(player, loc.x, loc.y));
     }
 
     private boolean landOrEnemyBlocked(GameMap map, Point loc) {
         if (!map.isOnMap(loc.x, loc.y)) return true;
-        if (map.map[loc.x][loc.y].blockGround()) return true;
+        if (map.isBlocked(player, loc.x, loc.y)) return true;
         Actor a = map.actorAt(loc.x, loc.y);
         return (a != null && !a.friendly);
     }
