@@ -12,19 +12,19 @@ a monster deep in a dungeon.
 
 ## FAQ
 
-Q: How do I run it?
+**Q:** How do I run it?
 
-A: You will need Java 1.8 on your computer to run Pearls of Wisdom.  Once you
-have it, just double-click the .jar file. 
+**A:** You will need Java 8 on your computer to run Pearls of Wisdom.  Once you
+have it, just double-click the .jar file.
 
-Q: Where are my games stored?
+**Q:** Where are my games stored?
 
-A: In `~/.pearls_of_wisdom/save`.  (~ is your home directory).
+**A:** In `~/.pearls_of_wisdom/save`.  (~ is your home directory).
 
-Q: I upgraded to a new version, and now my old characters crash when loading!
+**Q:** I upgraded to a new version, and now my old characters crash when loading!
 
-A: Yup, sorry about that.  Improving savefile compatibility may become
-a bigger priority after the game is complete and I'm not adding new features. 
+**A:** Yup, sorry about that.  Improving savefile compatibility may become
+a bigger priority after the game is complete and I'm not adding new features.
 
 ## Developer Information
 
