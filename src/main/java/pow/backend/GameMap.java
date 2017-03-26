@@ -146,8 +146,13 @@ public class GameMap implements Serializable {
         player.energy.setFull(); // make sure the player can move first
 
         if (pet != null) {
-            addActor(pet);
-            pet.loc = findClosestOpenSquare(player, playerLoc);
+            if (hasOpenSquare(pet)) {
+                addActor(pet);
+                pet.loc = findClosestOpenSquare(player, playerLoc);
+            }
+            else {
+                // TODO: log that the pet can't join..
+            }
         }
 
         updatePlayerVisibilityData(player);
@@ -208,6 +213,21 @@ public class GameMap implements Serializable {
             if (a.loc.x == x && a.loc.y == y && a.solid) return a;
         }
         return null;
+    }
+
+    // Checks to make sure the level has a place where the
+    // actor can be placed
+    private boolean hasOpenSquare(Actor actor) {
+        int width = Array2D.width(map);
+        int height = Array2D.height(map);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (!isBlocked(actor, x, y)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     // Finds the closest open square to the starting location.
