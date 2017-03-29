@@ -3,7 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.frontend.Frontend;
-import pow.frontend.save.SaveUtils;
+import pow.frontend.utils.SaveUtils;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.KeyUtils;
 

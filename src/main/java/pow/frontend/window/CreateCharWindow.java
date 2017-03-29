@@ -4,7 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.dungeon.gen.NameGenerator;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
-import pow.frontend.save.SaveUtils;
+import pow.frontend.utils.SaveUtils;
 
 import java.awt.Color;
 import java.awt.Font;

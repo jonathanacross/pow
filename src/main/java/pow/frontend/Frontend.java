@@ -7,6 +7,7 @@ import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
 import pow.frontend.effect.ArrowEffect;
 import pow.frontend.effect.Effect;
+import pow.frontend.effect.GameEffect;
 import pow.frontend.effect.RocketEffect;
 import pow.frontend.window.*;
 
@@ -141,6 +142,7 @@ public class Frontend {
 
     public void update() {
 
+        // TODO: simplify/cleanup
         while (! effects.isEmpty()) {
             Effect effect = effects.get(0);
             dirty = true;
@@ -149,6 +151,7 @@ public class Frontend {
                 return;
             } else {
                 effects.remove(0);
+                return;
             }
         }
 
@@ -178,6 +181,7 @@ public class Frontend {
                 case LOST_GAME: open(this.loseWindow); break;
                 case ROCKET: this.effects.add(new RocketEffect(event.actor)); break;
                 case ARROW: this.effects.add(new ArrowEffect(event.actor, event.point)); break;
+                case EFFECT: this.effects.add(new GameEffect(event.effects)); break;
                 case IN_STORE: processShopEntry(); break;
             }
         }

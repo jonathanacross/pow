@@ -1,4 +1,4 @@
-package pow.frontend.save;
+package pow.frontend.utils;
 
 import pow.backend.GameState;
 import pow.util.DebugLogger;
