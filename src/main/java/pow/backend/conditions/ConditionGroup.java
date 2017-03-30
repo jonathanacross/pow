@@ -13,7 +13,7 @@ import java.util.Map;
 // Class to store an instance of all the conditions.
 // One instance will be created per actor.
 public class ConditionGroup implements Serializable {
-    public final Map<ConditionTypes, Condition> conditionMap;
+    private final Map<ConditionTypes, Condition> conditionMap;
 
     public ConditionGroup(Actor actor) {
         conditionMap = new HashMap<>();

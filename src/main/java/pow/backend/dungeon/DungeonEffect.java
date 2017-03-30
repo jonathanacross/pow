@@ -38,7 +38,7 @@ public class DungeonEffect {
         }
     }
 
-    public List<ImageLoc> imageLocs;
+    public final List<ImageLoc> imageLocs;
     public DungeonEffect(List<ImageLoc> imageLocs) {
         this.imageLocs = imageLocs;
     }

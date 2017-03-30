@@ -1,10 +1,8 @@
 package pow.backend.dungeon.gen.worldgen;
 
-import pow.backend.ActionParams;
 import pow.backend.GameConstants;
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonFeature;
-import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
@@ -32,12 +30,6 @@ public class WorldDataGen {
     private static final DungeonTerrain DEBUG  = TerrainData.getTerrain("debug");
 
     private static final DungeonFeature NONE = null;
-    private static final DungeonFeature WIN_TILE = new DungeonFeature("wintile", "way to win", "orange pearl",
-            new DungeonFeature.Flags( false, false,false, false, false, false, false, false, true),
-            new ActionParams());
-    private static final DungeonFeature LOSE_TILE = new DungeonFeature("losetile", "death", "cobra",
-            new DungeonFeature.Flags( false, false,false, false, false, false, false, false, true),
-            new ActionParams());
     private static final DungeonFeature CANDLE = FeatureData.getFeature("candle");
     private static final DungeonFeature FOUNTAIN = FeatureData.getFeature("fountain");
     private static final DungeonFeature INN_DOOR = FeatureData.getFeature("inn");
@@ -195,8 +187,6 @@ public class WorldDataGen {
 
         Map<Integer, DungeonFeature> featureMap = new HashMap<>();
         featureMap.put(Constants.FEATURE_NONE, NONE);
-        featureMap.put(Constants.FEATURE_WIN_TILE, WIN_TILE);
-        featureMap.put(Constants.FEATURE_LOSE_TILE, LOSE_TILE);
         featureMap.put(Constants.FEATURE_CANDLE, CANDLE);
         featureMap.put(Constants.FEATURE_FOUNTAIN, FOUNTAIN);
         featureMap.put(Constants.FEATURE_WEAPON_SHOP_DOOR, WEAPON_SHOP_DOOR);

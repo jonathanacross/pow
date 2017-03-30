@@ -8,15 +8,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class WelcomeWindow extends AbstractWindow {
 
-    private String version;
+    private final String version;
 
     public WelcomeWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);

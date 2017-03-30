@@ -92,7 +92,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public final boolean friendly; // friendly to the player
     public final boolean invisible;
     public boolean aquatic;  // can go on water
-    public boolean terrestrial; // can go on land
+    public final boolean terrestrial; // can go on land
     public int level;
     public int gold;
     // Ideally, we would make all items for monsters at

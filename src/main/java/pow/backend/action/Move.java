@@ -26,19 +26,6 @@ public class Move implements Action {
     private List<GameEvent> addEvents(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Moved());
-        GameState gs = backend.getGameState();
-
-        // temporary custom code to demonstrate winning/losing
-        if (actor == gs.player) {
-            DungeonFeature feature = gs.getCurrentMap().map[actor.loc.x][actor.loc.y].feature;
-            if (feature != null && feature.id.equals("wintile")) {
-                backend.logMessage("you won!");
-                events.add(GameEvent.WonGame());
-            } else if (feature != null && feature.id.equals("losetile")) {
-                backend.logMessage("you died.");
-                events.add(GameEvent.LostGame());
-            }
-        }
         return events;
     }
 
