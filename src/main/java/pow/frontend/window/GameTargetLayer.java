@@ -71,6 +71,7 @@ public class GameTargetLayer extends AbstractWindow {
                 Point cursorPosition = targetableSquares.get(targetIdx);
                 callback.accept(cursorPosition);
                 break;
+            default: break;
         }
     }
 

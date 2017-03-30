@@ -173,6 +173,7 @@ public class Frontend {
                 case LOST_GAME: open(this.loseWindow); break;
                 case EFFECT: this.effects.add(event.effect); break;
                 case IN_STORE: processShopEntry(); break;
+                default: break;
             }
         }
     }

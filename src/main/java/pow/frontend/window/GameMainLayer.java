@@ -203,6 +203,7 @@ public class GameMainLayer extends AbstractWindow {
             case HELP: frontend.open(frontend.helpWindow); break;
             case DEBUG_INCR_CHAR_LEVEL: backend.tellPlayer(new DebugAction(DebugAction.What.INCREASE_CHAR_LEVEL)); break;
             case DEBUG_HEAL_CHAR: backend.tellPlayer(new DebugAction(DebugAction.What.HEAL)); break;
+            default: break;
         }
     }
 
