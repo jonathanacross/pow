@@ -3,11 +3,9 @@ package pow.frontend;
 import pow.backend.GameBackend;
 import pow.backend.ShopData;
 import pow.backend.action.RestAtInn;
+import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
-import pow.frontend.effect.ArrowEffect;
-import pow.frontend.effect.Effect;
-import pow.frontend.effect.RocketEffect;
 import pow.frontend.window.*;
 
 import java.awt.Color;
@@ -45,7 +43,7 @@ public class Frontend {
     private final GameBackend gameBackend;
     private final Queue<KeyEvent> keyEvents;
 
-    private final List<Effect> effects;
+    private final List<DungeonEffect> effects;
     private boolean dirty;  // need to redraw
     public final Stack<String> messages;  // short messages/help suggestions
 
@@ -57,7 +55,7 @@ public class Frontend {
         return dirty;
     }
 
-    public List<Effect> getEffects() {
+    public List<DungeonEffect> getEffects() {
         return effects;
     }
 
@@ -141,15 +139,12 @@ public class Frontend {
 
     public void update() {
 
-        while (! effects.isEmpty()) {
-            Effect effect = effects.get(0);
+        // Remove the current effect from our list to draw so that the
+        // next one will display.
+        if (! effects.isEmpty()) {
+            effects.remove(0);
             dirty = true;
-            if (effect.update()) {
-                // continue animation of current effect
-                return;
-            } else {
-                effects.remove(0);
-            }
+            return;
         }
 
         // finished all visual effects; now process future actions
@@ -176,9 +171,9 @@ public class Frontend {
             switch (event.eventType) {
                 case WON_GAME: open(this.winWindow); break;
                 case LOST_GAME: open(this.loseWindow); break;
-                case ROCKET: this.effects.add(new RocketEffect(event.actor)); break;
-                case ARROW: this.effects.add(new ArrowEffect(event.actor, event.point)); break;
+                case EFFECT: this.effects.add(event.effect); break;
                 case IN_STORE: processShopEntry(); break;
+                default: break;
             }
         }
     }

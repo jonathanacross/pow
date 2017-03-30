@@ -9,7 +9,7 @@ import java.util.List;
 public class MonsterIdGroup implements Serializable {
 
     // Monsters possible to generate.  If empty, then no monsters will be made.
-    public final List<String> monsterIds;
+    private final List<String> monsterIds;
 
     // Is it possible to generate a boss?  This will be false in two cases:
     // 1. There is no boss

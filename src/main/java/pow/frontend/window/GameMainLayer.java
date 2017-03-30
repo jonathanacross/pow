@@ -6,12 +6,8 @@ import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.behavior.RunBehavior;
-import pow.backend.dungeon.DungeonFeature;
-import pow.backend.dungeon.DungeonItem;
-import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.ItemList;
+import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
-import pow.frontend.effect.GlyphLoc;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
@@ -207,6 +203,7 @@ public class GameMainLayer extends AbstractWindow {
             case HELP: frontend.open(frontend.helpWindow); break;
             case DEBUG_INCR_CHAR_LEVEL: backend.tellPlayer(new DebugAction(DebugAction.What.INCREASE_CHAR_LEVEL)); break;
             case DEBUG_HEAL_CHAR: backend.tellPlayer(new DebugAction(DebugAction.What.HEAL)); break;
+            default: break;
         }
     }
 
@@ -251,9 +248,10 @@ public class GameMainLayer extends AbstractWindow {
 
         // draw effects
         if (!frontend.getEffects().isEmpty()) {
-            for (GlyphLoc glyphLoc : frontend.getEffects().get(0).render()) {
-                if (gs.player.canSeeLocation(gs, glyphLoc.loc)) {
-                    mapView.drawTile(graphics, glyphLoc.imageName, glyphLoc.loc.x, glyphLoc.loc.y);
+            DungeonEffect effect = frontend.getEffects().get(0);
+            for (DungeonEffect.ImageLoc imageLoc : effect.imageLocs) {
+                if (gs.player.canSeeLocation(gs, imageLoc.loc)) {
+                    mapView.drawTile(graphics, imageLoc.imageName, imageLoc.loc.x, imageLoc.loc.y);
                 }
             }
         }

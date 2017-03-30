@@ -38,6 +38,8 @@ public class ConfirmWindow extends AbstractWindow {
             case CANCEL:
                 frontend.close();
                 break;
+            default:
+                break;
         }
     }
 

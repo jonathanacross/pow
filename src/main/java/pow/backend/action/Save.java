@@ -2,7 +2,7 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
-import pow.frontend.save.SaveUtils;
+import pow.frontend.utils.SaveUtils;
 
 import java.util.ArrayList;
 

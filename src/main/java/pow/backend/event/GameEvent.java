@@ -1,45 +1,40 @@
 package pow.backend.event;
 
-import pow.backend.actors.Actor;
-import pow.util.Point;
+import pow.backend.dungeon.DungeonEffect;
 
 // class to report back interesting things that the UI should show
 public class GameEvent {
 
+    // TODO: collapse some of these (e.g., moved, healed, log_update?) into dungeon_updated
     public enum EventType {
         LOG_UPDATE,
         MOVED,  // player or creature moved
         ATTACKED,
-        ARROW,
         KILLED,
         WON_GAME,
         LOST_GAME,
         IN_STORE,
         HEALED,
-        DUNGEON_UPDATED,  // possibly make this more granular: dig, unlocked....
-        ROCKET  // demo effect to show animation
+        DUNGEON_UPDATED,  // indicates UI needs a redraw
+        EFFECT
     }
 
-    // TODO: fill out this class.. what's needed? can I simplify?
     public final EventType eventType;
-    public final Actor actor; // may be null for some events
-    public final Point point; // may be null for many events
+    public final DungeonEffect effect;
 
-    private GameEvent(EventType eventType, Actor actor, Point point) {
+    private GameEvent(EventType eventType, DungeonEffect effect) {
         this.eventType = eventType;
-        this.actor = actor;
-        this.point = point;
+        this.effect = effect;
     }
 
-    public static GameEvent LogUpdate() { return new GameEvent(EventType.LOG_UPDATE, null, null); }
-    public static GameEvent Moved() { return new GameEvent(EventType.MOVED, null, null); }
-    public static GameEvent Healed() { return new GameEvent(EventType.HEALED, null, null); }
-    public static GameEvent Attacked() { return new GameEvent(EventType.ATTACKED, null, null); }
-    public static GameEvent Arrow(Actor a, Point p) { return new GameEvent(EventType.ARROW, a, p); }
-    public static GameEvent Killed() { return new GameEvent(EventType.KILLED, null, null); }
-    public static GameEvent WonGame() { return new GameEvent(EventType.WON_GAME, null, null); }
-    public static GameEvent LostGame() { return new GameEvent(EventType.LOST_GAME, null, null); }
-    public static GameEvent InStore() { return new GameEvent(EventType.IN_STORE, null, null); }
-    public static GameEvent DungeonUpdated() { return new GameEvent(EventType.DUNGEON_UPDATED, null, null); }
-    public static GameEvent Rocket(Actor a) { return new GameEvent(EventType.ROCKET, a, null); }
+    public static GameEvent LogUpdate() { return new GameEvent(EventType.LOG_UPDATE, null); }
+    public static GameEvent Moved() { return new GameEvent(EventType.MOVED, null); }
+    public static GameEvent Healed() { return new GameEvent(EventType.HEALED, null); }
+    public static GameEvent Attacked() { return new GameEvent(EventType.ATTACKED, null); }
+    public static GameEvent Killed() { return new GameEvent(EventType.KILLED, null); }
+    public static GameEvent WonGame() { return new GameEvent(EventType.WON_GAME, null); }
+    public static GameEvent LostGame() { return new GameEvent(EventType.LOST_GAME, null); }
+    public static GameEvent InStore() { return new GameEvent(EventType.IN_STORE, null); }
+    public static GameEvent DungeonUpdated() { return new GameEvent(EventType.DUNGEON_UPDATED, null); }
+    public static GameEvent Effect(DungeonEffect effect) { return new GameEvent(EventType.EFFECT, effect); }
 }

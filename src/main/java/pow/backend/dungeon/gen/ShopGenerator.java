@@ -107,7 +107,7 @@ public class ShopGenerator {
             1 * (item.flags.arrow ? 1 : 0) +
             actionBonus(item);
 
-        double slotScaleFactor = 1.0;
+        double slotScaleFactor;
         switch (item.slot) {
             case BOW: slotScaleFactor = 3.2; break;  // bows are relatively more useful than other weapons
             case WEAPON: slotScaleFactor = 1.0; break;
@@ -117,6 +117,7 @@ public class ShopGenerator {
             case HEADGEAR: slotScaleFactor = 0.9; break;
             case SHIELD: slotScaleFactor = 1.0; break;
             case ARMOR: slotScaleFactor = 1.0; break;
+            default: slotScaleFactor = 1.0; break;
         }
         price *= slotScaleFactor;
 

@@ -19,10 +19,10 @@ import java.util.Random;
 public class GameMap implements Serializable {
 
     public static class Flags implements Serializable {
-        boolean permLight; // should the level always be lit?
-        boolean outside;  // if outside, then we can illuminate based on day/night
-        boolean poisonGas;  // player loses health if not wearing gasmask
-        boolean hot;  // player loses health if not wearing heatsuit
+        final boolean permLight; // should the level always be lit?
+        final boolean outside;  // if outside, then we can illuminate based on day/night
+        final boolean poisonGas;  // player loses health if not wearing gasmask
+        final boolean hot;  // player loses health if not wearing heatsuit
 
         public Flags(boolean permLight, boolean outside, boolean poisonGas, boolean hot) {
             this.permLight = permLight;

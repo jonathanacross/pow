@@ -21,8 +21,6 @@ public class Constants {
     public static final int FEATURE_INN_DOOR = 7 << 8;
     public static final int FEATURE_MAGIC_SHOP_DOOR = 8 << 8;
     public static final int FEATURE_WEAPON_SHOP_DOOR = 9 << 8;
-    public static final int FEATURE_WIN_TILE = 98 << 8;
-    public static final int FEATURE_LOSE_TILE = 99 << 8;
 
     public static int getTerrain(int x) { return x & 0xff; }
     public static int getFeature(int x) { return x & 0xff00; }
@@ -37,8 +35,6 @@ public class Constants {
                 case Constants.FEATURE_CLOSED_DOOR: return '+';
                 case Constants.FEATURE_OPEN_DOOR: return '\'';
                 case Constants.FEATURE_CANDLE: return 'c';
-                case Constants.FEATURE_WIN_TILE: return 'W';
-                case Constants.FEATURE_LOSE_TILE: return 'L';
                 case Constants.FEATURE_UP_STAIRS: return '<';
                 case Constants.FEATURE_DOWN_STAIRS: return '>';
                 case Constants.FEATURE_FOUNTAIN: return 'f';
@@ -74,8 +70,6 @@ public class Constants {
             case '+': return Constants.TERRAIN_FLOOR + Constants.FEATURE_CLOSED_DOOR;
             case '\'': return Constants.TERRAIN_FLOOR + Constants.FEATURE_OPEN_DOOR;
             case 'c': return Constants.TERRAIN_WALL + Constants.FEATURE_CANDLE;
-            case 'W': return Constants.TERRAIN_FLOOR + Constants.FEATURE_WIN_TILE;
-            case 'L': return Constants.TERRAIN_FLOOR + Constants.FEATURE_LOSE_TILE;
             case '<': return Constants.TERRAIN_FLOOR + Constants.FEATURE_UP_STAIRS;
             case '>': return Constants.TERRAIN_FLOOR + Constants.FEATURE_DOWN_STAIRS;
             case 'f': return Constants.TERRAIN_FLOOR + Constants.FEATURE_FOUNTAIN;
