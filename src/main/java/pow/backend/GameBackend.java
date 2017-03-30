@@ -108,6 +108,11 @@ public class GameBackend {
 
                     commandQueue.add(actor.act(this));
                     gameResult.addEvents(actor.conditions.update(this));
+
+                    if (actor == gameState.player) {
+                        // force return every time player takes turn
+                        return gameResult;
+                    }
                 } else {
                     // This actor doesn't have enough energy yet, so move on to the next.
                     gameState.getCurrentMap().advanceActor();

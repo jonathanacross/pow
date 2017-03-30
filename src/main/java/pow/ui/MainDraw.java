@@ -13,6 +13,15 @@ import java.awt.event.KeyEvent;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+// This class stores the main JPanel where everything is eventually
+// displayed to the user, and where all keypresses are recorded.
+// The game Frontend (which also includes the backend) is created
+// in this class and also injected to the GameThread class.
+// Synchronization between the threads is accomplished via the
+// keyEventQueue; all keypresses are recorded here, and the the
+// GameThread class processes them from the queue and updates
+// the game state. Forced redraw updates are done from GameThread by
+// calling update().
 public class MainDraw extends JPanel implements Observer, ComponentListener {
 
     private Image dbImage = null;

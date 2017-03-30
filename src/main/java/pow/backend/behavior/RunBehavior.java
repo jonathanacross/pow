@@ -97,7 +97,7 @@ public class RunBehavior implements Behavior {
     @Override
     public Action getAction() {
         stepCount++;
-        return new Move(player, direction.dx, direction.dy);
+        return new Move(player, direction.dx, direction.dy, true);
     }
 
     // See if the player can take one step while in a corridor.

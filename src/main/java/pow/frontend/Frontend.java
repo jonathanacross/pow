@@ -152,16 +152,6 @@ public class Frontend {
         if (keyEvent != null) {
             processKey(keyEvent);
         }
-    }
-
-    public void addKeyEvent(KeyEvent e) {
-        this.keyEvents.add(e);
-    }
-
-    private void processKey(KeyEvent e) {
-        if (!windows.isEmpty()) {
-            windows.peek().processKey(e);
-        }
 
         GameResult result = gameBackend.update();
         if (!result.events.isEmpty()) {
@@ -175,6 +165,16 @@ public class Frontend {
                 case IN_STORE: processShopEntry(); break;
                 default: break;
             }
+        }
+    }
+
+    public void addKeyEvent(KeyEvent e) {
+        this.keyEvents.add(e);
+    }
+
+    private void processKey(KeyEvent e) {
+        if (!windows.isEmpty()) {
+            windows.peek().processKey(e);
         }
     }
 

@@ -3,6 +3,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.ActionParams;
+import pow.backend.dungeon.DungeonEffect;
 import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonTerrain;
@@ -10,22 +11,32 @@ import pow.backend.event.GameEvent;
 import pow.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Move implements Action {
     private final int dx;
     private final int dy;
     private final Actor actor;
+    private final boolean pause;
 
     public Move(Actor actor, int dx, int dy) {
+        this(actor, dx, dy, false);
+    }
+
+    public Move(Actor actor, int dx, int dy, boolean pause) {
         this.actor = actor;
         this.dx = dx;
         this.dy = dy;
+        this.pause = pause;
     }
 
     private List<GameEvent> addEvents(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Moved());
+        if (pause) {
+            events.add(GameEvent.Effect(new DungeonEffect(Collections.emptyList())));
+        }
         return events;
     }
 
