@@ -4,6 +4,9 @@ package pow.backend.dungeon;
 import pow.util.Direction;
 import pow.util.Point;
 
+import java.util.Collections;
+import java.util.List;
+
 public class DungeonEffect {
 
     public enum EffectType {
@@ -13,7 +16,7 @@ public class DungeonEffect {
         BOLT
     }
 
-    // This could be changed to element, if it makes sense, later
+    // This could be changed to element, if it makes sense
     public enum EffectColor {
         NONE,
         WHITE,
@@ -25,7 +28,27 @@ public class DungeonEffect {
         PURPLE
     }
 
-    public static String getEffectId(
+    public static class ImageLoc {
+        public final String imageName;
+        public final Point loc;
+
+        public ImageLoc(String name, Point loc) {
+            this.imageName = name;
+            this.loc = loc;
+        }
+    }
+
+    public List<ImageLoc> imageLocs;
+    public DungeonEffect(List<ImageLoc> imageLocs) {
+        this.imageLocs = imageLocs;
+    }
+
+    // convenience constructor if the effect is only one point
+    public DungeonEffect(String name, Point loc) {
+        this(Collections.singletonList(new ImageLoc(name, loc)));
+    }
+
+    public static String getEffectName(
             EffectType effectType,
             EffectColor color,
             Direction dir) {
@@ -43,10 +66,5 @@ public class DungeonEffect {
         }
 
         return id;
-    }
-
-    public static DungeonObject getEffect(String id, Point point) {
-        return new DungeonObject(new DungeonObject.Params(
-                id, "", id, "", point, false));
     }
 }
