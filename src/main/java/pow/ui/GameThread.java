@@ -7,12 +7,27 @@ import pow.util.Observer;
 import java.awt.event.KeyEvent;
 import java.util.Queue;
 
+// This class encapsulates the thread where the game actually runs.
+// This runs in a separate thread than the main java UI thread so
+// that the UI will remain responsive, and so that we don't lose
+// any key events.
+//
+// The main game event loop is in the run method here, and the entire
+// game frontend (which in turn contains the backend) is a member
+// variable of this class.
+//
+// To make sure the game renders immediately, this has a reference
+// to the MainDraw (via the 'observer' member).
+//
+// Conversely, the MainDraw class, part of the java UI, maintains a
+// threadsafe queue of keypresses, which is injected into this class
+// so that we can process them.
 public class GameThread implements Runnable {
     private final Frontend gameFrontend;
     private final Queue<KeyEvent> queue;
     private final Observer observer;
 
-    private static final int ANIMATION_DELAY_MILLIS = 10;
+    private static final int ANIMATION_DELAY_MILLIS = 5;
 
 
     public GameThread(Frontend gameFrontend, Queue<KeyEvent> queue, Observer observer) {

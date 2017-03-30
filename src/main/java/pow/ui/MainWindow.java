@@ -13,11 +13,9 @@ public class MainWindow extends JFrame implements KeyListener {
         draw.processKey(e);
     }
 
-    public void keyReleased(KeyEvent e) {
-    }
+    public void keyReleased(KeyEvent e) { }
 
-    public void keyTyped(KeyEvent e) {
-    }
+    public void keyTyped(KeyEvent e) { }
 
     public MainWindow() {
         addKeyListener(this);
