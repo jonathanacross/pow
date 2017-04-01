@@ -3,8 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.GameConstants;
 import pow.backend.GameState;
-import pow.backend.dungeon.gen.worldgen.MapPoint;
-import pow.backend.dungeon.gen.worldgen.MapTopology;
+import pow.backend.dungeon.gen.worldgen.MapTopologySummary;
 import pow.backend.dungeon.gen.worldgen.SpacialConnection;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
@@ -58,8 +57,8 @@ public class WorldMapWindow extends AbstractWindow {
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         GameState gs = backend.getGameState();
-        MapTopology topology = gs.world.topology;
-        Map<Point3D, MapPoint> roomLocs = topology.getRoomLocs();
+        MapTopologySummary topology = gs.world.topologySummary;
+        Map<Point3D, String> roomLocs = topology.getRoomLocs();
 
         int roomSize = 20;  // these may have to be scaled to fit in the display
         int roomSpacing = 20;
@@ -69,7 +68,7 @@ public class WorldMapWindow extends AbstractWindow {
         int marginY = (dim.height - (roomGridSize * mapHeight)) / 2;
 
         // draw rooms
-        for (Map.Entry<Point3D, MapPoint> entry : roomLocs.entrySet()) {
+        for (Map.Entry<Point3D, String> entry : roomLocs.entrySet()) {
             Point3D p = entry.getKey();
             if (p.z != 0) continue;
 
@@ -101,7 +100,7 @@ public class WorldMapWindow extends AbstractWindow {
             int baseX = marginX + x * roomGridSize;
             int baseY = marginY + y * roomGridSize;
 
-            String roomId = roomLocs.get(p).id;
+            String roomId = roomLocs.get(p);
             boolean visited = gs.world.world.get(roomId).visited;
             graphics.setColor(visited ? VISITED_EDGE_COLOR : UNSEEN_EDGE_COLOR);
 
@@ -131,8 +130,8 @@ public class WorldMapWindow extends AbstractWindow {
     // Side effects: sets xmin, ymin, mapWidth, mapHeight
     private void extractDimensions() {
         GameState gs = backend.getGameState();
-        MapTopology topology = gs.world.topology;
-        Map<Point3D, MapPoint> roomLocs = topology.getRoomLocs();
+        MapTopologySummary topology = gs.world.topologySummary;
+        Map<Point3D, String> roomLocs = topology.getRoomLocs();
 
         // Find the bounds of what to print.
         xmin = Integer.MAX_VALUE;
@@ -178,11 +177,11 @@ public class WorldMapWindow extends AbstractWindow {
         otherLayerStatus = new HashMap<>();
 
         GameState gs = backend.getGameState();
-        MapTopology topology = gs.world.topology;
-        Map<Point3D, MapPoint> roomLocs = topology.getRoomLocs();
+        MapTopologySummary topology = gs.world.topologySummary;
+        Map<Point3D, String> roomLocs = topology.getRoomLocs();
 
-        for (Map.Entry<Point3D, MapPoint> entry : roomLocs.entrySet()) {
-            String roomId = entry.getValue().id;
+        for (Map.Entry<Point3D, String> entry : roomLocs.entrySet()) {
+            String roomId = entry.getValue();
             Point3D p3d = entry.getKey();
             Point p2d = new Point(p3d.x, p3d.y);
             boolean visited = gs.world.world.get(roomId).visited;

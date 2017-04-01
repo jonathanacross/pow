@@ -3,7 +3,9 @@ package pow.backend.dungeon.gen.worldgen;
 import pow.util.Direction;
 import pow.util.Point3D;
 
-public class SpacialConnection {
+import java.io.Serializable;
+
+public class SpacialConnection implements Serializable {
     public final Point3D fromLoc;
     public final Direction dir;
 

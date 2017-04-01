@@ -5,10 +5,7 @@ import pow.backend.actors.Player;
 import pow.backend.dungeon.RecentMaps;
 import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.mapgen.MapGenerator;
-import pow.backend.dungeon.gen.worldgen.MapPoint;
-import pow.backend.dungeon.gen.worldgen.MapTopology;
-import pow.backend.dungeon.gen.worldgen.SpacialConnection;
-import pow.backend.dungeon.gen.worldgen.WorldDataGen;
+import pow.backend.dungeon.gen.worldgen.*;
 import pow.util.Point;
 import pow.util.Point3D;
 
@@ -18,7 +15,7 @@ import java.util.*;
 public class GameWorld implements Serializable {
     public Map<String, GameMap> world;
     public RecentMaps recentMaps;
-    public MapTopology topology;
+    public MapTopologySummary topologySummary;
 
     public GameWorld(Random rng, Player player, Pet pet) {
         genMapWorld(rng, player, pet);
@@ -39,9 +36,10 @@ public class GameWorld implements Serializable {
     }
 
     private void genMapWorld(Random rng, Player player, Pet pet) {
-        // 1. generate overall structure of the world
+        // 1. generate overall structure of the world, and save a summary copy
         List<MapPoint> data = WorldDataGen.getMapPoints(GameConstants.USE_TEST_WORLD);
-        topology = new MapTopology(data, rng, GameConstants.PROB_CONNECT_ADJ_AREAS);
+        MapTopology topology = new MapTopology(data, rng, GameConstants.PROB_CONNECT_ADJ_AREAS);
+        topologySummary = new MapTopologySummary(topology);
 
         // 2. generate each area
         world = new HashMap<>();
