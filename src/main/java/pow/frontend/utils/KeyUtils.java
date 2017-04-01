@@ -74,6 +74,8 @@ public class KeyUtils {
                 return hasShift(event) ? KeyInput.TAKE_OFF : KeyInput.WEAR;
             case KeyEvent.VK_T:
                 return hasShift(event) ? KeyInput.TARGET_FLOOR : KeyInput.TARGET;
+            case KeyEvent.VK_2:
+                return hasShift(event) ? KeyInput.SHOW_WORLD_MAP : KeyInput.UNKNOWN;
 
             // debugging commands
             case KeyEvent.VK_EQUALS:

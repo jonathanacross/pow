@@ -34,6 +34,7 @@ public class Frontend {
     private final OpenGameWindow openGameWindow;
     public final MonsterInfoWindow monsterInfoWindow;
     public final PlayerInfoWindow playerInfoWindow;
+    public final WorldMapWindow worldMapWindow;
     private final LogWindow logWindow;
     private final StatusWindow statusWindow;
     private final MapWindow mapWindow;
@@ -83,6 +84,7 @@ public class Frontend {
         // popups in main game
         monsterInfoWindow = new MonsterInfoWindow(new WindowDim(887, 260,300,350), false, gameBackend, this);
         playerInfoWindow = new PlayerInfoWindow(new WindowDim(100, 100,625,456), true, gameBackend, this);
+        worldMapWindow = new WorldMapWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
         helpWindow = new HelpWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
 
         windows = new Stack<>();

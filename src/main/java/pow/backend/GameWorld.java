@@ -18,6 +18,7 @@ import java.util.*;
 public class GameWorld implements Serializable {
     public Map<String, GameMap> world;
     public RecentMaps recentMaps;
+    public MapTopology topology;
 
     public GameWorld(Random rng, Player player, Pet pet) {
         genMapWorld(rng, player, pet);
@@ -40,7 +41,7 @@ public class GameWorld implements Serializable {
     private void genMapWorld(Random rng, Player player, Pet pet) {
         // 1. generate overall structure of the world
         List<MapPoint> data = WorldDataGen.getMapPoints(GameConstants.USE_TEST_WORLD);
-        MapTopology topology = new MapTopology(data, rng, GameConstants.PROB_CONNECT_ADJ_AREAS);
+        topology = new MapTopology(data, rng, GameConstants.PROB_CONNECT_ADJ_AREAS);
 
         // 2. generate each area
         world = new HashMap<>();
