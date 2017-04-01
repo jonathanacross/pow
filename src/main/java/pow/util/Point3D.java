@@ -1,6 +1,8 @@
 package pow.util;
 
-public class Point3D {
+import java.io.Serializable;
+
+public class Point3D implements Serializable {
     public final int x;
     public final int y;
     public final int z;

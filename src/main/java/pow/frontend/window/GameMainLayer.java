@@ -197,6 +197,7 @@ public class GameMainLayer extends AbstractWindow {
             case GET: tryPickup(gs); break;
             case FIRE: tryFire(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
+            case SHOW_WORLD_MAP: frontend.open(frontend.worldMapWindow); break;
             case QUAFF: tryQuaff(gs); break;
             case WEAR: tryWear(gs); break;
             case TAKE_OFF: tryTakeOff(gs); break;

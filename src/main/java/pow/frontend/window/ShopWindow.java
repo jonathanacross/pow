@@ -40,7 +40,8 @@ public class ShopWindow extends AbstractWindow {
                 if (maxNum > 0) {
                     WindowDim cDim = new WindowDim(dim.x, dim.y, dim.width, 90);
                     frontend.open(new GetCountWindow(cDim, this.backend, this.frontend,
-                            "How many " + TextUtils.plural(entry.item.name) + " do you want to buy?",
+                            entry.item.image,
+                            "How many " + TextUtils.plural(entry.item.name) + " do you want?",
                             maxNum,
                             (int count) -> backend.tellPlayer(new BuyItem(entries, itemNumber, count))));
                 }

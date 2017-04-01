@@ -44,6 +44,7 @@ public class GameMap implements Serializable {
     public final int level;  // difficulty level
     public ShopData shopData; // for stores contained in this map
     public final Flags flags;
+    public boolean visited;  // has the player visited this map
 
     public void updatePlayerVisibilityData(Player player) {
         updateBrightness(player);
@@ -133,6 +134,7 @@ public class GameMap implements Serializable {
         this.actors = new ArrayList<>();
         this.flags = flags;
         this.shopData = shopData;
+        this.visited = false;
         initLightSources();
     }
 
@@ -142,6 +144,7 @@ public class GameMap implements Serializable {
     public void placePlayerAndPet(Player player, Point playerLoc, Pet pet) {
         player.loc.x = playerLoc.x;
         player.loc.y = playerLoc.y;
+        visited = true;
         addActor(player);
         player.energy.setFull(); // make sure the player can move first
 

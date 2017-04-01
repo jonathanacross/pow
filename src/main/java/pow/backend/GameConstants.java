@@ -16,7 +16,7 @@ public class GameConstants {
     // world creation.  (Note that at least one connection is
     // guaranteed--setting this to 0 will result in a world that
     // is a tree structure.)
-    public final static double PROB_CONNECT_ADJ_AREAS = 0.25;
+    public final static double PROB_CONNECT_ADJ_AREAS = 0.33;
 
     // How many new areas the player must go to before monsters
     // will be regenerated in the current area.
@@ -96,4 +96,6 @@ public class GameConstants {
     // ------------------- other game constants ---------------
 
     public final static int MESSAGE_LOG_SIZE = 50;
+
+    public final static boolean PLAYER_CAN_SEE_UNKNOWN_AREAS = true;
 }
