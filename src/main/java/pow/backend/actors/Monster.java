@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
 import pow.backend.action.Move;
+import pow.backend.actors.ai.KnightAi;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.event.GameEvent;
 import pow.util.MathUtils;
@@ -22,14 +23,15 @@ public class Monster extends Actor implements Serializable {
     public static class Flags implements Serializable {
         public final boolean stationary;  // can't move (e.g., a mushroom or mold)
         public final boolean erratic;  // just move randomly, e.g., insects
+        public boolean knight;  // moves like a knight
 //        public boolean aggressive;  // won't get scared/run away
 //        public boolean passive;  // doesn't attack player unless attacked
 //        public boolean perfect;  // never have random moves
-//        public boolean knight;  // moves like a knight
 
-        public Flags(boolean stationary, boolean erratic) {
+        public Flags(boolean stationary, boolean erratic, boolean knight) {
             this.stationary = stationary;
             this.erratic = erratic;
+            this.knight = knight;
         }
     }
 
@@ -58,10 +60,17 @@ public class Monster extends Actor implements Serializable {
 
     private Action doAwake(GameBackend backend) {
         GameState gs = backend.getGameState();
-        // attack if adjacent to an enemy
-        Actor closestEnemy = AiUtils.findNearestTarget(this, gs);
-        if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 2) {
-            return new Attack(this, closestEnemy);
+
+        // attack if possible
+        Actor closestEnemy = flags.knight ?
+                KnightAi.findNearestTargetKnight(this, gs) :
+                AiUtils.findNearestTarget(this, gs);
+        if (closestEnemy != null) {
+            int dist2 = MathUtils.dist2(loc, closestEnemy.loc);
+            boolean canHit = flags.knight ? dist2 == 5 : dist2 <= 2;
+            if (canHit) {
+                return new Attack(this, closestEnemy);
+            }
         }
 
         if (flags.stationary) {
@@ -74,7 +83,9 @@ public class Monster extends Actor implements Serializable {
         }
 
         // try to track the player
-        return AiUtils.moveTowardTarget(this, gs, gs.player.loc);
+        return flags.knight ?
+                KnightAi.knightMoveTowardTarget(this, gs, gs.player.loc) :
+                AiUtils.moveTowardTarget(this, gs, gs.player.loc);
     }
 
     private Action doSleep(GameBackend backend) {

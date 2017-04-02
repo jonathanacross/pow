@@ -107,12 +107,13 @@ public class MonsterGenerator {
             boolean friendly = false;
             boolean invisible = false;
             boolean aquatic = false;
+            boolean knightmove = false;
             for (String t : tokens) {
                 switch (t) {
                     case "": break;  // will happen if we have an empty string
                     case "stationary": stationary = true; break;
                     case "erratic": erratic = true; break;
-                    case "knightmove": break;
+                    case "knightmove": knightmove = true; break;
                     case "boss": break;
                     case "friendly": friendly = true; break;
                     case "invisible": invisible = true; break;
@@ -122,7 +123,7 @@ public class MonsterGenerator {
                 }
             }
 
-            return new AllFlags(new Monster.Flags(stationary, erratic), friendly, invisible, aquatic);
+            return new AllFlags(new Monster.Flags(stationary, erratic, knightmove), friendly, invisible, aquatic);
         }
 
         private static String parseArtifact(String text) {
