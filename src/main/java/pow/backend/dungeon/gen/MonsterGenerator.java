@@ -82,6 +82,7 @@ public class MonsterGenerator {
         int speed;
         AllFlags flags;
         int experience;
+        List<Monster.Spell> spells;
         String artifactDrops;  // slight misnomer.. can only handle 1 artifact right now
         int numDropAttempts;
 
@@ -97,6 +98,19 @@ public class MonsterGenerator {
                 this.invisible = invisible;
                 this.aquatic = aquatic;
             }
+        }
+
+        private List<Monster.Spell> parseSpells(String text) {
+            List<Monster.Spell> spells = new ArrayList<>();
+
+            String[] tokens = text.split(",", -1);
+            for (String token : tokens) {
+                if (token.isEmpty()) continue; // will happen for empty string
+
+                Monster.Spell spell = Monster.Spell.valueOf(token.toUpperCase());
+                spells.add(spell);
+            }
+            return spells;
         }
 
         private AllFlags parseFlags(String text) {
@@ -142,8 +156,8 @@ public class MonsterGenerator {
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificMonsterGenerator(String[] line) {
-            if (line.length != 14) {
-                throw new IllegalArgumentException("Expected 14 fields, but had " + line.length
+            if (line.length != 15) {
+                throw new IllegalArgumentException("Expected 15 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
 
@@ -159,8 +173,9 @@ public class MonsterGenerator {
             experience = Integer.parseInt(line[9]);
             speed = Integer.parseInt(line[10]);
             flags = parseFlags(line[11]);
-            artifactDrops = parseArtifact(line[12]);
-            numDropAttempts = Integer.parseInt(line[13]);
+            spells = parseSpells(line[12]);
+            artifactDrops = parseArtifact(line[13]);
+            numDropAttempts = Integer.parseInt(line[14]);
         }
 
         // resolves die rolls, location to get a specific monster instance
@@ -171,7 +186,7 @@ public class MonsterGenerator {
                     new DungeonObject.Params(id, name, image, description, location, true),
                     new Actor.Params(level, instanceHP, defense, experience, attackData,
                             flags.friendly, flags.invisible, flags.aquatic, speed,
-                            artifactDrops, numDropAttempts),
+                            artifactDrops, numDropAttempts, spells),
                     flags.monsterFlags);
         }
     }

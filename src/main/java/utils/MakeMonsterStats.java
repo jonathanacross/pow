@@ -208,18 +208,21 @@ public class MakeMonsterStats {
             String type = entry[2];
             String genFlagsStr = entry[3];  // ideally, these will be removed, eventually made into good game flags
             String gameFlagsStr = entry[4];
-            int relativeSpeed = Integer.parseInt(entry[5]);
-            String uniqueItemDrops = entry[6];
-            int numDropChances = Integer.parseInt(entry[7]);
-            String name = entry[8];
-            String image = entry[9];
-            String description = entry[10];
+            String spellFlagsStr = entry[5];
+            int relativeSpeed = Integer.parseInt(entry[6]);
+            String uniqueItemDrops = entry[7];
+            int numDropChances = Integer.parseInt(entry[8]);
+            String name = entry[9];
+            String image = entry[10];
+            String description = entry[11];
 
             Set<String> genFlags = getFlags(genFlagsStr);
             Set<String> gameFlags = getFlags(gameFlagsStr);
+            Set<String> spellFlags = getFlags(spellFlagsStr);
             Set<String> flags = new HashSet<>();
             flags.addAll(genFlags);
             flags.addAll(gameFlags);
+            flags.addAll(spellFlags);
 
             int speed = getSpeed(area, relativeSpeed);
             int hp = getHP(area, type, flags);
@@ -246,6 +249,7 @@ public class MakeMonsterStats {
                     experience + "\t" +
                     speed + "\t" +
                     gameFlagsStr + "\t" +
+                    spellFlagsStr + "\t" +
                     uniqueItemDrops + "\t" +
                     numDropChances);
 

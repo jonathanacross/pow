@@ -17,10 +17,7 @@ import pow.util.MathUtils;
 import pow.util.Point;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Player extends Actor implements Serializable, LightSource {
 
@@ -131,7 +128,8 @@ public class Player extends Actor implements Serializable, LightSource {
                 false,
                 0,
                 null,
-                0));
+                0,
+                Collections.emptyList()));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = -1;  // filled in by updateStats
         this.equipment = new ArrayList<>();

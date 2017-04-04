@@ -23,10 +23,10 @@ public class Monster extends Actor implements Serializable {
     public static class Flags implements Serializable {
         public final boolean stationary;  // can't move (e.g., a mushroom or mold)
         public final boolean erratic;  // just move randomly, e.g., insects
-        public boolean knight;  // moves like a knight
-//        public boolean aggressive;  // won't get scared/run away
-//        public boolean passive;  // doesn't attack player unless attacked
-//        public boolean perfect;  // never have random moves
+        public final boolean knight;  // moves like a knight
+//        public final boolean aggressive;  // won't get scared/run away
+//        public final boolean passive;  // doesn't attack player unless attacked
+//        public final boolean perfect;  // never have random moves
 
         public Flags(boolean stationary, boolean erratic, boolean knight) {
             this.stationary = stationary;
@@ -34,6 +34,7 @@ public class Monster extends Actor implements Serializable {
             this.knight = knight;
         }
     }
+
 
     private final int stateTurnCount; // how long have we been in this state?
 

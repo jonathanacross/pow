@@ -35,6 +35,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public final int maxHealth;
         public final int defense;
         public final int speed;
+        public final List<Spell> spells;
 
         public Params(int level,
                       int maxHealth,
@@ -46,7 +47,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
                       boolean aquatic,
                       int speed,
                       String requiredItemDrops,
-                      int numDropAttempts) {
+                      int numDropAttempts,
+                      List<Spell> spells) {
             this.level = level;
             this.maxHealth = maxHealth;
             this.defense = defense;
@@ -58,6 +60,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
             this.speed = speed;
             this.requiredItemDrops = requiredItemDrops;
             this.numDropAttempts = numDropAttempts;
+            this.spells = spells;
         }
     }
 
@@ -84,6 +87,12 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public int speed;
     }
 
+    // Possible spells
+    public enum Spell implements Serializable {
+        ARROW
+    }
+
+
     protected final ActorStats baseStats;
     public final ConditionGroup conditions;
     public final Energy energy;
@@ -103,6 +112,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     // they die.
     public final int numDropAttempts; // number of attempts of dropping an item, monster only?
     public final String requiredItemDrops;
+    public List<Spell> spells;
 
     public abstract Action act(GameBackend backend);
     public abstract boolean needsInput(GameState gameState);
