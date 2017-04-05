@@ -120,6 +120,7 @@ public class Player extends Actor implements Serializable, LightSource {
         super(objectParams, new Actor.Params(
                 1,
                 -1,
+                -1, // maxMana
                 -99,
                 0,
                 innateAttack,

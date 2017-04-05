@@ -48,6 +48,32 @@ public class MakeMonsterStats {
         return (int) Math.round(baseHP * scaleFactor);
     }
 
+    private static int getMana(int area, String type, Set<String> flags) {
+        double baseMana = 3.0 * Math.pow(1.25, area);
+
+        double scaleFactor;
+        switch (type) {
+            case "fungus": scaleFactor = 0.1; break;
+            case "insect": scaleFactor = 0.4; break;
+            case "jelly": scaleFactor = 0.2; break;
+            case "mage": scaleFactor = 1.5; break;
+            case "warrior": scaleFactor = 0.7; break;
+            case "archer": scaleFactor = 0.8; break;
+            case "rogue": scaleFactor = 0.8; break;
+            case "reptile": scaleFactor = 0.5; break;
+            case "giant": scaleFactor = 0.9; break;
+            case "dragon": scaleFactor = 1.2; break;
+            default: scaleFactor = 1.0;
+        }
+
+        // account for various flags/attributes
+        if (flags.contains("boss")) scaleFactor *= 1.5;
+        if (flags.contains("finalboss")) scaleFactor *= 1.5;
+        if (flags.contains("weak")) scaleFactor *= 0.5;
+
+        return (int) Math.round(baseMana * scaleFactor);
+    }
+
     private static int getExperience(int area, String type, Set<String> flags, int hp, int speed) {
         double experience = hp/2.0;
 
@@ -188,19 +214,21 @@ public class MakeMonsterStats {
 
         writer.println(
                 "#area" + "\t" +
-                        "id" + "\t" +
-                        "name" + "\t" +
-                        "image" + "\t" +
-                        "description" + "\t" +
-                        "hp" + "\t" +
-                        "attacks" + "\t" +
-                        "toHit" + "\t" +
-                        "defense" + "\t" +
-                        "experience" + "\t" +
-                        "speed" + "\t" +
-                        "flags" + "\t" +
-                        "artifactDrops" + "\t" +
-                        "numDropChances");
+                "id" + "\t" +
+                "name" + "\t" +
+                "image" + "\t" +
+                "description" + "\t" +
+                "hp" + "\t" +
+                "mana" + "\t" +
+                "attacks" + "\t" +
+                "toHit" + "\t" +
+                "defense" + "\t" +
+                "experience" + "\t" +
+                "speed" + "\t" +
+                "flags" + "\t" +
+                "spells" + "\t" +
+                "artifactDrops" + "\t" +
+                "numDropChances");
 
         for (String[] entry : data) {
             int area = Integer.parseInt(entry[0]);
@@ -226,6 +254,7 @@ public class MakeMonsterStats {
 
             int speed = getSpeed(area, relativeSpeed);
             int hp = getHP(area, type, flags);
+            int mana = getMana(area, type, flags);
             double attackAvg = getAttackTarget(area, type, flags);
             DieRoll attackDieRoll = findClosestDieRoll(attackAvg);
             int toHit = getToHit(area, type, flags);
@@ -243,6 +272,7 @@ public class MakeMonsterStats {
                     image + "\t" +
                     description + "\t" +
                     hp + "\t" +
+                    mana + "\t" +
                     attackDieRoll + "\t" +
                     toHit + "\t" +
                     defense + "\t" +

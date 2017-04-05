@@ -76,6 +76,7 @@ public class MonsterGenerator {
         String image;
         String description;
         int maxHealth;
+        int maxMana;
         DieRoll attack;
         int toHit;
         int defense;
@@ -156,8 +157,8 @@ public class MonsterGenerator {
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificMonsterGenerator(String[] line) {
-            if (line.length != 15) {
-                throw new IllegalArgumentException("Expected 15 fields, but had " + line.length
+            if (line.length != 16) {
+                throw new IllegalArgumentException("Expected 16 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
 
@@ -167,24 +168,25 @@ public class MonsterGenerator {
             image = line[3];
             description = line[4];
             maxHealth = Integer.parseInt(line[5]);
-            attack = DieRoll.parseDieRoll(line[6]);
-            toHit = Integer.parseInt(line[7]);
-            defense = Integer.parseInt(line[8]);
-            experience = Integer.parseInt(line[9]);
-            speed = Integer.parseInt(line[10]);
-            flags = parseFlags(line[11]);
-            spells = parseSpells(line[12]);
-            artifactDrops = parseArtifact(line[13]);
-            numDropAttempts = Integer.parseInt(line[14]);
+            maxMana = Integer.parseInt(line[6]);
+            attack = DieRoll.parseDieRoll(line[7]);
+            toHit = Integer.parseInt(line[8]);
+            defense = Integer.parseInt(line[9]);
+            experience = Integer.parseInt(line[10]);
+            speed = Integer.parseInt(line[11]);
+            flags = parseFlags(line[12]);
+            spells = parseSpells(line[13]);
+            artifactDrops = parseArtifact(line[14]);
+            numDropAttempts = Integer.parseInt(line[15]);
         }
 
         // resolves die rolls, location to get a specific monster instance
         public Monster genMonster(Random rng, Point location) {
-            int instanceHP = maxHealth;
             AttackData attackData = new AttackData(attack, toHit, 0);
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
-                    new Actor.Params(level, instanceHP, defense, experience, attackData,
+                    new Actor.Params(level, maxHealth, maxMana,
+                            defense, experience, attackData,
                             flags.friendly, flags.invisible, flags.aquatic, speed,
                             artifactDrops, numDropAttempts, spells),
                     flags.monsterFlags);

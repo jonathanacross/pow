@@ -33,12 +33,14 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public final String requiredItemDrops;
         public final int numDropAttempts;
         public final int maxHealth;
+        public final int maxMana;
         public final int defense;
         public final int speed;
         public final List<Spell> spells;
 
         public Params(int level,
                       int maxHealth,
+                      int maxMana,
                       int defense,
                       int experience,
                       AttackData attack,
@@ -51,6 +53,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
                       List<Spell> spells) {
             this.level = level;
             this.maxHealth = maxHealth;
+            this.maxMana = maxMana;
             this.defense = defense;
             this.experience = experience;
             this.attack = attack;
@@ -89,7 +92,14 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     // Possible spells
     public enum Spell implements Serializable {
-        ARROW
+        ARROW(1);
+
+        private int requiredMana;
+
+        Spell(int requiredMana) {
+            this.requiredMana = requiredMana;
+        }
+        public int getRequiredMana() { return requiredMana; }
     }
 
 
@@ -131,6 +141,9 @@ public abstract class Actor extends DungeonObject implements Serializable {
         int increaseAmount = Math.min(amount, getMaxMana() - getMana());
         baseStats.mana += increaseAmount;
         return increaseAmount;
+    }
+    public void useMana(int amount) {
+        baseStats.mana -= Math.min(amount, getMana());
     }
     public int getMaxHealth() { return baseStats.maxHealth + conditions.get(ConditionTypes.HEALTH).getIntensity(); }
     public int getHealth() { return baseStats.health; }
@@ -174,8 +187,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.level = actorParams.level;
         this.baseStats.maxHealth = actorParams.maxHealth;
         this.baseStats.health = actorParams.maxHealth;
-        this.baseStats.maxMana = 0;
-        this.baseStats.mana = 0;
+        this.baseStats.maxMana = actorParams.maxMana;
+        this.baseStats.mana = actorParams.maxMana;
         this.baseStats.defense = actorParams.defense;
         this.baseStats.meleeDieRoll = actorParams.attack.dieRoll;
         this.baseStats.meleeToHit = actorParams.attack.plusToHit;
@@ -184,6 +197,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.baseStats.rangedToHit = actorParams.attack.plusToHit;
         this.baseStats.rangedToDam = actorParams.attack.plusToDam;
         this.baseStats.speed = actorParams.speed;
+        this.spells = actorParams.spells;
         this.experience = actorParams.experience;
         this.friendly = actorParams.friendly;
         this.invisible = actorParams.invisible;

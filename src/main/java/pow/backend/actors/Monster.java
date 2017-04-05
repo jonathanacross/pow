@@ -5,12 +5,14 @@ import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
 import pow.backend.action.Move;
+import pow.backend.action.spell.Arrow;
 import pow.backend.actors.ai.KnightAi;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.event.GameEvent;
 import pow.util.MathUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Monster extends Actor implements Serializable {
@@ -59,6 +61,16 @@ public class Monster extends Actor implements Serializable {
         return super.takeDamage(backend, damage);
     }
 
+    private List<Monster.Spell> getCastableSpells() {
+        List<Monster.Spell> castableSpells = new ArrayList<>();
+        for (Monster.Spell spell : this.spells) {
+            if (spell.getRequiredMana() <= this.getMana()) {
+                castableSpells.add(spell);
+            }
+        }
+        return castableSpells;
+    }
+
     private Action doAwake(GameBackend backend) {
         GameState gs = backend.getGameState();
 
@@ -71,6 +83,18 @@ public class Monster extends Actor implements Serializable {
             boolean canHit = flags.knight ? dist2 == 5 : dist2 <= 2;
             if (canHit) {
                 return new Attack(this, closestEnemy);
+            }
+        }
+
+        // cast a spell if possible
+        if (closestEnemy != null) {
+            List<Monster.Spell> castableSpells = getCastableSpells();
+            if (!castableSpells.isEmpty()) {
+                int spellIdx = gs.rng.nextInt(castableSpells.size());
+                switch (castableSpells.get(spellIdx)) {
+                    case ARROW:
+                        return new Arrow(this, closestEnemy.loc);
+                }
             }
         }
 
