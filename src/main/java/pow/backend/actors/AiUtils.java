@@ -15,6 +15,19 @@ public class AiUtils {
         return moveOrWait(actor, gs, dx, dy);
     }
 
+    // TODO: clean up repeated code.
+    public static boolean canMoveTowardTarget(Actor actor, GameState gs, Point target) {
+        int d2 = MathUtils.dist2(actor.loc, target);
+
+        double dist = Math.sqrt(d2);
+        int rdx = target.x - actor.loc.x;
+        int rdy = target.y - actor.loc.y;
+        int dx = (int) Math.round(rdx / dist);
+        int dy = (int) Math.round(rdy / dist);
+
+        return (!gs.getCurrentMap().isBlocked(actor, actor.loc.x + dx, actor.loc.y + dy));
+    }
+
     public static Action moveTowardTarget(Actor actor, GameState gs, Point target) {
         int d2 = MathUtils.dist2(actor.loc, target);
 

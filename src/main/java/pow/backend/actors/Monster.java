@@ -10,6 +10,7 @@ import pow.backend.actors.ai.KnightAi;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.event.GameEvent;
 import pow.util.MathUtils;
+import pow.util.Point;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +20,10 @@ public class Monster extends Actor implements Serializable {
 
     public enum ActorState {
         SLEEPING,
-        AWAKE   // eventually, replace this with more fine-grained states: WANDERING, FLEEING, ATTACKING
+        ATTACKING,
+        WANDERING,
+        DUMB_AWAKE, // awake, for erratic creatures
+        AFRAID
     }
 
     public static class Flags implements Serializable {
@@ -37,26 +41,59 @@ public class Monster extends Actor implements Serializable {
         }
     }
 
-
-    private final int stateTurnCount; // how long have we been in this state?
+    private int currStateTurnCount;
 
     private ActorState state;
     private final Flags flags;
 
     public Monster(DungeonObject.Params objectParams, Actor.Params actorParams, Flags flags) {
         super(objectParams, actorParams);
-        this.stateTurnCount = 0;
+        this.currStateTurnCount = 0;
         this.state = ActorState.SLEEPING;
         this.flags = flags;
 
         this.baseStats.speed = actorParams.speed;
     }
 
+    private void updateState(ActorState newState, GameBackend backend) {
+        if (this.state == newState) {
+            return;
+        }
+
+        switch (newState) {
+            case DUMB_AWAKE:
+                backend.logMessage("the " + this.name + " wakes up!");
+                break;
+            case AFRAID:
+                backend.logMessage("the " + this.name + " flees in panic!");
+                break;
+            case ATTACKING:
+                backend.logMessage("the " + this.name + " turns to attack!");
+                break;
+            case WANDERING:
+                backend.logMessage("the " + this.name + " wanders aimlessly.");
+                break;
+            case SLEEPING:
+                backend.logMessage("the " + this.name + " falls asleep.");
+                break;
+        }
+        this.state = newState;
+        this.currStateTurnCount = 0;
+    }
+
     @Override
     public List<GameEvent> takeDamage(GameBackend backend, int damage) {
-        if (this.state == ActorState.SLEEPING) {
-            backend.logMessage("the " + this.name + " wakes up!");
-            this.state = ActorState.AWAKE;
+        // don't bother changing state if we will die!
+        if (damage <= this.getHealth()) {
+            if (flags.erratic) {
+                updateState(ActorState.DUMB_AWAKE, backend);
+            } else {
+                if (damage > 0.3 * this.getHealth()) {
+                    updateState(ActorState.AFRAID, backend);
+                } else {
+                    updateState(ActorState.ATTACKING, backend);
+                }
+            }
         }
         return super.takeDamage(backend, damage);
     }
@@ -71,33 +108,27 @@ public class Monster extends Actor implements Serializable {
         return castableSpells;
     }
 
-    private Action doAwake(GameBackend backend) {
-        GameState gs = backend.getGameState();
-
-        // attack if possible
-        Actor closestEnemy = flags.knight ?
+    // may theoretically return null if there are no closest targets
+    private Actor findNearestTarget(GameState gs) {
+        return flags.knight ?
                 KnightAi.findNearestTargetKnight(this, gs) :
                 AiUtils.findNearestTarget(this, gs);
-        if (closestEnemy != null) {
-            int dist2 = MathUtils.dist2(loc, closestEnemy.loc);
-            boolean canHit = flags.knight ? dist2 == 5 : dist2 <= 2;
-            if (canHit) {
-                return new Attack(this, closestEnemy);
-            }
-        }
+    }
 
-        // cast a spell if possible
-        if (closestEnemy != null) {
-            List<Monster.Spell> castableSpells = getCastableSpells();
-            if (!castableSpells.isEmpty()) {
-                int spellIdx = gs.rng.nextInt(castableSpells.size());
-                switch (castableSpells.get(spellIdx)) {
-                    case ARROW:
-                        return new Arrow(this, closestEnemy.loc);
-                }
-            }
+    private boolean enemyIsWithinRange(Actor target, int radius) {
+        if (target == null) {
+            return false;
         }
+        int dist2 = MathUtils.dist2(loc, target.loc);
+        return dist2 < radius * radius;
+    }
 
+    private boolean canHit(Actor target) {
+        int dist2 = MathUtils.dist2(loc, target.loc);
+        return flags.knight ? dist2 == 5 : dist2 <= 2;
+    }
+
+    private Action trackTarget(GameState gs, Point target) {
         if (flags.stationary) {
             return new Move(this, 0, 0);
         }
@@ -109,19 +140,100 @@ public class Monster extends Actor implements Serializable {
 
         // try to track the player
         return flags.knight ?
-                KnightAi.knightMoveTowardTarget(this, gs, gs.player.loc) :
-                AiUtils.moveTowardTarget(this, gs, gs.player.loc);
+                KnightAi.knightMoveTowardTarget(this, gs, target) :
+                AiUtils.moveTowardTarget(this, gs, target);
+    }
+
+    private Action doWander(GameBackend backend) {
+        // if there's something nearby, go after it!
+        GameState gs = backend.getGameState();
+        Actor closestEnemy = findNearestTarget(gs);
+        if (enemyIsWithinRange(closestEnemy, 15)) {
+            updateState(ActorState.ATTACKING, backend);
+            return doAttack(backend);
+        }
+
+        // fall asleep if bored
+        if (currStateTurnCount >= 20) {
+            updateState(ActorState.SLEEPING, backend);
+            return doSleep(backend);
+        }
+
+        // TODO: will this work for knights?
+        return AiUtils.wander(this, backend.getGameState());
+    }
+
+    private Action doDumbAwake(GameBackend backend) {
+        GameState gs = backend.getGameState();
+        Actor closestEnemy = findNearestTarget(gs);
+
+        // if nothing nearby, then fall asleep
+        if (! enemyIsWithinRange(closestEnemy, 15)) {
+            updateState(ActorState.SLEEPING, backend);
+            return doSleep(backend);
+        }
+
+        // attack if possible
+        if (closestEnemy != null && canHit(closestEnemy)) {
+            return new Attack(this, closestEnemy);
+        }
+
+        // cast a spell if possible
+        List<Monster.Spell> castableSpells = getCastableSpells();
+        if (!castableSpells.isEmpty()) {
+            int spellIdx = gs.rng.nextInt(castableSpells.size());
+            switch (castableSpells.get(spellIdx)) {
+                case ARROW:
+                    return new Arrow(this, closestEnemy.loc);
+            }
+        }
+
+        // wander aimlessly
+        return AiUtils.wander(this, backend.getGameState());
+    }
+
+    private Action doAttack(GameBackend backend) {
+        GameState gs = backend.getGameState();
+        Actor closestEnemy = findNearestTarget(gs);
+
+        // if nothing nearby, then just wander
+        if (! enemyIsWithinRange(closestEnemy, 15)) {
+            updateState(ActorState.WANDERING, backend);
+            return doWander(backend);
+        }
+
+        // attack if possible
+        if (canHit(closestEnemy)) {
+            return new Attack(this, closestEnemy);
+        }
+
+        // cast a spell if possible
+        List<Monster.Spell> castableSpells = getCastableSpells();
+        if (!castableSpells.isEmpty()) {
+            int spellIdx = gs.rng.nextInt(castableSpells.size());
+            switch (castableSpells.get(spellIdx)) {
+                case ARROW:
+                    return new Arrow(this, closestEnemy.loc);
+            }
+        }
+
+        // try to track enemy
+        return trackTarget(gs, closestEnemy.loc);
     }
 
     private Action doSleep(GameBackend backend) {
         GameState gs = backend.getGameState();
         Actor closestEnemy = AiUtils.findNearestTarget(this, gs);
-        if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 4) {
-            // randomly wake up if near an enemy
+        if (enemyIsWithinRange(closestEnemy, 3)) {
+            // randomly wake up if near an enemy.
             if (gs.rng.nextInt(4) == 0) {
-                backend.logMessage("the " + this.name + " wakes up!");
-                this.state = ActorState.AWAKE;
-                return doAwake(backend);
+                if (flags.erratic) {
+                    updateState(ActorState.DUMB_AWAKE, backend);
+                    return doDumbAwake(backend);
+                } else {
+                    updateState(ActorState.ATTACKING, backend);
+                    return doAttack(backend);
+                }
             }
         }
 
@@ -129,13 +241,54 @@ public class Monster extends Actor implements Serializable {
         return new Move(this, 0, 0);
     }
 
+    private Action doAfraid(GameBackend backend) {
+        GameState gs = backend.getGameState();
+        Actor closestEnemy = findNearestTarget(gs);
+
+        // if nothing nearby, then stop being afraid.
+        if (! enemyIsWithinRange(closestEnemy, 15)) {
+            updateState(ActorState.WANDERING, backend);
+            return doWander(backend);
+        }
+
+        // try to escape; move away from closest target
+        Point escapeTarget = new Point(2*loc.x - closestEnemy.loc.x, 2*loc.y - closestEnemy.loc.y);
+        if (AiUtils.canMoveTowardTarget(this, gs, escapeTarget)) {
+           return AiUtils.moveTowardTarget(this, gs, escapeTarget);
+        }
+
+        // obvious escape route is blocked, so try to attack
+        // attack if possible
+        if (canHit(closestEnemy)) {
+            return new Attack(this, closestEnemy);
+        }
+
+        // cast a spell if possible
+        List<Monster.Spell> castableSpells = getCastableSpells();
+        if (!castableSpells.isEmpty()) {
+            int spellIdx = gs.rng.nextInt(castableSpells.size());
+            switch (castableSpells.get(spellIdx)) {
+                case ARROW:
+                    return new Arrow(this, closestEnemy.loc);
+            }
+        }
+
+        // can't flee, can't attack? run around randomly.
+        // TODO: check this works with knights
+        return AiUtils.wander(this, backend.getGameState());
+    }
+
     @Override
     public Action act(GameBackend backend) {
+        currStateTurnCount++;
         switch (state) {
             case SLEEPING: return doSleep(backend);
-            case AWAKE: return doAwake(backend);
-            default: return null;
+            case WANDERING: return doWander(backend);
+            case ATTACKING: return doAttack(backend);
+            case AFRAID: return doAfraid(backend);
+            case DUMB_AWAKE: return doDumbAwake(backend);
         }
+        return null;
     }
 
     @Override
