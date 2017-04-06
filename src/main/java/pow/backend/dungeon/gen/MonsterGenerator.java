@@ -123,6 +123,9 @@ public class MonsterGenerator {
             boolean invisible = false;
             boolean aquatic = false;
             boolean knightmove = false;
+            boolean aggressive = false;
+            boolean passive = false;
+            boolean perfect = false;
             for (String t : tokens) {
                 switch (t) {
                     case "": break;  // will happen if we have an empty string
@@ -133,12 +136,16 @@ public class MonsterGenerator {
                     case "friendly": friendly = true; break;
                     case "invisible": invisible = true; break;
                     case "aquatic": aquatic = true; break;
+                    case "aggressive": aggressive = true; break;
+                    case "passive": passive = true; break;
+                    case "perfect": perfect = true; break;
                     default:
                         throw new IllegalArgumentException("unknown monster flag '" + t + "'");
                 }
             }
 
-            return new AllFlags(new Monster.Flags(stationary, erratic, knightmove), friendly, invisible, aquatic);
+            return new AllFlags(new Monster.Flags(stationary, erratic, knightmove, aggressive, passive, perfect),
+                    friendly, invisible, aquatic);
         }
 
         private static String parseArtifact(String text) {

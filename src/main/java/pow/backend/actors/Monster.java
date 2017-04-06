@@ -30,14 +30,18 @@ public class Monster extends Actor implements Serializable {
         public final boolean stationary;  // can't move (e.g., a mushroom or mold)
         public final boolean erratic;  // just move randomly, e.g., insects
         public final boolean knight;  // moves like a knight
-//        public final boolean aggressive;  // won't get scared/run away
-//        public final boolean passive;  // doesn't attack player unless attacked
-//        public final boolean perfect;  // never have random moves
+        public final boolean aggressive;  // won't get scared/run away
+        public final boolean passive;  // doesn't attack player unless attacked
+        public final boolean perfect;  // never have random moves
 
-        public Flags(boolean stationary, boolean erratic, boolean knight) {
+        public Flags(boolean stationary, boolean erratic, boolean knight,
+                     boolean aggressive, boolean passive, boolean perfect) {
             this.stationary = stationary;
             this.erratic = erratic;
             this.knight = knight;
+            this.aggressive = aggressive;
+            this.passive = passive;
+            this.perfect = perfect;
         }
     }
 
@@ -138,7 +142,7 @@ public class Monster extends Actor implements Serializable {
             return AiUtils.wander(this, gs);
         }
 
-        // try to track the player
+        // try to track the target
         return flags.knight ?
                 KnightAi.knightMoveTowardTarget(this, gs, target) :
                 AiUtils.moveTowardTarget(this, gs, target);
