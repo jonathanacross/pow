@@ -123,28 +123,54 @@ public class MonsterGenerator {
             boolean invisible = false;
             boolean aquatic = false;
             boolean knightmove = false;
-            boolean aggressive = false;
+            boolean fearless = false;
             boolean passive = false;
             boolean perfect = false;
             for (String t : tokens) {
                 switch (t) {
                     case "": break;  // will happen if we have an empty string
                     case "stationary": stationary = true; break;
-                    case "erratic": erratic = true; break;
                     case "knightmove": knightmove = true; break;
                     case "boss": break;
                     case "friendly": friendly = true; break;
                     case "invisible": invisible = true; break;
                     case "aquatic": aquatic = true; break;
-                    case "aggressive": aggressive = true; break;
+                    case "fearless": fearless = true; break;
                     case "passive": passive = true; break;
+                    case "erratic": erratic = true; break;
                     case "perfect": perfect = true; break;
                     default:
                         throw new IllegalArgumentException("unknown monster flag '" + t + "'");
                 }
             }
 
-            return new AllFlags(new Monster.Flags(stationary, erratic, knightmove, aggressive, passive, perfect),
+            // make sure there aren't incompatible flags..
+            if (erratic && passive) {
+                throw new RuntimeException("error: saw flags: " + text +
+                        "; only one of {erratic, passive} allowed");
+            }
+
+            if (erratic && fearless) {
+                throw new RuntimeException("error: saw flags: " + text +
+                        "; only one of {erratic, fearless} allowed");
+            }
+
+            if (erratic && perfect) {
+                throw new RuntimeException("error: saw flags: " + text +
+                        "; only one of {erratic, perfect} allowed");
+            }
+
+            if (erratic && stationary) {
+                throw new RuntimeException("error: saw flags: " + text +
+                        "; only one of {erratic, stationary} allowed");
+            }
+
+            if (stationary && knightmove) {
+                throw new RuntimeException("error: saw flags: " + text +
+                        "; only one of {stationary, knightmove} allowed");
+            }
+
+            return new AllFlags(new Monster.Flags(stationary, erratic, knightmove, fearless, passive, perfect),
                     friendly, invisible, aquatic);
         }
 
