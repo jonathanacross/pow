@@ -7,7 +7,9 @@ import pow.backend.actors.Actor;
 import pow.util.MathUtils;
 import pow.util.Point;
 
-public class StepMovement implements Movement {
+import java.io.Serializable;
+
+public class StepMovement implements Movement, Serializable {
 
     @Override
     public Action wander(Actor actor, GameState gs) {
@@ -68,5 +70,4 @@ public class StepMovement implements Movement {
         int dy = (int) Math.round(rdy / dist);
         return new Point(dx, dy);
     }
-
 }

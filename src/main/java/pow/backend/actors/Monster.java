@@ -28,8 +28,6 @@ public class Monster extends Actor implements Serializable {
         AFRAID
     }
 
-    private static final Movement KNIGHT_MOVEMENT = new KnightMovement();
-    private static final Movement STEP_MOVEMENT = new StepMovement();
 
     public static class Flags implements Serializable {
         public final boolean stationary;  // can't move (e.g., a mushroom or mold)
@@ -61,7 +59,7 @@ public class Monster extends Actor implements Serializable {
         this.currStateTurnCount = 0;
         this.state = ActorState.SLEEPING;
         this.flags = flags;
-        this.movement = flags.knight ? KNIGHT_MOVEMENT : STEP_MOVEMENT;
+        this.movement = flags.knight ? new KnightMovement() : new StepMovement();
 
         this.baseStats.speed = actorParams.speed;
     }

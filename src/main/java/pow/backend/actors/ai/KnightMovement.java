@@ -7,12 +7,13 @@ import pow.backend.actors.Actor;
 import pow.util.MathUtils;
 import pow.util.Point;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class KnightMovement implements Movement {
+public class KnightMovement implements Movement, Serializable {
 
     private static final List<Point> knightMoves = Arrays.asList(
                 new Point(2, 1),
