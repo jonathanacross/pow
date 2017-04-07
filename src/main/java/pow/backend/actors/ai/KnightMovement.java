@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class KnightAi {
+public class KnightMovement implements Movement {
 
     private static final List<Point> knightMoves = Arrays.asList(
                 new Point(2, 1),
@@ -46,36 +46,45 @@ public class KnightAi {
         dist2ToScore.put(32, 3);
     }
 
-
-    public static Action knightMoveTowardTarget(Actor actor, GameState gs, Point target) {
-
-        int d2 = MathUtils.dist2(actor.loc.x, actor.loc.y, target.x, target.y);
-
-        Point bestMove = new Point(0,0);  // If nothing better found, stay put.
-        int bestScore = Integer.MAX_VALUE;
+    @Override
+    public Action wander(Actor actor, GameState gs) {
+        Point wanderMove = new Point(0,0);
+        int moveCount = 1;
         for (Point move : knightMoves) {
             int newx = actor.loc.x + move.x;
             int newy = actor.loc.y + move.y;
 
             // skip illegal moves
             if (!gs.getCurrentMap().isOnMap(newx, newy) ||
-                gs.getCurrentMap().isBlocked(actor, newx, newy)) {
+                    gs.getCurrentMap().isBlocked(actor, newx, newy)) {
                 continue;
             }
 
-            int trialDist2 = MathUtils.dist2(newx, newy, target.x, target.y);
-            int currScore = dist2ToScore.containsKey(trialDist2) ?
-                dist2ToScore.get(trialDist2) : trialDist2;
-            if (currScore < bestScore) {
-                bestMove = move;
-                bestScore = currScore;
+            // Uses reservoir sampling (with a reservoir of size 1!) to pick a legal
+            // move with equal probability.
+            if (gs.rng.nextInt(moveCount) == 0) {
+                wanderMove = move;
             }
+            moveCount++;
         }
 
+        return new Move(actor, wanderMove.x, wanderMove.y);
+    }
+
+    @Override
+    public Action moveTowardTarget(Actor actor, GameState gs, Point target) {
+        Point bestMove = getClosestMoveTowardTarget(actor, gs, target);
         return new Move(actor, bestMove.x, bestMove.y);
     }
 
-    public static Actor findNearestTargetKnight(Actor actor, GameState gs) {
+    @Override
+    public boolean canMoveTowardTarget(Actor actor, GameState gs, Point target) {
+        Point bestMove = getClosestMoveTowardTarget(actor, gs, target);
+        return bestMove.x != 0 || bestMove.y != 0;
+    }
+
+    @Override
+    public Actor findNearestTarget(Actor actor, GameState gs) {
         int bestDist = Integer.MAX_VALUE;
         Actor closestMonster = null;
         for (Actor m : gs.getCurrentMap().actors) {
@@ -95,5 +104,36 @@ public class KnightAi {
         return closestMonster;
     }
 
+    @Override
+    public boolean canHit(Actor actor, Actor target) {
+        int dist2 = MathUtils.dist2(actor.loc, target.loc);
+        return dist2 == 5;
+    }
+
+    private static Point getClosestMoveTowardTarget(Actor actor, GameState gs, Point target) {
+
+        Point bestMove = new Point(0,0);  // If nothing better found, stay put.
+        int bestScore = Integer.MAX_VALUE;
+        for (Point move : knightMoves) {
+            int newx = actor.loc.x + move.x;
+            int newy = actor.loc.y + move.y;
+
+            // skip illegal moves
+            if (!gs.getCurrentMap().isOnMap(newx, newy) ||
+                    gs.getCurrentMap().isBlocked(actor, newx, newy)) {
+                continue;
+            }
+
+            int trialDist2 = MathUtils.dist2(newx, newy, target.x, target.y);
+            int currScore = dist2ToScore.containsKey(trialDist2) ?
+                    dist2ToScore.get(trialDist2) : trialDist2;
+            if (currScore < bestScore) {
+                bestMove = move;
+                bestScore = currScore;
+            }
+        }
+
+        return bestMove;
+    }
 
 }
