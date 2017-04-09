@@ -76,12 +76,14 @@ public class MonsterGenerator {
         String image;
         String description;
         int maxHealth;
+        int maxMana;
         DieRoll attack;
         int toHit;
         int defense;
         int speed;
         AllFlags flags;
         int experience;
+        List<Monster.Spell> spells;
         String artifactDrops;  // slight misnomer.. can only handle 1 artifact right now
         int numDropAttempts;
 
@@ -99,6 +101,19 @@ public class MonsterGenerator {
             }
         }
 
+        private List<Monster.Spell> parseSpells(String text) {
+            List<Monster.Spell> spells = new ArrayList<>();
+
+            String[] tokens = text.split(",", -1);
+            for (String token : tokens) {
+                if (token.isEmpty()) continue; // will happen for empty string
+
+                Monster.Spell spell = Monster.Spell.valueOf(token.toUpperCase());
+                spells.add(spell);
+            }
+            return spells;
+        }
+
         private AllFlags parseFlags(String text) {
             String[] tokens = text.split(",", -1);
 
@@ -107,22 +122,56 @@ public class MonsterGenerator {
             boolean friendly = false;
             boolean invisible = false;
             boolean aquatic = false;
+            boolean knightmove = false;
+            boolean fearless = false;
+            boolean passive = false;
+            boolean perfect = false;
             for (String t : tokens) {
                 switch (t) {
                     case "": break;  // will happen if we have an empty string
                     case "stationary": stationary = true; break;
-                    case "erratic": erratic = true; break;
-                    case "knightmove": break;
+                    case "knightmove": knightmove = true; break;
                     case "boss": break;
                     case "friendly": friendly = true; break;
                     case "invisible": invisible = true; break;
                     case "aquatic": aquatic = true; break;
+                    case "fearless": fearless = true; break;
+                    case "passive": passive = true; break;
+                    case "erratic": erratic = true; break;
+                    case "perfect": perfect = true; break;
                     default:
                         throw new IllegalArgumentException("unknown monster flag '" + t + "'");
                 }
             }
 
-            return new AllFlags(new Monster.Flags(stationary, erratic), friendly, invisible, aquatic);
+            // make sure there aren't incompatible flags..
+            if (erratic && passive) {
+                throw new RuntimeException("error: saw flags: " + text +
+                        "; only one of {erratic, passive} allowed");
+            }
+
+            if (erratic && fearless) {
+                throw new RuntimeException("error: saw flags: " + text +
+                        "; only one of {erratic, fearless} allowed");
+            }
+
+            if (erratic && perfect) {
+                throw new RuntimeException("error: saw flags: " + text +
+                        "; only one of {erratic, perfect} allowed");
+            }
+
+            if (erratic && stationary) {
+                throw new RuntimeException("error: saw flags: " + text +
+                        "; only one of {erratic, stationary} allowed");
+            }
+
+            if (stationary && knightmove) {
+                throw new RuntimeException("error: saw flags: " + text +
+                        "; only one of {stationary, knightmove} allowed");
+            }
+
+            return new AllFlags(new Monster.Flags(stationary, erratic, knightmove, fearless, passive, perfect),
+                    friendly, invisible, aquatic);
         }
 
         private static String parseArtifact(String text) {
@@ -141,8 +190,8 @@ public class MonsterGenerator {
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificMonsterGenerator(String[] line) {
-            if (line.length != 14) {
-                throw new IllegalArgumentException("Expected 14 fields, but had " + line.length
+            if (line.length != 16) {
+                throw new IllegalArgumentException("Expected 16 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
 
@@ -152,25 +201,27 @@ public class MonsterGenerator {
             image = line[3];
             description = line[4];
             maxHealth = Integer.parseInt(line[5]);
-            attack = DieRoll.parseDieRoll(line[6]);
-            toHit = Integer.parseInt(line[7]);
-            defense = Integer.parseInt(line[8]);
-            experience = Integer.parseInt(line[9]);
-            speed = Integer.parseInt(line[10]);
-            flags = parseFlags(line[11]);
-            artifactDrops = parseArtifact(line[12]);
-            numDropAttempts = Integer.parseInt(line[13]);
+            maxMana = Integer.parseInt(line[6]);
+            attack = DieRoll.parseDieRoll(line[7]);
+            toHit = Integer.parseInt(line[8]);
+            defense = Integer.parseInt(line[9]);
+            experience = Integer.parseInt(line[10]);
+            speed = Integer.parseInt(line[11]);
+            flags = parseFlags(line[12]);
+            spells = parseSpells(line[13]);
+            artifactDrops = parseArtifact(line[14]);
+            numDropAttempts = Integer.parseInt(line[15]);
         }
 
         // resolves die rolls, location to get a specific monster instance
         public Monster genMonster(Random rng, Point location) {
-            int instanceHP = maxHealth;
             AttackData attackData = new AttackData(attack, toHit, 0);
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
-                    new Actor.Params(level, instanceHP, defense, experience, attackData,
+                    new Actor.Params(level, maxHealth, maxMana,
+                            defense, experience, attackData,
                             flags.friendly, flags.invisible, flags.aquatic, speed,
-                            artifactDrops, numDropAttempts),
+                            artifactDrops, numDropAttempts, spells),
                     flags.monsterFlags);
         }
     }

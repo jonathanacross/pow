@@ -4,6 +4,8 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.Attack;
 import pow.backend.action.Action;
+import pow.backend.actors.ai.Movement;
+import pow.backend.actors.ai.StepMovement;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.MathUtils;
 
@@ -12,6 +14,8 @@ import java.io.Serializable;
 import static pow.util.MathUtils.dist2;
 
 public class Pet extends Actor implements Serializable {
+
+    private final Movement movement = new StepMovement();
 
     public Pet(DungeonObject.Params objectParams, Actor.Params actorParams) {
         super(objectParams, actorParams);
@@ -40,7 +44,7 @@ public class Pet extends Actor implements Serializable {
         GameState gs = backend.getGameState();
 
         // try to attack first
-        Actor closestEnemy = AiUtils.findNearestTarget(this, gs);
+        Actor closestEnemy = movement.findNearestTarget(this, gs);
         if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 2) {
             return new Attack(this, closestEnemy);
         }
@@ -48,10 +52,10 @@ public class Pet extends Actor implements Serializable {
         // if "far away" from the player, then try to catch up
         int playerDist = dist2(loc, gs.player.loc);
         if (playerDist >= 9) {
-            return AiUtils.moveTowardTarget(this, gs, gs.player.loc);
+            return movement.moveTowardTarget(this, gs, gs.player.loc);
         }
 
         // move randomly
-        return AiUtils.wander(this, gs);
+        return movement.wander(this, gs);
     }
 }

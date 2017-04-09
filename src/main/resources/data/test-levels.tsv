@@ -5,5 +5,5 @@ water	30		N		terrain	recursiveInterpolation	water	outside		goldfish,green fish,e
 #rogue	25		E		ddesert	recursiveInterpolation	forest	hot	white rat	blue ghost,pink ghost,evil eye
 run	1		E		terrain	run test	dungeon			farmer,mangy leper,jester,beggar,salesman
 item	2		W		terrain	item test	crypt			
-cave	17		D		terrain	cellularAutomata	1,true,desert cave	poisonGas	minotaur	brown scorpion,goldfish
+cave	17		D		terrain	cellularAutomata	1,true,desert cave	poisonGas	minotaur	brown scorpion,goldfish,chess knight
 arena	99		S		terrain	arena	dungeon			:all:

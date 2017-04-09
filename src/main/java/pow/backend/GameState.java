@@ -8,6 +8,7 @@ import pow.util.DieRoll;
 import pow.util.Point;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Random;
 
 // class that just holds the data for the game state
@@ -63,6 +64,7 @@ public class GameState implements Serializable {
                 new Actor.Params(
                         1,
                         20, // maxHealth
+                        5, // maxMana
                         3, // defense
                         0, // experience
                         new AttackData(new DieRoll(1, 4), 4, 0),
@@ -71,7 +73,8 @@ public class GameState implements Serializable {
                         false,
                         0,
                         null,
-                        0) // speed
+                        0,
+                        Collections.emptyList())
         );
         this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
