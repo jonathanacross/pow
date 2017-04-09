@@ -8,10 +8,7 @@ import pow.util.MathUtils;
 import pow.util.Point;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class KnightMovement implements Movement, Serializable {
 
@@ -136,5 +133,4 @@ public class KnightMovement implements Movement, Serializable {
 
         return bestMove;
     }
-
 }

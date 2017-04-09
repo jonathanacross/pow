@@ -210,7 +210,6 @@ public class GameMap implements Serializable {
         return false;
     }
 
-
     public Actor actorAt(int x, int y) {
         for (Actor a: this.actors) {
             if (a.loc.x == x && a.loc.y == y && a.solid) return a;
