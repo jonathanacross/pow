@@ -58,7 +58,7 @@ public class WorldDataGen {
 
     private static MapPoint parseMapLinkData(String[] line) {
         if (line.length != 11) {
-            throw new RuntimeException("error: expected 11 fields in line.");
+            throw new RuntimeException("error: expected 11 fields in line: " + String.join(",", line));
         }
 
         String id = line[0];
