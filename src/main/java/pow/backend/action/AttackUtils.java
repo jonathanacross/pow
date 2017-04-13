@@ -52,13 +52,18 @@ public class AttackUtils {
             if (gs.rng.nextDouble() <= dropChance) {
                 int difficultyLevel = map.level;
                 DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
-                if (item.flags.money) {
-                    if (gs.player.increaseWealth) {
-                        item.count *= GameConstants.BONUS_GOLD_MULTIPLIER;
-                    }
-                }
                 map.map[actor.loc.x][actor.loc.y].items.add(item);
             }
+        }
+
+        // with some probability, drop some gold
+        double multiplier = gs.player.increaseWealth ? GameConstants.BONUS_GOLD_DROP_RATE_MULTIPLIER : 1.0;
+        double goldDropChance =
+                1 - (multiplier * Math.pow(1 - GameConstants.MONSTER_GOLD_DROP_CHANCE, actor.numDropAttempts + 1));
+        if (gs.rng.nextDouble() <= goldDropChance) {
+            int difficultyLevel = map.level;
+            DungeonItem item = GeneratorUtils.getRandomMoneyForLevel(difficultyLevel, gs.rng);
+            map.map[actor.loc.x][actor.loc.y].items.add(item);
         }
 
         // Only remove the actor if it's NOT the player,
