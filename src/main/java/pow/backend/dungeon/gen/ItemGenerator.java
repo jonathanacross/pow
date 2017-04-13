@@ -28,6 +28,19 @@ public class ItemGenerator {
         }
     }
 
+    // returns a list of possible gold drops
+    public static List<String> getMoneyIdsForLevel(int level) {
+        if (instance.levelToMoneyIds.containsKey(level)) {
+            return instance.levelToMoneyIds.get(level);
+        } else {
+            if (level > instance.maxLevel) {
+                return instance.levelToMoneyIds.get(instance.maxLevel);
+            } else {
+                return instance.levelToMoneyIds.get(instance.minLevel);
+            }
+        }
+    }
+
     // generates a single item
     public static DungeonItem genItem(String id, double level, Random rng) {
         if (!instance.generatorMap.containsKey(id)) {
@@ -40,6 +53,7 @@ public class ItemGenerator {
     private static final ItemGenerator instance;
     private Map<String, SpecificItemGenerator> generatorMap;
     private Map<Integer, List<String>> levelToItemIds;
+    private Map<Integer, List<String>> levelToMoneyIds;
     private int minLevel;
     private int maxLevel;
 
@@ -74,11 +88,16 @@ public class ItemGenerator {
         // make the map of what items can be generated on each level,
         // since this is a 1-time computation.
         levelToItemIds = new HashMap<>();
+        levelToMoneyIds = new HashMap<>();
         for (int level = minLevel; level <= maxLevel; level++) {
             levelToItemIds.put(level, new ArrayList<>());
+            levelToMoneyIds.put(level, new ArrayList<>());
             for (SpecificItemGenerator sig : generatorMap.values()) {
                 if (sig.minLevel <= level && level <= sig.maxLevel) {
                     levelToItemIds.get(level).add(sig.id);
+                    if (sig.flags.money) {
+                        levelToMoneyIds.get(level).add(sig.id);
+                    }
                 }
             }
         }
@@ -175,7 +194,7 @@ public class ItemGenerator {
             }
         }
 
-        private int getMoneyForLevel(double level, Random rng) {
+        private int getMoneyAmountForLevel(double level, Random rng) {
             // made up; have to tune this later once money means something
             int maxAmt = Math.max((int) Math.round(Math.pow(1.1, level) * 10), 10);
             return rng.nextInt(maxAmt) + 1;
@@ -202,7 +221,7 @@ public class ItemGenerator {
             }
 
             int itemCount = flags.money
-                    ? getMoneyForLevel(level, rng)
+                    ? getMoneyAmountForLevel(level, rng)
                     : rng.nextInt(count.max + 1 - count.min) + count.min;
 
             return new DungeonItem(id, name, image, description, slot, DungeonItem.ArtifactSlot.NONE,

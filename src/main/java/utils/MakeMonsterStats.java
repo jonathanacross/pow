@@ -14,16 +14,17 @@ public class MakeMonsterStats {
 
     private static int getSpeed(int area, int relativeSpeed) {
         int baseSpeed = 0;
-        if (area == 6) baseSpeed = 1;
-        if (area == 7) baseSpeed = 2;
-        if (area == 8) baseSpeed = 3;
-        if (area == 9) baseSpeed = 4;
+        if (area >= 13) baseSpeed = 1;
+        if (area >= 15) baseSpeed = 2;
+        if (area >= 17) baseSpeed = 3;
+        if (area >= 19) baseSpeed = 4;
 
         return baseSpeed + relativeSpeed;
     }
 
     private static int getHP(int area, String type, Set<String> flags) {
         double baseHP = 6.0 * Math.pow(1.25, area);
+        //double baseHP = 1.3*area*area + 6.2;
 
         double scaleFactor;
         switch (type) {
@@ -50,6 +51,7 @@ public class MakeMonsterStats {
 
     private static int getMana(int area, String type, Set<String> flags) {
         double baseMana = 3.0 * Math.pow(1.25, area);
+        //double baseMana = 0.65*area*area + 3.1;
 
         double scaleFactor;
         switch (type) {
@@ -87,8 +89,7 @@ public class MakeMonsterStats {
     }
 
     private static double getAttackTarget(int area, String type, Set<String> flags) {
-        //double baseAttack = 1.0 * Math.pow(1.63, area);
-        double baseAttack = 0.125*area*area + 3;
+        double baseAttack = 0.08*area*area + 3;
         double scaleFactor;
         switch (type) {
             case "fungus": scaleFactor = 0.60; break;

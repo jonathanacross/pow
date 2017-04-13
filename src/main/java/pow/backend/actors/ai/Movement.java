@@ -18,8 +18,12 @@ public interface Movement {
     boolean canMoveTowardTarget(Actor actor, GameState gs, Point target);
 
     // Finds the 'nearest' target to the actor (given the actor's alignment
-    // and movement type).  May return null if there is no nearest actor.
-    Actor findNearestTarget(Actor actor, GameState gs);
+    // and movement type).  May return null if there is no nearest enemy.
+    Actor findNearestEnemy(Actor actor, GameState gs);
+
+    // Finds the 'nearest' other actor to the actor.  May return null if
+    // there is no nearest actor.
+    Actor findNearestActor(Actor actor, GameState gs);
 
     // Returns true if the actor can hit the target.
     boolean canHit(Actor actor, Actor target);

@@ -147,7 +147,7 @@ public class Monster extends Actor implements Serializable {
         // if there's something nearby, go after it!
         GameState gs = backend.getGameState();
         if (!flags.passive) {
-            Actor closestEnemy = movement.findNearestTarget(this, gs);
+            Actor closestEnemy = movement.findNearestEnemy(this, gs);
             if (enemyIsWithinRange(closestEnemy, 15)) {
                 updateState(ActorState.ATTACKING, backend);
                 return doAttack(backend);
@@ -175,7 +175,7 @@ public class Monster extends Actor implements Serializable {
 
     private Action doDumbAwake(GameBackend backend) {
         GameState gs = backend.getGameState();
-        Actor closestEnemy = movement.findNearestTarget(this, gs);
+        Actor closestEnemy = movement.findNearestEnemy(this, gs);
 
         // if nothing nearby, then fall asleep
         if (! enemyIsWithinRange(closestEnemy, 15)) {
@@ -200,7 +200,7 @@ public class Monster extends Actor implements Serializable {
 
     private Action doAttack(GameBackend backend) {
         GameState gs = backend.getGameState();
-        Actor closestEnemy = movement.findNearestTarget(this, gs);
+        Actor closestEnemy = movement.findNearestEnemy(this, gs);
 
         // if nothing nearby, then just wander
         if (! enemyIsWithinRange(closestEnemy, 15)) {
@@ -225,15 +225,19 @@ public class Monster extends Actor implements Serializable {
 
     private Action doSleep(GameBackend backend) {
         GameState gs = backend.getGameState();
-        Actor closestEnemy = movement.findNearestTarget(this, gs);
-        if (enemyIsWithinRange(closestEnemy, 3)) {
-            // randomly wake up if near an enemy.
+        Actor closestEnemy = movement.findNearestEnemy(this, gs);
+        if (enemyIsWithinRange(closestEnemy, 3) ||
+                enemyIsWithinRange(gs.player, 3)) {
+            // Randomly wake up if near an enemy or the player. (This
+            // is two cases, because the player may wake nearby townspeople,
+            // but your pet may wake a monster.)
             if (gs.rng.nextInt(4) == 0) {
                 if (flags.erratic) {
                     updateState(ActorState.DUMB_AWAKE, backend);
                     return doDumbAwake(backend);
                 } else {
-                    if (flags.passive) {
+                    if ((closestEnemy != null && closestEnemy.friendly == this.friendly)
+                            || flags.passive) {
                         updateState(ActorState.WANDERING, backend);
                         return doWander(backend);
                     } else {
@@ -250,7 +254,7 @@ public class Monster extends Actor implements Serializable {
 
     private Action doAfraid(GameBackend backend) {
         GameState gs = backend.getGameState();
-        Actor closestEnemy = movement.findNearestTarget(this, gs);
+        Actor closestEnemy = movement.findNearestEnemy(this, gs);
 
         // if nothing nearby, then stop being afraid.
         if (! enemyIsWithinRange(closestEnemy, 15)) {

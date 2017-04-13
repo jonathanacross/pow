@@ -3,6 +3,7 @@ package pow.backend;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.RecentMaps;
+import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.mapgen.MapGenerator;
 import pow.backend.dungeon.gen.worldgen.*;
@@ -56,6 +57,7 @@ public class GameWorld implements Serializable {
         GameMap startArea = world.get(topology.getFirstMapId());
         recentMaps = new RecentMaps();
         recentMaps.setMap(startArea);
+        GeneratorUtils.regenMonstersForCurrentMap(startArea, rng);
         Point playerLoc = startArea.findRandomOpenSquare(rng);
         startArea.placePlayerAndPet(player, playerLoc, pet);
     }

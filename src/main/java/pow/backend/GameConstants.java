@@ -74,16 +74,23 @@ public class GameConstants {
     // Light radius for player after getting the bright lantern.
     public final static int PLAYER_LARGE_LIGHT_RADIUS = 11;
 
-    // Chance a monster will drop an item.
+    // Chance a monster will drop an item (for each drop attempt).
     public final static double MONSTER_DROP_CHANCE = 0.5;
 
     // Chance a monster will drop an item when player has an
     // amulet of wealth.
     public final static double BONUS_MONSTER_DROP_CHANCE = 0.75;
 
-    // Multiplier for how much more gold will be dropped when
-    // player is wearing amulet of wealth.
-    public final static int BONUS_GOLD_MULTIPLIER = 3;
+    // Chance a monster will drop some gold (for each drop
+    // attempt + 1).  Should be between 0 and 1.  Larger values
+    // correspond to higher chance of dropping gold.
+    public final static double MONSTER_GOLD_DROP_CHANCE = 0.15;
+
+    // Multiplier for increasing the chance of monsters dropping
+    // gold when the player has an amulet of wealth.  Should be
+    // between 0 and 1.  Value of 1 will make amulets of wealth have
+    // no effect; value of 0 will make monsters always drop things.
+    public final static double BONUS_GOLD_DROP_RATE_MULTIPLIER = 0.7;
 
     // If player doesn't have gas mask, they lose this much
     // health in certain areas.

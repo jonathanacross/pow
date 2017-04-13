@@ -44,7 +44,7 @@ public class Pet extends Actor implements Serializable {
         GameState gs = backend.getGameState();
 
         // try to attack first
-        Actor closestEnemy = movement.findNearestTarget(this, gs);
+        Actor closestEnemy = movement.findNearestEnemy(this, gs);
         if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 2) {
             return new Attack(this, closestEnemy);
         }
