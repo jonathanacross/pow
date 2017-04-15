@@ -67,7 +67,7 @@ public class StatusWindow extends AbstractWindow {
             graphics.drawString("HP:" + a.getHealth() + "/" + a.getMaxHealth(), textX, y + 2*FONT_SIZE);
         }
         if (showExact && a.getMaxMana() > 0) {
-            graphics.drawString("MP:", textX, y + 3*FONT_SIZE);
+            graphics.drawString("MP:" + a.getMana() + "/" + a.getMaxMana(), textX, y + 3*FONT_SIZE);
         }
     }
 

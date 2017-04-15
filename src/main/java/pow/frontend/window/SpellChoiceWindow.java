@@ -21,7 +21,7 @@ public class SpellChoiceWindow extends AbstractWindow {
                              List<SpellParams> spells,
                              Consumer<Integer> callback) {
         super(new WindowDim(x, y, 350,
-                50 + FONT_SIZE * spells.size()),
+                60 + FONT_SIZE * spells.size()),
                 true, backend, frontend);
         this.message = message;
         this.spells = spells;
@@ -58,6 +58,11 @@ public class SpellChoiceWindow extends AbstractWindow {
     public void drawContents(Graphics graphics) {
         String currMessage = this.message;
 
+        final int nameColumnX = MARGIN + 20;
+        final int levelColumnX = MARGIN + 160;
+        final int manaColumnX = MARGIN + 200;
+        final int infoColumnX = MARGIN + 240;
+
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
@@ -67,17 +72,24 @@ public class SpellChoiceWindow extends AbstractWindow {
 
         graphics.drawString(currMessage, MARGIN, MARGIN + FONT_SIZE);
 
-        int y = 30;
+        int y = 45;
+        graphics.drawString("Spell", nameColumnX,y);
+        graphics.drawString("Level", levelColumnX,y);
+        graphics.drawString("Mana", manaColumnX, y);
+        graphics.drawString("Info", infoColumnX, y);
+
+        y = 60;
         int idx = 0;
         for (SpellParams spell : spells) {
             boolean isEnabled = enabled(spell);
 
             String label = (char) ((int) 'a' + idx) + ")";
-            int textY = y + 20;
             graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
-            graphics.drawString(label, MARGIN, textY);
-            graphics.drawString(spell.name, 40, textY);
-            graphics.drawString(spell.getDescription(backend.getGameState().player), 150, textY);
+            graphics.drawString(label, MARGIN, y);
+            graphics.drawString(spell.name, nameColumnX, y);
+            graphics.drawString(Integer.toString(spell.minLevel), levelColumnX, y);
+            graphics.drawString(Integer.toString(spell.requiredMana), manaColumnX, y);
+            graphics.drawString(spell.getDescription(backend.getGameState().player), infoColumnX, y);
 
             idx++;
             y += FONT_SIZE;
