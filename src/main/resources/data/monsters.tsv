@@ -23,7 +23,7 @@
 2	brown imp	brown imp	brown imp	A fast, mischievous creature.	5	2	1d4	6	4	3	2	erratic			1
 2	green komodo	green komodo	green komodo	A giant Komodo dragon. It is about 10 feet long and has a venomous bite.	21	4	2d4	12	13	11	0	boss		lantern	4
 2	purple spider	purple spider	purple spider	A large and powerful amathyst spider with bright yellow eyes.	11	3	2d2	10	7	6	0	boss,fearless		pearl 1	4
-3	novice mage	novice mage	novice mage	He is fumbling with his spell books.	8	9	1d4	6	6	4	0	perfect			1
+3	novice mage	novice mage	novice mage	He is fumbling with his spellParams books.	8	9	1d4	6	6	4	0	perfect			1
 3	novice warrior	novice warrior	novice warrior	An inexperienced but tough warrior.	12	4	2d3	9	9	6	0	perfect			1
 3	novice archer	novice archer	novice archer	He just completed archery training.	9	5	2d2	8	8	5	0	perfect	arrow		1
 3	novice rogue	novice rogue	novice rogue	A shifty individual.	9	5	2d2	8	8	5	0	perfect			1
@@ -99,7 +99,7 @@
 16	yellow dragon	yellow dragon	yellow dragon	A huge draconic form. Pools of acid melt the floor around it.	320	128	5d10	62	67	276	3	perfect,fearless			6
 15	red komodo	red komodo	red komodo	A giant Komodo dragon. It has a nearly impenetrable hide of a deep red hue.	188	43	5d9	52	66	113	1				0
 15	giant roc	giant roc	giant roc	A vast legendary bird, its iron talons rake the most impenetrable of surfaces and its screech echoes through the many winding dungeon corridors.	171	85	4d9	47	47	123	2				2
-16	zombie	zombie	zombie	A humanoid form encased in mouldy wrappings, the result of some unspeakable spell that left him wandering the earth forever.	213	75	5d8	52	52	75	0	erratic			2
+16	zombie	zombie	zombie	A humanoid form encased in mouldy wrappings, the result of some unspeakable spellParams that left him wandering the earth forever.	213	75	5d8	52	52	75	0	erratic			2
 15	red cobra	red cobra	red cobra	A great cobra with ruby scales.	188	43	5d9	52	66	113	1	fearless			0
 15	sandworm	sandworm	sand worm	An enormous worm with a fearsome array of crystalline teeth.	188	43	5d9	52	66	94	0	fearless			1
 16	two headed ogre	two headed ogre	two headed ogre	A giant orc-like figure with a two heads and an awesomely muscled frame. It regrows it heads as fast as you chop them off.	568	144	6d13	85	74	409	2	boss,perfect		heat suit	4

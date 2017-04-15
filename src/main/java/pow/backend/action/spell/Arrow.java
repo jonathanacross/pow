@@ -14,7 +14,7 @@ import pow.util.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Arrow implements Action, Spell {
+public class Arrow implements Action {
     private final Actor attacker;
     private final Point target;
 
@@ -22,9 +22,6 @@ public class Arrow implements Action, Spell {
         this.attacker = attacker;
         this.target = target;
     }
-
-    @Override
-    public int getRequiredMana() { return 1; }
 
     @Override
     public Actor getActor() {
@@ -63,7 +60,6 @@ public class Arrow implements Action, Spell {
             if (map.map[p.x][p.y].blockAir()) break;
             events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
         }
-        attacker.useMana(getRequiredMana());
         events.add(GameEvent.DungeonUpdated());
 
         return ActionResult.Succeeded(events);

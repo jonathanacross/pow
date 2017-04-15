@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameMap;
 import pow.backend.GameState;
+import pow.backend.SpellParams;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
@@ -82,6 +83,7 @@ public class GameMainLayer extends AbstractWindow {
                                 gs.player.inventory.items.get(choice.itemIdx).count))));
     }
 
+
     private void tryQuaff(GameState gs) {
         Point loc = gs.player.loc;
         ItemList inventoryItems = gs.player.inventory;
@@ -159,6 +161,24 @@ public class GameMainLayer extends AbstractWindow {
                         (ItemChoiceWindow.ItemChoice choice) -> backend.tellPlayer(new TakeOff(gs.player, choice.itemIdx))));
     }
 
+    private void tryCastSpell(GameState gs) {
+        frontend.open(
+                new SpellChoiceWindow(432, 100, this.backend, this.frontend,
+                        "Cast which spell?",
+                        gs.player.spells,
+                        (Integer choice) -> {
+                            SpellParams params = gs.player.spells.get(choice);
+                            Point target = gs.player.getTarget();
+                            if (target == null && params.requiresTarget) {
+                                backend.logMessage("no target selected.");
+                                return;
+                            }
+                            backend.tellPlayer(
+                                    SpellParams.buildAction(params, gs.player, target));
+                        })
+        );
+    }
+
     @Override
     public void processKey(KeyEvent e) {
         GameState gs = backend.getGameState();
@@ -186,7 +206,6 @@ public class GameMainLayer extends AbstractWindow {
             case UP_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, true)); break;
             case DOWN_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, false)); break;
             case REST: backend.tellPlayer(new Move(gs.player, 0, 0)); break;
-            //case FIRE: backend.tellPlayer(new FireRocket(gs.player)); break;
             case SAVE: backend.tellPlayer(new Save()); break;
             case LOOK: startLooking(gs); break;
             case CLOSE_DOOR: tryCloseDoor(gs); break;
@@ -196,6 +215,7 @@ public class GameMainLayer extends AbstractWindow {
             case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;
             case FIRE: tryFire(gs); break;
+            case MAGIC: tryCastSpell(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
             case SHOW_WORLD_MAP: frontend.open(frontend.worldMapWindow); break;
             case QUAFF: tryQuaff(gs); break;
@@ -312,13 +332,8 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         // make sure there's a target
-        Point target;
-        if (player.floorTarget != null) {
-            target = player.floorTarget;
-        }
-        else if (player.monsterTarget != null) {
-            target = player.monsterTarget.loc;
-        } else {
+        Point target = player.getTarget();
+        if (target == null) {
             backend.logMessage("no target selected.");
             return;
         }

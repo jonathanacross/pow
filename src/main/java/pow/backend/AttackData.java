@@ -25,4 +25,8 @@ public class AttackData implements Serializable {
     public String toString() {
         return this.dieRoll.toString() + " (" + formatBonus(plusToHit) + ", " + formatBonus(plusToDam) + ")";
     }
+
+    public double getAverageDamage() {
+        return 0.5 * dieRoll.roll * (plusToDam + dieRoll.die + 1);
+    }
 }

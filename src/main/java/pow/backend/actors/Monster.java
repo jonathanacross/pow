@@ -2,10 +2,10 @@ package pow.backend.actors;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.SpellParams;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
 import pow.backend.action.Move;
-import pow.backend.action.spell.Arrow;
 import pow.backend.actors.ai.Movement;
 import pow.backend.actors.ai.StepMovement;
 import pow.backend.actors.ai.KnightMovement;
@@ -27,7 +27,6 @@ public class Monster extends Actor implements Serializable {
         DUMB_AWAKE, // awake, for erratic creatures
         AFRAID
     }
-
 
     public static class Flags implements Serializable {
         public final boolean stationary;  // can't move (e.g., a mushroom or mold)
@@ -107,10 +106,10 @@ public class Monster extends Actor implements Serializable {
         return super.takeDamage(backend, damage);
     }
 
-    private List<Monster.Spell> getCastableSpells() {
-        List<Monster.Spell> castableSpells = new ArrayList<>();
-        for (Monster.Spell spell : this.spells) {
-            if (spell.getRequiredMana() <= this.getMana()) {
+    private List<SpellParams> getCastableSpells() {
+        List<SpellParams> castableSpells = new ArrayList<>();
+        for (SpellParams spell : this.spells) {
+            if (spell.requiredMana <= this.getMana()) {
                 castableSpells.add(spell);
             }
         }
@@ -163,14 +162,9 @@ public class Monster extends Actor implements Serializable {
         return movement.wander(this, gs);
     }
 
-    private Action castSpell(List<Monster.Spell> castableSpells, Actor closestEnemy, GameState gs) {
+    private Action castSpell(List<SpellParams> castableSpells, Actor closestEnemy, GameState gs) {
         int spellIdx = gs.rng.nextInt(castableSpells.size());
-        switch (castableSpells.get(spellIdx)) {
-            case ARROW:
-                return new Arrow(this, closestEnemy.loc);
-            default:
-                throw new RuntimeException("tried to cast unknown spell.");
-        }
+        return SpellParams.buildAction(castableSpells.get(spellIdx), this, closestEnemy.loc);
     }
 
     private Action doDumbAwake(GameBackend backend) {
@@ -189,7 +183,7 @@ public class Monster extends Actor implements Serializable {
         }
 
         // cast a spell if possible
-        List<Monster.Spell> castableSpells = getCastableSpells();
+        List<SpellParams> castableSpells = getCastableSpells();
         if (!castableSpells.isEmpty()) {
             return castSpell(castableSpells, closestEnemy, gs);
         }
@@ -214,7 +208,7 @@ public class Monster extends Actor implements Serializable {
         }
 
         // cast a spell if possible
-        List<Monster.Spell> castableSpells = getCastableSpells();
+        List<SpellParams> castableSpells = getCastableSpells();
         if (!castableSpells.isEmpty()) {
             return castSpell(castableSpells, closestEnemy, gs);
         }
@@ -275,7 +269,7 @@ public class Monster extends Actor implements Serializable {
         }
 
         // cast a spell if possible
-        List<Monster.Spell> castableSpells = getCastableSpells();
+        List<SpellParams> castableSpells = getCastableSpells();
         if (!castableSpells.isEmpty()) {
             return castSpell(castableSpells, closestEnemy, gs);
         }

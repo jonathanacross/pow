@@ -23,6 +23,7 @@ The keys . or number pad 5 indicate to stay still.
       j    Walk south                      J    Run south
       k    Walk north                      K    Run north
       l    Walk east                       L    Run east
+      m    Cast magic
       n    Walk southeast                  N    Run southeast
       q    Quaff a potion
       s    Save
