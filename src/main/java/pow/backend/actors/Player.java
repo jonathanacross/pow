@@ -131,7 +131,10 @@ public class Player extends Actor implements Serializable, LightSource {
                 0,
                 null,
                 0,
-                Arrays.asList(SpellData.getSpell("magic arrow"), SpellData.getSpell("lesser heal"))));
+                Arrays.asList(
+                        SpellData.getSpell("magic arrow"),
+                        SpellData.getSpell("lesser heal"),
+                        SpellData.getSpell("fireball"))));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = -1;  // filled in by updateStats
         this.equipment = new ArrayList<>();

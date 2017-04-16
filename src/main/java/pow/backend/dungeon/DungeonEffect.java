@@ -4,6 +4,7 @@ package pow.backend.dungeon;
 import pow.util.Direction;
 import pow.util.Point;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,6 +48,20 @@ public class DungeonEffect {
     public DungeonEffect(String name, Point loc) {
         this(Collections.singletonList(new ImageLoc(name, loc)));
     }
+
+    // convenience constructor if all effects are the same image
+    public DungeonEffect(String name, List<Point> locs) {
+        this(makeImageLocs(name, locs));
+    }
+
+    private static List<ImageLoc> makeImageLocs(String name, List<Point> locs) {
+        List<ImageLoc> imageLocs = new ArrayList<>();
+        for (Point loc: locs) {
+            imageLocs.add(new ImageLoc(name, loc));
+        }
+        return imageLocs;
+    }
+
 
     public static String getEffectName(
             EffectType effectType,

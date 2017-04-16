@@ -1,6 +1,7 @@
 package pow.backend;
 
 import pow.backend.action.Action;
+import pow.backend.action.BallSpell;
 import pow.backend.action.Heal;
 import pow.backend.action.Arrow;
 import pow.backend.action.spell.SpellAction;
@@ -117,6 +118,7 @@ public class SpellParams implements Serializable {
         switch (spellParams.spellType) {
             case ARROW: return new SpellAction(new Arrow(actor, target, attackData, false), spellParams);
             case HEAL: return new SpellAction(new Heal(actor, amount), spellParams);
+            case BALL: return new SpellAction(new BallSpell(actor, target, spellParams), spellParams);
             default: break;
         }
         throw new RuntimeException("tried to create unknown spell from " + spellParams.name);
