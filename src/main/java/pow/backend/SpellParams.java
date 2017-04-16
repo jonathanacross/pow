@@ -2,9 +2,10 @@ package pow.backend;
 
 import pow.backend.action.Action;
 import pow.backend.action.Heal;
-import pow.backend.action.spell.Arrow;
+import pow.backend.action.Arrow;
 import pow.backend.action.spell.SpellAction;
 import pow.backend.actors.Actor;
+import pow.util.DieRoll;
 import pow.util.Point;
 
 import java.io.Serializable;
@@ -111,11 +112,13 @@ public class SpellParams implements Serializable {
     }
 
     public static Action buildAction(SpellParams spellParams, Actor actor, Point target) {
+        int amount = spellParams.getAmount(actor);
+        AttackData attackData = new AttackData(new DieRoll(0,0), amount, amount);
         switch (spellParams.spellType) {
-            case ARROW: return new SpellAction(new Arrow(actor, target), spellParams);
-            case HEAL: return new SpellAction(new Heal(actor, spellParams.getAmount(actor)), spellParams);
+            case ARROW: return new SpellAction(new Arrow(actor, target, attackData, false), spellParams);
+            case HEAL: return new SpellAction(new Heal(actor, amount), spellParams);
             default: break;
         }
-        throw new RuntimeException("tried create unknown spell from " + spellParams.name);
+        throw new RuntimeException("tried to create unknown spell from " + spellParams.name);
     }
 }
