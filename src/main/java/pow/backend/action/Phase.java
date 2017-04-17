@@ -5,7 +5,6 @@ import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
-import pow.util.Arc;
 import pow.util.Direction;
 import pow.util.Point;
 
@@ -57,7 +56,7 @@ public class Phase implements Action {
                     DungeonEffect.EffectType.SMALL_BALL,
                     DungeonEffect.EffectColor.YELLOW,
                     Direction.N); // dummy
-            List<Point> arcPoints = Arc.createArc(targetLoc, actor.loc);
+            List<Point> arcPoints = createArc(actor.loc, targetLoc);
             for (Point p : arcPoints) {
                 events.add(GameEvent.Effect(new DungeonEffect(effectName, p)));
             }
@@ -85,4 +84,24 @@ public class Phase implements Action {
         return actor;
     }
 
+    private static List<Point> createArc(Point start, Point end) {
+        final int height = 5;
+        final int maxSteps = 20;
+
+        List<Point> points = new ArrayList<>();
+
+        double dx = end.x - start.x;
+        double dy = end.y - start.y;
+        int numSteps = (int) Math.min(2*Math.max(Math.abs(dx), Math.abs(dy)), maxSteps);
+
+        for (int i = 0; i <= numSteps; i++) {
+            double t = (double) i / numSteps;
+            double x = (1.0 - t) * start.x + t * end.x;
+            double y = (1.0 - t) * start.y + t * end.y;
+            double z = 4.0 * height * t * (1.0 - t);
+
+            points.add(new Point((int) Math.round(x), (int) Math.round(y - z)));
+        }
+        return points;
+    }
 }
