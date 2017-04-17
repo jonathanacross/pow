@@ -114,6 +114,7 @@ public class SpellParams implements Serializable {
         AttackData attackData = new AttackData(new DieRoll(0,0), amount, amount);
         switch (spellParams.spellType) {
             case ARROW: return new SpellAction(new Arrow(actor, target, attackData, false), spellParams);
+            case PHASE: return new SpellAction(new Phase(actor, amount), spellParams);
             case HEAL: return new SpellAction(new Heal(actor, amount), spellParams);
             case BALL: return new SpellAction(new BallSpell(actor, target, spellParams), spellParams);
             case BREATH: return new SpellAction(new BreathSpell(actor, target, spellParams), spellParams);

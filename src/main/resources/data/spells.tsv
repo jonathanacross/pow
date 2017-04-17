@@ -15,7 +15,7 @@ lesser heal	lesser heal	4	3	heal	none	0	10	0	none	{}% / {} hp
 lightning breath	lightning breath	2	4	breath	lightning	5	10	1	level	dam {}
 magic arrow	magic arrow	1	1	arrow	damage	8	2	1	level	dam {}
 mana cloud	mana cloud	7	15	ball	damage	4	45	2	level	dam {}
-phase	phase	2	5	phase	none	7	0	0	none	
+phase	phase	2	5	phase	none	0	7	0	none	max dist {}
 poison arrow	poison arrow	2	5	arrow	poison	8	3	1	level	dam {}
 poison breath	poison breath	5	10	breath	poison	6	30	1	level	dam {}
 poison cloud	poison cloud	5	10	ball	poison	2	10	1	level	dam {}
@@ -25,4 +25,4 @@ rift	rift	6	20	breath	stun	7	40	1	level	dam {} + stun
 sleep monster	sleep monster	1	3	arrow	sleep	8	0	0	none	
 speed	speed	6	10	speed	none	0	0	0	none	
 stun	stun	5	20	quake	stun	2	0	1	attack	dam {} + stun
-teleport	teleport	4	10	phase	none	50	0	0	none	
+teleport	teleport	4	10	phase	none	0	50	0	none	
