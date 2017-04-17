@@ -45,6 +45,29 @@ public class SpellUtils {
         return points;
     }
 
+    public static List<Point> getBreathArea(GameState gameState, Point center, Point target, int radius) {
+        final double cosThreshold = 0.866025403784439; // = cos(pi/6); results in a breath of angle pi/3
+
+        List<Point> ballSquares = getBallArea(gameState, center, radius);
+        List<Point> breathSquares = new ArrayList<>();
+
+        Point centerToTarget = new Point(target.x - center.x, target.y - center.y);
+        for (Point s : ballSquares) {
+            if (s == center) continue;
+
+            Point centerToSquare = new Point(s.x - center.x, s.y - center.y);
+            int dot = centerToTarget.dot(centerToSquare);
+            double normCenterToTarget = Math.sqrt(centerToTarget.dot(centerToTarget));
+            double normCenterToSquare = Math.sqrt(centerToSquare.dot(centerToSquare));
+            double cosTheta = (double) dot / (normCenterToSquare * normCenterToTarget);
+            if (cosTheta >= cosThreshold) {
+                breathSquares.add(s);
+            }
+        }
+
+        return breathSquares;
+    }
+
     public static DungeonEffect.EffectColor getEffectColor(SpellParams.Element element) {
         switch (element) {
             case NONE: return DungeonEffect.EffectColor.NONE;
