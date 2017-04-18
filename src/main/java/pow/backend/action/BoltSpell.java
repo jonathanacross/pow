@@ -38,7 +38,7 @@ public class BoltSpell implements Action {
 
         List<Point> ray = Bresenham.makeRay(attacker.loc, target, spellParams.size + 1);
         String effectId = DungeonEffect.getEffectName(
-                DungeonEffect.EffectType.SMALL_BALL,
+                DungeonEffect.EffectType.BOLT,
                 SpellUtils.getEffectColor(spellParams.element),
                 Direction.getDir(attacker.loc, target));
 

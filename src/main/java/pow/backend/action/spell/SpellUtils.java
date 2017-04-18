@@ -14,8 +14,9 @@ import java.util.List;
 // Various utility functions helpful for spells.
 public class SpellUtils {
 
-    // Returns the list of squares that a ball spell will hit
-    public static List<Point> getBallArea(GameState gameState, Point center, int radius) {
+    // Returns the list of squares visible from "center",
+    // at distance at most "radius", given the metric "metric".
+    public static List<Point> getFieldOfView(GameState gameState, Point center, int radius, Metric.MetricFunction metric) {
         GameMap map = gameState.getCurrentMap();
 
         int rowMin = Math.max(0, center.y - radius);
@@ -29,8 +30,7 @@ public class SpellUtils {
                 blockMap[x - colMin][y - rowMin] = map.map[x][y].blockAir();
             }
         }
-        FieldOfView fov = new FieldOfView(blockMap, center.x - colMin, center.y - rowMin, radius,
-                new Metric.EuclideanMetric());
+        FieldOfView fov = new FieldOfView(blockMap, center.x - colMin, center.y - rowMin, radius, metric);
         boolean[][] visible = fov.getFOV();
 
         List<Point> points = new ArrayList<>();
@@ -43,6 +43,11 @@ public class SpellUtils {
         }
 
         return points;
+    }
+
+    // Returns the list of squares that a ball spell will hit
+    public static List<Point> getBallArea(GameState gameState, Point center, int radius) {
+        return getFieldOfView(gameState, center, radius, new Metric.EuclideanMetric());
     }
 
     public static List<Point> getBreathArea(GameState gameState, Point center, Point target, int radius) {

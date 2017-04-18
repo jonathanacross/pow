@@ -62,21 +62,30 @@ public class DungeonEffect {
         return imageLocs;
     }
 
+    // used for bolts, since there are 4 symmetric images
+    private static Direction getEquivDirection(Direction dir) {
+        switch (dir) {
+            case S: return Direction.N;
+            case SW: return Direction.NE;
+            case W: return Direction.E;
+            case NW: return Direction.SE;
+            default: return dir;
+        }
+    }
 
     public static String getEffectName(
             EffectType effectType,
             EffectColor color,
             Direction dir) {
 
-        String dirStr = dir.toString();
         String colorStr = color.toString().toLowerCase();
 
         String id;
         switch (effectType) {
-            case ARROW: id = dirStr + " arrow"; break;
+            case ARROW: id = dir.toString() + " arrow"; break;
             case SMALL_BALL: id = "small " + colorStr + " ball"; break;
             case LARGE_BALL: id = "big " + colorStr + " ball"; break;
-            case BOLT: id = dirStr + " " + colorStr + " bolt"; break;
+            case BOLT: id = getEquivDirection(dir).toString() + " " + colorStr + " bolt"; break;
             default: id = "debug";
         }
 

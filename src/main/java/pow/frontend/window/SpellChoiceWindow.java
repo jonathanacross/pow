@@ -51,7 +51,8 @@ public class SpellChoiceWindow extends AbstractWindow {
     private static final int FONT_SIZE = 12;
 
     private boolean enabled(SpellParams params) {
-        return params.minLevel <= backend.getGameState().player.level;
+        return params.minLevel <= backend.getGameState().player.level &&
+                params.requiredMana <= backend.getGameState().player.getMana();
     }
 
     @Override
