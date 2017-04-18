@@ -1,6 +1,6 @@
 #id	name	min level	mana	effect	spell type	size	amtBase	amtDelta	stat	description
 arrow	arrow	1	1	arrow	damage	8	2	1	attack	dam {}
-backstab	backstab	6	5	lance	damage	1	0	5	attack	dam {}
+backstab	backstab	6	5	bolt	damage	1	0	5	attack	dam {}
 boost armor	boost armor	5	5	boost armor	none	0	10	1	level	{} to armor
 chain lightning	chain lightning	7	10	chain	lightning	0	30	2	level	dam {}
 circle cut	circle cut	3	10	circle cut	damage	1	0	1	attack	dam {}
@@ -8,9 +8,9 @@ confuse monsters	confuse monsters	3	8	ball	confuse	2	0	0	none
 fire breath	fire breath	6	15	breath	fire	7	40	1	level	dam {}
 fireball	fireball	5	8	ball	fire	3	20	2	level	dam {}
 greater heal	greater heal	7	15	heal	none	0	30	0	none	{}% / {} hp
-ice bolt	ice bolt	4	5	lance	ice	8	10	2	level	dam {}
+ice bolt	ice bolt	4	5	bolt	ice	8	10	2	level	dam {}
 ice breath	ice breath	3	5	breath	ice	6	20	1	level	dam {}
-lance	lance	2	5	lance	damage	4	0	1	attack	dam {}
+lance	lance	2	5	bolt	damage	4	0	1	attack	dam {}
 lesser heal	lesser heal	4	3	heal	none	0	10	0	none	{}% / {} hp
 lightning breath	lightning breath	2	4	breath	lightning	5	10	1	level	dam {}
 magic arrow	magic arrow	1	1	arrow	damage	8	2	1	level	dam {}

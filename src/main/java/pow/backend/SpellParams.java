@@ -19,7 +19,7 @@ public class SpellParams implements Serializable {
         CHAIN,
         CIRCLE_CUT,
         HEAL,
-        LANCE,
+        BOLT,
         PHASE,
         QUAKE,
         RESIST_ELEMENTS,
@@ -85,7 +85,7 @@ public class SpellParams implements Serializable {
         this.requiresTarget = (
                 spellType == SpellType.ARROW ||
                 spellType == SpellType.BALL ||
-                spellType == SpellType.LANCE ||
+                spellType == SpellType.BOLT ||
                 spellType == SpellType.BREATH);
     }
 
@@ -117,6 +117,7 @@ public class SpellParams implements Serializable {
             case PHASE: return new SpellAction(new Phase(actor, amount), spellParams);
             case HEAL: return new SpellAction(new Heal(actor, amount), spellParams);
             case BALL: return new SpellAction(new BallSpell(actor, target, spellParams), spellParams);
+            case BOLT: return new SpellAction(new BoltSpell(actor, target, spellParams), spellParams);
             case BREATH: return new SpellAction(new BreathSpell(actor, target, spellParams), spellParams);
             case QUAKE: return new SpellAction(new QuakeSpell(actor, spellParams), spellParams);
             default: break;

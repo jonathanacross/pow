@@ -135,6 +135,7 @@ public class Player extends Actor implements Serializable, LightSource {
                         SpellData.getSpell("magic arrow"),
                         SpellData.getSpell("phase"),
                         SpellData.getSpell("lesser heal"),
+                        SpellData.getSpell("ice bolt"),
                         SpellData.getSpell("fireball"),
                         SpellData.getSpell("quake"),
                         SpellData.getSpell("rift"))));
