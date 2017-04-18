@@ -4,7 +4,6 @@ import pow.backend.GameBackend;
 import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.SpellParams;
-import pow.backend.action.spell.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;

@@ -3,15 +3,17 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.SpellParams;
-import pow.backend.action.spell.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
 import pow.util.Direction;
+import pow.util.Metric;
 import pow.util.Point;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static pow.backend.action.SpellUtils.getFieldOfView;
 
 public class BreathSpell implements Action {
 
@@ -36,12 +38,12 @@ public class BreathSpell implements Action {
                 SpellUtils.getEffectColor(spellParams.element),
                 Direction.N); // dummy
         for (int radius = 1; radius <= spellParams.size; radius++) {
-            List<Point> effectSquares = SpellUtils.getBreathArea(gs, actor.loc, target, radius);
+            List<Point> effectSquares = getBreathArea(gs, actor.loc, target, radius);
             events.add(GameEvent.Effect(new DungeonEffect(effectName, effectSquares)));
         }
 
         // hit everything in the large area once
-        List<Point> hitSquares = SpellUtils.getBreathArea(gs, actor.loc, target, spellParams.size);
+        List<Point> hitSquares = getBreathArea(gs, actor.loc, target, spellParams.size);
         int damage = spellParams.getAmount(actor);
 
         for (Point s : hitSquares) {
@@ -55,6 +57,30 @@ public class BreathSpell implements Action {
         return ActionResult.Succeeded(events);
     }
 
+    private static List<Point> getBreathArea(GameState gameState, Point center, Point target, int radius) {
+        final double cosThreshold = 0.866025403784439; // = cos(pi/6); results in a breath of angle pi/3
+
+        List<Point> ballSquares = getFieldOfView(gameState, center, radius, Metric.euclideanMetric);
+        List<Point> breathSquares = new ArrayList<>();
+
+        Point centerToTarget = new Point(target.x - center.x, target.y - center.y);
+        for (Point s : ballSquares) {
+            if (s == center) continue;
+
+            Point centerToSquare = new Point(s.x - center.x, s.y - center.y);
+            int dot = centerToTarget.dot(centerToSquare);
+            double normCenterToTarget = Math.sqrt(centerToTarget.dot(centerToTarget));
+            double normCenterToSquare = Math.sqrt(centerToSquare.dot(centerToSquare));
+            double cosTheta = (double) dot / (normCenterToSquare * normCenterToTarget);
+            if (cosTheta >= cosThreshold) {
+                breathSquares.add(s);
+            }
+        }
+
+        return breathSquares;
+    }
+
+
     @Override
     public boolean consumesEnergy() {
         return true;
@@ -64,5 +90,4 @@ public class BreathSpell implements Action {
     public Actor getActor() {
         return actor;
     }
-
 }

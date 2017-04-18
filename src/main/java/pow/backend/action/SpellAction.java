@@ -1,15 +1,13 @@
-package pow.backend.action.spell;
+package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.SpellParams;
-import pow.backend.action.Action;
-import pow.backend.action.ActionResult;
 import pow.backend.actors.Actor;
 
 public class SpellAction implements Action {
 
-    private Action action;
-    private SpellParams params;
+    private final Action action;
+    private final SpellParams params;
 
     public SpellAction(Action action, SpellParams params) {
         this.action = action;

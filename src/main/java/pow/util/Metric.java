@@ -6,18 +6,6 @@ public class Metric {
         double dist(int dx, int dy);
     }
 
-    // a.k.a. L-infinity norm
-    public static class RogueMetric implements MetricFunction {
-        @Override
-        public double dist(int dx, int dy) {
-            return Math.max(Math.abs(dx), Math.abs(dy));
-        }
-    }
-
-    public static class EuclideanMetric implements MetricFunction {
-        @Override
-        public double dist(int dx, int dy) {
-            return Math.sqrt(dx * dx + dy * dy);
-        }
-    }
+    public static final MetricFunction rogueMetric = (int dx, int dy) -> Math.max(Math.abs(dx), Math.abs(dy));
+    public static final MetricFunction euclideanMetric = (int dx, int dy) -> Math.sqrt(dx * dx + dy * dy);
 }

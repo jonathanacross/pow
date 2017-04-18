@@ -72,10 +72,10 @@ ring of speed	& ring~ of speed	platinum ring	ring of speed	ring				41	90	1	5	spe
 # bracelets															
 bracelet of defense	& bracelet~ of defense	copper bracelet	bracelet of defense	bracelet				1	40	1	15	def:x	0	0	
 bracelet of attack	& bracelet~ of attack	silver bracelet	bracelet of attack	bracelet				11	80	1	25	attack:x	0	0	
-bracelet of fire	& bracelet~ of fire	red bracelet	bracelet of fire	bracelet				61	80	0	0		0	0	
-bracelet of poison	& bracelet~ of poison	green bracelet	bracelet of poison	bracelet				61	80	0	0		0	0	
-bracelet of cold	& bracelet~ of cold	blue bracelet	bracelet of cold	bracelet				61	80	0	0		0	0	
-bracelet of acid	& bracelet~ of acid	black bracelet	bracelet of acid	bracelet				61	80	0	0		0	0	
+#bracelet of fire	& bracelet~ of fire	red bracelet	bracelet of fire	bracelet				61	80	0	0		0	0	
+#bracelet of poison	& bracelet~ of poison	green bracelet	bracelet of poison	bracelet				61	80	0	0		0	0	
+#bracelet of cold	& bracelet~ of cold	blue bracelet	bracelet of cold	bracelet				61	80	0	0		0	0	
+#bracelet of acid	& bracelet~ of acid	black bracelet	bracelet of acid	bracelet				61	80	0	0		0	0	
 #bracelet of reflection	& bracelet~ of reflection	purple bracelet	bracelet of reflection	bracelet				70	90	0	0		0	0	reflect x% (0-35) dam
 bracelet of power	& bracelet~ of power	gold bracelet	bracelet of power	bracelet				81	90	1	4	str:x,int:x,dex:x,con:x	0	0	
 # amulets															
@@ -93,11 +93,11 @@ gold	& gold piece~	gold	gold	none	money			31	70	0	0		0	0	money
 platinum	& platinum piece~	platinum	platinum	none	money			51	90	0	0		0	0	money
 adamantium	& adamantium piece~	adamantium	adamantium	none	money			71	90	0	0		0	0	money
 # gems															
-sapphires	sapphires	sapphires	sapphires	none				11	90	1	5		0	0	weapon/armor upgrades?
-rubies	rubies	rubies	rubies	none				11	90	1	5		0	0	
-diamonds	diamonds	diamonds	diamonds	none				11	90	1	5		0	0	
-emeralds	emeralds	emeralds	emeralds	none				11	90	1	5		0	0	
-amythests	amythests	amythests	amythests	none				11	90	1	5		0	0	
+#sapphires	sapphires	sapphires	sapphires	none				11	90	1	5		0	0	weapon/armor upgrades?
+#rubies	rubies	rubies	rubies	none				11	90	1	5		0	0	
+#diamonds	diamonds	diamonds	diamonds	none				11	90	1	5		0	0	
+#emeralds	emeralds	emeralds	emeralds	none				11	90	1	5		0	0	
+#amythests	amythests	amythests	amythests	none				11	90	1	5		0	0	
 # potions															
 small mana potion	& small mana potion~	small blue potion	small mana potion	none	potion	restoreMana:10:		1	30	0	0		0	0	
 small health potion	& small health potion~	small red potion	small health potion	none	potion	heal:10:		1	30	0	0		0	0	

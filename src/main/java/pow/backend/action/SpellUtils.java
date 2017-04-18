@@ -1,4 +1,4 @@
-package pow.backend.action.spell;
+package pow.backend.action;
 
 import pow.backend.GameMap;
 import pow.backend.GameState;
@@ -43,34 +43,6 @@ public class SpellUtils {
         }
 
         return points;
-    }
-
-    // Returns the list of squares that a ball spell will hit
-    public static List<Point> getBallArea(GameState gameState, Point center, int radius) {
-        return getFieldOfView(gameState, center, radius, new Metric.EuclideanMetric());
-    }
-
-    public static List<Point> getBreathArea(GameState gameState, Point center, Point target, int radius) {
-        final double cosThreshold = 0.866025403784439; // = cos(pi/6); results in a breath of angle pi/3
-
-        List<Point> ballSquares = getBallArea(gameState, center, radius);
-        List<Point> breathSquares = new ArrayList<>();
-
-        Point centerToTarget = new Point(target.x - center.x, target.y - center.y);
-        for (Point s : ballSquares) {
-            if (s == center) continue;
-
-            Point centerToSquare = new Point(s.x - center.x, s.y - center.y);
-            int dot = centerToTarget.dot(centerToSquare);
-            double normCenterToTarget = Math.sqrt(centerToTarget.dot(centerToTarget));
-            double normCenterToSquare = Math.sqrt(centerToSquare.dot(centerToSquare));
-            double cosTheta = (double) dot / (normCenterToSquare * normCenterToTarget);
-            if (cosTheta >= cosThreshold) {
-                breathSquares.add(s);
-            }
-        }
-
-        return breathSquares;
     }
 
     public static DungeonEffect.EffectColor getEffectColor(SpellParams.Element element) {

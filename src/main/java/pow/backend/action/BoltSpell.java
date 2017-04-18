@@ -1,10 +1,8 @@
 package pow.backend.action;
 
 import pow.backend.*;
-import pow.backend.action.spell.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.dungeon.DungeonItem;
 import pow.backend.event.GameEvent;
 import pow.util.Bresenham;
 import pow.util.Direction;

@@ -1,7 +1,6 @@
 package pow.backend;
 
 import pow.backend.action.*;
-import pow.backend.action.spell.SpellAction;
 import pow.backend.actors.Actor;
 import pow.util.DieRoll;
 import pow.util.Point;
@@ -52,12 +51,12 @@ public class SpellParams implements Serializable {
     private final String description;
     public final int minLevel; // min level for a character to cast this
     public final int requiredMana;
-    public final SpellType spellType;
+    private final SpellType spellType;
     public final Element element;
     private final PowerStat powerStat;
     public final int size;  // related to size of area affected by this spell (for area spells)
-    public final int amtBase;
-    public final int amtDelta;  // total value for this spell will be amtBase + amtDelta*level
+    private final int amtBase;
+    private final int amtDelta;  // total value for this spell will be amtBase + amtDelta*level
     public final boolean requiresTarget;
 
     public SpellParams(String id,

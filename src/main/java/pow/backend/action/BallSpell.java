@@ -1,7 +1,6 @@
 package pow.backend.action;
 
 import pow.backend.*;
-import pow.backend.action.spell.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
@@ -12,6 +11,8 @@ import pow.util.Point;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static pow.backend.action.SpellUtils.getFieldOfView;
 
 public class BallSpell implements Action {
 
@@ -42,6 +43,10 @@ public class BallSpell implements Action {
         return visibleTarget;
     }
 
+    private static List<Point> getBallArea(GameState gameState, Point center, int radius) {
+        return getFieldOfView(gameState, center, radius, Metric.euclideanMetric);
+    }
+
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
@@ -54,16 +59,16 @@ public class BallSpell implements Action {
                 SpellUtils.getEffectColor(spellParams.element),
                 Direction.N); // dummy
         for (int radius = 1; radius <= spellParams.size; radius++) {
-            List<Point> effectSquares = SpellUtils.getBallArea(gs, visibleTarget, radius);
+            List<Point> effectSquares = getBallArea(gs, visibleTarget, radius);
             events.add(GameEvent.Effect(new DungeonEffect(effectName, effectSquares)));
         }
         for (int radius = spellParams.size - 1; radius >= 1; radius--) {
-            List<Point> effectSquares = SpellUtils.getBallArea(gs, visibleTarget, radius);
+            List<Point> effectSquares = getBallArea(gs, visibleTarget, radius);
             events.add(GameEvent.Effect(new DungeonEffect(effectName, effectSquares)));
         }
 
         // hit everything in the large ball once
-        List<Point> hitSquares = SpellUtils.getBallArea(gs, visibleTarget, spellParams.size);
+        List<Point> hitSquares = getBallArea(gs, visibleTarget, spellParams.size);
         int damage = spellParams.getAmount(actor);
 
         for (Point s : hitSquares) {

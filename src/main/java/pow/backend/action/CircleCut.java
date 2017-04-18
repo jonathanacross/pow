@@ -4,11 +4,9 @@ import pow.backend.GameBackend;
 import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.SpellParams;
-import pow.backend.action.spell.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
-import pow.util.Bresenham;
 import pow.util.Direction;
 import pow.util.Metric;
 import pow.util.Point;
@@ -39,7 +37,7 @@ public class CircleCut implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        List<Point> fovSquares = SpellUtils.getFieldOfView(gs, attacker.loc, spellParams.size, new Metric.RogueMetric());
+        List<Point> fovSquares = SpellUtils.getFieldOfView(gs, attacker.loc, spellParams.size, Metric.rogueMetric);
         Set<Point> fovSquareSet = new HashSet<>();
         fovSquareSet.addAll(fovSquares);
 
