@@ -104,5 +104,6 @@ public class GameConstants {
 
     public final static int MESSAGE_LOG_SIZE = 50;
 
-    public final static boolean PLAYER_CAN_SEE_UNKNOWN_AREAS = true;
+    // In the world map, can players see unvisited areas?
+    public final static boolean PLAYER_CAN_SEE_UNKNOWN_AREAS = false;
 }

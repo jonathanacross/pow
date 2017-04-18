@@ -33,4 +33,12 @@ The keys . or number pad 5 indicate to stay still.
       x    Examine nearby things
       y    Walk northwest                  Y    Run northwest
 
+Debugging commands (may be removed when the game is complete!)
+
+    Key    Action
+    ===    =========================
+      !    Heal player
+      @    Show world map
+      +    Gain a level
+
 Press any key to continue.

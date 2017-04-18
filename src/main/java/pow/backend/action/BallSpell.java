@@ -1,13 +1,13 @@
 package pow.backend.action;
 
-import pow.backend.GameBackend;
-import pow.backend.GameState;
-import pow.backend.SpellParams;
+import pow.backend.*;
 import pow.backend.action.spell.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
+import pow.util.Bresenham;
 import pow.util.Direction;
+import pow.util.Metric;
 import pow.util.Point;
 
 import java.util.ArrayList;
@@ -25,10 +25,28 @@ public class BallSpell implements Action {
         this.spellParams = spellParams;
     }
 
+    // Player may have targeted some illegal square, or some square
+    // they can't see.  So force the target to be the closest square
+    // towards the desired target that they *can* see.
+    private Point getVisibleTarget(GameMap map, Point target) {
+        int radius = Math.abs(target.x - actor.loc.x) + Math.abs(target.y - actor.loc.y);
+
+        List<Point> ray = Bresenham.makeRay(actor.loc, target, radius + 1);
+        Point visibleTarget = actor.loc;
+        for (Point p : ray) {
+            if (!map.isOnMap(p.x, p.y)) break;
+            if (map.map[p.x][p.y].blockAir()) break;
+            visibleTarget = p;
+            if (p.x == target.x && p.y == target.y) break;
+        }
+        return visibleTarget;
+    }
+
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
+        Point visibleTarget = getVisibleTarget(gs.getCurrentMap(), target);
 
         // draw effects
         String effectName = DungeonEffect.getEffectName(
@@ -36,16 +54,16 @@ public class BallSpell implements Action {
                 SpellUtils.getEffectColor(spellParams.element),
                 Direction.N); // dummy
         for (int radius = 1; radius <= spellParams.size; radius++) {
-            List<Point> effectSquares = SpellUtils.getBallArea(gs, target, radius);
+            List<Point> effectSquares = SpellUtils.getBallArea(gs, visibleTarget, radius);
             events.add(GameEvent.Effect(new DungeonEffect(effectName, effectSquares)));
         }
         for (int radius = spellParams.size - 1; radius >= 1; radius--) {
-            List<Point> effectSquares = SpellUtils.getBallArea(gs, target, radius);
+            List<Point> effectSquares = SpellUtils.getBallArea(gs, visibleTarget, radius);
             events.add(GameEvent.Effect(new DungeonEffect(effectName, effectSquares)));
         }
 
         // hit everything in the large ball once
-        List<Point> hitSquares = SpellUtils.getBallArea(gs, target, spellParams.size);
+        List<Point> hitSquares = SpellUtils.getBallArea(gs, visibleTarget, spellParams.size);
         int damage = spellParams.getAmount(actor);
 
         for (Point s : hitSquares) {
