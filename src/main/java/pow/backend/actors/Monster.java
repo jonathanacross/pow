@@ -7,6 +7,7 @@ import pow.backend.action.Action;
 import pow.backend.action.Attack;
 import pow.backend.action.Move;
 import pow.backend.actors.ai.Movement;
+import pow.backend.actors.ai.SpellAi;
 import pow.backend.actors.ai.StepMovement;
 import pow.backend.actors.ai.KnightMovement;
 import pow.backend.dungeon.DungeonObject;
@@ -106,10 +107,10 @@ public class Monster extends Actor implements Serializable {
         return super.takeDamage(backend, damage);
     }
 
-    private List<SpellParams> getCastableSpells() {
+    private List<SpellParams> getCastableSpells(GameState gs, Actor target) {
         List<SpellParams> castableSpells = new ArrayList<>();
         for (SpellParams spell : this.spells) {
-            if (spell.requiredMana <= this.getMana()) {
+            if (SpellAi.canCastSpell(spell, this, gs, target)) {
                 castableSpells.add(spell);
             }
         }
@@ -183,8 +184,8 @@ public class Monster extends Actor implements Serializable {
         }
 
         // cast a spell if possible
-        List<SpellParams> castableSpells = getCastableSpells();
-        if (!castableSpells.isEmpty()) {
+        List<SpellParams> castableSpells = getCastableSpells(gs, closestEnemy);
+        if (!castableSpells.isEmpty() && gs.rng.nextInt(2) == 0) {
             return castSpell(castableSpells, closestEnemy, gs);
         }
 
@@ -208,8 +209,8 @@ public class Monster extends Actor implements Serializable {
         }
 
         // cast a spell if possible
-        List<SpellParams> castableSpells = getCastableSpells();
-        if (!castableSpells.isEmpty()) {
+        List<SpellParams> castableSpells = getCastableSpells(gs, closestEnemy);
+        if (!castableSpells.isEmpty() && gs.rng.nextInt(2) == 0) {
             return castSpell(castableSpells, closestEnemy, gs);
         }
 
@@ -269,8 +270,8 @@ public class Monster extends Actor implements Serializable {
         }
 
         // cast a spell if possible
-        List<SpellParams> castableSpells = getCastableSpells();
-        if (!castableSpells.isEmpty()) {
+        List<SpellParams> castableSpells = getCastableSpells(gs, closestEnemy);
+        if (!castableSpells.isEmpty() && gs.rng.nextInt(2) == 0) {
             return castSpell(castableSpells, closestEnemy, gs);
         }
 

@@ -51,7 +51,7 @@ public class SpellParams implements Serializable {
     private final String description;
     public final int minLevel; // min level for a character to cast this
     public final int requiredMana;
-    private final SpellType spellType;
+    public final SpellType spellType;
     public final Element element;
     private final PowerStat powerStat;
     public final int size;  // related to size of area affected by this spell (for area spells)
