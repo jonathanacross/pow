@@ -53,8 +53,7 @@ public class CircleCut implements Action {
                 if (defender != null) {
                     int damage = spellParams.getAmount(attacker);
                     backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
-                    List<GameEvent> hitEvents = AttackUtils.doHit(backend, attacker, defender, damage);
-                    events.addAll(hitEvents);
+                    events.addAll(AttackUtils.doHit(backend, attacker, defender, damage));
                 }
             }
             events.add(GameEvent.Effect(new DungeonEffect(effectId, squares)));

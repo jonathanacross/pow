@@ -46,8 +46,7 @@ public class BoltSpell implements Action {
             if (defender != null) {
                 int damage = spellParams.getAmount(attacker);
                 backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
-                List<GameEvent> hitEvents = AttackUtils.doHit(backend, attacker, defender, damage);
-                events.addAll(hitEvents);
+                events.addAll(AttackUtils.doHit(backend, attacker, defender, damage));
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
             if (map.map[p.x][p.y].blockAir()) break;

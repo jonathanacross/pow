@@ -16,13 +16,13 @@ poison bolt	poison bolt	10	9	bolt	poison	8	12	2	level	dam {}
 acid bolt	acid bolt	13	11	bolt	acid	8	14	2	level	dam {}
 backstab	backstab	6	5	bolt	damage	1	0	5	attack	dam {}
 boost armor	boost armor	5	5	boost armor	none	0	10	1	level	{} to armor
-ice breath	ice breath	8	6	breath	ice	5	15	1	level	dam {}
-acid breath	acid breath	8	8	breath	acid	5	20	1	level	dam {}
-poison breath	poison breath	10	10	breath	poison	6	25	1	level	dam {}
-fire breath	fire breath	10	12	breath	fire	7	30	1	level	dam {}
+ice breath	ice breath	8	6	breath	ice	5	6	2	level	dam {}
+acid breath	acid breath	8	8	breath	acid	5	8	2	level	dam {}
+poison breath	poison breath	10	10	breath	poison	6	10	2	level	dam {}
+fire breath	fire breath	10	12	breath	fire	7	12	2	level	dam {}
 rift	rift	6	20	breath	stun	7	40	1	level	dam {} + stun
 chain lightning	chain lightning	7	10	chain	lightning	0	30	2	level	dam {}
-circle cut	circle cut	3	10	circle cut	damage	1	0	1	attack	dam {}
+circle cut	circle cut	3	5	circle cut	damage	1	0	1	attack	dam {}
 lesser heal	lesser heal	4	3	heal	none	0	10	0	none	{}% / {} hp
 greater heal	greater heal	7	15	heal	none	0	30	0	none	{}% / {} hp
 blink	blink	2	5	phase	none	0	3	0	none	max dist {}

@@ -1,13 +1,9 @@
 package pow.backend.actors.ai;
 
-import pow.backend.GameConstants;
 import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.SpellParams;
-import pow.backend.action.*;
 import pow.backend.actors.Actor;
-import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
 import pow.util.*;
 
 import java.util.List;
@@ -28,6 +24,7 @@ public class SpellAi {
             case BREATH: return targetVisibleAndWithinRange(spell, actor, gs, target);
             case QUAKE: return shouldCastQuake(spell, actor, gs, target);
             case CIRCLE_CUT: return targetVisibleAndWithinRange(spell, actor, gs, target);
+            default: break;
         }
         return false;
     }
