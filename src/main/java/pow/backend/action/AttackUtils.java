@@ -80,6 +80,7 @@ public class AttackUtils {
         return GameEvent.Killed();
     }
 
+    // TODO: add type of damage (e.g., plain attack vs fire, cold, etc.)
     public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender, int damage) {
         List<GameEvent> events = new ArrayList<>();
         backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + damage + " damage");

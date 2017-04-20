@@ -1,9 +1,6 @@
 package pow.backend.actors;
 
-import pow.backend.AttackData;
-import pow.backend.GameBackend;
-import pow.backend.GameConstants;
-import pow.backend.GameState;
+import pow.backend.*;
 import pow.backend.action.Action;
 import pow.backend.action.AttackUtils;
 import pow.backend.conditions.ConditionGroup;
@@ -36,7 +33,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public final int maxMana;
         public final int defense;
         public final int speed;
-        public final List<Spell> spells;
+        public final List<SpellParams> spells;
 
         public Params(int level,
                       int maxHealth,
@@ -50,7 +47,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
                       int speed,
                       String requiredItemDrops,
                       int numDropAttempts,
-                      List<Spell> spells) {
+                      List<SpellParams> spells) {
             this.level = level;
             this.maxHealth = maxHealth;
             this.maxMana = maxMana;
@@ -90,18 +87,6 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public int speed;
     }
 
-    // Possible spells
-    public enum Spell implements Serializable {
-        ARROW(1);
-
-        private int requiredMana;
-
-        Spell(int requiredMana) {
-            this.requiredMana = requiredMana;
-        }
-        public int getRequiredMana() { return requiredMana; }
-    }
-
 
     protected final ActorStats baseStats;
     public final ConditionGroup conditions;
@@ -122,7 +107,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     // they die.
     public final int numDropAttempts; // number of attempts of dropping an item, monster only?
     public final String requiredItemDrops;
-    public List<Spell> spells;
+    public List<SpellParams> spells;
 
     public abstract Action act(GameBackend backend);
     public abstract boolean needsInput(GameState gameState);

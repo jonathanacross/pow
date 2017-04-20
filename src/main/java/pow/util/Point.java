@@ -37,4 +37,9 @@ public class Point implements Serializable {
     public Point add(Direction direction) {
         return new Point(x + direction.dx, y + direction.dy);
     }
+
+    // Dot product, treating points as vectors.
+    public int dot(Point other) {
+        return this.x * other.x + this.y * other.y;
+    }
 }

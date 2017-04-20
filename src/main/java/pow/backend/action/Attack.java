@@ -33,8 +33,7 @@ public class Attack implements Action {
             if (damage == 0) {
                 backend.logMessage(attacker.getPronoun() + " misses " + target.getPronoun());
             } else {
-                List<GameEvent> hitEvents = AttackUtils.doHit(backend, attacker, target, damage);
-                events.addAll(hitEvents);
+                events.addAll(AttackUtils.doHit(backend, attacker, target, damage));
             }
         }
         return ActionResult.Succeeded(events);

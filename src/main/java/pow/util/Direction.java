@@ -61,22 +61,6 @@ public enum Direction {
         return getDir(dx, dy);
     }
 
-    // gives the direction between two points, where opposite
-    // directions are identified (e.g., NE = SW).
-    public static Direction getDirEquiv(Point src, Point dst) {
-        int dx = dst.x - src.x;
-        int dy = dst.y - src.y;
-
-        if (dy == 0) return N;
-
-        double slope = (double) dy / (double) dx;
-        if (slope < -2.414) return N;
-        else if (slope < -0.414) return SE;
-        else if (slope < 0.414) return E;
-        else if (slope < 2.414) return NE;
-        else return N;
-    }
-
     static {
         N.opposite = S;
         S.opposite = N;

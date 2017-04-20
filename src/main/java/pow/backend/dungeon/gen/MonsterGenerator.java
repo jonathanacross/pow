@@ -1,6 +1,7 @@
 package pow.backend.dungeon.gen;
 
 import pow.backend.AttackData;
+import pow.backend.SpellParams;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Monster;
 import pow.backend.dungeon.DungeonItem;
@@ -83,7 +84,7 @@ public class MonsterGenerator {
         int speed;
         AllFlags flags;
         int experience;
-        List<Monster.Spell> spells;
+        List<SpellParams> spells;
         String artifactDrops;  // slight misnomer.. can only handle 1 artifact right now
         int numDropAttempts;
 
@@ -101,14 +102,14 @@ public class MonsterGenerator {
             }
         }
 
-        private List<Monster.Spell> parseSpells(String text) {
-            List<Monster.Spell> spells = new ArrayList<>();
+        private List<SpellParams> parseSpells(String text) {
+            List<SpellParams> spells = new ArrayList<>();
 
             String[] tokens = text.split(",", -1);
             for (String token : tokens) {
                 if (token.isEmpty()) continue; // will happen for empty string
 
-                Monster.Spell spell = Monster.Spell.valueOf(token.toUpperCase());
+                SpellParams spell = SpellData.getSpell(token);
                 spells.add(spell);
             }
             return spells;

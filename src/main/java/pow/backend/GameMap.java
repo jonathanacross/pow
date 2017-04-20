@@ -198,12 +198,17 @@ public class GameMap implements Serializable {
         return x >= 0 && y >= 0 && x < width && y < height;
     }
 
+    // Sees if the actor can go on this terrain (subject to
+    // no other actors being there).
+    public boolean isTerrainBlocked(Actor actor, int x, int y) {
+        if (!isOnMap(x,y)) return true;
+        return (!actor.terrestrial || map[x][y].blockGround()) &&
+                (!actor.aquatic || map[x][y].blockWater());
+    }
+
     public boolean isBlocked(Actor actor, int x, int y) {
         if (!isOnMap(x,y)) return true;
-        boolean terrainMatches =
-                (actor.terrestrial && !map[x][y].blockGround()) ||
-                (actor.aquatic && !map[x][y].blockWater());
-        if (! terrainMatches) return true;
+        if (isTerrainBlocked(actor, x, y)) return true;
         for (Actor a: this.actors) {
             if (a.loc.x == x && a.loc.y == y && a.solid) return true;
         }

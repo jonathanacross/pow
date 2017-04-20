@@ -63,7 +63,7 @@ public class KeyUtils {
             case KeyEvent.VK_C:
                 return hasShift(event) ? KeyInput.PLAYER_INFO : KeyInput.CLOSE_DOOR;
             case KeyEvent.VK_G:
-                    return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.GET;
+                return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.GET;
             case KeyEvent.VK_D:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.DROP;
             case KeyEvent.VK_I:
@@ -72,6 +72,8 @@ public class KeyUtils {
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.QUAFF;
             case KeyEvent.VK_W:
                 return hasShift(event) ? KeyInput.TAKE_OFF : KeyInput.WEAR;
+            case KeyEvent.VK_M:
+                return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.MAGIC;
             case KeyEvent.VK_T:
                 return hasShift(event) ? KeyInput.TARGET_FLOOR : KeyInput.TARGET;
             case KeyEvent.VK_2:

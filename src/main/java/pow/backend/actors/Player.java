@@ -10,6 +10,7 @@ import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.LightSource;
+import pow.backend.dungeon.gen.SpellData;
 import pow.backend.event.GameEvent;
 import pow.util.Circle;
 import pow.util.DieRoll;
@@ -130,7 +131,16 @@ public class Player extends Actor implements Serializable, LightSource {
                 0,
                 null,
                 0,
-                Collections.emptyList()));
+                Arrays.asList(
+                        SpellData.getSpell("magic arrow"),
+                        SpellData.getSpell("phase"),
+                        SpellData.getSpell("circle cut"),
+                        SpellData.getSpell("lesser heal"),
+                        SpellData.getSpell("ice bolt"),
+                        SpellData.getSpell("fireball"),
+                        SpellData.getSpell("rift"),
+                        SpellData.getSpell("quake")
+                )));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = -1;  // filled in by updateStats
         this.equipment = new ArrayList<>();
@@ -443,4 +453,15 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     public boolean isWinner() { return winner; }
+
+    // TODO: put in actor class?
+    public Point getTarget() {
+        if (floorTarget != null) {
+            return floorTarget;
+        } else if (monsterTarget != null) {
+            return monsterTarget.loc;
+        } else {
+            return null;
+        }
+    }
 }

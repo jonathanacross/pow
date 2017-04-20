@@ -23,6 +23,7 @@ The keys . or number pad 5 indicate to stay still.
       j    Walk south                      J    Run south
       k    Walk north                      K    Run north
       l    Walk east                       L    Run east
+      m    Cast magic
       n    Walk southeast                  N    Run southeast
       q    Quaff a potion
       s    Save
@@ -31,5 +32,13 @@ The keys . or number pad 5 indicate to stay still.
       w    Wear/wield equipment            W    Take off equipment
       x    Examine nearby things
       y    Walk northwest                  Y    Run northwest
+
+Debugging commands (may be removed when the game is complete!)
+
+    Key    Action
+    ===    =========================
+      !    Heal player
+      @    Show world map
+      +    Gain a level
 
 Press any key to continue.
