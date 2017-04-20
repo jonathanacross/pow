@@ -27,6 +27,6 @@ public class AttackData implements Serializable {
     }
 
     public double getAverageDamage() {
-        return 0.5 * dieRoll.roll * (plusToDam + dieRoll.die + 1);
+        return plusToDam + 0.5 * dieRoll.roll * (dieRoll.die + 1);
     }
 }

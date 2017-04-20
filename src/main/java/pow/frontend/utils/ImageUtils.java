@@ -132,19 +132,26 @@ public class ImageUtils {
         return new Color(rgbAvg[0], rgbAvg[1], rgbAvg[2]);
     }
 
-    public static List<String> wrapText(String text, FontMetrics textMetrics, int width) {
+    public static List<String> wrapText(String text, FontMetrics textMetrics, int firstWidth, int restWidth) {
         String[] words = text.split(" ");
         int nIndex = 0;
+        boolean first = true;
         List<String> lines = new ArrayList<>();
         while (nIndex < words.length) {
             StringBuilder line = new StringBuilder();
             line.append(words[nIndex++]);
+            int width = first ? firstWidth : restWidth;
             while ((nIndex < words.length) && (textMetrics.stringWidth(line + " " + words[nIndex]) < width)) {
                 line.append(" " + words[nIndex]);
                 nIndex++;
             }
+            first = false;
             lines.add(line.toString());
         }
         return lines;
+    }
+
+    public static List<String> wrapText(String text, FontMetrics textMetrics, int width) {
+        return wrapText(text, textMetrics, width, width);
     }
 }
