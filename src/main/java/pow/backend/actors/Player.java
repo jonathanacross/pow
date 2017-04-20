@@ -273,6 +273,8 @@ public class Player extends Actor implements Serializable, LightSource {
         int i = this.playerStats.intelligence;
         this.baseStats.maxHealth = (int) Math.round(0.5 * c * c - 7 * c + 30);
         this.baseStats.maxMana = (int) Math.round(0.5 * i * i - 7 * i + 30);
+        this.baseStats.health = Math.min(baseStats.health, getMaxHealth());
+        this.baseStats.mana = Math.min(baseStats.mana, getMaxMana());
         this.baseStats.defense = baseDefense + defBonus;
         this.baseStats.meleeDieRoll = baseAttackDieRoll;
         this.baseStats.meleeToHit = baseWeaponToHit + weapToHitBonus;

@@ -305,9 +305,11 @@ public class WorldDataGen {
         int vaultLevel = Integer.parseInt(subParams[0]);
         ProtoTranslator style = getProtoTranslator(subParams[1]);
         int areaSize = GameConstants.DEFAULT_AREA_SIZE;
-        if (vaultLevel == 2) {
-            // for complex dungeons with huge vaults, make the levels bigger
-            areaSize = (int) Math.round(GameConstants.DEFAULT_AREA_SIZE * 1.5);
+        switch (vaultLevel) {
+            case 0: areaSize = GameConstants.DEFAULT_AREA_SIZE; break;
+            case 1: areaSize = (int) Math.round(GameConstants.DEFAULT_AREA_SIZE * 1.5); break;
+            case 2: areaSize = GameConstants.DEFAULT_AREA_SIZE * 2; break;
+            default: break;
         }
         return new RogueGenerator(areaSize, areaSize, vaultLevel, style, monsterIds, level, flags);
     }
