@@ -93,8 +93,6 @@ public class ShopGenerator {
         // While arbitrary, scalars here are fractional so that prices of
         // items don't all look the same.
         double price =
-            1.6 * sqr(item.attack.die * (item.attack.roll + 1)) +
-            3.4 * sqr(item.defense) +
             2.8 * sqr(item.bonuses[DungeonItem.TO_HIT_IDX]) +
             3.1 * sqr(item.bonuses[DungeonItem.TO_DAM_IDX]) +
             3.5 * sqr(item.bonuses[DungeonItem.DEF_IDX]) +

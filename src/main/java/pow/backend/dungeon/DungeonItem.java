@@ -82,8 +82,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     public final Flags flags;
     public final Slot slot;
     public final ArtifactSlot artifactSlot;
-    public final DieRoll attack;
-    public final int defense;
     public final int[] bonuses;
 
     public int count;  // e.g. for 2 gold coins, or 23 arrows
@@ -98,8 +96,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
                        ArtifactSlot artifactSlot,
                        Flags flags,
                        int[] bonuses,
-                       DieRoll attack,
-                       int defense,
                        int count,
                        ActionParams actionParams) {
         this.id = id;
@@ -110,8 +106,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         this.artifactSlot = artifactSlot;
         this.flags = flags;
         this.bonuses = bonuses;
-        this.attack = attack;
-        this.defense = defense;
         this.count = count;
         this.actionParams = actionParams;
     }
@@ -125,8 +119,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         this.slot = other.slot;
         this.artifactSlot = other.artifactSlot;
         this.flags = other.flags;
-        this.attack = other.attack;
-        this.defense = other.defense;
         this.bonuses = other.bonuses;
         this.count = other.count;
         this.actionParams = other.actionParams;
@@ -162,14 +154,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         if (i != 0) return i;
 
         i = artifactSlot.compareTo(other.artifactSlot);
-        if (i != 0) return i;
-
-        int thisAttackValue = attack != null ? (attack.die * 1000) + attack.roll : -1;
-        int otherAttackValue = other.attack != null ? (other.attack.die * 1000) + other.attack.roll : -1;
-        i = Integer.compare(thisAttackValue, otherAttackValue);
-        if (i != 0) return i;
-
-        i = Integer.compare(defense, other.defense);
         if (i != 0) return i;
 
         for (int b = 0; b < NUM_BONUSES; b++) {
@@ -227,17 +211,12 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
         sb.append(TextUtils.format(name, count, false));
 
-        if (attack != null && (attack.die + attack.roll > 0)) {
-            sb.append(" (" + attack.toString() + ")");
-            sb.append(" (" + formatBonus(bonuses[TO_HIT_IDX]) + "," + formatBonus(bonuses[TO_DAM_IDX]) + ")");
-        } else if ((bonuses[TO_HIT_IDX] != 0) || (bonuses[TO_DAM_IDX] != 0)) {
+        if ((bonuses[TO_HIT_IDX] != 0) || (bonuses[TO_DAM_IDX] != 0)) {
             // this happens for rings of attack, where there is no inherent damage, just bonuses
             sb.append(" (" + formatBonus(bonuses[TO_HIT_IDX]) + "," + formatBonus(bonuses[TO_DAM_IDX]) + ")");
         }
 
-        if (defense > 0) {
-            sb.append(" [" + defense + "," + formatBonus(bonuses[DEF_IDX]) + "]");
-        } else if (bonuses[DEF_IDX] != 0) {
+        if (bonuses[DEF_IDX] != 0) {
             // happens, e.g., for rings of defense
             sb.append(" [" + formatBonus(bonuses[DEF_IDX]) + "]");
         }

@@ -18,7 +18,7 @@ public class ShowItemStats {
         int bestDef = 0;
         for (int i = 0; i < k; i++) {
             DungeonItem item = items.get(rng.nextInt(items.size()));
-            int totalDef = item.defense + item.bonuses[DungeonItem.DEF_IDX];
+            int totalDef = item.bonuses[DungeonItem.DEF_IDX];
             if (totalDef > bestDef) {
                 bestDef = totalDef;
             }

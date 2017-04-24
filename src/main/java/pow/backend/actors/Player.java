@@ -230,8 +230,8 @@ public class Player extends Actor implements Serializable, LightSource {
         playerStats.constitution = innateCon + conBonus;
 
         // third, compute baseline dependent stats
-        DieRoll baseAttackDieRoll = innateAttack.dieRoll;  // will be used if player doesn't wear a weapon
-        DieRoll baseBowDieRoll = new DieRoll(0,0);  // will be used if player doesn't wear a bow
+        DieRoll baseAttackDieRoll = innateAttack.dieRoll;
+        DieRoll baseBowDieRoll = new DieRoll(0,0);  // TODO: this is innate die roll for bows -- should not be 0?
         int baseDefense = this.playerStats.dexterity - 7;
         int baseWeaponToHit = 2*(this.playerStats.dexterity - 7);
         int baseWeaponToDam = this.playerStats.strength - 7;
@@ -246,7 +246,7 @@ public class Player extends Actor implements Serializable, LightSource {
         int bowToDamBonus = 0;
 
         for (DungeonItem item : equipment) {
-            defBonus += item.defense + item.bonuses[DungeonItem.DEF_IDX];
+            defBonus += item.bonuses[DungeonItem.DEF_IDX];
             // Only add non bow/weapon (i.e. from rings/amulets) for toHit/toDam bonuses.
             // The weapon and bow bonuses will be applied to the weapon and bow, separately, later.
             if (item.slot != DungeonItem.Slot.BOW && item.slot != DungeonItem.Slot.WEAPON) {
@@ -260,12 +260,10 @@ public class Player extends Actor implements Serializable, LightSource {
             if (item.slot == DungeonItem.Slot.WEAPON) {
                 weapToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
                 weapToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
-                baseAttackDieRoll = item.attack;
             }
             if (item.slot == DungeonItem.Slot.BOW) {
                 bowToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
                 bowToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
-                baseBowDieRoll = item.attack;
             }
         }
 

@@ -1,24 +1,24 @@
-# id	# name	image	description	artifact slot	defense
-pearl 1	& pearl	redorange pearl	pearl from dungeon 1	pearl1	0
-pearl 2	& pearl	orange pearl	pearl from dungeon 2	pearl2	0
-pearl 3	& pearl	yellow pearl	pearl from dungeon 3	pearl3	0
-pearl 4	& pearl	green pearl	pearl from dungeon 4	pearl4	0
-pearl 5	& pearl	blue pearl	pearl from dungeon 5	pearl5	0
-pearl 6	& pearl	indigo pearl	pearl from dungeon 6	pearl6	0
-pearl 7	& pearl	violet pearl	pearl from dungeon 7	pearl7	0
-pearl 8	& pearl	rose pearl	pearl from dungeon 8	pearl8	0
-# main dungeon items					
-lantern	lantern	lantern	lantern	lantern	0
-magic key	magic key	magic key	magic key	key	0
-water float	water float	float	water float	float	0
-gas mask	gas mask	gas mask	gas mask	gasmask	0
-glasses	glasses	glasses	glasses	glasses	0
-magic pickaxe	magic pickaxe	magic pickaxe	magic pickaxe	pickaxe	0
-heat suit	heat suit	heat suit	heat suit	heatsuit	10
-magic feather	magic feather	magic feather	magic feather	feather	0
-# optional items					
-pet statue	pet statue	magic statue	pet statue	petstatue	0
-magic bag	magic bag	bag	bag	bag	0
-create wall staff	staff of create wall	crooked staff	staff of create wall	wallwand	0
-bright lantern	bright lantern	bright lantern	bright lantern	lantern2	0
-magic atlas	magic atlas	magic atlas	magic atlas	map	0
+# id	# name	image	description	artifact slot
+pearl 1	& pearl	redorange pearl	pearl from dungeon 1	pearl1
+pearl 2	& pearl	orange pearl	pearl from dungeon 2	pearl2
+pearl 3	& pearl	yellow pearl	pearl from dungeon 3	pearl3
+pearl 4	& pearl	green pearl	pearl from dungeon 4	pearl4
+pearl 5	& pearl	blue pearl	pearl from dungeon 5	pearl5
+pearl 6	& pearl	indigo pearl	pearl from dungeon 6	pearl6
+pearl 7	& pearl	violet pearl	pearl from dungeon 7	pearl7
+pearl 8	& pearl	rose pearl	pearl from dungeon 8	pearl8
+# main dungeon items				
+lantern	lantern	lantern	lantern	lantern
+magic key	magic key	magic key	magic key	key
+water float	water float	float	water float	float
+gas mask	gas mask	gas mask	gas mask	gasmask
+glasses	glasses	glasses	glasses	glasses
+magic pickaxe	magic pickaxe	magic pickaxe	magic pickaxe	pickaxe
+heat suit	heat suit	heat suit	heat suit	heatsuit
+magic feather	magic feather	magic feather	magic feather	feather
+# optional items				
+pet statue	pet statue	magic statue	pet statue	petstatue
+magic bag	magic bag	bag	bag	bag
+create wall staff	staff of create wall	crooked staff	staff of create wall	wallwand
+bright lantern	bright lantern	bright lantern	bright lantern	lantern2
+magic atlas	magic atlas	magic atlas	magic atlas	map
