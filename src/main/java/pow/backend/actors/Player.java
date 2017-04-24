@@ -67,7 +67,6 @@ public class Player extends Actor implements Serializable, LightSource {
     public boolean increaseWealth;
     private boolean winner;
 
-    private final AttackData innateAttack; // attack to use if nothing is wielded.
     public int experience;
 
     public Point floorTarget;
@@ -110,21 +109,19 @@ public class Player extends Actor implements Serializable, LightSource {
                         "yourself", // description
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
-                GainRatios.getAdventurer(),
-                new AttackData(new DieRoll(1, 1), 0, 0)
+                GainRatios.getAdventurer()
         );
     }
 
     private Player(DungeonObject.Params objectParams,
-                  GainRatios gainRatios,
-                  AttackData innateAttack ) {
+                  GainRatios gainRatios) {
         super(objectParams, new Actor.Params(
                 1,
                 -1,
                 -1, // maxMana
                 -99,
                 0,
-                innateAttack,
+                new AttackData(new DieRoll(0,0), 0, 0),
                 true,
                 false,
                 false,
@@ -146,7 +143,6 @@ public class Player extends Actor implements Serializable, LightSource {
         this.equipment = new ArrayList<>();
         this.artifacts = new HashMap<>();
         this.gainRatios = gainRatios;
-        this.innateAttack = innateAttack;
         this.experience = 0;
         this.playerStats = new PlayerStats();
         updateStats();  // updates currentPlayer stats, as well as much of actor baseStats
@@ -230,13 +226,12 @@ public class Player extends Actor implements Serializable, LightSource {
         playerStats.constitution = innateCon + conBonus;
 
         // third, compute baseline dependent stats
-        DieRoll baseAttackDieRoll = innateAttack.dieRoll;
-        DieRoll baseBowDieRoll = new DieRoll(0,0);  // TODO: this is innate die roll for bows -- should not be 0?
-        int baseDefense = this.playerStats.dexterity - 7;
-        int baseWeaponToHit = 2*(this.playerStats.dexterity - 7);
-        int baseWeaponToDam = this.playerStats.strength - 7;
-        int baseBowToHit = (int) Math.round(1.50 * (this.playerStats.dexterity - 7));
-        int baseBowToDam = (int) Math.round(0.75 * (this.playerStats.strength - 7));
+        int baseDefense = StatConversions.DEX_TO_DEFENSE_AND_ATTACK.getPoints(playerStats.dexterity);
+        int baseAttack = baseDefense;
+        int baseBowAttack = (int) Math.round(0.75 * baseDefense);
+        int baseDamage = StatConversions.STR_TO_DAMAGE.getPoints(playerStats.strength);
+        DieRoll baseAttackDieRoll = StatConversions.findClosestDieRoll(baseDamage);
+        DieRoll baseBowDieRoll = StatConversions.findClosestDieRoll(0.75 * baseDamage);
 
         // fourth, add equipment bonuses
         int defBonus = 0;
@@ -275,11 +270,11 @@ public class Player extends Actor implements Serializable, LightSource {
         this.baseStats.mana = Math.min(baseStats.mana, getMaxMana());
         this.baseStats.defense = baseDefense + defBonus;
         this.baseStats.meleeDieRoll = baseAttackDieRoll;
-        this.baseStats.meleeToHit = baseWeaponToHit + weapToHitBonus;
-        this.baseStats.meleeToDam = baseWeaponToDam + weapToDamBonus;
+        this.baseStats.meleeToHit = baseAttack + weapToHitBonus;
+        this.baseStats.meleeToDam = weapToDamBonus;
         this.baseStats.rangedDieRoll = baseBowDieRoll;
-        this.baseStats.rangedToHit = baseBowToHit + bowToHitBonus;
-        this.baseStats.rangedToDam = baseBowToDam + bowToDamBonus;
+        this.baseStats.rangedToHit = baseBowAttack + bowToHitBonus;
+        this.baseStats.rangedToDam = bowToDamBonus;
         this.baseStats.speed = innateSpd + spdBonus;
 
         updateWealthStatus();

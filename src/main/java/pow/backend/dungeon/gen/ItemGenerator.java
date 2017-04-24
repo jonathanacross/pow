@@ -3,7 +3,6 @@ package pow.backend.dungeon.gen;
 import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonItem;
 import pow.util.DebugLogger;
-import pow.util.DieRoll;
 import pow.util.TsvReader;
 
 import java.io.IOException;
