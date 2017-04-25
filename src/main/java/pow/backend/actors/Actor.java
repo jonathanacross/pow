@@ -64,31 +64,10 @@ public abstract class Actor extends DungeonObject implements Serializable {
         }
     }
 
-    // Holds stats for actors; these control how actors interact with each
-    // other and the world. Note that these may be derived from other
-    // quantities, e.g., the player's maxHealth may depend on their
-    // constitution + equipment, whereas a monster's may just be set at
-    // initialization time.
-    //
-    // Values of these at any particular time may be modified via
-    // conditions, which might have temporary changes at any given turn
-    public class ActorStats implements Serializable {
-        public int maxHealth;
-        public int health;
-        public int maxMana;
-        public int mana;
-        public int defense;
-        public DieRoll meleeDieRoll;
-        public int meleeToHit;
-        public int meleeToDam;
-        public DieRoll rangedDieRoll;
-        public int rangedToHit;
-        public int rangedToDam;
-        public int speed;
-    }
+    public ActorStats baseStats;
+    public int health;
+    public int mana;
 
-
-    protected final ActorStats baseStats;
     public final ConditionGroup conditions;
     public final Energy energy;
     public final int experience;
@@ -113,27 +92,27 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public abstract boolean needsInput(GameState gameState);
     public abstract String getPronoun();
 
-    public void setFullHealth() { baseStats.health = getMaxHealth(); }
-    public void setFullMana() { baseStats.mana = getMaxMana(); }
+    public void setFullHealth() { health = getMaxHealth(); }
+    public void setFullMana() { mana = getMaxMana(); }
     // tries to heal the actor by amount; returns the actual amount healed
     public int increaseHealth(int amount) {
         int increaseAmount = Math.min(amount, getMaxHealth() - getHealth());
-        baseStats.health += increaseAmount;
+        health += increaseAmount;
         return increaseAmount;
     }
     // tries to increase the mana of actor by amount; returns the actual amount increased
     public int increaseMana(int amount) {
         int increaseAmount = Math.min(amount, getMaxMana() - getMana());
-        baseStats.mana += increaseAmount;
+        mana += increaseAmount;
         return increaseAmount;
     }
     public void useMana(int amount) {
-        baseStats.mana -= Math.min(amount, getMana());
+        mana -= Math.min(amount, getMana());
     }
     public int getMaxHealth() { return baseStats.maxHealth + conditions.get(ConditionTypes.HEALTH).getIntensity(); }
-    public int getHealth() { return baseStats.health; }
+    public int getHealth() { return health; }
     public int getMaxMana() { return baseStats.maxMana; }
-    public int getMana() { return baseStats.mana; }
+    public int getMana() { return mana; }
     public int getDefense() { return baseStats.defense + conditions.get(ConditionTypes.DEFENSE).getIntensity(); }
     public int getSpeed() { return baseStats.speed + conditions.get(ConditionTypes.SPEED).getIntensity(); }
 
@@ -152,8 +131,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public List<GameEvent> takeDamage(GameBackend backend, int damage) {
         List<GameEvent> events = new ArrayList<>();
-        this.baseStats.health -= damage;
-        if (this.baseStats.health < 0) {
+        this.health -= damage;
+        if (this.health < 0) {
             events.add(AttackUtils.doDie(backend, this));
         }
         return events;
@@ -167,21 +146,11 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public Actor(DungeonObject.Params objectParams, Params actorParams) {
         super(objectParams);
-        this.baseStats = new ActorStats();
         this.energy = new Energy();
         this.level = actorParams.level;
-        this.baseStats.maxHealth = actorParams.maxHealth;
-        this.baseStats.health = actorParams.maxHealth;
-        this.baseStats.maxMana = actorParams.maxMana;
-        this.baseStats.mana = actorParams.maxMana;
-        this.baseStats.defense = actorParams.defense;
-        this.baseStats.meleeDieRoll = actorParams.attack.dieRoll;
-        this.baseStats.meleeToHit = actorParams.attack.plusToHit;
-        this.baseStats.meleeToDam = actorParams.attack.plusToDam;
-        this.baseStats.rangedDieRoll = actorParams.attack.dieRoll;
-        this.baseStats.rangedToHit = actorParams.attack.plusToHit;
-        this.baseStats.rangedToDam = actorParams.attack.plusToDam;
-        this.baseStats.speed = actorParams.speed;
+        this.baseStats = new ActorStats(actorParams);
+        this.health = actorParams.maxHealth;
+        this.mana = actorParams.maxMana;
         this.spells = actorParams.spells;
         this.experience = actorParams.experience;
         this.friendly = actorParams.friendly;
