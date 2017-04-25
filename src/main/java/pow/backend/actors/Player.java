@@ -1,9 +1,6 @@
 package pow.backend.actors;
 
-import pow.backend.AttackData;
-import pow.backend.GameBackend;
-import pow.backend.GameConstants;
-import pow.backend.GameState;
+import pow.backend.*;
 import pow.backend.action.Action;
 import pow.backend.behavior.ActionBehavior;
 import pow.backend.behavior.Behavior;
@@ -98,19 +95,19 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private Player(DungeonObject.Params objectParams,
-                  GainRatios gainRatios) {
+                   GainRatios gainRatios) {
         super(objectParams, new Actor.Params(
                 1,
-                -1,
-                -1, // maxMana
-                -99,
                 0,
-                new AttackData(new DieRoll(0,0), 0, 0),
                 true,
                 false,
                 false,
-                0,
                 null,
+                0,
+                10,
+                10,
+                10,
+                10,
                 0,
                 Arrays.asList(
                         SpellData.getSpell("magic arrow"),
@@ -182,14 +179,13 @@ public class Player extends Actor implements Serializable, LightSource {
     // update our stats, plus toHit, defense to include current equipped items and other bonuses.
     private void updateStats() {
 
-        // first, get our baseline/innate stats
         int innateStr = (int) Math.round(gainRatios.strRatio * (level + 10));
         int innateDex = (int) Math.round(gainRatios.dexRatio * (level + 10));
         int innateInt = (int) Math.round(gainRatios.intRatio * (level + 10));
         int innateCon = (int) Math.round(gainRatios.conRatio * (level + 10));
         int innateSpd = 0;
 
-        this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd);
+        this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment);
         this.health = Math.min(health, getMaxHealth());
         this.mana = Math.min(mana, getMaxMana());
 

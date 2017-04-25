@@ -1,7 +1,6 @@
 package pow.backend.dungeon;
 
 import pow.backend.ActionParams;
-import pow.util.DieRoll;
 import pow.util.TextUtils;
 
 import java.io.Serializable;

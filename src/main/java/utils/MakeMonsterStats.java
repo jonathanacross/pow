@@ -1,5 +1,6 @@
 package utils;
 
+import pow.backend.actors.StatConversions;
 import pow.util.DieRoll;
 import pow.util.TsvReader;
 
@@ -22,9 +23,9 @@ public class MakeMonsterStats {
         return baseSpeed + relativeSpeed;
     }
 
-    private static int getHP(int area, String type, Set<String> flags) {
-        double baseHP = 6.0 * Math.pow(1.25, area);
-        //double baseHP = 1.3*area*area + 6.2;
+    private static int getConstitution(int area, String type, Set<String> flags) {
+        //double baseHP = 6.0 * Math.pow(1.25, area);
+        double baseHP = 1.3*area*area + 6.2;
 
         double scaleFactor;
         switch (type) {
@@ -46,12 +47,15 @@ public class MakeMonsterStats {
         if (flags.contains("finalboss")) scaleFactor *= 3;
         if (flags.contains("weak")) scaleFactor *= 0.5;
 
-        return (int) Math.round(baseHP * scaleFactor);
+        int desiredHP = (int) Math.round(baseHP * scaleFactor);
+        int constitution = StatConversions.CON_TO_HEALTH.getStat(desiredHP);
+
+        return constitution;
     }
 
-    private static int getMana(int area, String type, Set<String> flags) {
-        double baseMana = 3.0 * Math.pow(1.25, area);
-        //double baseMana = 0.65*area*area + 3.1;
+    private static int getIntelligence(int area, String type, Set<String> flags) {
+        //double baseMana = 3.0 * Math.pow(1.25, area);
+        double baseMana = 0.65*area*area + 3.1;
 
         double scaleFactor;
         switch (type) {
@@ -73,22 +77,27 @@ public class MakeMonsterStats {
         if (flags.contains("finalboss")) scaleFactor *= 1.5;
         if (flags.contains("weak")) scaleFactor *= 0.5;
 
-        return (int) Math.round(baseMana * scaleFactor);
+        int desiredMana = (int) Math.round(baseMana * scaleFactor);
+        int intelligence = StatConversions.INT_TO_MANA.getStat(desiredMana);
+
+        return intelligence;
     }
 
-    private static int getExperience(int area, String type, Set<String> flags, int hp, int speed) {
+    private static int getExperience(int area, String type, Set<String> flags, int constitution, int speed) {
+        int hp = StatConversions.CON_TO_HEALTH.getPoints(constitution);
         double experience = hp/2.0;
 
         double scaleFactor = 1.0;
         if (flags.contains("erratic")) scaleFactor *= 0.7;
         if (flags.contains("stationary")) scaleFactor *= 0.5;
+        // TODO: add spells in calculation
 
         double speedExpFactor = Math.pow(1.2, speed);
 
         return (int) Math.round(experience * scaleFactor * speedExpFactor);
     }
 
-    private static double getAttackTarget(int area, String type, Set<String> flags) {
+    private static int getStrength(int area, String type, Set<String> flags) {
         double baseAttack = 0.08*area*area + 3;
         double scaleFactor;
         switch (type) {
@@ -110,40 +119,15 @@ public class MakeMonsterStats {
         if (flags.contains("weak")) scaleFactor *= 0.8;
         if (flags.contains("strong")) scaleFactor *= 1.25;
 
-        return baseAttack * scaleFactor;
+        int damage = (int) Math.round(baseAttack * scaleFactor);
+        int strength = StatConversions.STR_TO_DAMAGE.getPoints(damage);
+
+        return strength;
     }
 
-    private static DieRoll findClosestDieRoll(double value) {
-        // build possible die rolls
-        List<DieRoll> dieRolls = new ArrayList<>();
-        for (int roll = 1; roll <= 15; roll++) {
-            for (int die = 1; die <= 40; die++) {
-                dieRolls.add(new DieRoll(roll, die));
-            }
-        }
-        Collections.reverse(dieRolls);
 
-        double bestDist = Double.MAX_VALUE;
-        DieRoll bestDieRoll = null;
-        for (DieRoll dieRoll : dieRolls) {
-            double avgDamage = dieRoll.roll * (dieRoll.die + 1.0) / 2.0;
-            // Distance computed by two things.
-            // 1. Want the avg damage to match the target value approximately.
-            // 2. Want some variability, but not too much:
-            //    1d3 (avg 2) is better than 2d1,
-            //    1d5 (avg 3) is worse than 2d2.
-            //    so, we try to get the die size to be 2x as big as the number of rolls.
-            double dist = Math.abs(avgDamage - value)*10 + Math.pow(2*dieRoll.roll - dieRoll.die,2);
-            if (dist <= bestDist) {
-                bestDist = dist;
-                bestDieRoll = dieRoll;
-            }
-        }
-        return bestDieRoll;
-    }
-
-    private static int getDefense(int area, String type, Set<String> flags) {
-        double baseDef = 0.12*area*area + area + 5;
+    private static int getDexterity(int area, String type, Set<String> flags) {
+        double baseDef = 0.10*area*area + area + 5;
 
         double scaleFactor;
         switch (type) {
@@ -165,33 +149,10 @@ public class MakeMonsterStats {
         if (flags.contains("finalboss")) scaleFactor *= 1.4;
         if (flags.contains("weak")) scaleFactor *= 0.6;
 
-        return (int) Math.round(baseDef * scaleFactor);
-    }
+        int toHit = (int) Math.round(baseDef * scaleFactor);
+        int dexterity = StatConversions.DEX_TO_DEFENSE_AND_ATTACK.getStat(toHit);
 
-    private static int getToHit(int area, String type, Set<String> flags) {
-        double baseToHit = 0.12*area*area + area + 5;
-
-        double scaleFactor;
-        switch (type) {
-            case "fungus": scaleFactor = 0.75; break;
-            case "insect": scaleFactor = 0.90; break;
-            case "jelly": scaleFactor = 0.85; break;
-            case "mage": scaleFactor = 0.7; break;
-            case "warrior": scaleFactor = 1.0; break;
-            case "archer": scaleFactor = 0.9; break;
-            case "rogue": scaleFactor = 0.9; break;
-            case "reptile": scaleFactor = 1.1; break;
-            case "giant": scaleFactor = 1.1; break;
-            case "dragon": scaleFactor = 1.2; break;
-            default: scaleFactor = 1.0;
-        }
-
-        // account for various flags/attributes
-        if (flags.contains("boss")) scaleFactor *= 1.5;
-        if (flags.contains("finalboss")) scaleFactor *= 1.75;
-        if (flags.contains("weak")) scaleFactor *= 0.8;
-
-        return (int) Math.round(baseToHit * scaleFactor);
+        return dexterity;
     }
 
     private static Set<String> getFlags(String field) {
@@ -219,13 +180,12 @@ public class MakeMonsterStats {
                 "name" + "\t" +
                 "image" + "\t" +
                 "description" + "\t" +
-                "hp" + "\t" +
-                "mana" + "\t" +
-                "attacks" + "\t" +
-                "toHit" + "\t" +
-                "defense" + "\t" +
-                "experience" + "\t" +
+                "str" + "\t" +
+                "dex" + "\t" +
+                "int" + "\t" +
+                "con" + "\t" +
                 "speed" + "\t" +
+                "experience" + "\t" +
                 "flags" + "\t" +
                 "spells" + "\t" +
                 "artifactDrops" + "\t" +
@@ -254,13 +214,11 @@ public class MakeMonsterStats {
             flags.addAll(spellFlags);
 
             int speed = getSpeed(area, relativeSpeed);
-            int hp = getHP(area, type, flags);
-            int mana = getMana(area, type, flags);
-            double attackAvg = getAttackTarget(area, type, flags);
-            DieRoll attackDieRoll = findClosestDieRoll(attackAvg);
-            int toHit = getToHit(area, type, flags);
-            int defense = getDefense(area, type, flags);
-            int experience = getExperience(area, type, flags, hp, speed);
+            int strength = getStrength(area, type, flags);
+            int dexterity = getDexterity(area, type, flags);
+            int intelligence = getIntelligence(area, type, flags);
+            int constitution = getConstitution(area, type, flags);
+            int experience = getExperience(area, type, flags, constitution, speed);
 //            System.out.println(hp + "\t" + attackDieRoll + "\t" +
 //                            attackDieRoll.roll * (1.0 + attackDieRoll.die) / 2.0
 //                    + "\t" + attackAvg + "\t" + id);
@@ -272,13 +230,12 @@ public class MakeMonsterStats {
                     name + "\t" +
                     image + "\t" +
                     description + "\t" +
-                    hp + "\t" +
-                    mana + "\t" +
-                    attackDieRoll + "\t" +
-                    toHit + "\t" +
-                    defense + "\t" +
-                    experience + "\t" +
+                    strength + "\t" +
+                    dexterity + "\t" +
+                    intelligence + "\t" +
+                    constitution + "\t" +
                     speed + "\t" +
+                    experience + "\t" +
                     gameFlagsStr + "\t" +
                     spellFlagsStr + "\t" +
                     uniqueItemDrops + "\t" +

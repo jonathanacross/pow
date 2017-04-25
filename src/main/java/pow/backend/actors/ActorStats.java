@@ -4,7 +4,6 @@ import pow.backend.dungeon.DungeonItem;
 import pow.util.DieRoll;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 // Holds stats for actors; these control how actors interact with each
@@ -25,28 +24,6 @@ public class ActorStats implements Serializable {
     public final int rangedToDam;
     public final int maxHealth;
     public final int maxMana;
-
-    // temporary constructor for monsters.. will remove once they use the 4 main stats
-    public ActorStats(Actor.Params params) {
-        this.strength = 0;
-        this.dexterity = 0;
-        this.intelligence = 0;
-        this.constitution = 0;
-        this.speed = params.speed;
-        this.defense = params.defense;
-        this.meleeDieRoll = params.attack.dieRoll;
-        this.meleeToHit = params.attack.plusToHit;
-        this.meleeToDam = params.attack.plusToDam;
-        this.rangedDieRoll = params.attack.dieRoll;
-        this.rangedToHit = params.attack.plusToHit;
-        this.rangedToDam = params.attack.plusToDam;
-        this.maxHealth = params.maxHealth;
-        this.maxMana = params.maxMana;
-    }
-
-    public ActorStats(int strength, int dexterity, int intelligence, int constitution, int speed) {
-        this(strength, dexterity, intelligence, constitution, speed, Collections.EMPTY_LIST);
-    }
 
     public ActorStats(int strength, int dexterity, int intelligence, int constitution, int speed, List<DungeonItem> equipment) {
         // compute equipment bonuses
@@ -98,9 +75,9 @@ public class ActorStats implements Serializable {
         int baseDamage = StatConversions.STR_TO_DAMAGE.getPoints(this.strength);
         this.defense = agility + defBonus;
         this.meleeToHit = agility + meleeToHitBonus;
-        this.meleeToDam = agility + meleeToDamBonus;
+        this.meleeToDam = meleeToDamBonus;
         this.rangedToHit = (int) Math.round(0.75 * agility) + rangedToHitBonus;
-        this.rangedToDam = (int) Math.round(0.75 * agility) + rangedToDamBonus;
+        this.rangedToDam = rangedToDamBonus;
         this.meleeDieRoll = StatConversions.findClosestDieRoll(baseDamage);
         this.rangedDieRoll = StatConversions.findClosestDieRoll(0.75 * baseDamage);
     }
