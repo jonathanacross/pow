@@ -58,7 +58,7 @@ public class TestArea implements MapGenerator {
             List<MapConnection> connections,
             Random rng) {
         int width = 70;
-        int height = 100;
+        int height = 110;
         int[][] data = new int[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -84,7 +84,7 @@ public class TestArea implements MapGenerator {
                 rng);
 
         // add all items
-        for (int level = 0; level < 90; level++) {
+        for (int level = 0; level < 99; level++) {
             List<String> itemIds = ItemGenerator.getItemIdsForLevel(level);
             for (int id = 0; id < itemIds.size(); id++) {
                 dungeonSquares[id+1][level+1].items.add(ItemGenerator.genItem(itemIds.get(id), level, rng));

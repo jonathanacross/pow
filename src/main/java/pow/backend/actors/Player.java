@@ -58,26 +58,26 @@ public class Player extends Actor implements Serializable, LightSource {
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
             0,
-            23,
-            155,
-            413,
-            834,
-            1473,
-            2408,
-            3746,
-            5631,
-            8260,
-            11897,
-            16900,
-            23749,
-            33089,
-            45788,
-            63008,
-            86309,
-            117779,
-            160213,
-            217351,
-            294194
+            46,
+            295,
+            758,
+            1477,
+            2518,
+            3970,
+            5950,
+            8609,
+            12143,
+            16803,
+            22912,
+            30883,
+            41243,
+            54668,
+            72019,
+            94395,
+            123198,
+            160214,
+            207719,
+            268610
     };
 
     // default player
@@ -179,10 +179,10 @@ public class Player extends Actor implements Serializable, LightSource {
     // update our stats, plus toHit, defense to include current equipped items and other bonuses.
     private void updateStats() {
 
-        int innateStr = (int) Math.round(gainRatios.strRatio * (level + 10));
-        int innateDex = (int) Math.round(gainRatios.dexRatio * (level + 10));
-        int innateInt = (int) Math.round(gainRatios.intRatio * (level + 10));
-        int innateCon = (int) Math.round(gainRatios.conRatio * (level + 10));
+        int innateStr = (int) Math.round(gainRatios.strRatio * (level + 6));
+        int innateDex = (int) Math.round(gainRatios.dexRatio * (level + 6));
+        int innateInt = (int) Math.round(gainRatios.intRatio * (level + 6));
+        int innateCon = (int) Math.round(gainRatios.conRatio * (level + 6));
         int innateSpd = 0;
 
         this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment);
