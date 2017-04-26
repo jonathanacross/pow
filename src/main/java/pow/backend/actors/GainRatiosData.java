@@ -23,7 +23,7 @@ public class GainRatiosData {
 
     public static GainRatios getGainRatios(String id) {
         if (!instance.gainRatiosMap.containsKey(id)) {
-            DebugLogger.info("warning: unknown gain ratio id '" + id + "'");
+            //DebugLogger.info("warning: unknown gain ratio id '" + id + "'");
             return new GainRatios(id, 1.0, 1.0, 1.0, 1.0);
         }
         return instance.gainRatiosMap.get(id);
