@@ -6,30 +6,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// enum to help convert stats into base values
-// Assumes that all conversions are quadratic..
-public enum StatConversions {
-    CON_TO_HEALTH(0.25, 0, 0),
-    INT_TO_MANA(0.25, 0, 0),
-    DEX_TO_DEFENSE_AND_ATTACK(0.1, 0, 0),
-    STR_TO_DAMAGE(0.05, 0, 0);  // player, main weapon; bow is 75% of this
+public class StatComputations {
 
-    private double scale;
-    private double shift;
-    private int min;
-
-    StatConversions(double scale, double shift, int min) {
-        this.scale = scale;
-        this.shift = shift;
-        this.min = min;
+    public static int constitutionToHealth(int stat) {
+        return (int) Math.round(0.25 * stat * stat);
     }
 
-    public int getPoints(int stat) {
-        return (int) Math.round(scale*(stat - min)*(stat - min) + shift);
+    public static int intelligenceToMana(int stat) {
+        return (int) Math.round(0.25 * stat * stat);
     }
-    public int getStat(int points) {
-        if (points <= shift) return min;
-        return (int) Math.round(Math.sqrt((points - shift)/scale) + min);
+
+    public static int dexterityToDefenseAndAttack(int stat) {
+        return (int) Math.round(0.1 * stat * stat);
+    }
+
+    public static int strengthToDamage(int stat) {
+        return (int) Math.round(0.05 * stat * stat);
     }
 
     public static DieRoll findClosestDieRoll(double value) {

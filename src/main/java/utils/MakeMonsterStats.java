@@ -1,6 +1,6 @@
 package utils;
 
-import pow.backend.actors.StatConversions;
+import pow.backend.actors.StatComputations;
 import pow.util.TsvReader;
 
 import java.io.IOException;
@@ -75,7 +75,7 @@ public class MakeMonsterStats {
     }
 
     private static int getExperience(int level, Set<String> flags, int constitution, int speed) {
-        int hp = StatConversions.CON_TO_HEALTH.getPoints(constitution);
+        int hp = StatComputations.constitutionToHealth(constitution);
         double experience = hp/2.0;
 
         double scaleFactor = 1.0;
@@ -160,10 +160,10 @@ public class MakeMonsterStats {
 //                    + "\t" + attackAvg + "\t" + id);
 //            System.out.println(level + "\t" + attackAvg + "\t" + defense + "\t" + toHit + "\t" + speed + "\t" + experience + "\t" + id);
 
-//            int damage = StatConversions.STR_TO_DAMAGE.getPoints(strength);
-//            int defense = StatConversions.DEX_TO_DEFENSE_AND_ATTACK.getPoints(dexterity);
-//            int hp = StatConversions.CON_TO_HEALTH.getPoints(constitution);
-//            int mp = StatConversions.INT_TO_MANA.getPoints(intelligence);
+//            int damage = StatComputations.STR_TO_DAMAGE.getPoints(strength);
+//            int defense = StatComputations.DEX_TO_DEFENSE_AND_ATTACK.getPoints(dexterity);
+//            int hp = StatComputations.CON_TO_HEALTH.getPoints(constitution);
+//            int mp = StatComputations.INT_TO_MANA.getPoints(intelligence);
 
             writer.println(
                     level + "\t" +

@@ -19,27 +19,6 @@ import java.util.*;
 
 public class Player extends Actor implements Serializable, LightSource {
 
-    public static class GainRatios implements Serializable {
-        public final double strRatio;
-        public final double dexRatio;
-        public final double intRatio;
-        public final double conRatio;
-
-        public GainRatios(double strRatio, double dexRatio, double intRatio, double conRatio) {
-            this.strRatio = strRatio;
-            this.dexRatio = dexRatio;
-            this.intRatio = intRatio;
-            this.conRatio = conRatio;
-        }
-
-        // TODO: put these in data files, eventually
-        public static GainRatios getMage() { return new GainRatios(0.9, 0.9, 1.3, 0.9); }
-        public static GainRatios getAdventurer() { return new GainRatios(1.0, 1.0, 1.0, 1.0); }
-        public static GainRatios getWarrior() { return new GainRatios( 1.1, 1.1, 0.7, 1.1); }
-        public static GainRatios getRogue() { return new GainRatios(0.9, 1.1, 1.0, 1.0); }
-        public static GainRatios getDragonMaster() { return new GainRatios(1.1, 1.2, 0.9, 1.2); }
-    }
-
     public final int viewRadius;
     private int lightRadius;
     public final List<DungeonItem> equipment;
@@ -90,7 +69,7 @@ public class Player extends Actor implements Serializable, LightSource {
                         "yourself", // description
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
-                GainRatios.getAdventurer()
+                GainRatiosData.getGainRatios("player adventurer")
         );
     }
 

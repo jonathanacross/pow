@@ -1,13 +1,11 @@
 package pow.backend.dungeon.gen;
 
-import pow.backend.AttackData;
 import pow.backend.SpellParams;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Monster;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.DebugLogger;
-import pow.util.DieRoll;
 import pow.util.Point;
 import pow.util.TsvReader;
 

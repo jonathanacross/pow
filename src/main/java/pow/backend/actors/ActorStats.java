@@ -68,17 +68,17 @@ public class ActorStats implements Serializable {
         this.speed = speed + spdBonus;
 
         // compute derived stats
-        this.maxHealth = StatConversions.CON_TO_HEALTH.getPoints(this.constitution);
-        this.maxMana = StatConversions.INT_TO_MANA.getPoints(this.intelligence);
+        this.maxHealth = StatComputations.constitutionToHealth(this.constitution);
+        this.maxMana = StatComputations.intelligenceToMana(this.intelligence);
 
-        int agility = StatConversions.DEX_TO_DEFENSE_AND_ATTACK.getPoints(this.dexterity);
-        int baseDamage = StatConversions.STR_TO_DAMAGE.getPoints(this.strength);
+        int agility = StatComputations.dexterityToDefenseAndAttack(this.dexterity);
+        int baseDamage = StatComputations.strengthToDamage(this.strength);
         this.defense = agility + defBonus;
         this.meleeToHit = agility + meleeToHitBonus;
         this.meleeToDam = meleeToDamBonus;
         this.rangedToHit = (int) Math.round(0.75 * agility) + rangedToHitBonus;
         this.rangedToDam = rangedToDamBonus;
-        this.meleeDieRoll = StatConversions.findClosestDieRoll(baseDamage);
-        this.rangedDieRoll = StatConversions.findClosestDieRoll(0.75 * baseDamage);
+        this.meleeDieRoll = StatComputations.findClosestDieRoll(baseDamage);
+        this.rangedDieRoll = StatComputations.findClosestDieRoll(0.75 * baseDamage);
     }
 }
