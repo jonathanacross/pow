@@ -1,34 +1,34 @@
 #id	name	min level	mana	effect	spell type	size	amtBase	amtDelta	stat	description
 arrow	arrow	1	1	arrow	damage	8	2	1	attack	dam {}
-magic arrow	magic arrow	1	1	arrow	damage	8	2	1	level	dam {}
-poison arrow	poison arrow	2	5	arrow	poison	8	3	1	level	dam {}
+magic arrow	magic arrow	1	1	arrow	damage	8	2	1	intelligence	dam {}
+poison arrow	poison arrow	2	5	arrow	poison	8	3	1	dexterity	dam {}
 confuse monsters	confuse monsters	3	8	ball	confuse	2	0	0	none	
-ice ball	ice ball	5	10	ball	ice	2	12	1	level	dam {}
-fireball	fireball	9	15	ball	fire	2	18	2	level	dam {}
-poison cloud	poison cloud	13	20	ball	poison	3	24	1	level	dam {}
-acid ball	acid ball	17	25	ball	acid	2	30	2	level	dam {}
-mana cloud	mana cloud	18	30	ball	damage	4	36	1	level	dam {}
+ice ball	ice ball	5	10	ball	ice	2	12	1	intelligence	dam {}
+fireball	fireball	9	15	ball	fire	2	18	2	intelligence	dam {}
+poison cloud	poison cloud	13	20	ball	poison	3	24	1	intelligence	dam {}
+acid ball	acid ball	17	25	ball	acid	2	30	2	intelligence	dam {}
+mana cloud	mana cloud	18	30	ball	damage	4	36	1	intelligence	dam {}
 sleep monster	sleep monster	1	3	bolt	sleep	8	0	0	none	
 lance	lance	2	5	bolt	damage	4	0	1	attack	dam {}
-ice bolt	ice bolt	4	5	bolt	ice	8	8	2	level	dam {}
-fire bolt	fire bolt	7	7	bolt	fire	8	10	2	level	dam {}
-poison bolt	poison bolt	10	9	bolt	poison	8	12	2	level	dam {}
-acid bolt	acid bolt	13	11	bolt	acid	8	14	2	level	dam {}
+ice bolt	ice bolt	4	5	bolt	ice	8	8	2	intelligence	dam {}
+fire bolt	fire bolt	7	7	bolt	fire	8	10	2	intelligence	dam {}
+poison bolt	poison bolt	10	9	bolt	poison	8	12	2	intelligence	dam {}
+acid bolt	acid bolt	13	11	bolt	acid	8	14	2	intelligence	dam {}
 backstab	backstab	6	5	bolt	damage	1	0	5	attack	dam {}
-boost armor	boost armor	5	5	boost armor	none	0	10	1	level	{} to armor
-ice breath	ice breath	8	6	breath	ice	5	6	2	level	dam {}
-acid breath	acid breath	8	8	breath	acid	5	8	2	level	dam {}
-poison breath	poison breath	10	10	breath	poison	6	10	2	level	dam {}
-fire breath	fire breath	10	12	breath	fire	7	12	2	level	dam {}
-rift	rift	6	20	breath	stun	7	40	1	level	dam {} + stun
-chain lightning	chain lightning	7	10	chain	lightning	0	30	2	level	dam {}
+boost armor	boost armor	5	5	boost armor	none	0	10	1	intelligence	{} to armor
+ice breath	ice breath	8	6	breath	ice	5	6	2	intelligence	dam {}
+acid breath	acid breath	8	8	breath	acid	5	8	2	intelligence	dam {}
+poison breath	poison breath	10	10	breath	poison	6	10	2	intelligence	dam {}
+fire breath	fire breath	10	12	breath	fire	7	12	2	intelligence	dam {}
+rift	rift	6	20	breath	stun	7	40	1	strength	dam {} + stun
+chain lightning	chain lightning	7	10	chain	lightning	0	30	2	intelligence	dam {}
 circle cut	circle cut	3	5	circle cut	damage	1	0	1	attack	dam {}
-lesser heal	lesser heal	4	3	heal	none	0	10	0	none	{}% / {} hp
-greater heal	greater heal	7	15	heal	none	0	30	0	none	{}% / {} hp
-blink	blink	2	5	phase	none	0	3	0	none	max dist {}
-phase	phase	2	5	phase	none	0	7	0	none	max dist {}
-teleport	teleport	4	10	phase	none	0	50	0	none	
+lesser heal	lesser heal	4	3	heal	none	0	10	0	intelligence	{}% / {} hp
+greater heal	greater heal	7	15	heal	none	0	30	0	intelligence	{}% / {} hp
+blink	blink	2	5	phase	none	0	3	0	intelligence	max dist {}
+phase	phase	2	5	phase	none	0	7	0	intelligence	max dist {}
+teleport	teleport	4	10	phase	none	0	50	0	intelligence	
 stun	stun	5	20	quake	stun	2	0	1	attack	dam {} + stun
-quake	quake	7	20	quake	damage	5	30	1	level	dam {}
-resist elements	resist elements	5	5	resist elements	none	0	10	1	level	res {}%
+quake	quake	7	20	quake	damage	5	30	1	strength	dam {}
+resist elements	resist elements	5	5	resist elements	none	0	10	1	intelligence	res {}%
 speed	speed	6	10	speed	none	0	0	0	none	

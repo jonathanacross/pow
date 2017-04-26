@@ -42,8 +42,11 @@ public class SpellParams implements Serializable {
     // What stat is used to control how powerful the spell should be?
     public enum PowerStat implements Serializable {
         NONE,
-        ATTACK,  // TODO: add INT, STR, CON, DEX; remove LEVEL
-        LEVEL
+        STRENGTH,
+        DEXTERITY,
+        INTELLIGENCE,
+        CONSTITUTION,
+        ATTACK
     }
 
     public final String id;
@@ -97,8 +100,17 @@ public class SpellParams implements Serializable {
             case ATTACK:
                 multiplier = actor.getPrimaryAttack().getAverageDamage();
                 break;
-            case LEVEL:
-                multiplier = actor.level;
+            case STRENGTH:
+                multiplier = actor.baseStats.strength;
+                break;
+            case DEXTERITY:
+                multiplier = actor.baseStats.dexterity;
+                break;
+            case INTELLIGENCE:
+                multiplier = actor.baseStats.intelligence;
+                break;
+            case CONSTITUTION:
+                multiplier = actor.baseStats.constitution;
                 break;
             }
         return (int) Math.round(amtBase + amtDelta * multiplier);
