@@ -9,10 +9,10 @@ import java.util.List;
 // enum to help convert stats into base values
 // Assumes that all conversions are quadratic..
 public enum StatConversions {
-    CON_TO_HEALTH(0.46, 2.4, 6),  // health = 0.46*(con - 6)^2 + 2.4
-    INT_TO_MANA(0.46, 2.4, 6),
-    DEX_TO_DEFENSE_AND_ATTACK(0.075, 0, 5),
-    STR_TO_DAMAGE(0.056, 0, 5);  // player, main weapon; bow is 75% of this
+    CON_TO_HEALTH(0.25, 0, 0),
+    INT_TO_MANA(0.25, 0, 0),
+    DEX_TO_DEFENSE_AND_ATTACK(0.1, 0, 0),
+    STR_TO_DAMAGE(0.05, 0, 0);  // player, main weapon; bow is 75% of this
 
     private double scale;
     private double shift;

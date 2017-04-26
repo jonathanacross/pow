@@ -1,7 +1,6 @@
 package utils;
 
 import pow.backend.actors.StatConversions;
-import pow.util.DieRoll;
 import pow.util.TsvReader;
 
 import java.io.IOException;
@@ -12,6 +11,10 @@ import java.util.*;
 // Utility for filling in fields of monsters.tsv automatically.
 // Numbers in here are heuristic, and can be fiddled with to improve game balance.
 public class MakeMonsterStats {
+
+    private static double getBase(int area) {
+        return 1.2 * area + 5;
+    }
 
     private static int getSpeed(int area, int relativeSpeed) {
         int baseSpeed = 0;
@@ -24,63 +27,69 @@ public class MakeMonsterStats {
     }
 
     private static int getConstitution(int area, String type, Set<String> flags) {
-        //double baseHP = 6.0 * Math.pow(1.25, area);
-        double baseHP = 1.3*area*area + 6.2;
+        double baseCon = getBase(area);
 
         double scaleFactor;
         switch (type) {
-            case "fungus": scaleFactor = 0.55; break;
-            case "insect": scaleFactor = 0.60; break;
-            case "jelly": scaleFactor = 0.75; break;
-            case "mage": scaleFactor = 0.6667; break;
+            case "fungus": scaleFactor = 0.7; break;
+            case "insect": scaleFactor = 0.78; break;
+            case "fish": scaleFactor = 0.8; break;
+            case "bird": scaleFactor = 0.78; break;
+            case "jelly": scaleFactor = 0.86; break;
+            case "magical": scaleFactor = 0.76; break;
+            case "mage": scaleFactor = 0.81; break;
             case "warrior": scaleFactor = 1.0; break;
-            case "archer": scaleFactor = 0.8; break;
-            case "rogue": scaleFactor = 0.8; break;
-            case "reptile": scaleFactor = 1.1; break;
-            case "giant": scaleFactor = 1.3333; break;
-            case "dragon": scaleFactor = 1.5; break;
+            case "archer": scaleFactor = 0.9; break;
+            case "rogue": scaleFactor = 0.9; break;
+            case "reptile": scaleFactor = 1.05; break;
+            case "giant": scaleFactor = 1.15; break;
+            case "dragon": scaleFactor = 1.2; break;
+            case "mammal": scaleFactor = 1.0; break;
+            case "undead": scaleFactor = 0.85; break;
             default: scaleFactor = 1.0;
         }
 
         // account for various flags/attributes
-        if (flags.contains("boss")) scaleFactor *= 2;
-        if (flags.contains("finalboss")) scaleFactor *= 3;
-        if (flags.contains("weak")) scaleFactor *= 0.5;
+        if (flags.contains("boss")) scaleFactor *= 1.3;
+        if (flags.contains("finalboss")) scaleFactor *= 1.5;
+        if (flags.contains("weak")) scaleFactor *= 0.8;
 
-        int desiredHP = (int) Math.round(baseHP * scaleFactor);
-        int constitution = StatConversions.CON_TO_HEALTH.getStat(desiredHP);
+        double conApprox = scaleFactor * baseCon;
 
-        return constitution;
+        return (int) Math.round(conApprox);
     }
 
     private static int getIntelligence(int area, String type, Set<String> flags) {
-        //double baseMana = 3.0 * Math.pow(1.25, area);
-        double baseMana = 0.65*area*area + 3.1;
+        double baseInt = getBase(area);
 
         double scaleFactor;
         switch (type) {
-            case "fungus": scaleFactor = 0.1; break;
-            case "insect": scaleFactor = 0.4; break;
-            case "jelly": scaleFactor = 0.2; break;
+            case "fungus": scaleFactor = 0.3; break;
+            case "insect": scaleFactor = 0.6; break;
+            case "fish": scaleFactor = 0.6; break;
+            case "bird": scaleFactor = 0.75; break;
+            case "jelly": scaleFactor = 0.4; break;
+            case "magical": scaleFactor = 1.2; break;
             case "mage": scaleFactor = 1.5; break;
-            case "warrior": scaleFactor = 0.7; break;
-            case "archer": scaleFactor = 0.8; break;
-            case "rogue": scaleFactor = 0.8; break;
-            case "reptile": scaleFactor = 0.5; break;
-            case "giant": scaleFactor = 0.9; break;
-            case "dragon": scaleFactor = 1.2; break;
+            case "warrior": scaleFactor = 0.83; break;
+            case "archer": scaleFactor = 0.9; break;
+            case "rogue": scaleFactor = 0.9; break;
+            case "reptile": scaleFactor = 0.7; break;
+            case "giant": scaleFactor = 0.95; break;
+            case "dragon": scaleFactor = 0.9; break;
+            case "mammal": scaleFactor = 0.87; break;
+            case "undead": scaleFactor = 1.05; break;
             default: scaleFactor = 1.0;
         }
 
         // account for various flags/attributes
-        if (flags.contains("boss")) scaleFactor *= 1.5;
-        if (flags.contains("finalboss")) scaleFactor *= 1.5;
-        if (flags.contains("weak")) scaleFactor *= 0.5;
+        if (flags.contains("boss")) scaleFactor *= 1.1;
+        if (flags.contains("finalboss")) scaleFactor *= 1.2;
+        if (flags.contains("weak")) scaleFactor *= 0.8;
 
-        int desiredMana = (int) Math.round(baseMana * scaleFactor);
-        int intelligence = StatConversions.INT_TO_MANA.getStat(desiredMana);
+        int intApprox = (int) Math.round(baseInt * scaleFactor);
 
-        return intelligence;
+        return intApprox;
     }
 
     private static int getExperience(int area, String type, Set<String> flags, int constitution, int speed) {
@@ -98,49 +107,58 @@ public class MakeMonsterStats {
     }
 
     private static int getStrength(int area, String type, Set<String> flags) {
-        double baseAttack = 0.08*area*area + 3;
+        double baseAttack = getBase(area);
         double scaleFactor;
         switch (type) {
-            case "fungus": scaleFactor = 0.60; break;
-            case "insect": scaleFactor = 0.75; break;
-            case "jelly": scaleFactor = 0.65; break;
-            case "mage": scaleFactor = 0.7; break;
-            case "warrior": scaleFactor = 1.0; break;
-            case "archer": scaleFactor = 0.9; break;
-            case "rogue": scaleFactor = 0.8; break;
-            case "reptile": scaleFactor = 1.2; break;
-            case "giant": scaleFactor = 1.5; break;
-            case "dragon": scaleFactor = 1.2; break;
+            case "fungus": scaleFactor = 0.80; break;
+            case "insect": scaleFactor = 0.80; break;
+            case "fish": scaleFactor = 0.90; break;
+            case "bird": scaleFactor = 0.85; break;
+            case "jelly": scaleFactor = 0.8; break;
+            case "magical": scaleFactor = 0.75; break;
+            case "mage": scaleFactor = 0.85; break;
+            case "warrior": scaleFactor = 1.08; break;
+            case "archer": scaleFactor = 0.95; break;
+            case "rogue": scaleFactor = 0.9; break;
+            case "reptile": scaleFactor = 1.1; break;
+            case "giant": scaleFactor = 1.2; break;
+            case "dragon": scaleFactor = 1.1; break;
+            case "mammal": scaleFactor = 1.05; break;
+            case "undead": scaleFactor = 0.90; break;
             default: scaleFactor = 1.0;
         }
 
         // account for various flags/attributes
-        if (flags.contains("boss")) scaleFactor *= 1.2;
-        if (flags.contains("weak")) scaleFactor *= 0.8;
-        if (flags.contains("strong")) scaleFactor *= 1.25;
+        if (flags.contains("boss")) scaleFactor *= 1.1;
+        if (flags.contains("weak")) scaleFactor *= 0.9;
+        if (flags.contains("strong")) scaleFactor *= 1.1;
 
-        int damage = (int) Math.round(baseAttack * scaleFactor);
-        int strength = StatConversions.STR_TO_DAMAGE.getPoints(damage);
+        int strength = (int) Math.round(baseAttack * scaleFactor);
 
         return strength;
     }
 
 
     private static int getDexterity(int area, String type, Set<String> flags) {
-        double baseDef = 0.10*area*area + area + 5;
+        double baseDex = getBase(area);
 
         double scaleFactor;
         switch (type) {
-            case "fungus": scaleFactor = 0.6; break;
-            case "insect": scaleFactor = 0.8; break;
-            case "jelly": scaleFactor = 0.4; break;
-            case "mage": scaleFactor = 0.7; break;
-            case "warrior": scaleFactor = 1.0; break;
-            case "archer": scaleFactor = 0.9; break;
-            case "rogue": scaleFactor = 0.9; break;
-            case "reptile": scaleFactor = 1.4; break;
-            case "giant": scaleFactor = 1.2; break;
-            case "dragon": scaleFactor = 1.3; break;
+            case "fungus": scaleFactor = 0.77; break;
+            case "insect": scaleFactor = 0.9; break;
+            case "fish": scaleFactor = 1.08; break;
+            case "bird": scaleFactor = 0.95; break;
+            case "jelly": scaleFactor = 0.63; break;
+            case "magical": scaleFactor = 1.05; break;
+            case "mage": scaleFactor = 0.83; break;
+            case "warrior": scaleFactor = 1.05; break;
+            case "archer": scaleFactor = 0.95; break;
+            case "rogue": scaleFactor = 0.95; break;
+            case "reptile": scaleFactor = 1.1; break;
+            case "giant": scaleFactor = 1.05; break;
+            case "dragon": scaleFactor = 1.0; break;
+            case "mammal": scaleFactor = 0.9; break;
+            case "undead": scaleFactor = 1.05; break;
             default: scaleFactor = 1.0;
         }
 
@@ -149,9 +167,7 @@ public class MakeMonsterStats {
         if (flags.contains("finalboss")) scaleFactor *= 1.4;
         if (flags.contains("weak")) scaleFactor *= 0.6;
 
-        int toHit = (int) Math.round(baseDef * scaleFactor);
-        int dexterity = StatConversions.DEX_TO_DEFENSE_AND_ATTACK.getStat(toHit);
-
+        int dexterity = (int) Math.round(baseDex * scaleFactor);
         return dexterity;
     }
 
@@ -184,6 +200,10 @@ public class MakeMonsterStats {
                 "dex" + "\t" +
                 "int" + "\t" +
                 "con" + "\t" +
+//                        "damage" + "\t" +
+//                        "defense" + "\t" +
+//                        "hp" + "\t" +
+//                        "mp" + "\t" +
                 "speed" + "\t" +
                 "experience" + "\t" +
                 "flags" + "\t" +
@@ -224,6 +244,11 @@ public class MakeMonsterStats {
 //                    + "\t" + attackAvg + "\t" + id);
 //            System.out.println(area + "\t" + attackAvg + "\t" + defense + "\t" + toHit + "\t" + speed + "\t" + experience + "\t" + id);
 
+//            int damage = StatConversions.STR_TO_DAMAGE.getPoints(strength);
+//            int defense = StatConversions.DEX_TO_DEFENSE_AND_ATTACK.getPoints(dexterity);
+//            int hp = StatConversions.CON_TO_HEALTH.getPoints(constitution);
+//            int mp = StatConversions.INT_TO_MANA.getPoints(intelligence);
+
             writer.println(
                     area + "\t" +
                     id + "\t" +
@@ -234,6 +259,10 @@ public class MakeMonsterStats {
                     dexterity + "\t" +
                     intelligence + "\t" +
                     constitution + "\t" +
+//                            damage + "\t" +
+//                            defense + "\t" +
+//                            hp + "\t" +
+//                            mp + "\t" +
                     speed + "\t" +
                     experience + "\t" +
                     gameFlagsStr + "\t" +
