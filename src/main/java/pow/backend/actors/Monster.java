@@ -68,6 +68,7 @@ public class Monster extends Actor implements Serializable {
         }
 
         switch (newState) {
+            // TODO: fix formatting -- not all monsters should have 'the'
             case DUMB_AWAKE:
                 backend.logMessage("the " + this.name + " wakes up!");
                 break;

@@ -243,12 +243,12 @@ public class GameMainLayer extends AbstractWindow {
                 if (!gs.getCurrentMap().map[x][y].seen) {
                     continue;
                 }
-                mapView.drawTile(graphics, square.terrain.image, x, y);
+                mapView.drawTile(graphics, square.terrain.image, x, y, ImageController.DrawMode.NORMAL);
                 if (square.feature != null) {
-                    mapView.drawTile(graphics, square.feature.image, x, y);
+                    mapView.drawTile(graphics, square.feature.image, x, y, ImageController.DrawMode.NORMAL);
                 }
                 for (DungeonItem item : square.items.items) {
-                    mapView.drawTile(graphics, item.image, x, y);
+                    mapView.drawTile(graphics, item.image, x, y, ImageController.DrawMode.NORMAL);
                 }
             }
         }
@@ -256,7 +256,8 @@ public class GameMainLayer extends AbstractWindow {
         // draw monsters, player, pets
         for (Actor actor : gs.getCurrentMap().actors) {
             if (gs.player.canSeeLocation(gs, actor.loc) && gs.player.canSeeActor(actor)) {
-                mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y);
+                ImageController.DrawMode drawMode = actor.invisible ? ImageController.DrawMode.TRANSPARENT : ImageController.DrawMode.NORMAL;
+                mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y, drawMode);
             }
         }
 
@@ -272,7 +273,7 @@ public class GameMainLayer extends AbstractWindow {
             DungeonEffect effect = frontend.getEffects().get(0);
             for (DungeonEffect.ImageLoc imageLoc : effect.imageLocs) {
                 if (gs.player.canSeeLocation(gs, imageLoc.loc)) {
-                    mapView.drawTile(graphics, imageLoc.imageName, imageLoc.loc.x, imageLoc.loc.y);
+                    mapView.drawTile(graphics, imageLoc.imageName, imageLoc.loc.x, imageLoc.loc.y, ImageController.DrawMode.NORMAL);
                 }
             }
         }

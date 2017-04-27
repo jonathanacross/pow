@@ -27,14 +27,19 @@ public class ImageController {
         }
     }
 
+    public enum DrawMode {
+        NORMAL, GRAY, TRANSPARENT
+    }
+
     private BufferedImage tileImage;
     private BufferedImage grayTileImage;
+    private BufferedImage transparentTileImage;
     private Map<String, Point> tileData;
     private Map<String, Color> colorData;
     public static final int TILE_SIZE = 32;
 
     public static void drawTile(Graphics graphics, String tileName, int x, int y) {
-        drawTile(graphics, tileName, x, y, false);
+        drawTile(graphics, tileName, x, y, DrawMode.NORMAL);
     }
 
     public static Color getColor(String tileName) {
@@ -44,8 +49,16 @@ public class ImageController {
         return instance.colorData.get(tileName);
     }
 
+    private static BufferedImage getSrcImage(DrawMode drawMode)  {
+        switch (drawMode) {
+            case NORMAL: return instance.tileImage;
+            case GRAY: return instance.grayTileImage;
+            case TRANSPARENT: return instance.transparentTileImage;
+        }
+        return null;
+    }
 
-    public static void drawTile(Graphics graphics, String tileName, int x, int y, boolean gray) {
+    public static void drawTile(Graphics graphics, String tileName, int x, int y, DrawMode mode) {
         Point srcLoc;
         if (!instance.tileData.containsKey(tileName)) {
             System.out.println("error - couldn't find tile with name '" + tileName + "'");
@@ -53,14 +66,14 @@ public class ImageController {
         } else {
             srcLoc = instance.tileData.get(tileName);
         }
-        BufferedImage srcImage = gray ? instance.grayTileImage : instance.tileImage;
+        BufferedImage srcImage = getSrcImage(mode);
         graphics.drawImage(srcImage, x, y, x + TILE_SIZE, y + TILE_SIZE,
                 srcLoc.x * TILE_SIZE, srcLoc.y * TILE_SIZE,
                 (srcLoc.x + 1) * TILE_SIZE, (srcLoc.y + 1) * TILE_SIZE,
                 null);
     }
 
-    public static void drawTile(Graphics graphics, String tileName, int x, int y, boolean gray, int size) {
+    public static void drawTile(Graphics graphics, String tileName, int x, int y, DrawMode mode, int size) {
         Point srcLoc;
         if (!instance.tileData.containsKey(tileName)) {
             System.out.println("error - couldn't find tile with name '" + tileName + "'");
@@ -68,7 +81,7 @@ public class ImageController {
         } else {
             srcLoc = instance.tileData.get(tileName);
         }
-        BufferedImage srcImage = gray ? instance.grayTileImage : instance.tileImage;
+        BufferedImage srcImage = getSrcImage(mode);
         graphics.drawImage(srcImage, x, y, x + size, y + size,
                 srcLoc.x * TILE_SIZE, srcLoc.y * TILE_SIZE,
                 (srcLoc.x + 1) * TILE_SIZE, (srcLoc.y + 1) * TILE_SIZE,
@@ -79,6 +92,7 @@ public class ImageController {
         InputStream imageStream = this.getClass().getResourceAsStream("/images/32x32.png");
         this.tileImage = ImageIO.read(imageStream);
         this.grayTileImage = ImageUtils.makeGrayscale(this.tileImage);
+        this.transparentTileImage = ImageUtils.makeTransparent(this.tileImage);
         this.tileData = readDataFile("/data/32x32.tsv");
         this.colorData = initColorsFromTiles(this.tileImage, this.tileData, TILE_SIZE);
     }

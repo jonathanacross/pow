@@ -12,8 +12,6 @@ import pow.util.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pow.backend.action.SpellUtils.getFieldOfView;
-
 public class BallSpell implements Action {
 
     private final Actor actor;
@@ -44,7 +42,7 @@ public class BallSpell implements Action {
     }
 
     private static List<Point> getBallArea(GameState gameState, Point center, int radius) {
-        return getFieldOfView(gameState, center, radius, Metric.euclideanMetric);
+        return SpellUtils.getFieldOfView(gameState, center, radius, Metric.euclideanMetric);
     }
 
     @Override

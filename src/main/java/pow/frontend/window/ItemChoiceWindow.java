@@ -99,7 +99,8 @@ public class ItemChoiceWindow extends AbstractWindow {
         int idx = 0;
         for (DungeonItem item : currItems) {
             boolean isEnabled = enabled.apply(item);
-            ImageController.drawTile(graphics, item.image, 25, y, !isEnabled);
+            ImageController.DrawMode drawMode = isEnabled ? ImageController.DrawMode.NORMAL : ImageController.DrawMode.GRAY;
+            ImageController.drawTile(graphics, item.image, 25, y, drawMode);
 
             String label = (char) ((int) 'a' + idx) + ")";
             int textY = y + 20;

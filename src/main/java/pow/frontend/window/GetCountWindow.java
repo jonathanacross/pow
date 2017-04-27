@@ -69,7 +69,7 @@ public class GetCountWindow extends AbstractWindow {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        ImageController.drawTile(graphics, imageName, MARGIN, MARGIN, false);
+        ImageController.drawTile(graphics, imageName, MARGIN, MARGIN, ImageController.DrawMode.NORMAL);
 
         Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
         graphics.setFont(font);
