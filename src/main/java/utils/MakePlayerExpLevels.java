@@ -28,7 +28,7 @@ public class MakePlayerExpLevels {
         return expTotal / count;
     }
 
-    public static CurveFit.Params computeAverageMonsterExpByLevel() {
+    private static CurveFit.Params computeAverageMonsterExpByLevel() {
         Random rng = new Random(123);
         Set<String> allMonsters = MonsterGenerator.getMonsterIds();
 

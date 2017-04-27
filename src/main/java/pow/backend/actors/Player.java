@@ -10,7 +10,6 @@ import pow.backend.dungeon.LightSource;
 import pow.backend.dungeon.gen.SpellData;
 import pow.backend.event.GameEvent;
 import pow.util.Circle;
-import pow.util.DieRoll;
 import pow.util.MathUtils;
 import pow.util.Point;
 

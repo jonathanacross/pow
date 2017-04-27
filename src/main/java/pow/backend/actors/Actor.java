@@ -86,7 +86,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     // they die.
     public final int numDropAttempts; // number of attempts of dropping an item, monster only?
     public final String requiredItemDrops;
-    public List<SpellParams> spells;
+    public final List<SpellParams> spells;
 
     public abstract Action act(GameBackend backend);
     public abstract boolean needsInput(GameState gameState);

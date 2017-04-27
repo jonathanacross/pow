@@ -4,12 +4,9 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonObject;
-import pow.backend.dungeon.gen.SpellData;
-import pow.util.DieRoll;
 import pow.util.Point;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 

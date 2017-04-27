@@ -142,7 +142,7 @@ public class ImageUtils {
             line.append(words[nIndex++]);
             int width = first ? firstWidth : restWidth;
             while ((nIndex < words.length) && (textMetrics.stringWidth(line + " " + words[nIndex]) < width)) {
-                line.append(" " + words[nIndex]);
+                line.append(" ").append(words[nIndex]);
                 nIndex++;
             }
             first = false;
