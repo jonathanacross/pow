@@ -6,10 +6,7 @@ import pow.backend.SpellParams;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
 import pow.backend.action.Move;
-import pow.backend.actors.ai.Movement;
-import pow.backend.actors.ai.SpellAi;
-import pow.backend.actors.ai.StepMovement;
-import pow.backend.actors.ai.KnightMovement;
+import pow.backend.actors.ai.*;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.event.GameEvent;
 import pow.util.MathUtils;
@@ -60,7 +57,8 @@ public class Monster extends Actor implements Serializable {
         this.currStateTurnCount = 0;
         this.state = ActorState.SLEEPING;
         this.flags = flags;
-        this.movement = flags.knight ? new KnightMovement() : new StepMovement();
+        this.movement = flags.stationary ? new StationaryMovement() :
+                (flags.knight ? new KnightMovement() : new StepMovement());
     }
 
     private void updateState(ActorState newState, GameBackend backend) {
@@ -73,11 +71,13 @@ public class Monster extends Actor implements Serializable {
                 backend.logMessage(this.getPronoun() + " wakes up!");
                 break;
             case AFRAID:
+                // TODO: shouldn't be called for stationary creatures
                 backend.logMessage(this.getPronoun() + " flees in panic!");
                 break;
             case ATTACKING:
-                backend.logMessage(this.getPronoun() + " turns to attack!");
+                backend.logMessage(this.getPronoun() + " recovers its courage.");
                 break;
+            // TODO: shouldn't be called for stationary creatures
             case WANDERING:
                 backend.logMessage(this.getPronoun() + " wanders aimlessly.");
                 break;
@@ -125,10 +125,6 @@ public class Monster extends Actor implements Serializable {
     }
 
     private Action trackTarget(GameState gs, Point target) {
-        if (flags.stationary) {
-            return new Move(this, 0, 0);
-        }
-
         if (flags.erratic) {
             // move randomly
             return movement.wander(this, gs);
