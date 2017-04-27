@@ -48,10 +48,10 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("Level:     " + player.level);
         lines.add("Gold:      " + player.gold);
         lines.add("");
-        lines.add("Str:       " + player.playerStats.strength);
-        lines.add("Dex:       " + player.playerStats.dexterity);
-        lines.add("Int:       " + player.playerStats.intelligence);
-        lines.add("Con:       " + player.playerStats.constitution);
+        lines.add("Str:       " + player.baseStats.strength);
+        lines.add("Dex:       " + player.baseStats.dexterity);
+        lines.add("Int:       " + player.baseStats.intelligence);
+        lines.add("Con:       " + player.baseStats.constitution);
         lines.add("");
         lines.add("Attack:    " + player.getPrimaryAttack());   // 2d4 (+3, +1)
         lines.add("Bow:       " + player.getSecondaryAttack());  // 1d2 (+2, +0)

@@ -27,9 +27,9 @@ public class LogWindow extends AbstractWindow {
     private static final int TEXT_INDENT = 16;
 
     private static class LinePos {
-        public String line;
-        int x;
-        int y;
+        public final String line;
+        public final int x;
+        public final int y;
 
         public LinePos(String line, int x, int y) {
             this.line = line;

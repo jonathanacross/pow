@@ -60,8 +60,6 @@ public class Monster extends Actor implements Serializable {
         this.state = ActorState.SLEEPING;
         this.flags = flags;
         this.movement = flags.knight ? new KnightMovement() : new StepMovement();
-
-        this.baseStats.speed = actorParams.speed;
     }
 
     private void updateState(ActorState newState, GameBackend backend) {

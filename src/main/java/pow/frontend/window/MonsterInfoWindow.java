@@ -60,6 +60,11 @@ public class MonsterInfoWindow extends AbstractWindow {
         lines.add(actor.name);
         lines.addAll(descriptionLines);
         lines.add("");
+        lines.add("Str:    " + actor.baseStats.strength);
+        lines.add("Dex:    " + actor.baseStats.dexterity);
+        lines.add("Int:    " + actor.baseStats.intelligence);
+        lines.add("Con:    " + actor.baseStats.constitution);
+        lines.add("");
         lines.add("HP:     " + actor.getHealth() + "/" + actor.getMaxHealth());
         lines.add("MP:     " + actor.getMana() + "/" + actor.getMaxMana());
         lines.add("");

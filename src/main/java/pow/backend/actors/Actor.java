@@ -8,10 +8,10 @@ import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
 import pow.backend.event.GameEvent;
-import pow.util.DieRoll;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -22,73 +22,52 @@ public abstract class Actor extends DungeonObject implements Serializable {
     // TODO: revisit this class; see if can simplify
     public static class Params {
         public final int level;
-        public final AttackData attack;
         public final int experience;
         public final boolean friendly; // friendly to the player
         public final boolean invisible;
         public final boolean aquatic;
         public final String requiredItemDrops;
         public final int numDropAttempts;
-        public final int maxHealth;
-        public final int maxMana;
-        public final int defense;
+        public final int strength;
+        public final int dexterity;
+        public final int intelligence;
+        public final int constitution;
         public final int speed;
         public final List<SpellParams> spells;
 
         public Params(int level,
-                      int maxHealth,
-                      int maxMana,
-                      int defense,
                       int experience,
-                      AttackData attack,
                       boolean friendly,
                       boolean invisible,
                       boolean aquatic,
-                      int speed,
                       String requiredItemDrops,
                       int numDropAttempts,
+                      int strength,
+                      int dexterity,
+                      int intelligence,
+                      int constitution,
+                      int speed,
                       List<SpellParams> spells) {
             this.level = level;
-            this.maxHealth = maxHealth;
-            this.maxMana = maxMana;
-            this.defense = defense;
             this.experience = experience;
-            this.attack = attack;
             this.friendly = friendly;
             this.invisible = invisible;
             this.aquatic = aquatic;
-            this.speed = speed;
             this.requiredItemDrops = requiredItemDrops;
             this.numDropAttempts = numDropAttempts;
+            this.strength = strength;
+            this.dexterity = dexterity;
+            this.intelligence = intelligence;
+            this.constitution = constitution;
+            this.speed = speed;
             this.spells = spells;
         }
     }
 
-    // Holds stats for actors; these control how actors interact with each
-    // other and the world. Note that these may be derived from other
-    // quantities, e.g., the player's maxHealth may depend on their
-    // constitution + equipment, whereas a monster's may just be set at
-    // initialization time.
-    //
-    // Values of these at any particular time may be modified via
-    // conditions, which might have temporary changes at any given turn
-    public class ActorStats implements Serializable {
-        public int maxHealth;
-        public int health;
-        public int maxMana;
-        public int mana;
-        public int defense;
-        public DieRoll meleeDieRoll;
-        public int meleeToHit;
-        public int meleeToDam;
-        public DieRoll rangedDieRoll;
-        public int rangedToHit;
-        public int rangedToDam;
-        public int speed;
-    }
+    public ActorStats baseStats;
+    public int health;
+    public int mana;
 
-
-    protected final ActorStats baseStats;
     public final ConditionGroup conditions;
     public final Energy energy;
     public final int experience;
@@ -107,33 +86,33 @@ public abstract class Actor extends DungeonObject implements Serializable {
     // they die.
     public final int numDropAttempts; // number of attempts of dropping an item, monster only?
     public final String requiredItemDrops;
-    public List<SpellParams> spells;
+    public final List<SpellParams> spells;
 
     public abstract Action act(GameBackend backend);
     public abstract boolean needsInput(GameState gameState);
     public abstract String getPronoun();
 
-    public void setFullHealth() { baseStats.health = getMaxHealth(); }
-    public void setFullMana() { baseStats.mana = getMaxMana(); }
+    public void setFullHealth() { health = getMaxHealth(); }
+    public void setFullMana() { mana = getMaxMana(); }
     // tries to heal the actor by amount; returns the actual amount healed
     public int increaseHealth(int amount) {
         int increaseAmount = Math.min(amount, getMaxHealth() - getHealth());
-        baseStats.health += increaseAmount;
+        health += increaseAmount;
         return increaseAmount;
     }
     // tries to increase the mana of actor by amount; returns the actual amount increased
     public int increaseMana(int amount) {
         int increaseAmount = Math.min(amount, getMaxMana() - getMana());
-        baseStats.mana += increaseAmount;
+        mana += increaseAmount;
         return increaseAmount;
     }
     public void useMana(int amount) {
-        baseStats.mana -= Math.min(amount, getMana());
+        mana -= Math.min(amount, getMana());
     }
     public int getMaxHealth() { return baseStats.maxHealth + conditions.get(ConditionTypes.HEALTH).getIntensity(); }
-    public int getHealth() { return baseStats.health; }
+    public int getHealth() { return health; }
     public int getMaxMana() { return baseStats.maxMana; }
-    public int getMana() { return baseStats.mana; }
+    public int getMana() { return mana; }
     public int getDefense() { return baseStats.defense + conditions.get(ConditionTypes.DEFENSE).getIntensity(); }
     public int getSpeed() { return baseStats.speed + conditions.get(ConditionTypes.SPEED).getIntensity(); }
 
@@ -152,8 +131,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public List<GameEvent> takeDamage(GameBackend backend, int damage) {
         List<GameEvent> events = new ArrayList<>();
-        this.baseStats.health -= damage;
-        if (this.baseStats.health < 0) {
+        this.health -= damage;
+        if (this.health < 0) {
             events.add(AttackUtils.doDie(backend, this));
         }
         return events;
@@ -167,21 +146,17 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public Actor(DungeonObject.Params objectParams, Params actorParams) {
         super(objectParams);
-        this.baseStats = new ActorStats();
         this.energy = new Energy();
         this.level = actorParams.level;
-        this.baseStats.maxHealth = actorParams.maxHealth;
-        this.baseStats.health = actorParams.maxHealth;
-        this.baseStats.maxMana = actorParams.maxMana;
-        this.baseStats.mana = actorParams.maxMana;
-        this.baseStats.defense = actorParams.defense;
-        this.baseStats.meleeDieRoll = actorParams.attack.dieRoll;
-        this.baseStats.meleeToHit = actorParams.attack.plusToHit;
-        this.baseStats.meleeToDam = actorParams.attack.plusToDam;
-        this.baseStats.rangedDieRoll = actorParams.attack.dieRoll;
-        this.baseStats.rangedToHit = actorParams.attack.plusToHit;
-        this.baseStats.rangedToDam = actorParams.attack.plusToDam;
-        this.baseStats.speed = actorParams.speed;
+        this.baseStats = new ActorStats(
+                actorParams.strength,
+                actorParams.dexterity,
+                actorParams.intelligence,
+                actorParams.constitution,
+                actorParams.speed,
+                Collections.emptyList());
+        this.health = baseStats.maxHealth;
+        this.mana = baseStats.maxMana;
         this.spells = actorParams.spells;
         this.experience = actorParams.experience;
         this.friendly = actorParams.friendly;

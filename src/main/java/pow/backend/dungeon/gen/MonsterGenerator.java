@@ -1,13 +1,10 @@
 package pow.backend.dungeon.gen;
 
-import pow.backend.AttackData;
 import pow.backend.SpellParams;
-import pow.backend.actors.Actor;
-import pow.backend.actors.Monster;
+import pow.backend.actors.*;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.DebugLogger;
-import pow.util.DieRoll;
 import pow.util.Point;
 import pow.util.TsvReader;
 
@@ -51,7 +48,7 @@ public class MonsterGenerator {
     }
 
     private MonsterGenerator() throws IOException {
-        //Get file from resources folder
+        // Get file from resources folder
         InputStream tsvStream = this.getClass().getResourceAsStream("/data/monsters.tsv");
         TsvReader reader = new TsvReader(tsvStream);
 
@@ -76,11 +73,10 @@ public class MonsterGenerator {
         String name;
         String image;
         String description;
-        int maxHealth;
-        int maxMana;
-        DieRoll attack;
-        int toHit;
-        int defense;
+        int strength;
+        int dexterity;
+        int intelligence;
+        int constitution;
         int speed;
         AllFlags flags;
         int experience;
@@ -175,6 +171,18 @@ public class MonsterGenerator {
                     friendly, invisible, aquatic);
         }
 
+        private static Set<String> getFlags(String field) {
+            String[] fields = field.split(",");
+            Set<String> flags = new HashSet<>();
+            for (String tok : fields) {
+                if (!tok.isEmpty()) {
+                    flags.add(tok);
+                }
+            }
+            return flags;
+        }
+
+
         private static String parseArtifact(String text) {
             if (text.isEmpty()) {
                 return null;
@@ -188,41 +196,95 @@ public class MonsterGenerator {
             return text;
         }
 
+        private static int getSpeed(int level, int relativeSpeed) {
+            int baseSpeed = 0;
+            if (level >= 13) baseSpeed = 1;
+            if (level >= 15) baseSpeed = 2;
+            if (level >= 17) baseSpeed = 3;
+            if (level >= 19) baseSpeed = 4;
+
+            return baseSpeed + relativeSpeed;
+        }
+
+        private enum GainRatioStats { STRENGTH, DEXTERITY, INTELLIGENCE, CONSTITUTION }
+        private static int getStat(GainRatioStats whichStat, int level, Set<String> flags) {
+            double value = 1.5 * level + 5;
+
+            for (String flag: flags) {
+                GainRatios gainRatios = GainRatiosData.getGainRatios(flag);
+                switch (whichStat) {
+                    case STRENGTH: value *= gainRatios.strRatio; break;
+                    case DEXTERITY: value *= gainRatios.dexRatio; break;
+                    case INTELLIGENCE: value *= gainRatios.intRatio; break;
+                    case CONSTITUTION: value *= gainRatios.conRatio; break;
+                    default:
+                }
+            }
+
+            return (int) Math.round(value);
+        }
+
+        private static int getExperience(int level, Set<String> flags, int constitution, int speed) {
+            int hp = StatComputations.constitutionToHealth(constitution);
+            double experience = hp/2.0;
+
+            double scaleFactor = 1.0;
+            if (flags.contains("erratic")) scaleFactor *= 0.7;
+            if (flags.contains("stationary")) scaleFactor *= 0.5;
+            // TODO: add spells in calculation
+
+            double speedExpFactor = Math.pow(1.2, speed);
+
+            return (int) Math.round(experience * scaleFactor * speedExpFactor);
+        }
+
+
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificMonsterGenerator(String[] line) {
-            if (line.length != 16) {
-                throw new IllegalArgumentException("Expected 16 fields, but had " + line.length
+            if (line.length != 11) {
+                throw new IllegalArgumentException("Expected 11 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
 
             level = Integer.parseInt(line[0]);
             id = line[1];
-            name = line[2];
-            image = line[3];
-            description = line[4];
-            maxHealth = Integer.parseInt(line[5]);
-            maxMana = Integer.parseInt(line[6]);
-            attack = DieRoll.parseDieRoll(line[7]);
-            toHit = Integer.parseInt(line[8]);
-            defense = Integer.parseInt(line[9]);
-            experience = Integer.parseInt(line[10]);
-            speed = Integer.parseInt(line[11]);
-            flags = parseFlags(line[12]);
-            spells = parseSpells(line[13]);
-            artifactDrops = parseArtifact(line[14]);
-            numDropAttempts = Integer.parseInt(line[15]);
+            String genFlagsStr = line[2];
+            String gameFlagsStr = line[3];
+            String spellFlagsStr = line[4];
+            int relativeSpeed = Integer.parseInt(line[5]);
+            artifactDrops = parseArtifact(line[6]);
+            numDropAttempts = Integer.parseInt(line[7]);
+            name = line[8];
+            image = line[9];
+            description = line[10];
+
+            Set<String> genFlags = getFlags(genFlagsStr);
+            Set<String> gameFlags = getFlags(gameFlagsStr);
+            Set<String> spellFlags = getFlags(spellFlagsStr);
+            Set<String> allGeneratorFlags = new HashSet<>();
+            allGeneratorFlags.addAll(genFlags);
+            allGeneratorFlags.addAll(gameFlags);
+            allGeneratorFlags.addAll(spellFlags);
+
+            flags = parseFlags(gameFlagsStr);
+            spells = parseSpells(spellFlagsStr);
+            speed = getSpeed(level, relativeSpeed);
+            strength = getStat(GainRatioStats.STRENGTH, level, allGeneratorFlags);
+            dexterity = getStat(GainRatioStats.DEXTERITY, level, allGeneratorFlags);
+            intelligence = getStat(GainRatioStats.INTELLIGENCE, level, allGeneratorFlags);
+            constitution = getStat(GainRatioStats.CONSTITUTION, level, allGeneratorFlags);
+            experience = getExperience(level, allGeneratorFlags, constitution, speed);
         }
+
 
         // resolves die rolls, location to get a specific monster instance
         public Monster genMonster(Random rng, Point location) {
-            AttackData attackData = new AttackData(attack, toHit, 0);
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
-                    new Actor.Params(level, maxHealth, maxMana,
-                            defense, experience, attackData,
-                            flags.friendly, flags.invisible, flags.aquatic, speed,
-                            artifactDrops, numDropAttempts, spells),
+                    new Actor.Params(level, experience, flags.friendly, flags.invisible,
+                            flags.aquatic, artifactDrops, numDropAttempts, strength, dexterity,
+                            intelligence, constitution, speed, spells),
                     flags.monsterFlags);
         }
     }

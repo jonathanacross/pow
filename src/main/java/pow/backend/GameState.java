@@ -4,7 +4,6 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonObject;
-import pow.util.DieRoll;
 import pow.util.Point;
 
 import java.io.Serializable;
@@ -63,19 +62,18 @@ public class GameState implements Serializable {
                         true), // solid
                 new Actor.Params(
                         1,
-                        20, // maxHealth
-                        5, // maxMana
-                        3, // defense
-                        0, // experience
-                        new AttackData(new DieRoll(1, 4), 4, 0),
-                        true, // friendly to player
-                        false,
-                        false,
                         0,
+                        true,
+                        false,
+                        false,
                         null,
                         0,
-                        Collections.emptyList())
-        );
+                        12,
+                        10,
+                        8,
+                        8,
+                        0,
+                        Collections.emptyList()));
         this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         log.add("Welcome to Pearls of Wisdom!");

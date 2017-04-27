@@ -3,7 +3,6 @@ package pow.backend.dungeon.gen;
 import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonItem;
 import pow.util.DebugLogger;
-import pow.util.DieRoll;
 import pow.util.TsvReader;
 
 import java.io.IOException;
@@ -118,8 +117,6 @@ public class ItemGenerator {
         int maxBonus;
         MinMax count; // number to generate
         int[] bonuses;
-        DieRoll attack;
-        int defense;
         String extra;
 
         private DungeonItem.Flags parseFlags(String text) {
@@ -163,8 +160,8 @@ public class ItemGenerator {
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificItemGenerator(String[] line) {
-            if (line.length != 16) {
-                throw new IllegalArgumentException("Expected 15 fields, but had " + line.length
+            if (line.length != 14) {
+                throw new IllegalArgumentException("Expected 14 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
 
@@ -182,9 +179,7 @@ public class ItemGenerator {
                 minBonus = Integer.parseInt(line[10]);
                 maxBonus = Integer.parseInt(line[11]);
                 bonuses = ParseUtils.parseBonuses(line[12]);
-                attack = DieRoll.parseDieRoll(line[13]);
-                defense = Integer.parseInt(line[14]);
-                extra = line[15];
+                extra = line[13];
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
             }
@@ -225,7 +220,7 @@ public class ItemGenerator {
                     : rng.nextInt(count.max + 1 - count.min) + count.min;
 
             return new DungeonItem(id, name, image, description, slot, DungeonItem.ArtifactSlot.NONE,
-                    flags, specificItemBonuses, attack, defense, itemCount, actionParams);
+                    flags, specificItemBonuses, itemCount, actionParams);
         }
     }
 
