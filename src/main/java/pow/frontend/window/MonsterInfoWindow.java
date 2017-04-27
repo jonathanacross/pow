@@ -7,6 +7,7 @@ import pow.frontend.Frontend;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ImageUtils;
 import pow.frontend.WindowDim;
+import pow.util.TextUtils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -57,7 +58,7 @@ public class MonsterInfoWindow extends AbstractWindow {
         List<String> descriptionLines = ImageUtils.wrapText(actor.description, textMetrics, textWidth);
 
         List<String> lines = new ArrayList<>();
-        lines.add(actor.name);
+        lines.add(TextUtils.format(actor.name, 1, false));
         lines.addAll(descriptionLines);
         lines.add("");
         lines.add("Str:    " + actor.baseStats.strength);

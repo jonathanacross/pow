@@ -14,6 +14,7 @@ import pow.backend.dungeon.DungeonObject;
 import pow.backend.event.GameEvent;
 import pow.util.MathUtils;
 import pow.util.Point;
+import pow.util.TextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -68,21 +69,20 @@ public class Monster extends Actor implements Serializable {
         }
 
         switch (newState) {
-            // TODO: fix formatting -- not all monsters should have 'the'
             case DUMB_AWAKE:
-                backend.logMessage("the " + this.name + " wakes up!");
+                backend.logMessage(this.getPronoun() + " wakes up!");
                 break;
             case AFRAID:
-                backend.logMessage("the " + this.name + " flees in panic!");
+                backend.logMessage(this.getPronoun() + " flees in panic!");
                 break;
             case ATTACKING:
-                backend.logMessage("the " + this.name + " turns to attack!");
+                backend.logMessage(this.getPronoun() + " turns to attack!");
                 break;
             case WANDERING:
-                backend.logMessage("the " + this.name + " wanders aimlessly.");
+                backend.logMessage(this.getPronoun() + " wanders aimlessly.");
                 break;
             case SLEEPING:
-                backend.logMessage("the " + this.name + " falls asleep.");
+                backend.logMessage(this.getPronoun() + " falls asleep.");
                 break;
         }
         this.state = newState;
@@ -293,7 +293,8 @@ public class Monster extends Actor implements Serializable {
 
     @Override
     public String getPronoun() {
-        return "the " + this.name;
+        // TODO: rename?  this returns the noun, not the pronoun
+        return TextUtils.format(this.name, 1, true);
     }
 
     @Override
