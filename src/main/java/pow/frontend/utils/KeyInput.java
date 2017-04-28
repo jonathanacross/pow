@@ -41,6 +41,7 @@ public enum KeyInput {
     TAKE_OFF,
     MAGIC,
     PET,
+    KNOWLEDGE,
     INVENTORY,
     TARGET,
     TARGET_FLOOR,

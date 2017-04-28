@@ -32,6 +32,7 @@ public class Player extends Actor implements Serializable, LightSource {
     public Actor monsterTarget;
 
     public Behavior behavior;
+    public Knowledge knowledge;
 
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
@@ -112,6 +113,7 @@ public class Player extends Actor implements Serializable, LightSource {
         this.behavior = null;
         this.increaseWealth = false;
         this.winner = false;
+        this.knowledge = new Knowledge();
     }
 
     public void addCommand(Action request) {
@@ -242,9 +244,14 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     @Override
-    public void gainExperience(GameBackend backend, int exp) {
-        super.gainExperience(backend, exp);
-        this.experience += exp;
+    public void gainExperience(GameBackend backend, int experience, Actor source) {
+        super.gainExperience(backend, experience, source);
+        this.experience += experience;
+        // TODO: big hack here -- don't include your pet in the kill count..
+        // shouldn't have to key off the name 'pet', though
+        if (source != null && !source.id.equals("pet")) {
+            this.knowledge.incrementKillCount(source);
+        }
         checkIncreaseCharLevel(backend);
     }
 

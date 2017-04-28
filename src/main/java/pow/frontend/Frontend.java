@@ -3,6 +3,7 @@ package pow.frontend;
 import pow.backend.GameBackend;
 import pow.backend.ShopData;
 import pow.backend.action.RestAtInn;
+import pow.backend.actors.Knowledge;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;

@@ -88,7 +88,7 @@ public class AttackUtils {
         List<GameEvent> damageEvents = defender.takeDamage(backend, damage);
         for (GameEvent event : damageEvents) {
             if (event.eventType == GameEvent.EventType.KILLED) {
-                attacker.gainExperience(backend, defender.experience);
+                attacker.gainExperience(backend, defender.experience, defender);
             }
         }
         events.addAll(damageEvents);
