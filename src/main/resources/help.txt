@@ -12,7 +12,7 @@ The keys . or number pad 5 indicate to stay still.
     ===    =========================     ===    ==========================
       .    Stay still                      >    Go downstairs
                                            <    Go upstairs
-                                           ?    See help
+      /    See monster information         ?    See help
       b    Walk southwest                  B    Run southwest
       c    Close door                      C    Character description
       d    Drop an item

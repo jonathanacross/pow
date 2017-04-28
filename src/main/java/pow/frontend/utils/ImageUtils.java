@@ -6,6 +6,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImageUtils {
+    // changes an image to be somewhat transparent
+    public static BufferedImage makeTransparent(BufferedImage inImage) {
+        int width = inImage.getWidth();
+        int height = inImage.getHeight();
+        BufferedImage outImg = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_ARGB);
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int pixel = inImage.getRGB(x, y);
+                int a = (pixel >> 24) & 0xFF;
+                int r = (pixel >> 16) & 0xFF;
+                int g = (pixel >> 8) & 0xFF;
+                int b = pixel & 0xFF;
+
+                a = (int) Math.round(0.50 * a);
+
+                int outPix = (a << 24) | (r << 16) | (g << 8) | (b);
+                outImg.setRGB(x, y, outPix);
+            }
+        }
+        return outImg;
+    }
+
     // changes an image to grayscale and reduces the contrast
     public static BufferedImage makeGrayscale(BufferedImage inImage) {
         int width = inImage.getWidth();

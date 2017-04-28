@@ -3,7 +3,7 @@ terrain	0					terrain test	basement	permLight
 water	30		N		terrain	recursiveInterpolation	water	outside		goldfish,green fish,eel,pink jellyfish
 #ddesert	30		N		terrain	recursiveInterpolation	dig desert	outside		gray wolf,brown scorpion
 #rogue	25		E		ddesert	recursiveInterpolation	forest	hot	white rat	blue ghost,pink ghost,evil eye
-run	1		E		terrain	run test	dungeon			farmer,mangy leper,jester,beggar,salesman
+run	1		E		terrain	run test	dungeon			farmer,mangy leper,jester,beggar,salesman,yellow mushrooms
 item	2		W		terrain	item test	crypt			
-cave	17		D		terrain	cellularAutomata	1,true,desert cave	poisonGas	minotaur	brown scorpion,goldfish,chess knight
+cave	17		D		terrain	cellularAutomata	1,true,basement	poisonGas	minotaur	brown scorpion,goldfish,chess knight,pink ghost
 arena	99		S		terrain	arena	dungeon			:all:

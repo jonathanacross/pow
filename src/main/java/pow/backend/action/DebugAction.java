@@ -34,7 +34,7 @@ public class DebugAction implements Action {
                 if (player.level < 20) {
                     backend.logMessage("DEBUG: player up a level");
                     int expNeeded = player.getExpToNextLevel();
-                    player.gainExperience(backend, expNeeded + 1);
+                    player.gainExperience(backend, expNeeded + 1, null);
                 }
                 break;
             case HEAL:

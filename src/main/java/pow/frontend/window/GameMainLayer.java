@@ -9,6 +9,7 @@ import pow.backend.actors.Player;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
+import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
@@ -56,6 +57,12 @@ public class GameMainLayer extends AbstractWindow {
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Inventory:", null,
                         gs.player.inventory.items, null, (DungeonItem item) -> true,
                         (ItemChoiceWindow.ItemChoice choice) -> { }));
+    }
+
+    private void showKnowledge(GameState gs) {
+        frontend.open(
+                new KnowledgeWindow(new WindowDim(210, 5, 672, 672), true, this.backend, this.frontend,
+                        gs.player.knowledge.getMonsterSummary()));
     }
 
     private int countLegalItems(List<DungeonItem> items, Function<DungeonItem, Boolean> isLegal) {
@@ -218,6 +225,7 @@ public class GameMainLayer extends AbstractWindow {
             case MAGIC: tryCastSpell(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
             case SHOW_WORLD_MAP: frontend.open(frontend.worldMapWindow); break;
+            case KNOWLEDGE: showKnowledge(gs); break;
             case QUAFF: tryQuaff(gs); break;
             case WEAR: tryWear(gs); break;
             case TAKE_OFF: tryTakeOff(gs); break;
@@ -243,12 +251,12 @@ public class GameMainLayer extends AbstractWindow {
                 if (!gs.getCurrentMap().map[x][y].seen) {
                     continue;
                 }
-                mapView.drawTile(graphics, square.terrain.image, x, y);
+                mapView.drawTile(graphics, square.terrain.image, x, y, ImageController.DrawMode.NORMAL);
                 if (square.feature != null) {
-                    mapView.drawTile(graphics, square.feature.image, x, y);
+                    mapView.drawTile(graphics, square.feature.image, x, y, ImageController.DrawMode.NORMAL);
                 }
                 for (DungeonItem item : square.items.items) {
-                    mapView.drawTile(graphics, item.image, x, y);
+                    mapView.drawTile(graphics, item.image, x, y, ImageController.DrawMode.NORMAL);
                 }
             }
         }
@@ -256,7 +264,8 @@ public class GameMainLayer extends AbstractWindow {
         // draw monsters, player, pets
         for (Actor actor : gs.getCurrentMap().actors) {
             if (gs.player.canSeeLocation(gs, actor.loc) && gs.player.canSeeActor(actor)) {
-                mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y);
+                ImageController.DrawMode drawMode = actor.invisible ? ImageController.DrawMode.TRANSPARENT : ImageController.DrawMode.NORMAL;
+                mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y, drawMode);
             }
         }
 
@@ -272,7 +281,7 @@ public class GameMainLayer extends AbstractWindow {
             DungeonEffect effect = frontend.getEffects().get(0);
             for (DungeonEffect.ImageLoc imageLoc : effect.imageLocs) {
                 if (gs.player.canSeeLocation(gs, imageLoc.loc)) {
-                    mapView.drawTile(graphics, imageLoc.imageName, imageLoc.loc.x, imageLoc.loc.y);
+                    mapView.drawTile(graphics, imageLoc.imageName, imageLoc.loc.x, imageLoc.loc.y, ImageController.DrawMode.NORMAL);
                 }
             }
         }

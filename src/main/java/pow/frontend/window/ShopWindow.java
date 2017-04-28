@@ -91,7 +91,8 @@ public class ShopWindow extends AbstractWindow {
         int idx = 0;
         for (ShopData.ShopEntry entry : this.entries) {
             boolean isEnabled = maxNumBuyable(entry) > 0;
-            ImageController.drawTile(graphics, entry.item.image, 15 + MARGIN, y, !isEnabled);
+            ImageController.DrawMode drawMode = isEnabled ? ImageController.DrawMode.NORMAL : ImageController.DrawMode.GRAY;
+            ImageController.drawTile(graphics, entry.item.image, 15 + MARGIN, y, drawMode);
 
             String label = (char) ((int) 'a' + idx) + ")";
             int textY = y + 20;

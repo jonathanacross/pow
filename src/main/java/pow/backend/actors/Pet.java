@@ -32,11 +32,11 @@ public class Pet extends Actor implements Serializable {
     }
 
     @Override
-    public void gainExperience(GameBackend backend, int exp) {
-        super.gainExperience(backend, exp);
+    public void gainExperience(GameBackend backend, int experience, Actor source) {
+        super.gainExperience(backend, experience, source);
         // give experience to the player
-        int playerExp = (int) Math.round(exp * 0.6);
-        backend.getGameState().player.gainExperience(backend, playerExp);
+        int playerExp = (int) Math.round(experience * 0.6);
+        backend.getGameState().player.gainExperience(backend, playerExp, source);
     }
 
     @Override

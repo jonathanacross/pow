@@ -6,6 +6,7 @@ import pow.backend.actors.Actor;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
+import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -62,7 +63,7 @@ public class StatusWindow extends AbstractWindow {
 
         // draw the text
         ImageController.drawTile(graphics, a.image, x, y);
-        graphics.drawString(a.name, textX, y + FONT_SIZE);
+        graphics.drawString(TextUtils.format(a.name, 1, false), textX, y + FONT_SIZE);
         if (showExact) {
             graphics.drawString("HP:" + a.getHealth() + "/" + a.getMaxHealth(), textX, y + 2*FONT_SIZE);
         }

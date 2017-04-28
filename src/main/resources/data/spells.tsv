@@ -21,7 +21,7 @@ acid breath	acid breath	8	8	breath	acid	5	8	2	intelligence	dam {}
 poison breath	poison breath	10	10	breath	poison	6	10	2	intelligence	dam {}
 fire breath	fire breath	10	12	breath	fire	7	12	2	intelligence	dam {}
 rift	rift	6	20	breath	stun	7	40	1	strength	dam {} + stun
-chain lightning	chain lightning	7	10	chain	lightning	0	30	2	intelligence	dam {}
+chain lightning	chain lightning	7	20	chain	lightning	7	30	2	intelligence	dam {}
 circle cut	circle cut	3	5	circle cut	damage	1	0	1	attack	dam {}
 lesser heal	lesser heal	4	3	heal	none	0	10	0	intelligence	{}% / {} hp
 greater heal	greater heal	7	15	heal	none	0	30	0	intelligence	{}% / {} hp

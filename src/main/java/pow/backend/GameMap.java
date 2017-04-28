@@ -11,10 +11,7 @@ import pow.backend.dungeon.MonsterIdGroup;
 import pow.util.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class GameMap implements Serializable {
 
@@ -48,7 +45,7 @@ public class GameMap implements Serializable {
 
     public void updatePlayerVisibilityData(Player player) {
         updateBrightness(player);
-        updateSeenLocations(player);
+        updateSeenLocationsAndMonsters(player);
     }
 
     private void initLightSources() {
@@ -161,14 +158,19 @@ public class GameMap implements Serializable {
         updatePlayerVisibilityData(player);
     }
 
-    // update the seen locations
-    private void updateSeenLocations(Player player) {
+    private void updateSeenLocationsAndMonsters(Player player) {
         for (Point p : Circle.getPointsInCircle(player.viewRadius)) {
             int x = p.x + player.loc.x;
             int y = p.y + player.loc.y;
-            if (isOnMap(x,y)) {
-                if (map[x][y].brightness > 0) {
-                    map[x][y].seen = true;
+            if (!isOnMap(x,y)) continue;
+
+            if (map[x][y].brightness > 0) {
+                map[x][y].seen = true;
+
+                Actor a = actorAt(x, y);
+                // TODO: less hacky way of detecting if it's a pet?
+                if (a != null && a != player && !a.id.equals("pet")) {
+                    player.knowledge.addMonster(a);
                 }
             }
         }

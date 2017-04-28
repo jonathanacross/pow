@@ -52,8 +52,8 @@ public class MapView {
         graphics.drawRect(gameXToPixelX(x), gameYToPixelY(y), tileSize - 1, tileSize - 1);
     }
 
-    public void drawTile(Graphics graphics, String tileName, int x, int y) {
-        ImageController.drawTile(graphics, tileName, gameXToPixelX(x), gameYToPixelY(y), false, tileSize);
+    public void drawTile(Graphics graphics, String tileName, int x, int y, ImageController.DrawMode drawMode) {
+        ImageController.drawTile(graphics, tileName, gameXToPixelX(x), gameYToPixelY(y), drawMode, tileSize);
     }
 
     public void drawBlock(Graphics graphics, Color color, int x, int y) {

@@ -25,9 +25,15 @@ public class TextUtils {
     }
 
     public static String plural(String name) {
+        if (name.startsWith("!")) {
+            return name.substring(1);
+        }
         return replacePlural(removePrefix(name));
     }
     public static String singular(String name) {
+        if (name.startsWith("!")) {
+            return name.substring(1);
+        }
         return replaceSingular(removePrefix(name));
     }
 

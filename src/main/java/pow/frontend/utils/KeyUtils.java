@@ -19,7 +19,7 @@ public class KeyUtils {
             case KeyEvent.VK_SPACE:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.CYCLE;
             case KeyEvent.VK_SLASH:
-                return KeyInput.HELP;
+                return hasShift(event) ? KeyInput.HELP : KeyInput.KNOWLEDGE;
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_L:
             case KeyEvent.VK_NUMPAD6:

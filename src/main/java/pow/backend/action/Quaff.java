@@ -29,7 +29,7 @@ public class Quaff implements Action {
     public ActionResult process(GameBackend backend) {
         DungeonItem item = itemList.items.get(itemIdx);
         if (!item.flags.potion) {
-            DebugLogger.fatal(new RuntimeException(actor.name + " tried to quaff a non-potion, " + item.name));
+            DebugLogger.fatal(new RuntimeException(actor.getPronoun() + " tried to quaff a non-potion, " + item.name));
             return ActionResult.Failed(null);
         }
 

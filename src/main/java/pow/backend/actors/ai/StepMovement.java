@@ -105,8 +105,7 @@ public class StepMovement implements Movement, Serializable {
 
     @Override
     public boolean canHit(Actor actor, Actor target) {
-        int dist2 = MathUtils.dist2(actor.loc, target.loc);
-        return dist2 <= 2;
+        return MathUtils.dist2(actor.loc, target.loc) <= 2;
     }
 
     private static Action moveOrWait(Actor actor, GameState gs, int dx, int dy) {
