@@ -1,5 +1,7 @@
 package pow.backend.actors;
 
+import pow.backend.AttackData;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,19 +12,44 @@ public class Knowledge implements Serializable {
 
     public static class MonsterSummary implements Serializable {
         public final String id;
+        public final String description;
         public final String name;
+        public final int strength;
+        public final int dexterity;
+        public final int intelligence;
+        public final int constitution;
+        public final int health;
+        public final int maxHealth;
+        public final int mana;
+        public final int maxMana;
         public final int level;
-        public final String image;
+        public final AttackData primaryAttack;
+        public final int defense;
+        public final int speed;
         public final int experience;
+        public final String image;
+
         public int numKilled;
 
-        public MonsterSummary(String id, String name, int level, String image, int experience) {
-            this.id = id;
-            // TODO: remove everything except id and numKilled?
-            this.name = name;
-            this.level = level;
-            this.image = image;
-            this.experience = experience;
+        public MonsterSummary(Actor m) {
+            this.id = m.id;
+            this.description = m.description;
+            this.name = m.name;
+            this.strength = m.baseStats.strength;
+            this.dexterity = m.baseStats.dexterity;
+            this.intelligence = m.baseStats.intelligence;
+            this.constitution = m.baseStats.constitution;
+            this.health = m.health;
+            this.maxHealth = m.getMaxHealth();
+            this.mana = m.getMana();
+            this.maxMana = m.getMaxMana();
+            this.level = m.level;
+            this.primaryAttack = m.getPrimaryAttack();
+            this.defense = m.getDefense();
+            this.speed = m.getSpeed();
+            this.experience = m.experience;
+            this.image = m.image;
+
             this.numKilled = 0;
         }
 
@@ -37,7 +64,7 @@ public class Knowledge implements Serializable {
 
     public void addMonster(Actor m) {
         if (monsterKnowledge.containsKey(m.id)) return;
-        monsterKnowledge.put(m.id, new MonsterSummary(m.id, m.name, m.level, m.image, m.experience));
+        monsterKnowledge.put(m.id, new MonsterSummary(m));
     }
 
     public void incrementKillCount(Actor m) {

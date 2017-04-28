@@ -3,17 +3,14 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Knowledge;
-import pow.backend.dungeon.gen.MonsterGenerator;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.MonsterDisplay;
 import pow.util.*;
-import pow.util.Point;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.Random;
 
 public class KnowledgeWindow extends AbstractWindow {
 
@@ -99,12 +96,10 @@ public class KnowledgeWindow extends AbstractWindow {
         }
 
         if (!monsterSummary.isEmpty()) {
-            Random rng = new Random(123);
             Actor player = backend.getGameState().player;
-            Actor monster = MonsterGenerator.genMonster(monsterSummary.get(selectIndex).id, rng, new Point(0,0));
             MonsterDisplay.drawMonsterInfo(
                     graphics,
-                    monster,
+                    monsterSummary.get(selectIndex),
                     player,
                     true,
                     300,

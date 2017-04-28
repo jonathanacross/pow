@@ -2,6 +2,7 @@ package pow.frontend.utils;
 
 import pow.backend.action.AttackUtils;
 import pow.backend.actors.Actor;
+import pow.backend.actors.Knowledge;
 import pow.util.Point;
 import pow.util.TextUtils;
 
@@ -17,8 +18,8 @@ public class MonsterDisplay {
 
     public static void drawMonsterInfo(
             Graphics graphics,
-            Actor actor,
-            Actor player, // needed only to show hit percentages
+            Knowledge.MonsterSummary monster,
+            Actor player, // needed to calculate and show hit percentages
             boolean showCurrentHealth,
             int width,
             Point position
@@ -33,36 +34,36 @@ public class MonsterDisplay {
 
         graphics.setFont(font);
         FontMetrics textMetrics = graphics.getFontMetrics(font);
-        List<String> descriptionLines = ImageUtils.wrapText(actor.description, textMetrics, textWidth);
+        List<String> descriptionLines = ImageUtils.wrapText(monster.description, textMetrics, textWidth);
 
         List<String> lines = new ArrayList<>();
-        lines.add(TextUtils.singular(actor.name));
+        lines.add(TextUtils.singular(monster.name));
         lines.add("");
         lines.addAll(descriptionLines);
         lines.add("");
-        lines.add("Str:    " + actor.baseStats.strength);
-        lines.add("Dex:    " + actor.baseStats.dexterity);
-        lines.add("Int:    " + actor.baseStats.intelligence);
-        lines.add("Con:    " + actor.baseStats.constitution);
+        lines.add("Str:    " + monster.strength);
+        lines.add("Dex:    " + monster.dexterity);
+        lines.add("Int:    " + monster.intelligence);
+        lines.add("Con:    " + monster.constitution);
         lines.add("");
         if (showCurrentHealth) {
-            lines.add("HP:     " + actor.getHealth() + "/" + actor.getMaxHealth());
-            lines.add("MP:     " + actor.getMana() + "/" + actor.getMaxMana());
+            lines.add("HP:     " + monster.health + "/" + monster.maxHealth);
+            lines.add("MP:     " + monster.mana + "/" + monster.maxMana);
         } else {
-            lines.add("HP:     " + actor.getMaxHealth());
-            lines.add("MP:     " + actor.getMaxMana());
+            lines.add("HP:     " + monster.maxHealth);
+            lines.add("MP:     " + monster.maxMana);
         }
         lines.add("");
-        lines.add("Level:  " + actor.level);
-        lines.add("Attack: " + actor.getPrimaryAttack());
-        lines.add("Def:    " + actor.getDefense());
-        lines.add("Speed:  " + actor.getSpeed());
-        lines.add("Exp.:   " + actor.experience);
+        lines.add("Level:  " + monster.level);
+        lines.add("Attack: " + monster.primaryAttack);
+        lines.add("Def:    " + monster.defense);
+        lines.add("Speed:  " + monster.speed);
+        lines.add("Exp.:   " + monster.experience);
         lines.add("");
-        lines.add("Can hit you " + toPercentString(AttackUtils.hitProb(actor.getPrimaryAttack().plusToHit, player.getDefense())) + "% of the time");
-        lines.add("You can hit " + toPercentString(AttackUtils.hitProb(player.getPrimaryAttack().plusToHit, actor.getDefense())) + "% of the time");
+        lines.add("Can hit you " + toPercentString(AttackUtils.hitProb(monster.primaryAttack.plusToHit, player.getDefense())) + "% of the time");
+        lines.add("You can hit " + toPercentString(AttackUtils.hitProb(player.getPrimaryAttack().plusToHit, monster.defense)) + "% of the time");
 
-        ImageController.drawTile(graphics, actor.image, position.x + margin, position.y + margin);
+        ImageController.drawTile(graphics, monster.image, position.x + margin, position.y + margin);
 
         graphics.setColor(Color.WHITE);
         for (int i = 0; i < lines.size(); i++) {
