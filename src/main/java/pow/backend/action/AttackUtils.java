@@ -1,9 +1,6 @@
 package pow.backend.action;
 
-import pow.backend.GameBackend;
-import pow.backend.GameConstants;
-import pow.backend.GameState;
-import pow.backend.GameMap;
+import pow.backend.*;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.gen.ArtifactData;
@@ -19,6 +16,22 @@ public class AttackUtils {
         // so changes between toHit and defense are more significant.
         double z = (double) (toHit * toHit) / (toHit * toHit + defense * defense);
         return z;
+    }
+
+    // Adjusts the damage based on the damage type and the defender's resistances
+    private static int adjustDamage(int baseDamage, SpellParams.Element element, Actor defender) {
+        int bonus;
+        switch (element) {
+            case FIRE: bonus = defender.baseStats.resFire; break;
+            case ICE: bonus = defender.baseStats.resCold; break;
+            case ACID: bonus = defender.baseStats.resAcid; break;
+            case LIGHTNING: bonus = defender.baseStats.resElec; break;
+            case POISON: bonus = defender.baseStats.resPois; break;
+            default: bonus = 0;
+        }
+
+        double scale = Math.pow(0.7, bonus);
+        return (int) Math.round(scale * baseDamage);
     }
 
     // TODO: given the cases here, this should eventually be moved into an internal
@@ -80,12 +93,13 @@ public class AttackUtils {
         return GameEvent.Killed();
     }
 
-    // TODO: add type of damage (e.g., plain attack vs fire, cold, etc.)
-    public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender, int damage) {
+    public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender,
+                                        SpellParams.Element element, int damage) {
         List<GameEvent> events = new ArrayList<>();
-        backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + damage + " damage");
+        int adjustedDamage = adjustDamage(damage, element, defender);
+        backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + adjustedDamage + " damage");
         events.add(GameEvent.Attacked());
-        List<GameEvent> damageEvents = defender.takeDamage(backend, damage);
+        List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage);
         for (GameEvent event : damageEvents) {
             if (event.eventType == GameEvent.EventType.KILLED) {
                 attacker.gainExperience(backend, defender.experience, defender);

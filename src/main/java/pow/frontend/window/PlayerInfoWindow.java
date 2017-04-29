@@ -54,7 +54,11 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("Con:       " + player.baseStats.constitution);
         lines.add("");
         lines.add("Attack:    " + player.getPrimaryAttack());   // 2d4 (+3, +1)
-        lines.add("Bow:       " + player.getSecondaryAttack());  // 1d2 (+2, +0)
+        if (player.hasBowEquipped()) {
+            lines.add("Bow:       " + player.getSecondaryAttack());  // 1d2 (+2, +0)
+        } else {
+            lines.add("Bow:       N/A");
+        }
         lines.add("Defense:   " + player.getDefense()); // [19, +5]
         lines.add("Speed:     " + player.getSpeed());
         lines.add("");
