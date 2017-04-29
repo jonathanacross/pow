@@ -88,6 +88,17 @@ public class ShopGenerator {
         return bonus;
     }
 
+    private static double resistBonus(DungeonItem item) {
+        int numResists =
+                item.bonuses[DungeonItem.RES_FIRE_IDX] +
+                item.bonuses[DungeonItem.RES_COLD_IDX] +
+                item.bonuses[DungeonItem.RES_ACID_IDX] +
+                item.bonuses[DungeonItem.RES_ELEC_IDX] +
+                item.bonuses[DungeonItem.RES_POIS_IDX];
+        if (numResists == 0) return 0;
+        return 10 * Math.pow(3.9, numResists);
+    }
+
     private static int priceItem(DungeonItem item) {
         // Very arbitrary now.  Have to balance this.
         // While arbitrary, scalars here are fractional so that prices of
@@ -103,11 +114,12 @@ public class ShopGenerator {
             1000 * sqr(item.bonuses[DungeonItem.SPEED_IDX]) +
             20 * sqr(item.bonuses[DungeonItem.WEALTH_IDX]) +
             1 * (item.flags.arrow ? 1 : 0) +
-            actionBonus(item);
+            actionBonus(item) +
+            resistBonus(item);
 
         double slotScaleFactor;
         switch (item.slot) {
-            case BOW: slotScaleFactor = 3.2; break;  // bows are relatively more useful than other weapons
+            case BOW: slotScaleFactor = 3.2; break;  // bows are relatively more useful than melee weapons
             case WEAPON: slotScaleFactor = 1.0; break;
             case RING: slotScaleFactor = 1.1; break;
             case BOOTS: slotScaleFactor = 0.9; break;
