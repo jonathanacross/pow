@@ -30,9 +30,33 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     public static final int DEX_IDX = 4;
     public static final int INT_IDX = 5;
     public static final int CON_IDX = 6;
-    public static final int SPEED_IDX = 7;
-    public static final int WEALTH_IDX = 8;
-    public static final int NUM_BONUSES = 9;
+    public static final int RES_FIRE_IDX = 7;
+    public static final int RES_COLD_IDX = 8;
+    public static final int RES_ACID_IDX = 9;
+    public static final int RES_ELEC_IDX = 10;
+    public static final int RES_POIS_IDX = 11;
+    public static final int SPEED_IDX = 12;
+    public static final int WEALTH_IDX = 13;
+    public static final int GEM_SLOT_IDX = 14;
+    public static final int NUM_BONUSES = 15;
+
+    private static final String[] bonusNames = {
+            "hit",
+            "dam",
+            "def",
+            "str",
+            "dex",
+            "int",
+            "con",
+            "rFire",
+            "rCold",
+            "rAcid",
+            "rElec",
+            "rPois",
+            "speed",
+            "wealth",
+            "slots"
+    };
 
     public enum Slot {
         NONE,
@@ -168,7 +192,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         else { return "+" + x; }
     }
 
-    // TODO: see if I can use the Attack toString to simplify this.
     private static String formatGroupBonus(int[] bonusAmts, String[] names) {
         // simple case - see if all 0
         int numNonZero = 0;
@@ -201,7 +224,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
             }
             groups.add(formatBonus(bonusAmt) + " to " + String.join("/", stats));
         }
-        return String.join(", ", groups);
+        return "(" + String.join(", ", groups) + ")";
     }
 
     // Formats an item in a nice way, showing all the stats
@@ -209,25 +232,9 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         StringBuilder sb = new StringBuilder();
 
         sb.append(TextUtils.format(name, count, false));
+        sb.append(" ");
+        sb.append(formatGroupBonus(bonuses, bonusNames));
 
-        if ((bonuses[TO_HIT_IDX] != 0) || (bonuses[TO_DAM_IDX] != 0)) {
-            // this happens for rings of attack, where there is no inherent damage, just bonuses
-            sb.append(" (" + formatBonus(bonuses[TO_HIT_IDX]) + "," + formatBonus(bonuses[TO_DAM_IDX]) + ")");
-        }
-
-        if (bonuses[DEF_IDX] != 0) {
-            // happens, e.g., for rings of defense
-            sb.append(" [" + formatBonus(bonuses[DEF_IDX]) + "]");
-        }
-
-        if ((bonuses[STR_IDX] != 0) || (bonuses[DEX_IDX] != 0) ||
-                (bonuses[INT_IDX] != 0) || (bonuses[CON_IDX] != 0) ||
-                (bonuses[SPEED_IDX] != 0) || (bonuses[WEALTH_IDX] != 0)) {
-            sb.append(" {" + formatGroupBonus(
-                    new int[] {bonuses[STR_IDX], bonuses[DEX_IDX], bonuses[INT_IDX], bonuses[CON_IDX], bonuses[SPEED_IDX], bonuses[WEALTH_IDX]},
-                    new String[] {"Str", "Dex", "Int", "Con", "Speed", "Wealth"}
-                    ) + "}");
-        }
         return sb.toString();
     }
 }

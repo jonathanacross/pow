@@ -55,7 +55,7 @@ public class Arrow implements Action {
                 int damage = attackData.dieRoll.rollDice(gs.rng) + attackData.plusToDam;
                 if (hitsTarget && damage > 0) {
                     backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, damage));
+                    events.addAll(AttackUtils.doHit(backend, attacker, defender, SpellParams.Element.DAMAGE, damage));
                     break;
                 }
             }

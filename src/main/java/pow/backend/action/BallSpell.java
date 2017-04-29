@@ -72,7 +72,7 @@ public class BallSpell implements Action {
         for (Point s : hitSquares) {
             Actor m = gs.getCurrentMap().actorAt(s.x, s.y);
             if (m != null) {
-                events.addAll(AttackUtils.doHit(backend, actor, m, damage));
+                events.addAll(AttackUtils.doHit(backend, actor, m, spellParams.element, damage));
             }
         }
 

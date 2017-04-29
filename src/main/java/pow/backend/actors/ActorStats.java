@@ -24,6 +24,11 @@ public class ActorStats implements Serializable {
     public final int rangedToDam;
     public final int maxHealth;
     public final int maxMana;
+    public final int resFire;
+    public final int resCold;
+    public final int resAcid;
+    public final int resElec;
+    public final int resPois;
 
     public ActorStats(int strength, int dexterity, int intelligence, int constitution, int speed, List<DungeonItem> equipment) {
         // compute equipment bonuses
@@ -37,6 +42,12 @@ public class ActorStats implements Serializable {
         int meleeToDamBonus = 0;
         int rangedToHitBonus = 0;
         int rangedToDamBonus = 0;
+        int resFireBonus = 0;
+        int resColdBonus = 0;
+        int resAcidBonus = 0;
+        int resElecBonus = 0;
+        int resPoisBonus = 0;
+
         for (DungeonItem item : equipment) {
             strBonus += item.bonuses[DungeonItem.STR_IDX];
             dexBonus += item.bonuses[DungeonItem.DEX_IDX];
@@ -44,6 +55,11 @@ public class ActorStats implements Serializable {
             conBonus += item.bonuses[DungeonItem.CON_IDX];
             spdBonus += item.bonuses[DungeonItem.SPEED_IDX];
             defBonus += item.bonuses[DungeonItem.DEF_IDX];
+            resFireBonus += item.bonuses[DungeonItem.RES_FIRE_IDX];
+            resColdBonus += item.bonuses[DungeonItem.RES_COLD_IDX];
+            resAcidBonus += item.bonuses[DungeonItem.RES_ACID_IDX];
+            resElecBonus += item.bonuses[DungeonItem.RES_ELEC_IDX];
+            resPoisBonus += item.bonuses[DungeonItem.RES_POIS_IDX];
 
             if (item.slot == DungeonItem.Slot.WEAPON) {
                 meleeToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
@@ -80,5 +96,11 @@ public class ActorStats implements Serializable {
         this.rangedToDam = rangedToDamBonus;
         this.meleeDieRoll = StatComputations.findClosestDieRoll(baseDamage);
         this.rangedDieRoll = StatComputations.findClosestDieRoll(0.75 * baseDamage);
+
+        this.resFire = resFireBonus;
+        this.resCold = resColdBonus;
+        this.resAcid = resAcidBonus;
+        this.resElec = resElecBonus;
+        this.resPois = resPoisBonus;
     }
 }
