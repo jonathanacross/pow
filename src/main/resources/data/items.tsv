@@ -64,28 +64,28 @@ ring of dexterity	& ring~ of dexterity	goldblue ring	ring of dexterity	ring				2
 ring of constitution	& ring~ of constitution	goldred ring	ring of constitution	ring				21	60	1	4	con:x	
 ring of strength	& ring~ of strength	golddkblue ring	ring of strength	ring				21	60	1	4	str:x	
 ring of speed	& ring~ of speed	platinum ring	ring of speed	ring				41	90	1	5	speed:x	
-ring of fire	& ring~ of fire	red ring	ring of fire	ring				51	80	1	1	fire:x	res fire + fire brand
-ring of acid	& ring~ of acid	black ring	ring of acid	ring				51	80	1	1	acid:x	res acid + acid brand
-ring of cold	& ring~ of cold	white ring	ring of cold	ring				51	80	1	1	cold:x	res col + cold brand
-ring of poison	& ring~ of poison	green ring	ring of poison	ring				51	80	1	1	pois:x	res. poison + poisonbrand
+ring of fire	& ring~ of fire	red ring	ring of fire	ring				18	38	1	1	fire:x	res fire + fire brand
+ring of acid	& ring~ of acid	black ring	ring of acid	ring				30	44	1	1	acid:x	res acid + acid brand
+ring of cold	& ring~ of cold	white ring	ring of cold	ring				18	38	1	1	cold:x	res col + cold brand
+ring of poison	& ring~ of poison	green ring	ring of poison	ring				30	44	1	1	pois:x	res. poison + poisonbrand
 ring of power	& ring~ of power	gold ring	ring of power	ring				85	90	1	3	str:x,int:x,dex:x,con:x	
 # bracelets													
 bracelet of defense	& bracelet~ of defense	copper bracelet	bracelet of defense	bracelet				1	40	1	15	def:x	
 bracelet of attack	& bracelet~ of attack	silver bracelet	bracelet of attack	bracelet				11	80	1	25	attack:x	
-bracelet of fire	& bracelet~ of fire	red bracelet	bracelet of fire	bracelet				61	80	1	1	fire:x	
-bracelet of poison	& bracelet~ of poison	green bracelet	bracelet of poison	bracelet				61	80	1	1	pois:x	
-bracelet of cold	& bracelet~ of cold	blue bracelet	bracelet of cold	bracelet				61	80	1	1	cold:x	
-bracelet of acid	& bracelet~ of acid	black bracelet	bracelet of acid	bracelet				61	80	1	1	acid:x	
+bracelet of fire	& bracelet~ of fire	red bracelet	bracelet of fire	bracelet				18	38	1	1	fire:x	
+bracelet of poison	& bracelet~ of poison	green bracelet	bracelet of poison	bracelet				30	44	1	1	pois:x	
+bracelet of cold	& bracelet~ of cold	blue bracelet	bracelet of cold	bracelet				18	38	1	1	cold:x	
+bracelet of acid	& bracelet~ of acid	black bracelet	bracelet of acid	bracelet				30	44	1	1	acid:x	
 #bracelet of reflection	& bracelet~ of reflection	purple bracelet	bracelet of reflection	bracelet				70	90	0	0		reflect x% (0-35) dam
 bracelet of power	& bracelet~ of power	gold bracelet	bracelet of power	bracelet				81	90	1	4	str:x,int:x,dex:x,con:x	
 # amulets													
 amulet of wealth	& amulet~ of wealth	onyx amulet	amulet of wealth	amulet				1	30	0	0	wealth:1	better gold drops
 amulet of defense	& amulet~ of defense	coral amulet	amulet of defense	amulet				11	80	1	15	def:x	
 amulet of insulation	& amulet~ of insulation	amber amulet	amulet of insulation	amulet				31	50	1	1	fire:x,cold:x	res fire + cold
-amulet of chemistry	& amulet~ of chemistry	sapphire amulet	amulet of chemistry	amulet				41	60	1	1	acid:x,elec:x,pois:x	res acid, elec, pois
-amulet of resistance	& amulet~ of resistance	stone amulet	amulet of resistance	amulet				61	90	1	1	fire:x,cold:x,acid:x,elec:x,pois:x	res all
-#amulet of regeneration	& amulet~ of regeneration	smoky quartz amulet	amulet of regeneration	amulet				61	90	0	0		regen mana/hp
-#amulet of reflection	& amulet~ of reflection	aquamarine amulet	amulet of reflection	amulet				71	90	0	0		reflect x% (0-35) damage
+amulet of chemistry	& amulet~ of chemistry	sapphire amulet	amulet of chemistry	amulet				40	59	1	1	acid:x,elec:x,pois:x	res acid, elec, pois
+amulet of resistance	& amulet~ of resistance	stone amulet	amulet of resistance	amulet				60	90	1	1	fire:x,cold:x,acid:x,elec:x,pois:x	res all
+#amulet of regeneration	& amulet~ of regeneration	smoky quartz amulet	amulet of regeneration	amulet				60	90	0	0		regen mana/hp
+#amulet of reflection	& amulet~ of reflection	aquamarine amulet	amulet of reflection	amulet				70	90	0	0		reflect x% (0-35) damage
 # money													
 copper	& copper piece~	copper	copper	none	money			0	30	0	0		money
 silver	& silver piece~	silver	silver	none	money			11	50	0	0		money
