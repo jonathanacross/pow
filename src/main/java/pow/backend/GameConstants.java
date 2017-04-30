@@ -92,6 +92,10 @@ public class GameConstants {
     // no effect; value of 0 will make monsters always drop things.
     public final static double BONUS_GOLD_DROP_RATE_MULTIPLIER = 0.7;
 
+    // Probability that an item will have a socket.  Probability
+    // of 2 sockets will be this squared, etc.
+    public final static double PROB_GEN_SOCKET = 0.2;
+
     // If player doesn't have gas mask, they lose this much
     // health in certain areas.
     public final static int POISON_DAMAGE_PER_TURN = 1;

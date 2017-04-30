@@ -1,6 +1,7 @@
 package pow.backend.dungeon.gen;
 
 import pow.backend.ActionParams;
+import pow.backend.GameConstants;
 import pow.backend.dungeon.DungeonItem;
 import pow.util.DebugLogger;
 import pow.util.TsvReader;
@@ -115,6 +116,7 @@ public class ItemGenerator {
         int maxLevel;
         int minBonus;
         int maxBonus;
+        int maxSockets;
         MinMax count; // number to generate
         int[] bonuses;
         String extra;
@@ -139,8 +141,8 @@ public class ItemGenerator {
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificItemGenerator(String[] line) {
-            if (line.length != 14) {
-                throw new IllegalArgumentException("Expected 14 fields, but had " + line.length
+            if (line.length != 15) {
+                throw new IllegalArgumentException("Expected 15 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
 
@@ -157,8 +159,9 @@ public class ItemGenerator {
                 maxLevel = Integer.parseInt(line[9]);
                 minBonus = Integer.parseInt(line[10]);
                 maxBonus = Integer.parseInt(line[11]);
-                bonuses = ParseUtils.parseBonuses(line[12]);
-                extra = line[13];
+                maxSockets = Integer.parseInt(line[12]);
+                bonuses = ParseUtils.parseBonuses(line[13]);
+                extra = line[14];
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
             }
@@ -193,6 +196,12 @@ public class ItemGenerator {
                 specificItemBonuses[DungeonItem.TO_HIT_IDX] = rng.nextInt(totalAttack);
                 specificItemBonuses[DungeonItem.TO_DAM_IDX] = totalAttack - specificItemBonuses[DungeonItem.TO_HIT_IDX];
             }
+
+            // add sockets with some (fairly low) probability, according to a geometric distribution
+            int numSockets = (int) Math.floor(Math.log(rng.nextDouble()) / Math.log(GameConstants.PROB_GEN_SOCKET));
+
+            numSockets = Math.min(numSockets, maxSockets);
+            specificItemBonuses[DungeonItem.SOCKETS_IDX] = numSockets;
 
             int itemCount = flags.money
                     ? getMoneyAmountForLevel(level, rng)
