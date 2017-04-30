@@ -24,6 +24,14 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
             this.arrow = arrow;
             this.gem = gem;
         }
+
+        public int getSortValue() {
+            return (potion ? 1 : 0) +
+                    (money ? 2 : 0) +
+                    (arrow ? 4 : 0) +
+                    (gem ? 8 : 0);
+        }
+
     }
 
     public static final int TO_HIT_IDX = 0;
@@ -170,22 +178,38 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     @Override
     public int compareTo(DungeonItem other) {
-        int i = id.compareTo(other.id);
+        // first order by slot
+        int i = slot.compareTo(other.slot);
+        if (i != 0) return i;
+
+        // within slot, sort by flags; this orders potions/gems/arrows.
+        i = Integer.compare(flags.getSortValue(), other.flags.getSortValue());
+        if (i != 0) return i;
+
+        // also within slot, sort by decreasing total bonus
+        int thisTotalBonus = 0;
+        int otherTotalBonus = 0;
+        for (int b = 0; b < NUM_BONUSES; b++) {
+            thisTotalBonus += bonuses[b];
+            otherTotalBonus += other.bonuses[b];
+        }
+        i = Integer.compare(otherTotalBonus, thisTotalBonus);
+        if (i != 0) return i;
+
+        // if bonuses are the same, then sort by name, then by bonuses
+        i = id.compareTo(other.id);
         if (i != 0) return i;
 
         i = name.compareTo(other.name);
-        if (i != 0) return i;
-
-        i = slot.compareTo(other.slot);
-        if (i != 0) return i;
-
-        i = artifactSlot.compareTo(other.artifactSlot);
         if (i != 0) return i;
 
         for (int b = 0; b < NUM_BONUSES; b++) {
             i = Integer.compare(bonuses[b], other.bonuses[b]);
             if (i != 0) return i;
         }
+
+        i = artifactSlot.compareTo(other.artifactSlot);
+        if (i != 0) return i;
 
         return 0;
     }
