@@ -382,8 +382,8 @@ public class WorldDataGen {
                 break;
             case "haunted forest":
                 style = new RecursiveInterpolation.MapStyle(
-                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
-                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("forest", "berry bush", "pine tree")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("tan rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("tall grass", "berry bush", "tombstone")),
                         STAIRS_UP, DUNGEON_ENTRANCE, false, null, null);
                 break;
             case "volcano":
@@ -394,8 +394,8 @@ public class WorldDataGen {
                 break;
             case "dig desert":
                 style = new RecursiveInterpolation.MapStyle(
-                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null)),
-                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "cactus", "light pebbles")),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("tan rock", null, null)),
+                        Collections.singletonList(new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "dead tree", "light pebbles")),
                         STAIRS_UP, DUNGEON_ENTRANCE, true,
                         new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("diggable rock", null, null));

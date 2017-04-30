@@ -38,6 +38,7 @@ big tree	big tree	big tree
 sick big tree	sick big tree	sick big tree		
 gold tree	gold tree	gold tree		
 pine tree	pine tree	pine tree		
+tombstone	tombstone	tombstone		
 snowy pine tree	snowy pine tree	snowy pine tree		
 small tree	small tree	small tree		
 white small tree	white small tree	white small tree		
@@ -55,3 +56,4 @@ fountain	fountain	fountain
 inn	inn	inn	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	enterShop::inn
 weapon shop	weapon shop	weapon shop	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	enterShop::weaponShop
 magic shop	magic shop	magic shop	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	enterShop::magicShop
+alchemy shop	alchemy magic shop	alchemy magic shop	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	enterShop::alchemyShop

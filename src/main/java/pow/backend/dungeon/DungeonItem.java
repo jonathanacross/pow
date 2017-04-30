@@ -12,14 +12,17 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         public final boolean potion;
         public final boolean money;
         public final boolean arrow;
+        public final boolean gem;
 
         public Flags(
                 boolean potion,
                 boolean money,
-                boolean arrow) {
+                boolean arrow,
+                boolean gem) {
             this.potion = potion;
             this.money = money;
             this.arrow = arrow;
+            this.gem = gem;
         }
     }
 

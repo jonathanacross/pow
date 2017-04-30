@@ -58,17 +58,20 @@ public class ParseUtils {
         boolean potion = false;
         boolean money = false;
         boolean arrow = false;
+        boolean gem = false;
         for (String t : tokens) {
             switch (t) {
                 case "": break;  // will happen if we have an empty string
                 case "potion": potion = true; break;
                 case "money": money = true; break;
                 case "arrow": arrow = true; break;
-                default: throw new IllegalArgumentException("unknown item flag '" + t + "'");
+                case "gem": gem = true; break;
+                default:
+                    throw new IllegalArgumentException("unknown item flag '" + t + "'");
             }
         }
 
-        return new DungeonItem.Flags(potion, money, arrow);
+        return new DungeonItem.Flags(potion, money, arrow, gem);
     }
 
     public static ActionParams parseActionParams(String text) {

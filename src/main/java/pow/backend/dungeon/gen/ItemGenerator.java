@@ -119,27 +119,6 @@ public class ItemGenerator {
         int[] bonuses;
         String extra;
 
-        private DungeonItem.Flags parseFlags(String text) {
-            String[] tokens = text.split(",", -1);
-
-            boolean potion = false;
-            boolean money = false;
-            boolean arrow = false;
-            for (String t : tokens) {
-                switch (t) {
-                    case "": break;  // will happen if we have an empty string
-                    case "potion": potion = true; break;
-                    case "money": money = true; break;
-                    case "arrow": arrow = true; break;
-                    default:
-                        throw new IllegalArgumentException("unknown item flag '" + t + "'");
-                }
-            }
-
-            return new DungeonItem.Flags(potion, money, arrow);
-        }
-
-
         public static class MinMax {
             public final int min;
             public final int max;
@@ -171,7 +150,7 @@ public class ItemGenerator {
                 image = line[2];
                 description = line[3];
                 slot = DungeonItem.Slot.valueOf(line[4].toUpperCase());
-                flags = parseFlags(line[5]);
+                flags = ParseUtils.parseFlags(line[5]);
                 actionParams = ParseUtils.parseActionParams(line[6]);
                 count = new MinMax(line[7]);
                 minLevel = Integer.parseInt(line[8]);

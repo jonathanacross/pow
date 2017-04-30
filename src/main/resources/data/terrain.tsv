@@ -1,46 +1,57 @@
-area boundary	area boundary	black pit	actOnStep,blockGround,blockAir,blockWater,blockLava	moveToArea::
-ivy stone wall	ivy stone wall	ivy stone wall	blockGround,blockAir,blockWater,blockLava	
-diggable small stone wall	diggable stone wall	diggable small stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::floor
-green moss wall	mossy wall	green moss wall	blockGround,blockAir,blockWater,blockLava	
+#id	name	description	flags	action
+# floors				
+blue floor	floor	blue floor	blockWater,blockLava	
+charcoal floor	floor	charcoal floor	blockWater,blockLava	
+cold lava floor	cold lava floor	cold lava floor	blockWater,blockLava	
+dark sand	sand	dark sand	blockWater,blockLava	
+floor	floor	floor	blockWater,blockLava	
+forest	forest	forest	blockWater,blockLava	
+grass	grass	grass	blockWater,blockLava	
+hot lava floor	hot lava floor	hot lava floor	blockWater,blockLava	
+ice	ice floor	ice	blockWater,blockLava	
+road	road	road	blockWater,blockLava	
+sand	sand	sand	blockWater,blockLava	
+snow	snow	snow	blockWater,blockLava	
+swamp	swamp	swamp	blockWater,blockLava	
+tall grass	tall grass	tall grass	blockWater,blockLava	
+wood floor	floor	wood floor	blockWater,blockLava	
+# walls				
+big stone wall	stone wall	big stone wall	blockGround,blockAir,blockWater,blockLava	
 blue wall	stone wall	blue wall	blockGround,blockAir,blockWater,blockLava	
 brown stone wall	stone wall	brown stone wall	blockGround,blockAir,blockWater,blockLava	
+green moss wall	mossy wall	green moss wall	blockGround,blockAir,blockWater,blockLava	
+hot stone wall	hot stone wall	hot stone wall	blockGround,blockAir,blockWater,blockLava	
+ice wall	ice wall	ice wall	blockGround,blockAir,blockWater,blockLava	
+ivy stone wall	ivy stone wall	ivy stone wall	blockGround,blockAir,blockWater,blockLava	
+rock	rock	rock	blockGround,blockAir,blockWater,blockLava	
+small stone wall	stone wall	small stone wall	blockGround,blockAir,blockWater,blockLava	
+snowy rock	snowy rock	snowy rock	blockGround,blockAir,blockWater,blockLava	
+tan rock	tan rock	tan rock	blockGround,blockAir,blockWater,blockLava	
+waves	waves	waves	blockGround,blockAir,blockWater,blockLava	
+# diggable walls				
+diggable big stone wall	diggable stone wall	diggable big stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::floor
+diggable blue wall	diggable stone wall	diggable blue wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::blue floor
+diggable brown stone wall	diggable stone wall	diggable brown stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::dark sand
+diggable green moss wall	diggable mossy wall	diggable green moss wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::dark sand
+diggable hot stone wall	diggable hot stone wall	diggable hot stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::cold lava floor
 diggable ice wall	diggable ice wall	diggable ice wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::ice floor
-weapon store	weapon store	weapon store	blockGround,blockAir,blockWater,blockLava	
-ice	ice floor	ice	blockWater,blockLava	
-dark sand	sand	dark sand	blockWater,blockLava	
-inn	inn	inn	blockGround,blockAir,blockWater,blockLava	
-floor	floor	floor	blockWater,blockLava	
+diggable ivy stone wall	diggable ivy stone wall	diggable ivy stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::charcoal floor
+diggable rock	diggable rock	diggable rock	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::dark sand
+diggable small stone wall	diggable stone wall	diggable small stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::floor
+diggable tan rock	diggable tan rock	diggable tan rock	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::dark sand
+# water				
 water 1	shallow water	water 1	blockGround,blockLava	
 water 2	deep water	water 2	blockGround,blockLava	
 water 3	deep water	water 3	blockGround,blockLava	
 water 4	deep water	water 4	blockGround,blockLava	
-snow	snow	snow	blockWater,blockLava	
-forest	forest	forest	blockWater,blockLava	
-diggable hot stone wall	diggable hot stone wall	diggable hot stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::cold lava floor
-big stone wall	stone wall	big stone wall	blockGround,blockAir,blockWater,blockLava	
-diggable ivy stone wall	diggable ivy stone wall	diggable ivy stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::charcoal floor
-diggable rock	diggable rock	diggable rock	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::dark sand
+# stores				
+alchemy store	alchemy store	alchemy store	blockGround,blockAir,blockWater,blockLava	
+inn	inn	inn	blockGround,blockAir,blockWater,blockLava	
+magic store	magic store	magic store	blockGround,blockAir,blockWater,blockLava	
+weapon store	weapon store	weapon store	blockGround,blockAir,blockWater,blockLava	
+# misc				
 black pit	black pit	black pit	blockGround,blockLava,blockWater	
-charcoal floor	floor	charcoal floor	blockWater,blockLava	
-small stone wall	stone wall	small stone wall	blockGround,blockAir,blockWater,blockLava	
-wood floor	floor	wood floor	blockWater,blockLava	
+area boundary	area boundary	black pit	actOnStep,blockGround,blockAir,blockWater,blockLava	moveToArea::
 dock	dock	dock	blockLava	
 lava	lava	lava	blockWater,blockGround	
-diggable green moss wall	diggable mossy wall	diggable green moss wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::dark sand
-diggable blue wall	diggable stone wall	diggable blue wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::blue floor
-magic store	magic store	magic store	blockGround,blockAir,blockWater,blockLava	
-hot stone wall	hot stone wall	hot stone wall	blockGround,blockAir,blockWater,blockLava	
-diggable big stone wall	diggable stone wall	diggable big stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::floor
-snowy rock	snowy rock	snowy rock	blockGround,blockAir,blockWater,blockLava	
-blue floor	floor	blue floor	blockWater,blockLava	
-diggable brown stone wall	diggable stone wall	diggable brown stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::dark sand
-ice wall	ice wall	ice wall	blockGround,blockAir,blockWater,blockLava	
-waves	waves	waves	blockGround,blockAir,blockWater,blockLava	
-swamp	swamp	swamp	blockWater,blockLava	
-sand	sand	sand	blockWater,blockLava	
-rock	rock	rock	blockGround,blockAir,blockWater,blockLava	
 debug	debug	debug		
-hot lava floor	hot lava floor	hot lava floor	blockWater,blockLava	
-grass	grass	grass	blockWater,blockLava	
-road	road	road	blockWater,blockLava	
-cold lava floor	cold lava floor	cold lava floor	blockWater,blockLava	
