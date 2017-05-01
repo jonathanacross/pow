@@ -249,7 +249,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
             for (int idx : statIdxs) {
                 stats.add(names[idx]);
             }
-            groups.add(formatBonus(bonusAmt) + " to " + String.join("/", stats));
+            groups.add(formatBonus(bonusAmt) + " " + String.join("/", stats));
         }
         return "(" + String.join(", ", groups) + ")";
     }

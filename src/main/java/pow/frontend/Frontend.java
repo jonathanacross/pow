@@ -203,6 +203,10 @@ public class Frontend {
                 entries = shopData.magicItems;
                 open(new ShopWindow(dim, true, gameBackend, this, entries));
                 break;
+            case JEWELER_SHOP:
+                dim = WindowDim.center(650, 500, width, height);
+                open(new JewelerShopWindow(dim, true, gameBackend, this));
+                break;
             default:
                 System.out.println("entered a shop of type " + shopData.state);
         }

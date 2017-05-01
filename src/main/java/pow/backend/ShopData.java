@@ -10,13 +10,15 @@ public class ShopData implements Serializable {
         NONE,
         INN,
         WEAPON_SHOP,
-        MAGIC_SHOP;
+        MAGIC_SHOP,
+        JEWELER_SHOP;
 
         public static ShopState parseFromString(String s) {
             switch (s.toLowerCase()) {
                 case "inn": return INN;
                 case "weaponshop": return WEAPON_SHOP;
                 case "magicshop": return MAGIC_SHOP;
+                case "jewelershop": return JEWELER_SHOP;
                 default: return NONE;
             }
         }

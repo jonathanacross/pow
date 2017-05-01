@@ -35,6 +35,7 @@ public class WorldDataGen {
     private static final DungeonFeature INN_DOOR = FeatureData.getFeature("inn");
     private static final DungeonFeature WEAPON_SHOP_DOOR = FeatureData.getFeature("weapon shop");
     private static final DungeonFeature MAGIC_SHOP_DOOR = FeatureData.getFeature("magic shop");
+    private static final DungeonFeature JEWELER_SHOP_DOOR = FeatureData.getFeature("jeweler shop");
     static {
         try {
             instance = new WorldDataGen("/data/levels.tsv");
@@ -192,6 +193,7 @@ public class WorldDataGen {
         featureMap.put(Constants.FEATURE_WEAPON_SHOP_DOOR, WEAPON_SHOP_DOOR);
         featureMap.put(Constants.FEATURE_MAGIC_SHOP_DOOR, MAGIC_SHOP_DOOR);
         featureMap.put(Constants.FEATURE_INN_DOOR, INN_DOOR);
+        featureMap.put(Constants.FEATURE_JEWELER_SHOP_DOOR, JEWELER_SHOP_DOOR);
 
         switch (name) {
             case "town":  // towns

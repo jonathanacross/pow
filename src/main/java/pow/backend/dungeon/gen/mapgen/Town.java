@@ -51,8 +51,8 @@ public class Town implements MapGenerator {
     }
 
     private int[][] genMap(Random rng) {
-        int width = rng.nextInt(10) + 20;
-        int height = rng.nextInt(10) + 20;
+        int width = rng.nextInt(15) + 25;
+        int height = rng.nextInt(15) + 25;
 
         int[][] map = new int[width][height];
 
@@ -65,10 +65,15 @@ public class Town implements MapGenerator {
             }
         }
 
-        // build 3 rectangles for buildings
-        int[] doorTypes = {Constants.FEATURE_INN_DOOR, Constants.FEATURE_WEAPON_SHOP_DOOR, Constants.FEATURE_MAGIC_SHOP_DOOR};
-        List<Rectangle> buildings = getBuildingLocations(map, rng, 3);
-        for (int i = 0; i < 3; i++) {
+        // build rectangles for buildings
+        int[] doorTypes = {
+                Constants.FEATURE_INN_DOOR,
+                Constants.FEATURE_WEAPON_SHOP_DOOR,
+                Constants.FEATURE_MAGIC_SHOP_DOOR,
+                Constants.FEATURE_JEWELER_SHOP_DOOR};
+        int numBuildings = doorTypes.length;
+        List<Rectangle> buildings = getBuildingLocations(map, rng, numBuildings);
+        for (int i = 0; i < numBuildings; i++) {
             Rectangle building = buildings.get(i);
             // inset the top left of the rectangles by 1 so they guarantee to have space between them
             for (int x = building.left + 1; x < building.left + building.width; x++) {

@@ -93,15 +93,15 @@ gold	& gold piece~	gold	gold	none	money			31	70	0	0	0		money
 platinum	& platinum piece~	platinum	platinum	none	money			51	90	0	0	0		money
 adamantium	& adamantium piece~	adamantium	adamantium	none	money			71	90	0	0	0		money
 # gems														
-diamond	& diamond	diamond	diamond	none	gem			11	90	1	5	0		upgrade for res. elect
-onyx	& onyx	onyx	onyx	none	gem			11	90	1	5	0		upgrade for res acid
-ruby	& ruby	ruby	ruby	none	gem			11	90	1	5	0		upgrade for res fire
-citrine	& citrine	citrine	citrine	none	gem			11	90	1	5	0		upgrade for + str
-topaz	& topaz	topaz	topaz	none	gem			11	90	1	5	0		upgrade for + sex
-emerald	& emerald	emerald	emerald	none	gem			11	90	1	5	0		upgrade for res poison
-aquamarine	& aquamarine	aquamarine	aquamarine	none	gem			11	90	1	5	0		upgrade for + int
-sapphire	& sapphire	sapphire	sapphire	none	gem			11	90	1	5	0		upgrade for res cold
-amethyst	& amethyst	amethyst	amethyst	none	gem			11	90	1	5	0		upgrade for + con
+diamond	& diamond	diamond	diamond	none	gem			11	90	1	1	0	elec:1	
+onyx	& onyx	onyx	onyx	none	gem			11	90	1	1	0	acid:1	
+ruby	& ruby	ruby	ruby	none	gem			11	90	1	1	0	fire:1	
+citrine	& citrine	citrine	citrine	none	gem			11	90	1	1	0	str:1	
+topaz	& topaz	topaz	topaz	none	gem			11	90	1	1	0	dex:1	
+emerald	& emerald	emerald	emerald	none	gem			11	90	1	1	0	pois:1	
+aquamarine	& aquamarine	aquamarine	aquamarine	none	gem			11	90	1	1	0	int:1	
+sapphire	& sapphire	sapphire	sapphire	none	gem			11	90	1	1	0	cold:1	
+amethyst	& amethyst	amethyst	amethyst	none	gem			11	90	1	1	0	con:1	
 # potions														
 small mana potion	& small mana potion~	small blue potion	small mana potion	none	potion	restoreMana:10:		1	30	0	0	0		
 small health potion	& small health potion~	small red potion	small health potion	none	potion	heal:10:		1	30	0	0	0		
