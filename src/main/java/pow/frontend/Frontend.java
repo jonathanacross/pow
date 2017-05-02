@@ -3,6 +3,7 @@ package pow.frontend;
 import pow.backend.GameBackend;
 import pow.backend.ShopData;
 import pow.backend.action.RestAtInn;
+import pow.backend.action.UpgradeItem;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
@@ -205,7 +206,8 @@ public class Frontend {
                 break;
             case JEWELER_SHOP:
                 dim = WindowDim.center(650, 500, width, height);
-                open(new JewelerShopWindow(dim, true, gameBackend, this));
+                open(new JewelerShopWindow(dim, true, gameBackend, this,
+                        (UpgradeItem.ItemIndices i) -> gameBackend.tellPlayer(new UpgradeItem(i))));
                 break;
             default:
                 System.out.println("entered a shop of type " + shopData.state);

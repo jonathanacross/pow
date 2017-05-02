@@ -153,7 +153,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         this.slot = other.slot;
         this.artifactSlot = other.artifactSlot;
         this.flags = other.flags;
-        this.bonuses = other.bonuses;
+        this.bonuses = Arrays.copyOf(other.bonuses, NUM_BONUSES);
         this.count = other.count;
         this.actionParams = other.actionParams;
     }

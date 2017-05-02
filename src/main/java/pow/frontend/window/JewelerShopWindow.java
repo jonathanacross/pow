@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.backend.action.ShopUtils;
+import pow.backend.action.UpgradeItem;
 import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
@@ -10,6 +11,7 @@ import pow.frontend.utils.ImageController;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class JewelerShopWindow extends AbstractWindow {
 
@@ -30,7 +32,9 @@ public class JewelerShopWindow extends AbstractWindow {
             return equipment.size() + inventory.size() + gems.size();
         }
 
-        public IndexConverter(List<ShopUtils.ItemInfo> equipment, List<ShopUtils.ItemInfo> inventory, List<ShopUtils.ItemInfo> gems) {
+        public IndexConverter(List<ShopUtils.ItemInfo> equipment,
+                              List<ShopUtils.ItemInfo> inventory,
+                              List<ShopUtils.ItemInfo> gems) {
             this.equipment = equipment;
             this.inventory = inventory;
             this.gems = gems;
@@ -63,9 +67,15 @@ public class JewelerShopWindow extends AbstractWindow {
     }
 
     private IndexConverter selections;
+    private final Consumer<UpgradeItem.ItemIndices> callback;
 
-    public JewelerShopWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
+    public JewelerShopWindow(WindowDim dim,
+                             boolean visible,
+                             GameBackend backend,
+                             Frontend frontend,
+                             Consumer<UpgradeItem.ItemIndices> callback) {
         super(dim, visible, backend, frontend);
+        this.callback = callback;
         List<ShopUtils.ItemInfo> upgradeableEquipment = ShopUtils.getListOfUpgradeableItems(backend.getGameState().player.equipment);
         List<ShopUtils.ItemInfo> upgradeableInventory = ShopUtils.getListOfUpgradeableItems(backend.getGameState().player.inventory.items);
         List<ShopUtils.ItemInfo> gems = ShopUtils.getListOfGems(backend.getGameState().player);
@@ -87,6 +97,15 @@ public class JewelerShopWindow extends AbstractWindow {
                 selections.updateSelection(itemNumber);
                 frontend.setDirty(true);
             }
+        }
+
+        if (keyCode == KeyEvent.VK_ENTER) {
+            int equipmentIdx = selections.equipmentSelect < 0 ? -1 : selections.equipment.get(selections.equipmentSelect).listIndex;
+            int inventoryIdx = selections.inventorySelect < 0 ? -1 : selections.inventory.get(selections.inventorySelect).listIndex;
+            int gemsIdx = selections.gemsSelect < 0 ? -1 : selections.gems.get(selections.gemsSelect).listIndex;
+            callback.accept(new UpgradeItem.ItemIndices(equipmentIdx, inventoryIdx, gemsIdx));
+            frontend.close();
+            return;
         }
     }
 
