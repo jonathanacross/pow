@@ -12,15 +12,26 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         public final boolean potion;
         public final boolean money;
         public final boolean arrow;
+        public final boolean gem;
 
         public Flags(
                 boolean potion,
                 boolean money,
-                boolean arrow) {
+                boolean arrow,
+                boolean gem) {
             this.potion = potion;
             this.money = money;
             this.arrow = arrow;
+            this.gem = gem;
         }
+
+        public int getSortValue() {
+            return (potion ? 1 : 0) +
+                    (money ? 2 : 0) +
+                    (arrow ? 4 : 0) +
+                    (gem ? 8 : 0);
+        }
+
     }
 
     public static final int TO_HIT_IDX = 0;
@@ -37,7 +48,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     public static final int RES_POIS_IDX = 11;
     public static final int SPEED_IDX = 12;
     public static final int WEALTH_IDX = 13;
-    public static final int GEM_SLOT_IDX = 14;
+    public static final int SOCKETS_IDX = 14;
     public static final int NUM_BONUSES = 15;
 
     private static final String[] bonusNames = {
@@ -55,7 +66,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
             "rPois",
             "speed",
             "wealth",
-            "slots"
+            "sockets"
     };
 
     public enum Slot {
@@ -142,7 +153,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         this.slot = other.slot;
         this.artifactSlot = other.artifactSlot;
         this.flags = other.flags;
-        this.bonuses = other.bonuses;
+        this.bonuses = Arrays.copyOf(other.bonuses, NUM_BONUSES);
         this.count = other.count;
         this.actionParams = other.actionParams;
     }
@@ -167,22 +178,38 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     @Override
     public int compareTo(DungeonItem other) {
-        int i = id.compareTo(other.id);
+        // first order by slot
+        int i = slot.compareTo(other.slot);
+        if (i != 0) return i;
+
+        // within slot, sort by flags; this orders potions/gems/arrows.
+        i = Integer.compare(flags.getSortValue(), other.flags.getSortValue());
+        if (i != 0) return i;
+
+        // also within slot, sort by decreasing total bonus
+        int thisTotalBonus = 0;
+        int otherTotalBonus = 0;
+        for (int b = 0; b < NUM_BONUSES; b++) {
+            thisTotalBonus += bonuses[b];
+            otherTotalBonus += other.bonuses[b];
+        }
+        i = Integer.compare(otherTotalBonus, thisTotalBonus);
+        if (i != 0) return i;
+
+        // if bonuses are the same, then sort by name, then by bonuses
+        i = id.compareTo(other.id);
         if (i != 0) return i;
 
         i = name.compareTo(other.name);
-        if (i != 0) return i;
-
-        i = slot.compareTo(other.slot);
-        if (i != 0) return i;
-
-        i = artifactSlot.compareTo(other.artifactSlot);
         if (i != 0) return i;
 
         for (int b = 0; b < NUM_BONUSES; b++) {
             i = Integer.compare(bonuses[b], other.bonuses[b]);
             if (i != 0) return i;
         }
+
+        i = artifactSlot.compareTo(other.artifactSlot);
+        if (i != 0) return i;
 
         return 0;
     }
@@ -222,7 +249,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
             for (int idx : statIdxs) {
                 stats.add(names[idx]);
             }
-            groups.add(formatBonus(bonusAmt) + " to " + String.join("/", stats));
+            groups.add(formatBonus(bonusAmt) + " " + String.join("/", stats));
         }
         return "(" + String.join(", ", groups) + ")";
     }

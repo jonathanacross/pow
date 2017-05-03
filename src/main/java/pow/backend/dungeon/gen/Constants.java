@@ -21,6 +21,7 @@ public class Constants {
     public static final int FEATURE_INN_DOOR = 7 << 8;
     public static final int FEATURE_MAGIC_SHOP_DOOR = 8 << 8;
     public static final int FEATURE_WEAPON_SHOP_DOOR = 9 << 8;
+    public static final int FEATURE_JEWELER_SHOP_DOOR = 10 << 8;
 
     public static int getTerrain(int x) { return x & 0xff; }
     public static int getFeature(int x) { return x & 0xff00; }
@@ -41,6 +42,7 @@ public class Constants {
                 case Constants.FEATURE_INN_DOOR: return '1';
                 case Constants.FEATURE_WEAPON_SHOP_DOOR: return '2';
                 case Constants.FEATURE_MAGIC_SHOP_DOOR: return '3';
+                case Constants.FEATURE_JEWELER_SHOP_DOOR: return '3';
                 default: throw new IllegalArgumentException("unknown feature " + feature);
             }
         } else {
@@ -76,6 +78,7 @@ public class Constants {
             case '1': return Constants.TERRAIN_FLOOR + Constants.FEATURE_INN_DOOR;
             case '2': return Constants.TERRAIN_FLOOR + Constants.FEATURE_WEAPON_SHOP_DOOR;
             case '3': return Constants.TERRAIN_FLOOR + Constants.FEATURE_MAGIC_SHOP_DOOR;
+            case '4': return Constants.TERRAIN_FLOOR + Constants.FEATURE_JEWELER_SHOP_DOOR;
             default: throw new IllegalArgumentException("unknown char " + x);
         }
     }

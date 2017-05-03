@@ -1,6 +1,7 @@
 package pow.backend.dungeon.gen;
 
 import pow.backend.ActionParams;
+import pow.backend.GameConstants;
 import pow.backend.dungeon.DungeonItem;
 import pow.util.DebugLogger;
 import pow.util.TsvReader;
@@ -115,30 +116,10 @@ public class ItemGenerator {
         int maxLevel;
         int minBonus;
         int maxBonus;
+        int maxSockets;
         MinMax count; // number to generate
         int[] bonuses;
         String extra;
-
-        private DungeonItem.Flags parseFlags(String text) {
-            String[] tokens = text.split(",", -1);
-
-            boolean potion = false;
-            boolean money = false;
-            boolean arrow = false;
-            for (String t : tokens) {
-                switch (t) {
-                    case "": break;  // will happen if we have an empty string
-                    case "potion": potion = true; break;
-                    case "money": money = true; break;
-                    case "arrow": arrow = true; break;
-                    default:
-                        throw new IllegalArgumentException("unknown item flag '" + t + "'");
-                }
-            }
-
-            return new DungeonItem.Flags(potion, money, arrow);
-        }
-
 
         public static class MinMax {
             public final int min;
@@ -160,8 +141,8 @@ public class ItemGenerator {
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificItemGenerator(String[] line) {
-            if (line.length != 14) {
-                throw new IllegalArgumentException("Expected 14 fields, but had " + line.length
+            if (line.length != 15) {
+                throw new IllegalArgumentException("Expected 15 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
 
@@ -171,15 +152,16 @@ public class ItemGenerator {
                 image = line[2];
                 description = line[3];
                 slot = DungeonItem.Slot.valueOf(line[4].toUpperCase());
-                flags = parseFlags(line[5]);
+                flags = ParseUtils.parseFlags(line[5]);
                 actionParams = ParseUtils.parseActionParams(line[6]);
                 count = new MinMax(line[7]);
                 minLevel = Integer.parseInt(line[8]);
                 maxLevel = Integer.parseInt(line[9]);
                 minBonus = Integer.parseInt(line[10]);
                 maxBonus = Integer.parseInt(line[11]);
-                bonuses = ParseUtils.parseBonuses(line[12]);
-                extra = line[13];
+                maxSockets = Integer.parseInt(line[12]);
+                bonuses = ParseUtils.parseBonuses(line[13]);
+                extra = line[14];
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
             }
@@ -214,6 +196,12 @@ public class ItemGenerator {
                 specificItemBonuses[DungeonItem.TO_HIT_IDX] = rng.nextInt(totalAttack);
                 specificItemBonuses[DungeonItem.TO_DAM_IDX] = totalAttack - specificItemBonuses[DungeonItem.TO_HIT_IDX];
             }
+
+            // add sockets with some (fairly low) probability, according to a geometric distribution
+            int numSockets = (int) Math.floor(Math.log(rng.nextDouble()) / Math.log(GameConstants.PROB_GEN_SOCKET));
+
+            numSockets = Math.min(numSockets, maxSockets);
+            specificItemBonuses[DungeonItem.SOCKETS_IDX] = numSockets;
 
             int itemCount = flags.money
                     ? getMoneyAmountForLevel(level, rng)

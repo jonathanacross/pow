@@ -7,13 +7,13 @@
 32x32	6	0	cold lava floor	terrain
 32x32	7	0	road	terrain
 32x32	8	0	grass	terrain
-32x32	9	0	forest	terrain
-32x32	10	0	swamp	terrain
-32x32	11	0	sand	terrain
-32x32	12	0	snow	terrain
-32x32	13	0	hot lava floor	terrain
-32x32	14	0	waves	terrain
-32x32	15	0	-:null:-	:null:
+32x32	9	0	tall grass	terrain
+32x32	10	0	forest	terrain
+32x32	11	0	swamp	terrain
+32x32	12	0	sand	terrain
+32x32	13	0	snow	terrain
+32x32	14	0	hot lava floor	terrain
+32x32	15	0	waves	terrain
 32x32	0	1	big stone wall	feature
 32x32	1	1	ivy stone wall	terrain
 32x32	2	1	brown stone wall	terrain
@@ -23,8 +23,8 @@
 32x32	6	1	hot stone wall	feature
 32x32	7	1	small stone wall	feature
 32x32	8	1	rock	feature
-32x32	9	1	snowy rock	feature
-32x32	10	1	black pit	terrain
+32x32	9	1	tan rock	terrain
+32x32	10	1	snowy rock	feature
 32x32	11	1	lava	terrain
 32x32	12	1	water 1	terrain
 32x32	13	1	water 2	terrain
@@ -39,9 +39,9 @@
 32x32	6	2	diggable hot stone wall	feature
 32x32	7	2	diggable small stone wall	feature
 32x32	8	2	diggable rock	feature
-32x32	9	2	diggable snowy rock	feature
-32x32	10	2	-:null:-	:null:
-32x32	11	2	-:null:-	:null:
+32x32	9	2	diggable tan rock	terrain
+32x32	10	2	diggable snowy rock	feature
+32x32	11	2	black pit	terrain
 32x32	12	2	-:null:-	:null:
 32x32	13	2	-:null:-	:null:
 32x32	14	2	-:null:-	:null:
@@ -77,7 +77,7 @@
 32x32	12	4	inn	feature
 32x32	13	4	weapon shop	feature
 32x32	14	4	magic shop	feature
-32x32	15	4	-:null:-	:null:
+32x32	15	4	jeweler shop	feature
 32x32	0	5	stairs up	feature
 32x32	1	5	ivy stone stairs up	feature
 32x32	2	5	brown stone stairs up	feature
@@ -291,15 +291,15 @@
 32x32	2	18	gold	money
 32x32	3	18	platinum	money
 32x32	4	18	adamantium	money
-32x32	5	18	sapphires	money
-32x32	6	18	rubies	money
-32x32	7	18	diamonds	money
-32x32	8	18	emeralds	money
-32x32	9	18	amythests	money
-32x32	10	18	-:null:-	:null:
-32x32	11	18	-:null:-	:null:
-32x32	12	18	-:null:-	:null:
-32x32	13	18	-:null:-	:null:
+32x32	5	18	diamond	gem
+32x32	6	18	onyx	gem
+32x32	7	18	ruby	gem
+32x32	8	18	citrine	gem
+32x32	9	18	topaz	gem
+32x32	10	18	emerald	gem
+32x32	11	18	aquamarine	gem
+32x32	12	18	sapphire	gem
+32x32	13	18	amethyst	gem
 32x32	14	18	-:null:-	:null:
 32x32	15	18	-:null:-	:null:
 32x32	0	19	human_adventurer	human
@@ -511,46 +511,50 @@
 32x32	14	31	-:null:-	:null:
 32x32	15	31	-:null:-	:null:
 32x32	0	32	small white ball	effect
-32x32	1	32	small red ball	effect
-32x32	2	32	small orange ball	effect
-32x32	3	32	small yellow ball	effect
-32x32	4	32	small green ball	effect
-32x32	5	32	small blue ball	effect
-32x32	6	32	small purple ball	effect
-32x32	7	32	big white ball	effect
-32x32	8	32	big red ball	effect
-32x32	9	32	big orange ball	effect
-32x32	10	32	big yellow ball	effect
-32x32	11	32	big green ball	effect
-32x32	12	32	big blue ball	effect
-32x32	13	32	big purple ball	effect
-32x32	14	32	-:null:-	:null:
-32x32	15	32	-:null:-	:null:
+32x32	1	32	small black ball	effect
+32x32	2	32	small red ball	effect
+32x32	3	32	small orange ball	effect
+32x32	4	32	small yellow ball	effect
+32x32	5	32	small green ball	effect
+32x32	6	32	small blue ball	effect
+32x32	7	32	small purple ball	effect
+32x32	8	32	big white ball	effect
+32x32	9	32	big black ball	effect
+32x32	10	32	big red ball	effect
+32x32	11	32	big orange ball	effect
+32x32	12	32	big yellow ball	effect
+32x32	13	32	big green ball	effect
+32x32	14	32	big blue ball	effect
+32x32	15	32	big purple ball	effect
 32x32	0	33	N white bolt	effect
 32x32	1	33	NE white bolt	effect
 32x32	2	33	E white bolt	effect
 32x32	3	33	SE white bolt	effect
-32x32	4	33	N red bolt	effect
-32x32	5	33	NE red bolt	effect
-32x32	6	33	E red bolt	effect
-32x32	7	33	SE red bolt	effect
-32x32	8	33	N orange bolt	effect
-32x32	9	33	NE orange bolt	effect
-32x32	10	33	E orange bolt	effect
-32x32	11	33	SE orange bolt	effect
-32x32	12	33	N yellow bolt	effect
-32x32	13	33	NE yellow bolt	effect
-32x32	14	33	E yellow bolt	effect
-32x32	15	33	SE yellow bolt	effect
-32x32	0	34	N green bolt	effect
-32x32	1	34	NE green bolt	effect
-32x32	2	34	E green bolt	effect
-32x32	3	34	SE green bolt	effect
-32x32	4	34	N blue bolt	effect
-32x32	5	34	NE blue bolt	effect
-32x32	6	34	E blue bolt	effect
-32x32	7	34	SE blue bolt	effect
-32x32	8	34	N purple bolt	effect
-32x32	9	34	NE purple bolt	effect
-32x32	10	34	E purple bolt	effect
-32x32	11	34	SE purple bolt	effect
+32x32	4	33	N black bolt	effect
+32x32	5	33	NE black bolt	effect
+32x32	6	33	E black bolt	effect
+32x32	7	33	SE black bolt	effect
+32x32	8	33	N red bolt	effect
+32x32	9	33	NE red bolt	effect
+32x32	10	33	E red bolt	effect
+32x32	11	33	SE red bolt	effect
+32x32	12	33	N orange bolt	effect
+32x32	13	33	NE orange bolt	effect
+32x32	14	33	E orange bolt	effect
+32x32	15	33	SE orange bolt	effect
+32x32	0	34	N yellow bolt	effect
+32x32	1	34	NE yellow bolt	effect
+32x32	2	34	E yellow bolt	effect
+32x32	3	34	SE yellow bolt	effect
+32x32	4	34	N green bolt	effect
+32x32	5	34	NE green bolt	effect
+32x32	6	34	E green bolt	effect
+32x32	7	34	SE green bolt	effect
+32x32	8	34	N blue bolt	effect
+32x32	9	34	NE blue bolt	effect
+32x32	10	34	E blue bolt	effect
+32x32	11	34	SE blue bolt	effect
+32x32	12	34	N purple bolt	effect
+32x32	13	34	NE purple bolt	effect
+32x32	14	34	E purple bolt	effect
+32x32	15	34	SE purple bolt	effect
