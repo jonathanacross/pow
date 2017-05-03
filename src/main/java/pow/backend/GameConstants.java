@@ -94,7 +94,7 @@ public class GameConstants {
 
     // Probability that an item will have a socket.  Probability
     // of 2 sockets will be this squared, etc.
-    public final static double PROB_GEN_SOCKET = 0.2;
+    public final static double PROB_GEN_SOCKET = 0.224;
 
     // If player doesn't have gas mask, they lose this much
     // health in certain areas.

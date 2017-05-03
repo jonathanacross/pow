@@ -205,9 +205,9 @@ public class Frontend {
                 open(new ShopWindow(dim, true, gameBackend, this, entries));
                 break;
             case JEWELER_SHOP:
-                dim = WindowDim.center(650, 500, width, height);
+                dim = WindowDim.center(650, 550, width, height);
                 open(new JewelerShopWindow(dim, true, gameBackend, this,
-                        (UpgradeItem.ItemIndices i) -> gameBackend.tellPlayer(new UpgradeItem(i))));
+                        (UpgradeItem.UpgradeInfo i) -> gameBackend.tellPlayer(new UpgradeItem(i))));
                 break;
             default:
                 System.out.println("entered a shop of type " + shopData.state);

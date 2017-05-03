@@ -99,7 +99,15 @@ public class ShopGenerator {
         return 10 * Math.pow(3.9, numResists);
     }
 
-    private static int priceItem(DungeonItem item) {
+    private static double socketBonus(DungeonItem item) {
+        int numSockets = item.bonuses[DungeonItem.SOCKETS_IDX];
+        if (numSockets == 0) return 0;
+        else return Math.pow(10, numSockets + 1);
+    }
+
+    // TODO: should this be part of DungeonItem?
+    // or part of storeUtils?
+    public static int priceItem(DungeonItem item) {
         // Very arbitrary now.  Have to balance this.
         // While arbitrary, scalars here are fractional so that prices of
         // items don't all look the same.
@@ -115,7 +123,8 @@ public class ShopGenerator {
             20 * sqr(item.bonuses[DungeonItem.WEALTH_IDX]) +
             1 * (item.flags.arrow ? 1 : 0) +
             actionBonus(item) +
-            resistBonus(item);
+            resistBonus(item) +
+            socketBonus(item);
 
         double slotScaleFactor;
         switch (item.slot) {

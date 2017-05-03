@@ -14,22 +14,24 @@ import java.util.List;
 
 public class UpgradeItem implements Action {
 
-    public static class ItemIndices {
+    public static class UpgradeInfo {
         public final int equipmentIdx;
         public final int inventoryIdx;
         public final int gemIdx;
+        public final int price;
 
-        public ItemIndices(int equipmentIdx, int inventoryIdx, int gemIdx) {
+        public UpgradeInfo(int equipmentIdx, int inventoryIdx, int gemIdx, int price) {
             this.equipmentIdx = equipmentIdx;
             this.inventoryIdx = inventoryIdx;
             this.gemIdx = gemIdx;
+            this.price = price;
         }
     }
 
-    private final ItemIndices indices;
+    private final UpgradeInfo upgradeInfo;
 
-    public UpgradeItem(ItemIndices indices) {
-        this.indices = indices;
+    public UpgradeItem(UpgradeInfo upgradeInfo) {
+        this.upgradeInfo = upgradeInfo;
     }
 
     private void upgradeItem(DungeonItem item, DungeonItem gem, GameBackend backend, Player player) {
@@ -48,23 +50,30 @@ public class UpgradeItem implements Action {
         GameState gs = backend.getGameState();
         Player player = gs.player;
 
-        DungeonItem gem = player.inventory.items.get(indices.gemIdx);
+        // sanity check
+        if (player.gold < upgradeInfo.price) {
+            backend.logMessage("You do not have enough money.");
+            return ActionResult.Failed(null);
+        }
+        player.gold -= upgradeInfo.price;
+
+        DungeonItem gem = player.inventory.items.get(upgradeInfo.gemIdx);
 
         // upgrade the item
-        if (indices.equipmentIdx >= 0) {
-            DungeonItem item = player.takeOff(indices.equipmentIdx);
+        if (upgradeInfo.equipmentIdx >= 0) {
+            DungeonItem item = player.takeOff(upgradeInfo.equipmentIdx);
             upgradeItem(item, gem, backend, player);
             player.wear(item);
             // destroy the gem
-            player.inventory.removeOneItemAt(indices.gemIdx);
+            player.inventory.removeOneItemAt(upgradeInfo.gemIdx);
         }
-        else if (indices.inventoryIdx >= 0) {
-            DungeonItem item = player.inventory.items.get(indices.inventoryIdx);
+        else if (upgradeInfo.inventoryIdx >= 0) {
+            DungeonItem item = player.inventory.items.get(upgradeInfo.inventoryIdx);
 
             // destroy the gem -- note this is called *after* we get the item to upgrade
             // but before we try to replace items so that we (a) don't mess up
-            // indices and (b) have space available for a new upgraded item if possible.
-            player.inventory.removeOneItemAt(indices.gemIdx);
+            // upgradeInfo and (b) have space available for a new upgraded item if possible.
+            player.inventory.removeOneItemAt(upgradeInfo.gemIdx);
 
             if (item.count == 1) {
                 upgradeItem(item, gem, backend, player);
