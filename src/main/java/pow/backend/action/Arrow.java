@@ -1,9 +1,6 @@
 package pow.backend.action;
 
 import pow.backend.*;
-import pow.backend.action.Action;
-import pow.backend.action.ActionResult;
-import pow.backend.action.AttackUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.dungeon.DungeonItem;
@@ -21,12 +18,14 @@ public class Arrow implements Action {
     private final AttackData attackData;
     // Distinguish between firing a real arrow and a magical one.
     private final boolean usePhysicalArrow;
+    private final boolean hitMagically;
 
-    public Arrow(Actor attacker, Point target, AttackData attackData, boolean usePhysicalArrow) {
+    public Arrow(Actor attacker, Point target, AttackData attackData, boolean usePhysicalArrow, boolean hitMagically) {
         this.attacker = attacker;
         this.target = target;
         this.attackData = attackData;
         this.usePhysicalArrow = usePhysicalArrow;
+        this.hitMagically = hitMagically;
     }
 
     @Override
@@ -50,8 +49,10 @@ public class Arrow implements Action {
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
-                // TODO: for magical arrows, always hit?
-                boolean hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
+                boolean hitsTarget = true;
+                if (!hitMagically) {
+                    hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
+                }
                 int damage = attackData.dieRoll.rollDice(gs.rng) + attackData.plusToDam;
                 if (hitsTarget && damage > 0) {
                     backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());

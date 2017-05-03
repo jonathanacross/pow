@@ -96,6 +96,7 @@ public class TextUtils {
                 .replaceAll("sh~", "shes")
                 .replaceAll("s~", "ses")
                 .replaceAll("x~", "xes")
+                .replaceAll("y~", "ies")
                 .replaceAll("z~", "zes")
                 .replaceAll("~", "s");
         return replaceCustomPlural(simplePlural);

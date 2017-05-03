@@ -1,8 +1,8 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
-import pow.backend.actors.Actor;
 import pow.backend.actors.Knowledge;
+import pow.backend.actors.Player;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
@@ -96,7 +96,7 @@ public class KnowledgeWindow extends AbstractWindow {
         }
 
         if (!monsterSummary.isEmpty()) {
-            Actor player = backend.getGameState().player;
+            Player player = backend.getGameState().player;
             MonsterDisplay.drawMonsterInfo(
                     graphics,
                     monsterSummary.get(selectIndex),

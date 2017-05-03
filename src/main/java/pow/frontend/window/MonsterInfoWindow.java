@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Knowledge;
+import pow.backend.actors.Player;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.MonsterDisplay;
@@ -34,7 +35,7 @@ public class MonsterInfoWindow extends AbstractWindow {
             return;
         }
 
-        Actor player = backend.getGameState().player;
+        Player player = backend.getGameState().player;
         Knowledge.MonsterSummary monsterSummary = new Knowledge.MonsterSummary(actor);
 
         // actual drawing here
