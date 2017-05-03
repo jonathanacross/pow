@@ -27,8 +27,8 @@ public class JewelerShopWindow extends AbstractWindow {
         private final int inventoryIdxMin;
         private final int gemsIdxMin;
 
-        public int equipmentSelect;  // TODO: rename to equipmentSelectIdx?
-        public int inventorySelect;
+        public int equipmentSelectIdx;
+        public int inventorySelectIdx;
         public int gemsSelect;
 
         public int size() {
@@ -42,9 +42,9 @@ public class JewelerShopWindow extends AbstractWindow {
         // Return equivalent item with count of 1, since we only transform
         // one item at a time.
         public DungeonItem getSelectedItem() {
-            DungeonItem item = equipmentSelect >= 0 ?
-                    new DungeonItem(equipment.get(equipmentSelect).item) :
-                    new DungeonItem(inventory.get(inventorySelect).item);
+            DungeonItem item = equipmentSelectIdx >= 0 ?
+                    new DungeonItem(equipment.get(equipmentSelectIdx).item) :
+                    new DungeonItem(inventory.get(inventorySelectIdx).item);
             item.count = 1;
             return item;
         }
@@ -77,14 +77,14 @@ public class JewelerShopWindow extends AbstractWindow {
             this.gemsIdxMin = inventoryIdxMin + inventory.size();
 
             if (!equipment.isEmpty()) {
-                equipmentSelect = 0;
-                inventorySelect = -1;
+                equipmentSelectIdx = 0;
+                inventorySelectIdx = -1;
             } else if (!inventory.isEmpty()) {
-                equipmentSelect = -1;
-                inventorySelect = 0;
+                equipmentSelectIdx = -1;
+                inventorySelectIdx = 0;
             } else {
-                equipmentSelect = -1;
-                inventorySelect = -1;
+                equipmentSelectIdx = -1;
+                inventorySelectIdx = -1;
             }
 
             if (!gems.isEmpty()) {
@@ -96,11 +96,11 @@ public class JewelerShopWindow extends AbstractWindow {
 
         public void updateSelection(int idx) {
             if (equipmentIdxMin <= idx && idx < inventoryIdxMin) {
-                equipmentSelect = idx - equipmentIdxMin;
-                inventorySelect = -1;
+                equipmentSelectIdx = idx - equipmentIdxMin;
+                inventorySelectIdx = -1;
             } else if (inventoryIdxMin <= idx && idx < gemsIdxMin) {
-                equipmentSelect = -1;
-                inventorySelect = idx - inventoryIdxMin;
+                equipmentSelectIdx = -1;
+                inventorySelectIdx = idx - inventoryIdxMin;
             } else {
                 gemsSelect = idx - gemsIdxMin;
             }
@@ -143,13 +143,17 @@ public class JewelerShopWindow extends AbstractWindow {
 
             if (!selections.playerCanAffordUpgrade()) return;
             if (keyCode == KeyEvent.VK_ENTER) {
-                int equipmentIdx = selections.equipmentSelect < 0 ? -1 : selections.equipment.get(selections.equipmentSelect).listIndex;
-                int inventoryIdx = selections.inventorySelect < 0 ? -1 : selections.inventory.get(selections.inventorySelect).listIndex;
-                int gemsIdx = selections.gemsSelect < 0 ? -1 : selections.gems.get(selections.gemsSelect).listIndex;
+                int equipmentIdx = getIdxOrMinus1(selections.equipment, selections.equipmentSelectIdx);
+                int inventoryIdx = getIdxOrMinus1(selections.inventory, selections.inventorySelectIdx);
+                int gemsIdx = getIdxOrMinus1(selections.gems, selections.gemsSelect);
                 callback.accept(new UpgradeItem.UpgradeInfo(equipmentIdx, inventoryIdx, gemsIdx, selections.getCostOfSelectedItems()));
                 frontend.close();
             }
         }
+    }
+
+    private static int getIdxOrMinus1(List<ShopUtils.ItemInfo> itemInfoList, int idx) {
+        return idx < 0 ? -1 : itemInfoList.get(idx).listIndex;
     }
 
     final private int TILE_SIZE = 32;
@@ -210,7 +214,7 @@ public class JewelerShopWindow extends AbstractWindow {
             graphics.drawString("Equipment:", MARGIN, y);
             y += FONT_SIZE;
             for (ShopUtils.ItemInfo entry : selections.equipment) {
-                boolean isSelected = idx == selections.equipmentSelect;
+                boolean isSelected = idx == selections.equipmentSelectIdx;
                 drawItem(graphics, new Point(MARGIN, y), idx, entry.item, isSelected, true);
                 idx++;
                 y += TILE_SIZE;
@@ -228,7 +232,7 @@ public class JewelerShopWindow extends AbstractWindow {
             graphics.drawString("Inventory:", MARGIN, y);
             y += FONT_SIZE;
             for (ShopUtils.ItemInfo entry : selections.inventory) {
-                boolean isSelected = idx - baseInventoryIdx == selections.inventorySelect;
+                boolean isSelected = idx - baseInventoryIdx == selections.inventorySelectIdx;
                 drawItem(graphics, new Point(MARGIN, y), idx, entry.item, isSelected, true);
                 idx++;
                 y += TILE_SIZE;
@@ -250,7 +254,7 @@ public class JewelerShopWindow extends AbstractWindow {
             y += TILE_SIZE;
         }
 
-        // status line at the bottom
+        // status at the bottom
         y = dim.height - 125;
         graphics.setColor(Color.DARK_GRAY);
         graphics.drawLine(MARGIN, y + 5, dim.width - MARGIN, y + 5);

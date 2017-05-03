@@ -39,7 +39,7 @@ public class ItemChoiceWindow extends AbstractWindow {
                             List<DungeonItem> altItems,
                             Function<DungeonItem, Boolean> enabled,
                             Consumer<ItemChoice> callback) {
-        super(new WindowDim(x, y, 350,
+        super(new WindowDim(x, y, 400,
                 35 + 32 * Math.max(items.size(), altItems == null ? 0 : altItems.size())),
                 true, backend, frontend);
         this.message = message;

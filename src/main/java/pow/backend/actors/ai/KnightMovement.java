@@ -100,8 +100,7 @@ public class KnightMovement implements Movement, Serializable {
             }
 
             int dist2 = MathUtils.dist2(actor.loc.x, actor.loc.y, m.loc.x, m.loc.y);
-            int currScore = dist2ToScore.containsKey(dist2) ?
-                    dist2ToScore.get(dist2) : dist2;
+            int currScore = dist2ToScore.getOrDefault(dist2, dist2);
 
             if (closestMonster == null || currScore < bestDist) {
                 closestMonster = m;
@@ -132,8 +131,7 @@ public class KnightMovement implements Movement, Serializable {
             }
 
             int trialDist2 = MathUtils.dist2(newx, newy, target.x, target.y);
-            int currScore = dist2ToScore.containsKey(trialDist2) ?
-                    dist2ToScore.get(trialDist2) : trialDist2;
+            int currScore = dist2ToScore.getOrDefault(trialDist2, trialDist2);
             if (currScore < bestScore) {
                 bestMove = move;
                 bestScore = currScore;

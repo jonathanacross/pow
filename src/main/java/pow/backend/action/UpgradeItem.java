@@ -50,7 +50,7 @@ public class UpgradeItem implements Action {
         GameState gs = backend.getGameState();
         Player player = gs.player;
 
-        // sanity check
+        // pay for the upgrade
         if (player.gold < upgradeInfo.price) {
             backend.logMessage("You do not have enough money.");
             return ActionResult.Failed(null);
@@ -95,8 +95,6 @@ public class UpgradeItem implements Action {
                 player.inventory.add(newItem);
             }
         }
-
-
 
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());
