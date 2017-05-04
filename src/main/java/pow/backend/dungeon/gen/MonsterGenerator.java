@@ -224,14 +224,55 @@ public class MonsterGenerator {
             return (int) Math.round(value);
         }
 
-        private static int getExperience(int level, Set<String> flags, int constitution, int speed) {
+        // Simple heuristic to quantify how deadly a spell is.
+        // Currently just based on the type of spell; not taking into
+        // account the element.
+        private static double getSpellExperienceFactor(SpellParams spell) {
+            double typeFactor = 1.0;
+            switch (spell.spellType) {
+                // spells that the monster can cast affecting large areas are particularly deadly
+                case QUAKE: typeFactor = 1.3; break;
+                case BALL: typeFactor = 1.2; break;
+                case CHAIN: typeFactor = 1.2; break;
+                case BREATH: typeFactor = 1.15; break;
+
+                // spells that just require line of sight
+                case ARROW:
+                case BOLT:
+                case CIRCLE_CUT: typeFactor = 1.1; break;
+
+                // these don't really make the monster harder/easier.
+                case BOOST_ARMOR:
+                case HEAL:
+                case RESIST_ELEMENTS:
+                case SPEED: typeFactor = 1.0; break;
+
+                // this actually makes things easier since it doesn't directly attack the player
+                // and dilutes other more deadly spells
+                case PHASE: typeFactor = 0.8; break;
+            }
+            return typeFactor;
+        }
+
+        private static double getSpellListExperienceFactor(List<SpellParams> spells) {
+            if (spells.isEmpty()) return 1.0;
+            double total = 0.0;
+            for (SpellParams spell : spells) {
+                total += getSpellExperienceFactor(spell);
+            }
+            return total / spells.size();
+        }
+
+        private static int getExperience(Set<String> flags, int constitution, int dexterity, int strength, int speed, List<SpellParams> spells) {
             int hp = StatComputations.constitutionToHealth(constitution);
-            double experience = hp/2.0;
+            int damage = StatComputations.strengthToDamage(strength);
+            int agility = StatComputations.dexterityToDefenseAndAttack(dexterity);
+            double experience = Math.pow((double) hp * damage * agility, 1.0/3.0);
 
             double scaleFactor = 1.0;
             if (flags.contains("erratic")) scaleFactor *= 0.7;
             if (flags.contains("stationary")) scaleFactor *= 0.5;
-            // TODO: add spells in calculation
+            scaleFactor *= getSpellListExperienceFactor(spells);
 
             double speedExpFactor = Math.pow(1.2, speed);
 
@@ -274,7 +315,7 @@ public class MonsterGenerator {
             dexterity = getStat(GainRatioStats.DEXTERITY, level, allGeneratorFlags);
             intelligence = getStat(GainRatioStats.INTELLIGENCE, level, allGeneratorFlags);
             constitution = getStat(GainRatioStats.CONSTITUTION, level, allGeneratorFlags);
-            experience = getExperience(level, allGeneratorFlags, constitution, speed);
+            experience = getExperience(allGeneratorFlags, constitution, dexterity, strength, speed, spells);
         }
 
 

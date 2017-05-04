@@ -19,7 +19,7 @@
 2	yellow mushrooms	fungus	stationary		0		0	& yellow mushrooms	yellow mushrooms	Some brownish mushrooms; they look like shiitakes.
 2	floating eye	magical	fearless		0		1	& floating eye	floating eye	A disembodied eye, floating a few feet above the ground.
 2	bat	mammal	erratic		2		0	& bat	bat	A gray bat, fluttering around the air.
-2	green worm mass	jelly			0		0	& green worm mass	green worm mass	It is a large slimy mass of green worms.
+2	green worm mass	jelly	erratic		0		0	& green worm mass	green worm mass	It is a large slimy mass of green worms.
 2	brown imp	mammal,weak	erratic		2		1	& brown imp	brown imp	A fast, mischievous creature.
 2	green komodo	reptile	boss		0	lantern	4	& green komodo	green komodo	A giant Komodo dragon. It is about 10 feet long and has a venomous bite.
 2	purple spider	insect	boss,fearless		0	pearl 1	4	& purple spider	purple spider	A large and powerful amathyst spider with bright yellow eyes.
@@ -47,7 +47,7 @@
 6	green imp	magical,weak			2		1	& green imp	green imp	A mischievous creature.
 5	small red spiny	mammal			0		0	& small red spiny	small red spiny	An unusual lizard with a horn, covered with sharp spines.
 6	rock lizard	lizard			0		0	& rock lizard	rock lizard	A lizard with a hardened hide.
-6	yellow worm mass	jelly			0		0	& yellow worm mass	yellow worm mass	It is a large slimy mass of green worms.
+6	yellow worm mass	jelly	erratic		0		0	& yellow worm mass	yellow worm mass	It is a large slimy mass of green worms.
 6	yellow schweinhund	mammal	boss		1	water float	4	& yellow schweinhund	yellow schweinhund	A yellow schweinhund with sharp fangs and a long tail.
 6	Balthazar the Great	giant	boss,perfect,fearless	lance	0	pearl 3	6	!Balthazar the Great	Balthazar the Great	Balthazar is one of the world’s greatest kobold swordsmen, known for his feats at the battle of Arignor.
 8	dark elf mage	mage	perfect	blink,magic arrow,lightning bolt,lesser heal	0		1	& dark elf mage	dark elf mage	A dark elven figure, dressed all in black, hurling spells at you.
@@ -71,7 +71,7 @@
 10	baby green dragon	dragon		poison breath	2		3	& baby green dragon	baby green dragon	Its still-tender scales are deep green in hue. Poison seeps through its scales.
 10	baby red dragon	dragon		fire breath	2		3	& baby red dragon	baby red dragon	Its still-tender scales are deep red in hue. Heat radiates from its form.
 9	gold dragonfly	insect	erratic		3		0	& gold dragonfly	gold dragonfly	Large beating wings support this dazzling insect.
-9	purple worms	jelly	fearless		1		0	& purple worms	purple worms	It is a large slimy mass of purple worms.
+9	purple worms	jelly	erratic		1		0	& purple worms	purple worms	It is a large slimy mass of purple worms.
 10	golem	giant	perfect,fearless	acid bolt	0		1	& golem	golem	It is a massive animated statue.
 9	griffin	bird			0		1	& griffin	griffin	A legendary creature with the body, and back legs of a lion and the head and wings of an eagle.
 10	chess knight	magical	knightmove		0		1	& chess knight	chess knight	This strange creature always moves in the shape of an L, jumping over obstacles.

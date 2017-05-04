@@ -21,6 +21,7 @@ public class DungeonEffect {
     public enum EffectColor {
         NONE,
         WHITE,
+        BLACK,
         RED,
         ORANGE,
         YELLOW,

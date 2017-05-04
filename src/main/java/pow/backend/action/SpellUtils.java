@@ -48,7 +48,7 @@ public class SpellUtils {
     public static DungeonEffect.EffectColor getEffectColor(SpellParams.Element element) {
         switch (element) {
             case NONE: return DungeonEffect.EffectColor.NONE;
-            case ACID: return DungeonEffect.EffectColor.YELLOW;
+            case ACID: return DungeonEffect.EffectColor.BLACK;
             case CONFUSE: return DungeonEffect.EffectColor.ORANGE;
             case DAMAGE: return DungeonEffect.EffectColor.WHITE;
             case FIRE: return DungeonEffect.EffectColor.RED;
