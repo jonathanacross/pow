@@ -195,6 +195,7 @@ public class RunBehavior implements Behavior {
         // adjacent squares: must not have any monsters, and shouldn't have interesting stuff
         for (Direction d : newAdjacentDirs) {
             Point adj = gs.player.loc.add(d);
+            if (!map.isOnMap(adj.x, adj.y)) return true;
             if (map.actorAt(adj.x, adj.y) != null) return true;
             DungeonFeature feature = map.map[adj.x][adj.y].feature;
             if (feature != null && feature.flags.interesting) return true;

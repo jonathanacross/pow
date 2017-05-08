@@ -278,11 +278,12 @@ public class RecursiveInterpolation implements MapGenerator {
 
     private static void printMap(TerrainFeatureTriplet[][] map) {
         for (int y = 0; y < Array2D.height(map); y++) {
-            String line = "";
+            StringBuilder line = new StringBuilder();
             for (int x = 0; x < Array2D.width(map); x++) {
-                line = line + map[x][y] + ' ';
+                line.append(map[x][y]);
+                line.append(' ');
             }
-            System.out.println(line);
+            System.out.println(line.toString());
         }
         System.out.println();
     }

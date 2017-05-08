@@ -60,7 +60,7 @@ public class ItemChoiceWindow extends AbstractWindow {
             return;
         }
 
-        if (keyCode == KeyEvent.VK_EQUALS && this.altItems != null) {
+        if (keyCode == KeyEvent.VK_TAB && this.altItems != null) {
             useSecondList = !useSecondList;
             frontend.setDirty(true);
             return;

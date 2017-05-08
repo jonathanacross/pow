@@ -56,7 +56,7 @@ public class Knowledge implements Serializable {
         public void incrementKillCount() { this.numKilled++; }
     }
 
-    private Map<String,MonsterSummary> monsterKnowledge;
+    private final Map<String,MonsterSummary> monsterKnowledge;
 
     public Knowledge() {
         monsterKnowledge = new HashMap<>();

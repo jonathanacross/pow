@@ -256,11 +256,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     // Formats an item in a nice way, showing all the stats
     public String stringWithInfo() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(TextUtils.format(name, count, false));
-        sb.append(formatGroupBonus(bonuses, bonusNames));
-
-        return sb.toString();
+        return TextUtils.format(name, count, false) +
+                formatGroupBonus(bonuses, bonusNames);
     }
 }

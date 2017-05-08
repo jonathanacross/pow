@@ -14,6 +14,7 @@ import java.util.List;
 // Various utility functions helpful for spells.
 public class SpellUtils {
 
+    // TODO: move into Targeting?
     // Returns the list of squares visible from "center",
     // at distance at most "radius", given the metric "metric".
     public static List<Point> getFieldOfView(GameState gameState, Point center, int radius, Metric.MetricFunction metric) {
