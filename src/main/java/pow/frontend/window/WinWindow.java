@@ -3,6 +3,8 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
+import pow.frontend.utils.KeyInput;
+import pow.frontend.utils.KeyUtils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,7 +19,10 @@ public class WinWindow extends AbstractWindow {
 
     @Override
     public void processKey(KeyEvent e) {
-        frontend.close();
+        KeyInput input = KeyUtils.getKeyInput(e);
+        if (input == KeyInput.OKAY) {
+            frontend.close();
+        }
     }
 
     @Override
@@ -34,6 +39,6 @@ public class WinWindow extends AbstractWindow {
         f = new Font("Courier", Font.PLAIN, squareSize);
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press any key to continue.", 20, 150);
+        graphics.drawString("Press enter to continue.", 20, 150);
     }
 }

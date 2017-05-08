@@ -95,9 +95,15 @@ public class AttackUtils {
 
     public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender,
                                         SpellParams.Element element, int damage) {
+
+        String damTypeString = "";
+        if (element != SpellParams.Element.NONE && element != SpellParams.Element.DAMAGE) {
+            damTypeString = " " + element.toString().toLowerCase();
+        }
+
         List<GameEvent> events = new ArrayList<>();
         int adjustedDamage = adjustDamage(damage, element, defender);
-        backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + adjustedDamage + " damage");
+        backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + adjustedDamage + damTypeString + " damage");
         events.add(GameEvent.Attacked());
         List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage);
         for (GameEvent event : damageEvents) {

@@ -21,7 +21,7 @@ public class ImageUtils {
                 int g = (pixel >> 8) & 0xFF;
                 int b = pixel & 0xFF;
 
-                a = (int) Math.round(0.50 * a);
+                a = (int) Math.round(0.70 * a);
 
                 int outPix = (a << 24) | (r << 16) | (g << 8) | (b);
                 outImg.setRGB(x, y, outPix);
