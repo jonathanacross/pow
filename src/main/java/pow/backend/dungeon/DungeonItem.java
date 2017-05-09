@@ -66,7 +66,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
             "rPois",
             "speed",
             "wealth",
-            "sockets"
+            "socket~"
     };
 
     public enum Slot {
@@ -247,21 +247,16 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
             List<String> stats = new ArrayList<>();
             for (int idx : statIdxs) {
-                stats.add(names[idx]);
+                stats.add(TextUtils.formatThing(names[idx], bonusAmt > 1));
             }
             groups.add(formatBonus(bonusAmt) + " " + String.join("/", stats));
         }
-        return "(" + String.join(", ", groups) + ")";
+        return " (" + String.join(", ", groups) + ")";
     }
 
     // Formats an item in a nice way, showing all the stats
     public String stringWithInfo() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(TextUtils.format(name, count, false));
-        sb.append(" ");
-        sb.append(formatGroupBonus(bonuses, bonusNames));
-
-        return sb.toString();
+        return TextUtils.format(name, count, false) +
+                formatGroupBonus(bonuses, bonusNames);
     }
 }

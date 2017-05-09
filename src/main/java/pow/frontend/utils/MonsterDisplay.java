@@ -1,7 +1,7 @@
 package pow.frontend.utils;
 
 import pow.backend.action.AttackUtils;
-import pow.backend.actors.Actor;
+import pow.backend.actors.Player;
 import pow.backend.actors.Knowledge;
 import pow.util.Point;
 import pow.util.TextUtils;
@@ -19,7 +19,7 @@ public class MonsterDisplay {
     public static void drawMonsterInfo(
             Graphics graphics,
             Knowledge.MonsterSummary monster,
-            Actor player, // needed to calculate and show hit percentages
+            Player player, // needed to calculate and show hit percentages
             boolean showCurrentHealth,
             int width,
             Point position
@@ -61,7 +61,10 @@ public class MonsterDisplay {
         lines.add("Exp.:   " + monster.experience);
         lines.add("");
         lines.add("Can hit you " + toPercentString(AttackUtils.hitProb(monster.primaryAttack.plusToHit, player.getDefense())) + "% of the time");
-        lines.add("You can hit " + toPercentString(AttackUtils.hitProb(player.getPrimaryAttack().plusToHit, monster.defense)) + "% of the time");
+        lines.add("You can hit " + toPercentString(AttackUtils.hitProb(player.getPrimaryAttack().plusToHit, monster.defense)) + "% of the time (melee)");
+        if (player.hasBowEquipped()) {
+            lines.add("You can hit " + toPercentString(AttackUtils.hitProb(player.getSecondaryAttack().plusToHit, monster.defense)) + "% of the time (bow)");
+        }
 
         ImageController.drawTile(graphics, monster.image, position.x + margin, position.y + margin);
 

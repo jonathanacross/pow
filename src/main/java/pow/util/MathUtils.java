@@ -1,8 +1,8 @@
 package pow.util;
 
 public class MathUtils {
-    public static int clamp(int x, int low, int hi) {
-        return Math.max(Math.min(x, hi), low);
+    public static int clamp(int value, int low, int hi) {
+        return Math.max(Math.min(value, hi), low);
     }
 
     public static int dist2(int x1, int y1, int x2, int y2) {

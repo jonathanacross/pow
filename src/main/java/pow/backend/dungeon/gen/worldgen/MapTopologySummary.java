@@ -10,8 +10,8 @@ import java.util.*;
 // world map views.
 public class MapTopologySummary implements Serializable {
 
-    private Map<Point3D, String> roomLocs;
-    private Set<SpacialConnection> connections;
+    private final Map<Point3D, String> roomLocs;
+    private final Set<SpacialConnection> connections;
 
     public Map<Point3D, String> getRoomLocs() { return roomLocs; }
     public Set<SpacialConnection> getConnections() { return connections; }

@@ -123,8 +123,9 @@ public class SpellParams implements Serializable {
     public static Action buildAction(SpellParams spellParams, Actor actor, Point target) {
         int amount = spellParams.getAmount(actor);
         AttackData attackData = new AttackData(new DieRoll(0,0), amount, amount);
+        boolean hitMagically = spellParams.element != Element.NONE;
         switch (spellParams.spellType) {
-            case ARROW: return new SpellAction(new Arrow(actor, target, attackData, false), spellParams);
+            case ARROW: return new SpellAction(new Arrow(actor, target, attackData, false, hitMagically), spellParams);
             case PHASE: return new SpellAction(new Phase(actor, amount), spellParams);
             case HEAL: return new SpellAction(new Heal(actor, amount), spellParams);
             case BALL: return new SpellAction(new BallSpell(actor, target, spellParams), spellParams);

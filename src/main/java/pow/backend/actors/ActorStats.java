@@ -92,7 +92,7 @@ public class ActorStats implements Serializable {
         this.defense = agility + defBonus;
         this.meleeToHit = agility + meleeToHitBonus;
         this.meleeToDam = meleeToDamBonus;
-        this.rangedToHit = (int) Math.round(0.75 * agility) + rangedToHitBonus;
+        this.rangedToHit = agility + rangedToHitBonus;
         this.rangedToDam = rangedToDamBonus;
         this.meleeDieRoll = StatComputations.findClosestDieRoll(baseDamage);
         this.rangedDieRoll = StatComputations.findClosestDieRoll(0.75 * baseDamage);

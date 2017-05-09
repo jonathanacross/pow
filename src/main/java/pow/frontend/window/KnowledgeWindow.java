@@ -1,21 +1,25 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
-import pow.backend.actors.Actor;
 import pow.backend.actors.Knowledge;
+import pow.backend.actors.Player;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.MonsterDisplay;
-import pow.util.*;
+import pow.util.MathUtils;
+import pow.util.TextUtils;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 public class KnowledgeWindow extends AbstractWindow {
 
     private int selectIndex = 0;
-    private java.util.List<Knowledge.MonsterSummary> monsterSummary;
+    private final List<Knowledge.MonsterSummary> monsterSummary;
 
     public KnowledgeWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend,
                            java.util.List<Knowledge.MonsterSummary> monsterSummary) {
@@ -96,7 +100,7 @@ public class KnowledgeWindow extends AbstractWindow {
         }
 
         if (!monsterSummary.isEmpty()) {
-            Actor player = backend.getGameState().player;
+            Player player = backend.getGameState().player;
             MonsterDisplay.drawMonsterInfo(
                     graphics,
                     monsterSummary.get(selectIndex),

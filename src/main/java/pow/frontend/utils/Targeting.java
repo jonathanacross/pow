@@ -2,9 +2,12 @@ package pow.frontend.utils;
 
 import pow.backend.GameMap;
 import pow.backend.GameState;
+import pow.backend.action.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.frontend.window.MapView;
+import pow.util.MathUtils;
+import pow.util.Metric;
 import pow.util.Point;
 import pow.util.Direction;
 
@@ -74,51 +77,23 @@ public class Targeting {
         return points;
     }
 
-    // field of vew targeting, used for some spell effects
-//    List<Point> getFOVTargets(GameState gameState) {
-//        GameMap map = gameState.getCurrentMap();
-//
-//        int rowMin = Math.max(0, center.y - radius);
-//        int rowMax = Math.min(map.height - 1, center.y + radius);
-//        int colMin = Math.max(0, center.x - radius);
-//        int colMax = Math.min(map.width - 1, center.x + radius);
-//
-//        boolean[][] blockMap = new boolean[colMax - colMin + 1][rowMax - rowMin + 1];
-//        for (int x = colMin; x <= colMax; x++) {
-//            for (int y = rowMin; y <= rowMax; y++) {
-//                blockMap[x - colMin][y - rowMin] = map.map[x][y].blockAir();
-//            }
-//        }
-//        FieldOfView fov = new FieldOfView(blockMap, center.x - colMin, center.y - rowMin, radius, metric);
-//        boolean[][] visible = fov.getFOV();
-//
-//        List<Point> points = new ArrayList<>();
-//        for (int x = colMin; x <= colMax; x++) {
-//            for (int y = rowMin; y <= rowMax; y++) {
-//                if (visible[x - colMin][y - rowMin] && !map.map[x][y].blockAir()) {
-//                    points.add(new Point(x, y));
-//                }
-//            }
-//        }
-//        TargetingUtils.orderPointsByDistance(center, points);
-//
-//        return points;
-//    }
+    public static List<Point> getMonsterFOVTargets(GameState gameState) {
+        GameMap map = gameState.getCurrentMap();
 
-    // default for center is the player
-//    public List<Point> getMonsterFOVSquares(GameState gameState, Metric.MetricFunction metric, Point center) {
-//        GameMap map = gameState.getCurrentMap();
-//
-//        List<Point> squares = getFovTargets(radius, metric, center);
-//        List<Point> msquares = new ArrayList<>();
-//        for (Point square : squares) {
-//            if (map.actorAt(square.x, square.y) != null) {
-//                msquares.add(square);
-//            }
-//        }
-//        TargetingUtils.orderPointsByDistance(center, msquares);
-//
-//        return msquares;
+        List<Point> squares = SpellUtils.getFieldOfView(gameState, gameState.player.loc, gameState.player.viewRadius,
+                Metric.euclideanMetric);
+        List<Point> msquares = new ArrayList<>();
+        for (Point square : squares) {
+            if (!gameState.player.canSeeLocation(gameState, square)) continue;
+            Actor a = map.actorAt(square.x, square.y);
+            if (a != null && !a.friendly) {
+                msquares.add(square);
+            }
+        }
+        orderPointsByDistance(gameState.player.loc, msquares);
+
+        return msquares;
+    }
 
     // --------- other utilities
 
@@ -128,8 +103,8 @@ public class Targeting {
     private static void orderPointsByDistance(Point current, List<Point> targetablePoints) {
         targetablePoints.sort(
                 (Point a, Point b) -> {
-                    int distA = (a.x - current.x) * (a.x - current.x) + (a.y - current.y) * (a.y - current.y);
-                    int distB = (b.x - current.x) * (b.x - current.x) + (b.y - current.y) * (b.y - current.y);
+                    int distA = MathUtils.dist2(a.x, a.y, current.x, current.y);
+                    int distB = MathUtils.dist2(b.x, b.y, current.x, current.y);
                     return Integer.compare(distA, distB);
                 });
     }

@@ -24,6 +24,13 @@ public class TextUtils {
         return result;
     }
 
+    // returns just the thing, no extra words
+    // e.g., formatThing("mace", true) -> "maces"
+    // e.g., formatThing("ewok", false) -> "ewok"
+    public static String formatThing(String name, boolean pluralize) {
+        return pluralize ? plural(name) : singular(name);
+    }
+
     public static String plural(String name) {
         if (name.startsWith("!")) {
             return name.substring(1);
@@ -96,6 +103,7 @@ public class TextUtils {
                 .replaceAll("sh~", "shes")
                 .replaceAll("s~", "ses")
                 .replaceAll("x~", "xes")
+                .replaceAll("y~", "ies")
                 .replaceAll("z~", "zes")
                 .replaceAll("~", "s");
         return replaceCustomPlural(simplePlural);

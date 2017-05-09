@@ -23,6 +23,10 @@ public class RestAtInn implements Action {
             player.setFullMana();
             backend.logMessage("You feel refreshed.");
             List<GameEvent> events = new ArrayList<>();
+
+            // save the game!
+            backend.tellPlayer(new Save());
+
             events.add(GameEvent.DungeonUpdated());
             return ActionResult.Succeeded(events);
         } else {

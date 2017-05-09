@@ -22,7 +22,7 @@ public class SpellAi {
             case BALL: return shouldCastBall(spell, actor, gs, target);
             case BOLT: return targetVisibleAndWithinRange(spell, actor, gs, target);
             case BREATH: return targetVisibleAndWithinRange(spell, actor, gs, target);
-            case QUAKE: return shouldCastQuake(spell, actor, gs, target);
+            case QUAKE: return shouldCastQuake(spell, actor, target);
             case CIRCLE_CUT: return targetVisibleAndWithinRange(spell, actor, gs, target);
             default: break;
         }
@@ -44,7 +44,7 @@ public class SpellAi {
         return dist2 > spell.size * spell.size;
     }
 
-    private static boolean shouldCastQuake(SpellParams spell, Actor actor, GameState gs, Actor target) {
+    private static boolean shouldCastQuake(SpellParams spell, Actor actor, Actor target) {
         if (target == null) return false;
         int dist = Math.abs(target.loc.x - actor.loc.x) + Math.abs(target.loc.y - actor.loc.y);
         return dist < spell.size;

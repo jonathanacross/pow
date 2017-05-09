@@ -105,8 +105,8 @@ public class GameMainLayer extends AbstractWindow {
             return;
         }
 
-        final String message = doFloor && doInventory ? "Quaff which potion? (Press = to show floor.)" : "Quaff which potion?";
-        final String altMessage = doFloor && doInventory ? "Quaff which potion? (Press = to show inventory.)" : null;
+        final String message = doFloor && doInventory ? "Quaff which potion? (Press tab to show floor.)" : "Quaff which potion?";
+        final String altMessage = doFloor && doInventory ? "Quaff which potion? (Press tab to show inventory.)" : null;
         final ItemList mainItemList = doInventory ? inventoryItems : floorItems;
         final ItemList altItemList = doFloor && doInventory ? floorItems : null;
         final List<DungeonItem> altItems = doFloor && doInventory ? floorItems.items : null;
@@ -139,8 +139,8 @@ public class GameMainLayer extends AbstractWindow {
         // Figure out how to display to the user --
         // if there's only wearables on floor or in inventory, just show those as options,
         // else, allow user to swap back and forth between them.
-        final String message = doFloor && doInventory ? "Wear which item? (Press = to show floor.)" : "Wear which item?";
-        final String altMessage = doFloor && doInventory ? "Wear which item? (Press = to show inventory.)" : null;
+        final String message = doFloor && doInventory ? "Wear which item? (Press tab to show floor.)" : "Wear which item?";
+        final String altMessage = doFloor && doInventory ? "Wear which item? (Press tab to show inventory.)" : null;
         final ItemList mainItemList = doInventory ? inventoryItems : floorItems;
         final ItemList altItemList = doFloor && doInventory ? floorItems : null;
         final List<DungeonItem> altItems = doFloor && doInventory ? floorItems.items : null;
@@ -347,7 +347,7 @@ public class GameMainLayer extends AbstractWindow {
             return;
         }
 
-        backend.tellPlayer(new Arrow(gameState.player, target, gameState.player.getSecondaryAttack(), true));
+        backend.tellPlayer(new Arrow(gameState.player, target, gameState.player.getSecondaryAttack(), true, false));
     }
 
     private void startLooking(GameState gameState) {
@@ -357,8 +357,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startMonsterTargeting(GameState gameState) {
-        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gameState);
-        List<Point> targetableSquares = Targeting.getMonsterTargets(gameState, mapView);
+        List<Point> targetableSquares = Targeting.getMonsterFOVTargets(gameState);
         if (targetableSquares.isEmpty()) {
             backend.logMessage("no monsters to target");
             return;

@@ -38,13 +38,13 @@ public class Drop implements Action {
         if (numToDrop == item.count) {
             // dropping all of this item
             actor.inventory.items.remove(itemNum);
-            square.items.items.add(item);
+            square.items.add(item);
         } else {
             // if can just pick up some, then have to clone object, and update counts
             DungeonItem cloneForFloor = new DungeonItem(item);
             cloneForFloor.count = numToDrop;
             item.count -= numToDrop;
-            square.items.items.add(cloneForFloor);
+            square.items.add(cloneForFloor);
         }
         backend.logMessage(actor.getPronoun() + " drop " + TextUtils.format(item.name, numToDrop, true));
         return ActionResult.Succeeded(events);

@@ -44,6 +44,7 @@ public class TextUtilsTest {
             new TestCase("& ball~", "no balls", "a ball", "the ball", "2 balls"),
             new TestCase("& blacksmith~", "no blacksmiths", "a blacksmith", "the blacksmith", "2 blacksmiths"),
             new TestCase("& glyph~", "no glyphs", "a glyph", "the glyph", "2 glyphs"),
+            new TestCase("& ruby~", "no rubies", "a ruby", "the ruby", "2 rubies"),
             new TestCase("& torch~", "no torches", "a torch", "the torch", "2 torches"),
             new TestCase("& bush~", "no bushes", "a bush", "the bush", "2 bushes"),
             new TestCase("& box~", "no boxes", "a box", "the box", "2 boxes"),

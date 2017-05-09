@@ -1,10 +1,11 @@
 #id	level	group	possible dirs	from groups	from id	generator	genParams	flags	boss	monsters
 terrain	0					terrain test	basement	permLight		
-water	30		N		terrain	recursiveInterpolation	water	outside		goldfish,green fish,eel,pink jellyfish
-#ddesert	30		N		terrain	recursiveInterpolation	dig desert	outside		gray wolf,brown scorpion
-#rogue	25		E		ddesert	recursiveInterpolation	forest	hot	white rat	blue ghost,pink ghost,evil eye
+#golddesert	30		S		terrain	recursiveInterpolation	gold desert	outside		goldfish,green fish,eel,pink jellyfish
+rogue	2		D		terrain	rogue	1,dungeon		white rat	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
+desert	30		N		terrain	recursiveInterpolation	desert	outside		gray wolf,brown scorpion,evil incarnate
+digdesert	25		E		terrain	recursiveInterpolation	dig desert	hot	white rat	blue ghost,pink ghost,evil eye
 #run	1		E		terrain	run test	dungeon			farmer,mangy leper,jester,beggar,salesman,yellow mushrooms
-town	1		E		terrain	town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
+#town	1		E		terrain	town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
 item	2		W		terrain	item test	crypt			
-cave	17		D		terrain	cellularAutomata	1,true,basement	poisonGas	minotaur	brown scorpion,goldfish,chess knight,pink ghost
+#cave	17		D		terrain	cellularAutomata	1,true,basement	poisonGas	minotaur	brown scorpion,goldfish,chess knight,pink ghost
 arena	99		S		terrain	arena	dungeon			:all:

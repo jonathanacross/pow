@@ -14,6 +14,7 @@ import java.util.List;
 // Various utility functions helpful for spells.
 public class SpellUtils {
 
+    // TODO: move into Targeting?
     // Returns the list of squares visible from "center",
     // at distance at most "radius", given the metric "metric".
     public static List<Point> getFieldOfView(GameState gameState, Point center, int radius, Metric.MetricFunction metric) {
@@ -48,7 +49,7 @@ public class SpellUtils {
     public static DungeonEffect.EffectColor getEffectColor(SpellParams.Element element) {
         switch (element) {
             case NONE: return DungeonEffect.EffectColor.NONE;
-            case ACID: return DungeonEffect.EffectColor.YELLOW;
+            case ACID: return DungeonEffect.EffectColor.BLACK;
             case CONFUSE: return DungeonEffect.EffectColor.ORANGE;
             case DAMAGE: return DungeonEffect.EffectColor.WHITE;
             case FIRE: return DungeonEffect.EffectColor.RED;

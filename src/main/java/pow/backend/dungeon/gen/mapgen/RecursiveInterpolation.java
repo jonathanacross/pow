@@ -37,23 +37,23 @@ public class RecursiveInterpolation implements MapGenerator {
 
     // expand/modify this class to make richer areas
     public static class MapStyle {
-        public final List<TerrainFeatureTriplet> borders;
-        public final List<TerrainFeatureTriplet> interiors;
+        public final TerrainFeatureTriplet border;  // TODO: change name of this and below
+        public final TerrainFeatureTriplet interior;
         public final String upstairsFeatureId;
         public final String downstairsFeatureId;
         public final boolean addLockAroundExits;
         public final TerrainFeatureTriplet surroundingLock;
         public final TerrainFeatureTriplet mainLock;
 
-        public MapStyle(List<TerrainFeatureTriplet> borders,
-                        List<TerrainFeatureTriplet> interiors,
+        public MapStyle(TerrainFeatureTriplet border,
+                        TerrainFeatureTriplet interior,
                         String upstairsFeatureId,
                         String downstairsFeatureId,
                         boolean addLockAroundExits,
                         TerrainFeatureTriplet surroundingLock,
                         TerrainFeatureTriplet mainLock) {
-            this.borders = borders;
-            this.interiors = interiors;
+            this.border = border;
+            this.interior = interior;
             this.upstairsFeatureId = upstairsFeatureId;
             this.downstairsFeatureId = downstairsFeatureId;
             this.addLockAroundExits = addLockAroundExits;
@@ -99,16 +99,10 @@ public class RecursiveInterpolation implements MapGenerator {
             GameMap.Flags flags,
             Random rng) {
 
-        // get the border types; used in various functions below
-        Set<String> borders = new HashSet<>();
-        for (TerrainFeatureTriplet b : style.borders) {
-            borders.add(b.terrain);
-        }
-
         // build the terrain
         TerrainFeatureTriplet[][] layout = genTerrainLayout(width, height, style, rng);
         TerrainFeatureTriplet[][] terrainMap = makeInterpMap(layout, rng, numInterpolationSteps);
-        terrainMap = trimTerrainBorder(terrainMap, borders);
+        terrainMap = trimTerrainBorder(terrainMap, style.border.terrain);
         int w = Array2D.width(terrainMap);
         int h = Array2D.height(terrainMap);
 
@@ -136,7 +130,7 @@ public class RecursiveInterpolation implements MapGenerator {
         Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
                 connections,
                 squares,
-                style.interiors.get(0).terrain,
+                style.interior.terrain,
                 style.upstairsFeatureId,
                 style.downstairsFeatureId,
                 rng);
@@ -200,7 +194,6 @@ public class RecursiveInterpolation implements MapGenerator {
 
     private static TerrainFeatureTriplet[][] genTerrainLayout(
             int width, int height, MapStyle style, Random rng) {
-        int numInteriors = style.interiors.size();
 
         TerrainFeatureTriplet[][] layout = new TerrainFeatureTriplet[width][height];
 
@@ -210,9 +203,9 @@ public class RecursiveInterpolation implements MapGenerator {
                 boolean isEdge = (x == 0 | x == width - 1 || y == 0 || y == height - 1);
                 if (isEdge) {
                     // for now, just using first border; later extend this to multiple types.
-                    layout[x][y] = mixup(style.borders.get(0), rng);
+                    layout[x][y] = mixup(style.border, rng);
                 } else {
-                    layout[x][y] = mixup(style.interiors.get(rng.nextInt(numInteriors)), rng);
+                    layout[x][y] = mixup(style.interior, rng);
                 }
             }
         }
@@ -223,7 +216,7 @@ public class RecursiveInterpolation implements MapGenerator {
         int numDesiredToFill = (int) Math.round(x / 100.0 * numPossibleSquares);
         List<Point> safeBlocks = findSafeInternalSquaresToBlock(width, height, numDesiredToFill, rng);
         for (Point p : safeBlocks) {
-            layout[p.x][p.y] = mixup(style.borders.get(0), rng);
+            layout[p.x][p.y] = mixup(style.border, rng);
         }
 
         return layout;
@@ -285,11 +278,12 @@ public class RecursiveInterpolation implements MapGenerator {
 
     private static void printMap(TerrainFeatureTriplet[][] map) {
         for (int y = 0; y < Array2D.height(map); y++) {
-            String line = "";
+            StringBuilder line = new StringBuilder();
             for (int x = 0; x < Array2D.width(map); x++) {
-                line = line + map[x][y] + ' ';
+                line.append(map[x][y]);
+                line.append(' ');
             }
-            System.out.println(line);
+            System.out.println(line.toString());
         }
         System.out.println();
     }
@@ -326,7 +320,7 @@ public class RecursiveInterpolation implements MapGenerator {
 
     // removes extra borders of impassible stuff -- makes the map smaller, and
     // makes it so we won't have to "tunnel" to the nearest exit.
-    private static TerrainFeatureTriplet[][] trimTerrainBorder(TerrainFeatureTriplet[][] layout, Set<String> borders) {
+    private static TerrainFeatureTriplet[][] trimTerrainBorder(TerrainFeatureTriplet[][] layout, String borders) {
         int width = Array2D.width(layout);
         int height = Array2D.height(layout);
 
@@ -337,7 +331,7 @@ public class RecursiveInterpolation implements MapGenerator {
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if (!borders.contains(layout[x][y].terrain)) {
+                if (!borders.equals(layout[x][y].terrain)) {
                     minInteriorX = Math.min(minInteriorX, x);
                     maxInteriorX = Math.max(maxInteriorX, x);
                     minInteriorY = Math.min(minInteriorY, y);

@@ -107,7 +107,7 @@ public class JewelerShopWindow extends AbstractWindow {
         }
     }
 
-    private Selections selections;
+    private final Selections selections;
     private final Consumer<UpgradeItem.UpgradeInfo> callback;
 
     public JewelerShopWindow(WindowDim dim,

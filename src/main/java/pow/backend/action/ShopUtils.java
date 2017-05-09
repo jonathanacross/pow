@@ -10,8 +10,8 @@ import java.util.List;
 public class ShopUtils {
 
     public static class ItemInfo {
-        public int listIndex;  // which position in equipment/inventory list
-        public DungeonItem item;
+        public final int listIndex;  // which position in equipment/inventory list
+        public final DungeonItem item;
 
         public ItemInfo(int listIndex, DungeonItem item) {
             this.listIndex = listIndex;
