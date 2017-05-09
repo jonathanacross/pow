@@ -134,7 +134,10 @@ public class SpellParams implements Serializable {
             case BREATH: return new SpellAction(new BreathSpell(actor, target, spellParams), spellParams);
             case QUAKE: return new SpellAction(new QuakeSpell(actor, spellParams), spellParams);
             case CIRCLE_CUT: return new SpellAction(new CircleCut(actor, spellParams), spellParams);
-            default: break;
+            case BOOST_ARMOR:
+            case RESIST_ELEMENTS:
+            case SPEED:
+            //default: break;
         }
         throw new RuntimeException("tried to create unknown spell from " + spellParams.name);
     }
