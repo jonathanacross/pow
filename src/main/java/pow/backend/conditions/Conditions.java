@@ -95,4 +95,54 @@ public class Conditions {
         @Override String getDecreaseMessage() { return actor.getPronoun() + " defense decreases somewhat."; }
         @Override String getExtendMessage() { return actor.getPronoun() + " feel your defense extend."; }
     }
+
+    public static class ResistCold extends Condition implements Serializable {
+        public ResistCold(Actor actor) { super(actor); }
+
+        @Override String getStartMessage() { return actor.getPronoun() + " are resistant to cold."; }
+        @Override String getEndMessage() { return actor.getPronoun() + " are susceptible to cold."; }
+        @Override String getIncreaseMessage() { return actor.getPronoun() + " are more resistant to cold."; }
+        @Override String getDecreaseMessage() { return actor.getPronoun() + " are less resistant to cold."; }
+        @Override String getExtendMessage() { return actor.getPronoun() + " feel your resistance to cold extend."; }
+    }
+
+    public static class ResistFire extends Condition implements Serializable {
+        public ResistFire(Actor actor) { super(actor); }
+
+        @Override String getStartMessage() { return actor.getPronoun() + " are resistant to fire."; }
+        @Override String getEndMessage() { return actor.getPronoun() + " are susceptible to fire."; }
+        @Override String getIncreaseMessage() { return actor.getPronoun() + " are more resistant to fire."; }
+        @Override String getDecreaseMessage() { return actor.getPronoun() + " are less resistant to fire."; }
+        @Override String getExtendMessage() { return actor.getPronoun() + " feel your resistance to fire extend."; }
+    }
+
+    public static class ResistAcid extends Condition implements Serializable {
+        public ResistAcid(Actor actor) { super(actor); }
+
+        @Override String getStartMessage() { return actor.getPronoun() + " are resistant to acid."; }
+        @Override String getEndMessage() { return actor.getPronoun() + " are susceptible to acid."; }
+        @Override String getIncreaseMessage() { return actor.getPronoun() + " are more resistant to acid."; }
+        @Override String getDecreaseMessage() { return actor.getPronoun() + " are less resistant to acid."; }
+        @Override String getExtendMessage() { return actor.getPronoun() + " feel your resistance to acid extend."; }
+    }
+
+    public static class ResistPoison extends Condition implements Serializable {
+        public ResistPoison(Actor actor) { super(actor); }
+
+        @Override String getStartMessage() { return actor.getPronoun() + " are resistant to poison."; }
+        @Override String getEndMessage() { return actor.getPronoun() + " are susceptible to poison."; }
+        @Override String getIncreaseMessage() { return actor.getPronoun() + " are more resistant to poison."; }
+        @Override String getDecreaseMessage() { return actor.getPronoun() + " are less resistant to poison."; }
+        @Override String getExtendMessage() { return actor.getPronoun() + " feel your resistance to poison extend."; }
+    }
+
+    public static class ResistElectricity extends Condition implements Serializable {
+        public ResistElectricity(Actor actor) { super(actor); }
+
+        @Override String getStartMessage() { return actor.getPronoun() + " are resistant to electricity."; }
+        @Override String getEndMessage() { return actor.getPronoun() + " are susceptible to electricity."; }
+        @Override String getIncreaseMessage() { return actor.getPronoun() + " are more resistant to electricity."; }
+        @Override String getDecreaseMessage() { return actor.getPronoun() + " are less resistant to electricity."; }
+        @Override String getExtendMessage() { return actor.getPronoun() + " feel your resistance to electricity extend."; }
+    }
 }

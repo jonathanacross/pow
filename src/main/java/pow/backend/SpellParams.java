@@ -2,10 +2,14 @@ package pow.backend;
 
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
+import pow.backend.conditions.ConditionTypes;
+import pow.backend.conditions.Conditions;
 import pow.util.DieRoll;
 import pow.util.Point;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class SpellParams implements Serializable {
 
@@ -14,6 +18,7 @@ public class SpellParams implements Serializable {
         ARROW,
         BALL,
         BOOST_ARMOR,
+        BOOST_ATTACK,
         BREATH,
         CHAIN,
         CIRCLE_CUT,
@@ -125,19 +130,42 @@ public class SpellParams implements Serializable {
         AttackData attackData = new AttackData(new DieRoll(0,0), amount, amount);
         boolean hitMagically = spellParams.element != Element.NONE;
         switch (spellParams.spellType) {
-            case ARROW: return new SpellAction(new Arrow(actor, target, attackData, false, hitMagically), spellParams);
-            case PHASE: return new SpellAction(new Phase(actor, amount), spellParams);
-            case HEAL: return new SpellAction(new Heal(actor, amount), spellParams);
-            case BALL: return new SpellAction(new BallSpell(actor, target, spellParams), spellParams);
-            case BOLT: return new SpellAction(new BoltSpell(actor, target, spellParams), spellParams);
-            case CHAIN: return new SpellAction(new ChainSpell(actor, spellParams), spellParams);
-            case BREATH: return new SpellAction(new BreathSpell(actor, target, spellParams), spellParams);
-            case QUAKE: return new SpellAction(new QuakeSpell(actor, spellParams), spellParams);
-            case CIRCLE_CUT: return new SpellAction(new CircleCut(actor, spellParams), spellParams);
+            case ARROW:
+                return new SpellAction(new Arrow(actor, target, attackData, false, hitMagically), spellParams);
+            case PHASE:
+                return new SpellAction(new Phase(actor, amount), spellParams);
+            case HEAL:
+                return new SpellAction(new Heal(actor, amount), spellParams);
+            case BALL:
+                return new SpellAction(new BallSpell(actor, target, spellParams), spellParams);
+            case BOLT:
+                return new SpellAction(new BoltSpell(actor, target, spellParams), spellParams);
+            case CHAIN:
+                return new SpellAction(new ChainSpell(actor, spellParams), spellParams);
+            case BREATH:
+                return new SpellAction(new BreathSpell(actor, target, spellParams), spellParams);
+            case QUAKE:
+                return new SpellAction(new QuakeSpell(actor, spellParams), spellParams);
+            case CIRCLE_CUT:
+                return new SpellAction(new CircleCut(actor, spellParams), spellParams);
             case BOOST_ARMOR:
+                return new SpellAction(new StartCondition(actor,
+                        Collections.singletonList(ConditionTypes.DEFENSE), 30,
+                        spellParams.getAmount(actor)), spellParams);
+            case BOOST_ATTACK:
+                return new SpellAction(new StartCondition(actor,
+                        Collections.singletonList(ConditionTypes.TO_HIT), 30,
+                        spellParams.getAmount(actor)), spellParams);
             case RESIST_ELEMENTS:
+                return new SpellAction(new StartCondition(actor,
+                        Arrays.asList(ConditionTypes.RESIST_COLD, ConditionTypes.RESIST_FIRE,
+                                ConditionTypes.RESIST_ACID, ConditionTypes.RESIST_POIS,
+                                ConditionTypes.RESIST_ELEC), 30,
+                        spellParams.getAmount(actor)), spellParams);
             case SPEED:
-            //default: break;
+                return new SpellAction(new StartCondition(actor,
+                        Collections.singletonList(ConditionTypes.SPEED), 30,
+                        spellParams.getAmount(actor)), spellParams);
         }
         throw new RuntimeException("tried to create unknown spell from " + spellParams.name);
     }

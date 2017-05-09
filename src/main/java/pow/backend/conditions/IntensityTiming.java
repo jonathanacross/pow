@@ -1,11 +1,12 @@
 package pow.backend.conditions;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 // helper class to keep track of changing intensities over time
-public class IntensityTiming {
+public class IntensityTiming implements Serializable {
     private static class IntensityDuration {
         public int intensity;
         public int turnsRemaining;

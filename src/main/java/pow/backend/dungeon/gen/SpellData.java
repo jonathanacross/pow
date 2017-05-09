@@ -75,7 +75,7 @@ public class SpellData {
             powerStat = SpellParams.PowerStat.valueOf(line[9].toUpperCase().replace(" ", "_"));
             description = line[10];
 
-            return new SpellParams( id, name, description, minLevel, requiredMana,
+            return new SpellParams(id, name, description, minLevel, requiredMana,
                     spellType, element, powerStat, size, amtBase, amtDelta);
         } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
