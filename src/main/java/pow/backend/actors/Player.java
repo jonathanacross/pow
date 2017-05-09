@@ -7,7 +7,6 @@ import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.LightSource;
-import pow.backend.dungeon.gen.SpellData;
 import pow.backend.event.GameEvent;
 import pow.util.Circle;
 import pow.util.MathUtils;
@@ -59,22 +58,22 @@ public class Player extends Actor implements Serializable, LightSource {
             253152
     };
 
-    // default player
+    // default (empty) player
     public Player() {
-        this(
-                new DungeonObject.Params(
+        this(new DungeonObject.Params(
                         "player", // id
                         "", // name
                         "human_adventurer", // image
                         "yourself", // description
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
-                GainRatiosData.getGainRatios("player adventurer")
-        );
+             GainRatiosData.getGainRatios("player adventurer"),
+             Collections.emptyList());
     }
 
-    private Player(DungeonObject.Params objectParams,
-                   GainRatios gainRatios) {
+    public Player(DungeonObject.Params objectParams,
+                   GainRatios gainRatios,
+                   List<SpellParams> spells) {
         super(objectParams, new Actor.Params(
                 1,
                 0,
@@ -88,17 +87,7 @@ public class Player extends Actor implements Serializable, LightSource {
                 10,
                 10,
                 0,
-                Arrays.asList(
-                        SpellData.getSpell("magic arrow"),
-                        SpellData.getSpell("phase"),
-                        SpellData.getSpell("circle cut"),
-                        SpellData.getSpell("lesser heal"),
-                        SpellData.getSpell("ice bolt"),
-                        SpellData.getSpell("fireball"),
-                        SpellData.getSpell("chain lightning"),
-                        SpellData.getSpell("rift"),
-                        SpellData.getSpell("quake")
-                )));
+                spells));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = -1;  // filled in by updateStats
         this.equipment = new ArrayList<>();

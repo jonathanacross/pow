@@ -44,14 +44,13 @@ public class GameState implements Serializable {
         this.turnCount = 0;
     }
 
-    public GameState(String name) {
+    public GameState(Player player) {
         this.gameInProgress = false;
         //int seed =  -524622737;
         int seed = (new Random()).nextInt();
         System.out.println("starting seed = " + seed);
         this.rng = new Random(seed);
-        this.player = new Player();
-        this.player.name = name;
+        this.player = player;
         this.pet = new Pet(
                 new DungeonObject.Params(
                         "pet", // id
