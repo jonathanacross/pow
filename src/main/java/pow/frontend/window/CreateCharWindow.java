@@ -1,6 +1,8 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
+import pow.backend.actors.Player;
+import pow.backend.dungeon.gen.CharacterGenerator;
 import pow.backend.dungeon.gen.NameGenerator;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
@@ -26,9 +28,9 @@ public class CreateCharWindow extends AbstractWindow {
         name = "";
     }
 
-
     private void startNewGame() {
-        backend.newGame(name);
+        Player player = CharacterGenerator.getPlayer(name, "warrior");
+        backend.newGame(player);
         frontend.setState(Frontend.State.GAME);
     }
 

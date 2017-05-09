@@ -148,7 +148,7 @@ public class GameBackend {
         gameState.log.add(message);
     }
 
-    public void newGame(String name) { gameState = new GameState(name); }
+    public void newGame(Player player) { gameState = new GameState(player); }
 
     public void load(GameState gameState) {
         this.gameState = gameState;

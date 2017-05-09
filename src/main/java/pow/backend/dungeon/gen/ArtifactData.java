@@ -55,7 +55,7 @@ public class ArtifactData {
         DungeonItem.ArtifactSlot artifactSlot;
 
         if (line.length != 5) {
-            throw new IllegalArgumentException("Expected 6 fields, but had " + line.length
+            throw new IllegalArgumentException("Expected 5 fields, but had " + line.length
                     + ". Fields = \n" + String.join(",", line));
         }
 
