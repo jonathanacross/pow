@@ -49,20 +49,29 @@ public class CharacterGenerator {
         }
     }
 
-    public static List<String> getCharacterIds() {
-        return instance.characterIds;
+    private static final CharacterGenerator instance;
+    private Map<String, CharacterData> charDataMap;
+    private List<CharacterData> characterData;
+
+    static {
+        try {
+            instance = new CharacterGenerator();
+        } catch (Exception e) {
+            DebugLogger.fatal(e);
+            throw new RuntimeException(e); // so intellij won't complain
+        }
     }
 
-    public static CharacterData getCharacterData(String id) {
+    public static List<CharacterData> getCharacterData() {
+        return instance.characterData;
+    }
+
+    public static Player getPlayer(String name, String id) {
         if (!instance.charDataMap.containsKey(id)) {
             DebugLogger.error("unknown character id '" + id + "'");
             throw new RuntimeException("unknown character id '" + id + "'");
         }
-        return instance.charDataMap.get(id);
-    }
-
-    public static Player getPlayer(String name, String id) {
-        CharacterData characterData = getCharacterData(id);
+        CharacterData characterData = instance.charDataMap.get(id);
 
         DungeonObject.Params objectParams = new DungeonObject.Params(
                 "player", // id
@@ -77,34 +86,21 @@ public class CharacterGenerator {
         return new Player(objectParams, gainRatios, characterData.spells);
     }
 
-    private static final CharacterGenerator instance;
-    private Map<String, CharacterData> charDataMap;
-    private List<String> characterIds;
-
-    static {
-        try {
-            instance = new CharacterGenerator();
-        } catch (Exception e) {
-            DebugLogger.fatal(e);
-            throw new RuntimeException(e); // so intellij won't complain
-        }
-    }
-
     private CharacterGenerator() throws IOException {
         // Get file from resources folder
         InputStream tsvStream = this.getClass().getResourceAsStream("/data/characters.tsv");
         TsvReader reader = new TsvReader(tsvStream);
 
         charDataMap = new HashMap<>();
-        characterIds = new ArrayList<>();
+        characterData = new ArrayList<>();
         for (String[] line : reader.getData()) {
             CharacterData character = parseCharacter(line);
             charDataMap.put(character.id, character);
-            characterIds.add(character.id);
+            characterData.add(character);
         }
     }
 
-    public static List<SpellParams> parseSpells(String text) {
+    private static List<SpellParams> parseSpells(String text) {
         String[] tokens = text.split(",", -1);
         List<SpellParams> spellList = new ArrayList<>();
 
