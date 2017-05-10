@@ -19,13 +19,15 @@ public class Arrow implements Action {
     // Distinguish between firing a real arrow and a magical one.
     private final boolean usePhysicalArrow;
     private final boolean hitMagically;
+    private final SpellParams.Element element;
 
-    public Arrow(Actor attacker, Point target, AttackData attackData, boolean usePhysicalArrow, boolean hitMagically) {
+    public Arrow(Actor attacker, Point target, AttackData attackData, boolean usePhysicalArrow, SpellParams.Element element) {
         this.attacker = attacker;
         this.target = target;
         this.attackData = attackData;
         this.usePhysicalArrow = usePhysicalArrow;
-        this.hitMagically = hitMagically;
+        this.hitMagically = !element.equals(SpellParams.Element.NONE);
+        this.element = element;
     }
 
     @Override
@@ -56,7 +58,7 @@ public class Arrow implements Action {
                 int damage = attackData.dieRoll.rollDice(gs.rng) + attackData.plusToDam;
                 if (hitsTarget && damage > 0) {
                     backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, SpellParams.Element.DAMAGE, damage));
+                    events.addAll(AttackUtils.doHit(backend, attacker, defender, element, damage));
                     break;
                 }
             }

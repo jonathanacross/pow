@@ -124,8 +124,8 @@ public class AttackUtils {
             case CONFUSE:
                 // TODO: pull in spell params for duration/intensity?
                 if (backend.getGameState().rng.nextInt(defender.level + 1) == 0) {
-                    // TODO: monsters/player aren't currently affected by confusion.
-                    events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, 10, damage));
+                    // TODO: have this not affect the caster?
+                    events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, 15, 1));
                 } else {
                     backend.logMessage(attacker.getPronoun() + " failed to confuse " + defender.getPronoun());
                 }

@@ -150,6 +150,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public boolean canDig() { return false; }  // overridden in Player
     public boolean canSeeInvisible() { return true; }  // overridden in Player
     public boolean canSeeActor(Actor a) { return !a.invisible || this.canSeeInvisible(); }
+    public boolean isConfused() { return conditions.get(ConditionTypes.CONFUSE).getIntensity() > 0; }
 
     public void gainExperience(GameBackend backend, int experience, Actor source) {} // overridden in Player
 
