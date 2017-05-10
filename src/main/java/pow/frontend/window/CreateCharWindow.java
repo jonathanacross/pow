@@ -11,7 +11,6 @@ import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 import pow.frontend.utils.SaveUtils;
 import pow.util.MathUtils;
-import pow.util.Point;
 
 import java.awt.Color;
 import java.awt.Font;

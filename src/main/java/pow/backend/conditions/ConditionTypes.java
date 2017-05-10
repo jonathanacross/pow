@@ -7,6 +7,8 @@ import java.util.function.Function;
 public enum ConditionTypes {
     HEALTH(Conditions.Health::new),
     POISON(Conditions.Poison::new),
+    STUN(Conditions.Stun::new),
+    CONFUSE(Conditions.Confuse::new),
     SPEED(Conditions.Speed::new),
     TO_HIT(Conditions.ToHit::new),
     TO_DAM(Conditions.ToDam::new),

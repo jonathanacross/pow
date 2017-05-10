@@ -19,9 +19,7 @@ public class TextUtils {
         String prefixed = replacePrefix(name, count, definite);
 
         // fix pluralization
-        String result = count == 1 ? replaceSingular(prefixed) : replacePlural(prefixed);
-
-        return result;
+        return count == 1 ? replaceSingular(prefixed) : replacePlural(prefixed);
     }
 
     // returns just the thing, no extra words

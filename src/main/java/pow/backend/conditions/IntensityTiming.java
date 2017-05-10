@@ -1,7 +1,6 @@
 package pow.backend.conditions;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -55,12 +54,7 @@ public class IntensityTiming implements Serializable {
         }
 
         // clean up: remove any entries with time <= 0
-        Iterator<IntensityDuration> it = intensities.iterator();
-        while (it.hasNext()) {
-            if (it.next().turnsRemaining <= 0) {
-                it.remove();
-            }
-        }
+        intensities.removeIf(intensityDuration -> intensityDuration.turnsRemaining <= 0);
     }
 
     public void add(int intensity, int duration) {

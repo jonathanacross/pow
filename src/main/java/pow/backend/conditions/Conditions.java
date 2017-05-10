@@ -54,6 +54,26 @@ public class Conditions {
         }
     }
 
+    public static class Stun extends Condition implements Serializable {
+        public Stun(Actor actor) { super(actor); }
+
+        @Override String getStartMessage() { return (actor.getPronoun() + " are stunned!"); }
+        @Override String getEndMessage() { return (actor.getPronoun() + " are no longer stunned."); }
+        @Override String getIncreaseMessage() { return actor.getPronoun() + " feel more stunned."; }
+        @Override String getDecreaseMessage() { return actor.getPronoun() + " feel less stunned."; }
+        @Override String getExtendMessage() { return actor.getPronoun() + " feel stunned longer."; }
+    }
+
+    public static class Confuse extends Condition implements Serializable {
+        public Confuse(Actor actor) { super(actor); }
+
+        @Override String getStartMessage() { return(actor.getPronoun() + " are confused!"); }
+        @Override String getEndMessage() { return(actor.getPronoun() + " are no longer confused."); }
+        @Override String getIncreaseMessage() { return actor.getPronoun() + " feel more confused."; }
+        @Override String getDecreaseMessage() { return actor.getPronoun() + " feel less confused."; }
+        @Override String getExtendMessage() { return actor.getPronoun() + " feel confused longer."; }
+    }
+
     public static class Speed extends Condition implements Serializable {
         public Speed(Actor actor) {
             super(actor);

@@ -3,7 +3,6 @@ package pow.backend;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.conditions.ConditionTypes;
-import pow.backend.conditions.Conditions;
 import pow.util.DieRoll;
 import pow.util.Point;
 

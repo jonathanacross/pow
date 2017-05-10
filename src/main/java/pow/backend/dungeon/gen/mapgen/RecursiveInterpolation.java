@@ -144,8 +144,7 @@ public class RecursiveInterpolation implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(w, h, rng);
         GeneratorUtils.addItems(level, squares, numItems, rng);
 
-        GameMap map = new GameMap(name, level, squares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
-        return map;
+        return new GameMap(name, level, squares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
     }
 
     // fills in squares such that the open squares are connected

@@ -2,12 +2,14 @@ package pow.backend.action;
 
 import pow.backend.*;
 import pow.backend.actors.Actor;
+import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.gen.ArtifactData;
 import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AttackUtils {
@@ -93,17 +95,15 @@ public class AttackUtils {
         return GameEvent.Killed();
     }
 
-    public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender,
+    public static List<GameEvent> doSimpleHit(GameBackend backend, Actor attacker, Actor defender,
                                         SpellParams.Element element, int damage) {
-
         String damTypeString = "";
         if (element != SpellParams.Element.NONE && element != SpellParams.Element.DAMAGE) {
             damTypeString = " " + element.toString().toLowerCase();
         }
-
-        List<GameEvent> events = new ArrayList<>();
         int adjustedDamage = adjustDamage(damage, element, defender);
         backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + adjustedDamage + damTypeString + " damage");
+        List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Attacked());
         List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage);
         for (GameEvent event : damageEvents) {
@@ -112,6 +112,43 @@ public class AttackUtils {
             }
         }
         events.addAll(damageEvents);
+
         return events;
+    }
+
+    public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender,
+                                        SpellParams.Element element, int damage) {
+
+        List<GameEvent> events = new ArrayList<>();
+        switch (element) {
+            case CONFUSE:
+                // TODO: pull in spell params for duration/intensity?
+                if (backend.getGameState().rng.nextInt(defender.level + 1) == 0) {
+                    // TODO: monsters/player aren't currently affected by confusion.
+                    events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, 10, damage));
+                } else {
+                    backend.logMessage(attacker.getPronoun() + " failed to confuse " + defender.getPronoun());
+                }
+                break;
+            case SLEEP:
+                if (backend.getGameState().rng.nextInt(defender.level + 1) == 0) {
+                    defender.putToSleep(backend);
+                } else {
+                    backend.logMessage(attacker.getPronoun() + " failed to put " + defender.getPronoun() + " to sleep");
+                }
+                break;
+            case STUN:
+                // TODO: pull in spell params for duration/intensity?  damage is probably too much for intensity.
+                events.addAll(defender.conditions.get(ConditionTypes.STUN).start(backend, 15, damage));
+                events.addAll(doSimpleHit(backend, attacker, defender, element, damage));
+                break;
+            case POISON:
+                // TODO: pull in spell params for duration/intensity? -- intensity is too low to be meaningful for high-lev monsters. need tuning
+                events.addAll(defender.conditions.get(ConditionTypes.POISON).start(backend, 15, 1));
+                events.addAll(doSimpleHit(backend, attacker, defender, element, damage));
+            default:
+                events.addAll(doSimpleHit(backend, attacker, defender, element, damage));
+        }
+       return events;
     }
 }

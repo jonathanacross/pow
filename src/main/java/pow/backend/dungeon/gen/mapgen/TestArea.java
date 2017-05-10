@@ -98,8 +98,7 @@ public class TestArea implements MapGenerator {
             dungeonSquares[width-2][idx+1].items.add(ArtifactData.getArtifact(id));
         }
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
-        return map;
+        return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
     }
 
     private static final String[] TERRAIN_TYPES_TEST = {
@@ -187,7 +186,6 @@ public class TestArea implements MapGenerator {
                 downstairsFeatureId,
                 rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
-        return map;
+        return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
     }
 }

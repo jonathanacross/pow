@@ -106,6 +106,11 @@ public class Monster extends Actor implements Serializable {
         return super.takeDamage(backend, damage);
     }
 
+    @Override
+    public void putToSleep(GameBackend backend) {
+        updateState(ActorState.SLEEPING, backend);
+    }
+
     private List<SpellParams> getCastableSpells(GameState gs, Actor target) {
         List<SpellParams> castableSpells = new ArrayList<>();
         for (SpellParams spell : this.spells) {
