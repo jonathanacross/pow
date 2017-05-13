@@ -19,7 +19,7 @@ public class SpellAi {
             case ARROW: return targetVisibleAndWithinRange(spell, actor, gs, target);
             case PHASE: return shouldCastPhase();
             case HEAL: return shouldCastHeal(actor);
-            case BALL: return shouldCastBall(spell, actor, gs, target);
+            case BALL: return shouldCastBall(actor, gs, target);
             case BOLT: return targetVisibleAndWithinRange(spell, actor, gs, target);
             case BREATH: return targetVisibleAndWithinRange(spell, actor, gs, target);
             case QUAKE: return shouldCastQuake(spell, actor, target);
@@ -36,12 +36,9 @@ public class SpellAi {
         return dist2 <= spell.size * spell.size;
     }
 
-    private static boolean shouldCastBall(SpellParams spell, Actor actor, GameState gs, Actor target) {
+    private static boolean shouldCastBall(Actor actor, GameState gs, Actor target) {
         if (target == null) return false;
-        if (!actorHasLineOfSight(actor, gs, target.loc)) return false;
-        int dist2 = MathUtils.dist2(actor.loc, target.loc);
-        // don't cast the spell if we're really close; we'll hurt ourselves!
-        return dist2 > spell.size * spell.size;
+        return actorHasLineOfSight(actor, gs, target.loc);
     }
 
     private static boolean shouldCastQuake(SpellParams spell, Actor actor, Actor target) {

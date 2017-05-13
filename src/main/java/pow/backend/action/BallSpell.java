@@ -41,8 +41,13 @@ public class BallSpell implements Action {
         return visibleTarget;
     }
 
-    private static List<Point> getBallArea(GameState gameState, Point center, int radius) {
-        return SpellUtils.getFieldOfView(gameState, center, radius, Metric.euclideanMetric);
+    private List<Point> getBallArea(GameState gameState, Point center, int radius) {
+        List<Point> hitSquares = SpellUtils.getFieldOfView(gameState, center, radius, Metric.euclideanMetric);
+        hitSquares.removeIf( (Point p) -> {
+            Actor target = gameState.getCurrentMap().actorAt(p.x, p.y);
+            return (target != null) && (target.friendly == actor.friendly);
+        } );
+        return hitSquares;
     }
 
     @Override
@@ -67,12 +72,11 @@ public class BallSpell implements Action {
 
         // hit everything in the large ball once
         List<Point> hitSquares = getBallArea(gs, visibleTarget, spellParams.size);
-        int damage = spellParams.getAmount(actor);
-
+        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, actor, backend.getGameState().rng);
         for (Point s : hitSquares) {
             Actor m = gs.getCurrentMap().actorAt(s.x, s.y);
             if (m != null) {
-                events.addAll(AttackUtils.doHit(backend, actor, m, spellParams.element, damage));
+                events.addAll(AttackUtils.doHit(backend, actor, m, hitParams));
             }
         }
 

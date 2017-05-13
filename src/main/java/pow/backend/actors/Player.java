@@ -273,25 +273,10 @@ public class Player extends Actor implements Serializable, LightSource {
         return expBreak - experience;
     }
 
-    // stat gain formulas: here are initial scale constants
-    //        mage    adventurer    warrior    dragm    rogue
-    // str    0.9    1    1.1    1.1    0.9
-    // dex    0.9    1    1.1    1.2    1.1
-    // int    1.3    1    0.7    0.9    1
-    // con    0.9    1    1.1    1.2    1
-    // total    4    4    4    4.4    4
-    //
-    // Then, stat = scale*(level + 10)
-    // from here, can get  HP/MP by one of:
-    // innate HP = 0.55 str^2 - 6.94*str + 23  (nice quadratic, like it better than exponential)
-    // innate MP = 0.51 int^2 - 8.00*int + 37
-    // hp or mp = 0.5 * stat^2 - 7*stat + 30  <- pretty nice, and works all right for both
-
-
     private void gainLevel(GameBackend backend) {
         backend.logMessage("congrats, you gained a level!");
         level++;
-        updateStats();  // will update MaxHP,
+        updateStats();
     }
 
     public boolean hasBowEquipped() {

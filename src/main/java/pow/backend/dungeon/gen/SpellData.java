@@ -53,12 +53,15 @@ public class SpellData {
         SpellParams.Element element;
         SpellParams.PowerStat powerStat;
         int size;  // related to size of area affected by this spell (for area spells)
-        int amtBase;
-        int amtDelta;  // total value for this spell will be amtBase + amtDelta*level
+        int duration;
+        double primaryAmtBase;
+        double primaryAmtDelta;  // total value for this spell will be amtBase + amtDelta*level
+        double secondaryAmtBase;
+        double secondaryAmtDelta;
 
 
-        if (line.length != 11) {
-            throw new IllegalArgumentException("Expected 11 fields, but had " + line.length
+        if (line.length != 14) {
+            throw new IllegalArgumentException("Expected 14 fields, but had " + line.length
                     + ". Fields = \n" + String.join(",", line));
         }
 
@@ -70,13 +73,17 @@ public class SpellData {
             spellType = SpellParams.SpellType.valueOf(line[4].toUpperCase().replace(" ", "_"));
             element = SpellParams.Element.valueOf(line[5].toUpperCase().replace(" ", "_"));
             size = Integer.parseInt(line[6]);
-            amtBase = Integer.parseInt(line[7]);
-            amtDelta = Integer.parseInt(line[8]);
-            powerStat = SpellParams.PowerStat.valueOf(line[9].toUpperCase().replace(" ", "_"));
-            description = line[10];
+            duration = Integer.parseInt(line[7]);
+            primaryAmtBase = Double.parseDouble(line[8]);
+            primaryAmtDelta = Double.parseDouble(line[9]);
+            secondaryAmtBase = Double.parseDouble(line[10]);
+            secondaryAmtDelta = Double.parseDouble(line[11]);
+            powerStat = SpellParams.PowerStat.valueOf(line[12].toUpperCase().replace(" ", "_"));
+            description = line[13];
 
-            return new SpellParams( id, name, description, minLevel, requiredMana,
-                    spellType, element, powerStat, size, amtBase, amtDelta);
+            return new SpellParams(id, name, description, minLevel, requiredMana,
+                    spellType, element, powerStat, size, duration, primaryAmtBase, primaryAmtDelta,
+                    secondaryAmtBase, secondaryAmtDelta);
         } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
         }

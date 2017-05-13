@@ -3,7 +3,7 @@ package pow.backend.behavior;
 import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.action.Action;
-import pow.backend.action.Move;
+import pow.backend.action.MoveRequest;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonFeature;
@@ -97,7 +97,7 @@ public class RunBehavior implements Behavior {
     @Override
     public Action getAction() {
         stepCount++;
-        return new Move(player, direction.dx, direction.dy, true);
+        return new MoveRequest(player, direction.dx, direction.dy, true);
     }
 
     // See if the player can take one step while in a corridor.

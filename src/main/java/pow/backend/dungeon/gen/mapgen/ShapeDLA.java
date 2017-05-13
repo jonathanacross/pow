@@ -76,8 +76,7 @@ public class ShapeDLA implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
-        GameMap map = new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
-        return map;
+        return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
     }
 
     private Shape genOutline(int dungeonWidth, int dungeonHeight, Random rng) {

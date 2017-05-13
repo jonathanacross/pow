@@ -113,34 +113,44 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public int getHealth() { return health; }
     public int getMaxMana() { return baseStats.maxMana; }
     public int getMana() { return mana; }
-    public int getDefense() { return baseStats.defense + conditions.get(ConditionTypes.DEFENSE).getIntensity(); }
+    public int getDefense() {
+        return Math.max(0, baseStats.defense +
+                conditions.get(ConditionTypes.DEFENSE).getIntensity() -
+                conditions.get(ConditionTypes.STUN).getIntensity());
+    }
     public int getSpeed() { return baseStats.speed + conditions.get(ConditionTypes.SPEED).getIntensity(); }
 
     public AttackData getPrimaryAttack() {
         return new AttackData(
                 baseStats.meleeDieRoll,
-                baseStats.meleeToHit + conditions.get(ConditionTypes.TO_HIT).getIntensity(),
+                Math.max(0, baseStats.meleeToHit +
+                        conditions.get(ConditionTypes.TO_HIT).getIntensity() -
+                        conditions.get(ConditionTypes.STUN).getIntensity()),
                 baseStats.meleeToDam + conditions.get(ConditionTypes.TO_DAM).getIntensity());
     }
     public AttackData getSecondaryAttack() {
         return new AttackData(
                 baseStats.rangedDieRoll,
-                baseStats.rangedToHit + conditions.get(ConditionTypes.TO_HIT).getIntensity(),
+                Math.max(0,baseStats.rangedToHit + conditions.get(ConditionTypes.TO_HIT).getIntensity() -
+                        conditions.get(ConditionTypes.STUN).getIntensity()),
                 baseStats.rangedToDam + conditions.get(ConditionTypes.TO_DAM).getIntensity());
     }
 
     public List<GameEvent> takeDamage(GameBackend backend, int damage) {
         List<GameEvent> events = new ArrayList<>();
         this.health -= damage;
+        events.add(GameEvent.DungeonUpdated());
         if (this.health < 0) {
             events.add(AttackUtils.doDie(backend, this));
         }
         return events;
     }
 
+    public void putToSleep(GameBackend backend) { } // overridden in Monster
     public boolean canDig() { return false; }  // overridden in Player
     public boolean canSeeInvisible() { return true; }  // overridden in Player
     public boolean canSeeActor(Actor a) { return !a.invisible || this.canSeeInvisible(); }
+    public boolean isConfused() { return conditions.get(ConditionTypes.CONFUSE).getIntensity() > 0; }
 
     public void gainExperience(GameBackend backend, int experience, Actor source) {} // overridden in Player
 

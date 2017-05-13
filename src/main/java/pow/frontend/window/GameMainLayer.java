@@ -170,7 +170,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void tryCastSpell(GameState gs) {
         frontend.open(
-                new SpellChoiceWindow(432, 100, this.backend, this.frontend,
+                new SpellChoiceWindow(332, 100, this.backend, this.frontend,
                         "Cast which spell?",
                         gs.player.spells,
                         (Integer choice) -> {
@@ -192,14 +192,14 @@ public class GameMainLayer extends AbstractWindow {
 
         KeyInput input = KeyUtils.getKeyInput(e);
         switch (input) {
-            case EAST: backend.tellPlayer(new Move(gs.player, 1, 0)); break;
-            case WEST: backend.tellPlayer(new Move(gs.player, -1, 0)); break;
-            case SOUTH: backend.tellPlayer(new Move(gs.player, 0, 1)); break;
-            case NORTH: backend.tellPlayer(new Move(gs.player, 0, -1)); break;
-            case NORTH_WEST: backend.tellPlayer(new Move(gs.player, -1, -1)); break;
-            case NORTH_EAST: backend.tellPlayer(new Move(gs.player, 1, -1)); break;
-            case SOUTH_WEST: backend.tellPlayer(new Move(gs.player, -1, 1)); break;
-            case SOUTH_EAST: backend.tellPlayer(new Move(gs.player, 1, 1)); break;
+            case EAST: backend.tellPlayer(new MoveRequest(gs.player, 1, 0)); break;
+            case WEST: backend.tellPlayer(new MoveRequest(gs.player, -1, 0)); break;
+            case SOUTH: backend.tellPlayer(new MoveRequest(gs.player, 0, 1)); break;
+            case NORTH: backend.tellPlayer(new MoveRequest(gs.player, 0, -1)); break;
+            case NORTH_WEST: backend.tellPlayer(new MoveRequest(gs.player, -1, -1)); break;
+            case NORTH_EAST: backend.tellPlayer(new MoveRequest(gs.player, 1, -1)); break;
+            case SOUTH_WEST: backend.tellPlayer(new MoveRequest(gs.player, -1, 1)); break;
+            case SOUTH_EAST: backend.tellPlayer(new MoveRequest(gs.player, 1, 1)); break;
 
             case RUN_EAST: backend.tellPlayer(new RunBehavior(gs.player, Direction.E)); break;
             case RUN_WEST: backend.tellPlayer(new RunBehavior(gs.player, Direction.W)); break;
@@ -347,7 +347,7 @@ public class GameMainLayer extends AbstractWindow {
             return;
         }
 
-        backend.tellPlayer(new Arrow(gameState.player, target, gameState.player.getSecondaryAttack(), true, false));
+        backend.tellPlayer(new Arrow(gameState.player, target, gameState.player.getSecondaryAttack()));
     }
 
     private void startLooking(GameState gameState) {

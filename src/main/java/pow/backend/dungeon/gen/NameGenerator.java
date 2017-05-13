@@ -46,7 +46,7 @@ public class NameGenerator {
 
     private static List<String> getNames(String resource) throws IOException {
         // Get file from resources folder
-        InputStream tsvStream = NameGenerator.class.getResourceAsStream("/data/names.tsv");
+        InputStream tsvStream = NameGenerator.class.getResourceAsStream(resource);
         TsvReader reader = new TsvReader(tsvStream);
 
         List<String> names = new ArrayList<>();

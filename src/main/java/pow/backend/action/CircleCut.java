@@ -47,13 +47,13 @@ public class CircleCut implements Action {
                     SpellUtils.getEffectColor(spellParams.element),
                     dir);
             List<Point> squares = getHitSquares(attacker.loc.x, attacker.loc.y, dir, spellParams.size, fovSquareSet);
+            AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker, backend.getGameState().rng);
 
             for (Point p : squares) {
                 Actor defender = map.actorAt(p.x, p.y);
                 if (defender != null) {
-                    int damage = spellParams.getAmount(attacker);
                     backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, spellParams.element, damage));
+                    events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
                 }
             }
             events.add(GameEvent.Effect(new DungeonEffect(effectId, squares)));

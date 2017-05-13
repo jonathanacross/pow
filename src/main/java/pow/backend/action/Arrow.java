@@ -16,16 +16,11 @@ public class Arrow implements Action {
     private final Actor attacker;
     private final Point target;
     private final AttackData attackData;
-    // Distinguish between firing a real arrow and a magical one.
-    private final boolean usePhysicalArrow;
-    private final boolean hitMagically;
 
-    public Arrow(Actor attacker, Point target, AttackData attackData, boolean usePhysicalArrow, boolean hitMagically) {
+    public Arrow(Actor attacker, Point target, AttackData attackData) {
         this.attacker = attacker;
         this.target = target;
         this.attackData = attackData;
-        this.usePhysicalArrow = usePhysicalArrow;
-        this.hitMagically = hitMagically;
     }
 
     @Override
@@ -49,14 +44,11 @@ public class Arrow implements Action {
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
-                boolean hitsTarget = true;
-                if (!hitMagically) {
-                    hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
-                }
+                boolean hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
                 int damage = attackData.dieRoll.rollDice(gs.rng) + attackData.plusToDam;
                 if (hitsTarget && damage > 0) {
                     backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, SpellParams.Element.DAMAGE, damage));
+                    events.addAll(AttackUtils.doHit(backend, attacker, defender, new AttackUtils.HitParams(damage)));
                     break;
                 }
             }
@@ -65,7 +57,7 @@ public class Arrow implements Action {
             events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
         }
 
-        if (usePhysicalArrow && (attacker == gs.player)) {
+        if (attacker == gs.player) {
             DungeonItem arrows = gs.player.findArrows();
             int count = arrows.count - 1;
             gs.player.inventory.removeOneItem(arrows);

@@ -2,6 +2,7 @@ package pow.backend.action;
 
 import pow.backend.*;
 import pow.backend.actors.Actor;
+import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.gen.ArtifactData;
 import pow.backend.dungeon.gen.GeneratorUtils;
@@ -9,6 +10,7 @@ import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class AttackUtils {
     public static double hitProb(int toHit, int defense) {
@@ -93,17 +95,15 @@ public class AttackUtils {
         return GameEvent.Killed();
     }
 
-    public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender,
+    public static List<GameEvent> doSimpleHit(GameBackend backend, Actor attacker, Actor defender,
                                         SpellParams.Element element, int damage) {
-
         String damTypeString = "";
         if (element != SpellParams.Element.NONE && element != SpellParams.Element.DAMAGE) {
             damTypeString = " " + element.toString().toLowerCase();
         }
-
-        List<GameEvent> events = new ArrayList<>();
         int adjustedDamage = adjustDamage(damage, element, defender);
         backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + adjustedDamage + damTypeString + " damage");
+        List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Attacked());
         List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage);
         for (GameEvent event : damageEvents) {
@@ -112,6 +112,66 @@ public class AttackUtils {
             }
         }
         events.addAll(damageEvents);
+
         return events;
+    }
+
+    public static class HitParams {
+        public final SpellParams.Element element;
+        public final int damage;
+        // needed for some types of hits, such as poison, that have lingering effects
+        public final int duration;
+        public final int intensity;
+
+        public HitParams(SpellParams.Element element, int damage, int duration, int intensity) {
+            this.element = element;
+            this.damage = damage;
+            this.duration = duration;
+            this.intensity = intensity;
+        }
+
+        // plain physical hit
+        public HitParams(int damage) {
+            this(SpellParams.Element.NONE, damage, 0, 0);
+        }
+
+        public HitParams(SpellParams spellParams, Actor actor, Random rng) {
+            this(spellParams.element,
+                    spellParams.getPrimaryAmount(actor).rollDice(rng),
+                    spellParams.duration,
+                    spellParams.getSecondaryAmount(actor));
+        }
+    }
+
+    public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender, HitParams hitParams) {
+
+        List<GameEvent> events = new ArrayList<>();
+        switch (hitParams.element) {
+            case CONFUSE:
+                if (backend.getGameState().rng.nextInt(defender.level + 1) == 0) {
+                    // TODO: have this not affect the caster?
+                    events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, hitParams.duration, hitParams.intensity));
+                } else {
+                    backend.logMessage(attacker.getPronoun() + " failed to confuse " + defender.getPronoun());
+                }
+                break;
+            case SLEEP:
+                if (backend.getGameState().rng.nextInt(defender.level + 1) == 0) {
+                    defender.putToSleep(backend);
+                } else {
+                    backend.logMessage(attacker.getPronoun() + " failed to put " + defender.getPronoun() + " to sleep");
+                }
+                break;
+            case STUN:
+                events.addAll(defender.conditions.get(ConditionTypes.STUN).start(backend, hitParams.duration, hitParams.intensity));
+                events.addAll(doSimpleHit(backend, attacker, defender, hitParams.element, hitParams.damage));
+                break;
+            case POISON:
+                events.addAll(defender.conditions.get(ConditionTypes.POISON).start(backend, hitParams.duration, hitParams.intensity));
+                events.addAll(doSimpleHit(backend, attacker, defender, hitParams.element, hitParams.damage));
+            default:
+                events.addAll(doSimpleHit(backend, attacker, defender, hitParams.element, hitParams.damage));
+        }
+       return events;
     }
 }

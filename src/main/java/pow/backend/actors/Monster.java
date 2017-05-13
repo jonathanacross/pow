@@ -106,6 +106,11 @@ public class Monster extends Actor implements Serializable {
         return super.takeDamage(backend, damage);
     }
 
+    @Override
+    public void putToSleep(GameBackend backend) {
+        updateState(ActorState.SLEEPING, backend);
+    }
+
     private List<SpellParams> getCastableSpells(GameState gs, Actor target) {
         List<SpellParams> castableSpells = new ArrayList<>();
         for (SpellParams spell : this.spells) {
@@ -125,6 +130,10 @@ public class Monster extends Actor implements Serializable {
     }
 
     private Action trackTarget(GameState gs, Point target) {
+        if (isConfused()) {
+            return doConfused(gs);
+        }
+
         if (flags.erratic) {
             // move randomly
             return movement.wander(this, gs);
@@ -136,6 +145,10 @@ public class Monster extends Actor implements Serializable {
 
         // try to track the target
         return movement.moveTowardTarget(this, gs, target);
+    }
+
+    private Action doConfused(GameState gs) {
+        return movement.wander(this, gs);
     }
 
     private Action doWander(GameBackend backend) {
@@ -165,6 +178,11 @@ public class Monster extends Actor implements Serializable {
 
     private Action doDumbAwake(GameBackend backend) {
         GameState gs = backend.getGameState();
+
+        if (isConfused()) {
+            return doConfused(gs);
+        }
+
         Actor closestEnemy = movement.findNearestEnemy(this, gs);
 
         // if nothing nearby, then fall asleep
@@ -190,6 +208,11 @@ public class Monster extends Actor implements Serializable {
 
     private Action doAttack(GameBackend backend) {
         GameState gs = backend.getGameState();
+
+        if (isConfused()) {
+            return doConfused(gs);
+        }
+
         Actor closestEnemy = movement.findNearestEnemy(this, gs);
 
         // if nothing nearby, then just wander
@@ -215,6 +238,7 @@ public class Monster extends Actor implements Serializable {
 
     private Action doSleep(GameBackend backend) {
         GameState gs = backend.getGameState();
+
         Actor closestEnemy = movement.findNearestEnemy(this, gs);
         if (enemyIsWithinRange(closestEnemy, 3) ||
                 enemyIsWithinRange(gs.player, 3)) {
@@ -244,6 +268,11 @@ public class Monster extends Actor implements Serializable {
 
     private Action doAfraid(GameBackend backend) {
         GameState gs = backend.getGameState();
+
+        if (isConfused()) {
+            return doConfused(gs);
+        }
+
         Actor closestEnemy = movement.findNearestEnemy(this, gs);
 
         // if nothing nearby, then stop being afraid.

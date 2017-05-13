@@ -28,7 +28,7 @@ public class QuakeSpell implements Action {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
 
-        int damage = spellParams.getAmount(actor);
+        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, actor, backend.getGameState().rng);
         String effectName = DungeonEffect.getEffectName(
                 DungeonEffect.EffectType.SMALL_BALL,
                 SpellUtils.getEffectColor(spellParams.element),
@@ -39,7 +39,7 @@ public class QuakeSpell implements Action {
             for (Point s : hitSquares) {
                 Actor m = gs.getCurrentMap().actorAt(s.x, s.y);
                 if (m != null) {
-                    events.addAll(AttackUtils.doHit(backend, actor, m, spellParams.element, damage));
+                    events.addAll(AttackUtils.doHit(backend, actor, m, hitParams));
                 }
             }
         }

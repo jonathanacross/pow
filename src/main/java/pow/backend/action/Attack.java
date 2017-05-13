@@ -2,7 +2,6 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
-import pow.backend.SpellParams;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 
@@ -34,7 +33,7 @@ public class Attack implements Action {
             if (damage == 0) {
                 backend.logMessage(attacker.getPronoun() + " misses " + target.getPronoun());
             } else {
-                events.addAll(AttackUtils.doHit(backend, attacker, target, SpellParams.Element.DAMAGE, damage));
+                events.addAll(AttackUtils.doHit(backend, attacker, target, new AttackUtils.HitParams(damage)));
             }
         }
         return ActionResult.Succeeded(events);

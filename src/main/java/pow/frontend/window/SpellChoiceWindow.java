@@ -20,8 +20,7 @@ public class SpellChoiceWindow extends AbstractWindow {
                              String message,
                              List<SpellParams> spells,
                              Consumer<Integer> callback) {
-        super(new WindowDim(x, y, 350,
-                60 + FONT_SIZE * spells.size()),
+        super( new WindowDim(x, y, 550, 60 + FONT_SIZE * spells.size()),
                 true, backend, frontend);
         this.message = message;
         this.spells = spells;

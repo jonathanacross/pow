@@ -11,13 +11,16 @@ import pow.util.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BoltSpell implements Action {
-
+// Spell that casts various types of arrows.  There's a fair amount of code
+// in common with the Arrow Action, but the parameters for hitting, doing damage,
+// and losing physical arrows are different enough that it's not worth combining
+// them.
+public class ArrowSpell implements Action {
     private final Actor attacker;
     private final Point target;
     private final SpellParams spellParams;
 
-    public BoltSpell(Actor attacker, Point target, SpellParams spellParams) {
+    public ArrowSpell(Actor attacker, Point target, SpellParams spellParams) {
         this.attacker = attacker;
         this.target = target;
         this.spellParams = spellParams;
@@ -36,8 +39,8 @@ public class BoltSpell implements Action {
 
         List<Point> ray = Bresenham.makeRay(attacker.loc, target, spellParams.size + 1);
         String effectId = DungeonEffect.getEffectName(
-                DungeonEffect.EffectType.BOLT,
-                SpellUtils.getEffectColor(spellParams.element),
+                DungeonEffect.EffectType.ARROW,
+                DungeonEffect.EffectColor.NONE,
                 Direction.getDir(attacker.loc, target));
 
         ray.remove(0); // remove the attacker from the path of the arrow.
@@ -47,13 +50,14 @@ public class BoltSpell implements Action {
             if (defender != null) {
                 backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
                 events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+                break;
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
             if (map.map[p.x][p.y].blockAir()) break;
             events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
         }
-        events.add(GameEvent.DungeonUpdated());
 
+        events.add(GameEvent.DungeonUpdated());
         return ActionResult.Succeeded(events);
     }
 
