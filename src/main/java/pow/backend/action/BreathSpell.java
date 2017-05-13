@@ -44,7 +44,7 @@ public class BreathSpell implements Action {
 
         // hit everything in the large area once
         List<Point> hitSquares = getBreathArea(gs, actor.loc, target, spellParams.size);
-        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, actor);
+        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, actor, backend.getGameState().rng);
         for (Point s : hitSquares) {
             Actor m = gs.getCurrentMap().actorAt(s.x, s.y);
             if (m != null) {

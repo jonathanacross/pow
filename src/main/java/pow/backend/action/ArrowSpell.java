@@ -44,7 +44,7 @@ public class ArrowSpell implements Action {
                 Direction.getDir(attacker.loc, target));
 
         ray.remove(0); // remove the attacker from the path of the arrow.
-        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker);
+        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker, backend.getGameState().rng);
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {

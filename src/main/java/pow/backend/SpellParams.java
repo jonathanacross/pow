@@ -2,6 +2,7 @@ package pow.backend;
 
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
+import pow.backend.actors.StatComputations;
 import pow.backend.conditions.ConditionTypes;
 import pow.util.DieRoll;
 import pow.util.Point;
@@ -64,9 +65,9 @@ public class SpellParams implements Serializable {
     private final PowerStat powerStat;
     public final int size;  // related to size of area affected by this spell (for area spells)
     public final int duration; // how long the effect lacks (for poison, buffing spells, etc)
-    private final double primaryAmtBase;
-    private final double primaryAmtDelta;  // total value for this spell will be primaryAmtBase + primaryAmtDelta*level
-    private final double secondaryAmtBase;
+    private final double primaryAmtBase;  // primary amount will be a die roll
+    private final double primaryAmtDelta;
+    private final double secondaryAmtBase;  // secondary amount is fixed
     private final double secondaryAmtDelta;
     public final boolean requiresTarget;
 
@@ -105,7 +106,7 @@ public class SpellParams implements Serializable {
                 spellType == SpellType.BREATH);
     }
 
-    private int getAmount(Actor actor, double base, double delta, PowerStat powerStat) {
+    private double getAmount(Actor actor, double base, double delta, PowerStat powerStat) {
         double multiplier = 0.0;
         switch (powerStat) {
             case NONE:
@@ -127,35 +128,35 @@ public class SpellParams implements Serializable {
                 multiplier = actor.baseStats.constitution;
                 break;
         }
-        return (int) Math.round(base + delta * multiplier);
+        return base + delta * multiplier;
     }
 
-    public int getPrimaryAmount(Actor actor) {
-        return getAmount(actor, primaryAmtBase, primaryAmtDelta, powerStat);
+    public DieRoll getPrimaryAmount(Actor actor) {
+        return StatComputations.findClosestDieRoll(getAmount(actor, primaryAmtBase, primaryAmtDelta, powerStat));
     }
 
     public int getSecondaryAmount(Actor actor) {
-        return getAmount(actor, secondaryAmtBase, secondaryAmtDelta, powerStat);
+        return (int) Math.round(getAmount(actor, secondaryAmtBase, secondaryAmtDelta, powerStat));
     }
 
 
     public String getDescription(Actor actor) {
         return description
-                .replace("{1}", Integer.toString(getPrimaryAmount(actor)))
-                .replace("{2}", Integer.toString(getPrimaryAmount(actor)))
+                .replace("{1}", getPrimaryAmount(actor).toString())
+                .replace("{2}", Integer.toString(getSecondaryAmount(actor)))
                 .replace("{s}", Integer.toString(size))
                 .replace("{t}", Integer.toString(duration));
     }
 
     public static Action buildAction(SpellParams spellParams, Actor actor, Point target) {
-        int primaryAmount = spellParams.getPrimaryAmount(actor);
+        int secondaryAmount = spellParams.getSecondaryAmount(actor);
         switch (spellParams.spellType) {
             case ARROW:
                 return new SpellAction(new ArrowSpell(actor, target, spellParams), spellParams);
             case PHASE:
                 return new SpellAction(new Phase(actor, spellParams.size), spellParams);
             case HEAL:
-                return new SpellAction(new Heal(actor, primaryAmount), spellParams);
+                return new SpellAction(new Heal(actor, secondaryAmount), spellParams);
             case BALL:
                 return new SpellAction(new BallSpell(actor, target, spellParams), spellParams);
             case BOLT:
@@ -170,22 +171,18 @@ public class SpellParams implements Serializable {
                 return new SpellAction(new CircleCut(actor, spellParams), spellParams);
             case BOOST_ARMOR:
                 return new SpellAction(new StartCondition(actor,
-                        Collections.singletonList(ConditionTypes.DEFENSE), 30,
-                        spellParams.getPrimaryAmount(actor)), spellParams);
+                        Collections.singletonList(ConditionTypes.DEFENSE), spellParams.duration, secondaryAmount), spellParams);
             case BOOST_ATTACK:
                 return new SpellAction(new StartCondition(actor,
-                        Collections.singletonList(ConditionTypes.TO_HIT), 30,
-                        spellParams.getPrimaryAmount(actor)), spellParams);
+                        Collections.singletonList(ConditionTypes.TO_HIT), spellParams.duration, secondaryAmount), spellParams);
             case RESIST_ELEMENTS:
                 return new SpellAction(new StartCondition(actor,
                         Arrays.asList(ConditionTypes.RESIST_COLD, ConditionTypes.RESIST_FIRE,
                                 ConditionTypes.RESIST_ACID, ConditionTypes.RESIST_POIS,
-                                ConditionTypes.RESIST_ELEC), 30,
-                        spellParams.getPrimaryAmount(actor)), spellParams);
+                                ConditionTypes.RESIST_ELEC), spellParams.duration, secondaryAmount), spellParams);
             case SPEED:
                 return new SpellAction(new StartCondition(actor,
-                        Collections.singletonList(ConditionTypes.SPEED), 30,
-                        spellParams.getPrimaryAmount(actor)), spellParams);
+                        Collections.singletonList(ConditionTypes.SPEED), spellParams.duration, secondaryAmount), spellParams);
         }
         throw new RuntimeException("tried to create unknown spell from " + spellParams.name);
     }

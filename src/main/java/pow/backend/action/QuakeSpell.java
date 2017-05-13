@@ -28,7 +28,7 @@ public class QuakeSpell implements Action {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
 
-        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, actor);
+        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, actor, backend.getGameState().rng);
         String effectName = DungeonEffect.getEffectName(
                 DungeonEffect.EffectType.SMALL_BALL,
                 SpellUtils.getEffectColor(spellParams.element),

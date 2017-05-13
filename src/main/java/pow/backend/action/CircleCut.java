@@ -47,7 +47,7 @@ public class CircleCut implements Action {
                     SpellUtils.getEffectColor(spellParams.element),
                     dir);
             List<Point> squares = getHitSquares(attacker.loc.x, attacker.loc.y, dir, spellParams.size, fovSquareSet);
-            AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker);
+            AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker, backend.getGameState().rng);
 
             for (Point p : squares) {
                 Actor defender = map.actorAt(p.x, p.y);

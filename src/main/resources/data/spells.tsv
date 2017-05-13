@@ -17,8 +17,8 @@ fire bolt	fire bolt	10	9	bolt	fire	8	0	12	2	0	0	intelligence	range {s}, dam {1}
 poison bolt	poison bolt	13	11	bolt	poison	8	10	14	2	1	1	intelligence	range {s}, dam {1}, poison {2} for {t} turns
 acid bolt	acid bolt	16	13	bolt	acid	8	0	16	2	0	0	intelligence	range {s}, dam {1}
 backstab	backstab	6	5	bolt	damage	1	0	0	5	0	0	attack	range {s}, dam {1}
-boost armor	boost armor	5	5	boost armor	none	0	30	0	1	0	0	intelligence	{1} to armor for {t} turns
-boost attack	boost attack	5	5	boost attack	none	0	30	0	1	0	0	intelligence	{1} to hit for {t} turns
+boost armor	boost armor	5	5	boost armor	none	0	30	0	0	0	1	intelligence	{2} to armor for {t} turns
+boost attack	boost attack	5	5	boost attack	none	0	30	0	0	0	1	intelligence	{2} to hit for {t} turns
 ice breath	ice breath	8	6	breath	ice	5	0	6	2	0	0	intelligence	range {s}, dam {1}
 lightning breath	lightning breath	8	8	breath	lightning	5	0	8	2	0	0	intelligence	range {s}, dam {1}
 acid breath	acid breath	8	10	breath	acid	6	0	10	2	0	0	intelligence	range {s}, dam {1}
@@ -27,13 +27,13 @@ fire breath	fire breath	10	14	breath	fire	7	0	14	2	0	0	intelligence	range {s}, d
 rift	rift	6	20	breath	stun	7	10	40	1	0	1	strength	range {s}, dam {1}, stun {2} for {t} turns
 chain lightning	chain lightning	7	20	chain	lightning	7	0	30	2	0	0	intelligence	range {s}, dam {1}
 circle cut	circle cut	3	5	circle cut	damage	1	0	0	1	0	0	attack	range {s}, dam {1}
-lesser heal	lesser heal	4	3	heal	none	0	0	10	0	0	0	intelligence	heal {1}% / {1} hp
-greater heal	greater heal	7	15	heal	none	0	0	30	0	0	0	intelligence	heal {1}% / {1} hp
-blink	blink	2	5	phase	none	3	0	0	0	0	0	intelligence	max dist {1}
-phase	phase	2	5	phase	none	7	0	0	0	0	0	intelligence	max dist {1}
-teleport	teleport	4	10	phase	none	50	0	0	0	0	0	intelligence	max dist {1}
+lesser heal	lesser heal	4	3	heal	none	0	0	0	0	10	0	intelligence	heal {2}% / {2} hp
+greater heal	greater heal	7	15	heal	none	0	0	0	0	30	0	intelligence	heal {2}% / {2} hp
+blink	blink	2	5	phase	none	3	0	0	0	0	0	intelligence	max dist {s}
+phase	phase	2	5	phase	none	7	0	0	0	0	0	intelligence	max dist {s}
+teleport	teleport	4	10	phase	none	50	0	0	0	0	0	intelligence	max dist {s}
 stun	stun	5	20	quake	stun	2	10	0	1	0	1	attack	radius {s}, dam {1}, stun {2} for {t} turns
 quake	quake	7	20	quake	damage	5	0	30	1	0	0	strength	radius {s}, dam {1}
-resist elements	resist elements	5	5	resist elements	none	0	30	1	0	0	0	intelligence	+{1} res. elements for {t} turns
-haste	speed	10	15	speed	none	0	30	1	0	0	0	none	+{1} to speed for {t} turns
-speed	speed	15	40	speed	none	0	30	2	0	0	0	none	+{1} to speed for {t} turns
+resist elements	resist elements	5	5	resist elements	none	0	30	0	0	1	0	intelligence	+{2} res. elements for {t} turns
+haste	speed	10	15	speed	none	0	30	0	0	1	0	none	+{2} to speed for {t} turns
+speed	speed	15	40	speed	none	0	30	0	0	2	0	none	+{2} to speed for {t} turns

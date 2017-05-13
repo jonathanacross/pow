@@ -10,6 +10,7 @@ import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class AttackUtils {
     public static double hitProb(int toHit, int defense) {
@@ -134,9 +135,9 @@ public class AttackUtils {
             this(SpellParams.Element.NONE, damage, 0, 0);
         }
 
-        public HitParams(SpellParams spellParams, Actor actor) {
+        public HitParams(SpellParams spellParams, Actor actor, Random rng) {
             this(spellParams.element,
-                    spellParams.getPrimaryAmount(actor),
+                    spellParams.getPrimaryAmount(actor).rollDice(rng),
                     spellParams.duration,
                     spellParams.getSecondaryAmount(actor));
         }
