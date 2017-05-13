@@ -34,7 +34,7 @@ public class Attack implements Action {
             if (damage == 0) {
                 backend.logMessage(attacker.getPronoun() + " misses " + target.getPronoun());
             } else {
-                events.addAll(AttackUtils.doHit(backend, attacker, target, SpellParams.Element.DAMAGE, damage));
+                events.addAll(AttackUtils.doHit(backend, attacker, target, new AttackUtils.HitParams(damage)));
             }
         }
         return ActionResult.Succeeded(events);

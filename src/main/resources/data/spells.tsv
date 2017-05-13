@@ -1,39 +1,39 @@
-#id	name	min level	mana	effect	spell type	size	amtBase	amtDelta	stat	description
-arrow	arrow	1	1	arrow	damage	8	2	1	attack	dam {}
-magic arrow	magic arrow	1	1	arrow	damage	8	2	1	intelligence	dam {}
-poison arrow	poison arrow	2	5	arrow	poison	8	3	1	dexterity	dam {}
-confuse monsters	confuse monsters	3	8	ball	confuse	2	0	0	none	
-ice ball	ice ball	5	10	ball	ice	2	12	1	intelligence	dam {}
-lightning ball	lightning ball	8	14	ball	lightning	3	18	1	intelligence	dam {}
-fireball	fireball	11	18	ball	fire	2	24	2	intelligence	dam {}
-poison cloud	poison cloud	14	22	ball	poison	3	30	1	intelligence	dam {}
-acid ball	acid ball	17	26	ball	acid	2	36	2	intelligence	dam {}
-mana cloud	mana cloud	18	30	ball	damage	4	36	1	intelligence	dam {}
-sleep monster	sleep monster	1	3	bolt	sleep	8	0	0	none	
-lance	lance	2	5	bolt	damage	4	0	2	attack	dam {}
-ice bolt	ice bolt	4	5	bolt	ice	8	8	2	intelligence	dam {}
-lightning bolt	lightning bolt	7	7	bolt	lightning	8	10	2	intelligence	dam {}
-fire bolt	fire bolt	10	9	bolt	fire	8	12	2	intelligence	dam {}
-poison bolt	poison bolt	13	11	bolt	poison	8	14	2	intelligence	dam {}
-acid bolt	acid bolt	16	13	bolt	acid	8	16	2	intelligence	dam {}
-backstab	backstab	6	5	bolt	damage	1	0	5	attack	dam {}
-boost armor	boost armor	5	5	boost armor	none	0	0	1	intelligence	{} to armor
-boost attack	boost attack	5	5	boost attack	none	0	0	1	intelligence	{} to hit
-ice breath	ice breath	8	6	breath	ice	5	6	2	intelligence	dam {}
-lightning breath	lightning breath	8	8	breath	lightning	5	8	2	intelligence	dam {}
-acid breath	acid breath	8	10	breath	acid	6	10	2	intelligence	dam {}
-poison breath	poison breath	10	12	breath	poison	6	12	2	intelligence	dam {}
-fire breath	fire breath	10	14	breath	fire	7	14	2	intelligence	dam {}
-rift	rift	6	20	breath	stun	7	40	1	strength	dam {} + stun
-chain lightning	chain lightning	7	20	chain	lightning	7	30	2	intelligence	dam {}
-circle cut	circle cut	3	5	circle cut	damage	1	0	1	attack	dam {}
-lesser heal	lesser heal	4	3	heal	none	0	10	0	intelligence	{}% / {} hp
-greater heal	greater heal	7	15	heal	none	0	30	0	intelligence	{}% / {} hp
-blink	blink	2	5	phase	none	0	3	0	intelligence	max dist {}
-phase	phase	2	5	phase	none	0	7	0	intelligence	max dist {}
-teleport	teleport	4	10	phase	none	0	50	0	intelligence	
-stun	stun	5	20	quake	stun	2	0	1	attack	dam {} + stun
-quake	quake	7	20	quake	damage	5	30	1	strength	dam {}
-resist elements	resist elements	5	5	resist elements	none	0	1	0	intelligence	res +{}
-haste	speed	10	15	speed	none	0	1	0	none	+{} to speed
-speed	speed	15	40	speed	none	0	2	0	none	+{} to speed
+#id	name	min level	mana	effect	spell type	size	duration	primaryAmtBase	primaryAmtDelta	secondaryAmtBase	secondaryAmtDelta	stat	description
+arrow	arrow	1	1	arrow	damage	8	0	2	1	0	0	attack	dam {}
+magic arrow	magic arrow	1	1	arrow	damage	8	0	2	1	0	0	intelligence	dam {}
+poison arrow	poison arrow	2	5	arrow	poison	8	10	3	1	0	1	dexterity	dam {}
+confuse monsters	confuse monsters	3	8	ball	confuse	2	15	0	0	0	0	none	
+ice ball	ice ball	5	10	ball	ice	2	0	12	1	0	0	intelligence	dam {}
+lightning ball	lightning ball	8	14	ball	lightning	3	0	18	1	0	0	intelligence	dam {}
+fireball	fireball	11	18	ball	fire	2	0	24	2	0	0	intelligence	dam {}
+poison cloud	poison cloud	14	22	ball	poison	3	0	30	1	0	1	intelligence	dam {}
+acid ball	acid ball	17	26	ball	acid	2	0	36	2	0	0	intelligence	dam {}
+mana cloud	mana cloud	18	30	ball	damage	4	0	36	1	0	0	intelligence	dam {}
+sleep monster	sleep monster	1	3	bolt	sleep	8	15	0	0	0	0	none	
+lance	lance	2	5	bolt	damage	4	0	0	2	0	0	attack	dam {}
+ice bolt	ice bolt	4	5	bolt	ice	8	0	8	2	0	0	intelligence	dam {}
+lightning bolt	lightning bolt	7	7	bolt	lightning	8	0	10	2	0	0	intelligence	dam {}
+fire bolt	fire bolt	10	9	bolt	fire	8	0	12	2	0	0	intelligence	dam {}
+poison bolt	poison bolt	13	11	bolt	poison	8	10	14	2	1	1	intelligence	dam {}
+acid bolt	acid bolt	16	13	bolt	acid	8	0	16	2	0	0	intelligence	dam {}
+backstab	backstab	6	5	bolt	damage	1	0	0	5	0	0	attack	dam {}
+boost armor	boost armor	5	5	boost armor	none	0	30	0	1	0	0	intelligence	{} to armor
+boost attack	boost attack	5	5	boost attack	none	0	30	0	1	0	0	intelligence	{} to hit
+ice breath	ice breath	8	6	breath	ice	5	0	6	2	0	0	intelligence	dam {}
+lightning breath	lightning breath	8	8	breath	lightning	5	0	8	2	0	0	intelligence	dam {}
+acid breath	acid breath	8	10	breath	acid	6	0	10	2	0	0	intelligence	dam {}
+poison breath	poison breath	10	12	breath	poison	6	10	12	2	1	1	intelligence	dam {}
+fire breath	fire breath	10	14	breath	fire	7	0	14	2	0	0	intelligence	dam {}
+rift	rift	6	20	breath	stun	7	10	40	1	0	1	strength	dam {} + stun
+chain lightning	chain lightning	7	20	chain	lightning	7	0	30	2	0	0	intelligence	dam {}
+circle cut	circle cut	3	5	circle cut	damage	1	0	0	1	0	0	attack	dam {}
+lesser heal	lesser heal	4	3	heal	none	0	0	10	0	0	0	intelligence	{}% / {} hp
+greater heal	greater heal	7	15	heal	none	0	0	30	0	0	0	intelligence	{}% / {} hp
+blink	blink	2	5	phase	none	0	0	3	0	0	0	intelligence	max dist {}
+phase	phase	2	5	phase	none	0	0	7	0	0	0	intelligence	max dist {}
+teleport	teleport	4	10	phase	none	0	0	50	0	0	0	intelligence	
+stun	stun	5	20	quake	stun	2	10	0	1	0	1	attack	dam {} + stun
+quake	quake	7	20	quake	damage	5	0	30	1	0	0	strength	dam {}
+resist elements	resist elements	5	5	resist elements	none	0	30	1	0	0	0	intelligence	res +{}
+haste	speed	10	15	speed	none	0	30	1	0	0	0	none	+{} to speed
+speed	speed	15	40	speed	none	0	30	2	0	0	0	none	+{} to speed

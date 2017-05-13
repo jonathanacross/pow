@@ -347,7 +347,7 @@ public class GameMainLayer extends AbstractWindow {
             return;
         }
 
-        backend.tellPlayer(new Arrow(gameState.player, target, gameState.player.getSecondaryAttack(), true, SpellParams.Element.NONE));
+        backend.tellPlayer(new Arrow(gameState.player, target, gameState.player.getSecondaryAttack()));
     }
 
     private void startLooking(GameState gameState) {

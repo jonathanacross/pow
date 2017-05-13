@@ -41,12 +41,12 @@ public class BoltSpell implements Action {
                 Direction.getDir(attacker.loc, target));
 
         ray.remove(0); // remove the attacker from the path of the arrow.
+        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker);
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
-                int damage = spellParams.getAmount(attacker);
                 backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
-                events.addAll(AttackUtils.doHit(backend, attacker, defender, spellParams.element, damage));
+                events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
             if (map.map[p.x][p.y].blockAir()) break;

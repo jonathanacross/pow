@@ -116,16 +116,41 @@ public class AttackUtils {
         return events;
     }
 
-    public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender,
-                                        SpellParams.Element element, int damage) {
+    public static class HitParams {
+        public final SpellParams.Element element;
+        public final int damage;
+        // needed for some types of hits, such as poison, that have lingering effects
+        public final int duration;
+        public final int intensity;
+
+        public HitParams(SpellParams.Element element, int damage, int duration, int intensity) {
+            this.element = element;
+            this.damage = damage;
+            this.duration = duration;
+            this.intensity = intensity;
+        }
+
+        // plain physical hit
+        public HitParams(int damage) {
+            this(SpellParams.Element.NONE, damage, 0, 0);
+        }
+
+        public HitParams(SpellParams spellParams, Actor actor) {
+            this(spellParams.element,
+                    spellParams.getPrimaryAmount(actor),
+                    spellParams.duration,
+                    spellParams.getSecondaryAmount(actor));
+        }
+    }
+
+    public static List<GameEvent> doHit(GameBackend backend, Actor attacker, Actor defender, HitParams hitParams) {
 
         List<GameEvent> events = new ArrayList<>();
-        switch (element) {
+        switch (hitParams.element) {
             case CONFUSE:
-                // TODO: pull in spell params for duration/intensity?
                 if (backend.getGameState().rng.nextInt(defender.level + 1) == 0) {
                     // TODO: have this not affect the caster?
-                    events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, 15, 1));
+                    events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, hitParams.duration, hitParams.intensity));
                 } else {
                     backend.logMessage(attacker.getPronoun() + " failed to confuse " + defender.getPronoun());
                 }
@@ -138,16 +163,14 @@ public class AttackUtils {
                 }
                 break;
             case STUN:
-                // TODO: pull in spell params for duration/intensity?  damage is probably too much for intensity.
-                events.addAll(defender.conditions.get(ConditionTypes.STUN).start(backend, 15, damage));
-                events.addAll(doSimpleHit(backend, attacker, defender, element, damage));
+                events.addAll(defender.conditions.get(ConditionTypes.STUN).start(backend, hitParams.duration, hitParams.intensity));
+                events.addAll(doSimpleHit(backend, attacker, defender, hitParams.element, hitParams.damage));
                 break;
             case POISON:
-                // TODO: pull in spell params for duration/intensity? -- intensity is too low to be meaningful for high-lev monsters. need tuning
-                events.addAll(defender.conditions.get(ConditionTypes.POISON).start(backend, 15, 1));
-                events.addAll(doSimpleHit(backend, attacker, defender, element, damage));
+                events.addAll(defender.conditions.get(ConditionTypes.POISON).start(backend, hitParams.duration, hitParams.intensity));
+                events.addAll(doSimpleHit(backend, attacker, defender, hitParams.element, hitParams.damage));
             default:
-                events.addAll(doSimpleHit(backend, attacker, defender, element, damage));
+                events.addAll(doSimpleHit(backend, attacker, defender, hitParams.element, hitParams.damage));
         }
        return events;
     }

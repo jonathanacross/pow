@@ -243,6 +243,7 @@ public class MonsterGenerator {
 
                 // these don't really make the monster harder/easier.
                 case BOOST_ARMOR:
+                case BOOST_ATTACK:
                 case HEAL:
                 case RESIST_ELEMENTS:
                 case SPEED: typeFactor = 1.0; break;

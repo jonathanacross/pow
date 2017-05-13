@@ -12,15 +12,19 @@ import pow.util.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Arrow implements Action {
+// Spell that casts various types of arrows.  There's a fair amount of code
+// in common with the Arrow Action, but the parameters for hitting, doing damage,
+// and losing physical arrows are different enough that it's not worth combining
+// them.
+public class ArrowSpell implements Action {
     private final Actor attacker;
     private final Point target;
-    private final AttackData attackData;
+    private final SpellParams spellParams;
 
-    public Arrow(Actor attacker, Point target, AttackData attackData) {
+    public ArrowSpell(Actor attacker, Point target, SpellParams spellParams) {
         this.attacker = attacker;
         this.target = target;
-        this.attackData = attackData;
+        this.spellParams = spellParams;
     }
 
     @Override
@@ -34,38 +38,27 @@ public class Arrow implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        List<Point> ray = Bresenham.makeRay(attacker.loc, target, GameConstants.ACTOR_ARROW_FIRE_RANGE + 1);
+        List<Point> ray = Bresenham.makeRay(attacker.loc, target, spellParams.size + 1);
         String effectId = DungeonEffect.getEffectName(
                 DungeonEffect.EffectType.ARROW,
                 DungeonEffect.EffectColor.NONE,
                 Direction.getDir(attacker.loc, target));
 
         ray.remove(0); // remove the attacker from the path of the arrow.
+        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker);
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
-                boolean hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
-                int damage = attackData.dieRoll.rollDice(gs.rng) + attackData.plusToDam;
-                if (hitsTarget && damage > 0) {
-                    backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, new AttackUtils.HitParams(damage)));
-                    break;
-                }
+                backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
+                events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+                break;
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
             if (map.map[p.x][p.y].blockAir()) break;
             events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
         }
 
-        if (attacker == gs.player) {
-            DungeonItem arrows = gs.player.findArrows();
-            int count = arrows.count - 1;
-            gs.player.inventory.removeOneItem(arrows);
-            backend.logMessage("you have " + count + " arrows left");
-        }
-
         events.add(GameEvent.DungeonUpdated());
-
         return ActionResult.Succeeded(events);
     }
 

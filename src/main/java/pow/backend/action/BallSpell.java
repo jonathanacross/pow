@@ -67,12 +67,11 @@ public class BallSpell implements Action {
 
         // hit everything in the large ball once
         List<Point> hitSquares = getBallArea(gs, visibleTarget, spellParams.size);
-        int damage = spellParams.getAmount(actor);
-
+        AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, actor);
         for (Point s : hitSquares) {
             Actor m = gs.getCurrentMap().actorAt(s.x, s.y);
             if (m != null) {
-                events.addAll(AttackUtils.doHit(backend, actor, m, spellParams.element, damage));
+                events.addAll(AttackUtils.doHit(backend, actor, m, hitParams));
             }
         }
 
