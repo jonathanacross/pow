@@ -9,7 +9,6 @@ import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class AttackUtils {

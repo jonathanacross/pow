@@ -140,19 +140,20 @@ public class SpellParams implements Serializable {
 
 
     public String getDescription(Actor actor) {
-        // TODO: allow primary/secondary/size/duration in these strings
-        return description.replace("{}", Integer.toString(getPrimaryAmount(actor)));
+        return description
+                .replace("{1}", Integer.toString(getPrimaryAmount(actor)))
+                .replace("{2}", Integer.toString(getPrimaryAmount(actor)))
+                .replace("{s}", Integer.toString(size))
+                .replace("{t}", Integer.toString(duration));
     }
 
     public static Action buildAction(SpellParams spellParams, Actor actor, Point target) {
         int primaryAmount = spellParams.getPrimaryAmount(actor);
-        int secondaryAmount = spellParams.getSecondaryAmount(actor);
-        AttackData attackData = new AttackData(new DieRoll(0,0), primaryAmount, primaryAmount);
         switch (spellParams.spellType) {
             case ARROW:
                 return new SpellAction(new ArrowSpell(actor, target, spellParams), spellParams);
             case PHASE:
-                return new SpellAction(new Phase(actor, primaryAmount), spellParams);
+                return new SpellAction(new Phase(actor, spellParams.size), spellParams);
             case HEAL:
                 return new SpellAction(new Heal(actor, primaryAmount), spellParams);
             case BALL:

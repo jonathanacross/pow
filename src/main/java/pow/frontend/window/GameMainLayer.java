@@ -170,7 +170,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void tryCastSpell(GameState gs) {
         frontend.open(
-                new SpellChoiceWindow(432, 100, this.backend, this.frontend,
+                new SpellChoiceWindow(332, 100, this.backend, this.frontend,
                         "Cast which spell?",
                         gs.player.spells,
                         (Integer choice) -> {

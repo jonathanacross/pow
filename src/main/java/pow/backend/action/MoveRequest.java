@@ -1,19 +1,8 @@
 package pow.backend.action;
 
-import pow.backend.ActionParams;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
-import pow.backend.dungeon.DungeonEffect;
-import pow.backend.dungeon.DungeonExit;
-import pow.backend.dungeon.DungeonFeature;
-import pow.backend.dungeon.DungeonTerrain;
-import pow.backend.event.GameEvent;
-import pow.util.Point;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 // class for the player to request movement -- may return a different movement
 // if the player is confused
