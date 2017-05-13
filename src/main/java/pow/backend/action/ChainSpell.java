@@ -65,7 +65,7 @@ public class ChainSpell implements Action {
                     SpellUtils.getEffectColor(spellParams.element),
                     Direction.getDir(curr, target));
 
-            ray.remove(0); // remove the attacker from the path of the arrow.
+            ray.remove(0); // remove the attacker from the path
             AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker, backend.getGameState().rng);
             for (Point p : ray) {
                 Actor defender = map.actorAt(p.x, p.y);

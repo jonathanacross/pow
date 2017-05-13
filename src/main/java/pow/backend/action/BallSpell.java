@@ -41,8 +41,13 @@ public class BallSpell implements Action {
         return visibleTarget;
     }
 
-    private static List<Point> getBallArea(GameState gameState, Point center, int radius) {
-        return SpellUtils.getFieldOfView(gameState, center, radius, Metric.euclideanMetric);
+    private List<Point> getBallArea(GameState gameState, Point center, int radius) {
+        List<Point> hitSquares = SpellUtils.getFieldOfView(gameState, center, radius, Metric.euclideanMetric);
+        hitSquares.removeIf( (Point p) -> {
+            Actor target = gameState.getCurrentMap().actorAt(p.x, p.y);
+            return (target != null) && (target.friendly == actor.friendly);
+        } );
+        return hitSquares;
     }
 
     @Override
