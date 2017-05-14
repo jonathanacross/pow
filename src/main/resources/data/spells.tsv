@@ -1,12 +1,12 @@
 #id	name	min level	mana	effect	spell type	size	duration	primaryAmtBase	primaryAmtDelta	secondaryAmtBase	secondaryAmtDelta	stat	description
 arrow	arrow	1	1	arrow	damage	8	0	2	1	0	0	attack	range {s}, dam {1}
 magic arrow	magic arrow	1	1	arrow	damage	8	0	2	1	0	0	intelligence	range {s}, dam {1}
-poison arrow	poison arrow	2	5	arrow	poison	8	10	3	1	0	1	dexterity	range {s}, dam {1}, poison {2} for {t} turns
+poison arrow	poison arrow	2	4	arrow	poison	8	10	3	1	0	0.2	dexterity	range {s}, dam {1}, poison {2} for {t} turns
 confuse monsters	confuse monsters	3	8	ball	confuse	2	15	0	0	0	0	none	radius {s}, {t} turns
 ice ball	ice ball	5	10	ball	ice	2	0	12	1	0	0	intelligence	radius {s}, dam {1}
 lightning ball	lightning ball	8	14	ball	lightning	3	0	18	1	0	0	intelligence	radius {s}, dam {1}
 fireball	fireball	11	18	ball	fire	2	0	24	2	0	0	intelligence	radius {s}, dam {1}
-poison cloud	poison cloud	14	22	ball	poison	3	10	30	1	0	1	intelligence	radius {s}, dam {1}, poison {2} for {t} turns
+poison cloud	poison cloud	14	22	ball	poison	3	10	30	1	0	0.4	intelligence	radius {s}, dam {1}, poison {2} for {t} turns
 acid ball	acid ball	17	26	ball	acid	2	0	36	2	0	0	intelligence	radius {s}, dam {1}
 mana cloud	mana cloud	18	30	ball	damage	4	0	36	1	0	0	intelligence	radius {s}, dam {1}
 sleep monster	sleep monster	1	3	bolt	sleep	8	15	0	0	0	0	none	range {s}, sleep for {t} turns
@@ -14,7 +14,7 @@ lance	lance	2	5	bolt	damage	4	0	0	2	0	0	attack	range {s}, dam {1}
 ice bolt	ice bolt	4	5	bolt	ice	8	0	8	2	0	0	intelligence	range {s}, dam {1}
 lightning bolt	lightning bolt	7	7	bolt	lightning	8	0	10	2	0	0	intelligence	range {s}, dam {1}
 fire bolt	fire bolt	10	9	bolt	fire	8	0	12	2	0	0	intelligence	range {s}, dam {1}
-poison bolt	poison bolt	13	11	bolt	poison	8	10	14	2	1	1	intelligence	range {s}, dam {1}, poison {2} for {t} turns
+poison bolt	poison bolt	13	11	bolt	poison	8	10	14	2	1	0.3	intelligence	range {s}, dam {1}, poison {2} for {t} turns
 acid bolt	acid bolt	16	13	bolt	acid	8	0	16	2	0	0	intelligence	range {s}, dam {1}
 backstab	backstab	6	5	bolt	damage	1	0	0	5	0	0	attack	range {s}, dam {1}
 boost armor	boost armor	5	5	boost armor	none	0	30	0	0	0	1	intelligence	{2} to armor for {t} turns
@@ -22,9 +22,9 @@ boost attack	boost attack	5	5	boost attack	none	0	30	0	0	0	1	intelligence	{2} to
 ice breath	ice breath	8	6	breath	ice	5	0	6	2	0	0	intelligence	range {s}, dam {1}
 lightning breath	lightning breath	8	8	breath	lightning	5	0	8	2	0	0	intelligence	range {s}, dam {1}
 acid breath	acid breath	8	10	breath	acid	6	0	10	2	0	0	intelligence	range {s}, dam {1}
-poison breath	poison breath	10	12	breath	poison	6	10	12	2	1	1	intelligence	range {s}, dam {1}, poison {2} for {t} turns
+poison breath	poison breath	10	12	breath	poison	6	10	12	2	1	0.3	intelligence	range {s}, dam {1}, poison {2} for {t} turns
 fire breath	fire breath	10	14	breath	fire	7	0	14	2	0	0	intelligence	range {s}, dam {1}
-rift	rift	6	20	breath	stun	7	10	40	1	0	1	strength	range {s}, dam {1}, stun {2} for {t} turns
+rift	rift	6	20	breath	stun	7	10	40	1	0	0.3	strength	range {s}, dam {1}, stun {2} for {t} turns
 chain lightning	chain lightning	7	20	chain	lightning	7	0	30	2	0	0	intelligence	range {s}, dam {1}
 circle cut	circle cut	3	5	circle cut	damage	1	0	0	1	0	0	attack	range {s}, dam {1}
 lesser heal	lesser heal	4	3	heal	none	0	0	0	0	10	0	intelligence	heal {2}% / {2} hp
@@ -32,7 +32,7 @@ greater heal	greater heal	7	15	heal	none	0	0	0	0	30	0	intelligence	heal {2}% / {
 blink	blink	2	5	phase	none	3	0	0	0	0	0	intelligence	max dist {s}
 phase	phase	2	5	phase	none	7	0	0	0	0	0	intelligence	max dist {s}
 teleport	teleport	4	10	phase	none	50	0	0	0	0	0	intelligence	max dist {s}
-stun	stun	5	20	quake	stun	2	10	0	1	0	1	attack	radius {s}, dam {1}, stun {2} for {t} turns
+stun	stun	5	20	quake	stun	2	10	0	1	0	0.3	attack	radius {s}, dam {1}, stun {2} for {t} turns
 quake	quake	7	20	quake	damage	5	0	30	1	0	0	strength	radius {s}, dam {1}
 resist elements	resist elements	5	5	resist elements	none	0	30	0	0	1	0	intelligence	+{2} res. elements for {t} turns
 haste	speed	10	15	speed	none	0	30	0	0	1	0	none	+{2} to speed for {t} turns
