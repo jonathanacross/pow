@@ -1,4 +1,4 @@
-#id	name	description	flags	action
+#id	name	image	flags	action
 # floors				
 blue floor	floor	blue floor	blockWater,blockLava	
 charcoal floor	floor	charcoal floor	blockWater,blockLava	
@@ -19,6 +19,7 @@ wood floor	floor	wood floor	blockWater,blockLava
 big stone wall	stone wall	big stone wall	blockGround,blockAir,blockWater,blockLava	
 blue wall	stone wall	blue wall	blockGround,blockAir,blockWater,blockLava	
 brown stone wall	stone wall	brown stone wall	blockGround,blockAir,blockWater,blockLava	
+dark brick wall	stone wall	dark brick wall	blockGround,blockAir,blockWater,blockLava	
 green moss wall	mossy wall	green moss wall	blockGround,blockAir,blockWater,blockLava	
 hot stone wall	hot stone wall	hot stone wall	blockGround,blockAir,blockWater,blockLava	
 ice wall	ice wall	ice wall	blockGround,blockAir,blockWater,blockLava	
@@ -32,6 +33,7 @@ waves	waves	waves	blockGround,blockAir,blockWater,blockLava
 diggable big stone wall	diggable stone wall	diggable big stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::floor
 diggable blue wall	diggable stone wall	diggable blue wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::blue floor
 diggable brown stone wall	diggable stone wall	diggable brown stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::dark sand
+diggable dark brick wall	diggable stone wall	diggable dark brick wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::dark sand
 diggable green moss wall	diggable mossy wall	diggable green moss wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::dark sand
 diggable hot stone wall	diggable hot stone wall	diggable hot stone wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::cold lava floor
 diggable ice wall	diggable ice wall	diggable ice wall	diggable,actOnStep,blockGround,blockAir,blockWater,blockLava	modifyTerrain::ice floor
@@ -51,6 +53,7 @@ magic store	magic store	magic store	blockGround,blockAir,blockWater,blockLava
 weapon store	weapon store	weapon store	blockGround,blockAir,blockWater,blockLava	
 # misc				
 black pit	black pit	black pit	blockGround,blockLava,blockWater	
+nothing	nothing	black pit	blockGround,blockLava,blockWater,blockAir	
 area boundary	area boundary	black pit	actOnStep,blockGround,blockAir,blockWater,blockLava	moveToArea::
 dock	dock	dock	blockLava	
 lava	lava	lava	blockWater,blockGround	

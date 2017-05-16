@@ -48,6 +48,7 @@
 5	small red spiny	mammal			0		0	& small red spiny	small red spiny	An unusual lizard with a horn, covered with sharp spines.
 6	rock lizard	lizard			0		0	& rock lizard	rock lizard	A lizard with a hardened hide.
 6	yellow worm mass	jelly	erratic		0		0	& yellow worm mass	yellow worm mass	It is a large slimy mass of green worms.
+6	blue wizard	mage	boss,perfect	lesser heal,lightning bolt,magic arrow,blink	1	magic atlas	4	!The blue wizard	blue wizard	The reclusive blue wizard is known for his vast library of books and spells. He looks up at you in anger for disturbing his solace.
 6	yellow schweinhund	mammal	boss		1	water float	4	& yellow schweinhund	yellow schweinhund	A yellow schweinhund with sharp fangs and a long tail.
 6	Balthazar the Great	giant	boss,perfect,fearless	lance	0	pearl 3	6	!Balthazar the Great	Balthazar the Great	Balthazar is one of the world’s greatest kobold swordsmen, known for his feats at the battle of Arignor.
 8	dark elf mage	mage	perfect	blink,magic arrow,lightning bolt,lesser heal	0		1	& dark elf mage	dark elf mage	A dark elven figure, dressed all in black, hurling spells at you.

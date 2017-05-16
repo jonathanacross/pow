@@ -23,6 +23,8 @@ town2	21	3	N,E,S,W	3		town	town	outside,permLight		farmer,mangy leper,jester,beg
 forest2	22	3	N,E,S,W	3		recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
 forest3	23	3	N,E,S,W	3		recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
 forest4	24	3	N,E,S,W	3		recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
+blacktowerl1	24		U		forest2	premade	blacktowerl1,black tower	permLight		rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
+blacktowerl2	25		U		blacktowerl1	premade	blacktowerl2,black tower	permLight	blue wizard	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
 d3l1	25		D		forest4	rogue	0,dungeon			rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
 d3l2	26		D		d3l1	rogue	0,dungeon		yellow schweinhund	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
 d3l3	27		D		d3l2	rogue	0,dungeon			rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
