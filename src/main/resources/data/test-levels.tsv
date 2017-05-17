@@ -3,8 +3,8 @@ terrain	0					terrain test	basement	permLight
 #golddesert	30		S		terrain	recursiveInterpolation	gold desert	outside		goldfish,green fish,eel,pink jellyfish
 rogue	2		D		terrain	rogue	1,dungeon		white rat	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
 desert	30		N		terrain	recursiveInterpolation	desert	outside		gray wolf,brown scorpion
-blacktowerl1	24		U		desert	premade	blacktowerl1,black tower	permLight		rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
-blacktowerl2	25		U		blacktowerl1	premade	blacktowerl2,black tower	permLight	blue wizard	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
+blacktowerl1	24		U		desert	premade	blacktowerl1,black tower	permLight		bot,blue snake,blue beetle
+blacktowerl2	25		U		blacktowerl1	premade	blacktowerl2,black tower	permLight	blue wizard	bot,blue snake,blue beetle
 digdesert	25		E		terrain	recursiveInterpolation	dig desert	hot	white rat	blue ghost,pink ghost,evil eye
 #run	1		E		terrain	run test	dungeon			farmer,mangy leper,jester,beggar,salesman,yellow mushrooms
 #town	1		E		terrain	town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
