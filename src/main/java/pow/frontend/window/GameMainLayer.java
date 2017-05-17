@@ -186,6 +186,14 @@ public class GameMainLayer extends AbstractWindow {
         );
     }
 
+    private void tryShowMap(GameState gs) {
+        if (gs.player.hasMap()) {
+            frontend.open(frontend.worldMapWindow);
+        } else {
+            backend.logMessage("You don't have a map.");
+        }
+    }
+
     @Override
     public void processKey(KeyEvent e) {
         GameState gs = backend.getGameState();
@@ -224,7 +232,7 @@ public class GameMainLayer extends AbstractWindow {
             case FIRE: tryFire(gs); break;
             case MAGIC: tryCastSpell(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
-            case SHOW_WORLD_MAP: frontend.open(frontend.worldMapWindow); break;
+            case SHOW_WORLD_MAP: tryShowMap(gs); break;
             case KNOWLEDGE: showKnowledge(gs); break;
             case QUAFF: tryQuaff(gs); break;
             case WEAR: tryWear(gs); break;

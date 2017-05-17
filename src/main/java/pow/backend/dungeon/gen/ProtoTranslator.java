@@ -11,8 +11,20 @@ public class ProtoTranslator {
     private final Map<Integer, DungeonTerrain> terrainMap;
     private final Map<Integer, DungeonFeature> featureMap;
 
-    public DungeonTerrain getTerrain(int x) { return terrainMap.get(Constants.getTerrain(x)); }
-    public DungeonFeature getFeature(int x) { return featureMap.get(Constants.getFeature(x)); }
+    public DungeonTerrain getTerrain(int x) {
+        int terrainValue = Constants.getTerrain(x);
+        if (!terrainMap.containsKey(terrainValue)) {
+            throw new RuntimeException("couldn't translate terrain value " + terrainValue);
+        }
+        return terrainMap.get(terrainValue);
+    }
+    public DungeonFeature getFeature(int x) {
+        int featureValue = Constants.getFeature(x);
+        if (!featureMap.containsKey(featureValue)) {
+            throw new RuntimeException("couldn't translate feature value " + featureValue);
+        }
+        return featureMap.get(featureValue);
+    }
 
     public ProtoTranslator(Map<Integer, DungeonTerrain> terrainMap, Map<Integer, DungeonFeature> featureMap) {
         this.terrainMap = terrainMap;

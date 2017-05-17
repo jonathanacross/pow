@@ -21,11 +21,11 @@
 32x32	4	1	blue wall	terrain
 32x32	5	1	ice wall	feature
 32x32	6	1	hot stone wall	feature
-32x32	7	1	small stone wall	feature
-32x32	8	1	rock	feature
-32x32	9	1	tan rock	terrain
-32x32	10	1	snowy rock	feature
-32x32	11	1	lava	terrain
+32x32	7	1	dark brick wall	terrain
+32x32	8	1	small stone wall	feature
+32x32	9	1	rock	feature
+32x32	10	1	tan rock	terrain
+32x32	11	1	snowy rock	feature
 32x32	12	1	water 1	terrain
 32x32	13	1	water 2	terrain
 32x32	14	1	water 3	terrain
@@ -37,13 +37,13 @@
 32x32	4	2	diggable blue wall	terrain
 32x32	5	2	diggable ice wall	feature
 32x32	6	2	diggable hot stone wall	feature
-32x32	7	2	diggable small stone wall	feature
-32x32	8	2	diggable rock	feature
-32x32	9	2	diggable tan rock	terrain
-32x32	10	2	diggable snowy rock	feature
-32x32	11	2	black pit	terrain
-32x32	12	2	-:null:-	:null:
-32x32	13	2	-:null:-	:null:
+32x32	7	2	diggable dark brick wall	terrain
+32x32	8	2	diggable small stone wall	feature
+32x32	9	2	diggable rock	feature
+32x32	10	2	diggable tan rock	terrain
+32x32	11	2	diggable snowy rock	feature
+32x32	12	2	lava	terrain
+32x32	13	2	black pit	terrain
 32x32	14	2	-:null:-	:null:
 32x32	15	2	-:null:-	:null:
 32x32	0	3	open door	feature
@@ -53,8 +53,8 @@
 32x32	4	3	blue open door	feature
 32x32	5	3	ice open door	feature
 32x32	6	3	hot stone open door	feature
-32x32	7	3	open rock door	feature
-32x32	8	3	-:null:-	:null:
+32x32	7	3	dark brick open door	feature
+32x32	8	3	open rock door	feature
 32x32	9	3	-:null:-	:null:
 32x32	10	3	-:null:-	:null:
 32x32	11	3	-:null:-	:null:
@@ -69,10 +69,10 @@
 32x32	4	4	blue closed door	feature
 32x32	5	4	ice closed door	feature
 32x32	6	4	hot stone closed door	feature
-32x32	7	4	closed wood rock door	feature
-32x32	8	4	closed wood key rock door	feature
-32x32	9	4	closed wood pearl rock door	feature
-32x32	10	4	-:null:-	:null:
+32x32	7	4	dark brick closed door	feature
+32x32	8	4	closed wood rock door	feature
+32x32	9	4	closed wood key rock door	feature
+32x32	10	4	closed wood pearl rock door	feature
 32x32	11	4	dark door	feature
 32x32	12	4	inn	feature
 32x32	13	4	weapon shop	feature
@@ -85,10 +85,10 @@
 32x32	4	5	blue stairs up	feature
 32x32	5	5	ice stairs up	feature
 32x32	6	5	hot stone stairs up	feature
-32x32	7	5	closed metal rock door	feature
-32x32	8	5	closed metal key rock door	feature
-32x32	9	5	closed metal pearl rock door	feature
-32x32	10	5	-:null:-	:null:
+32x32	7	5	dark brick stairs up	feature
+32x32	8	5	closed metal rock door	feature
+32x32	9	5	closed metal key rock door	feature
+32x32	10	5	closed metal pearl rock door	feature
 32x32	11	5	-:null:-	:null:
 32x32	12	5	-:null:-	:null:
 32x32	13	5	-:null:-	:null:
@@ -101,7 +101,7 @@
 32x32	4	6	blue stairs down	feature
 32x32	5	6	ice stairs down	feature
 32x32	6	6	hot stone stairs down	feature
-32x32	7	6	-:null:-	:null:
+32x32	7	6	dark brick stairs down	feature
 32x32	8	6	-:null:-	:null:
 32x32	9	6	-:null:-	:null:
 32x32	10	6	-:null:-	:null:
@@ -112,9 +112,9 @@
 32x32	15	6	-:null:-	:null:
 32x32	0	7	teleport tile	feature
 32x32	1	7	dungeon entrance	feature
-32x32	2	7	debug	debug
-32x32	3	7	dock	terrain
-32x32	4	7	candle	feature
+32x32	2	7	tower	feature
+32x32	3	7	debug	debug
+32x32	4	7	dock	terrain
 32x32	5	7	big tree	feature
 32x32	6	7	sick big tree	feature
 32x32	7	7	gold tree	feature
@@ -136,425 +136,441 @@
 32x32	7	8	fountain	feature
 32x32	8	8	tombstone	feature
 32x32	9	8	wood chest	misc item
-32x32	10	8	red rune	misc item
-32x32	11	8	yellow rune	misc item
-32x32	12	8	green rune	misc item
-32x32	13	8	-:null:-	:null:
-32x32	14	8	-:null:-	:null:
-32x32	15	8	-:null:-	:null:
-32x32	0	9	redorange pearl	misc item
-32x32	1	9	orange pearl	misc item
-32x32	2	9	yellow pearl	misc item
-32x32	3	9	green pearl	misc item
-32x32	4	9	blue pearl	misc item
-32x32	5	9	indigo pearl	misc item
-32x32	6	9	violet pearl	misc item
-32x32	7	9	rose pearl	misc items
-32x32	8	9	magic statue	misc item
-32x32	9	9	lantern	misc item
-32x32	10	9	bright lantern	misc item
-32x32	11	9	magic key	misc item
-32x32	12	9	gas mask	misc item
-32x32	13	9	heat suit	misc item
-32x32	14	9	magic feather	misc item
-32x32	15	9	float	misc item
-32x32	0	10	magic pickaxe	misc item
-32x32	1	10	magic atlas	misc item
-32x32	2	10	glasses	misc item
-32x32	3	10	bag	misc item
-32x32	4	10	crooked staff	misc item
-32x32	5	10	shell	misc item
-32x32	6	10	mac plus	misc item
-32x32	7	10	rye	misc item
-32x32	8	10	beer	misc item
-32x32	9	10	ham	misc item
-32x32	10	10	bread	misc item
-32x32	11	10	-:null:-	:null:
-32x32	12	10	-:null:-	:null:
-32x32	13	10	-:null:-	:null:
-32x32	14	10	-:null:-	:null:
-32x32	15	10	-:null:-	:null:
-32x32	0	11	dagger	weapon
-32x32	1	11	main gauche	weapon
-32x32	2	11	short sword	weapon
-32x32	3	11	cutlass	weapon
-32x32	4	11	long sword	weapon
-32x32	5	11	broad sword	weapon
-32x32	6	11	blade of chaos	weapon
-32x32	7	11	short bow	bow
-32x32	8	11	long bow	bow
-32x32	9	11	gold longbow	bow
-32x32	10	11	crossbow	bow
-32x32	11	11	large crossbow	bow
-32x32	12	11	gold crossbow	bow
-32x32	13	11	arrow	bow
+32x32	10	8	bookcase	feature
+32x32	11	8	crate	feature
+32x32	12	8	throne	feature
+32x32	13	8	glass ball	feature
+32x32	14	8	red carpet	feature
+32x32	15	8	candle	feature
+32x32	0	9	candelabra	feature
+32x32	1	9	red curtain	feature
+32x32	2	9	blue curtain	feature
+32x32	3	9	green curtain	feature
+32x32	4	9	red rune	misc item
+32x32	5	9	yellow rune	misc item
+32x32	6	9	green rune	misc item
+32x32	7	9	-:null:-	:null:
+32x32	8	9	-:null:-	:null:
+32x32	9	9	-:null:-	:null:
+32x32	10	9	-:null:-	:null:
+32x32	11	9	-:null:-	:null:
+32x32	12	9	-:null:-	:null:
+32x32	13	9	-:null:-	:null:
+32x32	14	9	-:null:-	:null:
+32x32	15	9	-:null:-	:null:
+32x32	0	10	redorange pearl	misc item
+32x32	1	10	orange pearl	misc item
+32x32	2	10	yellow pearl	misc item
+32x32	3	10	green pearl	misc item
+32x32	4	10	blue pearl	misc item
+32x32	5	10	indigo pearl	misc item
+32x32	6	10	violet pearl	misc item
+32x32	7	10	rose pearl	misc items
+32x32	8	10	magic statue	misc item
+32x32	9	10	lantern	misc item
+32x32	10	10	bright lantern	misc item
+32x32	11	10	magic key	misc item
+32x32	12	10	gas mask	misc item
+32x32	13	10	heat suit	misc item
+32x32	14	10	magic feather	misc item
+32x32	15	10	float	misc item
+32x32	0	11	magic pickaxe	misc item
+32x32	1	11	magic atlas	misc item
+32x32	2	11	glasses	misc item
+32x32	3	11	bag	misc item
+32x32	4	11	crooked staff	misc item
+32x32	5	11	shell	misc item
+32x32	6	11	mac plus	misc item
+32x32	7	11	rye	misc item
+32x32	8	11	beer	misc item
+32x32	9	11	ham	misc item
+32x32	10	11	bread	misc item
+32x32	11	11	-:null:-	:null:
+32x32	12	11	-:null:-	:null:
+32x32	13	11	-:null:-	:null:
 32x32	14	11	-:null:-	:null:
 32x32	15	11	-:null:-	:null:
-32x32	0	12	cloak	armor
-32x32	1	12	fur cloak	armor
-32x32	2	12	blue cloak	armor
-32x32	3	12	purple cloak	armor
-32x32	4	12	light blue cloak	armor
-32x32	5	12	gloves	armor
-32x32	6	12	heavy gloves	armor
-32x32	7	12	green gloves	armor
-32x32	8	12	iron gloves	armor
-32x32	9	12	blue gloves	armor
-32x32	10	12	gold gloves	armor
-32x32	11	12	leather cap	armor
-32x32	12	12	hard leather cap	armor
-32x32	13	12	iron helmet	armor
-32x32	14	12	steel helmet	armor
-32x32	15	12	golden helmet	armor
-32x32	0	13	soft leather boots	armor
-32x32	1	13	hard leather boots	armor
-32x32	2	13	steel boots	armor
-32x32	3	13	blue boots	armor
-32x32	4	13	green boots	armor
-32x32	5	13	gold boots	armor
-32x32	6	13	leather shield	armor
-32x32	7	13	large shield	armor
-32x32	8	13	buckler	armor
-32x32	9	13	crystal shield	armor
-32x32	10	13	death shield	armor
-32x32	11	13	golden shield	armor
-32x32	12	13	-:null:-	:null:
-32x32	13	13	-:null:-	:null:
-32x32	14	13	-:null:-	:null:
-32x32	15	13	-:null:-	:null:
-32x32	0	14	robe	armor
-32x32	1	14	soft leather armor	armor
-32x32	2	14	hard leather armor	armor
-32x32	3	14	chain mail	armor
-32x32	4	14	plate mail	armor
-32x32	5	14	ceramic mail	armor
-32x32	6	14	augmented mail	armor
-32x32	7	14	dragon scale mail	armor
-32x32	8	14	-:null:-	:null:
-32x32	9	14	-:null:-	:null:
-32x32	10	14	-:null:-	:null:
-32x32	11	14	-:null:-	:null:
+32x32	0	12	dagger	weapon
+32x32	1	12	main gauche	weapon
+32x32	2	12	short sword	weapon
+32x32	3	12	cutlass	weapon
+32x32	4	12	long sword	weapon
+32x32	5	12	broad sword	weapon
+32x32	6	12	blade of chaos	weapon
+32x32	7	12	short bow	bow
+32x32	8	12	long bow	bow
+32x32	9	12	gold longbow	bow
+32x32	10	12	crossbow	bow
+32x32	11	12	large crossbow	bow
+32x32	12	12	gold crossbow	bow
+32x32	13	12	arrow	bow
+32x32	14	12	-:null:-	:null:
+32x32	15	12	-:null:-	:null:
+32x32	0	13	cloak	armor
+32x32	1	13	fur cloak	armor
+32x32	2	13	blue cloak	armor
+32x32	3	13	purple cloak	armor
+32x32	4	13	light blue cloak	armor
+32x32	5	13	gloves	armor
+32x32	6	13	heavy gloves	armor
+32x32	7	13	green gloves	armor
+32x32	8	13	iron gloves	armor
+32x32	9	13	blue gloves	armor
+32x32	10	13	gold gloves	armor
+32x32	11	13	leather cap	armor
+32x32	12	13	hard leather cap	armor
+32x32	13	13	iron helmet	armor
+32x32	14	13	steel helmet	armor
+32x32	15	13	golden helmet	armor
+32x32	0	14	soft leather boots	armor
+32x32	1	14	hard leather boots	armor
+32x32	2	14	steel boots	armor
+32x32	3	14	blue boots	armor
+32x32	4	14	green boots	armor
+32x32	5	14	gold boots	armor
+32x32	6	14	leather shield	armor
+32x32	7	14	large shield	armor
+32x32	8	14	buckler	armor
+32x32	9	14	crystal shield	armor
+32x32	10	14	death shield	armor
+32x32	11	14	golden shield	armor
 32x32	12	14	-:null:-	:null:
 32x32	13	14	-:null:-	:null:
 32x32	14	14	-:null:-	:null:
 32x32	15	14	-:null:-	:null:
-32x32	0	15	onyx amulet	amulet
-32x32	1	15	coral amulet	amulet
-32x32	2	15	amber amulet	amulet
-32x32	3	15	sapphire amulet	amulet
-32x32	4	15	stone amulet	amulet
-32x32	5	15	smoky quartz amulet	amulet
-32x32	6	15	aquamarine amulet	amulet
-32x32	7	15	-:null:-	:null:
-32x32	8	15	copper bracelet	bracelet
-32x32	9	15	silver bracelet	bracelet
-32x32	10	15	gold bracelet	bracelet
-32x32	11	15	red bracelet	bracelet
-32x32	12	15	green bracelet	bracelet
-32x32	13	15	blue bracelet	bracelet
-32x32	14	15	purple bracelet	bracelet
-32x32	15	15	black bracelet	bracelet
-32x32	0	16	copper ring	ring
-32x32	1	16	silver ring	ring
-32x32	2	16	gold ring	ring
-32x32	3	16	golddkblue ring	ring
-32x32	4	16	goldblue ring	ring
-32x32	5	16	goldred ring	ring
-32x32	6	16	goldgreen ring	ring
-32x32	7	16	platinum ring	ring
-32x32	8	16	adamantium ring	ring
-32x32	9	16	blue ring	ring
-32x32	10	16	green ring	ring
-32x32	11	16	red ring	ring
-32x32	12	16	black ring	ring
-32x32	13	16	white ring	ring
-32x32	14	16	-:null:-	:null:
-32x32	15	16	dark gray potion	potion
-32x32	0	17	small red potion	potion
-32x32	1	17	medium red potion	potion
-32x32	2	17	large red potion	potion
-32x32	3	17	small blue potion	potion
-32x32	4	17	medium blue potion	potion
-32x32	5	17	large blue potion	potion
-32x32	6	17	small purple potion	potion
-32x32	7	17	medium purple potion	potion
-32x32	8	17	large purple potion	potion
-32x32	9	17	small green potion	potion
-32x32	10	17	large green potion	potion
-32x32	11	17	small orange potion	potion
-32x32	12	17	large orange potion	potion
-32x32	13	17	small yellow potion	potion
-32x32	14	17	large yellow potion	potion
-32x32	15	17	white potion	potion
-32x32	0	18	copper	money
-32x32	1	18	silver	money
-32x32	2	18	gold	money
-32x32	3	18	platinum	money
-32x32	4	18	adamantium	money
-32x32	5	18	diamond	gem
-32x32	6	18	onyx	gem
-32x32	7	18	ruby	gem
-32x32	8	18	citrine	gem
-32x32	9	18	topaz	gem
-32x32	10	18	emerald	gem
-32x32	11	18	aquamarine	gem
-32x32	12	18	sapphire	gem
-32x32	13	18	amethyst	gem
-32x32	14	18	-:null:-	:null:
-32x32	15	18	-:null:-	:null:
-32x32	0	19	human_adventurer	human
-32x32	1	19	human_fighter	human
-32x32	2	19	human_mage	human
-32x32	3	19	human_wizard	human
-32x32	4	19	human_thief	human
-32x32	5	19	dragonmaster	human
-32x32	6	19	farmer	person
-32x32	7	19	gray dress person	person
-32x32	8	19	jester	person
-32x32	9	19	brown woman	person
-32x32	10	19	blonde man	person
-32x32	11	19	-:null:-	:null:
-32x32	12	19	-:null:-	:null:
-32x32	13	19	-:null:-	:null:
+32x32	0	15	robe	armor
+32x32	1	15	soft leather armor	armor
+32x32	2	15	hard leather armor	armor
+32x32	3	15	chain mail	armor
+32x32	4	15	plate mail	armor
+32x32	5	15	ceramic mail	armor
+32x32	6	15	augmented mail	armor
+32x32	7	15	dragon scale mail	armor
+32x32	8	15	-:null:-	:null:
+32x32	9	15	-:null:-	:null:
+32x32	10	15	-:null:-	:null:
+32x32	11	15	-:null:-	:null:
+32x32	12	15	-:null:-	:null:
+32x32	13	15	-:null:-	:null:
+32x32	14	15	-:null:-	:null:
+32x32	15	15	-:null:-	:null:
+32x32	0	16	onyx amulet	amulet
+32x32	1	16	coral amulet	amulet
+32x32	2	16	amber amulet	amulet
+32x32	3	16	sapphire amulet	amulet
+32x32	4	16	stone amulet	amulet
+32x32	5	16	smoky quartz amulet	amulet
+32x32	6	16	aquamarine amulet	amulet
+32x32	7	16	-:null:-	:null:
+32x32	8	16	copper bracelet	bracelet
+32x32	9	16	silver bracelet	bracelet
+32x32	10	16	gold bracelet	bracelet
+32x32	11	16	red bracelet	bracelet
+32x32	12	16	green bracelet	bracelet
+32x32	13	16	blue bracelet	bracelet
+32x32	14	16	purple bracelet	bracelet
+32x32	15	16	black bracelet	bracelet
+32x32	0	17	copper ring	ring
+32x32	1	17	silver ring	ring
+32x32	2	17	gold ring	ring
+32x32	3	17	golddkblue ring	ring
+32x32	4	17	goldblue ring	ring
+32x32	5	17	goldred ring	ring
+32x32	6	17	goldgreen ring	ring
+32x32	7	17	platinum ring	ring
+32x32	8	17	adamantium ring	ring
+32x32	9	17	blue ring	ring
+32x32	10	17	green ring	ring
+32x32	11	17	red ring	ring
+32x32	12	17	black ring	ring
+32x32	13	17	white ring	ring
+32x32	14	17	-:null:-	:null:
+32x32	15	17	dark gray potion	potion
+32x32	0	18	small red potion	potion
+32x32	1	18	medium red potion	potion
+32x32	2	18	large red potion	potion
+32x32	3	18	small blue potion	potion
+32x32	4	18	medium blue potion	potion
+32x32	5	18	large blue potion	potion
+32x32	6	18	small purple potion	potion
+32x32	7	18	medium purple potion	potion
+32x32	8	18	large purple potion	potion
+32x32	9	18	small green potion	potion
+32x32	10	18	large green potion	potion
+32x32	11	18	small orange potion	potion
+32x32	12	18	large orange potion	potion
+32x32	13	18	small yellow potion	potion
+32x32	14	18	large yellow potion	potion
+32x32	15	18	white potion	potion
+32x32	0	19	copper	money
+32x32	1	19	silver	money
+32x32	2	19	gold	money
+32x32	3	19	platinum	money
+32x32	4	19	adamantium	money
+32x32	5	19	diamond	gem
+32x32	6	19	onyx	gem
+32x32	7	19	ruby	gem
+32x32	8	19	citrine	gem
+32x32	9	19	topaz	gem
+32x32	10	19	emerald	gem
+32x32	11	19	aquamarine	gem
+32x32	12	19	sapphire	gem
+32x32	13	19	amethyst	gem
 32x32	14	19	-:null:-	:null:
 32x32	15	19	-:null:-	:null:
-32x32	0	20	green mushrooms	basement
-32x32	1	20	black ant	basement
-32x32	2	20	white rat	basement
-32x32	3	20	brown beetle	basement
-32x32	4	20	crawling moss	basement
-32x32	5	20	-:null:-	:null:
-32x32	6	20	-:null:-	:null:
-32x32	7	20	-:null:-	:null:
-32x32	8	20	-:null:-	:null:
-32x32	9	20	-:null:-	:null:
+32x32	0	20	human_adventurer	human
+32x32	1	20	human_fighter	human
+32x32	2	20	human_mage	human
+32x32	3	20	human_thief	human
+32x32	4	20	dragonmaster	human
+32x32	5	20	farmer	person
+32x32	6	20	gray dress person	person
+32x32	7	20	jester	person
+32x32	8	20	brown woman	person
+32x32	9	20	blonde man	person
 32x32	10	20	-:null:-	:null:
 32x32	11	20	-:null:-	:null:
 32x32	12	20	-:null:-	:null:
 32x32	13	20	-:null:-	:null:
-32x32	14	20	giant salamander	basement
+32x32	14	20	-:null:-	:null:
 32x32	15	20	-:null:-	:null:
-32x32	0	21	bit	area1
-32x32	1	21	bot	area1
-32x32	2	21	yellow ant	area1
-32x32	3	21	pigeon	area1
-32x32	4	21	yellow snake	area1
-32x32	5	21	scruffy dog	area1
-32x32	6	21	yellow mushrooms	area1
-32x32	7	21	floating eye	area1
-32x32	8	21	bat	area1
-32x32	9	21	green worm mass	area1
-32x32	10	21	brown imp	area1
+32x32	0	21	green mushrooms	basement
+32x32	1	21	black ant	basement
+32x32	2	21	white rat	basement
+32x32	3	21	brown beetle	basement
+32x32	4	21	crawling moss	basement
+32x32	5	21	-:null:-	:null:
+32x32	6	21	-:null:-	:null:
+32x32	7	21	-:null:-	:null:
+32x32	8	21	-:null:-	:null:
+32x32	9	21	-:null:-	:null:
+32x32	10	21	-:null:-	:null:
 32x32	11	21	-:null:-	:null:
 32x32	12	21	-:null:-	:null:
-32x32	13	21	green komodo	area1
-32x32	14	21	purple spider	area1
+32x32	13	21	-:null:-	:null:
+32x32	14	21	giant salamander	basement
 32x32	15	21	-:null:-	:null:
-32x32	0	22	novice mage	area2
-32x32	1	22	novice warrior	area2
-32x32	2	22	novice archer	area2
-32x32	3	22	novice rogue	area2
-32x32	4	22	red ant	area2
-32x32	5	22	cobra	area2
-32x32	6	22	green centipede	area2
-32x32	7	22	pincer beetle	area2
-32x32	8	22	dust devil	area2
-32x32	9	22	jackal	area2
-32x32	10	22	brown scorpion	area2
-32x32	11	22	blue ooze	area2
+32x32	0	22	bit	area1
+32x32	1	22	bot	area1
+32x32	2	22	yellow ant	area1
+32x32	3	22	pigeon	area1
+32x32	4	22	yellow snake	area1
+32x32	5	22	scruffy dog	area1
+32x32	6	22	yellow mushrooms	area1
+32x32	7	22	floating eye	area1
+32x32	8	22	bat	area1
+32x32	9	22	green worm mass	area1
+32x32	10	22	brown imp	area1
+32x32	11	22	-:null:-	:null:
 32x32	12	22	-:null:-	:null:
-32x32	13	22	great turtle	area2
-32x32	14	22	minotaur	area2
+32x32	13	22	green komodo	area1
+32x32	14	22	purple spider	area1
 32x32	15	22	-:null:-	:null:
-32x32	0	23	rabbit mage	area3
-32x32	1	23	rabbit warrior	area3
-32x32	2	23	rabbit archer	area3
-32x32	3	23	rabbit rogue	area3
-32x32	4	23	purple beetle	area3
-32x32	5	23	blue snake	area3
-32x32	6	23	black spider	area3
-32x32	7	23	green imp	area3
-32x32	8	23	small red spiny	area3
-32x32	9	23	rock lizard	area3
-32x32	10	23	yellow worm mass	area1
-32x32	11	23	-:null:-	:null:
+32x32	0	23	novice mage	area2
+32x32	1	23	novice warrior	area2
+32x32	2	23	novice archer	area2
+32x32	3	23	novice rogue	area2
+32x32	4	23	red ant	area2
+32x32	5	23	cobra	area2
+32x32	6	23	green centipede	area2
+32x32	7	23	pincer beetle	area2
+32x32	8	23	dust devil	area2
+32x32	9	23	jackal	area2
+32x32	10	23	brown scorpion	area2
+32x32	11	23	blue ooze	area2
 32x32	12	23	-:null:-	:null:
-32x32	13	23	yellow schweinhund	area3
-32x32	14	23	Balthazar the Great	area3
+32x32	13	23	great turtle	area2
+32x32	14	23	minotaur	area2
 32x32	15	23	-:null:-	:null:
-32x32	0	24	dark elf mage	area4
-32x32	1	24	dark elf warrior	area4
-32x32	2	24	dark elf archer	area4
-32x32	3	24	dark elf rogue	area4
-32x32	4	24	baby blue dragon	area4
-32x32	5	24	baby yellow dragon	area4
-32x32	6	24	blue beetle	area4
-32x32	7	24	gray wolf	area4
-32x32	8	24	bear	area4
-32x32	9	24	white wolf	area4
-32x32	10	24	big red spiny	area4
-32x32	11	24	frost giant	area4
+32x32	0	24	rabbit mage	area3
+32x32	1	24	rabbit warrior	area3
+32x32	2	24	rabbit archer	area3
+32x32	3	24	rabbit rogue	area3
+32x32	4	24	purple beetle	area3
+32x32	5	24	blue snake	area3
+32x32	6	24	black spider	area3
+32x32	7	24	green imp	area3
+32x32	8	24	small red spiny	area3
+32x32	9	24	rock lizard	area3
+32x32	10	24	yellow worm mass	area1
+32x32	11	24	blue wizard	human
 32x32	12	24	-:null:-	:null:
-32x32	13	24	Hagar the Merciless	area4
-32x32	14	24	ice creature	area4
+32x32	13	24	yellow schweinhund	area3
+32x32	14	24	Balthazar the Great	area3
 32x32	15	24	-:null:-	:null:
-32x32	0	25	orc mage	area5
-32x32	1	25	orc warrior	area5
-32x32	2	25	orc archer	area5
-32x32	3	25	orc rogue	area5
-32x32	4	25	baby green dragon	area5
-32x32	5	25	baby red dragon	area5
-32x32	6	25	gold dragonfly	area5
-32x32	7	25	purple worms	area5
-32x32	8	25	golem	area5
-32x32	9	25	griffin	area5
-32x32	10	25	chess knight	area5
-32x32	11	25	copperhead snake	area5
+32x32	0	25	dark elf mage	area4
+32x32	1	25	dark elf warrior	area4
+32x32	2	25	dark elf archer	area4
+32x32	3	25	dark elf rogue	area4
+32x32	4	25	baby blue dragon	area4
+32x32	5	25	baby yellow dragon	area4
+32x32	6	25	blue beetle	area4
+32x32	7	25	gray wolf	area4
+32x32	8	25	bear	area4
+32x32	9	25	white wolf	area4
+32x32	10	25	big red spiny	area4
+32x32	11	25	frost giant	area4
 32x32	12	25	-:null:-	:null:
-32x32	13	25	Lor the Betrayer	area5
-32x32	14	25	basilisk	area5
+32x32	13	25	Hagar the Merciless	area4
+32x32	14	25	ice creature	area4
 32x32	15	25	-:null:-	:null:
-32x32	0	26	skeleton mage	area6
-32x32	1	26	skeleton warrior	area6
-32x32	2	26	skeleton archer	area6
-32x32	3	26	skeleton rogue	area6
-32x32	4	26	mummy	area6
-32x32	5	26	blue ghost	area6
-32x32	6	26	pink ghost	area6
-32x32	7	26	vampire	area6
-32x32	8	26	evil eye	area6
-32x32	9	26	floating skull	monster
-32x32	10	26	vampire bat	monster
-32x32	11	26	-:null:-	:null:
+32x32	0	26	orc mage	area5
+32x32	1	26	orc warrior	area5
+32x32	2	26	orc archer	area5
+32x32	3	26	orc rogue	area5
+32x32	4	26	baby green dragon	area5
+32x32	5	26	baby red dragon	area5
+32x32	6	26	gold dragonfly	area5
+32x32	7	26	purple worms	area5
+32x32	8	26	golem	area5
+32x32	9	26	griffin	area5
+32x32	10	26	chess knight	area5
+32x32	11	26	copperhead snake	area5
 32x32	12	26	-:null:-	:null:
-32x32	13	26	red spider	area6
-32x32	14	26	skeletal dragon	area6
+32x32	13	26	Lor the Betrayer	area5
+32x32	14	26	basilisk	area5
 32x32	15	26	-:null:-	:null:
-32x32	0	27	troll mage	area7
-32x32	1	27	troll warrior	area7
-32x32	2	27	troll archer	area7
-32x32	3	27	troll rogue	area7
-32x32	4	27	blue dragon	area7
-32x32	5	27	yellow dragon	area7
-32x32	6	27	red komodo	area7
-32x32	7	27	giant roc	area7
-32x32	8	27	zombie	area7
-32x32	9	27	red cobra	area7
-32x32	10	27	sand worm	area7
+32x32	0	27	skeleton mage	area6
+32x32	1	27	skeleton warrior	area6
+32x32	2	27	skeleton archer	area6
+32x32	3	27	skeleton rogue	area6
+32x32	4	27	mummy	area6
+32x32	5	27	blue ghost	area6
+32x32	6	27	pink ghost	area6
+32x32	7	27	vampire	area6
+32x32	8	27	evil eye	area6
+32x32	9	27	floating skull	monster
+32x32	10	27	vampire bat	monster
 32x32	11	27	-:null:-	:null:
 32x32	12	27	-:null:-	:null:
-32x32	13	27	two headed ogre	area7
-32x32	14	27	oliphant	area7
+32x32	13	27	red spider	area6
+32x32	14	27	skeletal dragon	area6
 32x32	15	27	-:null:-	:null:
-32x32	0	28	demon mage	area8
-32x32	1	28	demon warrior	area8
-32x32	2	28	demon archer	area8
-32x32	3	28	demon rogue	area8
-32x32	4	28	green dragon	area8
-32x32	5	28	red dragon	area8
-32x32	6	28	creeping magma	area8
-32x32	7	28	lava beetle	area8
-32x32	8	28	mumak	area8
-32x32	9	28	iron golem	area8
-32x32	10	28	fire vortex	area8
-32x32	11	28	lava dragon	area8
+32x32	0	28	troll mage	area7
+32x32	1	28	troll warrior	area7
+32x32	2	28	troll archer	area7
+32x32	3	28	troll rogue	area7
+32x32	4	28	blue dragon	area7
+32x32	5	28	yellow dragon	area7
+32x32	6	28	red komodo	area7
+32x32	7	28	giant roc	area7
+32x32	8	28	zombie	area7
+32x32	9	28	red cobra	area7
+32x32	10	28	sand worm	area7
+32x32	11	28	-:null:-	:null:
 32x32	12	28	-:null:-	:null:
-32x32	13	28	phoenix	area8
-32x32	14	28	Maeglor	area8
+32x32	13	28	two headed ogre	area7
+32x32	14	28	oliphant	area7
 32x32	15	28	-:null:-	:null:
-32x32	0	29	alien mage	area9
-32x32	1	29	alien warrior	area9
-32x32	2	29	alien archer	area9
-32x32	3	29	alien rogue	area9
-32x32	4	29	ancient black dragon	area9
-32x32	5	29	ancient gold dragon	area9
-32x32	6	29	master vampire	area9
-32x32	7	29	beholder	monster
-32x32	8	29	magic whirlwind	area9
-32x32	9	29	djinn	area9
-32x32	10	29	spike dog	area9
-32x32	11	29	-:null:-	:null:
+32x32	0	29	demon mage	area8
+32x32	1	29	demon warrior	area8
+32x32	2	29	demon archer	area8
+32x32	3	29	demon rogue	area8
+32x32	4	29	green dragon	area8
+32x32	5	29	red dragon	area8
+32x32	6	29	creeping magma	area8
+32x32	7	29	lava beetle	area8
+32x32	8	29	mumak	area8
+32x32	9	29	iron golem	area8
+32x32	10	29	fire vortex	area8
+32x32	11	29	lava dragon	area8
 32x32	12	29	-:null:-	:null:
-32x32	13	29	Lugorith	area9
-32x32	14	29	evil incarnate	area9
+32x32	13	29	phoenix	area8
+32x32	14	29	Maeglor	area8
 32x32	15	29	-:null:-	:null:
-32x32	0	30	goldfish	ocean
-32x32	1	30	green fish	ocean
-32x32	2	30	eel	ocean
-32x32	3	30	pink jellyfish	ocean
-32x32	4	30	copper jellyfish	ocean
-32x32	5	30	scaryfish	ocean
-32x32	6	30	water whirlwind	ocean
-32x32	7	30	octopus	ocean
-32x32	8	30	medusa	ocean
-32x32	9	30	sea dragon	ocean
-32x32	10	30	yellow turtle	ocean
-32x32	11	30	red turtle	ocean
+32x32	0	30	alien mage	area9
+32x32	1	30	alien warrior	area9
+32x32	2	30	alien archer	area9
+32x32	3	30	alien rogue	area9
+32x32	4	30	ancient black dragon	area9
+32x32	5	30	ancient gold dragon	area9
+32x32	6	30	master vampire	area9
+32x32	7	30	beholder	monster
+32x32	8	30	magic whirlwind	area9
+32x32	9	30	djinn	area9
+32x32	10	30	spike dog	area9
+32x32	11	30	-:null:-	:null:
 32x32	12	30	-:null:-	:null:
-32x32	13	30	-:null:-	:null:
-32x32	14	30	-:null:-	:null:
+32x32	13	30	Lugorith	area9
+32x32	14	30	evil incarnate	area9
 32x32	15	30	-:null:-	:null:
-32x32	0	31	N arrow	effect
-32x32	1	31	NE arrow	effect
-32x32	2	31	E arrow	effect
-32x32	3	31	SE arrow	effect
-32x32	4	31	S arrow	effect
-32x32	5	31	SW arrow	effect
-32x32	6	31	W arrow	effect
-32x32	7	31	NW arrow	effect
-32x32	8	31	-:null:-	:null:
-32x32	9	31	-:null:-	:null:
-32x32	10	31	-:null:-	:null:
-32x32	11	31	-:null:-	:null:
+32x32	0	31	goldfish	ocean
+32x32	1	31	green fish	ocean
+32x32	2	31	eel	ocean
+32x32	3	31	pink jellyfish	ocean
+32x32	4	31	copper jellyfish	ocean
+32x32	5	31	scaryfish	ocean
+32x32	6	31	water whirlwind	ocean
+32x32	7	31	octopus	ocean
+32x32	8	31	medusa	ocean
+32x32	9	31	sea dragon	ocean
+32x32	10	31	yellow turtle	ocean
+32x32	11	31	red turtle	ocean
 32x32	12	31	-:null:-	:null:
 32x32	13	31	-:null:-	:null:
 32x32	14	31	-:null:-	:null:
 32x32	15	31	-:null:-	:null:
-32x32	0	32	small white ball	effect
-32x32	1	32	small black ball	effect
-32x32	2	32	small red ball	effect
-32x32	3	32	small orange ball	effect
-32x32	4	32	small yellow ball	effect
-32x32	5	32	small green ball	effect
-32x32	6	32	small blue ball	effect
-32x32	7	32	small purple ball	effect
-32x32	8	32	big white ball	effect
-32x32	9	32	big black ball	effect
-32x32	10	32	big red ball	effect
-32x32	11	32	big orange ball	effect
-32x32	12	32	big yellow ball	effect
-32x32	13	32	big green ball	effect
-32x32	14	32	big blue ball	effect
-32x32	15	32	big purple ball	effect
-32x32	0	33	N white bolt	effect
-32x32	1	33	NE white bolt	effect
-32x32	2	33	E white bolt	effect
-32x32	3	33	SE white bolt	effect
-32x32	4	33	N black bolt	effect
-32x32	5	33	NE black bolt	effect
-32x32	6	33	E black bolt	effect
-32x32	7	33	SE black bolt	effect
-32x32	8	33	N red bolt	effect
-32x32	9	33	NE red bolt	effect
-32x32	10	33	E red bolt	effect
-32x32	11	33	SE red bolt	effect
-32x32	12	33	N orange bolt	effect
-32x32	13	33	NE orange bolt	effect
-32x32	14	33	E orange bolt	effect
-32x32	15	33	SE orange bolt	effect
-32x32	0	34	N yellow bolt	effect
-32x32	1	34	NE yellow bolt	effect
-32x32	2	34	E yellow bolt	effect
-32x32	3	34	SE yellow bolt	effect
-32x32	4	34	N green bolt	effect
-32x32	5	34	NE green bolt	effect
-32x32	6	34	E green bolt	effect
-32x32	7	34	SE green bolt	effect
-32x32	8	34	N blue bolt	effect
-32x32	9	34	NE blue bolt	effect
-32x32	10	34	E blue bolt	effect
-32x32	11	34	SE blue bolt	effect
-32x32	12	34	N purple bolt	effect
-32x32	13	34	NE purple bolt	effect
-32x32	14	34	E purple bolt	effect
-32x32	15	34	SE purple bolt	effect
+32x32	0	32	N arrow	effect
+32x32	1	32	NE arrow	effect
+32x32	2	32	E arrow	effect
+32x32	3	32	SE arrow	effect
+32x32	4	32	S arrow	effect
+32x32	5	32	SW arrow	effect
+32x32	6	32	W arrow	effect
+32x32	7	32	NW arrow	effect
+32x32	8	32	-:null:-	:null:
+32x32	9	32	-:null:-	:null:
+32x32	10	32	-:null:-	:null:
+32x32	11	32	-:null:-	:null:
+32x32	12	32	-:null:-	:null:
+32x32	13	32	-:null:-	:null:
+32x32	14	32	-:null:-	:null:
+32x32	15	32	-:null:-	:null:
+32x32	0	33	small white ball	effect
+32x32	1	33	small black ball	effect
+32x32	2	33	small red ball	effect
+32x32	3	33	small orange ball	effect
+32x32	4	33	small yellow ball	effect
+32x32	5	33	small green ball	effect
+32x32	6	33	small blue ball	effect
+32x32	7	33	small purple ball	effect
+32x32	8	33	big white ball	effect
+32x32	9	33	big black ball	effect
+32x32	10	33	big red ball	effect
+32x32	11	33	big orange ball	effect
+32x32	12	33	big yellow ball	effect
+32x32	13	33	big green ball	effect
+32x32	14	33	big blue ball	effect
+32x32	15	33	big purple ball	effect
+32x32	0	34	N white bolt	effect
+32x32	1	34	NE white bolt	effect
+32x32	2	34	E white bolt	effect
+32x32	3	34	SE white bolt	effect
+32x32	4	34	N black bolt	effect
+32x32	5	34	NE black bolt	effect
+32x32	6	34	E black bolt	effect
+32x32	7	34	SE black bolt	effect
+32x32	8	34	N red bolt	effect
+32x32	9	34	NE red bolt	effect
+32x32	10	34	E red bolt	effect
+32x32	11	34	SE red bolt	effect
+32x32	12	34	N orange bolt	effect
+32x32	13	34	NE orange bolt	effect
+32x32	14	34	E orange bolt	effect
+32x32	15	34	SE orange bolt	effect
+32x32	0	35	N yellow bolt	effect
+32x32	1	35	NE yellow bolt	effect
+32x32	2	35	E yellow bolt	effect
+32x32	3	35	SE yellow bolt	effect
+32x32	4	35	N green bolt	effect
+32x32	5	35	NE green bolt	effect
+32x32	6	35	E green bolt	effect
+32x32	7	35	SE green bolt	effect
+32x32	8	35	N blue bolt	effect
+32x32	9	35	NE blue bolt	effect
+32x32	10	35	E blue bolt	effect
+32x32	11	35	SE blue bolt	effect
+32x32	12	35	N purple bolt	effect
+32x32	13	35	NE purple bolt	effect
+32x32	14	35	E purple bolt	effect
+32x32	15	35	SE purple bolt	effect
