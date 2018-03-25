@@ -29,9 +29,7 @@ public class Point implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = x;
-        result = 31 * result + y;
-        return result;
+        return 32768*x + y;
     }
 
     public Point add(Direction direction) {

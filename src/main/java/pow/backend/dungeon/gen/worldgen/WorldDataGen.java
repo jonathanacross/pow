@@ -183,6 +183,7 @@ public class WorldDataGen {
             case "cellularAutomata": return buildCellularAutomataGenerator(params, monsterIds, level, flags);
             case "premade": return buildPremadeGenerator(params, monsterIds, level, flags);
             case "rogue": return buildRogueGenerator(params, monsterIds, level, flags);
+            case "radial": return buildRadialGenerator(params, monsterIds, level, flags);
             case "terrain test":
             case "run test":
             case "item test":
@@ -301,6 +302,16 @@ public class WorldDataGen {
                 featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("brown stone open door"));
                 featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("brown stone closed door"));
                 break;
+            case "volcano": // outside level 8
+                terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("cold lava floor"));
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("rock"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable rock"));
+
+                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature(TOWER_ENTRANCE));
+                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature(DUNGEON_ENTRANCE));
+                featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("open door"));
+                featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("closed door"));
+                break;
             case "lava cave":  // dungeon 8
                 terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("cold lava floor"));
                 terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("hot stone wall"));
@@ -349,6 +360,11 @@ public class WorldDataGen {
             default: break;
         }
         return new RogueGenerator(areaSize, areaSize, vaultLevel, style, monsterIds, level, flags);
+    }
+
+    private static MapGenerator buildRadialGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
+        ProtoTranslator style = getProtoTranslator(params);
+        return new RadialGenerator(GameConstants.RADIAL_NUM_CELLS, GameConstants.RADIAL_MATCH_PERCENT, style, monsterIds, level, flags);
     }
 
     private static MapGenerator buildDelveGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
