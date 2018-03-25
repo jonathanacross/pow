@@ -169,6 +169,7 @@ public class AttackUtils {
             case POISON:
                 events.addAll(defender.conditions.get(ConditionTypes.POISON).start(backend, hitParams.duration, hitParams.intensity));
                 events.addAll(doSimpleHit(backend, attacker, defender, hitParams.element, hitParams.damage));
+                break;
             default:
                 events.addAll(doSimpleHit(backend, attacker, defender, hitParams.element, hitParams.damage));
         }

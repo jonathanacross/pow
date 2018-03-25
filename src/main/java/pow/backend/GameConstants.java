@@ -45,6 +45,14 @@ public class GameConstants {
     // navigate.
     public final static int DELVE_AREA_SIZE = 50;
 
+    // Number of cells to use to create a radial area (is roughly
+    // equal to the area of the level.
+    public final static int RADIAL_NUM_CELLS = 4000;
+
+    // How often, when creating  a radial area, a cell will match
+    // the one next to it.
+    public final static int RADIAL_MATCH_PERCENT = 75;
+
     // --------------- player/monster constants -------------
 
     // How many different things an actor (typically the player)

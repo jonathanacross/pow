@@ -47,7 +47,7 @@ public class TextUtils {
     private static boolean startsWithVowel(String s) {
         // skip over any '& '
         int idx = 0;
-        while (idx < s.length() && s.charAt(idx) == ' ' || s.charAt(idx) == '&') {
+        while (idx < s.length() && (s.charAt(idx) == ' ' || s.charAt(idx) == '&')) {
             idx++;
         }
         if (idx >= s.length()) return false;
