@@ -139,8 +139,8 @@ public class GameMap implements Serializable {
     // Player is set to the requested location, and set to full energy.
     // Pet is moved as near to the player as possible.
     public void placePlayerAndPet(Player player, Point playerLoc, Pet pet) {
-        player.loc.x = playerLoc.x;
-        player.loc.y = playerLoc.y;
+        // Make sure the player doesn't appear on a monster.
+        player.loc = findClosestOpenSquare(player, playerLoc);
         visited = true;
         addActor(player);
         player.energy.setFull(); // make sure the player can move first

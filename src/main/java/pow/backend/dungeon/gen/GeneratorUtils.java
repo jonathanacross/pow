@@ -280,15 +280,30 @@ public class GeneratorUtils {
 
     // --------------------- related to exits --------------
 
+    // We require a 1 square border around a stair, so that they may be entered from
+    // any direction.
+    // Assumes that the indices x,y are completely within the bounds (with 1 square buffer).
+    private static boolean stairsAllowedAt(DungeonSquare[][] squares, int x, int y) {
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                DungeonSquare square = squares[x + dx][y + dy];
+                if (square.feature != null || square.blockGround()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private static Point findStairsLocation(DungeonSquare[][] squares, Random rng) {
         int width = Array2D.width(squares);
         int height = Array2D.height(squares);
         int x;
         int y;
         do {
-            x = rng.nextInt(width);
-            y = rng.nextInt(height);
-        } while (squares[x][y].feature != null || squares[x][y].blockGround());
+            x = rng.nextInt(width - 2) + 1;
+            y = rng.nextInt(height - 2) + 1;
+        } while (!stairsAllowedAt(squares, x, y));
         return new Point(x,y);
     }
 
@@ -303,11 +318,11 @@ public class GeneratorUtils {
         params.actionName = ActionParams.ActionName.MOVE_TO_AREA_ACTION;
         params.name = connection.destination.toString();
         DungeonFeature.Flags flags =  new DungeonFeature.Flags(
+                true,
+                true,
                 false,
                 false,
-                false,
-                false,
-                false,
+                true,
                 up,
                 !up,
                 false,
@@ -465,6 +480,7 @@ public class GeneratorUtils {
     //      edge where the border is only one square thick.
     //    * There is at most 1 connection in each cardinal direction
     //      (There may be multiple up/down connections)
+    //    * There are 3x3 spots available to place any up/down exits.
     public static Map<String, Point> addDefaultExits(
             List<MapConnection> connections,
             DungeonSquare[][] squares,  // modified in place
