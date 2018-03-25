@@ -1,6 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.backend.SpellParams;
 import pow.backend.actors.Actor;
 
@@ -18,7 +19,8 @@ public class SpellAction implements Action {
     public ActionResult process(GameBackend backend) {
         Actor actor = action.getActor();
         if (actor.getMana() < params.requiredMana) {
-            backend.logMessage(actor.getPronoun() + " doesn't have enough mana.");
+            backend.logMessage(actor.getPronoun() + " doesn't have enough mana.",
+                    MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
 

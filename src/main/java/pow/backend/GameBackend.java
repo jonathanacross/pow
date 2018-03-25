@@ -143,9 +143,9 @@ public class GameBackend {
 
     // NOTE: to make sure that the UI updates, we can't modify gameState.log
     // directly; instead MUST use this method for all logging.
-    public void logMessage(String message) {
+    public void logMessage(String message, MessageLog.MessageType type) {
         commandQueue.add(new Log());
-        gameState.log.add(message);
+        gameState.log.add(message, type);
     }
 
     public void newGame(Player player) { gameState = new GameState(player); }

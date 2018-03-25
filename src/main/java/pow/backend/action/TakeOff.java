@@ -2,6 +2,7 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
@@ -24,12 +25,14 @@ public class TakeOff implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         DungeonItem item = player.takeOff(index);
-        backend.logMessage(player.getPronoun() + " take off " + TextUtils.format(item.name, 1, true));
+        backend.logMessage(player.getPronoun() + " take off " + TextUtils.format(item.name, 1, true),
+                MessageLog.MessageType.GENERAL);
         // put the item somewhere
         int numCanAdd = player.inventory.numCanAdd(item);
         if (numCanAdd == 0) {
             // put on the ground
-            backend.logMessage(player.getPronoun() + " drop " + TextUtils.format(item.name, 1, false));
+            backend.logMessage(player.getPronoun() + " drop " + TextUtils.format(item.name, 1, false),
+                    MessageLog.MessageType.GENERAL);
             gs.getCurrentMap().map[player.loc.x][player.loc.y].items.add(item);
         } else {
             // save in inventory

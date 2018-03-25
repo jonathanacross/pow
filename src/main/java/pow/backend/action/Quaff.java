@@ -2,6 +2,7 @@ package pow.backend.action;
 
 import pow.backend.ActionParams;
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.ItemList;
@@ -34,7 +35,8 @@ public class Quaff implements Action {
         }
 
         // get the real action from the potion and do it
-        backend.logMessage(actor.getPronoun() + " quaffed " + TextUtils.format(item.name, 1, false));
+        backend.logMessage(actor.getPronoun() + " quaffed " + TextUtils.format(item.name, 1, false),
+                MessageLog.MessageType.GENERAL);
         itemList.removeOneItemAt(itemIdx);
         Action action = ActionParams.buildAction(this.actor, item.actionParams);
         return action.process(backend);

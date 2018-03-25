@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameMap;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.SpellParams;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
@@ -37,7 +38,7 @@ public class GameMainLayer extends AbstractWindow {
         ItemList items = gs.getCurrentMap().map[playerLoc.x][playerLoc.y].items;
 
         if (items.size() == 0) {
-            backend.logMessage("Nothing here to pick up.");
+            backend.logMessage("Nothing here to pick up.", MessageLog.MessageType.USER_ERROR);
         } else if (items.size() == 1) {
             // no ambiguity, just pick up the one item
             backend.tellPlayer(new PickUp(gs.player, 0, items.items.get(0).count));
@@ -78,7 +79,7 @@ public class GameMainLayer extends AbstractWindow {
     private void tryDrop(GameState gs) {
         Function<DungeonItem, Boolean> droppable = (DungeonItem item) -> true;
         if (countLegalItems(gs.player.inventory.items, droppable) == 0) {
-            backend.logMessage("You have nothing to drop.");
+            backend.logMessage("You have nothing to drop.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
@@ -101,7 +102,7 @@ public class GameMainLayer extends AbstractWindow {
         boolean doFloor = floorItems != null && countLegalItems(floorItems.items, quaffable) > 0;
 
         if (!doFloor && !doInventory) {
-            backend.logMessage("There are no potions to quaff here.");
+            backend.logMessage("There are no potions to quaff here.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
@@ -132,7 +133,7 @@ public class GameMainLayer extends AbstractWindow {
 
         // easy case -- nothing to wear
         if (!doFloor && !doInventory) {
-            backend.logMessage("There is nothing you can equip/wear.");
+            backend.logMessage("There is nothing you can equip/wear.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
@@ -158,7 +159,7 @@ public class GameMainLayer extends AbstractWindow {
     private void tryTakeOff(GameState gs) {
         Function<DungeonItem, Boolean> removable = (DungeonItem item) -> true;
         if (countLegalItems(gs.player.equipment, removable) == 0) {
-            backend.logMessage("You have nothing you can take off.");
+            backend.logMessage("You have nothing you can take off.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
@@ -177,7 +178,7 @@ public class GameMainLayer extends AbstractWindow {
                             SpellParams params = gs.player.spells.get(choice);
                             Point target = gs.player.getTarget();
                             if (target == null && params.requiresTarget) {
-                                backend.logMessage("no target selected.");
+                                backend.logMessage("no target selected.", MessageLog.MessageType.USER_ERROR);
                                 return;
                             }
                             backend.tellPlayer(
@@ -190,7 +191,7 @@ public class GameMainLayer extends AbstractWindow {
         if (gs.player.hasMap()) {
             frontend.open(frontend.worldMapWindow);
         } else {
-            backend.logMessage("You don't have a map.");
+            backend.logMessage("You don't have a map.", MessageLog.MessageType.USER_ERROR);
         }
     }
 
@@ -324,7 +325,7 @@ public class GameMainLayer extends AbstractWindow {
         List<Point> targetableSquares = Targeting.getCloseDoorTargets(gameState);
 
         if (targetableSquares.isEmpty()) {
-            backend.logMessage("no doors here you can close.");
+            backend.logMessage("no doors here you can close.", MessageLog.MessageType.USER_ERROR);
         } else if (targetableSquares.size() == 1) {
             // only one door to close.  Just close it
             closeDoor(gameState, targetableSquares.get(0));
@@ -340,18 +341,18 @@ public class GameMainLayer extends AbstractWindow {
 
         // make sure the player has a bow and arrows
         if (!player.hasBowEquipped()) {
-            backend.logMessage("you do not have a bow equipped.");
+            backend.logMessage("you do not have a bow equipped.", MessageLog.MessageType.USER_ERROR);
             return;
         }
         if (player.findArrows() == null) {
-            backend.logMessage("you do not have any arrows.");
+            backend.logMessage("you do not have any arrows.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
         // make sure there's a target
         Point target = player.getTarget();
         if (target == null) {
-            backend.logMessage("no target selected.");
+            backend.logMessage("no target selected.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
@@ -367,7 +368,7 @@ public class GameMainLayer extends AbstractWindow {
     private void startMonsterTargeting(GameState gameState) {
         List<Point> targetableSquares = Targeting.getMonsterFOVTargets(gameState);
         if (targetableSquares.isEmpty()) {
-            backend.logMessage("no monsters to target");
+            backend.logMessage("no monsters to target", MessageLog.MessageType.USER_ERROR);
             return;
         }
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,
@@ -386,7 +387,7 @@ public class GameMainLayer extends AbstractWindow {
         MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getFloorTargets(gameState, mapView);
         if (targetableSquares.isEmpty()) {
-            backend.logMessage("you can't see anything!");
+            backend.logMessage("you can't see anything!", MessageLog.MessageType.USER_ERROR);
             return;
         }
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,

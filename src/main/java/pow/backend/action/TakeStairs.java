@@ -2,6 +2,7 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
@@ -26,7 +27,7 @@ public class TakeStairs implements Action {
         GameState gs = backend.getGameState();
 
         if (actor != gs.player) {
-            backend.logMessage(actor.getPronoun() + " is not allowed up/down stairs");
+            backend.logMessage(actor.getPronoun() + " is not allowed up/down stairs", MessageLog.MessageType.DEBUG);
             return ActionResult.Failed(null);
         }
 
@@ -35,7 +36,7 @@ public class TakeStairs implements Action {
             (!feature.flags.stairsUp && this.up) ||
             (!feature.flags.stairsDown && !this.up)) {
             String dir = this.up ? "up" : "down";
-            backend.logMessage("there are no " + dir + " stairs here");
+            backend.logMessage("there are no " + dir + " stairs here", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
 

@@ -2,6 +2,7 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
@@ -28,14 +29,16 @@ public class Wear implements Action {
         GameState gs = backend.getGameState();
         DungeonItem item = itemList.items.get(index);
         itemList.removeOneItemAt(index);
-        backend.logMessage(player.getPronoun() + " wear " + TextUtils.format(item.name, 1, true));
+        backend.logMessage(player.getPronoun() + " wear " + TextUtils.format(item.name, 1, true),
+                MessageLog.MessageType.GENERAL);
         DungeonItem oldItem = player.wear(item);
         // put the old item somewhere
         if (oldItem != null) {
             int numCanAdd = player.inventory.numCanAdd(oldItem);
             if (numCanAdd == 0) {
                 // put on the ground
-                backend.logMessage(player.getPronoun() + " drop " + TextUtils.format(item.name, 1, false));
+                backend.logMessage(player.getPronoun() + " drop " + TextUtils.format(item.name, 1, false),
+                        MessageLog.MessageType.GENERAL);
                 gs.getCurrentMap().map[player.loc.x][player.loc.y].items.add(oldItem);
             } else {
                 // save in inventory

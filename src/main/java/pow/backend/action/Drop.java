@@ -2,6 +2,7 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
@@ -46,7 +47,8 @@ public class Drop implements Action {
             item.count -= numToDrop;
             square.items.add(cloneForFloor);
         }
-        backend.logMessage(actor.getPronoun() + " drop " + TextUtils.format(item.name, numToDrop, true));
+        backend.logMessage(actor.getPronoun() + " drop " + TextUtils.format(item.name, numToDrop, true),
+                MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }
 

@@ -1,6 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.backend.ShopData;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
@@ -21,7 +22,7 @@ public class RestAtInn implements Action {
             player.gold -= shopData.innCost;
             player.setFullHealth();
             player.setFullMana();
-            backend.logMessage("You feel refreshed.");
+            backend.logMessage("You feel refreshed.", MessageLog.MessageType.GENERAL);
             List<GameEvent> events = new ArrayList<>();
 
             // save the game!
@@ -30,7 +31,7 @@ public class RestAtInn implements Action {
             events.add(GameEvent.DungeonUpdated());
             return ActionResult.Succeeded(events);
         } else {
-            backend.logMessage("You do not have enough money.");
+            backend.logMessage("You do not have enough money.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
     }

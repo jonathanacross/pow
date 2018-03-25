@@ -1,6 +1,7 @@
 package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonEffect;
@@ -72,7 +73,7 @@ public class Move implements Action {
                 }
             }
 
-            backend.logMessage(actor.getPronoun() + " can't go that way");
+            backend.logMessage(actor.getPronoun() + " can't go that way", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
 
@@ -118,7 +119,7 @@ public class Move implements Action {
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {
-            backend.logMessage(actor.getPronoun() + " can't go that way");
+            backend.logMessage(actor.getPronoun() + " can't go that way", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
     }

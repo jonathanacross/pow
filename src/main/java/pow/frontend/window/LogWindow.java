@@ -26,13 +26,19 @@ public class LogWindow extends AbstractWindow {
     private static final int MESSAGE_SEP = 3;
     private static final int TEXT_INDENT = 16;
 
+    private static Color LAVENDER = new Color(192, 128, 255);
+    private static Color ORANGE = new Color(255, 172, 0);
+    private static Color LIGHT_BLUE = new Color(64, 128,255);
+
     private static class LinePos {
         public final String line;
+        public final Color color;
         public final int x;
         public final int y;
 
-        public LinePos(String line, int x, int y) {
+        public LinePos(String line, Color color, int x, int y) {
             this.line = line;
+            this.color = color;
             this.x = x;
             this.y = y;
         }
@@ -50,7 +56,8 @@ public class LogWindow extends AbstractWindow {
             List<String> messageLines = ImageUtils.wrapText("> " + message.toString(),
                     textMetrics, textWidth, textWidth - TEXT_INDENT);
             for (String line : messageLines) {
-                linePositions.add(new LinePos(line, MARGIN + (firstLine ? 0 : TEXT_INDENT), y));
+                linePositions.add(new LinePos(line, getMessageColor(message),
+                        MARGIN + (firstLine ? 0 : TEXT_INDENT), y));
                 firstLine = false;
                 y += FONT_SIZE;
             }
@@ -58,6 +65,21 @@ public class LogWindow extends AbstractWindow {
         }
 
         return linePositions;
+    }
+
+    private Color getMessageColor(MessageLog.Message message) {
+        switch (message.type) {
+            case GENERAL: return Color.WHITE;
+            case GAME_EVENT: return LAVENDER;
+            case COMBAT_GOOD: return Color.GREEN;
+            case COMBAT_NEUTRAL: return Color.YELLOW;
+            case COMBAT_BAD: return Color.RED;
+            case USER_ERROR: return ORANGE;
+            case STATUS: return Color.CYAN;
+            case DEBUG: return LIGHT_BLUE;
+        }
+        // Shouldn't get here.
+        return Color.WHITE;
     }
 
     @Override
@@ -73,14 +95,13 @@ public class LogWindow extends AbstractWindow {
         graphics.setFont(font);
         FontMetrics textMetrics = graphics.getFontMetrics(font);
 
-        graphics.setColor(Color.WHITE);
-
         List<MessageLog.Message> messages = backend.getGameState().log.getLastN(30);
         List<LinePos> lines = getLinePositions(messages, textMetrics, textWidth);
 
         // Shift lines up so that last line is positioned at bottom of window.
         int deltaHeight = (dim.height - MARGIN) - lines.get(lines.size() - 1).y;
         for (LinePos line: lines) {
+            graphics.setColor(line.color);
             graphics.drawString(line.line, line.x, line.y + deltaHeight);
         }
 

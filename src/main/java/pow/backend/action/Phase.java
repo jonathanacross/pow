@@ -2,6 +2,7 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
@@ -48,7 +49,8 @@ public class Phase implements Action {
 
 
         if (validSquares.isEmpty()) {
-            backend.logMessage(actor.getPronoun() + " can't phase anywhere.");
+            backend.logMessage(actor.getPronoun() + " can't phase anywhere.",
+                    MessageLog.MessageType.USER_ERROR);
         } else {
             Point targetLoc = validSquares.get(gs.rng.nextInt(validSquares.size()));
 
@@ -67,7 +69,7 @@ public class Phase implements Action {
                 gs.player.monsterTarget = null;
                 gs.getCurrentMap().updatePlayerVisibilityData(gs.player);
             }
-            backend.logMessage(actor.getPronoun() + " phase.");
+            backend.logMessage(actor.getPronoun() + " phase.", MessageLog.MessageType.GENERAL);
 
             events.add(GameEvent.DungeonUpdated());
         }

@@ -64,7 +64,7 @@ public class BreathSpell implements Action {
 
         Point centerToTarget = new Point(target.x - center.x, target.y - center.y);
         for (Point s : ballSquares) {
-            if (s == center) continue;
+            if (s.equals(center)) continue;
 
             Point centerToSquare = new Point(s.x - center.x, s.y - center.y);
             int dot = centerToTarget.dot(centerToSquare);

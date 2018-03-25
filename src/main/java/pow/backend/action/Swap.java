@@ -1,6 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 import pow.util.Point;
@@ -32,7 +33,8 @@ public class Swap implements Action {
 
         if (first != second) {
             Point tmp = first.loc; first.loc = second.loc; second.loc = tmp;
-            backend.logMessage(first.getPronoun() + " and " + second.getPronoun() + " swap places");
+            backend.logMessage(first.getPronoun() + " and " + second.getPronoun() + " swap places",
+                    MessageLog.MessageType.GENERAL);
             events.add(GameEvent.Moved());
             return ActionResult.Succeeded(events);
         } else {

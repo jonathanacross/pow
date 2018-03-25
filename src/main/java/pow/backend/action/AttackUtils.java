@@ -42,7 +42,10 @@ public class AttackUtils {
         GameState gs = backend.getGameState();
         GameMap map = gs.getCurrentMap();
 
-        backend.logMessage(actor.getPronoun() + " died");
+        MessageLog.MessageType messageType = actor.friendly
+                ? MessageLog.MessageType.COMBAT_BAD
+                : MessageLog.MessageType.COMBAT_GOOD;
+        backend.logMessage(actor.getPronoun() + " died", messageType);
 
         if (actor == gs.player) {
             gs.gameInProgress = false;
@@ -102,7 +105,10 @@ public class AttackUtils {
             damTypeString = " " + element.toString().toLowerCase();
         }
         int adjustedDamage = adjustDamage(damage, element, defender);
-        backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + adjustedDamage + damTypeString + " damage");
+        MessageLog.MessageType messageType = defender.friendly
+                ? MessageLog.MessageType.COMBAT_BAD
+                : MessageLog.MessageType.COMBAT_GOOD;
+        backend.logMessage(attacker.getPronoun() + " hit " + defender.getPronoun() + " for " + adjustedDamage + damTypeString + " damage", messageType);
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Attacked());
         List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage);
@@ -152,14 +158,14 @@ public class AttackUtils {
                     // TODO: have this not affect the caster?
                     events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, hitParams.duration, hitParams.intensity));
                 } else {
-                    backend.logMessage(attacker.getPronoun() + " failed to confuse " + defender.getPronoun());
+                    backend.logMessage(attacker.getPronoun() + " failed to confuse " + defender.getPronoun(), MessageLog.MessageType.COMBAT_NEUTRAL);
                 }
                 break;
             case SLEEP:
                 if (backend.getGameState().rng.nextInt(defender.level + 1) == 0) {
                     defender.putToSleep(backend);
                 } else {
-                    backend.logMessage(attacker.getPronoun() + " failed to put " + defender.getPronoun() + " to sleep");
+                    backend.logMessage(attacker.getPronoun() + " failed to put " + defender.getPronoun() + " to sleep", MessageLog.MessageType.COMBAT_NEUTRAL);
                 }
                 break;
             case STUN:

@@ -2,6 +2,7 @@ package pow.backend.actors;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.SpellParams;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
@@ -68,21 +69,21 @@ public class Monster extends Actor implements Serializable {
 
         switch (newState) {
             case DUMB_AWAKE:
-                backend.logMessage(this.getPronoun() + " wakes up!");
+                backend.logMessage(this.getPronoun() + " wakes up!", MessageLog.MessageType.GENERAL);
                 break;
             case AFRAID:
                 // TODO: shouldn't be called for stationary creatures
-                backend.logMessage(this.getPronoun() + " flees in panic!");
+                backend.logMessage(this.getPronoun() + " flees in panic!", MessageLog.MessageType.GENERAL);
                 break;
             case ATTACKING:
-                backend.logMessage(this.getPronoun() + " recovers its courage.");
+                backend.logMessage(this.getPronoun() + " recovers its courage.", MessageLog.MessageType.GENERAL);
                 break;
             // TODO: shouldn't be called for stationary creatures
             case WANDERING:
-                backend.logMessage(this.getPronoun() + " wanders aimlessly.");
+                backend.logMessage(this.getPronoun() + " wanders aimlessly.", MessageLog.MessageType.GENERAL);
                 break;
             case SLEEPING:
-                backend.logMessage(this.getPronoun() + " falls asleep.");
+                backend.logMessage(this.getPronoun() + " falls asleep.", MessageLog.MessageType.GENERAL);
                 break;
         }
         this.state = newState;

@@ -1,6 +1,7 @@
 package pow.backend.conditions;
 
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 
@@ -37,14 +38,14 @@ public abstract class Condition implements Serializable {
 
         // update user with change in status
         if (!this.intensityTiming.active()) {
-            backend.logMessage(getStartMessage());
+            backend.logMessage(getStartMessage(), MessageLog.MessageType.STATUS);
         } else {
             if (intensity > currIntensity) {
-                backend.logMessage(getIncreaseMessage());
+                backend.logMessage(getIncreaseMessage(), MessageLog.MessageType.STATUS);
             } else if (turnsRemaining > currTurnsRemaining) {
-                backend.logMessage(getExtendMessage());
+                backend.logMessage(getExtendMessage(), MessageLog.MessageType.STATUS);
             } else {
-                backend.logMessage("but it has no effect");
+                backend.logMessage("but it has no effect", MessageLog.MessageType.STATUS);
             }
         }
 
@@ -69,12 +70,12 @@ public abstract class Condition implements Serializable {
         // if there's a change, then log for the user
         int newIntensity = intensityTiming.getIntensity();
         if (!this.intensityTiming.active()) {
-            backend.logMessage(getEndMessage());
+            backend.logMessage(getEndMessage(), MessageLog.MessageType.STATUS);
         } else {
             if (currIntensity < newIntensity) {
-                backend.logMessage(getIncreaseMessage());
+                backend.logMessage(getIncreaseMessage(), MessageLog.MessageType.STATUS);
             } else if (currIntensity > newIntensity) {
-                backend.logMessage(getDecreaseMessage());
+                backend.logMessage(getDecreaseMessage(), MessageLog.MessageType.STATUS);
             }
         }
 
