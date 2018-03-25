@@ -1,6 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.backend.ShopData;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
@@ -31,13 +32,13 @@ public class BuyItem implements Action {
         // sanity checks
         int totalCost = entry.price * count;
         if (player.gold < totalCost) {
-            backend.logMessage("You do not have enough money.");
+            backend.logMessage("You do not have enough money.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
         DungeonItem item = entry.item;
         int numCanGet = Math.min(player.inventory.numCanAdd(item), item.count);
         if (numCanGet <= 0) {
-            backend.logMessage(player.getPronoun() + " can't hold any more.");
+            backend.logMessage(player.getPronoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
 
@@ -53,7 +54,8 @@ public class BuyItem implements Action {
             item.count -= count;
             player.inventory.add(cloneForInventory);
         }
-        backend.logMessage(player.getPronoun() + " buy " + TextUtils.format(item.name, count, true));
+        backend.logMessage(player.getPronoun() + " buy " + TextUtils.format(item.name, count, true),
+                MessageLog.MessageType.GENERAL);
 
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());

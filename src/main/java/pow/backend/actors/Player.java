@@ -274,7 +274,7 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private void gainLevel(GameBackend backend) {
-        backend.logMessage("congrats, you gained a level!");
+        backend.logMessage("congrats, you gained a level!", MessageLog.MessageType.GAME_EVENT);
         level++;
         updateStats();
     }

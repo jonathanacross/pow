@@ -1,6 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 
@@ -27,7 +28,7 @@ public class Heal implements Action {
         events.add(GameEvent.Healed());
 
         int healAmount = actor.increaseHealth(this.amount);
-        backend.logMessage(actor.getPronoun() + " healed " + healAmount);
+        backend.logMessage(actor.getPronoun() + " healed " + healAmount, MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }
 

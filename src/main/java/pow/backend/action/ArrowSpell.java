@@ -48,7 +48,10 @@ public class ArrowSpell implements Action {
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
-                backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
+                MessageLog.MessageType messageType = defender.friendly
+                        ? MessageLog.MessageType.COMBAT_BAD
+                        : MessageLog.MessageType.COMBAT_GOOD;
+                backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun(), messageType);
                 events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
                 break;
             }

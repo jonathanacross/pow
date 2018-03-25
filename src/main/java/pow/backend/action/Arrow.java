@@ -47,7 +47,10 @@ public class Arrow implements Action {
                 boolean hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
                 int damage = attackData.dieRoll.rollDice(gs.rng) + attackData.plusToDam;
                 if (hitsTarget && damage > 0) {
-                    backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
+                    MessageLog.MessageType messageType = defender.friendly
+                            ? MessageLog.MessageType.COMBAT_BAD
+                            : MessageLog.MessageType.COMBAT_GOOD;
+                    backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun(), messageType);
                     events.addAll(AttackUtils.doHit(backend, attacker, defender, new AttackUtils.HitParams(damage)));
                     break;
                 }
@@ -61,7 +64,7 @@ public class Arrow implements Action {
             DungeonItem arrows = gs.player.findArrows();
             int count = arrows.count - 1;
             gs.player.inventory.removeOneItem(arrows);
-            backend.logMessage("you have " + count + " arrows left");
+            backend.logMessage("you have " + count + " arrows left", MessageLog.MessageType.GENERAL);
         }
 
         events.add(GameEvent.DungeonUpdated());

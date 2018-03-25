@@ -1,6 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.event.GameEvent;
@@ -32,13 +33,13 @@ public class DebugAction implements Action {
         switch (what) {
             case INCREASE_CHAR_LEVEL:
                 if (player.level < 20) {
-                    backend.logMessage("DEBUG: player up a level");
+                    backend.logMessage("DEBUG: player up a level", MessageLog.MessageType.DEBUG);
                     int expNeeded = player.getExpToNextLevel();
                     player.gainExperience(backend, expNeeded + 1, null);
                 }
                 break;
             case HEAL:
-                backend.logMessage("DEBUG: healing player");
+                backend.logMessage("DEBUG: healing player", MessageLog.MessageType.DEBUG);
                 player.setFullHealth();
                 player.setFullMana();
                 break;

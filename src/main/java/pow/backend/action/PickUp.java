@@ -2,6 +2,7 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
@@ -35,7 +36,7 @@ public class PickUp implements Action {
 
         DungeonSquare square = gs.getCurrentMap().map[actor.loc.x][actor.loc.y];
         if (square.items.size() == 0) {
-            backend.logMessage(actor.getPronoun() + " can't pick up anything here.");
+            backend.logMessage(actor.getPronoun() + " can't pick up anything here.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
 
@@ -44,7 +45,8 @@ public class PickUp implements Action {
         if (item.flags.money) {
             actor.gold += item.count;
             square.items.items.remove(itemNum);
-            backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true));
+            backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
+                    MessageLog.MessageType.GENERAL);
             return ActionResult.Succeeded(events);
         }
 
@@ -60,12 +62,13 @@ public class PickUp implements Action {
             // slight hack here.. update the visibility of the game map,
             // since picking up some artifacts may involve lanterns
             gs.getCurrentMap().updatePlayerVisibilityData(gs.player);
-            backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true));
+            backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
+                    MessageLog.MessageType.GAME_EVENT);
 
             // log if the player won the game
             for (GameEvent event : events) {
                 if (event.eventType.equals(GameEvent.EventType.WON_GAME)) {
-                    backend.logMessage("Congratulations, you won!");
+                    backend.logMessage("Congratulations, you won!", MessageLog.MessageType.GAME_EVENT);
                 }
             }
             return ActionResult.Succeeded(events);
@@ -73,7 +76,7 @@ public class PickUp implements Action {
 
         int numCanGet = Math.min(actor.inventory.numCanAdd(item), item.count);
         if (numCanGet <= 0) {
-            backend.logMessage(actor.getPronoun() + " can't hold any more.");
+            backend.logMessage(actor.getPronoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
 
@@ -89,7 +92,8 @@ public class PickUp implements Action {
             item.count -= numToAdd;
             actor.inventory.add(cloneForInventory);
         }
-        backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true));
+        backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
+                MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }
 

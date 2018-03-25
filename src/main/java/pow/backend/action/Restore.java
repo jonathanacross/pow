@@ -1,6 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 
@@ -28,7 +29,8 @@ public class Restore implements Action {
 
         int hpAmount = actor.increaseHealth(this.amount);
         int mpAmount = actor.increaseMana(this.amount);
-        backend.logMessage(actor.getPronoun() + " restored " + hpAmount + " health and " + mpAmount + " mana");
+        backend.logMessage(actor.getPronoun() + " restored " + hpAmount + " health and " + mpAmount + " mana",
+                MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }
 

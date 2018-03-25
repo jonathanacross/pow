@@ -1,9 +1,6 @@
 package pow.backend.action;
 
-import pow.backend.GameBackend;
-import pow.backend.GameMap;
-import pow.backend.GameState;
-import pow.backend.SpellParams;
+import pow.backend.*;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
@@ -52,7 +49,10 @@ public class CircleCut implements Action {
             for (Point p : squares) {
                 Actor defender = map.actorAt(p.x, p.y);
                 if (defender != null) {
-                    backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun());
+                    MessageLog.MessageType messageType = defender.friendly
+                            ? MessageLog.MessageType.COMBAT_BAD
+                            : MessageLog.MessageType.COMBAT_GOOD;
+                    backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun(), messageType);
                     events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
                 }
             }
