@@ -219,8 +219,6 @@ public class GameMainLayer extends AbstractWindow {
             case RUN_SOUTH_WEST: backend.tellPlayer(new RunBehavior(gs.player, Direction.SW)); break;
             case RUN_SOUTH_EAST: backend.tellPlayer(new RunBehavior(gs.player, Direction.SE)); break;
 
-            case UP_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, true)); break;
-            case DOWN_STAIRS: backend.tellPlayer(new TakeStairs(gs.player, false)); break;
             case REST: backend.tellPlayer(new Move(gs.player, 0, 0)); break;
             case SAVE: backend.tellPlayer(new Save()); break;
             case LOOK: startLooking(gs); break;

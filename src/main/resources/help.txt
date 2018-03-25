@@ -1,4 +1,5 @@
-Use the following keys to move, attack, or open adjacent doors:
+Use the following keys to move, attack, go up/down stairs, or open
+adjacent doors:
 
      y  k  u      7  8  9
      h     l      4     6
@@ -10,8 +11,7 @@ The keys . or number pad 5 indicate to stay still.
 
     Key    Action                        Key    Action
     ===    =========================     ===    ==========================
-      .    Stay still                      >    Go downstairs
-                                           <    Go upstairs
+      .    Stay still
       /    See monster information         ?    See help
       b    Walk southwest                  B    Run southwest
       c    Close door                      C    Character description

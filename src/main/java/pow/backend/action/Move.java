@@ -73,7 +73,7 @@ public class Move implements Action {
                 }
             }
 
-            backend.logMessage(actor.getPronoun() + " can't go that way", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(actor.getPronoun() + " can't go that way", MessageLog.MessageType.DEBUG);
             return ActionResult.Failed(null);
         }
 
@@ -103,11 +103,21 @@ public class Move implements Action {
 
         DungeonFeature feature = gs.getCurrentMap().map[newx][newy].feature;
         if (feature != null && feature.flags.actOnStep) {
-            Point loc = new Point(newx, newy);
-            ActionParams params = new ActionParams(feature.actionParams);
-            params.point = loc;
-            Action newAction = ActionParams.buildAction(this.actor, params);
-            return ActionResult.Failed(newAction);
+            if (feature.flags.stairsDown || feature.flags.stairsUp) {
+                // special case if the feature is stairs, as we have to compute final destination
+                // location based on the direction of the player.
+                DungeonExit exit = new DungeonExit(feature.actionParams.name);
+                String targetArea = exit.areaId;
+                Point targetLoc = gs.world.world.get(exit.areaId).keyLocations.get(exit.locName);
+                Point adjustedTargetLoc = new Point(targetLoc.x + dx, targetLoc.y + dy);
+                return ActionResult.Failed(new GotoArea(targetArea, adjustedTargetLoc));
+            } else {
+                Point loc = new Point(newx, newy);
+                ActionParams params = new ActionParams(feature.actionParams);
+                params.point = loc;
+                Action newAction = ActionParams.buildAction(this.actor, params);
+                return ActionResult.Failed(newAction);
+            }
         }
 
         if (! gs.getCurrentMap().isBlocked(this.actor, newx, newy)) {
