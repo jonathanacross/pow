@@ -64,6 +64,8 @@ public class PickUp implements Action {
             gs.getCurrentMap().updatePlayerVisibilityData(gs.player);
             backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
                     MessageLog.MessageType.GAME_EVENT);
+            // Print the description too, so that the player knows what the artifact does.
+            backend.logMessage(item.description, MessageLog.MessageType.GAME_EVENT);
 
             // log if the player won the game
             for (GameEvent event : events) {

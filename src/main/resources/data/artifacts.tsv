@@ -1,24 +1,24 @@
 # id	# name	image	description	artifact slot
-pearl 1	& pearl	redorange pearl	pearl from dungeon 1	pearl1
-pearl 2	& pearl	orange pearl	pearl from dungeon 2	pearl2
-pearl 3	& pearl	yellow pearl	pearl from dungeon 3	pearl3
-pearl 4	& pearl	green pearl	pearl from dungeon 4	pearl4
-pearl 5	& pearl	blue pearl	pearl from dungeon 5	pearl5
-pearl 6	& pearl	indigo pearl	pearl from dungeon 6	pearl6
-pearl 7	& pearl	violet pearl	pearl from dungeon 7	pearl7
-pearl 8	& pearl	rose pearl	pearl from dungeon 8	pearl8
+pearl 1	& pearl	redorange pearl	Pearl 1: it is inscribed in tiny lettering, 'You always find something in the last place you look.' 	pearl1
+pearl 2	& pearl	orange pearl	Pearl 2: it is inscribed in tiny lettering, 'Smile today, tomorrow could be worse.'	pearl2
+pearl 3	& pearl	yellow pearl	Pearl 3: it is inscribed in tiny lettering, 'If you think nothing is impossible, try slamming a revolving door.'	pearl3
+pearl 4	& pearl	green pearl	Pearl 4: it is inscribed in tiny lettering, 'If you don't succeed at first, hide all evidence that you tried.'	pearl4
+pearl 5	& pearl	blue pearl	Pearl 5: it is inscribed in tiny lettering, 'He who laughs last didn't get it.'	pearl5
+pearl 6	& pearl	indigo pearl	Pearl 6: it is inscribed in tiny lettering, 'Never test how deep the water is with both feet.'	pearl6
+pearl 7	& pearl	violet pearl	Pearl 7: it is inscribed in tiny lettering, 'No good deed goes unpunished.'	pearl7
+pearl 8	& pearl	rose pearl	Pearl 8: it is inscribed in tiny lettering, 'To make time fly, throw your watch out the window.'	pearl8
 # main dungeon items				
-lantern	lantern	lantern	lantern	lantern
-magic key	magic key	magic key	magic key	key
-water float	water float	float	water float	float
-gas mask	gas mask	gas mask	gas mask	gasmask
-glasses	glasses	glasses	glasses	glasses
-magic pickaxe	magic pickaxe	magic pickaxe	magic pickaxe	pickaxe
-heat suit	heat suit	heat suit	heat suit	heatsuit
-magic feather	magic feather	magic feather	magic feather	feather
+lantern	lantern	lantern	It provides a warm glow around you.	lantern
+magic key	magic key	magic key	It allows you to open locked doors.	key
+water float	water float	float	It allows you to swim in water.	float
+gas mask	gas mask	gas mask	It protects you from poisonous swamp gasses.	gasmask
+glasses	glasses	glasses	It allows you to see invisible creatures.	glasses
+magic pickaxe	magic pickaxe	magic pickaxe	It allows you to dig through some walls.	pickaxe
+heat suit	heat suit	heat suit	It protects you from the radiant heat of volcanos.	heatsuit
+magic feather	magic feather	magic feather	It looks long and delicate.	feather
 # optional items				
-pet statue	pet statue	magic statue	pet statue	petstatue
-magic bag	magic bag	bag	bag	bag
-create wall staff	staff of create wall	crooked staff	staff of create wall	wallwand
-bright lantern	bright lantern	bright lantern	bright lantern	lantern2
-magic atlas	magic atlas	magic atlas	magic atlas	map
+pet statue	pet statue	magic statue	It is a bronze statue of a cat.	petstatue
+magic bag	magic bag	bag	It increases the number of items you can hold in a slot.	bag
+create wall staff	staff of create wall	crooked staff	It’s crooked and made of mahogany.	wallwand
+bright lantern	bright lantern	bright lantern	It casts a bright magical light, piercing the darkness around you.	lantern2
+magic atlas	magic atlas	magic atlas	It shows a map of the world (press M).	map
