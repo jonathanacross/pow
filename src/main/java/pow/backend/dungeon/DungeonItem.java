@@ -102,10 +102,10 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         GLASSES,
         PICKAXE,
         HEATSUIT,
-        FEATHER,
         PETSTATUE,
         BAG,
-        WALLWAND,
+        PORTALKEY,
+        XRAYSCOPE,
         MAP
     }
 

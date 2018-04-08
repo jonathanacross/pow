@@ -38,6 +38,10 @@ rock open door	open rock door	open rock door	openDoor,blockWater,blockLava,inter
 rock closed door	closed rock door	closed metal rock door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::rock open door
 key locked rock door	key locked rock door	closed metal key rock door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	unlockDoor:1:rock open door
 pearl locked rock door	pearl locked rock door	closed metal pearl rock door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	unlockDoor:2:rock open door
+blue portal door	blue portal door	blue portal door	blockWater,blockLava,blockAir,blockGround,interesting	
+red portal door	red portal door	red portal door	blockWater,blockLava,blockAir,blockGround,interesting	
+gray portal door	closed portal door	gray portal door	blockWater,blockLava,blockAir,blockGround,interesting	
+spikes	spikes	spikes		
 candle	candle	candle	smallLight	
 candelabra	candelabra	candelabra	smallLight	
 big tree	big tree	big tree		

@@ -15,10 +15,10 @@ gas mask	gas mask	gas mask	It protects you from poisonous swamp gasses.	gasmask
 glasses	glasses	glasses	It allows you to see invisible creatures.	glasses
 magic pickaxe	magic pickaxe	magic pickaxe	It allows you to dig through some walls.	pickaxe
 heat suit	heat suit	heat suit	It protects you from the radiant heat of volcanos.	heatsuit
-magic feather	magic feather	magic feather	It looks long and delicate.	feather
+x-ray scope	x-ray scope	x-ray scope	It allows you to see hidden traps.	xrayscope
 # optional items				
 pet statue	pet statue	magic statue	It is a bronze statue of a cat.	petstatue
-magic bag	magic bag	bag	It increases the number of items you can hold in a slot.	bag
-create wall staff	staff of create wall	crooked staff	It’s crooked and made of mahogany.	wallwand
-bright lantern	bright lantern	bright lantern	It casts a bright magical light, piercing the darkness around you.	lantern2
 magic atlas	magic atlas	magic atlas	It shows a map of the world (press M).	map
+portal key	portal key	portal key	It is a silver key with a shimmering jewel etched in the shape of a spiral.	portalkey
+magic bag	magic bag	bag	It increases the number of items you can hold in a slot.	bag
+bright lantern	bright lantern	bright lantern	It casts a bright magical light, piercing the darkness around you.	lantern2
