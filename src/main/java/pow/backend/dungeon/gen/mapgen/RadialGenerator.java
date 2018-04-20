@@ -114,8 +114,7 @@ public class RadialGenerator implements MapGenerator {
             Direction parentDir = Direction.getDir(-cell.loc.x, -cell.loc.y);
             Point parentLoc = cell.loc.add(parentDir);
             MazeCell parent = findOrCreateCell(cells, parentLoc);
-            cell.available = rng.nextInt(100) < matchPercent
-                    ? parent.available : !parent.available;
+            cell.available = rng.nextInt(100) < matchPercent == parent.available;
 
             for (Direction direction : Direction.CARDINALS) {
                 Point newLoc = cell.loc.add(direction);

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class KnowledgeWindow extends AbstractWindow {
 
-    private int selectIndex = 0;
+    private int selectIndex;
     private final List<Knowledge.MonsterSummary> monsterSummary;
 
     public KnowledgeWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend,

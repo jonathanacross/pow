@@ -9,12 +9,15 @@ import java.awt.event.KeyListener;
 public class MainWindow extends JFrame implements KeyListener {
     private final MainDraw draw;
 
+    @Override
     public void keyPressed(KeyEvent e) {
         draw.processKey(e);
     }
 
+    @Override
     public void keyReleased(KeyEvent e) { }
 
+    @Override
     public void keyTyped(KeyEvent e) { }
 
     public MainWindow() {

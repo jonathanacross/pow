@@ -45,8 +45,7 @@ public class MakePlayerExpLevels {
             monstersByLevel.get(level).add(m);
         }
 
-        List<Integer> levels = new ArrayList<>();
-        levels.addAll(monstersByLevel.keySet());
+        List<Integer> levels = new ArrayList<>(monstersByLevel.keySet());
         Collections.sort(levels);
         for (int level : levels) {
 //            for (Monster m: monstersByLevel.get(level)) {

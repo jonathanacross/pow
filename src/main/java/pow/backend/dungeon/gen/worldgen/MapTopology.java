@@ -147,11 +147,9 @@ public class MapTopology {
             Map<Point3D, MapPoint> roomLocs,
             List<SpacialConnection> connections, Random rng, double probConnect) {
 
-        List<Point3D> locs = new ArrayList<>();
-        locs.addAll(roomLocs.keySet());
+        List<Point3D> locs = new ArrayList<>(roomLocs.keySet());
 
-        Set<SpacialConnection> allConnections = new HashSet<>();
-        allConnections.addAll(connections);
+        Set<SpacialConnection> allConnections = new HashSet<>(connections);
 
         for (int i = 0; i < locs.size(); i++) {
             for (int j = i + 1; j < locs.size(); j++) {

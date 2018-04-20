@@ -75,8 +75,7 @@ public class Knowledge implements Serializable {
     }
 
     public List<MonsterSummary> getMonsterSummary() {
-        List<MonsterSummary> summaryList = new ArrayList<>();
-        summaryList.addAll(monsterKnowledge.values());
+        List<MonsterSummary> summaryList = new ArrayList<>(monsterKnowledge.values());
         summaryList.sort((MonsterSummary m1, MonsterSummary m2) -> {
             if (m1.experience != m2.experience) { return m1.experience - m2.experience; }
             if (m1.level != m2.level) { return m1.level - m2.level; }
