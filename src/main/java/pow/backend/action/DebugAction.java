@@ -15,8 +15,11 @@ public class DebugAction implements Action {
     private final What what;
 
     public enum What {
+        UNKNOWN,
         INCREASE_CHAR_LEVEL,
-        HEAL
+        HEAL,
+        CLOSED_PORTAL_DEBUG,
+        OPEN_PORTAL_DEBUG
     }
 
     public DebugAction(What what) {
@@ -31,6 +34,9 @@ public class DebugAction implements Action {
         Player player = backend.getGameState().player;
 
         switch (what) {
+            case UNKNOWN:
+                backend.logMessage("DEBUG: unknown action", MessageLog.MessageType.DEBUG);
+                break;
             case INCREASE_CHAR_LEVEL:
                 if (player.level < 20) {
                     backend.logMessage("DEBUG: player up a level", MessageLog.MessageType.DEBUG);
@@ -42,6 +48,12 @@ public class DebugAction implements Action {
                 backend.logMessage("DEBUG: healing player", MessageLog.MessageType.DEBUG);
                 player.setFullHealth();
                 player.setFullMana();
+                break;
+            case CLOSED_PORTAL_DEBUG:
+                backend.logMessage("DEBUG: hit closed portal", MessageLog.MessageType.DEBUG);
+                break;
+            case OPEN_PORTAL_DEBUG:
+                backend.logMessage("DEBUG: hit open portal", MessageLog.MessageType.DEBUG);
                 break;
         }
         List<GameEvent> events = new ArrayList<>();

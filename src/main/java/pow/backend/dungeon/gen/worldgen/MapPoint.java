@@ -11,12 +11,20 @@ import java.util.Set;
 // location of maps in the world (via the class MapTopology), and a
 // map generator to create the map.
 public class MapPoint {
+
+    public enum PortalStatus {
+        NONE,
+        CLOSED,
+        OPEN
+    }
+
     public final String id;
     public final int level;
     public final int group;
     public final List<Direction> fromDirs;
     public final Set<Integer> fromGroups;
     public final Set<String> fromIds;
+    public final PortalStatus portalStatus;
     public final MapGenerator mapGenerator;
 
     public MapPoint(String id,
@@ -25,6 +33,7 @@ public class MapPoint {
                     List<Direction> fromDirs,
                     Set<Integer> fromGroups,
                     Set<String> fromIds,
+                    PortalStatus portalStatus,
                     MapGenerator mapGenerator) {
         this.id = id;
         this.level = level;
@@ -32,6 +41,7 @@ public class MapPoint {
         this.fromDirs = fromDirs;
         this.fromGroups = fromGroups;
         this.fromIds = fromIds;
+        this.portalStatus = portalStatus;
         this.mapGenerator = mapGenerator;
     }
 }

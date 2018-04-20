@@ -1,84 +1,84 @@
-#id	level	group	possible dirs	from groups	from id	generator	genParams	flags	boss	monsters
-town1	1	1				town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
-basement1	1		D		town1	premade	basementl1,basement	permLight		green mushrooms,black ant,white rat,brown beetle,crawling moss
-basement2	2		D		basement1	premade	basementl2,basement	permLight	giant salamander	green mushrooms,black ant,white rat,brown beetle,crawling moss
-grassyfields1	2	1	N,E,S,W	1		recursiveInterpolation	grass	outside		bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
-grassyfields2	3	1	N,E,S,W	1		recursiveInterpolation	grass	outside		bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
-grassyfields3	4	1	N,E,S,W	1		recursiveInterpolation	grass	outside		bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
-grassyfields4	5	1	N,E,S,W	1		recursiveInterpolation	grass	outside		bot,yellow ant,pigeon,yellow snake,scruffy dog
-d1l1	6		D		grassyfields4	shapeDLA	dungeon			yellow snake,scruffy dog,yellow mushrooms,floating eye,bat,green worm mass,brown imp
-d1l2	7		D		d1l1	shapeDLA	dungeon		green komodo	yellow snake,scruffy dog,yellow mushrooms,floating eye,bat,green worm mass,brown imp
-d1l3	8		D		d1l2	shapeDLA	dungeon			yellow snake,scruffy dog,yellow mushrooms,floating eye,bat,green worm mass,brown imp
-d1l4	9		D		d1l3	shapeDLA	dungeon		purple spider	yellow snake,scruffy dog,yellow mushrooms,floating eye,bat,green worm mass,brown imp
-desert1	10	2	N,E,S,W	1		recursiveInterpolation	desert	outside		novice mage,novice warrior,novice archer,novice rogue,cobra,green centipede,pincer beetle,dust devil,jackal,brown scorpion
-desert2	11	2	N,E,S,W	2		recursiveInterpolation	desert	outside		novice archer,novice rogue,cobra,red ant,pincer beetle,dust devil,jackal
-desert3	12	2	N,E,S,W	2		recursiveInterpolation	desert	outside		novice archer,novice rogue,cobra,red ant,pincer beetle,dust devil,jackal
-desert4	13	2	N,E,S,W	2		recursiveInterpolation	desert	outside		novice archer,novice rogue,cobra,red ant,pincer beetle,dust devil,jackal
-d2l1	15		D		desert4	cellularAutomata	1,true,desert cave			novice warrior,novice mage,green centipede,brown scorpion,goldfish
-d2l2	16		D		d2l1	cellularAutomata	1,true,desert cave		great turtle	novice warrior,novice mage,green centipede,brown scorpion,goldfish
-d2l3	17		D		d2l2	cellularAutomata	1,true,desert cave			novice warrior,novice mage,green centipede,brown scorpion,goldfish
-d2l4	18		D		d2l3	cellularAutomata	1,true,desert cave		minotaur	novice warrior,novice mage,green centipede,brown scorpion,goldfish
-forest1	20	3	N,E,S,W	1,2		recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
-town2	21	3	N,E,S,W	3		town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
-forest2	22	3	N,E,S,W	3		recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
-forest3	23	3	N,E,S,W	3		recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
-forest4	24	3	N,E,S,W	3		recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
-blacktowerl1	24		U		forest2	premade	blacktowerl1,black tower	permLight		bot,blue snake,blue beetle
-blacktowerl2	25		U		blacktowerl1	premade	blacktowerl2,black tower	permLight	blue wizard	bot,blue snake,blue beetle
-d3l1	25		D		forest4	rogue	0,dungeon			rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
-d3l2	26		D		d3l1	rogue	0,dungeon		yellow schweinhund	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
-d3l3	27		D		d3l2	rogue	0,dungeon			rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
-d3l4	28		D		d3l3	rogue	0,dungeon		Balthazar the Great	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
-water1	30	4	N,E,S,W	3		recursiveInterpolation	water	outside		goldfish,green fish,eel,pink jellyfish
-water2	31	4	N,E,S,W	4		recursiveInterpolation	water	outside		goldfish,green fish,eel,pink jellyfish
-snow1	32	5	N,E,S,W	4		recursiveInterpolation	snow	outside		dark elf mage,dark elf archer,dark elf rogue,blue beetle,gray wolf,bear,big red spiny
-snow2	33	5	N,E,S,W	5		recursiveInterpolation	snow	outside		dark elf mage,dark elf archer,dark elf rogue,blue beetle,gray wolf,bear,big red spiny
-snow3	34	5	N,E,S,W	5		recursiveInterpolation	snow	outside		dark elf mage,dark elf archer,dark elf rogue,blue beetle,gray wolf,bear,big red spiny
-d4l1	35		D		snow3	delve	ice cave			dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
-d4l2	36		D		d4l1	delve	ice cave		Hagar the Merciless	dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
-d4l3	37		D		d4l2	delve	ice cave			dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
-d4l4	38		D		d4l3	delve	ice cave		ice creature	dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
-swamp1	40	6	N,E,S,W	4		recursiveInterpolation	swamp	outside,poisonGas		orc archer,orc rogue,baby green dragon,gold dragonfly,purple worms,griffin,copperhead snake
-town3	41	6	N,E,S,W	6		town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
-swamp2	42	6	N,E,S,W	6		recursiveInterpolation	swamp	outside,poisonGas		orc archer,orc rogue,baby green dragon,gold dragonfly,purple worms,griffin,copperhead snake
-swamp3	43	6	N,E,S,W	6		recursiveInterpolation	swamp	outside,poisonGas		orc archer,orc rogue,baby green dragon,gold dragonfly,purple worms,griffin,copperhead snake
-swamp4	44	6	N,E,S,W	6		recursiveInterpolation	swamp	outside,poisonGas		orc archer,orc rogue,baby green dragon,gold dragonfly,purple worms,griffin,copperhead snake
-d5l1	45		D		swamp4	rogue	1,dungeon			orc mage,orc warrior,orc archer,baby green dragon,baby red dragon,purple worms,golem,chess knight
-d5l2	46		D		d5l1	rogue	1,dungeon		Lor the Betrayer	orc mage,orc warrior,orc archer,baby green dragon,baby red dragon,purple worms,golem,chess knight
-d5l3	47		D		d5l2	rogue	1,dungeon			orc mage,orc warrior,orc archer,baby green dragon,baby red dragon,purple worms,golem,chess knight
-d5l4	48		D		d5l3	rogue	1,dungeon		basilisk	orc mage,orc warrior,orc archer,baby green dragon,baby red dragon,purple worms,golem,chess knight
-haunted1	50	7	N,E,S,W	5,6		recursiveInterpolation	haunted forest	outside		skeleton mage,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire bat
-haunted2	51	7	N,E,S,W	7		recursiveInterpolation	haunted forest	outside		skeleton mage,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire bat
-haunted3	52	7	N,E,S,W	7		recursiveInterpolation	haunted forest	outside		skeleton mage,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire bat
-haunted4	53	7	N,E,S,W	7		recursiveInterpolation	haunted forest	outside		skeleton mage,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire bat
-d6l1	55		D		haunted4	shapeDLA	crypt			skeleton mage,skeleton warrior,skeleton archer,mummy,pink ghost,vampire,evil eye,floating skull,vampire bat
-d6l2	56		D		d6l1	shapeDLA	crypt		red spider	skeleton mage,skeleton warrior,skeleton archer,mummy,pink ghost,vampire,evil eye,floating skull,vampire bat
-d6l3	57		D		d6l2	shapeDLA	crypt			skeleton mage,skeleton warrior,skeleton archer,mummy,pink ghost,vampire,evil eye,floating skull,vampire bat
-d6l4	58		D		d6l3	shapeDLA	crypt		skeletal dragon	skeleton mage,skeleton warrior,skeleton archer,mummy,pink ghost,vampire,evil eye,floating skull,vampire bat
-dig desert1	60	8	N,E,S,W	6,7		recursiveInterpolation	dig desert	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
-town4	61	8	N,E,S,W	8		town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
-dig desert2	62	8	N,E,S,W	8		recursiveInterpolation	dig desert	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
-dig desert3	63	8	N,E,S,W	8		recursiveInterpolation	dig desert	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
-dig desert4	64	8	N,E,S,W	8		recursiveInterpolation	dig desert	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
-d7l1	65		D		dig desert4	cellularAutomata	2,false,brown cave			troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
-d7l2	66		D		d7l1	cellularAutomata	2,false,brown cave		two headed ogre	troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
-d7l3	67		D		d7l2	cellularAutomata	2,false,brown cave			troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
-d7l4	68		D		d7l3	cellularAutomata	2,false,brown cave		oliphant	troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
-ocean1	70	9	N,E,S,W	8		recursiveInterpolation	water	outside		copper jellyfish,scaryfish,water whirlwind,octopus,medusa,sea dragon
-ocean2	71	9	N,E,S,W	9		recursiveInterpolation	water	outside		copper jellyfish,scaryfish,water whirlwind,octopus,medusa,sea dragon
-volcano1	72	10	N,E,S,W	9		recursiveInterpolation	volcano	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
-volcano2	73	10	N,E,S,W	10		recursiveInterpolation	volcano	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
-volcano3	74	10	N,E,S,W	10		radial	volcano	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
-d8l1	75		D		volcano3	cellularAutomata	3,false,lava cave	hot		demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
-d8l2	76		D		d8l1	cellularAutomata	3,false,lava cave	hot	phoenix	demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
-d8l3	77		D		d8l2	cellularAutomata	3,false,lava cave	hot		demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
-d8l4	78		D		d8l3	cellularAutomata	3,false,lava cave	hot	Maeglor	demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
-golden desert1	80	11	N,E,S,W	10		recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
-town5	81	11	N,E,S,W	11		town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
-golden desert2	82	11	N,E,S,W	11		recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
-golden desert3	83	11	N,E,S,W	11		recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
-golden desert4	84	11	N,E,S,W	11		recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
-d9l1	85		D		golden desert3	rogue	2,blue			alien mage,alien warrior,alien archer,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind
-d9l2	86		D		d9l1	rogue	2,blue		Lugorith	alien mage,alien warrior,alien archer,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind
-d9l3	87		D		d9l2	rogue	2,blue			alien mage,alien warrior,alien archer,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind
-d9l4	88		D		d9l3	rogue	2,blue		evil incarnate	alien mage,alien warrior,alien archer,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind
+#id	level	group	possible dirs	from groups	from id	teleport	generator	genParams	flags	boss	monsters
+town1	1	1				open	town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
+basement1	1		D		town1		premade	basementl1,basement	permLight		green mushrooms,black ant,white rat,brown beetle,crawling moss
+basement2	2		D		basement1		premade	basementl2,basement	permLight	giant salamander	green mushrooms,black ant,white rat,brown beetle,crawling moss
+grassyfields1	2	1	N,E,S,W	1			recursiveInterpolation	grass	outside		bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
+grassyfields2	3	1	N,E,S,W	1			recursiveInterpolation	grass	outside		bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
+grassyfields3	4	1	N,E,S,W	1			recursiveInterpolation	grass	outside		bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
+grassyfields4	5	1	N,E,S,W	1			recursiveInterpolation	grass	outside		bot,yellow ant,pigeon,yellow snake,scruffy dog
+d1l1	6		D		grassyfields4		shapeDLA	dungeon			yellow snake,scruffy dog,yellow mushrooms,floating eye,bat,green worm mass,brown imp
+d1l2	7		D		d1l1		shapeDLA	dungeon		green komodo	yellow snake,scruffy dog,yellow mushrooms,floating eye,bat,green worm mass,brown imp
+d1l3	8		D		d1l2		shapeDLA	dungeon			yellow snake,scruffy dog,yellow mushrooms,floating eye,bat,green worm mass,brown imp
+d1l4	9		D		d1l3		shapeDLA	dungeon		purple spider	yellow snake,scruffy dog,yellow mushrooms,floating eye,bat,green worm mass,brown imp
+desert1	10	2	N,E,S,W	1			recursiveInterpolation	desert	outside		novice mage,novice warrior,novice archer,novice rogue,cobra,green centipede,pincer beetle,dust devil,jackal,brown scorpion
+desert2	11	2	N,E,S,W	2		open	recursiveInterpolation	desert	outside		novice archer,novice rogue,cobra,red ant,pincer beetle,dust devil,jackal
+desert3	12	2	N,E,S,W	2			recursiveInterpolation	desert	outside		novice archer,novice rogue,cobra,red ant,pincer beetle,dust devil,jackal
+desert4	13	2	N,E,S,W	2			recursiveInterpolation	desert	outside		novice archer,novice rogue,cobra,red ant,pincer beetle,dust devil,jackal
+d2l1	15		D		desert4		cellularAutomata	1,true,desert cave			novice warrior,novice mage,green centipede,brown scorpion,goldfish
+d2l2	16		D		d2l1		cellularAutomata	1,true,desert cave		great turtle	novice warrior,novice mage,green centipede,brown scorpion,goldfish
+d2l3	17		D		d2l2		cellularAutomata	1,true,desert cave			novice warrior,novice mage,green centipede,brown scorpion,goldfish
+d2l4	18		D		d2l3		cellularAutomata	1,true,desert cave		minotaur	novice warrior,novice mage,green centipede,brown scorpion,goldfish
+forest1	20	3	N,E,S,W	1,2			recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
+town2	21	3	N,E,S,W	3			town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
+forest2	22	3	N,E,S,W	3			recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
+forest3	23	3	N,E,S,W	3			recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
+forest4	24	3	N,E,S,W	3			recursiveInterpolation	forest	outside		rabbit archer,rabbit rogue,purple beetle,blue snake,small red spiny,rock lizard,yellow worm mass
+blacktowerl1	24		U		forest2		premade	blacktowerl1,black tower	permLight		bot,blue snake,blue beetle
+blacktowerl2	25		U		blacktowerl1		premade	blacktowerl2,black tower	permLight	blue wizard	bot,blue snake,blue beetle
+d3l1	25		D		forest4		rogue	0,dungeon			rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
+d3l2	26		D		d3l1		rogue	0,dungeon		yellow schweinhund	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
+d3l3	27		D		d3l2		rogue	0,dungeon			rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
+d3l4	28		D		d3l3		rogue	0,dungeon		Balthazar the Great	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
+water1	30	4	N,E,S,W	3			recursiveInterpolation	water	outside		goldfish,green fish,eel,pink jellyfish
+water2	31	4	N,E,S,W	4			recursiveInterpolation	water	outside		goldfish,green fish,eel,pink jellyfish
+snow1	32	5	N,E,S,W	4		open	recursiveInterpolation	snow	outside		dark elf mage,dark elf archer,dark elf rogue,blue beetle,gray wolf,bear,big red spiny
+snow2	33	5	N,E,S,W	5			recursiveInterpolation	snow	outside		dark elf mage,dark elf archer,dark elf rogue,blue beetle,gray wolf,bear,big red spiny
+snow3	34	5	N,E,S,W	5			recursiveInterpolation	snow	outside		dark elf mage,dark elf archer,dark elf rogue,blue beetle,gray wolf,bear,big red spiny
+d4l1	35		D		snow3		delve	ice cave			dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
+d4l2	36		D		d4l1		delve	ice cave		Hagar the Merciless	dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
+d4l3	37		D		d4l2		delve	ice cave			dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
+d4l4	38		D		d4l3		delve	ice cave		ice creature	dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
+swamp1	40	6	N,E,S,W	4			recursiveInterpolation	swamp	outside,poisonGas		orc archer,orc rogue,baby green dragon,gold dragonfly,purple worms,griffin,copperhead snake
+town3	41	6	N,E,S,W	6			town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
+swamp2	42	6	N,E,S,W	6			recursiveInterpolation	swamp	outside,poisonGas		orc archer,orc rogue,baby green dragon,gold dragonfly,purple worms,griffin,copperhead snake
+swamp3	43	6	N,E,S,W	6			recursiveInterpolation	swamp	outside,poisonGas		orc archer,orc rogue,baby green dragon,gold dragonfly,purple worms,griffin,copperhead snake
+swamp4	44	6	N,E,S,W	6			recursiveInterpolation	swamp	outside,poisonGas		orc archer,orc rogue,baby green dragon,gold dragonfly,purple worms,griffin,copperhead snake
+d5l1	45		D		swamp4		rogue	1,dungeon			orc mage,orc warrior,orc archer,baby green dragon,baby red dragon,purple worms,golem,chess knight
+d5l2	46		D		d5l1		rogue	1,dungeon		Lor the Betrayer	orc mage,orc warrior,orc archer,baby green dragon,baby red dragon,purple worms,golem,chess knight
+d5l3	47		D		d5l2		rogue	1,dungeon			orc mage,orc warrior,orc archer,baby green dragon,baby red dragon,purple worms,golem,chess knight
+d5l4	48		D		d5l3		rogue	1,dungeon		basilisk	orc mage,orc warrior,orc archer,baby green dragon,baby red dragon,purple worms,golem,chess knight
+haunted1	50	7	N,E,S,W	5,6			recursiveInterpolation	haunted forest	outside		skeleton mage,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire bat
+haunted2	51	7	N,E,S,W	7		open	recursiveInterpolation	haunted forest	outside		skeleton mage,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire bat
+haunted3	52	7	N,E,S,W	7			recursiveInterpolation	haunted forest	outside		skeleton mage,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire bat
+haunted4	53	7	N,E,S,W	7			recursiveInterpolation	haunted forest	outside		skeleton mage,skeleton archer,skeleton rogue,mummy,blue ghost,pink ghost,vampire bat
+d6l1	55		D		haunted4		shapeDLA	crypt			skeleton mage,skeleton warrior,skeleton archer,mummy,pink ghost,vampire,evil eye,floating skull,vampire bat
+d6l2	56		D		d6l1		shapeDLA	crypt		red spider	skeleton mage,skeleton warrior,skeleton archer,mummy,pink ghost,vampire,evil eye,floating skull,vampire bat
+d6l3	57		D		d6l2		shapeDLA	crypt			skeleton mage,skeleton warrior,skeleton archer,mummy,pink ghost,vampire,evil eye,floating skull,vampire bat
+d6l4	58		D		d6l3		shapeDLA	crypt		skeletal dragon	skeleton mage,skeleton warrior,skeleton archer,mummy,pink ghost,vampire,evil eye,floating skull,vampire bat
+dig desert1	60	8	N,E,S,W	6,7			recursiveInterpolation	dig desert	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
+town4	61	8	N,E,S,W	8			town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
+dig desert2	62	8	N,E,S,W	8			recursiveInterpolation	dig desert	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
+dig desert3	63	8	N,E,S,W	8			recursiveInterpolation	dig desert	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
+dig desert4	64	8	N,E,S,W	8			recursiveInterpolation	dig desert	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
+d7l1	65		D		dig desert4		cellularAutomata	2,false,brown cave			troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
+d7l2	66		D		d7l1		cellularAutomata	2,false,brown cave		two headed ogre	troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
+d7l3	67		D		d7l2		cellularAutomata	2,false,brown cave			troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
+d7l4	68		D		d7l3		cellularAutomata	2,false,brown cave		oliphant	troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
+ocean1	70	9	N,E,S,W	8			recursiveInterpolation	water	outside		copper jellyfish,scaryfish,water whirlwind,octopus,medusa,sea dragon
+ocean2	71	9	N,E,S,W	9			recursiveInterpolation	water	outside		copper jellyfish,scaryfish,water whirlwind,octopus,medusa,sea dragon
+volcano1	72	10	N,E,S,W	9		open	recursiveInterpolation	volcano	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
+volcano2	73	10	N,E,S,W	10			recursiveInterpolation	volcano	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
+volcano3	74	10	N,E,S,W	10			radial	volcano	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
+d8l1	75		D		volcano3		cellularAutomata	3,false,lava cave	hot		demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
+d8l2	76		D		d8l1		cellularAutomata	3,false,lava cave	hot	phoenix	demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
+d8l3	77		D		d8l2		cellularAutomata	3,false,lava cave	hot		demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
+d8l4	78		D		d8l3		cellularAutomata	3,false,lava cave	hot	Maeglor	demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
+golden desert1	80	11	N,E,S,W	10			recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
+town5	81	11	N,E,S,W	11			town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
+golden desert2	82	11	N,E,S,W	11			recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
+golden desert3	83	11	N,E,S,W	11			recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
+golden desert4	84	11	N,E,S,W	11			recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
+d9l1	85		D		golden desert3		rogue	2,blue			alien mage,alien warrior,alien archer,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind
+d9l2	86		D		d9l1		rogue	2,blue		Lugorith	alien mage,alien warrior,alien archer,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind
+d9l3	87		D		d9l2		rogue	2,blue			alien mage,alien warrior,alien archer,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind
+d9l4	88		D		d9l3		rogue	2,blue		evil incarnate	alien mage,alien warrior,alien archer,ancient black dragon,ancient gold dragon,master vampire,magic whirlwind

@@ -5,12 +5,19 @@ import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.MonsterIdGroup;
-import pow.backend.dungeon.gen.*;
+import pow.backend.dungeon.gen.FeatureData;
+import pow.backend.dungeon.gen.GeneratorUtils;
+import pow.backend.dungeon.gen.MapConnection;
+import pow.backend.dungeon.gen.TerrainData;
+import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Array2D;
 import pow.util.Direction;
 import pow.util.Point;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class RecursiveInterpolation implements MapGenerator {
 
@@ -41,6 +48,8 @@ public class RecursiveInterpolation implements MapGenerator {
         public final TerrainFeatureTriplet interior;
         public final String upstairsFeatureId;
         public final String downstairsFeatureId;
+        public final String openPortalFeatureId;
+        public final String closedPortalFeatureId;
         public final boolean addLockAroundExits;
         public final TerrainFeatureTriplet surroundingLock;
         public final TerrainFeatureTriplet mainLock;
@@ -49,6 +58,8 @@ public class RecursiveInterpolation implements MapGenerator {
                         TerrainFeatureTriplet interior,
                         String upstairsFeatureId,
                         String downstairsFeatureId,
+                        String openPortalFeatureId,
+                        String closedPortalFeatureId,
                         boolean addLockAroundExits,
                         TerrainFeatureTriplet surroundingLock,
                         TerrainFeatureTriplet mainLock) {
@@ -56,6 +67,8 @@ public class RecursiveInterpolation implements MapGenerator {
             this.interior = interior;
             this.upstairsFeatureId = upstairsFeatureId;
             this.downstairsFeatureId = downstairsFeatureId;
+            this.openPortalFeatureId = openPortalFeatureId;
+            this.closedPortalFeatureId = closedPortalFeatureId;
             this.addLockAroundExits = addLockAroundExits;
             this.surroundingLock = surroundingLock;
             this.mainLock = mainLock;
@@ -83,8 +96,11 @@ public class RecursiveInterpolation implements MapGenerator {
         this.flags = flags;
     }
 
-    public GameMap genMap(String name, List<MapConnection> connections, Random rng) {
-        return genMap(name, level, sourceSize, sourceSize, numInterpolationSteps, mapStyle, monsterIds, connections, flags, rng);
+    @Override
+    public GameMap genMap(String name, List<MapConnection> connections,
+                          MapPoint.PortalStatus portalStatus, Random rng) {
+        return genMap(name, level, sourceSize, sourceSize, numInterpolationSteps, mapStyle, monsterIds,
+                connections, portalStatus, flags, rng);
     }
 
     private static GameMap genMap(
@@ -96,6 +112,7 @@ public class RecursiveInterpolation implements MapGenerator {
             MapStyle style,
             MonsterIdGroup monsterIds,
             List<MapConnection> connections,
+            MapPoint.PortalStatus portalStatus,
             GameMap.Flags flags,
             Random rng) {
 
@@ -126,13 +143,18 @@ public class RecursiveInterpolation implements MapGenerator {
             }
         }
 
-        // place the exits
-        Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
-                connections,
-                squares,
+        // place the exits and get key locations
+        GeneratorUtils.CommonIds commonIds = new GeneratorUtils.CommonIds(
                 style.interior.terrain,
                 style.upstairsFeatureId,
                 style.downstairsFeatureId,
+                style.openPortalFeatureId,
+                style.closedPortalFeatureId);
+        Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
+                connections,
+                portalStatus,
+                squares,
+                commonIds,
                 rng);
 
         // block the exits, if necessary
@@ -154,7 +176,7 @@ public class RecursiveInterpolation implements MapGenerator {
         // make the edges blocked initially
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                blocked[x][y] = (x == 0 | x == width - 1 || y == 0 || y == height - 1) ? 1 : 0;
+                blocked[x][y] = ((x == 0) || (x == width - 1) || (y == 0) || (y == height - 1)) ? 1 : 0;
             }
         }
 
@@ -199,7 +221,7 @@ public class RecursiveInterpolation implements MapGenerator {
         // fill a border around the edge
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                boolean isEdge = (x == 0 | x == width - 1 || y == 0 || y == height - 1);
+                boolean isEdge = ((x == 0) || (x == width - 1) || (y == 0) || (y == height - 1));
                 if (isEdge) {
                     // for now, just using first border; later extend this to multiple types.
                     layout[x][y] = mixup(style.border, rng);

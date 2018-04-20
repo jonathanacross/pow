@@ -3,7 +3,11 @@ package pow.backend.dungeon.gen.mapgen;
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.MonsterIdGroup;
-import pow.backend.dungeon.gen.*;
+import pow.backend.dungeon.gen.Constants;
+import pow.backend.dungeon.gen.GeneratorUtils;
+import pow.backend.dungeon.gen.MapConnection;
+import pow.backend.dungeon.gen.ProtoTranslator;
+import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -37,21 +41,24 @@ public class CellularAutomata implements MapGenerator {
     @Override
     public GameMap genMap(String name,
                           List<MapConnection> connections,
+                          MapPoint.PortalStatus portalStatus,
                           Random rng) {
         int[][] data = genMap(width, height, rng);
         data = GeneratorUtils.trimMap(data);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, this.translator);
 
         // place the exits and get key locations
-        String upstairsFeatureId = translator.getFeature(Constants.FEATURE_UP_STAIRS).id;
-        String downstairsFeatureId =  translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
-        String floorTerrainId = translator.getTerrain(Constants.TERRAIN_FLOOR).id;
+        GeneratorUtils.CommonIds commonIds = new GeneratorUtils.CommonIds(
+                translator.getTerrain(Constants.TERRAIN_FLOOR).id,
+                translator.getFeature(Constants.FEATURE_UP_STAIRS).id,
+                translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id,
+                translator.getFeature(Constants.FEATURE_OPEN_PORTAL).id,
+                translator.getFeature(Constants.FEATURE_CLOSED_PORTAL).id);
         Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
                 connections,
+                portalStatus,
                 dungeonSquares,
-                floorTerrainId,
-                upstairsFeatureId,
-                downstairsFeatureId,
+                commonIds,
                 rng);
 
         // add items

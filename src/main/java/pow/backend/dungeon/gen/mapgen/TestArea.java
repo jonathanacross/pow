@@ -4,6 +4,7 @@ import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
+import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Point;
 
 import java.util.*;
@@ -29,16 +30,17 @@ public class TestArea implements MapGenerator {
     @Override
     public GameMap genMap(String name,
                           List<MapConnection> connections,
+                          MapPoint.PortalStatus portalStatus,
                           Random rng) {
         switch (type) {
             case "run test":
-                return genPremadeMap(name, RUN_TEST, connections, rng);
+                return genPremadeMap(name, RUN_TEST, connections, portalStatus, rng);
             case "terrain test":
-                return genPremadeMap(name, TERRAIN_TYPES_TEST, connections, rng);
+                return genPremadeMap(name, TERRAIN_TYPES_TEST, connections, portalStatus, rng);
             case "item test":
-                return genItemMap(name, connections, rng);
+                return genItemMap(name, connections, portalStatus, rng);
             case "arena":
-                return genArena(name, connections, rng);
+                return genArena(name, connections, portalStatus, rng);
             default:
                 throw new RuntimeException("unknown test area type '" + type + "'");
         }
@@ -47,16 +49,18 @@ public class TestArea implements MapGenerator {
     private GameMap genPremadeMap(String name,
                                   String[] charData,
                                   List<MapConnection> connections,
+                                  MapPoint.PortalStatus portalStatus,
                                   Random rng) {
         PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.parseMapInfo(Arrays.asList(charData));
         PremadeGenerator generator = new PremadeGenerator(mapInfo, translator, monsterIds, level, flags);
-        return generator.genMap(name, connections, rng);
+        return generator.genMap(name, connections, portalStatus, rng);
     }
 
     // Creates a map showing all items for all levels.
     private GameMap genItemMap(String name,
-            List<MapConnection> connections,
-            Random rng) {
+                               List<MapConnection> connections,
+                               MapPoint.PortalStatus portalStatus,
+                               Random rng) {
         int width = 70;
         int height = 110;
         int[][] data = new int[width][height];
@@ -72,15 +76,17 @@ public class TestArea implements MapGenerator {
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, translator);
 
         // place the exits and get key locations
-        String upstairsFeatureId = translator.getFeature(Constants.FEATURE_UP_STAIRS).id;
-        String downstairsFeatureId =  translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
-        String floorTerrainId = translator.getTerrain(Constants.TERRAIN_FLOOR).id;
+        GeneratorUtils.CommonIds commonIds = new GeneratorUtils.CommonIds(
+                translator.getTerrain(Constants.TERRAIN_FLOOR).id,
+                translator.getFeature(Constants.FEATURE_UP_STAIRS).id,
+                translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id,
+                translator.getFeature(Constants.FEATURE_OPEN_PORTAL).id,
+                translator.getFeature(Constants.FEATURE_CLOSED_PORTAL).id);
         Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
                 connections,
+                portalStatus,
                 dungeonSquares,
-                floorTerrainId,
-                upstairsFeatureId,
-                downstairsFeatureId,
+                commonIds,
                 rng);
 
         // add all items
@@ -158,9 +164,9 @@ public class TestArea implements MapGenerator {
     };
 
     private GameMap genArena(String name,
-                          List<MapConnection> connections,
-                          Random rng) {
-
+                             List<MapConnection> connections,
+                             MapPoint.PortalStatus portalStatus,
+                             Random rng) {
         final int width = 60;
         final int height = 60;
         int[][] data = new int[width][height];
@@ -175,15 +181,18 @@ public class TestArea implements MapGenerator {
 
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, this.translator);
 
-        String upstairsFeatureId = translator.getFeature(Constants.FEATURE_UP_STAIRS).id;
-        String downstairsFeatureId =  translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
-        String floorTerrainId = translator.getTerrain(Constants.TERRAIN_FLOOR).id;
+        // place the exits and get key locations
+        GeneratorUtils.CommonIds commonIds = new GeneratorUtils.CommonIds(
+                translator.getTerrain(Constants.TERRAIN_FLOOR).id,
+                translator.getFeature(Constants.FEATURE_UP_STAIRS).id,
+                translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id,
+                translator.getFeature(Constants.FEATURE_OPEN_PORTAL).id,
+                translator.getFeature(Constants.FEATURE_CLOSED_PORTAL).id);
         Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
                 connections,
+                portalStatus,
                 dungeonSquares,
-                floorTerrainId,
-                upstairsFeatureId,
-                downstairsFeatureId,
+                commonIds,
                 rng);
 
         return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);

@@ -27,7 +27,8 @@ public class ActionParams implements Serializable {
         RESTORE_MANA_ACTION,
         RESTORE_ACTION,
         UNLOCK_DOOR_ACTION,
-        ENTER_SHOP_ACTION
+        ENTER_SHOP_ACTION,
+        DEBUG_ACTION
     }
 
     public ActionName actionName;
@@ -86,6 +87,8 @@ public class ActionParams implements Serializable {
                 return new UnlockDoor(actor, params.point, params.number, FeatureData.getFeature(params.name));
             case ENTER_SHOP_ACTION:
                 return new EnterShop(actor, ShopData.ShopState.parseFromString(params.name));
+            case DEBUG_ACTION:
+                return new DebugAction(DebugAction.What.valueOf(params.name));
             default:
                 throw new RuntimeException("tried to create unknown action: " + params.actionName);
         }

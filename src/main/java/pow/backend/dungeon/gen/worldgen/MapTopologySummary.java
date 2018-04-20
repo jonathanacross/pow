@@ -12,9 +12,11 @@ public class MapTopologySummary implements Serializable {
 
     private final Map<Point3D, String> roomLocs;
     private final Set<SpacialConnection> connections;
+    private final Map<String, MapPoint.PortalStatus> portals;
 
     public Map<Point3D, String> getRoomLocs() { return roomLocs; }
     public Set<SpacialConnection> getConnections() { return connections; }
+    public Map<String, MapPoint.PortalStatus> getPortals() { return portals; }
 
     public MapTopologySummary(MapTopology mapTopology) {
         roomLocs = new HashMap<>();
@@ -23,5 +25,7 @@ public class MapTopologySummary implements Serializable {
         }
 
         connections = mapTopology.getConnections();
+
+        portals = mapTopology.getPortals();
     }
 }
