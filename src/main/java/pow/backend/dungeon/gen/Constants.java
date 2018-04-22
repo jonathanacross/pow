@@ -36,6 +36,8 @@ public class Constants {
     public static final int FEATURE_OPEN_PORTAL = 21 << 8;
     public static final int FEATURE_CLOSED_PORTAL = 22 << 8;
 
+    public static final String PORTAL_KEY_LOCATION_ID = "_PORTAL_";
+
     public static int getTerrain(int x) { return x & 0xff; }
     public static int getFeature(int x) { return x & 0xff00; }
 

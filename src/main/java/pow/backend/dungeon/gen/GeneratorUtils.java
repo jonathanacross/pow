@@ -371,21 +371,41 @@ public class GeneratorUtils {
         return new DungeonSquare(terrain, null);
     }
 
-    private static DungeonFeature buildPortalFeature(
+    public static DungeonFeature buildOpenPortalFeature(String openPortalFeatureId) {
+            DungeonFeature featureTemplate = FeatureData.getFeature(openPortalFeatureId);
+
+            ActionParams params = new ActionParams();
+            params.actionName = ActionParams.ActionName.ENTER_PORTAL_ACTION;
+            DungeonFeature.Flags flags = new DungeonFeature.Flags(
+                    true,
+                    true,
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false,
+                    true);
+
+            return new DungeonFeature(
+                    featureTemplate.id,
+                    featureTemplate.name,
+                    featureTemplate.image,
+                    flags,
+                    params);
+    }
+
+    private static DungeonFeature buildClosedPortalFeature(
             String openPortalFeatureId, String closedPortalFeatureId,
-            boolean isOpen) {
-        String featureId = isOpen ? openPortalFeatureId : closedPortalFeatureId;
+            Point loc) {
+        String featureId = closedPortalFeatureId;
         DungeonFeature featureTemplate = FeatureData.getFeature(featureId);
 
         ActionParams params = new ActionParams();
-        if (isOpen) {
-            params.actionName = ActionParams.ActionName.DEBUG_ACTION;
-            params.name = "OPEN_PORTAL_DEBUG";
-        } else {
-            params.actionName = ActionParams.ActionName.DEBUG_ACTION;
-            params.name = "CLOSED_PORTAL_DEBUG";
-        }
-        DungeonFeature.Flags flags =  new DungeonFeature.Flags(
+        params.actionName = ActionParams.ActionName.OPEN_PORTAL_ACTION;
+        params.name = openPortalFeatureId;
+        params.point = loc;
+        DungeonFeature.Flags flags = new DungeonFeature.Flags(
                 true,
                 true,
                 false,
@@ -558,11 +578,12 @@ public class GeneratorUtils {
         }
         if (portalStatus != MapPoint.PortalStatus.NONE) {
             boolean isOpen = (portalStatus == MapPoint.PortalStatus.OPEN);
-            DungeonFeature portal = GeneratorUtils.buildPortalFeature(ids.openPortalFeature, ids.closedPortalFeature, isOpen);
             Point loc = GeneratorUtils.findStairsLocation(squares, rng);
+            DungeonFeature portal = isOpen
+                    ? GeneratorUtils.buildOpenPortalFeature(ids.openPortalFeature)
+                    : GeneratorUtils.buildClosedPortalFeature(ids.openPortalFeature, ids.closedPortalFeature, loc);
             squares[loc.x][loc.y].feature = portal;
-            // TODO: pull out this string constant
-            keyLocations.put("portal", loc);
+            keyLocations.put(Constants.PORTAL_KEY_LOCATION_ID, loc);
         }
         return keyLocations;
 

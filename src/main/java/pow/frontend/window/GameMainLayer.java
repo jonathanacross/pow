@@ -1,15 +1,14 @@
 package pow.frontend.window;
 
-import pow.backend.GameMap;
-import pow.backend.GameState;
-import pow.backend.MessageLog;
-import pow.backend.SpellParams;
+import pow.backend.*;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
+import pow.backend.dungeon.gen.worldgen.MapPoint;
+import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
@@ -21,7 +20,10 @@ import pow.util.Direction;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class GameMainLayer extends AbstractWindow {

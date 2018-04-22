@@ -31,6 +31,7 @@ public class DungeonFeature implements Serializable {
             this.blockAir = blockAir;
             this.glowing = glowing;
             this.actOnStep = actOnStep;
+            // TODO: merge stairsUp and stairsDown
             this.stairsUp = stairsUp;
             this.stairsDown = stairsDown;
             this.openDoor = openDoor;

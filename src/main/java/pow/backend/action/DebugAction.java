@@ -18,8 +18,6 @@ public class DebugAction implements Action {
         UNKNOWN,
         INCREASE_CHAR_LEVEL,
         HEAL,
-        CLOSED_PORTAL_DEBUG,
-        OPEN_PORTAL_DEBUG
     }
 
     public DebugAction(What what) {
@@ -48,12 +46,6 @@ public class DebugAction implements Action {
                 backend.logMessage("DEBUG: healing player", MessageLog.MessageType.DEBUG);
                 player.setFullHealth();
                 player.setFullMana();
-                break;
-            case CLOSED_PORTAL_DEBUG:
-                backend.logMessage("DEBUG: hit closed portal", MessageLog.MessageType.DEBUG);
-                break;
-            case OPEN_PORTAL_DEBUG:
-                backend.logMessage("DEBUG: hit open portal", MessageLog.MessageType.DEBUG);
                 break;
         }
         List<GameEvent> events = new ArrayList<>();

@@ -4,6 +4,7 @@ import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.gen.FeatureData;
+import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.dungeon.gen.TerrainData;
 import pow.util.Direction;
 import pow.util.Point;
@@ -28,7 +29,9 @@ public class ActionParams implements Serializable {
         RESTORE_ACTION,
         UNLOCK_DOOR_ACTION,
         ENTER_SHOP_ACTION,
-        DEBUG_ACTION
+        ENTER_PORTAL_ACTION,
+        OPEN_PORTAL_ACTION,
+        DEBUG_ACTION,
     }
 
     public ActionName actionName;
@@ -87,6 +90,10 @@ public class ActionParams implements Serializable {
                 return new UnlockDoor(actor, params.point, params.number, FeatureData.getFeature(params.name));
             case ENTER_SHOP_ACTION:
                 return new EnterShop(actor, ShopData.ShopState.parseFromString(params.name));
+            case OPEN_PORTAL_ACTION:
+                return new OpenPortal(actor, params.point, GeneratorUtils.buildOpenPortalFeature(params.name));
+            case ENTER_PORTAL_ACTION:
+                return new EnterPortal(actor);
             case DEBUG_ACTION:
                 return new DebugAction(DebugAction.What.valueOf(params.name));
             default:

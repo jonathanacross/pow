@@ -27,6 +27,7 @@ public class GameState implements Serializable {
     public final MessageLog log;
 
     public boolean gameInProgress;
+    public boolean inPortal;  // Indicates that the player is in a portal (and needs to indicate where they will exit).
 
     // convenience method
     public GameMap getCurrentMap() {
@@ -38,6 +39,7 @@ public class GameState implements Serializable {
         this.world = null;
         this.rng = new Random();
         this.gameInProgress = false;
+        this.inPortal = false;
         this.player = new Player();
         this.pet = null;
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
