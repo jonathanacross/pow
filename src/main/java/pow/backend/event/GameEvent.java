@@ -16,7 +16,8 @@ public class GameEvent {
         IN_STORE,
         HEALED,
         DUNGEON_UPDATED,  // indicates UI needs a redraw
-        EFFECT
+        EFFECT,
+        IN_PORTAL,
     }
 
     public final EventType eventType;
@@ -35,6 +36,7 @@ public class GameEvent {
     public static GameEvent WonGame() { return new GameEvent(EventType.WON_GAME, null); }
     public static GameEvent LostGame() { return new GameEvent(EventType.LOST_GAME, null); }
     public static GameEvent InStore() { return new GameEvent(EventType.IN_STORE, null); }
+    public static GameEvent InPortal() { return new GameEvent(EventType.IN_PORTAL, null); }
     public static GameEvent DungeonUpdated() { return new GameEvent(EventType.DUNGEON_UPDATED, null); }
     public static GameEvent Effect(DungeonEffect effect) { return new GameEvent(EventType.EFFECT, effect); }
 }

@@ -48,8 +48,9 @@ public class GameWorld implements Serializable {
             MapGenerator mapGenerator = entry.getValue().mapGenerator;
             String id = entry.getValue().id;
             List<MapConnection> connections = getConnections(topology, entry.getKey());
+            MapPoint.PortalStatus portalStatus = topologySummary.getPortals().get(id);
 
-            GameMap area = mapGenerator.genMap(id, connections, rng);
+            GameMap area = mapGenerator.genMap(id, connections, portalStatus, rng);
             world.put(id, area);
         }
 

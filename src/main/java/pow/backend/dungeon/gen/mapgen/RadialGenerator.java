@@ -7,6 +7,7 @@ import pow.backend.dungeon.gen.Constants;
 import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.ProtoTranslator;
+import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Direction;
 import pow.util.Point;
 
@@ -35,21 +36,24 @@ public class RadialGenerator implements MapGenerator {
     @Override
     public GameMap genMap(String name,
                           List<MapConnection> connections,
+                          MapPoint.PortalStatus portalStatus,
                           Random rng) {
         int[][] data = genMap(rng);
         data = GeneratorUtils.trimMap(data);
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, this.translator);
 
         // place the exits and get key locations
-        String upstairsFeatureId = translator.getFeature(Constants.FEATURE_UP_STAIRS).id;
-        String downstairsFeatureId = translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
-        String floorTerrainId = translator.getTerrain(Constants.TERRAIN_FLOOR).id;
+        GeneratorUtils.CommonIds commonIds = new GeneratorUtils.CommonIds(
+                translator.getTerrain(Constants.TERRAIN_FLOOR).id,
+                translator.getFeature(Constants.FEATURE_UP_STAIRS).id,
+                translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id,
+                translator.getFeature(Constants.FEATURE_OPEN_PORTAL).id,
+                translator.getFeature(Constants.FEATURE_CLOSED_PORTAL).id);
         Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
                 connections,
+                portalStatus,
                 dungeonSquares,
-                floorTerrainId,
-                upstairsFeatureId,
-                downstairsFeatureId,
+                commonIds,
                 rng);
 
         // add items
@@ -110,8 +114,7 @@ public class RadialGenerator implements MapGenerator {
             Direction parentDir = Direction.getDir(-cell.loc.x, -cell.loc.y);
             Point parentLoc = cell.loc.add(parentDir);
             MazeCell parent = findOrCreateCell(cells, parentLoc);
-            cell.available = rng.nextInt(100) < matchPercent
-                    ? parent.available : !parent.available;
+            cell.available = rng.nextInt(100) < matchPercent == parent.available;
 
             for (Direction direction : Direction.CARDINALS) {
                 Point newLoc = cell.loc.add(direction);
@@ -165,13 +168,13 @@ public class RadialGenerator implements MapGenerator {
 
         for (MazeCell cell : cells.values()) {
             Point loc = cell.loc;
-            grid[loc.x - left + 1][loc.y - top + 1] = cell.available ?
-                    Constants.TERRAIN_FLOOR :
-                    Constants.TERRAIN_LAVA;
+            grid[loc.x - left + 1][loc.y - top + 1] = cell.available
+                    ? Constants.TERRAIN_FLOOR
+                    : Constants.TERRAIN_LAVA;
         }
 
-//        // mark the start point
-//        grid[1 - left][1 - top] = '@';
+        // Note: the start point is at grid[1 - left][1 - top].
+        // Could use this later if need something in the center of the level.
 
         return grid;
     }
@@ -181,17 +184,4 @@ public class RadialGenerator implements MapGenerator {
         int[][] grid = toGrid(cells);
         return grid;
     }
-
-//    public static void main(String[] args) {
-//        RadialGenerator mp = new RadialGenerator();
-//        mp.lavaMaze();
-//        char[][] grid = mp.toGrid();
-//
-//        for (int y = 0; y < grid[0].length; y++) {
-//            for (int x = 0; x < grid.length; x++) {
-//                System.out.print(grid[x][y]);
-//            }
-//            System.out.println();
-//        }
-//    }
 }

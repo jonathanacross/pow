@@ -76,17 +76,21 @@ public class MainDraw extends JPanel implements Observer, ComponentListener {
     }
 
     // called when backend changes
+    @Override
     public void update() {
         render();
         paintScreen();
     }
 
+    @Override
     public void componentHidden(ComponentEvent event) {
     }
 
+    @Override
     public void componentMoved(ComponentEvent event) {
     }
 
+    @Override
     public void componentResized(ComponentEvent event) {
         dbImage = null;  // force render to reallocate the image buffer
         frontend.resize(getWidth(), getHeight());
@@ -94,6 +98,7 @@ public class MainDraw extends JPanel implements Observer, ComponentListener {
         paintScreen();
     }
 
+    @Override
     public void componentShown(ComponentEvent event) {
     }
 }

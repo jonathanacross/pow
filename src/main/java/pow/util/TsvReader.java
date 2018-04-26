@@ -33,7 +33,7 @@ public class TsvReader {
 
     private void readFile(InputStream stream) throws IOException {
         data = new ArrayList<>();
-        try (InputStreamReader isr = new InputStreamReader(stream);
+        try (InputStreamReader isr = new InputStreamReader(stream, "UTF-8");
              BufferedReader br = new BufferedReader(isr)) {
             String line;
             while ((line = br.readLine()) != null) {

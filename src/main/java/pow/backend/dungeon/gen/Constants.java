@@ -16,7 +16,7 @@ public class Constants {
     public static final int FEATURE_CLOSED_DOOR = 1 << 8;
     public static final int FEATURE_OPEN_DOOR = 2 << 8;
     public static final int FEATURE_CANDLE = 3 << 8;
-    public static final int FEATURE_CANDLEABRA = 4 << 8;
+    public static final int FEATURE_CANDELABRA = 4 << 8;
     public static final int FEATURE_WOOD_CHEST = 5 << 8;
     public static final int FEATURE_CRATE = 6 << 8;
     public static final int FEATURE_GLASS_ORB = 7 << 8;
@@ -33,6 +33,10 @@ public class Constants {
     public static final int FEATURE_MAGIC_SHOP_DOOR = 18 << 8;
     public static final int FEATURE_WEAPON_SHOP_DOOR = 19 << 8;
     public static final int FEATURE_JEWELER_SHOP_DOOR = 20 << 8;
+    public static final int FEATURE_OPEN_PORTAL = 21 << 8;
+    public static final int FEATURE_CLOSED_PORTAL = 22 << 8;
+
+    public static final String PORTAL_KEY_LOCATION_ID = "_PORTAL_";
 
     public static int getTerrain(int x) { return x & 0xff; }
     public static int getFeature(int x) { return x & 0xff00; }
@@ -47,7 +51,7 @@ public class Constants {
                 case Constants.FEATURE_CLOSED_DOOR: return '+';
                 case Constants.FEATURE_OPEN_DOOR: return '\'';
                 case Constants.FEATURE_CANDLE: return 'c';
-                case Constants.FEATURE_CANDLEABRA: return 'A';
+                case Constants.FEATURE_CANDELABRA: return 'A';
                 case Constants.FEATURE_WOOD_CHEST: return 'B';
                 case Constants.FEATURE_CRATE: return 'C';
                 case Constants.FEATURE_GLASS_ORB: return 'D';
@@ -64,6 +68,8 @@ public class Constants {
                 case Constants.FEATURE_WEAPON_SHOP_DOOR: return '2';
                 case Constants.FEATURE_MAGIC_SHOP_DOOR: return '3';
                 case Constants.FEATURE_JEWELER_SHOP_DOOR: return '3';
+                case Constants.FEATURE_OPEN_PORTAL: return 'P';
+                case Constants.FEATURE_CLOSED_PORTAL: return 'Q';
                 default: throw new IllegalArgumentException("unknown feature " + feature);
             }
         } else {
@@ -95,7 +101,7 @@ public class Constants {
             case '+': return Constants.TERRAIN_FLOOR + Constants.FEATURE_CLOSED_DOOR;
             case '\'': return Constants.TERRAIN_FLOOR + Constants.FEATURE_OPEN_DOOR;
             case 'c': return Constants.TERRAIN_WALL + Constants.FEATURE_CANDLE;
-            case 'A': return Constants.TERRAIN_WALL + Constants.FEATURE_CANDLEABRA;
+            case 'A': return Constants.TERRAIN_WALL + Constants.FEATURE_CANDELABRA;
             case 'B': return Constants.TERRAIN_FLOOR + Constants.FEATURE_WOOD_CHEST;
             case 'C': return Constants.TERRAIN_FLOOR + Constants.FEATURE_CRATE;
             case 'D': return Constants.TERRAIN_FLOOR + Constants.FEATURE_GLASS_ORB;
@@ -105,6 +111,8 @@ public class Constants {
             case 'H': return Constants.TERRAIN_WALL + Constants.FEATURE_GREEN_CURTAIN;
             case 'I': return Constants.TERRAIN_FLOOR + Constants.FEATURE_RED_CARPET;
             case 'J': return Constants.TERRAIN_FLOOR + Constants.FEATURE_THRONE;
+            case 'P': return Constants.TERRAIN_FLOOR + Constants.FEATURE_OPEN_PORTAL;
+            case 'Q': return Constants.TERRAIN_FLOOR + Constants.FEATURE_CLOSED_PORTAL;
             case '<': return Constants.TERRAIN_FLOOR + Constants.FEATURE_UP_STAIRS;
             case '>': return Constants.TERRAIN_FLOOR + Constants.FEATURE_DOWN_STAIRS;
             case 'f': return Constants.TERRAIN_FLOOR + Constants.FEATURE_FOUNTAIN;

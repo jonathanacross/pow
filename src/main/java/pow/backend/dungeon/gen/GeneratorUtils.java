@@ -5,6 +5,7 @@ import pow.backend.GameConstants;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.*;
+import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Array2D;
 import pow.util.Direction;
 import pow.util.Point;
@@ -12,6 +13,24 @@ import pow.util.Point;
 import java.util.*;
 
 public class GeneratorUtils {
+
+    // Common ids used for GenerateCommonExits to simplify signature.
+    public static class CommonIds {
+        public final String interiorTerrain; // interior terrain id used to make a N/S/E/W exit.
+        public final String upstairsFeature;
+        public final String downstairsFeature;
+        public final String openPortalFeature;
+        public final String closedPortalFeature;
+
+        public CommonIds(String interiorTerrain, String upstairsFeature, String downstairsFeature,
+                                String openPortalFeature, String closedPortalFeature) {
+            this.interiorTerrain = interiorTerrain;
+            this.upstairsFeature = upstairsFeature;
+            this.downstairsFeature = downstairsFeature;
+            this.openPortalFeature = openPortalFeature;
+            this.closedPortalFeature = closedPortalFeature;
+        }
+    }
 
     // generates a solid wall of dungeon of the desired size
     public static int[][] solidMap(int width, int height) {
@@ -352,6 +371,59 @@ public class GeneratorUtils {
         return new DungeonSquare(terrain, null);
     }
 
+    public static DungeonFeature buildOpenPortalFeature(String openPortalFeatureId) {
+            DungeonFeature featureTemplate = FeatureData.getFeature(openPortalFeatureId);
+
+            ActionParams params = new ActionParams();
+            params.actionName = ActionParams.ActionName.ENTER_PORTAL_ACTION;
+            DungeonFeature.Flags flags = new DungeonFeature.Flags(
+                    true,
+                    true,
+                    false,
+                    true,
+                    true,
+                    false,
+                    false,
+                    false,
+                    true);
+
+            return new DungeonFeature(
+                    featureTemplate.id,
+                    featureTemplate.name,
+                    featureTemplate.image,
+                    flags,
+                    params);
+    }
+
+    private static DungeonFeature buildClosedPortalFeature(
+            String openPortalFeatureId, String closedPortalFeatureId,
+            Point loc) {
+        String featureId = closedPortalFeatureId;
+        DungeonFeature featureTemplate = FeatureData.getFeature(featureId);
+
+        ActionParams params = new ActionParams();
+        params.actionName = ActionParams.ActionName.OPEN_PORTAL_ACTION;
+        params.name = openPortalFeatureId;
+        params.point = loc;
+        DungeonFeature.Flags flags = new DungeonFeature.Flags(
+                true,
+                true,
+                false,
+                true,
+                true,
+                false,
+                false,
+                false,
+                true);
+
+        return new DungeonFeature(
+                featureTemplate.id,
+                featureTemplate.name,
+                featureTemplate.image,
+                flags,
+                params);
+    }
+
     public static int getDefaultNumItems(int width, int height, Random rng) {
         int area = width * height;
         double meanNumItems = GameConstants.ITEM_DENSITY * area;
@@ -480,29 +552,38 @@ public class GeneratorUtils {
     //      edge where the border is only one square thick.
     //    * There is at most 1 connection in each cardinal direction
     //      (There may be multiple up/down connections)
-    //    * There are 3x3 spots available to place any up/down exits.
+    //    * There are 3x3 spots available to place any up/down exits
+    //      and portals.
     public static Map<String, Point> addDefaultExits(
             List<MapConnection> connections,
+            MapPoint.PortalStatus portalStatus,
             DungeonSquare[][] squares,  // modified in place
-            String interiorTerrainId, // interior terrain id used to make a N/S/E/W exit.
-            String upstairsFeatureId,  // feature ids used to make upstairs or downstairs.
-            String downstairsFeatureId,
+            CommonIds ids,
             Random rng) {
         Map<String, Point> keyLocations = new HashMap<>();
         for (MapConnection connection : connections) {
             if (connection.dir == Direction.U || connection.dir == Direction.D) {
                 // up or down
-                DungeonFeature stairs = GeneratorUtils.buildStairsFeature(upstairsFeatureId, downstairsFeatureId, connection);
+                DungeonFeature stairs = GeneratorUtils.buildStairsFeature(ids.upstairsFeature, ids.downstairsFeature, connection);
                 Point loc = GeneratorUtils.findStairsLocation(squares, rng);
                 squares[loc.x][loc.y].feature = stairs;
                 keyLocations.put(connection.name, loc);
             } else {
                 // cardinal direction
-                DungeonSquare square = GeneratorUtils.buildTeleportTile(interiorTerrainId, connection.destination.toString());
+                DungeonSquare square = GeneratorUtils.buildTeleportTile(ids.interiorTerrain, connection.destination.toString());
                 Point loc = GeneratorUtils.findExitCoordinates(squares, connection.dir, rng);
                 squares[loc.x][loc.y] = square;
                 keyLocations.put(connection.name, loc);
             }
+        }
+        if (portalStatus != MapPoint.PortalStatus.NONE) {
+            boolean isOpen = (portalStatus == MapPoint.PortalStatus.OPEN);
+            Point loc = GeneratorUtils.findStairsLocation(squares, rng);
+            DungeonFeature portal = isOpen
+                    ? GeneratorUtils.buildOpenPortalFeature(ids.openPortalFeature)
+                    : GeneratorUtils.buildClosedPortalFeature(ids.openPortalFeature, ids.closedPortalFeature, loc);
+            squares[loc.x][loc.y].feature = portal;
+            keyLocations.put(Constants.PORTAL_KEY_LOCATION_ID, loc);
         }
         return keyLocations;
 

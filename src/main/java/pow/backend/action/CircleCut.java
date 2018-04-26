@@ -35,8 +35,7 @@ public class CircleCut implements Action {
         GameMap map = gs.getCurrentMap();
 
         List<Point> fovSquares = SpellUtils.getFieldOfView(gs, attacker.loc, spellParams.size, Metric.rogueMetric);
-        Set<Point> fovSquareSet = new HashSet<>();
-        fovSquareSet.addAll(fovSquares);
+        Set<Point> fovSquareSet = new HashSet<>(fovSquares);
 
         for (Direction dir : Direction.ALL) {
             String effectId = DungeonEffect.getEffectName(

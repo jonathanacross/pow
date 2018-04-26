@@ -58,7 +58,7 @@ public class NameGenerator {
         return names;
     }
 
-    private class CategoricalRandomVariable {
+    private static class CategoricalRandomVariable {
         private final Map<String, Double> frequencies;
         private double total;
 
@@ -100,7 +100,7 @@ public class NameGenerator {
         }
     }
 
-    private class MarkovModel {
+    private static class MarkovModel {
 
         // something not in any name to mark the beginning/end
         private static final String BOUNDARY_SYMBOL = "_";

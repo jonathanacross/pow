@@ -11,10 +11,12 @@ public class MapTopology {
     private Map<Point3D, MapPoint> roomLocs;
     private Set<SpacialConnection> connections;
     private final String firstMapId;
+    private Map<String, MapPoint.PortalStatus> portals;
 
     public Map<Point3D, MapPoint> getRoomLocs() { return roomLocs; }
     public Set<SpacialConnection> getConnections() { return connections; }
     public String getFirstMapId() { return firstMapId; }
+    public  Map<String, MapPoint.PortalStatus> getPortals() { return portals; }
 
     public MapTopology(List<MapPoint> mapPointList, Random rng, double probConnect) {
         firstMapId = mapPointList.get(0).id;
@@ -133,6 +135,7 @@ public class MapTopology {
         }
 
         this.connections = extendConnections(roomLocs, baseConnections, rng, probConnect);
+        this.portals = extractPortals(mapPointList);
         return true;
     }
 
@@ -144,11 +147,9 @@ public class MapTopology {
             Map<Point3D, MapPoint> roomLocs,
             List<SpacialConnection> connections, Random rng, double probConnect) {
 
-        List<Point3D> locs = new ArrayList<>();
-        locs.addAll(roomLocs.keySet());
+        List<Point3D> locs = new ArrayList<>(roomLocs.keySet());
 
-        Set<SpacialConnection> allConnections = new HashSet<>();
-        allConnections.addAll(connections);
+        Set<SpacialConnection> allConnections = new HashSet<>(connections);
 
         for (int i = 0; i < locs.size(); i++) {
             for (int j = i + 1; j < locs.size(); j++) {
@@ -166,6 +167,14 @@ public class MapTopology {
         }
 
         return allConnections;
+    }
+
+    private static Map<String, MapPoint.PortalStatus> extractPortals(List<MapPoint> mapPointList) {
+        Map<String, MapPoint.PortalStatus> portals = new HashMap<>();
+        for (MapPoint mp : mapPointList) {
+            portals.put(mp.id, mp.portalStatus);
+        }
+        return portals;
     }
 
     private static List<Point3D> findConnectingLocations(Map<Point3D, MapPoint> roomLocs, MapPoint roomLinkData) {
@@ -211,5 +220,4 @@ public class MapTopology {
     private static String abbreviateId(String id) {
         return id.substring(0, 2) + id.charAt(id.length() - 1);
     }
-
 }

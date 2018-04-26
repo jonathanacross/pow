@@ -2,23 +2,20 @@ package pow.frontend;
 
 import pow.backend.GameBackend;
 import pow.backend.ShopData;
+import pow.backend.action.ExitPortal;
 import pow.backend.action.RestAtInn;
 import pow.backend.action.UpgradeItem;
 import pow.backend.dungeon.DungeonEffect;
+import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
 import pow.frontend.window.*;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
 
 // TODO: make interface for this
 public class Frontend {
@@ -166,6 +163,7 @@ public class Frontend {
                 case LOST_GAME: open(this.loseWindow); break;
                 case EFFECT: this.effects.add(event.effect); break;
                 case IN_STORE: processShopEntry(); break;
+                case IN_PORTAL: choosePortal(); break;
                 default: break;
             }
         }
@@ -213,6 +211,25 @@ public class Frontend {
                 System.out.println("entered a shop of type " + shopData.state);
         }
     }
+
+    private void choosePortal() {
+        Map<String, MapPoint.PortalStatus> portals = gameBackend.getGameState().world.topologySummary.getPortals();
+        List<String> openPortalAreas = new ArrayList<>();
+        for (Map.Entry<String, MapPoint.PortalStatus> entry : portals.entrySet()) {
+            if (entry.getValue() == MapPoint.PortalStatus.OPEN) {
+                openPortalAreas.add(entry.getKey());
+            }
+        }
+        Collections.sort(openPortalAreas);
+
+        open(new PortalChoiceWindow(300, 150,
+                gameBackend, this,
+                "Which area do you wish to go to?",
+                openPortalAreas,
+                (String areaId) -> gameBackend.tellPlayer(new ExitPortal(gameBackend.getGameState().player, areaId))
+        ));
+    }
+
 
     private static final Color BACKGROUND_COLOR = Color.BLACK;
 

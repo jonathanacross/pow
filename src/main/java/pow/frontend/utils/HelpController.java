@@ -34,7 +34,7 @@ public class HelpController {
 
     private List<String> readLines(InputStream stream) throws IOException {
         List<String> lines = new ArrayList<>();
-        try (InputStreamReader isr = new InputStreamReader(stream);
+        try (InputStreamReader isr = new InputStreamReader(stream, "UTF-8");
              BufferedReader br = new BufferedReader(isr)) {
             String line;
             while ((line = br.readLine()) != null) {

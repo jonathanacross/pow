@@ -22,7 +22,7 @@
 2	green worm mass	jelly	erratic		0		0	& green worm mass	green worm mass	It is a large slimy mass of green worms.
 2	brown imp	mammal,weak	erratic		2		1	& brown imp	brown imp	A fast, mischievous creature.
 2	green komodo	reptile	boss		0	lantern	4	& green komodo	green komodo	A giant Komodo dragon. It is about 10 feet long and has a venomous bite.
-2	purple spider	insect	boss,fearless		0	pearl 1	4	& purple spider	purple spider	A large and powerful amathyst spider with bright yellow eyes.
+2	purple spider	insect	boss,fearless		0	pearl 1	4	& purple spider	purple spider	A large and powerful amethyst spider with bright yellow eyes.
 3	novice mage	mage	perfect	arrow,blink	0		1	& novice mage	novice mage	He is fumbling with his spell books.
 3	novice warrior	warrior	perfect		0		1	& novice warrior	novice warrior	An inexperienced but tough warrior.
 3	novice archer	archer	perfect	arrow	0		1	& novice archer	novice archer	He just completed archery training.
@@ -43,7 +43,7 @@
 5	rabbit rogue	rogue	perfect	blink	0		1	& rabbit rogue	rabbit rogue	A rabbit humanoid that eyes your purse. He has a sharp dagger.
 6	purple beetle	insect	erratic		1		0	& purple beetle	purple beetle	A purple beetle caustic bite and hard carapace.
 6	blue snake	reptile	fearless		-2		1	& blue snake	blue snake	A huge 12-foot python, covered in an intricate blue scales.
-6	black spider	insect			1		0	& black spider	black spider	A giant tarantula with large hairy legs and glowing red ees.
+6	black spider	insect			1		0	& black spider	black spider	A giant tarantula with large hairy legs and glowing red eyes.
 6	green imp	magical,weak			2		1	& green imp	green imp	A mischievous creature.
 5	small red spiny	mammal			0		0	& small red spiny	small red spiny	An unusual lizard with a horn, covered with sharp spines.
 6	rock lizard	lizard			0		0	& rock lizard	rock lizard	A lizard with a hardened hide.
@@ -52,7 +52,7 @@
 6	yellow schweinhund	mammal	boss		1	water float	4	& yellow schweinhund	yellow schweinhund	A yellow schweinhund with sharp fangs and a long tail.
 6	Balthazar the Great	giant	boss,perfect,fearless	lance	0	pearl 3	6	!Balthazar the Great	Balthazar the Great	Balthazar is one of the world’s greatest kobold swordsmen, known for his feats at the battle of Arignor.
 8	dark elf mage	mage	perfect	blink,magic arrow,lightning bolt,lesser heal	0		1	& dark elf mage	dark elf mage	A dark elven figure, dressed all in black, hurling spells at you.
-8	dark elf warrior	warrior	perfect		0		1	& dark elf warrior	dark elf warrior	A dark elven figure in armour and ready with his sword.
+8	dark elf warrior	warrior	perfect		0		1	& dark elf warrior	dark elf warrior	A dark elven figure in armor and ready with his sword.
 7	dark elf archer	archer	perfect	arrow	0		1	& dark elf archer	dark elf archer	A dark elven figure armed with a longbow.
 7	dark elf rogue	rogue	perfect	backstab,blink	0		1	& dark elf rogue	dark elf rogue	A dark elven figure armed with a short sword, ready to slit your throat.
 8	baby blue dragon	dragon		ice breath	1		3	& baby blue dragon	baby blue dragon	Its still-tender scales are deep blue in hue. Icy blasts of cold air come from it as it breathes.
@@ -66,7 +66,7 @@
 8	Hagar the Merciless	giant	boss,perfect,fearless	lance	0	gas mask	4	!Hagar the Merciless	Hagar the Merciless	Hagar, warrior-king from the East, is legendary for his skill in combat and excessive cruelty.
 8	ice creature	giant	boss,fearless	ice breath,ice bolt	0	pearl 4	4	& ice creature	ice creature	It is a towering glacier of ice, moving inexorably towards you.
 10	orc mage	mage	perfect	phase,fire bolt,lesser heal	0		1	& orc mage	orc mage	An orc dressed in skins who gestures wildly.
-10	orc warrior	warrior	perfect		0		1	& orc warrior	orc warrior	An armoured orc with an air of authority.
+10	orc warrior	warrior	perfect		0		1	& orc warrior	orc warrior	An armored orc with an air of authority.
 9	orc archer	archer	perfect	arrow	0		1	& orc archer	orc archer	An orc archer who moves with confidence.
 9	orc rogue	rogue	perfect	backstab,blink	0		1	& orc rogue	orc rogue	A cunning and devious orc with a chaotic nature.
 10	baby green dragon	dragon		poison breath	2		3	& baby green dragon	baby green dragon	Its still-tender scales are deep green in hue. Poison seeps through its scales.
@@ -77,13 +77,14 @@
 9	griffin	bird			0		1	& griffin	griffin	A legendary creature with the body, and back legs of a lion and the head and wings of an eagle.
 10	chess knight	magical	knightmove		0		1	& chess knight	chess knight	This strange creature always moves in the shape of an L, jumping over obstacles.
 9	copperhead snake	reptile	fearless		-2		1	& copperhead snake	copperhead snake	It has a copper head and sharp venomous fangs.
+10	grue	mammal	boss,perfect	blink,backstab	3	portal key	6	& grue	grue	Armed with sharp claws and fangs, a grue is a sinister, lurking presence in the dark places of the earth with insatiable appetite.
 10	Lor the Betrayer	giant	boss,perfect	circle cut,lesser heal	3	glasses	6	!Lor the Betrayer	Lor the Betrayer	Lor, heir to the throne of Undor, killed his father and betrayed his kingdom for his lust for gold.
-10	basilisk	reptile	boss,perfect	poison breath,fire breath	1	pearl 5	6	& basilisk	basilisk	A vile reptile that preys on unsuspecting travellers. Its eyes stare deeply at you and your soul starts to wilt!
+10	basilisk	reptile	boss,perfect	poison breath,fire breath	1	pearl 5	6	& basilisk	basilisk	A vile reptile that preys on unsuspecting travelers. Its eyes stare deeply at you and your soul starts to wilt!
 12	skeleton mage	mage	perfect	phase,ice bolt,lesser heal,lightning ball	0		1	& skeleton mage	skeleton mage	A skeleton mage. Power seems to crackle from his frame.
 12	skeleton warrior	warrior	perfect	lance	0		1	& skeleton warrior	skeleton warrior	A skeleton warrior of considerable skill.
 11	skeleton archer	archer	perfect	arrow	0		1	& skeleton archer	skeleton archer	A skeleton archer wielding arrows tipped with rusty iron.
 11	skeleton rogue	rogue	perfect	backstab	0		1	& skeleton rogue	skeleton rogue	A skeleton rogue. He moves stealthily and his eyes gleam with evil intent.
-12	mummy	warrior	perfect		-1		1	& mummy	mummy	It is a human form encased in mouldy wrappings.
+12	mummy	warrior	perfect		-1		1	& mummy	mummy	It is a human form encased in moldy wrappings.
 11	blue ghost	undead	invisible,erratic	blink,magic arrow	0		1	& blue ghost	blue ghost	A figure that seems made of void. Its strangely human shape is cloaked in shadow.
 12	pink ghost	undead	invisible,fearless	blink	0		1	& pink ghost	pink ghost	It is a ghostly form with eyes that haunt you, and a shriek that pierces to your bones.
 12	vampire	undead	perfect	poison bolt,acid bolt	2		1	& vampire	vampire	It is a humanoid with an aura of power. You notice a sharp set of front teeth.
@@ -100,16 +101,17 @@
 16	yellow dragon	dragon	perfect,fearless	acid breath	1		6	& yellow dragon	yellow dragon	A huge draconic form. Pools of acid melt the floor around it.
 15	red komodo	reptile			-1		0	& red komodo	red komodo	A giant Komodo dragon. It has a nearly impenetrable hide of a deep red hue.
 15	giant roc	bird		acid ball	0		2	& giant roc	giant roc	A vast legendary bird, its iron talons rake the most impenetrable of surfaces and its screech echoes through the many winding dungeon corridors.
-16	zombie	warrior	erratic		-2		2	& zombie	zombie	A humanoid form encased in mouldy wrappings, the result of some unspeakable spell that left him wandering the earth forever.
+16	zombie	warrior	erratic		-2		2	& zombie	zombie	A humanoid form encased in moldy wrappings, the result of some unspeakable spell that left him wandering the earth forever.
 15	red cobra	reptile	fearless	poison bolt	-1		0	& red cobra	red cobra	A great cobra with ruby scales.
 15	sandworm	reptile	fearless		-2		1	& sandworm	sand worm	An enormous worm with a fearsome array of crystalline teeth.
+14	black orc	warrior	boss,fearless,perfect	circle cut,lance	0	magic bag	4	!Algol the black orc	black orc	He has a huge hulking frame and nearly black skin.  Algol was chieftain of a savage orc tribe, known for his short temper.
 16	two headed ogre	giant	boss,perfect	circle cut,lesser heal,lance	0	heat suit	4	& two headed ogre	two headed ogre	A giant orc-like figure with a two heads and an awesomely muscled frame. It regrows it heads as fast as you chop them off.
 16	oliphant	mammal	boss		-1	pearl 7	6	& oliphant	oliphant	A giant elephantine creature with four tusks, sharp teeth, and a foul temper.
 17	demon mage	mage	perfect,fearless	phase,ice bolt,lesser heal,fireball,fire bolt,blink	0		1	& demon mage	demon mage	A fearsome opponent. His spells are lethal and his combat blows crushingly hard.
 17	demon warrior	warrior	perfect,fearless	lance	0		1	& demon warrior	demon warrior	A demon wielding a massive sword. Feared by all when it flies into one of its berserk rages, it will cut down anything in its path.
 17	demon archer	archer	perfect,fearless	arrow	0		1	& demon archer	demon archer	A demon wielding a deadly bow which he fires with deadly efficiency.
 17	demon rogue	rogue	perfect,fearless	backstab	0		1	& demon rogue	demon rogue	His eyes gleam with malice as he waits for unsuspecting travelers.
-17	green dragon	dragon	fearless	poison breath	1		6	& green dragon	green dragon	A huge draconic form enveloped in clouds of poisonous vapour.
+17	green dragon	dragon	fearless	poison breath	1		6	& green dragon	green dragon	A huge draconic form enveloped in clouds of poisonous vapor.
 18	red dragon	dragon	fearless	fire breath	1		6	& red dragon	red dragon	A huge draconic form. Wisps of smoke steam from its nostrils and the extreme heat surrounding it makes you gasp for breath.
 18	creeping magma	jelly	fearless		-3		1	& creeping magma	creeping magma	A pulsing jelly as hot as magma that flows toward you, leaving a path of destruction.
 18	lava beetle	insect	erratic		0		0	& lava beetle	lava beetle	This beetle can tunnel through solid rock with its pincers, and cut through your armor like butter.
@@ -117,10 +119,10 @@
 18	iron golem	giant	perfect,passive	acid ball,acid bolt,greater heal	0		2	& iron golem	iron golem	It is a massive metal statue that moves steadily towards you
 18	fire vortex	magical		fireball,fire bolt	1		0	& fire vortex	fire vortex	A towering fire vortex, burning everything beyond recognition.
 18	lava dragon	dragon		fireball	0		8	& lava dragon	lava dragon	An immense dragon capable of awesome destruction that dwells within pools of lava. Fire leaps continuously from its huge form. You have never felt such extreme heat, or witnessed such a scorching stare.
-18	phoenix	bird	boss	greater heal,lance,fireball,lightning bolt	3	magic feather	10	& phoenix	phoenix	A massive glowing eagle bathed in flames. The searing heat chars your skin and melts your armour.
+18	phoenix	bird	boss	greater heal,lance,fireball,lightning bolt	3	x-ray scope	10	& phoenix	phoenix	A massive glowing eagle bathed in flames. The searing heat chars your skin and melts your armor.
 18	Maeglor	giant	boss,perfect	rift,quake,greater heal	4	pearl 8	14	!Maeglor	Maeglor	Lord of the underworld, Maeglor is a massive humanoid demon wreathed in flames. His power and evil are undeniable - darkness itself recoils from his touch as he leaves a trail of death and destruction. Mighty claws rend reality as he annihilates all in his path to your soul!
 19	alien mage	mage		magic arrow,mana cloud,greater heal,ice bolt,fire bolt,phase	0		1	& alien mage	alien mage	A great mage, incanting horribly as he advances toward you. Power seems to crackle from his slender frame.
-19	alien warrior	warrior		circle cut,lance	0		1	& alien warrior	alien warrior	A mighty warrior wearing armour and radiating evil power. He moves with lightning speed.
+19	alien warrior	warrior		circle cut,lance	0		1	& alien warrior	alien warrior	A mighty warrior wearing armor and radiating evil power. He moves with lightning speed.
 19	alien archer	archer		poison arrow	0		1	& alien archer	alien archer	A legendary archer who fires arrows with terrifying speed and accuracy.
 19	alien rogue	rogue		backstab,lesser heal	0		1	& alien rogue	alien rogue	A master of camouflage, this thief has great power and shifty speed.
 20	ancient black dragon	dragon	fearless	rift,acid breath,poison breath,greater heal	2		10	& ancient black dragon	ancient black dragon	A massive dragon, one of the mightiest of dragonkind. It is thousands of years old and seeks to maintain the Cosmic Balance. It will destroy you.
@@ -133,7 +135,7 @@
 20	Lugorith	dragon	boss,perfect,fearless	rift,quake,greater heal,fire breath,acid breath,poison breath,ice breath,lightning breath	4	bright lantern	16	!Lugorith	Lugorith	The lord of chaos, Lugorith is a massive dragon of changing form. As you watch, it appears first fair and then foul. Its body is twisted by chaotic forces as it strives to stay real. Its very existence distorts the universe around it.
 20	evil incarnate	giant,strong	boss,perfect,fearless	quake,greater heal,mana cloud,fireball,lance,circle cut,phase,backstab	5	magic bag	18	!Evil Incarnate	evil incarnate	A massive form cloaked in flame. His skeletal visage is twisted with evil, as he seeks forever to dominate all that is light and good in the world. He is the origin of man's fear of darkness and has created many foul creatures with his evil powers. He holds a great staff in his hand, and strides forward to destroy you.
 3	goldfish	fish	erratic,aquatic		0		0	& goldfish	goldfish	It looks just like the goldfish you used to keep in a glass bowl when you were a kid, but bigger.
-4	green fish	fish	erratic,aquatic		1		0	& green fish	green fish	Barracuda, known for their large size, fearsome appearance and ferocious behaviour.
+4	green fish	fish	erratic,aquatic		1		0	& green fish	green fish	Barracuda, known for their large size, fearsome appearance and ferocious behavior.
 4	eel	fish	aquatic		0		0	& eel	eel	An electric eel slipping through the water.
 4	pink jellyfish	jelly	erratic,aquatic		-2		0	& pink jellyfish	pink jellyfish	A large pink jellyfish. It looks poisonous.
 5	copper jellyfish	jelly	erratic,aquatic		-2		0	& copper jellyfish	copper jellyfish	A copper-colored jellyfish; it has a large bell and long tentacles.

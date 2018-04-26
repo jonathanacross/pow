@@ -5,6 +5,7 @@ import pow.backend.ShopData;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
+import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Array2D;
 import pow.util.Point;
 
@@ -28,23 +29,26 @@ public class Town implements MapGenerator {
     }
 
     @Override
-    public GameMap genMap(String name, List<MapConnection> connections, Random rng) {
+    public GameMap genMap(String name, List<MapConnection> connections,
+                          MapPoint.PortalStatus portalStatus, Random rng) {
         int[][] data = genMap(rng);
 
         DungeonSquare[][] dungeonSquares = GeneratorUtils.convertToDungeonSquares(data, translator);
 
-        // Add exits
-        String upstairsFeatureId = translator.getFeature(Constants.FEATURE_UP_STAIRS).id;
-        String downstairsFeatureId =  translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id;
-        String floorTerrainId = translator.getTerrain(Constants.TERRAIN_FLOOR).id;
+        // place the exits and get key locations
+        GeneratorUtils.CommonIds commonIds = new GeneratorUtils.CommonIds(
+                translator.getTerrain(Constants.TERRAIN_FLOOR).id,
+                translator.getFeature(Constants.FEATURE_UP_STAIRS).id,
+                translator.getFeature(Constants.FEATURE_DOWN_STAIRS).id,
+                translator.getFeature(Constants.FEATURE_OPEN_PORTAL).id,
+                translator.getFeature(Constants.FEATURE_CLOSED_PORTAL).id);
         Map<String, Point> keyLocations = GeneratorUtils.addDefaultExits(
                 connections,
+                portalStatus,
                 dungeonSquares,
-                floorTerrainId,
-                upstairsFeatureId,
-                downstairsFeatureId,
+                commonIds,
                 rng);
-        ShopData shopData = ShopGenerator.genShop(level, rng);
+       ShopData shopData = ShopGenerator.genShop(level, rng);
 
         return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags, shopData);
     }
@@ -117,7 +121,7 @@ public class Town implements MapGenerator {
         return new Point(x,y);
     }
 
-    private class Rectangle {
+    private static class Rectangle {
         public final int left;
         public final int top;
         public final int width;

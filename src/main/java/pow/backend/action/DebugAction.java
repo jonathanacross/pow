@@ -15,8 +15,9 @@ public class DebugAction implements Action {
     private final What what;
 
     public enum What {
+        UNKNOWN,
         INCREASE_CHAR_LEVEL,
-        HEAL
+        HEAL,
     }
 
     public DebugAction(What what) {
@@ -31,6 +32,9 @@ public class DebugAction implements Action {
         Player player = backend.getGameState().player;
 
         switch (what) {
+            case UNKNOWN:
+                backend.logMessage("DEBUG: unknown action", MessageLog.MessageType.DEBUG);
+                break;
             case INCREASE_CHAR_LEVEL:
                 if (player.level < 20) {
                     backend.logMessage("DEBUG: player up a level", MessageLog.MessageType.DEBUG);

@@ -10,11 +10,12 @@ public enum Direction {
     W(-1, 0, 0),
     NW(-1, -1, 0),
     U(0, 0, 1),
-    D(0, 0, -1);
+    D(0, 0, -1),
+    T(0, 0, 0);  // for Tesseract, or Teleport (4th dimension).
 
-    public int dx;
-    public int dy;
-    public int dz;
+    public final int dx;
+    public final int dy;
+    public final int dz;
     public Direction opposite;
     public Direction rotateLeft90;
     public Direction rotateLeft45;
@@ -30,7 +31,7 @@ public enum Direction {
     public static final Direction[] CARDINALS = {N, E, S, W};
     public static final Direction[] DIAGONALS = {NE, SE, NW, SW};
     public static final Direction[] ALL = {N, NE, E, SE, S, SW, W, NW};
-    public static final Direction[] EXITS = {N, NE, E, SE, S, SW, W, NW, U, D};
+    public static final Direction[] EXITS = {N, NE, E, SE, S, SW, W, NW, U, D, T};
 
     public static Direction getDir(int dx, int dy) {
         if (dx == 0) {

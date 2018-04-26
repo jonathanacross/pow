@@ -110,48 +110,48 @@
 32x32	13	6	-:null:-	:null:
 32x32	14	6	-:null:-	:null:
 32x32	15	6	-:null:-	:null:
-32x32	0	7	teleport tile	feature
-32x32	1	7	dungeon entrance	feature
-32x32	2	7	tower	feature
-32x32	3	7	debug	debug
-32x32	4	7	dock	terrain
-32x32	5	7	big tree	feature
-32x32	6	7	sick big tree	feature
-32x32	7	7	gold tree	feature
-32x32	8	7	pine tree	feature
-32x32	9	7	snowy pine tree	feature
-32x32	10	7	small tree	feature
-32x32	11	7	white small tree	feature
-32x32	12	7	bush	feature
-32x32	13	7	berry bush	feature
-32x32	14	7	poison flower	feature
-32x32	15	7	dead tree	feature
-32x32	0	8	palm tree	feature
-32x32	1	8	cactus	feature
-32x32	2	8	light pebbles	feature
-32x32	3	8	dark pebbles	feature
-32x32	4	8	sign1	feature
-32x32	5	8	sign2	feature
-32x32	6	8	sign3	feature
-32x32	7	8	fountain	feature
-32x32	8	8	tombstone	feature
-32x32	9	8	wood chest	misc item
-32x32	10	8	bookcase	feature
-32x32	11	8	crate	feature
-32x32	12	8	throne	feature
-32x32	13	8	glass ball	feature
-32x32	14	8	red carpet	feature
-32x32	15	8	candle	feature
-32x32	0	9	candelabra	feature
-32x32	1	9	red curtain	feature
-32x32	2	9	blue curtain	feature
-32x32	3	9	green curtain	feature
-32x32	4	9	red rune	misc item
-32x32	5	9	yellow rune	misc item
-32x32	6	9	green rune	misc item
-32x32	7	9	-:null:-	:null:
-32x32	8	9	-:null:-	:null:
-32x32	9	9	-:null:-	:null:
+32x32	0	7	blue portal	feature
+32x32	1	7	red portal	feature
+32x32	2	7	gray portal	feature
+32x32	3	7	dungeon entrance	feature
+32x32	4	7	tower	feature
+32x32	5	7	debug	debug
+32x32	6	7	dock	terrain
+32x32	7	7	big tree	feature
+32x32	8	7	sick big tree	feature
+32x32	9	7	gold tree	feature
+32x32	10	7	pine tree	feature
+32x32	11	7	snowy pine tree	feature
+32x32	12	7	small tree	feature
+32x32	13	7	white small tree	feature
+32x32	14	7	bush	feature
+32x32	15	7	berry bush	feature
+32x32	0	8	poison flower	feature
+32x32	1	8	dead tree	feature
+32x32	2	8	palm tree	feature
+32x32	3	8	cactus	feature
+32x32	4	8	light pebbles	feature
+32x32	5	8	dark pebbles	feature
+32x32	6	8	sign1	feature
+32x32	7	8	sign2	feature
+32x32	8	8	sign3	feature
+32x32	9	8	fountain	feature
+32x32	10	8	tombstone	feature
+32x32	11	8	wood chest	misc item
+32x32	12	8	bookcase	feature
+32x32	13	8	crate	feature
+32x32	14	8	throne	feature
+32x32	15	8	glass ball	feature
+32x32	0	9	red carpet	feature
+32x32	1	9	candle	feature
+32x32	2	9	candelabra	feature
+32x32	3	9	red curtain	feature
+32x32	4	9	blue curtain	feature
+32x32	5	9	green curtain	feature
+32x32	6	9	spikes	feature
+32x32	7	9	red rune	feature
+32x32	8	9	yellow rune	feature
+32x32	9	9	green rune	feature
 32x32	10	9	-:null:-	:null:
 32x32	11	9	-:null:-	:null:
 32x32	12	9	-:null:-	:null:
@@ -172,23 +172,23 @@
 32x32	11	10	magic key	misc item
 32x32	12	10	gas mask	misc item
 32x32	13	10	heat suit	misc item
-32x32	14	10	magic feather	misc item
-32x32	15	10	float	misc item
-32x32	0	11	magic pickaxe	misc item
-32x32	1	11	magic atlas	misc item
-32x32	2	11	glasses	misc item
-32x32	3	11	bag	misc item
-32x32	4	11	crooked staff	misc item
-32x32	5	11	shell	misc item
-32x32	6	11	mac plus	misc item
-32x32	7	11	rye	misc item
-32x32	8	11	beer	misc item
-32x32	9	11	ham	misc item
-32x32	10	11	bread	misc item
-32x32	11	11	-:null:-	:null:
-32x32	12	11	-:null:-	:null:
-32x32	13	11	-:null:-	:null:
-32x32	14	11	-:null:-	:null:
+32x32	14	10	float	misc item
+32x32	15	10	magic pickaxe	misc item
+32x32	0	11	magic atlas	misc item
+32x32	1	11	glasses	misc item
+32x32	2	11	bag	misc item
+32x32	3	11	x-ray scope	misc item
+32x32	4	11	portal key	misc item
+32x32	5	11	crown	misc item
+32x32	6	11	crooked staff	misc item
+32x32	7	11	shell	misc item
+32x32	8	11	mac plus	misc item
+32x32	9	11	rye	misc item
+32x32	10	11	beer	misc item
+32x32	11	11	ham	misc item
+32x32	12	11	bread	misc item
+32x32	13	11	magic feather	misc item
+32x32	14	11	mirror	misc item
 32x32	15	11	-:null:-	:null:
 32x32	0	12	dagger	weapon
 32x32	1	12	main gauche	weapon
@@ -348,8 +348,8 @@
 32x32	11	21	-:null:-	:null:
 32x32	12	21	-:null:-	:null:
 32x32	13	21	-:null:-	:null:
-32x32	14	21	giant salamander	basement
-32x32	15	21	-:null:-	:null:
+32x32	14	21	-:null:-	:null:
+32x32	15	21	giant salamander	basement
 32x32	0	22	bit	area1
 32x32	1	22	bot	area1
 32x32	2	22	yellow ant	area1
@@ -363,9 +363,9 @@
 32x32	10	22	brown imp	area1
 32x32	11	22	-:null:-	:null:
 32x32	12	22	-:null:-	:null:
-32x32	13	22	green komodo	area1
-32x32	14	22	purple spider	area1
-32x32	15	22	-:null:-	:null:
+32x32	13	22	-:null:-	:null:
+32x32	14	22	green komodo	area1
+32x32	15	22	purple spider	area1
 32x32	0	23	novice mage	area2
 32x32	1	23	novice warrior	area2
 32x32	2	23	novice archer	area2
@@ -379,9 +379,9 @@
 32x32	10	23	brown scorpion	area2
 32x32	11	23	blue ooze	area2
 32x32	12	23	-:null:-	:null:
-32x32	13	23	great turtle	area2
-32x32	14	23	minotaur	area2
-32x32	15	23	-:null:-	:null:
+32x32	13	23	-:null:-	:null:
+32x32	14	23	great turtle	area2
+32x32	15	23	minotaur	area2
 32x32	0	24	rabbit mage	area3
 32x32	1	24	rabbit warrior	area3
 32x32	2	24	rabbit archer	area3
@@ -392,12 +392,12 @@
 32x32	7	24	green imp	area3
 32x32	8	24	small red spiny	area3
 32x32	9	24	rock lizard	area3
-32x32	10	24	yellow worm mass	area1
+32x32	10	24	yellow worm mass	area3
 32x32	11	24	blue wizard	human
 32x32	12	24	-:null:-	:null:
-32x32	13	24	yellow schweinhund	area3
-32x32	14	24	Balthazar the Great	area3
-32x32	15	24	-:null:-	:null:
+32x32	13	24	-:null:-	:null:
+32x32	14	24	yellow schweinhund	area3
+32x32	15	24	Balthazar the Great	area3
 32x32	0	25	dark elf mage	area4
 32x32	1	25	dark elf warrior	area4
 32x32	2	25	dark elf archer	area4
@@ -411,9 +411,9 @@
 32x32	10	25	big red spiny	area4
 32x32	11	25	frost giant	area4
 32x32	12	25	-:null:-	:null:
-32x32	13	25	Hagar the Merciless	area4
-32x32	14	25	ice creature	area4
-32x32	15	25	-:null:-	:null:
+32x32	13	25	-:null:-	:null:
+32x32	14	25	Hagar the Merciless	area4
+32x32	15	25	ice creature	area4
 32x32	0	26	orc mage	area5
 32x32	1	26	orc warrior	area5
 32x32	2	26	orc archer	area5
@@ -426,10 +426,10 @@
 32x32	9	26	griffin	area5
 32x32	10	26	chess knight	area5
 32x32	11	26	copperhead snake	area5
-32x32	12	26	-:null:-	:null:
-32x32	13	26	Lor the Betrayer	area5
-32x32	14	26	basilisk	area5
-32x32	15	26	-:null:-	:null:
+32x32	12	26	grue	area5
+32x32	13	26	-:null:-	:null:
+32x32	14	26	Lor the Betrayer	area5
+32x32	15	26	basilisk	area5
 32x32	0	27	skeleton mage	area6
 32x32	1	27	skeleton warrior	area6
 32x32	2	27	skeleton archer	area6
@@ -443,9 +443,9 @@
 32x32	10	27	vampire bat	monster
 32x32	11	27	-:null:-	:null:
 32x32	12	27	-:null:-	:null:
-32x32	13	27	red spider	area6
-32x32	14	27	skeletal dragon	area6
-32x32	15	27	-:null:-	:null:
+32x32	13	27	-:null:-	:null:
+32x32	14	27	red spider	area6
+32x32	15	27	skeletal dragon	area6
 32x32	0	28	troll mage	area7
 32x32	1	28	troll warrior	area7
 32x32	2	28	troll archer	area7
@@ -457,11 +457,11 @@
 32x32	8	28	zombie	area7
 32x32	9	28	red cobra	area7
 32x32	10	28	sand worm	area7
-32x32	11	28	-:null:-	:null:
+32x32	11	28	black orc	area7
 32x32	12	28	-:null:-	:null:
-32x32	13	28	two headed ogre	area7
-32x32	14	28	oliphant	area7
-32x32	15	28	-:null:-	:null:
+32x32	13	28	-:null:-	:null:
+32x32	14	28	two headed ogre	area7
+32x32	15	28	oliphant	area7
 32x32	0	29	demon mage	area8
 32x32	1	29	demon warrior	area8
 32x32	2	29	demon archer	area8
@@ -475,9 +475,9 @@
 32x32	10	29	fire vortex	area8
 32x32	11	29	lava dragon	area8
 32x32	12	29	-:null:-	:null:
-32x32	13	29	phoenix	area8
-32x32	14	29	Maeglor	area8
-32x32	15	29	-:null:-	:null:
+32x32	13	29	-:null:-	:null:
+32x32	14	29	phoenix	area8
+32x32	15	29	Maeglor	area8
 32x32	0	30	alien mage	area9
 32x32	1	30	alien warrior	area9
 32x32	2	30	alien archer	area9
@@ -491,9 +491,9 @@
 32x32	10	30	spike dog	area9
 32x32	11	30	-:null:-	:null:
 32x32	12	30	-:null:-	:null:
-32x32	13	30	Lugorith	area9
-32x32	14	30	evil incarnate	area9
-32x32	15	30	-:null:-	:null:
+32x32	13	30	-:null:-	:null:
+32x32	14	30	Lugorith	area9
+32x32	15	30	evil incarnate	area9
 32x32	0	31	goldfish	ocean
 32x32	1	31	green fish	ocean
 32x32	2	31	eel	ocean

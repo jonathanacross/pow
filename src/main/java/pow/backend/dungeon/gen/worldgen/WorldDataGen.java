@@ -25,6 +25,11 @@ public class WorldDataGen {
         return testWorld ? testInstance.mapPoints : instance.mapPoints;
     }
 
+    private static final String DUNGEON_ENTRANCE_ID = "dungeon entrance";
+    private static final String TOWER_ENTRANCE_ID = "tower";
+    private static final String OPEN_PORTAL_ID = "blue portal";
+    private static final String CLOSED_PORTAL_ID = "gray portal";
+
     private static final DungeonTerrain WATER = TerrainData.getTerrain("water 1");
     private static final DungeonTerrain LAVA  = TerrainData.getTerrain("lava");
     private static final DungeonTerrain DEBUG  = TerrainData.getTerrain("debug");
@@ -33,7 +38,7 @@ public class WorldDataGen {
     private static final DungeonFeature NONE = null;
     private static final DungeonFeature CANDLE = FeatureData.getFeature("candle");
 
-    private static final DungeonFeature CANDLEABRA = FeatureData.getFeature("candelabra");
+    private static final DungeonFeature CANDELABRA = FeatureData.getFeature("candelabra");
     private static final DungeonFeature WOOD_CHEST = FeatureData.getFeature("wood chest");
     private static final DungeonFeature CRATE = FeatureData.getFeature("crate");
     private static final DungeonFeature GLASS_ORB = FeatureData.getFeature("glass orb");
@@ -49,6 +54,8 @@ public class WorldDataGen {
     private static final DungeonFeature WEAPON_SHOP_DOOR = FeatureData.getFeature("weapon shop");
     private static final DungeonFeature MAGIC_SHOP_DOOR = FeatureData.getFeature("magic shop");
     private static final DungeonFeature JEWELER_SHOP_DOOR = FeatureData.getFeature("jeweler shop");
+    private static final DungeonFeature OPEN_PORTAL = FeatureData.getFeature(OPEN_PORTAL_ID);
+    private static final DungeonFeature CLOSED_PORTAL = FeatureData.getFeature(CLOSED_PORTAL_ID);
     static {
         try {
             instance = new WorldDataGen("/data/levels.tsv");
@@ -71,8 +78,8 @@ public class WorldDataGen {
     }
 
     private static MapPoint parseMapLinkData(String[] line) {
-        if (line.length != 11) {
-            throw new RuntimeException("error: expected 11 fields in line: " + String.join(",", line));
+        if (line.length != 12) {
+            throw new RuntimeException("error: expected 12 fields in line: " + String.join(",", line));
         }
 
         String id = line[0];
@@ -104,15 +111,16 @@ public class WorldDataGen {
             Collections.addAll(fromIds, fids);
         }
 
-        String generatorName = line[6];
-        String generatorParams = line[7];
-        GameMap.Flags flags = parseFlags(line[8]);
-        String bossId = getBossId(line[9]);
-        List<String> monsterIds = getMonsterIds(line[10]);
+        MapPoint.PortalStatus portalStatus = parsePortalStatus(line[6]);
+        String generatorName = line[7];
+        String generatorParams = line[8];
+        GameMap.Flags flags = parseFlags(line[9]);
+        String bossId = getBossId(line[10]);
+        List<String> monsterIds = getMonsterIds(line[11]);
         MonsterIdGroup monsterIdGroup = new MonsterIdGroup(monsterIds, bossId != null, bossId);
         MapGenerator generator = buildGenerator(generatorName, generatorParams, monsterIdGroup, level, flags);
 
-        return new MapPoint(id, level, group, directions, fromGroups, fromIds, generator);
+        return new MapPoint(id, level, group, directions, fromGroups, fromIds, portalStatus, generator);
     }
 
     private static String getBossId(String field) {
@@ -146,10 +154,6 @@ public class WorldDataGen {
         return new ArrayList<>(Arrays.asList(monsterIds));
     }
 
-    private static final String STAIRS_UP = "stairs up";
-    private static final String STAIRS_DOWN = "stairs down";
-    private static final String DUNGEON_ENTRANCE = "dungeon entrance";
-    private static final String TOWER_ENTRANCE = "tower";
 
     private static GameMap.Flags parseFlags(String text) {
         String[] tokens = text.split(",", -1);
@@ -171,7 +175,18 @@ public class WorldDataGen {
         }
 
         return new GameMap.Flags(permLight, outside, poisonGas, hot);
+    }
 
+    private static MapPoint.PortalStatus parsePortalStatus(String text) {
+        switch (text) {
+            case "":
+            case "none":
+                return MapPoint.PortalStatus.NONE;
+            case "open": return MapPoint.PortalStatus.OPEN;
+            case "closed": return MapPoint.PortalStatus.CLOSED;
+            default:
+                throw new IllegalArgumentException("unknown teleport status '" + text + "'");
+        }
     }
 
     private static MapGenerator buildGenerator(String generatorType, String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
@@ -205,7 +220,7 @@ public class WorldDataGen {
         Map<Integer, DungeonFeature> featureMap = new HashMap<>();
         featureMap.put(Constants.FEATURE_NONE, NONE);
         featureMap.put(Constants.FEATURE_CANDLE, CANDLE);
-        featureMap.put(Constants.FEATURE_CANDLEABRA, CANDLEABRA);
+        featureMap.put(Constants.FEATURE_CANDELABRA, CANDELABRA);
         featureMap.put(Constants.FEATURE_WOOD_CHEST, WOOD_CHEST);
         featureMap.put(Constants.FEATURE_CRATE, CRATE);
         featureMap.put(Constants.FEATURE_GLASS_ORB, GLASS_ORB);
@@ -220,6 +235,8 @@ public class WorldDataGen {
         featureMap.put(Constants.FEATURE_MAGIC_SHOP_DOOR, MAGIC_SHOP_DOOR);
         featureMap.put(Constants.FEATURE_INN_DOOR, INN_DOOR);
         featureMap.put(Constants.FEATURE_JEWELER_SHOP_DOOR, JEWELER_SHOP_DOOR);
+        featureMap.put(Constants.FEATURE_OPEN_PORTAL, OPEN_PORTAL);
+        featureMap.put(Constants.FEATURE_CLOSED_PORTAL, CLOSED_PORTAL);
 
         switch (name) {
             case "town":  // towns
@@ -282,6 +299,17 @@ public class WorldDataGen {
                 featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("ice open door"));
                 featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("ice closed door"));
                 break;
+            case "gruecave":  // grue's cave, similar to crypt but lava is replaced with a wall
+                terrainMap.put(Constants.TERRAIN_LAVA, TerrainData.getTerrain("ivy stone wall"));
+                terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("charcoal floor"));
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("ivy stone wall"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable ivy stone wall"));
+
+                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("ivy stone stairs up"));
+                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("ivy stone stairs down"));
+                featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("ivy stone open door"));
+                featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("ivy stone closed door"));
+                break;
             case "crypt":  // dungeon 6
                 terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("charcoal floor"));
                 terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("ivy stone wall"));
@@ -307,8 +335,8 @@ public class WorldDataGen {
                 terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("rock"));
                 terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable rock"));
 
-                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature(TOWER_ENTRANCE));
-                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature(DUNGEON_ENTRANCE));
+                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature(TOWER_ENTRANCE_ID));
+                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature(DUNGEON_ENTRANCE_ID));
                 featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("open door"));
                 featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("closed door"));
                 break;
@@ -399,19 +427,22 @@ public class WorldDataGen {
                 style = new RecursiveInterpolation.MapStyle(
                         new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree"),
-                        TOWER_ENTRANCE, DUNGEON_ENTRANCE, false, null, null);
+                        TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
+                        false, null, null);
                 break;
             case "desert":
                 style = new RecursiveInterpolation.MapStyle(
                         new RecursiveInterpolation.TerrainFeatureTriplet("tan rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("sand", "cactus", "light pebbles"),
-                        TOWER_ENTRANCE, DUNGEON_ENTRANCE, false, null, null);
+                        TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
+                        false, null, null);
                 break;
             case "forest":
                 style = new RecursiveInterpolation.MapStyle(
                         new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("forest", "big tree", "pine tree"),
-                        TOWER_ENTRANCE, DUNGEON_ENTRANCE, true,
+                        TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
+                        true,
                         new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("forest","key locked rock door", null));
                 break;
@@ -419,37 +450,43 @@ public class WorldDataGen {
                 style = new RecursiveInterpolation.MapStyle(
                         new RecursiveInterpolation.TerrainFeatureTriplet("waves", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("water 3", null, "water 4"),
-                        TOWER_ENTRANCE, DUNGEON_ENTRANCE, false, null, null);
+                        TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
+                        false, null, null);
                 break;
             case "snow":
                 style = new RecursiveInterpolation.MapStyle(
                         new RecursiveInterpolation.TerrainFeatureTriplet("snowy rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("snow", "snowy pine tree", "white small tree"),
-                        TOWER_ENTRANCE, DUNGEON_ENTRANCE, false, null, null);
+                        TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
+                        false, null, null);
                 break;
             case "swamp":
                 style = new RecursiveInterpolation.MapStyle(
                         new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree"),
-                        TOWER_ENTRANCE, DUNGEON_ENTRANCE, false, null, null);
+                        TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
+                        false, null, null);
                 break;
             case "haunted forest":
                 style = new RecursiveInterpolation.MapStyle(
                         new RecursiveInterpolation.TerrainFeatureTriplet("tan rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("tall grass", "berry bush", "tombstone"),
-                        TOWER_ENTRANCE, DUNGEON_ENTRANCE, false, null, null);
+                        TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
+                        false, null, null);
                 break;
             case "volcano":
                 style = new RecursiveInterpolation.MapStyle(
                         new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("cold lava floor", null, "dark pebbles"),
-                        TOWER_ENTRANCE, DUNGEON_ENTRANCE, false, null, null);
+                        TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
+                        false, null, null);
                 break;
             case "dig desert":
                 style = new RecursiveInterpolation.MapStyle(
                         new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "dead tree", "light pebbles"),
-                        TOWER_ENTRANCE, DUNGEON_ENTRANCE, true,
+                        TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
+                        true,
                         new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("diggable rock", null, null));
                 break;
@@ -457,7 +494,8 @@ public class WorldDataGen {
                 style = new RecursiveInterpolation.MapStyle(
                         new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("sand", "gold tree", "light pebbles"),
-                        TOWER_ENTRANCE, DUNGEON_ENTRANCE, true,
+                        TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
+                        true,
                         new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
                         new RecursiveInterpolation.TerrainFeatureTriplet("sand", "pearl locked rock door", null));
                 break;

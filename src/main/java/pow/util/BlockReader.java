@@ -35,7 +35,7 @@ public class BlockReader {
 
         List<String> lineGroup = new ArrayList<>();
 
-        try (InputStreamReader isr = new InputStreamReader(stream);
+        try (InputStreamReader isr = new InputStreamReader(stream, "UTF-8");
              BufferedReader br = new BufferedReader(isr)) {
             String line;
 

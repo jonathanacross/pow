@@ -36,6 +36,7 @@ public class GameThread implements Runnable {
         this.observer = observer;
     }
 
+    @Override
     public void run() {
         try {
             while (true) {
