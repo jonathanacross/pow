@@ -168,13 +168,13 @@ public class RadialGenerator implements MapGenerator {
 
         for (MazeCell cell : cells.values()) {
             Point loc = cell.loc;
-            grid[loc.x - left + 1][loc.y - top + 1] = cell.available ?
-                    Constants.TERRAIN_FLOOR :
-                    Constants.TERRAIN_LAVA;
+            grid[loc.x - left + 1][loc.y - top + 1] = cell.available
+                    ? Constants.TERRAIN_FLOOR
+                    : Constants.TERRAIN_LAVA;
         }
 
-//        // mark the start point
-//        grid[1 - left][1 - top] = '@';
+        // Note: the start point is at grid[1 - left][1 - top].
+        // Could use this later if need something in the center of the level.
 
         return grid;
     }
@@ -184,17 +184,4 @@ public class RadialGenerator implements MapGenerator {
         int[][] grid = toGrid(cells);
         return grid;
     }
-
-//    public static void main(String[] args) {
-//        RadialGenerator mp = new RadialGenerator();
-//        mp.lavaMaze();
-//        char[][] grid = mp.toGrid();
-//
-//        for (int y = 0; y < grid[0].length; y++) {
-//            for (int x = 0; x < grid.length; x++) {
-//                System.out.print(grid[x][y]);
-//            }
-//            System.out.println();
-//        }
-//    }
 }

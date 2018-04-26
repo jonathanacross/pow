@@ -299,6 +299,17 @@ public class WorldDataGen {
                 featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("ice open door"));
                 featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("ice closed door"));
                 break;
+            case "gruecave":  // grue's cave, similar to crypt but lava is replaced with a wall
+                terrainMap.put(Constants.TERRAIN_LAVA, TerrainData.getTerrain("ivy stone wall"));
+                terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("charcoal floor"));
+                terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("ivy stone wall"));
+                terrainMap.put(Constants.TERRAIN_DIGGABLE_WALL, TerrainData.getTerrain("diggable ivy stone wall"));
+
+                featureMap.put(Constants.FEATURE_UP_STAIRS, FeatureData.getFeature("ivy stone stairs up"));
+                featureMap.put(Constants.FEATURE_DOWN_STAIRS, FeatureData.getFeature("ivy stone stairs down"));
+                featureMap.put(Constants.FEATURE_OPEN_DOOR, FeatureData.getFeature("ivy stone open door"));
+                featureMap.put(Constants.FEATURE_CLOSED_DOOR, FeatureData.getFeature("ivy stone closed door"));
+                break;
             case "crypt":  // dungeon 6
                 terrainMap.put(Constants.TERRAIN_FLOOR, TerrainData.getTerrain("charcoal floor"));
                 terrainMap.put(Constants.TERRAIN_WALL, TerrainData.getTerrain("ivy stone wall"));
