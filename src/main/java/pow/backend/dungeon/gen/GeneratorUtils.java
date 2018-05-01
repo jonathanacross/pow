@@ -5,12 +5,14 @@ import pow.backend.GameConstants;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.*;
+import pow.backend.dungeon.gen.mapgen.TerrainFeatureTriplet;
 import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Array2D;
 import pow.util.Direction;
 import pow.util.Point;
 
 import java.util.*;
+import java.util.function.IntFunction;
 
 public class GeneratorUtils {
 
@@ -440,6 +442,7 @@ public class GeneratorUtils {
     // Removes extra borders of impassible stuff -- makes the map smaller, and
     // makes it so we won't have to "tunnel" to the nearest exit.
     // This is necessary to call before using findExitCoordinate.
+    // Works for all maps created using ProtoTranslators.
     public static int[][] trimMap(int[][] squares) {
         int width = Array2D.width(squares);
         int height = Array2D.height(squares);
@@ -470,6 +473,42 @@ public class GeneratorUtils {
         }
         return croppedLayout;
     }
+
+    // removes extra borders of impassible stuff -- makes the map smaller, and
+    // makes it so we won't have to "tunnel" to the nearest exit.
+    // This is necessary to call before using findExitCoordinate.
+    // Works for maps using TerrainFeatureTriplets.
+    public static TerrainFeatureTriplet[][] trimTerrainBorder(TerrainFeatureTriplet[][] layout, String borders) {
+        int width = Array2D.width(layout);
+        int height = Array2D.height(layout);
+
+        int minInteriorX = width - 1;
+        int maxInteriorX = 0;
+        int minInteriorY = height - 1;
+        int maxInteriorY = 0;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (!borders.equals(layout[x][y].terrain)) {
+                    minInteriorX = Math.min(minInteriorX, x);
+                    maxInteriorX = Math.max(maxInteriorX, x);
+                    minInteriorY = Math.min(minInteriorY, y);
+                    maxInteriorY = Math.max(maxInteriorY, y);
+                }
+            }
+        }
+
+        int newWidth = maxInteriorX - minInteriorX + 3;
+        int newHeight = maxInteriorY - minInteriorY + 3;
+        TerrainFeatureTriplet[][] croppedLayout = new TerrainFeatureTriplet[newWidth][newHeight];
+        for (int x = minInteriorX - 1; x <= maxInteriorX + 1; x++) {
+            for (int y = minInteriorY - 1; y <= maxInteriorY + 1; y++) {
+                croppedLayout[x - minInteriorX + 1][y - minInteriorY + 1] = layout[x][y];
+            }
+        }
+        return croppedLayout;
+    }
+
 
     private static boolean isOpen(DungeonSquare square) {
         return !square.terrain.flags.blockGround || !square.terrain.flags.blockWater || square.terrain.flags.diggable;

@@ -21,30 +21,9 @@ import java.util.Random;
 
 public class RecursiveInterpolation implements MapGenerator {
 
-    public static class TerrainFeatureTriplet {
-        public final String terrain;
-        public final String feature1;
-        public final String feature2;
-
-        public TerrainFeatureTriplet(String terrain, String feature1, String feature2) {
-            this.terrain = terrain;
-            this.feature1 = feature1;
-            this.feature2 = feature2;
-        }
-
-        // just a rough thing for debugging
-        @Override
-        public String toString() {
-            char t = terrain == null ? '_' : terrain.charAt(0);
-            char f1 = feature1 == null ? '_' : feature1.charAt(0);
-            char f2 = feature2 == null ? '_' : feature2.charAt(0);
-            return "" + t + f1 + f2;
-        }
-    }
-
     // expand/modify this class to make richer areas
     public static class MapStyle {
-        public final TerrainFeatureTriplet border;  // TODO: change name of this and below
+        public final TerrainFeatureTriplet border;
         public final TerrainFeatureTriplet interior;
         public final String upstairsFeatureId;
         public final String downstairsFeatureId;
@@ -119,7 +98,7 @@ public class RecursiveInterpolation implements MapGenerator {
         // build the terrain
         TerrainFeatureTriplet[][] layout = genTerrainLayout(width, height, style, rng);
         TerrainFeatureTriplet[][] terrainMap = makeInterpMap(layout, rng, numInterpolationSteps);
-        terrainMap = trimTerrainBorder(terrainMap, style.border.terrain);
+        terrainMap = GeneratorUtils.trimTerrainBorder(terrainMap, style.border.terrain);
         int w = Array2D.width(terrainMap);
         int h = Array2D.height(terrainMap);
 
@@ -339,44 +318,12 @@ public class RecursiveInterpolation implements MapGenerator {
         return data;
     }
 
-    // removes extra borders of impassible stuff -- makes the map smaller, and
-    // makes it so we won't have to "tunnel" to the nearest exit.
-    private static TerrainFeatureTriplet[][] trimTerrainBorder(TerrainFeatureTriplet[][] layout, String borders) {
-        int width = Array2D.width(layout);
-        int height = Array2D.height(layout);
-
-        int minInteriorX = width - 1;
-        int maxInteriorX = 0;
-        int minInteriorY = height - 1;
-        int maxInteriorY = 0;
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (!borders.equals(layout[x][y].terrain)) {
-                    minInteriorX = Math.min(minInteriorX, x);
-                    maxInteriorX = Math.max(maxInteriorX, x);
-                    minInteriorY = Math.min(minInteriorY, y);
-                    maxInteriorY = Math.max(maxInteriorY, y);
-                }
-            }
-        }
-
-        int newWidth = maxInteriorX - minInteriorX + 3;
-        int newHeight = maxInteriorY - minInteriorY + 3;
-        TerrainFeatureTriplet[][] croppedLayout = new TerrainFeatureTriplet[newWidth][newHeight];
-        for (int x = minInteriorX - 1; x <= maxInteriorX + 1; x++) {
-            for (int y = minInteriorY - 1; y <= maxInteriorY + 1; y++) {
-                croppedLayout[x - minInteriorX + 1][y - minInteriorY + 1] = layout[x][y];
-            }
-        }
-        return croppedLayout;
-    }
-
     private static double[][] makeNoise(int width, int height, int origWidth, int origHeight, int interpolationSteps) {
         int scale = Math.max(origWidth, origHeight) * 2;
         return fractalNoise(width, height, 1.0, scale, 0.0, interpolationSteps);
     }
 
+    // TODO: move this into shared utility functions so it can be used by MountainGenerator.
     private static void addLockAroundExits(DungeonSquare[][] squares,
                                            Map<String, Point> keyLocations,
                                            TerrainFeatureTriplet mainLock,

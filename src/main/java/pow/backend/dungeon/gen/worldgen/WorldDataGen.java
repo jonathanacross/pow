@@ -197,6 +197,7 @@ public class WorldDataGen {
             case "delve": return buildDelveGenerator(params, monsterIds, level, flags);
             case "cellularAutomata": return buildCellularAutomataGenerator(params, monsterIds, level, flags);
             case "premade": return buildPremadeGenerator(params, monsterIds, level, flags);
+            case "mountain": return buildMountainGenerator(params, monsterIds, level, flags);
             case "rogue": return buildRogueGenerator(params, monsterIds, level, flags);
             case "radial": return buildRadialGenerator(params, monsterIds, level, flags);
             case "terrain test":
@@ -420,84 +421,89 @@ public class WorldDataGen {
         return new PremadeGenerator(mapInfo, style, monsterIds, level, flags);
     }
 
+    private static MapGenerator buildMountainGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
+        return new MountainGenerator(monsterIds, level, flags);
+    }
+
+
     private static MapGenerator buildRecursiveInterpolationGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         RecursiveInterpolation.MapStyle style;
         switch (params) {
             case "grass":
                 style = new RecursiveInterpolation.MapStyle(
-                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("grass", "bush", "big tree"),
+                        new TerrainFeatureTriplet("rock", null, null),
+                        new TerrainFeatureTriplet("grass", "bush", "big tree"),
                         TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
                         false, null, null);
                 break;
             case "desert":
                 style = new RecursiveInterpolation.MapStyle(
-                        new RecursiveInterpolation.TerrainFeatureTriplet("tan rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("sand", "cactus", "light pebbles"),
+                        new TerrainFeatureTriplet("tan rock", null, null),
+                        new TerrainFeatureTriplet("sand", "cactus", "light pebbles"),
                         TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
                         false, null, null);
                 break;
             case "forest":
                 style = new RecursiveInterpolation.MapStyle(
-                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("forest", "big tree", "pine tree"),
+                        new TerrainFeatureTriplet("rock", null, null),
+                        new TerrainFeatureTriplet("forest", "big tree", "pine tree"),
                         TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
                         true,
-                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("forest","key locked rock door", null));
+                        new TerrainFeatureTriplet("rock", null, null),
+                        new TerrainFeatureTriplet("forest","key locked rock door", null));
                 break;
             case "water":
                 style = new RecursiveInterpolation.MapStyle(
-                        new RecursiveInterpolation.TerrainFeatureTriplet("waves", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("water 3", null, "water 4"),
+                        new TerrainFeatureTriplet("waves", null, null),
+                        new TerrainFeatureTriplet("water 3", null, "water 4"),
                         TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
                         false, null, null);
                 break;
             case "snow":
                 style = new RecursiveInterpolation.MapStyle(
-                        new RecursiveInterpolation.TerrainFeatureTriplet("snowy rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("snow", "snowy pine tree", "white small tree"),
+                        new TerrainFeatureTriplet("snowy rock", null, null),
+                        new TerrainFeatureTriplet("snow", "snowy pine tree", "white small tree"),
                         TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
                         false, null, null);
                 break;
             case "swamp":
                 style = new RecursiveInterpolation.MapStyle(
-                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("swamp", "poison flower", "sick big tree"),
+                        new TerrainFeatureTriplet("rock", null, null),
+                        new TerrainFeatureTriplet("swamp", "poison flower", "sick big tree"),
                         TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
                         false, null, null);
                 break;
             case "haunted forest":
                 style = new RecursiveInterpolation.MapStyle(
-                        new RecursiveInterpolation.TerrainFeatureTriplet("tan rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("tall grass", "berry bush", "tombstone"),
+                        new TerrainFeatureTriplet("tan rock", null, null),
+                        new TerrainFeatureTriplet("tall grass", "berry bush", "tombstone"),
                         TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
                         false, null, null);
                 break;
             case "volcano":
                 style = new RecursiveInterpolation.MapStyle(
-                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("cold lava floor", null, "dark pebbles"),
+                        new TerrainFeatureTriplet("rock", null, null),
+                        new TerrainFeatureTriplet("cold lava floor", null, "dark pebbles"),
                         TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
                         false, null, null);
                 break;
             case "dig desert":
                 style = new RecursiveInterpolation.MapStyle(
-                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("dark sand", "dead tree", "light pebbles"),
+                        new TerrainFeatureTriplet("rock", null, null),
+                        new TerrainFeatureTriplet("dark sand", "dead tree", "light pebbles"),
                         TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
                         true,
-                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("diggable rock", null, null));
+                        new TerrainFeatureTriplet("rock", null, null),
+                        new TerrainFeatureTriplet("diggable rock", null, null));
                 break;
             case "gold desert":
                 style = new RecursiveInterpolation.MapStyle(
-                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("sand", "gold tree", "light pebbles"),
+                        new TerrainFeatureTriplet("rock", null, null),
+                        new TerrainFeatureTriplet("sand", "gold tree", "light pebbles"),
                         TOWER_ENTRANCE_ID, DUNGEON_ENTRANCE_ID, OPEN_PORTAL_ID, CLOSED_PORTAL_ID,
                         true,
-                        new RecursiveInterpolation.TerrainFeatureTriplet("rock", null, null),
-                        new RecursiveInterpolation.TerrainFeatureTriplet("sand", "pearl locked rock door", null));
+                        new TerrainFeatureTriplet("rock", null, null),
+                        new TerrainFeatureTriplet("sand", "pearl locked rock door", null));
                 break;
             default:
                 throw new RuntimeException("Unknown MapStyle '" + params + "'");
