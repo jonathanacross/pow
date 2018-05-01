@@ -144,5 +144,6 @@
 15	octopus	fish	aquatic,fearless		0		1	& octopus	octopus	A primeval creature with tentacles 20 feet long.
 12	medusa	magical	aquatic,perfect	poison arrow,acid bolt,ice bolt	0		1	& medusa	medusa	A hideous gorgon, with venom dripping from her ghastly mouth.
 15	sea dragon	dragon	aquatic	ice breath,acid breath	1		4	& sea dragon	sea dragon	A mighty sea dragon, with great horns and a long tail.
-5	yellow turtle	reptile	aquatic,passive		-1		1	& yellow turtle	yellow turtle	A turtle with a yellow shell.
-5	red turtle	reptile	aquatic,passive		-1		1	& red turtle	red turtle	A turtle with a red shell.
+16	yellow turtle	reptile	aquatic,perfect	lesser heal	-1		1	& yellow turtle	yellow turtle	A turtle with a yellow shell.
+17	red turtle	reptile	perfect,passive	backstab	-1		1	& red turtle	red turtle	A turtle with a red shell.
+17	purple turtle	reptile	boss,perfect,fearless	acid bolt,lesser heal,lightning bolt,fire bolt,lance	-1	magic bag	4	& elder turtle	purple turtle	This ancient testudine has a hard amethyst carapace and a magical aura.

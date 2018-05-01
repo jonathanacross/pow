@@ -67,6 +67,7 @@ d7l3	67		D		d7l2		cellularAutomata	2,false,brown cave			troll mage,troll warrior
 d7l4	68		D		d7l3		cellularAutomata	2,false,brown cave		oliphant	troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
 ocean1	70	9	N,E,S,W	8			recursiveInterpolation	water	outside		copper jellyfish,scaryfish,water whirlwind,octopus,medusa,sea dragon
 ocean2	71	9	N,E,S,W	9			recursiveInterpolation	water	outside		copper jellyfish,scaryfish,water whirlwind,octopus,medusa,sea dragon
+turtle island	71	9	N,E,S,W	9			mountain		outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,sea dragon
 volcano1	72	10	N,E,S,W	9			recursiveInterpolation	volcano	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
 volcano2	73	10	N,E,S,W	10		closed	recursiveInterpolation	volcano	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
 volcano3	74	10	N,E,S,W	10			radial	volcano	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
