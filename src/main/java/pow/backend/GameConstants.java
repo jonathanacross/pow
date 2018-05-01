@@ -40,6 +40,10 @@ public class GameConstants {
     // fractal nature of the level, which tends to look more realistic.
     public final static int OUTSIDE_AREA_NUM_INTERPOLATION_STEPS = 3;
 
+    // Number of steps to iterate to make mountain/island levels.
+    // Level size is approximately 2^ISLAND_AREA_NUM_ITERATIONS.
+    public final static int ISLAND_AREA_NUM_ITERATIONS = 6;
+
     // How big levels will using delve generation.  These are
     // slightly smaller since they are slightly annoying to
     // navigate.

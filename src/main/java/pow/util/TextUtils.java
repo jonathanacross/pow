@@ -61,17 +61,18 @@ public class TextUtils {
     }
 
     private static String replacePrefix(String s, int count, boolean definite) {
-        if (count == 0) {
-            return "no " + s.replaceAll("& ", "");
-        } else if (count == 1) {
-            if (definite) {
-                return "the " + s.replaceAll("& ", "");
-            } else {
-                String indefArticle = startsWithVowel(s) ? "an" : "a";
-                return s.replaceAll("&", indefArticle);
-            }
-        } else {
-            return count + " " + s.replaceAll("& ", "");
+        switch (count) {
+            case 0:
+                return "no " + s.replaceAll("& ", "");
+            case 1:
+                if (definite) {
+                    return "the " + s.replaceAll("& ", "");
+                } else {
+                    String indefArticle = startsWithVowel(s) ? "an" : "a";
+                    return s.replaceAll("&", indefArticle);
+                }
+            default:
+                return count + " " + s.replaceAll("& ", "");
         }
 
     }

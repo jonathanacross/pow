@@ -7,8 +7,6 @@ import pow.backend.actors.Player;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
-import pow.backend.dungeon.gen.worldgen.MapPoint;
-import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
@@ -20,10 +18,7 @@ import pow.util.Direction;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 public class GameMainLayer extends AbstractWindow {
@@ -39,19 +34,23 @@ public class GameMainLayer extends AbstractWindow {
         Point playerLoc = gs.player.loc;
         ItemList items = gs.getCurrentMap().map[playerLoc.x][playerLoc.y].items;
 
-        if (items.size() == 0) {
-            backend.logMessage("Nothing here to pick up.", MessageLog.MessageType.USER_ERROR);
-        } else if (items.size() == 1) {
-            // no ambiguity, just pick up the one item
-            backend.tellPlayer(new PickUp(gs.player, 0, items.items.get(0).count));
-        } else {
-            // ask the user to pick which item
-            frontend.open(
-                    new ItemChoiceWindow(632, 25, this.backend, this.frontend,
-                            "Pick up which item?", null,
-                            items.items, null, (DungeonItem item) -> true,
-                            (ItemChoiceWindow.ItemChoice choice) ->
-                                    backend.tellPlayer(new PickUp(gs.player, choice.itemIdx, items.items.get(choice.itemIdx).count))));
+        switch (items.size()) {
+            case 0:
+                backend.logMessage("Nothing here to pick up.", MessageLog.MessageType.USER_ERROR);
+                break;
+            case 1:
+                // no ambiguity, just pick up the one item
+                backend.tellPlayer(new PickUp(gs.player, 0, items.items.get(0).count));
+                break;
+            default:
+                // ask the user to pick which item
+                frontend.open(
+                        new ItemChoiceWindow(632, 25, this.backend, this.frontend,
+                                "Pick up which item?", null,
+                                items.items, null, (DungeonItem item) -> true,
+                                (ItemChoiceWindow.ItemChoice choice) ->
+                                        backend.tellPlayer(new PickUp(gs.player, choice.itemIdx, items.items.get(choice.itemIdx).count))));
+                break;
         }
     }
 

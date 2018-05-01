@@ -90,11 +90,11 @@ public class FractalMountain {
         double total = 0;
         double min = Double.MAX_VALUE;
         double max = -Double.MAX_VALUE;
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] != OUTSIDE_RANGE) {
-                total += values[i];
-                min = Math.min(values[i], min);
-                max = Math.max(values[i], max);
+        for (double value : values) {
+            if (value != OUTSIDE_RANGE) {
+                total += value;
+                min = Math.min(value, min);
+                max = Math.max(value, max);
             } else {
                 min = Math.min(0, min);
             }

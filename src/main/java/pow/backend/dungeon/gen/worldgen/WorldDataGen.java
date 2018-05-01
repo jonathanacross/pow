@@ -422,9 +422,24 @@ public class WorldDataGen {
     }
 
     private static MapGenerator buildMountainGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
-        return new MountainGenerator(monsterIds, level, flags);
+        MountainGenerator.MapStyle mapStyle = new MountainGenerator.MapStyle(
+                new double[]{0.08, 0.16, 0.24, 0.32, 0.4, 0.5},
+                new TerrainFeatureTriplet[]{
+                        new TerrainFeatureTriplet("waves", null, null),
+                        new TerrainFeatureTriplet("water 4", null, null),
+                        new TerrainFeatureTriplet("water 3", null, null),
+                        new TerrainFeatureTriplet("water 2", null, null),
+                        new TerrainFeatureTriplet("water 1", null, null),
+                        new TerrainFeatureTriplet("sand", null, "palm tree"),
+                        new TerrainFeatureTriplet("grass", null, "palm tree")
+                },
+                TOWER_ENTRANCE_ID,
+                DUNGEON_ENTRANCE_ID,
+                OPEN_PORTAL_ID,
+                CLOSED_PORTAL_ID
+        );
+        return new MountainGenerator(GameConstants.ISLAND_AREA_NUM_ITERATIONS, mapStyle, monsterIds, level, flags);
     }
-
 
     private static MapGenerator buildRecursiveInterpolationGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         RecursiveInterpolation.MapStyle style;
