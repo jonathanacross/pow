@@ -5,6 +5,7 @@ import pow.backend.GameConstants;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.*;
+import pow.backend.dungeon.gen.mapgen.TerrainFeatureTriplet;
 import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Array2D;
 import pow.util.Direction;
@@ -440,6 +441,7 @@ public class GeneratorUtils {
     // Removes extra borders of impassible stuff -- makes the map smaller, and
     // makes it so we won't have to "tunnel" to the nearest exit.
     // This is necessary to call before using findExitCoordinate.
+    // Works for all maps created using ProtoTranslators.
     public static int[][] trimMap(int[][] squares) {
         int width = Array2D.width(squares);
         int height = Array2D.height(squares);
@@ -469,6 +471,130 @@ public class GeneratorUtils {
             }
         }
         return croppedLayout;
+    }
+
+    // removes extra borders of impassible stuff -- makes the map smaller, and
+    // makes it so we won't have to "tunnel" to the nearest exit.
+    // This is necessary to call before using findExitCoordinate.
+    // Works for maps using TerrainFeatureTriplets.
+    public static TerrainFeatureTriplet[][] trimTerrainBorder(TerrainFeatureTriplet[][] layout, String borders) {
+        int width = Array2D.width(layout);
+        int height = Array2D.height(layout);
+
+        int minInteriorX = width - 1;
+        int maxInteriorX = 0;
+        int minInteriorY = height - 1;
+        int maxInteriorY = 0;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (!borders.equals(layout[x][y].terrain)) {
+                    minInteriorX = Math.min(minInteriorX, x);
+                    maxInteriorX = Math.max(maxInteriorX, x);
+                    minInteriorY = Math.min(minInteriorY, y);
+                    maxInteriorY = Math.max(maxInteriorY, y);
+                }
+            }
+        }
+
+        int newWidth = maxInteriorX - minInteriorX + 3;
+        int newHeight = maxInteriorY - minInteriorY + 3;
+        TerrainFeatureTriplet[][] croppedLayout = new TerrainFeatureTriplet[newWidth][newHeight];
+        for (int x = minInteriorX - 1; x <= maxInteriorX + 1; x++) {
+            for (int y = minInteriorY - 1; y <= maxInteriorY + 1; y++) {
+                croppedLayout[x - minInteriorX + 1][y - minInteriorY + 1] = layout[x][y];
+            }
+        }
+        return croppedLayout;
+    }
+
+    public static DungeonSquare[][] convertTerrainAndNoiseToDungeonSquares(TerrainFeatureTriplet[][] terrainMap,
+                                                                           double[][] noiseMap) {
+
+        int w = Array2D.width(terrainMap);
+        int h = Array2D.height(terrainMap);
+
+        DungeonSquare[][] squares = new DungeonSquare[w][h];
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                DungeonTerrain terrain = TerrainData.getTerrain(terrainMap[x][y].terrain);
+
+                DungeonFeature feature = null;
+                if (noiseMap[x][y] > 0.5 && terrainMap[x][y].feature1 != null) {
+                    feature = FeatureData.getFeature(terrainMap[x][y].feature1);
+                } else if (noiseMap[x][y] < -0.5 && terrainMap[x][y].feature2 != null) {
+                    feature = FeatureData.getFeature(terrainMap[x][y].feature2);
+                }
+
+                squares[x][y] = new DungeonSquare(terrain, feature);
+            }
+        }
+
+        return squares;
+    }
+
+    public static void addLockAroundExits(DungeonSquare[][] squares,
+                                           Map<String, Point> keyLocations,
+                                           TerrainFeatureTriplet mainLock,
+                                           TerrainFeatureTriplet surroundingLock) {
+        int width = Array2D.width(squares);
+        int height = Array2D.height(squares);
+
+        for (Point location: keyLocations.values()) {
+            boolean onLeft = location.x == 0;
+            boolean onRight = location.x == width - 1;
+            boolean onTop = location.y == 0;
+            boolean onBottom = location.y == height - 1;
+
+            // skip up/down exits
+            if (!onLeft && !onRight && !onBottom && !onTop) {
+                continue;
+            }
+
+            // add walls around the exit..
+            for (Direction direction : Direction.ALL) {
+                Point adj = location.add(direction);
+                if (adj.x >= 0 && adj.y >= 0 && adj.x < width && adj.y < height) {
+                    if (!squares[adj.x][adj.y].blockGround() || !squares[adj.x][adj.y].blockWater()) {
+                        DungeonTerrain terrain = TerrainData.getTerrain(surroundingLock.terrain);
+                        DungeonFeature feature = surroundingLock.feature1 != null ? FeatureData.getFeature(surroundingLock.feature1) : null;
+                        squares[adj.x][adj.y] = new DungeonSquare(terrain, feature);
+                    }
+                }
+            }
+
+            // ..except a door leading into the level
+            Point doorLoc;
+            if (onLeft) doorLoc = location.add(Direction.E);
+            else if (onRight) doorLoc = location.add(Direction.W);
+            else if (onTop)  doorLoc = location.add(Direction.S);
+            else doorLoc = location.add(Direction.N);
+            DungeonTerrain terrain = TerrainData.getTerrain(mainLock.terrain);
+            DungeonFeature feature = mainLock.feature1 != null ? FeatureData.getFeature(mainLock.feature1) : null;
+            squares[doorLoc.x][doorLoc.y] = new DungeonSquare(terrain, feature);
+        }
+    }
+
+    public static double[][] fractalNoise(int width, int height, double initAmp, double initScale, double delta, int iters) {
+        double[][] data = new double[width][height];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                double t = 0.0;
+                double amp = initAmp;
+                double scale = initScale;
+
+                for (int i = 0; i < iters; i++) {
+                    t += amp * pow.util.SimplexNoise.noise(x / scale + delta, y / scale + delta);
+                    amp *= 0.5;
+                    scale *= 0.5;
+                }
+
+                data[x][y] = t;
+
+            }
+        }
+        return data;
     }
 
     private static boolean isOpen(DungeonSquare square) {

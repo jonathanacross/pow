@@ -1,17 +1,12 @@
 package pow.backend.dungeon.gen.mapgen;
 
 import pow.backend.GameMap;
-import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
-import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.dungeon.MonsterIdGroup;
-import pow.backend.dungeon.gen.FeatureData;
 import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.dungeon.gen.MapConnection;
-import pow.backend.dungeon.gen.TerrainData;
 import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Array2D;
-import pow.util.Direction;
 import pow.util.Point;
 
 import java.util.ArrayList;
@@ -21,30 +16,9 @@ import java.util.Random;
 
 public class RecursiveInterpolation implements MapGenerator {
 
-    public static class TerrainFeatureTriplet {
-        public final String terrain;
-        public final String feature1;
-        public final String feature2;
-
-        public TerrainFeatureTriplet(String terrain, String feature1, String feature2) {
-            this.terrain = terrain;
-            this.feature1 = feature1;
-            this.feature2 = feature2;
-        }
-
-        // just a rough thing for debugging
-        @Override
-        public String toString() {
-            char t = terrain == null ? '_' : terrain.charAt(0);
-            char f1 = feature1 == null ? '_' : feature1.charAt(0);
-            char f2 = feature2 == null ? '_' : feature2.charAt(0);
-            return "" + t + f1 + f2;
-        }
-    }
-
     // expand/modify this class to make richer areas
     public static class MapStyle {
-        public final TerrainFeatureTriplet border;  // TODO: change name of this and below
+        public final TerrainFeatureTriplet border;
         public final TerrainFeatureTriplet interior;
         public final String upstairsFeatureId;
         public final String downstairsFeatureId;
@@ -119,29 +93,14 @@ public class RecursiveInterpolation implements MapGenerator {
         // build the terrain
         TerrainFeatureTriplet[][] layout = genTerrainLayout(width, height, style, rng);
         TerrainFeatureTriplet[][] terrainMap = makeInterpMap(layout, rng, numInterpolationSteps);
-        terrainMap = trimTerrainBorder(terrainMap, style.border.terrain);
+        terrainMap = GeneratorUtils.trimTerrainBorder(terrainMap, style.border.terrain);
         int w = Array2D.width(terrainMap);
         int h = Array2D.height(terrainMap);
 
         // generate fractal noise for feature placement
         double[][] noiseMap = makeNoise(w, h, width, height, numInterpolationSteps);
 
-        DungeonSquare[][] squares = new DungeonSquare[w][h];
-        for (int x = 0; x < w; x++) {
-            for (int y = 0; y < h; y++) {
-                DungeonTerrain terrain = TerrainData.getTerrain(terrainMap[x][y].terrain);
-
-                DungeonFeature feature = null;
-                if (noiseMap[x][y] > 0.5 && terrainMap[x][y].feature1 != null) {
-                    feature = FeatureData.getFeature(terrainMap[x][y].feature1);
-                }
-                else if (noiseMap[x][y] < -0.5 && terrainMap[x][y].feature2 != null) {
-                    feature = FeatureData.getFeature(terrainMap[x][y].feature2);
-                }
-
-                squares[x][y] = new DungeonSquare(terrain, feature);
-            }
-        }
+        DungeonSquare[][] squares = GeneratorUtils.convertTerrainAndNoiseToDungeonSquares(terrainMap, noiseMap);
 
         // place the exits and get key locations
         GeneratorUtils.CommonIds commonIds = new GeneratorUtils.CommonIds(
@@ -159,7 +118,7 @@ public class RecursiveInterpolation implements MapGenerator {
 
         // block the exits, if necessary
         if (style.addLockAroundExits) {
-            addLockAroundExits(squares, keyLocations, style.mainLock, style.surroundingLock);
+            GeneratorUtils.addLockAroundExits(squares, keyLocations, style.mainLock, style.surroundingLock);
         }
 
         // add items
@@ -317,105 +276,8 @@ public class RecursiveInterpolation implements MapGenerator {
         return map;
     }
 
-    private static double[][] fractalNoise(int width, int height, double initAmp, double initScale, double delta, int iters) {
-        double[][] data = new double[width][height];
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                double t = 0.0;
-                double amp = initAmp;
-                double scale = initScale;
-
-                for (int i = 0; i < iters; i++) {
-                    t += amp * pow.util.SimplexNoise.noise(x / scale + delta, y / scale + delta);
-                    amp *= 0.5;
-                    scale *= 0.5;
-                }
-
-                data[x][y] = t;
-
-            }
-        }
-        return data;
-    }
-
-    // removes extra borders of impassible stuff -- makes the map smaller, and
-    // makes it so we won't have to "tunnel" to the nearest exit.
-    private static TerrainFeatureTriplet[][] trimTerrainBorder(TerrainFeatureTriplet[][] layout, String borders) {
-        int width = Array2D.width(layout);
-        int height = Array2D.height(layout);
-
-        int minInteriorX = width - 1;
-        int maxInteriorX = 0;
-        int minInteriorY = height - 1;
-        int maxInteriorY = 0;
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (!borders.equals(layout[x][y].terrain)) {
-                    minInteriorX = Math.min(minInteriorX, x);
-                    maxInteriorX = Math.max(maxInteriorX, x);
-                    minInteriorY = Math.min(minInteriorY, y);
-                    maxInteriorY = Math.max(maxInteriorY, y);
-                }
-            }
-        }
-
-        int newWidth = maxInteriorX - minInteriorX + 3;
-        int newHeight = maxInteriorY - minInteriorY + 3;
-        TerrainFeatureTriplet[][] croppedLayout = new TerrainFeatureTriplet[newWidth][newHeight];
-        for (int x = minInteriorX - 1; x <= maxInteriorX + 1; x++) {
-            for (int y = minInteriorY - 1; y <= maxInteriorY + 1; y++) {
-                croppedLayout[x - minInteriorX + 1][y - minInteriorY + 1] = layout[x][y];
-            }
-        }
-        return croppedLayout;
-    }
-
     private static double[][] makeNoise(int width, int height, int origWidth, int origHeight, int interpolationSteps) {
         int scale = Math.max(origWidth, origHeight) * 2;
-        return fractalNoise(width, height, 1.0, scale, 0.0, interpolationSteps);
-    }
-
-    private static void addLockAroundExits(DungeonSquare[][] squares,
-                                           Map<String, Point> keyLocations,
-                                           TerrainFeatureTriplet mainLock,
-                                           TerrainFeatureTriplet surroundingLock) {
-        int width = Array2D.width(squares);
-        int height = Array2D.height(squares);
-
-        for (Point location: keyLocations.values()) {
-            boolean onLeft = location.x == 0;
-            boolean onRight = location.x == width - 1;
-            boolean onTop = location.y == 0;
-            boolean onBottom = location.y == height - 1;
-
-            // skip up/down exits
-            if (!onLeft && !onRight && !onBottom && !onTop) {
-                continue;
-            }
-
-            // add walls around the exit..
-            for (Direction direction : Direction.ALL) {
-                Point adj = location.add(direction);
-                if (adj.x >= 0 && adj.y >= 0 && adj.x < width && adj.y < height) {
-                    if (!squares[adj.x][adj.y].blockGround() || !squares[adj.x][adj.y].blockWater()) {
-                        DungeonTerrain terrain = TerrainData.getTerrain(surroundingLock.terrain);
-                        DungeonFeature feature = surroundingLock.feature1 != null ? FeatureData.getFeature(surroundingLock.feature1) : null;
-                        squares[adj.x][adj.y] = new DungeonSquare(terrain, feature);
-                    }
-                }
-            }
-
-            // ..except a door leading into the level
-            Point doorLoc;
-            if (onLeft) doorLoc = location.add(Direction.E);
-            else if (onRight) doorLoc = location.add(Direction.W);
-            else if (onTop)  doorLoc = location.add(Direction.S);
-            else doorLoc = location.add(Direction.N);
-            DungeonTerrain terrain = TerrainData.getTerrain(mainLock.terrain);
-            DungeonFeature feature = mainLock.feature1 != null ? FeatureData.getFeature(mainLock.feature1) : null;
-            squares[doorLoc.x][doorLoc.y] = new DungeonSquare(terrain, feature);
-        }
+        return GeneratorUtils.fractalNoise(width, height, 1.0, scale, 0.0, interpolationSteps);
     }
 }

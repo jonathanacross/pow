@@ -4,7 +4,7 @@ public class GameConstants {
     // --------------- world construction -----------------
 
     // Use test world (for debugging).
-    public final static boolean USE_TEST_WORLD = false;
+    public final static boolean USE_TEST_WORLD = true;
 
     // How many monsters per square there should be, on average.
     public final static double MONSTER_DENSITY = 1.0 / 100.0;
@@ -39,6 +39,10 @@ public class GameConstants {
     // the actual level size.  Making this higher will increase the
     // fractal nature of the level, which tends to look more realistic.
     public final static int OUTSIDE_AREA_NUM_INTERPOLATION_STEPS = 3;
+
+    // Number of steps to iterate to make mountain/island levels.
+    // Level size is approximately 2^ISLAND_AREA_NUM_ITERATIONS.
+    public final static int ISLAND_AREA_NUM_ITERATIONS = 6;
 
     // How big levels will using delve generation.  These are
     // slightly smaller since they are slightly annoying to

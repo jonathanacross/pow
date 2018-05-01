@@ -61,18 +61,22 @@ public class ActorStats implements Serializable {
             resElecBonus += item.bonuses[DungeonItem.RES_ELEC_IDX];
             resPoisBonus += item.bonuses[DungeonItem.RES_POIS_IDX];
 
-            if (item.slot == DungeonItem.Slot.WEAPON) {
-                meleeToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
-                meleeToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
-            } else if (item.slot == DungeonItem.Slot.BOW) {
-                rangedToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
-                rangedToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
-            } else {
-                // toHit, toDam applies to both ranged and melee for magical items
-                meleeToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
-                meleeToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
-                rangedToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
-                rangedToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
+            switch (item.slot) {
+                case WEAPON:
+                    meleeToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
+                    meleeToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
+                    break;
+                case BOW:
+                    rangedToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
+                    rangedToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
+                    break;
+                default:
+                    // toHit, toDam applies to both ranged and melee for magical items
+                    meleeToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
+                    meleeToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
+                    rangedToHitBonus += item.bonuses[DungeonItem.TO_HIT_IDX];
+                    rangedToDamBonus += item.bonuses[DungeonItem.TO_DAM_IDX];
+                    break;
             }
         }
 
