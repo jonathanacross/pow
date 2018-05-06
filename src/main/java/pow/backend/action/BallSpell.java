@@ -56,6 +56,9 @@ public class BallSpell implements Action {
         List<GameEvent> events = new ArrayList<>();
         Point visibleTarget = getVisibleTarget(gs.getCurrentMap(), target);
 
+        backend.logMessage(actor.getPronoun() + " casts a" +
+                AttackUtils.getDamageTypeString(spellParams.element) + " ball", MessageLog.MessageType.COMBAT_NEUTRAL);
+
         // draw effects
         String effectName = DungeonEffect.getEffectName(
                 DungeonEffect.EffectType.LARGE_BALL,

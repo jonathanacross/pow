@@ -34,6 +34,8 @@ public class Arrow implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
+        backend.logMessage(attacker.getPronoun() + " fire an arrow.", MessageLog.MessageType.COMBAT_NEUTRAL);
+
         List<Point> ray = Bresenham.makeRay(attacker.loc, target, GameConstants.ACTOR_ARROW_FIRE_RANGE + 1);
         String effectId = DungeonEffect.getEffectName(
                 DungeonEffect.EffectType.ARROW,
@@ -44,14 +46,11 @@ public class Arrow implements Action {
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
-                boolean hitsTarget = gs.rng.nextDouble() > AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
+                boolean hitsTarget = gs.rng.nextDouble() <= AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
                 int damage = attackData.dieRoll.rollDice(gs.rng) + attackData.plusToDam;
                 if (hitsTarget && damage > 0) {
-                    MessageLog.MessageType messageType = defender.friendly
-                            ? MessageLog.MessageType.COMBAT_BAD
-                            : MessageLog.MessageType.COMBAT_GOOD;
-                    backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun(), messageType);
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, new AttackUtils.HitParams(damage)));
+                    AttackUtils.HitParams hitParams = new AttackUtils.HitParams(damage);
+                    events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
                     break;
                 }
             }

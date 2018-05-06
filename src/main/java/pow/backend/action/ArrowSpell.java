@@ -37,6 +37,8 @@ public class ArrowSpell implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
+        backend.logMessage(attacker.getPronoun() + " fire an arrow.", MessageLog.MessageType.COMBAT_NEUTRAL);
+
         List<Point> ray = Bresenham.makeRay(attacker.loc, target, spellParams.size + 1);
         String effectId = DungeonEffect.getEffectName(
                 DungeonEffect.EffectType.ARROW,
@@ -48,10 +50,6 @@ public class ArrowSpell implements Action {
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
-                MessageLog.MessageType messageType = defender.friendly
-                        ? MessageLog.MessageType.COMBAT_BAD
-                        : MessageLog.MessageType.COMBAT_GOOD;
-                backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun(), messageType);
                 events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
                 break;
             }
