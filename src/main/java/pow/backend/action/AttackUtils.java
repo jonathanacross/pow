@@ -98,12 +98,17 @@ public class AttackUtils {
         return GameEvent.Killed();
     }
 
-    public static List<GameEvent> doSimpleHit(GameBackend backend, Actor attacker, Actor defender,
-                                        SpellParams.Element element, int damage) {
+    public static String getDamageTypeString(SpellParams.Element element) {
         String damTypeString = "";
         if (element != SpellParams.Element.NONE && element != SpellParams.Element.DAMAGE) {
             damTypeString = " " + element.toString().toLowerCase();
         }
+        return damTypeString;
+    }
+
+    public static List<GameEvent> doSimpleHit(GameBackend backend, Actor attacker, Actor defender,
+                                        SpellParams.Element element, int damage) {
+        String damTypeString = getDamageTypeString(element);
         int adjustedDamage = adjustDamage(damage, element, defender);
         MessageLog.MessageType messageType = defender.friendly
                 ? MessageLog.MessageType.COMBAT_BAD

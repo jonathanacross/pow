@@ -2,6 +2,7 @@ package pow.backend;
 
 import pow.backend.action.Action;
 import pow.backend.action.ActionResult;
+import pow.backend.action.AttackUtils;
 import pow.backend.action.Log;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
@@ -132,9 +133,11 @@ public class GameBackend {
         GameMap map = gameState.getCurrentMap();
         Player player = gameState.player;
         if (map.flags.poisonGas && !player.hasGasMask()) {
+            logMessage("the noxious air burns your lungs", MessageLog.MessageType.COMBAT_BAD);
             events.addAll(player.takeDamage(this, GameConstants.POISON_DAMAGE_PER_TURN));
         }
         if (map.flags.hot && !player.hasHeatSuit()) {
+            logMessage("you wither in the extreme heat", MessageLog.MessageType.COMBAT_BAD);
             events.addAll(player.takeDamage(this, GameConstants.HEAT_DAMAGE_PER_TURN));
         }
         gameState.turnCount++;

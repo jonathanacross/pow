@@ -34,6 +34,9 @@ public class CircleCut implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
+        backend.logMessage(attacker.getPronoun() + " cut in a" +
+                AttackUtils.getDamageTypeString(spellParams.element) + " circle", MessageLog.MessageType.COMBAT_NEUTRAL);
+
         List<Point> fovSquares = SpellUtils.getFieldOfView(gs, attacker.loc, spellParams.size, Metric.rogueMetric);
         Set<Point> fovSquareSet = new HashSet<>(fovSquares);
 
@@ -51,7 +54,6 @@ public class CircleCut implements Action {
                     MessageLog.MessageType messageType = defender.friendly
                             ? MessageLog.MessageType.COMBAT_BAD
                             : MessageLog.MessageType.COMBAT_GOOD;
-                    backend.logMessage(attacker.getPronoun() + " hits " + defender.getPronoun(), messageType);
                     events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
                 }
             }

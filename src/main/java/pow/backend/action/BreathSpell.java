@@ -2,6 +2,7 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.SpellParams;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
@@ -31,6 +32,9 @@ public class BreathSpell implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
+
+        backend.logMessage(actor.getPronoun() + " breathes" +
+                AttackUtils.getDamageTypeString(spellParams.element), MessageLog.MessageType.COMBAT_NEUTRAL);
 
         // draw effects
         String effectName = DungeonEffect.getEffectName(

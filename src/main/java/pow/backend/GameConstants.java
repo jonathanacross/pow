@@ -4,7 +4,7 @@ public class GameConstants {
     // --------------- world construction -----------------
 
     // Use test world (for debugging).
-    public final static boolean USE_TEST_WORLD = true;
+    public final static boolean USE_TEST_WORLD = false;
 
     // How many monsters per square there should be, on average.
     public final static double MONSTER_DENSITY = 1.0 / 100.0;
@@ -50,7 +50,7 @@ public class GameConstants {
     public final static int DELVE_AREA_SIZE = 50;
 
     // Number of cells to use to create a radial area (is roughly
-    // equal to the area of the level.
+    // equal to the area of the level).
     public final static int RADIAL_NUM_CELLS = 4000;
 
     // How often, when creating  a radial area, a cell will match
