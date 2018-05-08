@@ -219,6 +219,10 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         else { return "+" + x; }
     }
 
+    public String bonusString() {
+        return formatGroupBonus(bonuses, bonusNames);
+    }
+
     private static String formatGroupBonus(int[] bonusAmts, String[] names) {
         // simple case - see if all 0
         int numNonZero = 0;
@@ -251,12 +255,12 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
             }
             groups.add(formatBonus(bonusAmt) + " " + String.join("/", stats));
         }
-        return " (" + String.join(", ", groups) + ")";
+        return "(" + String.join(", ", groups) + ")";
     }
 
     // Formats an item in a nice way, showing all the stats
     public String stringWithInfo() {
-        return TextUtils.format(name, count, false) +
+        return TextUtils.format(name, count, false) + " " +
                 formatGroupBonus(bonuses, bonusNames);
     }
 }

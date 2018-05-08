@@ -6,30 +6,57 @@ import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
+import pow.util.TextUtils;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.*;
+import java.util.List;
 
 public class PlayerInfoWindow extends AbstractWindow {
 
+    private boolean mainView;
+    private Map<DungeonItem.Slot, StringPosition> slotData;
+
     public PlayerInfoWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
+        mainView = true;
+
+        slotData = new HashMap<>();
+        slotData.put(DungeonItem.Slot.WEAPON, new StringPosition("Weapon", 0));
+        slotData.put(DungeonItem.Slot.BOW, new StringPosition("Bow", 1));
+        slotData.put(DungeonItem.Slot.SHIELD, new StringPosition("Shield", 2));
+        slotData.put(DungeonItem.Slot.HEADGEAR, new StringPosition("Head", 3));
+        slotData.put(DungeonItem.Slot.ARMOR, new StringPosition("Armor", 4));
+        slotData.put(DungeonItem.Slot.CLOAK, new StringPosition("Cloak", 5));
+        slotData.put(DungeonItem.Slot.RING, new StringPosition("Ring", 6));
+        slotData.put(DungeonItem.Slot.BRACELET, new StringPosition("Bracelet", 7));
+        slotData.put(DungeonItem.Slot.AMULET, new StringPosition("Amulet", 8));
+        slotData.put(DungeonItem.Slot.GLOVES, new StringPosition("Gloves",9));
+        slotData.put(DungeonItem.Slot.BOOTS, new StringPosition("Boots", 10));
     }
 
     @Override
     public void processKey(KeyEvent e) {
-        frontend.close();
+        int keyCode = e.getKeyCode();
+
+        if (keyCode == KeyEvent.VK_ESCAPE) {
+            frontend.close();
+            return;
+        }
+
+        if (keyCode == KeyEvent.VK_TAB || keyCode == KeyEvent.VK_SPACE) {
+            mainView = !mainView;
+            frontend.setDirty(true);
+            return;
+        }
     }
 
     final private int TILE_SIZE = 32;
-    final private int MARGIN = 10;
+    final private int MARGIN = 15;
     final private int FONT_SIZE = 12;
 
-    @Override
-    public void drawContents(Graphics graphics) {
+    private void drawMainInfo(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
@@ -71,25 +98,15 @@ public class PlayerInfoWindow extends AbstractWindow {
         }
 
         // draw slot stuff
-        Map<DungeonItem.Slot, SlotData> slotData = new HashMap<>();
-                slotData.put(DungeonItem.Slot.WEAPON, new SlotData("Weapon", 0));
-                slotData.put(DungeonItem.Slot.BOW, new SlotData("Bow", 1));
-                slotData.put(DungeonItem.Slot.SHIELD, new SlotData("Shield", 2));
-                slotData.put(DungeonItem.Slot.HEADGEAR, new SlotData("Head", 3));
-                slotData.put(DungeonItem.Slot.ARMOR, new SlotData("Armor", 4));
-                slotData.put(DungeonItem.Slot.CLOAK, new SlotData("Cloak", 5));
-                slotData.put(DungeonItem.Slot.RING, new SlotData("Ring", 6));
-                slotData.put(DungeonItem.Slot.BRACELET, new SlotData("Bracelet", 7));
-                slotData.put(DungeonItem.Slot.AMULET, new SlotData("Amulet", 8));
-                slotData.put(DungeonItem.Slot.GLOVES, new SlotData("Gloves",9));
-                slotData.put(DungeonItem.Slot.BOOTS, new SlotData("Boots", 10));
-        for (SlotData sd : slotData.values()) {
-            graphics.drawString(sd.name, 245, TILE_SIZE * sd.position + 30);
+        for (StringPosition sd : slotData.values()) {
+            graphics.drawString(sd.name, 260, MARGIN + TILE_SIZE * sd.position + TILE_SIZE/2 + FONT_SIZE/2);
         }
         for (DungeonItem item: player.equipment) {
             int position = slotData.get(item.slot).position;
-            ImageController.drawTile(graphics, item.image, 295, TILE_SIZE * position + MARGIN);
-            graphics.drawString(item.stringWithInfo(), 335, TILE_SIZE * position + 30);
+            int y = TILE_SIZE * position + MARGIN;
+            ImageController.drawTile(graphics, item.image, 315, y);
+            graphics.drawString(TextUtils.format(item.name, 1, false),  355, y + FONT_SIZE + 2);
+            graphics.drawString(item.bonusString(), 355, y + 2*FONT_SIZE + 2);
         }
 
         // draw artifacts
@@ -115,13 +132,146 @@ public class PlayerInfoWindow extends AbstractWindow {
             i++;
         }
 
+        // bottom text
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Press space/tab to change view, esc to close.", MARGIN, dim.height - MARGIN);
     }
 
-    private static class SlotData {
+    private void drawStatsInfo(Graphics graphics) {
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, dim.width, dim.height);
+
+        Player player = backend.getGameState().player;
+        ImageController.drawTile(graphics, player.image, MARGIN, MARGIN);
+
+        Font f = new Font("Courier", Font.PLAIN, FONT_SIZE);
+        graphics.setFont(f);
+        graphics.setColor(Color.WHITE);
+
+        // draw slot stuff
+        Map<DungeonItem.Slot, StringPosition> slotData = new HashMap<>();
+        slotData.put(DungeonItem.Slot.WEAPON, new StringPosition("Weapon", 0));
+        slotData.put(DungeonItem.Slot.BOW, new StringPosition("Bow", 1));
+        slotData.put(DungeonItem.Slot.SHIELD, new StringPosition("Shield", 2));
+        slotData.put(DungeonItem.Slot.HEADGEAR, new StringPosition("Head", 3));
+        slotData.put(DungeonItem.Slot.ARMOR, new StringPosition("Armor", 4));
+        slotData.put(DungeonItem.Slot.CLOAK, new StringPosition("Cloak", 5));
+        slotData.put(DungeonItem.Slot.RING, new StringPosition("Ring", 6));
+        slotData.put(DungeonItem.Slot.BRACELET, new StringPosition("Bracelet", 7));
+        slotData.put(DungeonItem.Slot.AMULET, new StringPosition("Amulet", 8));
+        slotData.put(DungeonItem.Slot.GLOVES, new StringPosition("Gloves",9));
+        slotData.put(DungeonItem.Slot.BOOTS, new StringPosition("Boots", 10));
+
+        Map<Integer, StringPosition> bonusData = new HashMap<>();
+        bonusData.put(DungeonItem.TO_HIT_IDX, new StringPosition("hit", 0));
+        bonusData.put(DungeonItem.TO_DAM_IDX, new StringPosition("dam", 1));
+        bonusData.put(DungeonItem.DEF_IDX, new StringPosition("def", 2));
+        bonusData.put(DungeonItem.STR_IDX, new StringPosition("str", 3));
+        bonusData.put(DungeonItem.DEX_IDX, new StringPosition("dex", 4));
+        bonusData.put(DungeonItem.INT_IDX, new StringPosition("int", 5));
+        bonusData.put(DungeonItem.CON_IDX, new StringPosition("con", 6));
+        bonusData.put(DungeonItem.RES_FIRE_IDX, new StringPosition("rFire", 7));
+        bonusData.put(DungeonItem.RES_COLD_IDX, new StringPosition("rCold", 8));
+        bonusData.put(DungeonItem.RES_ACID_IDX, new StringPosition("rAcid", 9));
+        bonusData.put(DungeonItem.RES_ELEC_IDX, new StringPosition("rElec", 10));
+        bonusData.put(DungeonItem.RES_POIS_IDX, new StringPosition("rPois", 11));
+        bonusData.put(DungeonItem.SPEED_IDX, new StringPosition("speed", 12));
+        bonusData.put(DungeonItem.WEALTH_IDX, new StringPosition("wealth", 13));
+        bonusData.put(DungeonItem.SOCKETS_IDX, new StringPosition("sockets", 14));
+
+        int dx = TILE_SIZE;
+        int dy = TILE_SIZE;
+        int numSlots = slotData.size();
+        int numBonuses = bonusData.size();
+
+        int gridTop = MARGIN + 50;  // top of interior of grid (excluding header)
+        int gridLeft = MARGIN + 105;  // left of interior of grid (excluding header)
+
+        // header on top
+        for (StringPosition bonus : bonusData.values()) {
+            int x = gridLeft + 15 + bonus.position * dx;
+            int y = gridTop - 5;
+            drawRotated(graphics, bonus.name, x, y, -45);
+        }
+
+        // left icons
+        for (DungeonItem item: player.equipment) {
+            int position = slotData.get(item.slot).position;
+            int x = gridLeft - 40;
+            int y = gridTop + dy * position;
+            ImageController.drawTile(graphics, item.image, x, y);
+        }
+
+        // left item types
+        for (StringPosition sd : slotData.values()) {
+            int y = gridTop + dy * sd.position + TILE_SIZE/2 + FONT_SIZE/2;
+            graphics.drawString(sd.name, gridLeft - 100, y);
+        }
+
+        // grid interior
+        for (DungeonItem item: player.equipment) {
+            int position = slotData.get(item.slot).position;
+            int y = gridTop + dy * position + TILE_SIZE/2 + FONT_SIZE/2;
+
+            for (Map.Entry<Integer, StringPosition> entry : bonusData.entrySet()) {
+                int bonusIdx = entry.getKey();
+                StringPosition bonus = entry.getValue();
+                int x = gridLeft + 5 + bonus.position * dx;
+                if (item.bonuses[bonusIdx] > 0) {
+                    graphics.drawString(bonusString(item.bonuses[bonusIdx]), x, y);
+                }
+            }
+        }
+
+        // grid interior lines
+        graphics.setColor(Color.DARK_GRAY);
+        for (int bonusIdx = 1; bonusIdx < numBonuses; bonusIdx++) {
+            graphics.drawLine(gridLeft + dy*bonusIdx, gridTop, gridLeft + dy*bonusIdx, gridTop + dy*numSlots);
+        }
+        for (int slotIdx = 1; slotIdx < numSlots; slotIdx++) {
+            graphics.drawLine(gridLeft, gridTop + slotIdx*dy, gridLeft + numBonuses*dx, gridTop + slotIdx*dy);
+        }
+
+        // grid border
+        graphics.setColor(Color.GRAY);
+        graphics.drawLine(gridLeft, gridTop, gridLeft, gridTop + dy*numSlots);
+        graphics.drawLine(gridLeft, gridTop, gridLeft + numBonuses*dx, gridTop);
+        graphics.drawLine(gridLeft + dy*numBonuses, gridTop, gridLeft + dy*numBonuses, gridTop + dy*numSlots);
+        graphics.drawLine(gridLeft, gridTop + numSlots*dy, gridLeft + numBonuses*dx, gridTop + numSlots*dy);
+
+        // bottom text
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Press space/tab to change view, esc to close.", MARGIN, dim.height - MARGIN);
+    }
+
+    // right justifies string, assumes bonus is <= 999.
+    private static String bonusString(int bonus) {
+        return String.format("%3s", bonus);
+    }
+
+    public static void drawRotated(Graphics g, String text, double x, double y, int angle) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.translate((float)x,(float)y);
+        g2d.rotate(Math.toRadians(angle));
+        g2d.drawString(text,0,0);
+        g2d.rotate(-Math.toRadians(angle));
+        g2d.translate(-(float)x,-(float)y);
+    }
+
+    @Override
+    public void drawContents(Graphics graphics) {
+        if (mainView) {
+            drawMainInfo(graphics);
+        } else {
+            drawStatsInfo(graphics);
+        }
+    }
+
+    private static class StringPosition {
         public final String name;
         public final int position;
 
-        public SlotData(String name, int position) {
+        public StringPosition(String name, int position) {
             this.name = name;
             this.position = position;
         }
