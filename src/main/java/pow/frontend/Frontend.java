@@ -81,7 +81,7 @@ public class Frontend {
         messageWindow = new MessageWindow(new WindowDim(210, 682, 672, 30), true, gameBackend, this);
         // popups in main game
         monsterInfoWindow = new MonsterInfoWindow(new WindowDim(887, 260,300,452), false, gameBackend, this);
-        playerInfoWindow = new PlayerInfoWindow(WindowDim.center(625, 456, this.width, this.height), true, gameBackend, this);
+        playerInfoWindow = new PlayerInfoWindow(WindowDim.center(635, 470, this.width, this.height), true, gameBackend, this);
         worldMapWindow = new WorldMapWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
         helpWindow = new HelpWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
 

@@ -2,7 +2,6 @@ package pow.backend;
 
 import pow.backend.action.Action;
 import pow.backend.action.ActionResult;
-import pow.backend.action.AttackUtils;
 import pow.backend.action.Log;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;

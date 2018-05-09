@@ -26,7 +26,6 @@ The keys . or number pad 5 indicate to stay still.
       m    Cast magic                      M    Show world map
       n    Walk southeast                  N    Run southeast
       q    Quaff a potion
-      s    Save
       t    Target a monster                T    Target a spot on the ground
       u    Walk northeast                  U    Run northeast
       w    Wear/wield equipment            W    Take off equipment
@@ -39,5 +38,6 @@ Debugging commands (may be removed when the game is complete!)
     ===    =========================
       !    Heal player
       +    Gain a level
+      s    Save
 
 Press any key to continue.
