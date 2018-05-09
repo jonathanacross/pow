@@ -16,7 +16,7 @@ import java.util.List;
 public class PlayerInfoWindow extends AbstractWindow {
 
     private boolean mainView;
-    private Map<DungeonItem.Slot, StringPosition> slotData;
+    private final Map<DungeonItem.Slot, StringPosition> slotData;
 
     public PlayerInfoWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
@@ -48,7 +48,6 @@ public class PlayerInfoWindow extends AbstractWindow {
         if (keyCode == KeyEvent.VK_TAB || keyCode == KeyEvent.VK_SPACE) {
             mainView = !mainView;
             frontend.setDirty(true);
-            return;
         }
     }
 
@@ -257,7 +256,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         return String.format("%3s", bonus);
     }
 
-    public static void drawRotated(Graphics g, String text, double x, double y, int angle) {
+    private static void drawRotated(Graphics g, String text, double x, double y, int angle) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.translate((float)x,(float)y);
         g2d.rotate(Math.toRadians(angle));
@@ -276,10 +275,10 @@ public class PlayerInfoWindow extends AbstractWindow {
     }
 
     private static class StringPosition {
-        public final String name;
-        public final int position;
+        final String name;
+        final int position;
 
-        public StringPosition(String name, int position) {
+        StringPosition(String name, int position) {
             this.name = name;
             this.position = position;
         }

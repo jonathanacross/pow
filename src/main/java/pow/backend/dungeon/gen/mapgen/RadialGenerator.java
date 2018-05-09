@@ -65,7 +65,7 @@ public class RadialGenerator implements MapGenerator {
 
 
     private static class MazeCell {
-        Point loc;
+        public final Point loc;
         public boolean available;
         public boolean seen;
 

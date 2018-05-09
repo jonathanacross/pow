@@ -69,7 +69,7 @@ public class CreateCharWindow extends AbstractWindow {
         }
     }
 
-    public void processNameKey(KeyEvent e) {
+    private void processNameKey(KeyEvent e) {
         char c = e.getKeyChar();
         if (c == '*') {
             name = NameGenerator.getRandomName(backend.getGameState().rng);
@@ -93,7 +93,7 @@ public class CreateCharWindow extends AbstractWindow {
         }
     }
 
-    public void processSelectKey(KeyEvent e) {
+    private void processSelectKey(KeyEvent e) {
         KeyInput input = KeyUtils.getKeyInput(e);
         switch (input) {
             case EAST:
