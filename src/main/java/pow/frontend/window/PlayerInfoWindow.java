@@ -110,26 +110,34 @@ public class PlayerInfoWindow extends AbstractWindow {
         }
 
         // draw artifacts
-        List<DungeonItem> pearls = new ArrayList<>();
-        List<DungeonItem> otherArtifacts = new ArrayList<>();
+        Map<DungeonItem.ArtifactSlot, Point> artifactLocations = new HashMap<>();
+        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL1, new Point(0,0));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL2, new Point(1,0));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL3, new Point(2,0));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL4, new Point(3,0));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL5, new Point(4,0));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL6, new Point(5,0));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL7, new Point(6,0));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL8, new Point(7,0));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PETSTATUE, new Point(0,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN, new Point(1,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.KEY, new Point(2,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.MAP, new Point(3,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.FLOAT, new Point(4,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.GASMASK, new Point(5,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PORTALKEY, new Point(6,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.GLASSES, new Point(7,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PICKAXE, new Point(8,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.BAG, new Point(9,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.HEATSUIT, new Point(10,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.XRAYSCOPE, new Point(11,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN2, new Point(12,1));
+
         for (DungeonItem item : player.artifacts.values()) {
-            if (item.artifactSlot.toString().startsWith("PEARL")) {
-                pearls.add(item);
-            } else {
-                otherArtifacts.add(item);
-            }
-        }
-        Collections.sort(pearls);
-        Collections.sort(otherArtifacts);
-        int i = 0;
-        for (DungeonItem item: pearls) {
-            ImageController.drawTile(graphics, item.image, TILE_SIZE * i + 15, 370);
-            i++;
-        }
-        i = 0;
-        for (DungeonItem item: otherArtifacts) {
-            ImageController.drawTile(graphics, item.image, TILE_SIZE * i + 15, 370 + TILE_SIZE);
-            i++;
+            Point loc = artifactLocations.get(item.artifactSlot);
+            int x = 15 + TILE_SIZE * loc.x;
+            int y = 370 + TILE_SIZE * loc.y;
+            ImageController.drawTile(graphics, item.image, x, y);
         }
 
         // bottom text
