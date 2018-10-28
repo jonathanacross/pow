@@ -48,6 +48,7 @@ public class KeyUtils {
             case KeyEvent.VK_N:
             case KeyEvent.VK_NUMPAD3:
                 return hasShift(event) ? KeyInput.RUN_SOUTH_EAST : KeyInput.SOUTH_EAST;
+            case KeyEvent.VK_PERIOD:
             case KeyEvent.VK_NUMPAD5:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.REST;
             case KeyEvent.VK_F:
