@@ -56,7 +56,7 @@ public class ItemActionWindow extends AbstractWindow {
                 int y = Math.min(this.dim.y + 32 * itemNumber, this.frontend.height - 140);
                 frontend.open(new ActionChoiceWindow(x, y, this.backend, this.frontend,
                         "What do you want to do with ",
-                        items, itemNumber, actions));
+                        items, itemNumber, location, actions));
                 // parent will close this window, too.
             }
         }

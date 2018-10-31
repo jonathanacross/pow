@@ -3,6 +3,7 @@ package pow.backend.actors;
 import pow.backend.*;
 import pow.backend.action.Action;
 import pow.backend.action.AttackUtils;
+import pow.backend.behavior.Behavior;
 import pow.backend.conditions.ConditionGroup;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonObject;
@@ -87,6 +88,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public final int numDropAttempts; // number of attempts of dropping an item, monster only?
     public final String requiredItemDrops;
     public final List<SpellParams> spells;
+    public Behavior behavior;
 
     public abstract Action act(GameBackend backend);
     public abstract boolean needsInput(GameState gameState);
@@ -154,6 +156,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public void gainExperience(GameBackend backend, int experience, Actor source) {} // overridden in Player
 
+    public void clearBehavior() { this.behavior = null; }
+
     public Actor(DungeonObject.Params objectParams, Params actorParams) {
         super(objectParams);
         this.energy = new Energy();
@@ -178,5 +182,6 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.conditions = new ConditionGroup(this);
         this.inventory = new ItemList(GameConstants.ACTOR_ITEM_LIST_SIZE, GameConstants.ACTOR_DEFAULT_ITEMS_PER_SLOT);
         this.gold = 0;
+        this.behavior = null;
     }
 }

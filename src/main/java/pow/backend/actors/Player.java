@@ -31,7 +31,6 @@ public class Player extends Actor implements Serializable, LightSource {
     public Point floorTarget;
     public Actor monsterTarget;
 
-    public Behavior behavior;
     public final Knowledge knowledge;
 
     // computed as totals in MakePlayerExpLevels
@@ -100,7 +99,6 @@ public class Player extends Actor implements Serializable, LightSource {
         this.mana = this.baseStats.maxMana;
         this.floorTarget = null;
         this.monsterTarget = null;
-        this.behavior = null;
         this.increaseWealth = false;
         this.winner = false;
         this.knowledge = new Knowledge();
@@ -125,7 +123,7 @@ public class Player extends Actor implements Serializable, LightSource {
     @Override
     public boolean needsInput(GameState gameState) {
         if (this.behavior != null && !this.behavior.canPerform(gameState)) {
-            waitForInput();
+            clearBehavior();
         }
         return behavior == null;
     }

@@ -29,6 +29,9 @@ public class GameBackend {
         gameState.player.addCommand(request);
     }
     public void tellPlayer(Behavior behavior) { gameState.player.behavior = behavior; }
+    public void tellPet(Action request) {
+        gameState.pet.addCommand(request);
+    }
 
     public void setGameInProgress(boolean gameInProgress) {
         gameState.gameInProgress = gameInProgress;

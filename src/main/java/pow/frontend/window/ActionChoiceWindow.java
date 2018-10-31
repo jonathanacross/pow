@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.*;
+import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.ItemList;
@@ -26,12 +27,14 @@ public class ActionChoiceWindow extends AbstractWindow {
     private final String message;
     private final ItemList items;
     private final int itemIndex;
+    private final ItemActions.ItemLocation location;
     private final List<ItemActions.Action> actions;
 
     public ActionChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
                               String message,
                               ItemList items,
                               int itemIndex,
+                              ItemActions.ItemLocation location,
                               List<ItemActions.Action> actions) {
         super(new WindowDim(x, y, 320,
                 80 + 17 * actions.size()),
@@ -39,6 +42,7 @@ public class ActionChoiceWindow extends AbstractWindow {
         this.message = message;
         this.items = items;
         this.itemIndex = itemIndex;
+        this.location = location;
         this.actions = actions;
     }
 
@@ -53,6 +57,7 @@ public class ActionChoiceWindow extends AbstractWindow {
 
         GameState gs = backend.getGameState();
         Player player = gs.player;
+        Pet pet = gs.pet;
         DungeonItem item = items.get(itemIndex);
 
         // TODO: change so can use f/q/d/g/w/W as alternates
@@ -62,10 +67,14 @@ public class ActionChoiceWindow extends AbstractWindow {
                 ItemActions.Action action = actions.get(actionNumber);
                 switch (action) {
                     case GET:
-                        backend.tellPlayer(new PickUp(gs.player, itemIndex, item.count));
+                        backend.tellPlayer(new PickUp(player, itemIndex, item.count));
                         break;
                     case DROP:
-                        backend.tellPlayer(new Drop(player, itemIndex, item.count));
+                        if (location != ItemActions.ItemLocation.PET) {
+                            backend.tellPlayer(new Drop(player, itemIndex, item.count));
+                        } else {
+                            backend.tellPet(new Drop(pet, itemIndex, item.count));
+                        }
                         break;
                     case FIRE:
                         backend.tellPlayer(new Arrow(player, player.getTarget(), player.getSecondaryAttack()));
@@ -74,11 +83,22 @@ public class ActionChoiceWindow extends AbstractWindow {
                         backend.tellPlayer(new Wear(player, items, itemIndex));
                         break;
                     case QUAFF:
-                        backend.tellPlayer(new Quaff(player, items, itemIndex));
+                        if (location != ItemActions.ItemLocation.PET) {
+                            backend.tellPlayer(new Quaff(player, items, itemIndex));
+                        } else {
+                            backend.tellPet(new Quaff(pet, items, itemIndex));
+                        }
                         break;
                     case TAKE_OFF:
                         backend.tellPlayer(new TakeOff(player, itemIndex));
                         break;
+                    case GIVE:
+                        if (location != ItemActions.ItemLocation.PET) {
+                            // TODO: allow user to specify count
+                            backend.tellPlayer(new TransferItem(player, pet, itemIndex, item.count));
+                        } else {
+                            backend.tellPet(new TransferItem(pet, player, itemIndex, item.count));
+                        }
                 }
                 frontend.close();
                 frontend.close();
