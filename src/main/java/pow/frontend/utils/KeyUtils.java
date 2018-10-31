@@ -60,11 +60,13 @@ public class KeyUtils {
             case KeyEvent.VK_C:
                 return hasShift(event) ? KeyInput.PLAYER_INFO : KeyInput.CLOSE_DOOR;
             case KeyEvent.VK_G:
-                return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.GET;
+                return hasShift(event) ? KeyInput.GROUND : KeyInput.GET;
             case KeyEvent.VK_D:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.DROP;
             case KeyEvent.VK_I:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.INVENTORY;
+            case KeyEvent.VK_E:
+                return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.EQUIPMENT;
             case KeyEvent.VK_Q:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.QUAFF;
             case KeyEvent.VK_W:

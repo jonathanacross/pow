@@ -28,6 +28,8 @@ public class ItemList implements Serializable {
         return items.size();
     }
 
+    public DungeonItem get(int idx) { return items.get(idx); }
+
     public int numCanAdd(DungeonItem item) {
         int idx = findIdx(item);
 

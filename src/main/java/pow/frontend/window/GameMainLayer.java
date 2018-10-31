@@ -8,10 +8,7 @@ import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
-import pow.frontend.utils.KeyInput;
-import pow.frontend.utils.KeyUtils;
-import pow.frontend.utils.Targeting;
+import pow.frontend.utils.*;
 import pow.util.Point;
 import pow.util.Direction;
 
@@ -54,11 +51,21 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
+    private void showGround(GameState gs) {
+        Point playerLoc = gs.player.loc;
+        ItemList items = gs.getCurrentMap().map[playerLoc.x][playerLoc.y].items;
+        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Ground:",
+                items, ItemActions.ItemLocation.GROUND));
+    }
+
     private void showInventory(GameState gs) {
-        frontend.open(
-                new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Inventory:", null,
-                        gs.player.inventory.items, null, (DungeonItem item) -> true,
-                        (ItemChoiceWindow.ItemChoice choice) -> { }));
+        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Inventory:",
+                       gs.player.inventory, ItemActions.ItemLocation.INVENTORY));
+    }
+
+    private void showEquipment(GameState gs) {
+        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Equipment:",
+                gs.player.equipment, ItemActions.ItemLocation.EQUIPMENT));
     }
 
     private void showKnowledge(GameState gs) {
@@ -159,14 +166,14 @@ public class GameMainLayer extends AbstractWindow {
 
     private void tryTakeOff(GameState gs) {
         Function<DungeonItem, Boolean> removable = (DungeonItem item) -> true;
-        if (countLegalItems(gs.player.equipment, removable) == 0) {
+        if (countLegalItems(gs.player.equipment.items, removable) == 0) {
             backend.logMessage("You have nothing you can take off.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Take off which item?", null,
-                        gs.player.equipment, null, removable,
+                        gs.player.equipment.items, null, removable,
                         (ItemChoiceWindow.ItemChoice choice) -> backend.tellPlayer(new TakeOff(gs.player, choice.itemIdx))));
     }
 
@@ -227,16 +234,18 @@ public class GameMainLayer extends AbstractWindow {
             case TARGET: startMonsterTargeting(gs); break;
             case TARGET_FLOOR: startFloorTargeting(gs); break;
             case INVENTORY: showInventory(gs); break;
-            case DROP: tryDrop(gs); break;
+            case GROUND: showGround(gs); break;
+            case EQUIPMENT: showEquipment(gs); break;
+            //case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;
             case FIRE: tryFire(gs); break;
             case MAGIC: tryCastSpell(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
             case SHOW_WORLD_MAP: tryShowMap(gs); break;
             case KNOWLEDGE: showKnowledge(gs); break;
-            case QUAFF: tryQuaff(gs); break;
-            case WEAR: tryWear(gs); break;
-            case TAKE_OFF: tryTakeOff(gs); break;
+            //case QUAFF: tryQuaff(gs); break;
+            //case WEAR: tryWear(gs); break;
+            //case TAKE_OFF: tryTakeOff(gs); break;
             case HELP: frontend.open(frontend.helpWindow); break;
             case DEBUG_INCR_CHAR_LEVEL: backend.tellPlayer(new DebugAction(DebugAction.What.INCREASE_CHAR_LEVEL)); break;
             case DEBUG_HEAL_CHAR: backend.tellPlayer(new DebugAction(DebugAction.What.HEAL)); break;

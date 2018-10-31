@@ -39,7 +39,7 @@ public class GetCountWindow extends AbstractWindow {
         if (keyCode == KeyEvent.VK_ENTER && !countString.isEmpty()) {
             int count = Integer.parseInt(countString);
             if (count == 0) {
-                frontend.close();  // the the player escape out
+                frontend.close();  // let the player escape out
                 return;
             }
             count = MathUtils.clamp(count, 1, maxNum);

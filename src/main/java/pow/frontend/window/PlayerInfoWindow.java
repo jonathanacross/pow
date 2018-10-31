@@ -100,7 +100,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         for (StringPosition sd : slotData.values()) {
             graphics.drawString(sd.name, 260, MARGIN + TILE_SIZE * sd.position + TILE_SIZE/2 + FONT_SIZE/2);
         }
-        for (DungeonItem item: player.equipment) {
+        for (DungeonItem item: player.equipment.items) {
             int position = slotData.get(item.slot).position;
             int y = TILE_SIZE * position + MARGIN;
             ImageController.drawTile(graphics, item.image, 315, y);
@@ -202,7 +202,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         }
 
         // left icons
-        for (DungeonItem item: player.equipment) {
+        for (DungeonItem item: player.equipment.items) {
             int position = slotData.get(item.slot).position;
             int x = gridLeft - 40;
             int y = gridTop + dy * position;
@@ -216,7 +216,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         }
 
         // grid interior
-        for (DungeonItem item: player.equipment) {
+        for (DungeonItem item: player.equipment.items) {
             int position = slotData.get(item.slot).position;
             int y = gridTop + dy * position + TILE_SIZE/2 + FONT_SIZE/2;
 

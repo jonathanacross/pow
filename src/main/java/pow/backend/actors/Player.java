@@ -6,6 +6,7 @@ import pow.backend.behavior.ActionBehavior;
 import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
+import pow.backend.dungeon.ItemList;
 import pow.backend.dungeon.LightSource;
 import pow.backend.event.GameEvent;
 import pow.util.Circle;
@@ -19,7 +20,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
     public final int viewRadius;
     private int lightRadius;
-    public final List<DungeonItem> equipment;
+    public final ItemList equipment;
     public final Map<DungeonItem.ArtifactSlot, DungeonItem> artifacts;
     private final GainRatios gainRatios;
     public boolean increaseWealth;
@@ -90,7 +91,7 @@ public class Player extends Actor implements Serializable, LightSource {
                 spells));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = -1;  // filled in by updateStats
-        this.equipment = new ArrayList<>();
+        this.equipment = new ItemList();
         this.artifacts = new HashMap<>();
         this.gainRatios = gainRatios;
         this.experience = 0;
@@ -155,7 +156,7 @@ public class Player extends Actor implements Serializable, LightSource {
         int innateCon = (int) Math.round(gainRatios.conRatio * (level + 6));
         int innateSpd = 0;
 
-        this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment);
+        this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment.items);
         this.health = Math.min(health, getMaxHealth());
         this.mana = Math.min(mana, getMaxMana());
 
@@ -167,7 +168,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
     private void updateWealthStatus() {
         this.increaseWealth = false;
-        for (DungeonItem item : equipment) {
+        for (DungeonItem item : equipment.items) {
             if (item.bonuses[DungeonItem.WEALTH_IDX] > 0) {
                 this.increaseWealth = true;
             }
@@ -200,7 +201,7 @@ public class Player extends Actor implements Serializable, LightSource {
         for (int i = 0; i < equipment.size(); i++) {
             if (equipment.get(i).slot == slot) {
                 // replace old item
-                DungeonItem oldItem = equipment.remove(i);
+                DungeonItem oldItem = equipment.items.remove(i);
                 equipment.add(item);
                 updateStats();
                 return oldItem;
@@ -213,7 +214,7 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     public DungeonItem takeOff(int idx) {
-        DungeonItem item = equipment.remove(idx);
+        DungeonItem item = equipment.items.remove(idx);
         updateStats();
         return item;
     }
@@ -280,7 +281,7 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     public boolean hasBowEquipped() {
-        for (DungeonItem item : equipment)  {
+        for (DungeonItem item : equipment.items)  {
             if (item.slot.equals(DungeonItem.Slot.BOW)) return true;
         }
         return false;

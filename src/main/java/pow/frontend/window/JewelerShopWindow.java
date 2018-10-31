@@ -118,7 +118,7 @@ public class JewelerShopWindow extends AbstractWindow {
         super(dim, visible, backend, frontend);
         this.callback = callback;
         Player player = backend.getGameState().player;
-        List<ShopUtils.ItemInfo> equipment = ShopUtils.getListOfUpgradeableItems(player.equipment);
+        List<ShopUtils.ItemInfo> equipment = ShopUtils.getListOfUpgradeableItems(player.equipment.items);
         List<ShopUtils.ItemInfo> inventory = ShopUtils.getListOfUpgradeableItems(player.inventory.items);
         List<ShopUtils.ItemInfo> gems = ShopUtils.getListOfGems(player);
         selections = new Selections(equipment, inventory, gems, player.gold);

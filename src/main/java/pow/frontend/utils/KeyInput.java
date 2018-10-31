@@ -40,6 +40,8 @@ public enum KeyInput {
     PET,
     KNOWLEDGE,
     INVENTORY,
+    GROUND,
+    EQUIPMENT,
     TARGET,
     TARGET_FLOOR,
     SHOW_WORLD_MAP,
