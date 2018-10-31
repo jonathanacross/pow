@@ -15,20 +15,18 @@ The keys . or number pad 5 indicate to stay still.
       /    See monster information         ?    See help
       b    Walk southwest                  B    Run southwest
       c    Close door                      C    Character description
-      d    Drop an item
+      e    Show your equipment
       f    Fire an arrow
-      g    Get objects on the floor
+      g    Get objects on the ground       G    Show objects on the ground
       h    Walk west                       H    Run west
-      i    Inventory list
+      i    Show your inventory
       j    Walk south                      J    Run south
       k    Walk north                      K    Run north
       l    Walk east                       L    Run east
       m    Cast magic                      M    Show world map
       n    Walk southeast                  N    Run southeast
-      q    Quaff a potion
       t    Target a monster                T    Target a spot on the ground
       u    Walk northeast                  U    Run northeast
-      w    Wear/wield equipment            W    Take off equipment
       x    Examine nearby things
       y    Walk northwest                  Y    Run northwest
 

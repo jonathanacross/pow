@@ -26,6 +26,7 @@ public class ItemChoiceWindow extends AbstractWindow {
 
     private final String message;
     private final String altMessage;
+    // TODO: change to take itemLists instead of List<DungeonItem>
     private final List<DungeonItem> items;
     private final List<DungeonItem> altItems;
     private boolean useSecondList;

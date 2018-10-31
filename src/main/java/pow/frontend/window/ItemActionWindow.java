@@ -1,10 +1,15 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
+import pow.backend.GameState;
+import pow.backend.action.*;
 import pow.backend.dungeon.DungeonItem;
+import pow.backend.dungeon.ItemList;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
+import pow.frontend.utils.ItemActions;
+import pow.util.TextUtils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,38 +21,19 @@ import java.util.function.Function;
 
 public class ItemActionWindow extends AbstractWindow {
 
-    public static class ItemChoice {
-        public final boolean useSecondList;
-        public final int itemIdx;
-
-        public ItemChoice(boolean useSecondList, int itemIdx) {
-            this.useSecondList = useSecondList;
-            this.itemIdx = itemIdx;
-        }
-    }
-
     private final String message;
-    private final String altMessage;
-    private final List<DungeonItem> items;
-    private final List<DungeonItem> altItems;
-    private boolean useSecondList;
-    private final Consumer<ItemChoice> callback;
+    private final ItemList items;
+    private final ItemActions.ItemLocation location;
 
     public ItemActionWindow(int x, int y, GameBackend backend, Frontend frontend,
                             String message,
-                            String altMessage,
-                            List<DungeonItem> items,
-                            List<DungeonItem> altItems,
-                            Consumer<ItemChoice> callback) {
-        super(new WindowDim(x, y, 400,
-                35 + 32 * Math.max(items.size(), altItems == null ? 0 : altItems.size())),
-                true, backend, frontend);
+                            ItemList items,
+                            ItemActions.ItemLocation location) {
+        super(new WindowDim(x, y, 320,
+                35 + 32 * items.size()), true, backend, frontend);
         this.message = message;
-        this.altMessage = altMessage;
         this.items = items;
-        this.altItems = altItems;
-        this.callback = callback;
-        this.useSecondList = false;
+        this.location = location;
     }
 
     @Override
@@ -59,18 +45,19 @@ public class ItemActionWindow extends AbstractWindow {
             return;
         }
 
-        if (keyCode == KeyEvent.VK_TAB && this.altItems != null) {
-            useSecondList = !useSecondList;
-            frontend.setDirty(true);
-            return;
-        }
-
-        List<DungeonItem> currItems = useSecondList ? altItems : items;
         if (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z) {
             int itemNumber = keyCode - KeyEvent.VK_A;
-            if (itemNumber >= 0 && itemNumber < currItems.size()) {
-                this.callback.accept(new ItemChoice(useSecondList, itemNumber));
-                frontend.close();
+            if (itemNumber >= 0 && itemNumber < items.size()) {
+                GameState gs = backend.getGameState();
+                DungeonItem item = items.get(itemNumber);
+                List<ItemActions.Action> actions = ItemActions.getActions(item, gs, location);
+                // try to place the window near the item
+                int x = this.dim.x + 20;
+                int y = Math.min(this.dim.y + 32 * itemNumber, this.frontend.height - 140);
+                frontend.open(new ActionChoiceWindow(x, y, this.backend, this.frontend,
+                        "What do you want to do with ",
+                        items, itemNumber, actions));
+                // parent will close this window, too.
             }
         }
     }
@@ -81,9 +68,6 @@ public class ItemActionWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        String currMessage = this.useSecondList ? this.altMessage : this.message;
-        List<DungeonItem> currItems = this.useSecondList ? this.altItems : this.items;
-
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
@@ -91,19 +75,17 @@ public class ItemActionWindow extends AbstractWindow {
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(currMessage, MARGIN, MARGIN + FONT_SIZE);
+        graphics.drawString(message, MARGIN, MARGIN + FONT_SIZE);
 
         int y = 30;
         int idx = 0;
-        for (DungeonItem item : currItems) {
-            ImageController.DrawMode drawMode = ImageController.DrawMode.NORMAL;
-            ImageController.drawTile(graphics, item.image, 25, y, drawMode);
-
+        for (DungeonItem item : items.items) {
             String label = (char) ((int) 'a' + idx) + ")";
-            int textY = y + 20;
-            graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
-            graphics.drawString(label, MARGIN, textY);
-            graphics.drawString(item.stringWithInfo(), 60, textY);
+            graphics.drawString(label, MARGIN, y + 20);
+
+            ImageController.drawTile(graphics, item.image, MARGIN + 20, y);
+            graphics.drawString(TextUtils.format(item.name, item.count, false),  MARGIN + 60, y + FONT_SIZE + 2);
+            graphics.drawString(item.bonusString(), MARGIN + 60, y + 2*FONT_SIZE + 2);
 
             idx++;
             y += TILE_SIZE;
