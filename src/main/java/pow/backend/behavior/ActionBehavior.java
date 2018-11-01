@@ -2,15 +2,16 @@ package pow.backend.behavior;
 
 import pow.backend.GameState;
 import pow.backend.action.Action;
+import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 
 public class ActionBehavior implements Behavior {
 
-    private final Player player;
+    private final Actor actor;
     private final Action action;
 
-    public ActionBehavior(Player player, Action action) {
-        this.player = player;
+    public ActionBehavior(Actor actor, Action action) {
+        this.actor = actor;
         this.action = action;
     }
 
@@ -21,7 +22,7 @@ public class ActionBehavior implements Behavior {
 
     @Override
     public pow.backend.action.Action getAction() {
-        player.waitForInput();
+        actor.clearBehavior();
         return action;
     }
 }

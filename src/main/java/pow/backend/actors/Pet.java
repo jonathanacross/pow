@@ -6,6 +6,8 @@ import pow.backend.action.Attack;
 import pow.backend.action.Action;
 import pow.backend.actors.ai.Movement;
 import pow.backend.actors.ai.StepMovement;
+import pow.backend.behavior.ActionBehavior;
+import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.MathUtils;
 
@@ -19,6 +21,7 @@ public class Pet extends Actor implements Serializable {
 
     public Pet(DungeonObject.Params objectParams, Actor.Params actorParams) {
         super(objectParams, actorParams);
+        this.behavior = null;
     }
 
     @Override
@@ -39,27 +42,35 @@ public class Pet extends Actor implements Serializable {
         backend.getGameState().player.gainExperience(backend, playerExp, source);
     }
 
+    public void addCommand(Action request) {
+        this.behavior = new ActionBehavior(this, request);
+    }
+
     @Override
     public Action act(GameBackend backend) {
-        GameState gs = backend.getGameState();
+        if (behavior != null) {
+            return behavior.getAction();
+        } else {
+            GameState gs = backend.getGameState();
 
-        if (isConfused()) {
+            if (isConfused()) {
+                return movement.wander(this, gs);
+            }
+
+            // try to attack first
+            Actor closestEnemy = movement.findNearestEnemy(this, gs);
+            if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 2) {
+                return new Attack(this, closestEnemy);
+            }
+
+            // if "far away" from the player, then try to catch up
+            int playerDist = dist2(loc, gs.player.loc);
+            if (playerDist >= 9) {
+                return movement.moveTowardTarget(this, gs, gs.player.loc);
+            }
+
+            // move randomly
             return movement.wander(this, gs);
         }
-
-        // try to attack first
-        Actor closestEnemy = movement.findNearestEnemy(this, gs);
-        if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 2) {
-            return new Attack(this, closestEnemy);
-        }
-
-        // if "far away" from the player, then try to catch up
-        int playerDist = dist2(loc, gs.player.loc);
-        if (playerDist >= 9) {
-            return movement.moveTowardTarget(this, gs, gs.player.loc);
-        }
-
-        // move randomly
-        return movement.wander(this, gs);
     }
 }

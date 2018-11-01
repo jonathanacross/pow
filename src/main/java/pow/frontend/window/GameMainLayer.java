@@ -68,6 +68,11 @@ public class GameMainLayer extends AbstractWindow {
                 gs.player.equipment, ItemActions.ItemLocation.EQUIPMENT));
     }
 
+    private void showPetInventory(GameState gs) {
+        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Pet:",
+                gs.pet.inventory, ItemActions.ItemLocation.PET));
+    }
+
     private void showKnowledge(GameState gs) {
         frontend.open(
                 new KnowledgeWindow(new WindowDim(210, 5, 672, 672), true, this.backend, this.frontend,
@@ -236,6 +241,7 @@ public class GameMainLayer extends AbstractWindow {
             case INVENTORY: showInventory(gs); break;
             case GROUND: showGround(gs); break;
             case EQUIPMENT: showEquipment(gs); break;
+            case PET: showPetInventory(gs); break;
             //case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;
             case FIRE: tryFire(gs); break;

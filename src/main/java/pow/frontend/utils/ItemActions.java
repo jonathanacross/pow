@@ -12,7 +12,8 @@ public class ItemActions {
     public enum ItemLocation {
         GROUND,
         INVENTORY,
-        EQUIPMENT
+        EQUIPMENT,
+        PET
     }
 
     public enum Action {
@@ -21,7 +22,8 @@ public class ItemActions {
         WEAR("Wear"),
         TAKE_OFF("Take Off"),
         QUAFF("Quaff"),
-        FIRE("Fire");
+        FIRE("Fire"),
+        GIVE("Give");
 
         private String text;
         Action(String text) {
@@ -40,7 +42,7 @@ public class ItemActions {
     }
 
     private static boolean canWear(DungeonItem item, ItemLocation location) {
-        return (location != ItemLocation.EQUIPMENT) &&
+        return ((location == ItemLocation.GROUND || location == ItemLocation.INVENTORY)) &&
                 (item.slot != DungeonItem.Slot.NONE);
     }
 
@@ -52,7 +54,11 @@ public class ItemActions {
         return item.flags.potion;
     }
 
-    private static boolean canFire(DungeonItem item, GameState gameState) {
+    private static boolean canFire(DungeonItem item, GameState gameState, ItemLocation location) {
+        if (location == ItemLocation.PET) {
+            return false;
+        }
+
         if (!item.flags.arrow) {
             return false;
         }
@@ -70,6 +76,13 @@ public class ItemActions {
         return true;
     }
 
+    public static boolean canGive(GameState gameState, ItemLocation location) {
+        if (gameState.pet == null) {
+            return false;
+        }
+        return location == ItemLocation.INVENTORY || location == ItemLocation.PET;
+    }
+
     public static List<Action> getActions(DungeonItem item, GameState gameState, ItemLocation location) {
         List<Action> actions = new ArrayList<>();
         if (canGet(location)) {
@@ -78,7 +91,7 @@ public class ItemActions {
         if (canQuaff(item)) {
             actions.add(Action.QUAFF);
         }
-        if (canFire(item, gameState)) {
+        if (canFire(item, gameState, location)) {
             actions.add(Action.FIRE);
         }
         if (canWear(item, location)) {
@@ -86,6 +99,9 @@ public class ItemActions {
         }
         if (canTakeOff(location)) {
             actions.add(Action.TAKE_OFF);
+        }
+        if (canGive(gameState, location)) {
+            actions.add(Action.GIVE);
         }
         if (canDrop(location)) {
             actions.add(Action.DROP);
