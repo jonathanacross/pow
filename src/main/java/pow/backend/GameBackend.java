@@ -5,6 +5,7 @@ import pow.backend.action.ActionResult;
 import pow.backend.action.Log;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
+import pow.backend.behavior.AiBehavior;
 import pow.backend.behavior.Behavior;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
@@ -25,13 +26,10 @@ public class GameBackend {
 
     public GameBackend() { this.gameState = new GameState(); }
 
-    public void tellPlayer(Action request) {
-        gameState.player.addCommand(request);
+    public void tellSelectedActor(Action request) {
+        gameState.selectedActor.addCommand(request);
     }
-    public void tellPlayer(Behavior behavior) { gameState.player.behavior = behavior; }
-    public void tellPet(Action request) {
-        gameState.pet.addCommand(request);
-    }
+    public void tellSelectedActor(Behavior behavior) { gameState.selectedActor.behavior = behavior; }
 
     public void setGameInProgress(boolean gameInProgress) {
         gameState.gameInProgress = gameInProgress;
@@ -97,6 +95,7 @@ public class GameBackend {
 
                 // if waiting for input, just return
                 if (actor.energy.canTakeTurn() && actor.needsInput(gameState)) {
+                    gameState.selectedActor = actor;
                     return gameResult;
                     //return new GameResult(madeProgress, new ArrayList<>());
                 }
@@ -105,6 +104,7 @@ public class GameBackend {
                     // If the actor can move now, but needs input from the user, just
                     // return so we can wait for it.
                     if (actor.needsInput(gameState)) {
+                        gameState.selectedActor = actor;
                         return gameResult;
                         //return new GameResult(madeProgress, new ArrayList<>());
                     }
@@ -112,7 +112,7 @@ public class GameBackend {
                     commandQueue.add(actor.act(this));
                     gameResult.addEvents(actor.conditions.update(this));
 
-                    if (actor == gameState.player) {
+                    if (actor == gameState.selectedActor) {
                         // force return every time player takes turn
                         return gameResult;
                     }

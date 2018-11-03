@@ -43,7 +43,7 @@ public class ShopWindow extends AbstractWindow {
                             entry.item.image,
                             "How many " + TextUtils.plural(entry.item.name) + " do you want?",
                             maxNum,
-                            (int count) -> backend.tellPlayer(new BuyItem(entries, itemNumber, count))));
+                            (int count) -> backend.tellSelectedActor(new BuyItem(entries, itemNumber, count))));
                 }
             }
         }

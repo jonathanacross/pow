@@ -2,6 +2,10 @@ package pow.backend.dungeon.gen;
 
 import pow.backend.SpellParams;
 import pow.backend.actors.*;
+import pow.backend.actors.ai.KnightMovement;
+import pow.backend.actors.ai.Movement;
+import pow.backend.actors.ai.StationaryMovement;
+import pow.backend.actors.ai.StepMovement;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.DebugLogger;
@@ -83,6 +87,7 @@ public class MonsterGenerator {
         List<SpellParams> spells;
         String artifactDrops;  // slight misnomer.. can only handle 1 artifact right now
         int numDropAttempts;
+        Movement movement;
 
         public static class AllFlags {
             final Monster.Flags monsterFlags;
@@ -317,15 +322,18 @@ public class MonsterGenerator {
             intelligence = getStat(GainRatioStats.INTELLIGENCE, level, allGeneratorFlags);
             constitution = getStat(GainRatioStats.CONSTITUTION, level, allGeneratorFlags);
             experience = getExperience(allGeneratorFlags, constitution, dexterity, strength, speed, spells);
+            movement = flags.monsterFlags.stationary ? new StationaryMovement() :
+                            (flags.monsterFlags.knight ? new KnightMovement() : new StepMovement());
         }
 
 
         // resolves die rolls, location to get a specific monster instance
         public Monster genMonster(Random rng, Point location) {
+
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
                     new Actor.Params(level, experience, flags.friendly, flags.invisible,
-                            flags.aquatic, artifactDrops, numDropAttempts, strength, dexterity,
+                            flags.aquatic, movement, artifactDrops, numDropAttempts, strength, dexterity,
                             intelligence, constitution, speed, spells),
                     flags.monsterFlags);
         }

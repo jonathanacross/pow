@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.*;
+import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
@@ -11,7 +12,6 @@ import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ItemActions;
-import pow.util.Point;
 import pow.util.TextUtils;
 
 import java.awt.Color;
@@ -19,7 +19,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.function.Consumer;
 
 // Window to choose which action to take (given a particular item).
 public class ActionChoiceWindow extends AbstractWindow {
@@ -57,7 +56,8 @@ public class ActionChoiceWindow extends AbstractWindow {
 
         GameState gs = backend.getGameState();
         Player player = gs.player;
-        Pet pet = gs.pet;
+        Actor selectedActor = gs.selectedActor;
+        Actor nonselectedActor = (gs.selectedActor == gs.player) ? gs.pet : gs.player;
         DungeonItem item = items.get(itemIndex);
 
         // TODO: change so can use f/q/d/g/w/W as alternates
@@ -67,38 +67,29 @@ public class ActionChoiceWindow extends AbstractWindow {
                 ItemActions.Action action = actions.get(actionNumber);
                 switch (action) {
                     case GET:
-                        backend.tellPlayer(new PickUp(player, itemIndex, item.count));
+                        backend.tellSelectedActor(new PickUp(selectedActor, itemIndex, item.count));
                         break;
                     case DROP:
-                        if (location != ItemActions.ItemLocation.PET) {
-                            backend.tellPlayer(new Drop(player, itemIndex, item.count));
-                        } else {
-                            backend.tellPet(new Drop(pet, itemIndex, item.count));
-                        }
+                        backend.tellSelectedActor(new Drop(selectedActor, itemIndex, item.count));
                         break;
                     case FIRE:
-                        backend.tellPlayer(new Arrow(player, player.getTarget(), player.getSecondaryAttack()));
+                        // TODO: support pets/or fix so this can't be called
+                        backend.tellSelectedActor(new Arrow(player, player.getTarget(), player.getSecondaryAttack()));
                         break;
                     case WEAR:
-                        backend.tellPlayer(new Wear(player, items, itemIndex));
+                        // TODO: support pets/or fix so this can't be called
+                        backend.tellSelectedActor(new Wear(player, items, itemIndex));
                         break;
                     case QUAFF:
-                        if (location != ItemActions.ItemLocation.PET) {
-                            backend.tellPlayer(new Quaff(player, items, itemIndex));
-                        } else {
-                            backend.tellPet(new Quaff(pet, items, itemIndex));
-                        }
+                        backend.tellSelectedActor(new Quaff(selectedActor, items, itemIndex));
                         break;
                     case TAKE_OFF:
-                        backend.tellPlayer(new TakeOff(player, itemIndex));
+                        // TODO: support pets/or fix so this can't be called
+                        backend.tellSelectedActor(new TakeOff(player, itemIndex));
                         break;
                     case GIVE:
-                        if (location != ItemActions.ItemLocation.PET) {
-                            // TODO: allow user to specify count
-                            backend.tellPlayer(new TransferItem(player, pet, itemIndex, item.count));
-                        } else {
-                            backend.tellPet(new TransferItem(pet, player, itemIndex, item.count));
-                        }
+                        // TODO: allow user to specify count
+                        backend.tellSelectedActor(new TransferItem(selectedActor, nonselectedActor, itemIndex, item.count));
                 }
                 frontend.close();
                 frontend.close();

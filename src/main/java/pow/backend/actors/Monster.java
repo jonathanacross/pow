@@ -51,15 +51,12 @@ public class Monster extends Actor implements Serializable {
 
     private ActorState state;
     private final Flags flags;
-    private final Movement movement;
 
     public Monster(DungeonObject.Params objectParams, Actor.Params actorParams, Flags flags) {
         super(objectParams, actorParams);
         this.currStateTurnCount = 0;
         this.state = ActorState.SLEEPING;
         this.flags = flags;
-        this.movement = flags.stationary ? new StationaryMovement() :
-                (flags.knight ? new KnightMovement() : new StepMovement());
     }
 
     private void updateState(ActorState newState, GameBackend backend) {

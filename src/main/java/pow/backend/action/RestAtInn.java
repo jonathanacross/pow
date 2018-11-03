@@ -32,7 +32,7 @@ public class RestAtInn implements Action {
             List<GameEvent> events = new ArrayList<>();
 
             // save the game!
-            backend.tellPlayer(new Save());
+            backend.tellSelectedActor(new Save());
 
             events.add(GameEvent.DungeonUpdated());
             return ActionResult.Succeeded(events);

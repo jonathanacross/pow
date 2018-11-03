@@ -190,7 +190,7 @@ public class Frontend {
                 open(new ConfirmWindow(dim, true, gameBackend, this,
                         "Do you want to rest at the inn? It costs " + cost + " gold.",
                         "Rest", "Cancel",
-                        () -> gameBackend.tellPlayer(new RestAtInn())));
+                        () -> gameBackend.tellSelectedActor(new RestAtInn())));
                 break;
             case WEAPON_SHOP:
                 dim = WindowDim.center(450, 500, width, height);
@@ -205,7 +205,7 @@ public class Frontend {
             case JEWELER_SHOP:
                 dim = WindowDim.center(650, 550, width, height);
                 open(new JewelerShopWindow(dim, true, gameBackend, this,
-                        (UpgradeItem.UpgradeInfo i) -> gameBackend.tellPlayer(new UpgradeItem(i))));
+                        (UpgradeItem.UpgradeInfo i) -> gameBackend.tellSelectedActor(new UpgradeItem(i))));
                 break;
             default:
                 System.out.println("entered a shop of type " + shopData.state);
@@ -226,7 +226,7 @@ public class Frontend {
                 gameBackend, this,
                 "Which area do you wish to go to?",
                 openPortalAreas,
-                (String areaId) -> gameBackend.tellPlayer(new ExitPortal(gameBackend.getGameState().player, areaId))
+                (String areaId) -> gameBackend.tellSelectedActor(new ExitPortal(gameBackend.getGameState().player, areaId))
         ));
     }
 

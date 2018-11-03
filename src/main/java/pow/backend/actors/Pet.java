@@ -7,6 +7,7 @@ import pow.backend.action.Action;
 import pow.backend.actors.ai.Movement;
 import pow.backend.actors.ai.StepMovement;
 import pow.backend.behavior.ActionBehavior;
+import pow.backend.behavior.AiBehavior;
 import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.MathUtils;
@@ -17,11 +18,13 @@ import static pow.util.MathUtils.dist2;
 
 public class Pet extends Actor implements Serializable {
 
-    private final Movement movement = new StepMovement();
+    public boolean autoPlay;
 
-    public Pet(DungeonObject.Params objectParams, Actor.Params actorParams) {
+    public Pet(DungeonObject.Params objectParams, Actor.Params actorParams, GameState gs) {
         super(objectParams, actorParams);
-        this.behavior = null;
+        // TODO: reduce dependence on gs here?
+        this.behavior = new AiBehavior(this, gs);
+        this.autoPlay = true;
     }
 
     @Override
@@ -31,7 +34,10 @@ public class Pet extends Actor implements Serializable {
 
     @Override
     public boolean needsInput(GameState gameState) {
-        return false;
+        if (this.behavior != null && !this.behavior.canPerform(gameState)) {
+            clearBehavior();
+        }
+        return behavior == null;
     }
 
     @Override
@@ -48,29 +54,6 @@ public class Pet extends Actor implements Serializable {
 
     @Override
     public Action act(GameBackend backend) {
-        if (behavior != null) {
-            return behavior.getAction();
-        } else {
-            GameState gs = backend.getGameState();
-
-            if (isConfused()) {
-                return movement.wander(this, gs);
-            }
-
-            // try to attack first
-            Actor closestEnemy = movement.findNearestEnemy(this, gs);
-            if (closestEnemy != null && MathUtils.dist2(loc, closestEnemy.loc) <= 2) {
-                return new Attack(this, closestEnemy);
-            }
-
-            // if "far away" from the player, then try to catch up
-            int playerDist = dist2(loc, gs.player.loc);
-            if (playerDist >= 9) {
-                return movement.moveTowardTarget(this, gs, gs.player.loc);
-            }
-
-            // move randomly
-            return movement.wander(this, gs);
-        }
+        return behavior.getAction();
     }
 }

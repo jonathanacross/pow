@@ -3,6 +3,7 @@ package pow.backend;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
+import pow.backend.actors.ai.StepMovement;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.Point;
 
@@ -20,6 +21,7 @@ public class GameState implements Serializable {
     // character data
     public final Player player;
     public Pet pet;
+    public Actor selectedActor;  // which actor is the player controlling?
 
     public int turnCount;
 
@@ -41,6 +43,7 @@ public class GameState implements Serializable {
         this.gameInProgress = false;
         this.inPortal = false;
         this.player = new Player();
+        this.selectedActor = this.player;
         this.pet = null;
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         this.turnCount = 0;
@@ -53,6 +56,7 @@ public class GameState implements Serializable {
         System.out.println("starting seed = " + seed);
         this.rng = new Random(seed);
         this.player = player;
+        this.selectedActor = this.player;
         this.pet = new Pet(
                 new DungeonObject.Params(
                         "pet", // id
@@ -67,6 +71,7 @@ public class GameState implements Serializable {
                         true,
                         false,
                         false,
+                        new StepMovement(),
                         null,
                         0,
                         12,
@@ -74,7 +79,7 @@ public class GameState implements Serializable {
                         8,
                         8,
                         0,
-                        Collections.emptyList()));
+                        Collections.emptyList()), this);
         this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         log.add("Welcome to Pearls of Wisdom!", MessageLog.MessageType.GAME_EVENT);

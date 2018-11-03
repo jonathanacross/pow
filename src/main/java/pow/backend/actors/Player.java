@@ -2,8 +2,7 @@ package pow.backend.actors;
 
 import pow.backend.*;
 import pow.backend.action.Action;
-import pow.backend.behavior.ActionBehavior;
-import pow.backend.behavior.Behavior;
+import pow.backend.actors.ai.StepMovement;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
@@ -80,6 +79,7 @@ public class Player extends Actor implements Serializable, LightSource {
                 true,
                 false,
                 false,
+                new StepMovement(),
                 null,
                 0,
                 10,
@@ -104,10 +104,6 @@ public class Player extends Actor implements Serializable, LightSource {
         this.knowledge = new Knowledge();
     }
 
-    public void addCommand(Action request) {
-        this.behavior = new ActionBehavior(this, request);
-    }
-
     public boolean canSeeLocation(GameState gs, Point point) {
         // must be on the map, within the player's view radius, and must be lit
         return (gs.getCurrentMap().isOnMap(point.x, point.y) &&
@@ -126,10 +122,6 @@ public class Player extends Actor implements Serializable, LightSource {
             clearBehavior();
         }
         return behavior == null;
-    }
-
-    public void waitForInput() {
-        this.behavior = null;
     }
 
     @Override
@@ -322,7 +314,6 @@ public class Player extends Actor implements Serializable, LightSource {
 
     public boolean isWinner() { return winner; }
 
-    // TODO: put in actor class?
     public Point getTarget() {
         if (floorTarget != null) {
             return floorTarget;

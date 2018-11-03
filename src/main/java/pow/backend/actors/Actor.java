@@ -3,12 +3,17 @@ package pow.backend.actors;
 import pow.backend.*;
 import pow.backend.action.Action;
 import pow.backend.action.AttackUtils;
+import pow.backend.action.Move;
+import pow.backend.actors.ai.Movement;
+import pow.backend.actors.ai.StepMovement;
+import pow.backend.behavior.ActionBehavior;
 import pow.backend.behavior.Behavior;
 import pow.backend.conditions.ConditionGroup;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
 import pow.backend.event.GameEvent;
+import pow.util.Point;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +32,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public final boolean friendly; // friendly to the player
         public final boolean invisible;
         public final boolean aquatic;
+        public final Movement movement;
         public final String requiredItemDrops;
         public final int numDropAttempts;
         public final int strength;
@@ -41,6 +47,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
                       boolean friendly,
                       boolean invisible,
                       boolean aquatic,
+                      Movement movement,
                       String requiredItemDrops,
                       int numDropAttempts,
                       int strength,
@@ -54,6 +61,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
             this.friendly = friendly;
             this.invisible = invisible;
             this.aquatic = aquatic;
+            this.movement = movement;
             this.requiredItemDrops = requiredItemDrops;
             this.numDropAttempts = numDropAttempts;
             this.strength = strength;
@@ -77,6 +85,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public final boolean invisible;
     public boolean aquatic;  // can go on water
     public final boolean terrestrial; // can go on land
+    public final Movement movement;
     public int level;
     public int gold;
     // Ideally, we would make all items for monsters at
@@ -157,6 +166,11 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public void gainExperience(GameBackend backend, int experience, Actor source) {} // overridden in Player
 
     public void clearBehavior() { this.behavior = null; }
+    public void addCommand(Action request) {
+        this.behavior = new ActionBehavior(this, request);
+    }
+
+    public Point getTarget() { return null; }  // overridden in Player, Pet.
 
     public Actor(DungeonObject.Params objectParams, Params actorParams) {
         super(objectParams);
@@ -183,5 +197,6 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.inventory = new ItemList(GameConstants.ACTOR_ITEM_LIST_SIZE, GameConstants.ACTOR_DEFAULT_ITEMS_PER_SLOT);
         this.gold = 0;
         this.behavior = null;
+        this.movement = actorParams.movement;
     }
 }

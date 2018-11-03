@@ -4,6 +4,7 @@ import pow.backend.*;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
+import pow.backend.behavior.AiBehavior;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
@@ -28,7 +29,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void tryPickup(GameState gs) {
-        Point playerLoc = gs.player.loc;
+        Point playerLoc = gs.selectedActor.loc;
         ItemList items = gs.getCurrentMap().map[playerLoc.x][playerLoc.y].items;
 
         switch (items.size()) {
@@ -37,7 +38,7 @@ public class GameMainLayer extends AbstractWindow {
                 break;
             case 1:
                 // no ambiguity, just pick up the one item
-                backend.tellPlayer(new PickUp(gs.player, 0, items.items.get(0).count));
+                backend.tellSelectedActor(new PickUp(gs.selectedActor, 0, items.items.get(0).count));
                 break;
             default:
                 // ask the user to pick which item
@@ -46,13 +47,13 @@ public class GameMainLayer extends AbstractWindow {
                                 "Pick up which item?", null,
                                 items.items, null, (DungeonItem item) -> true,
                                 (ItemChoiceWindow.ItemChoice choice) ->
-                                        backend.tellPlayer(new PickUp(gs.player, choice.itemIdx, items.items.get(choice.itemIdx).count))));
+                                        backend.tellSelectedActor(new PickUp(gs.selectedActor, choice.itemIdx, items.items.get(choice.itemIdx).count))));
                 break;
         }
     }
 
     private void showGround(GameState gs) {
-        Point playerLoc = gs.player.loc;
+        Point playerLoc = gs.selectedActor.loc;
         ItemList items = gs.getCurrentMap().map[playerLoc.x][playerLoc.y].items;
         frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Ground:",
                 items, ItemActions.ItemLocation.GROUND));
@@ -60,7 +61,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void showInventory(GameState gs) {
         frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Inventory:",
-                       gs.player.inventory, ItemActions.ItemLocation.INVENTORY));
+                       gs.selectedActor.inventory, ItemActions.ItemLocation.INVENTORY));
     }
 
     private void showEquipment(GameState gs) {
@@ -91,7 +92,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void tryDrop(GameState gs) {
         Function<DungeonItem, Boolean> droppable = (DungeonItem item) -> true;
-        if (countLegalItems(gs.player.inventory.items, droppable) == 0) {
+        if (countLegalItems(gs.selectedActor.inventory.items, droppable) == 0) {
             backend.logMessage("You have nothing to drop.", MessageLog.MessageType.USER_ERROR);
             return;
         }
@@ -99,15 +100,15 @@ public class GameMainLayer extends AbstractWindow {
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Drop which item?",
                         null,
-                        gs.player.inventory.items, null, droppable,
-                        (ItemChoiceWindow.ItemChoice choice) -> backend.tellPlayer(new Drop(gs.player, choice.itemIdx,
-                                gs.player.inventory.items.get(choice.itemIdx).count))));
+                        gs.selectedActor.inventory.items, null, droppable,
+                        (ItemChoiceWindow.ItemChoice choice) -> backend.tellSelectedActor(new Drop(gs.selectedActor, choice.itemIdx,
+                                gs.selectedActor.inventory.items.get(choice.itemIdx).count))));
     }
 
 
     private void tryQuaff(GameState gs) {
         Point loc = gs.player.loc;
-        ItemList inventoryItems = gs.player.inventory;
+        ItemList inventoryItems = gs.selectedActor.inventory;
         ItemList floorItems = gs.getCurrentMap().map[loc.x][loc.y].items;
         Function<DungeonItem, Boolean> quaffable = (DungeonItem item) -> item.flags.potion;
 
@@ -129,15 +130,20 @@ public class GameMainLayer extends AbstractWindow {
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, message, altMessage,
                         mainItemList.items, altItems, quaffable,
                         (ItemChoiceWindow.ItemChoice choice) ->
-                                backend.tellPlayer(new Quaff(
-                                        gs.player,
+                                backend.tellSelectedActor(new Quaff(
+                                        gs.selectedActor,
                                         choice.useSecondList ? altItemList : mainItemList,
                                         choice.itemIdx))));
     }
 
     private void tryWear(GameState gs) {
-        Point loc = gs.player.loc;
-        ItemList inventoryItems = gs.player.inventory;
+        if (gs.selectedActor == gs.pet) {
+            backend.logMessage("your pet cannot equip/wear items.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
+
+        Point loc = gs.selectedActor.loc;
+        ItemList inventoryItems = gs.selectedActor.inventory;
         ItemList floorItems = gs.getCurrentMap().map[loc.x][loc.y].items;
         Function<DungeonItem, Boolean> wearable = (DungeonItem item) -> item.slot != DungeonItem.Slot.NONE;
 
@@ -163,13 +169,18 @@ public class GameMainLayer extends AbstractWindow {
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, message, altMessage,
                         mainItemList.items, altItems, wearable,
                         (ItemChoiceWindow.ItemChoice choice) ->
-                                backend.tellPlayer(new Wear(
+                                backend.tellSelectedActor(new Wear(
                                         gs.player,
                                         choice.useSecondList ? altItemList : mainItemList,
                                         choice.itemIdx))));
     }
 
     private void tryTakeOff(GameState gs) {
+        if (gs.selectedActor == gs.pet) {
+            backend.logMessage("your pet cannot unequip items.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
+
         Function<DungeonItem, Boolean> removable = (DungeonItem item) -> true;
         if (countLegalItems(gs.player.equipment.items, removable) == 0) {
             backend.logMessage("You have nothing you can take off.", MessageLog.MessageType.USER_ERROR);
@@ -179,23 +190,23 @@ public class GameMainLayer extends AbstractWindow {
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Take off which item?", null,
                         gs.player.equipment.items, null, removable,
-                        (ItemChoiceWindow.ItemChoice choice) -> backend.tellPlayer(new TakeOff(gs.player, choice.itemIdx))));
+                        (ItemChoiceWindow.ItemChoice choice) -> backend.tellSelectedActor(new TakeOff(gs.player, choice.itemIdx))));
     }
 
     private void tryCastSpell(GameState gs) {
         frontend.open(
                 new SpellChoiceWindow(332, 100, this.backend, this.frontend,
                         "Cast which spell?",
-                        gs.player.spells,
+                        gs.selectedActor.spells,
                         (Integer choice) -> {
-                            SpellParams params = gs.player.spells.get(choice);
-                            Point target = gs.player.getTarget();
+                            SpellParams params = gs.selectedActor.spells.get(choice);
+                            Point target = gs.selectedActor.getTarget();
                             if (target == null && params.requiresTarget) {
                                 backend.logMessage("no target selected.", MessageLog.MessageType.USER_ERROR);
                                 return;
                             }
-                            backend.tellPlayer(
-                                    SpellParams.buildAction(params, gs.player, target));
+                            backend.tellSelectedActor(
+                                    SpellParams.buildAction(params, gs.selectedActor, target));
                         })
         );
     }
@@ -208,32 +219,53 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
+//    private void selectNextCharacter() {
+//        backend.selectNextCharacter();
+//        frontend.setDirty(true);
+//    }
+
+    private void togglePetAutoplay() {
+        GameState gs = backend.getGameState();
+        if (gs.pet == null) {
+            return;
+        }
+        gs.pet.autoPlay = !gs.pet.autoPlay;
+        System.out.println("pet autoplay: " + (gs.pet.autoPlay ? "on" : "off"));
+        // TODO: log status of autoplay
+        if (gs.pet.autoPlay) {// && gs.pet.behavior == null) {
+            gs.pet.behavior = new AiBehavior(gs.pet, gs);
+        }
+        if (!gs.pet.autoPlay) {
+            gs.pet.behavior = null;
+        }
+    }
+
     @Override
     public void processKey(KeyEvent e) {
         GameState gs = backend.getGameState();
 
         KeyInput input = KeyUtils.getKeyInput(e);
         switch (input) {
-            case EAST: backend.tellPlayer(new MoveRequest(gs.player, 1, 0)); break;
-            case WEST: backend.tellPlayer(new MoveRequest(gs.player, -1, 0)); break;
-            case SOUTH: backend.tellPlayer(new MoveRequest(gs.player, 0, 1)); break;
-            case NORTH: backend.tellPlayer(new MoveRequest(gs.player, 0, -1)); break;
-            case NORTH_WEST: backend.tellPlayer(new MoveRequest(gs.player, -1, -1)); break;
-            case NORTH_EAST: backend.tellPlayer(new MoveRequest(gs.player, 1, -1)); break;
-            case SOUTH_WEST: backend.tellPlayer(new MoveRequest(gs.player, -1, 1)); break;
-            case SOUTH_EAST: backend.tellPlayer(new MoveRequest(gs.player, 1, 1)); break;
+            case EAST: backend.tellSelectedActor(new MoveRequest(gs.selectedActor, 1, 0)); break;
+            case WEST: backend.tellSelectedActor(new MoveRequest(gs.selectedActor, -1, 0)); break;
+            case SOUTH: backend.tellSelectedActor(new MoveRequest(gs.selectedActor, 0, 1)); break;
+            case NORTH: backend.tellSelectedActor(new MoveRequest(gs.selectedActor, 0, -1)); break;
+            case NORTH_WEST: backend.tellSelectedActor(new MoveRequest(gs.selectedActor, -1, -1)); break;
+            case NORTH_EAST: backend.tellSelectedActor(new MoveRequest(gs.selectedActor, 1, -1)); break;
+            case SOUTH_WEST: backend.tellSelectedActor(new MoveRequest(gs.selectedActor, -1, 1)); break;
+            case SOUTH_EAST: backend.tellSelectedActor(new MoveRequest(gs.selectedActor, 1, 1)); break;
 
-            case RUN_EAST: backend.tellPlayer(new RunBehavior(gs.player, Direction.E)); break;
-            case RUN_WEST: backend.tellPlayer(new RunBehavior(gs.player, Direction.W)); break;
-            case RUN_SOUTH: backend.tellPlayer(new RunBehavior(gs.player, Direction.S)); break;
-            case RUN_NORTH: backend.tellPlayer(new RunBehavior(gs.player, Direction.N)); break;
-            case RUN_NORTH_WEST: backend.tellPlayer(new RunBehavior(gs.player, Direction.NW)); break;
-            case RUN_NORTH_EAST: backend.tellPlayer(new RunBehavior(gs.player, Direction.NE)); break;
-            case RUN_SOUTH_WEST: backend.tellPlayer(new RunBehavior(gs.player, Direction.SW)); break;
-            case RUN_SOUTH_EAST: backend.tellPlayer(new RunBehavior(gs.player, Direction.SE)); break;
+            case RUN_EAST: backend.tellSelectedActor(new RunBehavior(gs.selectedActor, Direction.E)); break;
+            case RUN_WEST: backend.tellSelectedActor(new RunBehavior(gs.selectedActor, Direction.W)); break;
+            case RUN_SOUTH: backend.tellSelectedActor(new RunBehavior(gs.selectedActor, Direction.S)); break;
+            case RUN_NORTH: backend.tellSelectedActor(new RunBehavior(gs.selectedActor, Direction.N)); break;
+            case RUN_NORTH_WEST: backend.tellSelectedActor(new RunBehavior(gs.selectedActor, Direction.NW)); break;
+            case RUN_NORTH_EAST: backend.tellSelectedActor(new RunBehavior(gs.selectedActor, Direction.NE)); break;
+            case RUN_SOUTH_WEST: backend.tellSelectedActor(new RunBehavior(gs.selectedActor, Direction.SW)); break;
+            case RUN_SOUTH_EAST: backend.tellSelectedActor(new RunBehavior(gs.selectedActor, Direction.SE)); break;
 
-            case REST: backend.tellPlayer(new Move(gs.player, 0, 0)); break;
-            case SAVE: backend.tellPlayer(new Save()); break;
+            case REST: backend.tellSelectedActor(new Move(gs.selectedActor, 0, 0)); break;
+            case SAVE: backend.tellSelectedActor(new Save()); break;
             case LOOK: startLooking(gs); break;
             case CLOSE_DOOR: tryCloseDoor(gs); break;
             case TARGET: startMonsterTargeting(gs); break;
@@ -241,7 +273,9 @@ public class GameMainLayer extends AbstractWindow {
             case INVENTORY: showInventory(gs); break;
             case GROUND: showGround(gs); break;
             case EQUIPMENT: showEquipment(gs); break;
-            case PET: showPetInventory(gs); break;
+            //case PET: showPetInventory(gs); break;
+            case AUTO_PLAY: togglePetAutoplay(); break;
+            //case SELECT_CHARACTER: backend.tellSelectedActor(new SelectNextCharacter()); break;
             //case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;
             case FIRE: tryFire(gs); break;
@@ -253,8 +287,8 @@ public class GameMainLayer extends AbstractWindow {
             //case WEAR: tryWear(gs); break;
             //case TAKE_OFF: tryTakeOff(gs); break;
             case HELP: frontend.open(frontend.helpWindow); break;
-            case DEBUG_INCR_CHAR_LEVEL: backend.tellPlayer(new DebugAction(DebugAction.What.INCREASE_CHAR_LEVEL)); break;
-            case DEBUG_HEAL_CHAR: backend.tellPlayer(new DebugAction(DebugAction.What.HEAL)); break;
+            case DEBUG_INCR_CHAR_LEVEL: backend.tellSelectedActor(new DebugAction(DebugAction.What.INCREASE_CHAR_LEVEL)); break;
+            case DEBUG_HEAL_CHAR: backend.tellSelectedActor(new DebugAction(DebugAction.What.HEAL)); break;
             default: break;
         }
     }
@@ -332,7 +366,7 @@ public class GameMainLayer extends AbstractWindow {
         DungeonSquare square = gameState.getCurrentMap().map[p.x][p.y];
         String closedDoorId = square.feature.actionParams.name;
         DungeonFeature closedDoor = FeatureData.getFeature(closedDoorId);
-        backend.tellPlayer(new ModifyFeature(gameState.player, p, closedDoor));
+        backend.tellSelectedActor(new ModifyFeature(gameState.selectedActor, p, closedDoor));
     }
 
     private void tryCloseDoor(GameState gameState) {
@@ -370,7 +404,12 @@ public class GameMainLayer extends AbstractWindow {
             return;
         }
 
-        backend.tellPlayer(new Arrow(gameState.player, target, gameState.player.getSecondaryAttack()));
+        if (gameState.selectedActor == gameState.pet) {
+            backend.logMessage("your pet cannot shoot arrows.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
+
+        backend.tellSelectedActor(new Arrow(gameState.selectedActor, target, gameState.player.getSecondaryAttack()));
     }
 
     private void startLooking(GameState gameState) {
