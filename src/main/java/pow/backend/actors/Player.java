@@ -20,10 +20,12 @@ public class Player extends Actor implements Serializable, LightSource {
     public final int viewRadius;
     private int lightRadius;
     public final ItemList equipment;
-    public final Map<DungeonItem.ArtifactSlot, DungeonItem> artifacts;
+    // TODO: move artifacts out, e.g., to a party
+    public final Artifacts artifacts;
     private final GainRatios gainRatios;
     public boolean increaseWealth;
     private boolean winner;
+    public boolean autoPlay;  // whether this character is controlled by computer
 
     public int experience;
 
@@ -68,6 +70,7 @@ public class Player extends Actor implements Serializable, LightSource {
                         true), // solid
              GainRatiosData.getGainRatios("player adventurer"),
              Collections.emptyList());
+        this.autoPlay = false;
     }
 
     public Player(DungeonObject.Params objectParams,
@@ -91,7 +94,7 @@ public class Player extends Actor implements Serializable, LightSource {
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = -1;  // filled in by updateStats
         this.equipment = new ItemList();
-        this.artifacts = new HashMap<>();
+        this.artifacts = new Artifacts();
         this.gainRatios = gainRatios;
         this.experience = 0;
         updateStats();
@@ -102,6 +105,7 @@ public class Player extends Actor implements Serializable, LightSource {
         this.increaseWealth = false;
         this.winner = false;
         this.knowledge = new Knowledge();
+        this.autoPlay = false;
     }
 
     public boolean canSeeLocation(GameState gs, Point point) {
@@ -166,23 +170,17 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private void updateLightRadius() {
-        this.lightRadius = GameConstants.PLAYER_SMALL_LIGHT_RADIUS;
-        if (artifacts.containsKey(DungeonItem.ArtifactSlot.LANTERN)) {
-            this.lightRadius = GameConstants.PLAYER_MED_LIGHT_RADIUS;
-        }
-        if (artifacts.containsKey(DungeonItem.ArtifactSlot.LANTERN2)) {
-            this.lightRadius = GameConstants.PLAYER_LARGE_LIGHT_RADIUS;
-        }
+        this.lightRadius = artifacts.getLightRadius();
     }
 
     private void updateBagSize() {
-        if (this.artifacts.containsKey(DungeonItem.ArtifactSlot.BAG)) {
+        if (this.artifacts.hasBag()) {
             this.inventory.increaseMaxPerSlot(GameConstants.PLAYER_EXPANDED_ITEMS_PER_SLOT);
         }
     }
 
     private void updateAquatic() {
-        this.aquatic = this.artifacts.containsKey(DungeonItem.ArtifactSlot.FLOAT);
+        this.aquatic = this.artifacts.hasFloat();
     }
 
     // returns the old item, if any
@@ -210,12 +208,12 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     public List<GameEvent> addArtifact(DungeonItem item) {
-        artifacts.put(item.artifactSlot, item);
+        artifacts.add(item);
         updateStats();
         List<GameEvent> events = new ArrayList<>();
 
         // check for a win!
-        if (!winner && hasAllPearls()) {
+        if (!winner && artifacts.hasAllPearls()) {
             winner = true;
             events.add(GameEvent.WonGame());
         }
@@ -277,32 +275,14 @@ public class Player extends Actor implements Serializable, LightSource {
         return false;
     }
 
-    public boolean hasGasMask() {
-        return artifacts.containsKey(DungeonItem.ArtifactSlot.GASMASK);
-    }
-    public boolean hasHeatSuit() { return artifacts.containsKey(DungeonItem.ArtifactSlot.HEATSUIT); }
-    public boolean hasMap() { return artifacts.containsKey(DungeonItem.ArtifactSlot.MAP); }
-    public boolean hasKey() { return artifacts.containsKey(DungeonItem.ArtifactSlot.KEY); }
-    public boolean hasPortalKey() { return artifacts.containsKey(DungeonItem.ArtifactSlot.PORTALKEY); }
-    public boolean hasAllPearls() {
-        return  artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL1) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL2) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL3) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL4) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL5) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL6) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL7) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL8);
-    }
-
     @Override
     public boolean canDig() {
-        return artifacts.containsKey(DungeonItem.ArtifactSlot.PICKAXE);
+        return artifacts.hasPickAxe();
     }
 
     @Override
     public boolean canSeeInvisible() {
-        return artifacts.containsKey(DungeonItem.ArtifactSlot.GLASSES);
+        return artifacts.hasGlasses();
     }
 
     public DungeonItem findArrows() {

@@ -132,7 +132,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         artifactLocations.put(DungeonItem.ArtifactSlot.XRAYSCOPE, new Point(11,1));
         artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN2, new Point(12,1));
 
-        for (DungeonItem item : player.artifacts.values()) {
+        for (DungeonItem item : player.artifacts.getArtifacts().values()) {
             Point loc = artifactLocations.get(item.artifactSlot);
             int x = 15 + TILE_SIZE * loc.x;
             int y = 370 + TILE_SIZE * loc.y;

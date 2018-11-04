@@ -212,7 +212,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void tryShowMap(GameState gs) {
-        if (gs.player.hasMap()) {
+        if (gs.player.artifacts.hasMap()) {
             frontend.open(frontend.worldMapWindow);
         } else {
             backend.logMessage("You don't have a map.", MessageLog.MessageType.USER_ERROR);
@@ -224,19 +224,20 @@ public class GameMainLayer extends AbstractWindow {
 //        frontend.setDirty(true);
 //    }
 
-    private void togglePetAutoplay() {
+    private void toggleAutoplay(boolean pet) {
         GameState gs = backend.getGameState();
-        if (gs.pet == null) {
+        Player player = pet ? gs.pet : gs.player;
+        if (player == null) {
             return;
         }
-        gs.pet.autoPlay = !gs.pet.autoPlay;
-        System.out.println("pet autoplay: " + (gs.pet.autoPlay ? "on" : "off"));
+        player.autoPlay = !player.autoPlay;
+        System.out.println((pet ? "pet" : "player") + " autoplay: " + (player.autoPlay ? "on" : "off"));
         // TODO: log status of autoplay
-        if (gs.pet.autoPlay) {// && gs.pet.behavior == null) {
-            gs.pet.behavior = new AiBehavior(gs.pet, gs);
+        if (player.autoPlay) {
+            player.behavior = new AiBehavior(player, gs);
         }
-        if (!gs.pet.autoPlay) {
-            gs.pet.behavior = null;
+        if (!player.autoPlay) {
+            player.behavior = null;
         }
     }
 
@@ -274,7 +275,8 @@ public class GameMainLayer extends AbstractWindow {
             case GROUND: showGround(gs); break;
             case EQUIPMENT: showEquipment(gs); break;
             //case PET: showPetInventory(gs); break;
-            case AUTO_PLAY: togglePetAutoplay(); break;
+            case AUTO_PLAY: toggleAutoplay(false); break;
+            case AUTO_PLAY_PET: toggleAutoplay(true); break;
             //case SELECT_CHARACTER: backend.tellSelectedActor(new SelectNextCharacter()); break;
             //case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;

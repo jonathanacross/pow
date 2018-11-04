@@ -4,7 +4,6 @@ import pow.backend.GameBackend;
 import pow.backend.MessageLog;
 import pow.backend.ShopData;
 import pow.backend.actors.Actor;
-import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.event.GameEvent;
 
@@ -16,7 +15,7 @@ public class RestAtInn implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         Player player = backend.getGameState().player;
-        Pet pet = backend.getGameState().pet;
+        Player pet = backend.getGameState().pet;
         ShopData shopData = backend.getGameState().getCurrentMap().shopData;
         shopData.state = ShopData.ShopState.NONE;
 

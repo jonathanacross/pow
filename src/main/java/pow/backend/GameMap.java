@@ -1,7 +1,6 @@
 package pow.backend;
 
 import pow.backend.actors.Actor;
-import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
@@ -138,7 +137,7 @@ public class GameMap implements Serializable {
     // Call when a player enters a level.
     // Player is set to the requested location, and set to full energy.
     // Pet is moved as near to the player as possible.
-    public void placePlayerAndPet(Player player, Point playerLoc, Pet pet) {
+    public void placePlayerAndPet(Player player, Point playerLoc, Player pet) {
         // Make sure the player doesn't appear on a monster.
         player.loc = findClosestOpenSquare(player, playerLoc);
         visited = true;

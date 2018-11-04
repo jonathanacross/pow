@@ -39,6 +39,7 @@ public enum KeyInput {
     MAGIC,
     PET,
     AUTO_PLAY,
+    AUTO_PLAY_PET,
     KNOWLEDGE,
     INVENTORY,
     GROUND,

@@ -1,14 +1,10 @@
 package pow.backend;
 
 import pow.backend.actors.Actor;
-import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
-import pow.backend.actors.ai.StepMovement;
-import pow.backend.dungeon.DungeonObject;
-import pow.util.Point;
+import pow.backend.dungeon.gen.CharacterGenerator;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Random;
 
 // class that just holds the data for the game state
@@ -20,7 +16,7 @@ public class GameState implements Serializable {
 
     // character data
     public final Player player;
-    public Pet pet;
+    public Player pet;
     public Actor selectedActor;  // which actor is the player controlling?
 
     public int turnCount;
@@ -57,29 +53,7 @@ public class GameState implements Serializable {
         this.rng = new Random(seed);
         this.player = player;
         this.selectedActor = this.player;
-        this.pet = new Pet(
-                new DungeonObject.Params(
-                        "pet", // id
-                        "your pet", // name
-                        "bot", // image
-                        "your pet", // description
-                        new Point(-1, -1), // location -- will be updated
-                        true), // solid
-                new Actor.Params(
-                        1,
-                        0,
-                        true,
-                        false,
-                        false,
-                        new StepMovement(),
-                        null,
-                        0,
-                        12,
-                        10,
-                        8,
-                        8,
-                        0,
-                        Collections.emptyList()), this);
+        this.pet = CharacterGenerator.getPlayer("your pet", "gel");
         this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         log.add("Welcome to Pearls of Wisdom!", MessageLog.MessageType.GAME_EVENT);

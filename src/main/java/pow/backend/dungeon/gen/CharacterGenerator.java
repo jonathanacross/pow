@@ -19,6 +19,7 @@ public class CharacterGenerator {
 
     public static class CharacterData {
         public final String id;
+        public final boolean isPet;
         public final String name;
         public final String image;
         public final String description;
@@ -29,6 +30,7 @@ public class CharacterGenerator {
         public final List<SpellParams> spells;
 
         public CharacterData(String id,
+                             boolean isPet,
                              String name,
                              String image,
                              String description,
@@ -38,6 +40,7 @@ public class CharacterGenerator {
                              double conGain,
                              List<SpellParams> spells) {
             this.id = id;
+            this.isPet = isPet;
             this.name = name;
             this.image = image;
             this.description = description;
@@ -123,6 +126,7 @@ public class CharacterGenerator {
 
     private static CharacterData parseCharacter(String[] line) {
         String id;
+        boolean isPet;
         String name;
         String image;
         String description;
@@ -132,23 +136,24 @@ public class CharacterGenerator {
         double conGain;
         List<SpellParams> spells;
 
-        if (line.length != 9) {
-            throw new IllegalArgumentException("Expected 9 fields, but had " + line.length
+        if (line.length != 10) {
+            throw new IllegalArgumentException("Expected 10 fields, but had " + line.length
                     + ". Fields = \n" + String.join(",", line));
         }
 
         try {
             id = line[0];
-            name = line[1];
-            image = line[2];
-            description = line[3];
-            strGain = Double.parseDouble(line[4]);
-            dexGain = Double.parseDouble(line[5]);
-            intGain = Double.parseDouble(line[6]);
-            conGain = Double.parseDouble(line[7]);
-            spells = parseSpells(line[8]);
+            isPet = line[1].equals("pet");
+            name = line[2];
+            image = line[3];
+            description = line[4];
+            strGain = Double.parseDouble(line[5]);
+            dexGain = Double.parseDouble(line[6]);
+            intGain = Double.parseDouble(line[7]);
+            conGain = Double.parseDouble(line[8]);
+            spells = parseSpells(line[9]);
 
-            return new CharacterData(id, name, image, description, strGain, dexGain, intGain, conGain, spells);
+            return new CharacterData(id, isPet, name, image, description, strGain, dexGain, intGain, conGain, spells);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" +
                     String.join(",", line), e);
