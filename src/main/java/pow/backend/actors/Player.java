@@ -32,6 +32,7 @@ public class Player extends Actor implements Serializable, LightSource {
     public Point floorTarget;
     public Actor monsterTarget;
 
+    // TODO: move this out, e.g., to party
     public final Knowledge knowledge;
 
     // computed as totals in MakePlayerExpLevels
@@ -108,6 +109,7 @@ public class Player extends Actor implements Serializable, LightSource {
         this.autoPlay = false;
     }
 
+    @Override
     public boolean canSeeLocation(GameState gs, Point point) {
         // must be on the map, within the player's view radius, and must be lit
         return (gs.getCurrentMap().isOnMap(point.x, point.y) &&
@@ -224,6 +226,7 @@ public class Player extends Actor implements Serializable, LightSource {
     @Override
     public void gainExperience(GameBackend backend, int experience, Actor source) {
         super.gainExperience(backend, experience, source);
+        // TODO: see how to have other members in party all get experience
         this.experience += experience;
         // TODO: big hack here -- don't include your pet in the kill count..
         // shouldn't have to key off the name 'pet', though

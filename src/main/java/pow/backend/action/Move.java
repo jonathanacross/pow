@@ -124,8 +124,8 @@ public class Move implements Action {
             // move
             actor.loc.x = newx;
             actor.loc.y = newy;
-            if (actor == gs.player) {
-                gs.getCurrentMap().updatePlayerVisibilityData(gs.player);
+            if (actor == gs.selectedActor) {
+                gs.getCurrentMap().updatePlayerVisibilityData(gs.player, gs.pet);
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {

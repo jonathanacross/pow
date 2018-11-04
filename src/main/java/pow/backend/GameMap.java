@@ -42,9 +42,9 @@ public class GameMap implements Serializable {
     public final Flags flags;
     public boolean visited;  // has the player visited this map
 
-    public void updatePlayerVisibilityData(Player player) {
-        updateBrightness(player);
-        updateSeenLocationsAndMonsters(player);
+    public void updatePlayerVisibilityData(Player player, Player pet) {
+        updateBrightness(player, pet);
+        updateSeenLocationsAndMonsters(player, pet);
     }
 
     private void initLightSources() {
@@ -63,6 +63,9 @@ public class GameMap implements Serializable {
 
     // helper method for updateBrightness
     private void addBrightness(LightSource lightSource) {
+        if (lightSource == null) {
+            return;
+        }
         int maxR2 = Circle.getRadiusSquared(lightSource.getLightRadius());
         int sx = lightSource.getLocation().x;
         int sy = lightSource.getLocation().y;
@@ -89,7 +92,7 @@ public class GameMap implements Serializable {
     // (i.e., the player can see).  The gradation 0-100 is primarily
     // a convenience for the frontend to display light in a cool manner.
     public static final int MAX_BRIGHTNESS = 100;
-    private void updateBrightness(Player player) {
+    private void updateBrightness(Player player, Player pet) {
         if (flags.permLight) {
             // level completely lit
             for (int x = 0; x < width; x++) {
@@ -111,6 +114,7 @@ public class GameMap implements Serializable {
             addBrightness(source);
         }
         addBrightness(player);
+        addBrightness(pet);
     }
 
     public GameMap(String name,
@@ -154,10 +158,10 @@ public class GameMap implements Serializable {
             }
         }
 
-        updatePlayerVisibilityData(player);
+        updatePlayerVisibilityData(player, pet);
     }
 
-    private void updateSeenLocationsAndMonsters(Player player) {
+    private void updateSeenLocationsAndMonsters(Player player, Player pet) {
         for (Point p : Circle.getPointsInCircle(player.viewRadius)) {
             int x = p.x + player.loc.x;
             int y = p.y + player.loc.y;
@@ -167,8 +171,7 @@ public class GameMap implements Serializable {
                 map[x][y].seen = true;
 
                 Actor a = actorAt(x, y);
-                // TODO: less hacky way of detecting if it's a pet?
-                if (a != null && a != player && !a.id.equals("pet")) {
+                if (a != null && a != player && a != pet) {
                     player.knowledge.addMonster(a);
                 }
             }

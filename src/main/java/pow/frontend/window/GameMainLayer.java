@@ -107,7 +107,7 @@ public class GameMainLayer extends AbstractWindow {
 
 
     private void tryQuaff(GameState gs) {
-        Point loc = gs.player.loc;
+        Point loc = gs.selectedActor.loc;
         ItemList inventoryItems = gs.selectedActor.inventory;
         ItemList floorItems = gs.getCurrentMap().map[loc.x][loc.y].items;
         Function<DungeonItem, Boolean> quaffable = (DungeonItem item) -> item.flags.potion;
@@ -322,7 +322,7 @@ public class GameMainLayer extends AbstractWindow {
 
         // draw monsters, player, pets
         for (Actor actor : gs.getCurrentMap().actors) {
-            if (gs.player.canSeeLocation(gs, actor.loc) && gs.player.canSeeActor(actor)) {
+            if (gs.selectedActor.canSeeLocation(gs, actor.loc) && gs.selectedActor.canSeeActor(actor)) {
                 ImageController.DrawMode drawMode = actor.invisible ? ImageController.DrawMode.TRANSPARENT : ImageController.DrawMode.NORMAL;
                 mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y, drawMode);
             }
@@ -339,7 +339,7 @@ public class GameMainLayer extends AbstractWindow {
         if (!frontend.getEffects().isEmpty()) {
             DungeonEffect effect = frontend.getEffects().get(0);
             for (DungeonEffect.ImageLoc imageLoc : effect.imageLocs) {
-                if (gs.player.canSeeLocation(gs, imageLoc.loc)) {
+                if (gs.selectedActor.canSeeLocation(gs, imageLoc.loc)) {
                     mapView.drawTile(graphics, imageLoc.imageName, imageLoc.loc.x, imageLoc.loc.y, ImageController.DrawMode.NORMAL);
                 }
             }
@@ -355,7 +355,7 @@ public class GameMainLayer extends AbstractWindow {
                 double darknessD = 1.0 - (gs.getCurrentMap().map[x][y].brightness / (double) GameMap.MAX_BRIGHTNESS);
                 // Assign max darkness if we can't see it; alternatively, we could paint
                 // in gray, or something.  Or just not show it at all?
-                if (!gs.player.canSeeLocation(gs, new Point(x, y))) {
+                if (!gs.selectedActor.canSeeLocation(gs, new Point(x, y))) {
                     darknessD = 1;
                 }
                 int darkness = (int) Math.round(maxDarkness * darknessD);

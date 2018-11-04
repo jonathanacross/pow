@@ -61,7 +61,7 @@ public class PickUp implements Action {
             square.items.items.remove(itemNum);
             // slight hack here.. update the visibility of the game map,
             // since picking up some artifacts may involve lanterns
-            gs.getCurrentMap().updatePlayerVisibilityData(gs.player);
+            gs.getCurrentMap().updatePlayerVisibilityData(gs.player, gs.pet);
             backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
                     MessageLog.MessageType.GAME_EVENT);
             // Print the description too, so that the player knows what the artifact does.

@@ -102,7 +102,10 @@ public class StatusWindow extends AbstractWindow {
 
         if (gs.pet != null && gs.player.canSeeLocation(gs, gs.pet.loc)) {
             y += 5;
-            drawActorSummary(graphics, gs.pet, MARGIN, y, true, selectPet); y += 40;
+            drawActorSummary(graphics, gs.pet, MARGIN, y, true, selectPet); y += 4*FONT_SIZE;
+            graphics.drawString("Exp:       " + gs.pet.experience, textX, y); y += FONT_SIZE;
+            graphics.drawString("Exp next:  " + gs.pet.getExpToNextLevel(), textX, y); y += FONT_SIZE;
+            graphics.drawString("Level:     " + gs.pet.level, textX, y); y += FONT_SIZE;
         }
 
         y += 5;
