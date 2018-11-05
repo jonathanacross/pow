@@ -223,6 +223,11 @@ public class Player extends Actor implements Serializable, LightSource {
         updateStats();
         List<GameEvent> events = new ArrayList<>();
 
+        // check for getting a pet
+        if (item.artifactSlot.equals(DungeonItem.ArtifactSlot.PETSTATUE)) {
+            events.add(GameEvent.GotPet());
+        }
+
         // check for a win!
         if (!winner && artifacts.hasAllPearls()) {
             winner = true;

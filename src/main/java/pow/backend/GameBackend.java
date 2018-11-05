@@ -30,6 +30,12 @@ public class GameBackend {
     }
     public void tellSelectedActor(Behavior behavior) { gameState.selectedActor.behavior = behavior; }
 
+    public void setPet(Player pet) {
+        this.gameState.pet = pet;
+        this.gameState.pet.setAutoplay(this.gameState, true);
+        this.gameState.getCurrentMap().placePet(this.gameState.player, this.gameState.player.loc, this.gameState.pet);
+    }
+
     public void setGameInProgress(boolean gameInProgress) {
         gameState.gameInProgress = gameInProgress;
     }

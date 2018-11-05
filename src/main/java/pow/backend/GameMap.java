@@ -161,6 +161,20 @@ public class GameMap implements Serializable {
         updatePlayerVisibilityData(player, pet);
     }
 
+    public void placePet(Player player, Point playerLoc, Player pet) {
+        if (pet != null) {
+            if (hasOpenSquare(pet)) {
+                addActor(pet);
+                pet.loc = findClosestOpenSquare(player, playerLoc);
+            }
+            else {
+                // TODO: log that the pet can't join..
+            }
+        }
+        updatePlayerVisibilityData(player, pet);
+    }
+
+
     private void updateSeenLocationsAndMonsters(Player player, Player pet) {
         for (Point p : Circle.getPointsInCircle(player.viewRadius)) {
             int x = p.x + player.loc.x;

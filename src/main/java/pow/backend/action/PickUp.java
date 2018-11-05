@@ -72,6 +72,9 @@ public class PickUp implements Action {
                 if (event.eventType.equals(GameEvent.EventType.WON_GAME)) {
                     backend.logMessage("Congratulations, you won!", MessageLog.MessageType.GAME_EVENT);
                 }
+                if (event.eventType.equals(GameEvent.EventType.GOT_PET)) {
+                    backend.logMessage("The pet statue glows as you pick it up.", MessageLog.MessageType.GAME_EVENT);
+                }
             }
             return ActionResult.Succeeded(events);
         }

@@ -77,7 +77,16 @@ public class CharacterGenerator {
             }
         }
         return players;
+    }
 
+    public static List<CharacterData> getPetCharacterData() {
+        List<CharacterData> players = new ArrayList<>();
+        for (CharacterData cd : instance.characterData) {
+            if (cd.isPet) {
+                players.add(cd);
+            }
+        }
+        return players;
     }
 
     public static Player getPlayer(String name, String id, boolean autoPlay) {

@@ -29,6 +29,7 @@ public class Frontend {
     private final WinWindow winWindow;
     private final LoseWindow loseWindow;
     private final CreateCharWindow createCharWindow;
+    private final SetPetWindow setPetWindow;
     private final OpenGameWindow openGameWindow;
     public final MonsterInfoWindow monsterInfoWindow;
     public final PlayerInfoWindow playerInfoWindow;
@@ -72,6 +73,7 @@ public class Frontend {
         winWindow = new WinWindow(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
         loseWindow = new LoseWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
         createCharWindow = new CreateCharWindow(WindowDim.center(480, 200, this.width, this.height), gameBackend, this);
+        setPetWindow = new SetPetWindow(WindowDim.center(480, 240, this.width, this.height), gameBackend, this);
         openGameWindow = new OpenGameWindow(WindowDim.center(380, 300, this.width, this.height), true, gameBackend, this);
         // main game
         statusWindow = new StatusWindow(new WindowDim(5, 5, 200, 707), true, gameBackend, this);
@@ -164,6 +166,7 @@ public class Frontend {
                 case EFFECT: this.effects.add(event.effect); break;
                 case IN_STORE: processShopEntry(); break;
                 case IN_PORTAL: choosePortal(); break;
+                case GOT_PET: open(this.setPetWindow); break;
                 default: break;
             }
         }
