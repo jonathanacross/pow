@@ -120,6 +120,14 @@ public class AttackUtils {
         for (GameEvent event : damageEvents) {
             if (event.eventType == GameEvent.EventType.KILLED) {
                 attacker.gainExperience(backend, defender.experience, defender);
+                // If the attacker is a party member, give some experience to other chars.
+                int partialExp = (int) Math.round(0.75 * defender.experience);
+                GameState gs = backend.getGameState();
+                if (attacker == gs.pet) {
+                    gs.player.gainExperience(backend, partialExp, defender);
+                } else if (attacker == gs.player && gs.pet != null) {
+                    gs.pet.gainExperience(backend, partialExp, defender);
+                }
             }
         }
         events.addAll(damageEvents);

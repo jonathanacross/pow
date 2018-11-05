@@ -69,7 +69,18 @@ public class CharacterGenerator {
         return instance.characterData;
     }
 
-    public static Player getPlayer(String name, String id) {
+    public static List<CharacterData> getPlayerCharacterData() {
+        List<CharacterData> players = new ArrayList<>();
+        for (CharacterData cd : instance.characterData) {
+            if (!cd.isPet) {
+                players.add(cd);
+            }
+        }
+        return players;
+
+    }
+
+    public static Player getPlayer(String name, String id, boolean autoPlay) {
         if (!instance.charDataMap.containsKey(id)) {
             DebugLogger.error("unknown character id '" + id + "'");
             throw new RuntimeException("unknown character id '" + id + "'");
@@ -86,7 +97,7 @@ public class CharacterGenerator {
         GainRatios gainRatios = new GainRatios("", characterData.strGain, characterData.dexGain,
                 characterData.intGain, characterData.conGain);
 
-        return new Player(objectParams, gainRatios, characterData.spells);
+        return new Player(objectParams, gainRatios, characterData.spells, autoPlay);
     }
 
     private CharacterGenerator() throws IOException {

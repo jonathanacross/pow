@@ -31,7 +31,7 @@ public class CreateCharWindow extends AbstractWindow {
         resetName();
         onName = false;
         charSelectId = 0;
-        characterData = CharacterGenerator.getCharacterData();
+        characterData = CharacterGenerator.getPlayerCharacterData();
     }
 
     public void resetName() {
@@ -39,7 +39,7 @@ public class CreateCharWindow extends AbstractWindow {
     }
 
     private void startNewGame() {
-        Player player = CharacterGenerator.getPlayer(name, characterData.get(charSelectId).id);
+        Player player = CharacterGenerator.getPlayer(name, characterData.get(charSelectId).id, false);
         onName = false;
         backend.newGame(player);
         frontend.setState(Frontend.State.GAME);

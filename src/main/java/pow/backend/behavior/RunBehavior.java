@@ -5,7 +5,6 @@ import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.MoveRequest;
 import pow.backend.actors.Actor;
-import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonFeature;
 import pow.util.Point;
 import pow.util.Direction;

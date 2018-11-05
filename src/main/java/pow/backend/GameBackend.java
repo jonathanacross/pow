@@ -5,7 +5,6 @@ import pow.backend.action.ActionResult;
 import pow.backend.action.Log;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
-import pow.backend.behavior.AiBehavior;
 import pow.backend.behavior.Behavior;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;

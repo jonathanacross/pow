@@ -3,6 +3,7 @@ package pow.backend.actors;
 import pow.backend.*;
 import pow.backend.action.Action;
 import pow.backend.actors.ai.StepMovement;
+import pow.backend.behavior.AiBehavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
@@ -70,13 +71,14 @@ public class Player extends Actor implements Serializable, LightSource {
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
              GainRatiosData.getGainRatios("player adventurer"),
-             Collections.emptyList());
-        this.autoPlay = false;
+             Collections.emptyList(),
+                false);
     }
 
     public Player(DungeonObject.Params objectParams,
                    GainRatios gainRatios,
-                   List<SpellParams> spells) {
+                   List<SpellParams> spells,
+                  boolean autoPlay) {
         super(objectParams, new Actor.Params(
                 1,
                 0,
@@ -106,8 +108,8 @@ public class Player extends Actor implements Serializable, LightSource {
         this.increaseWealth = false;
         this.winner = false;
         this.knowledge = new Knowledge();
-        this.autoPlay = false;
-    }
+        this.autoPlay = autoPlay;
+   }
 
     @Override
     public boolean canSeeLocation(GameState gs, Point point) {
@@ -118,8 +120,15 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     @Override
-    public String getPronoun() {
-        return "you";
+    public String getPronoun() { return name; }
+
+    public void setAutoplay(GameState gameState, boolean autoPlay) {
+        this.autoPlay = autoPlay;
+        if (autoPlay) {
+            this.behavior = new AiBehavior(this, gameState);
+        } else {
+            this.behavior = null;
+        }
     }
 
     @Override
@@ -226,7 +235,6 @@ public class Player extends Actor implements Serializable, LightSource {
     @Override
     public void gainExperience(GameBackend backend, int experience, Actor source) {
         super.gainExperience(backend, experience, source);
-        // TODO: see how to have other members in party all get experience
         this.experience += experience;
         // TODO: big hack here -- don't include your pet in the kill count..
         // shouldn't have to key off the name 'pet', though
@@ -266,7 +274,7 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private void gainLevel(GameBackend backend) {
-        backend.logMessage("congrats, you gained a level!", MessageLog.MessageType.GAME_EVENT);
+        backend.logMessage(this.name + " gained a level!", MessageLog.MessageType.GAME_EVENT);
         level++;
         updateStats();
     }
@@ -297,6 +305,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
     public boolean isWinner() { return winner; }
 
+    @Override
     public Point getTarget() {
         if (floorTarget != null) {
             return floorTarget;

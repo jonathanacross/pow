@@ -2,7 +2,6 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
-import pow.backend.action.*;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.ItemList;
 import pow.frontend.Frontend;
@@ -16,8 +15,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class ItemActionWindow extends AbstractWindow {
 

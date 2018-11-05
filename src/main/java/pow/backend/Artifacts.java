@@ -2,11 +2,12 @@ package pow.backend;
 
 import pow.backend.dungeon.DungeonItem;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 // Holds the set of artifacts that the player/party owns.
-public class Artifacts {
+public class Artifacts implements Serializable {
     private final Map<DungeonItem.ArtifactSlot, DungeonItem> artifacts;
 
     public Artifacts() {

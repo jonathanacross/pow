@@ -53,7 +53,10 @@ public class GameState implements Serializable {
         this.rng = new Random(seed);
         this.player = player;
         this.selectedActor = this.player;
-        this.pet = CharacterGenerator.getPlayer("your pet", "gel");
+        this.pet = CharacterGenerator.getPlayer("Fido", "gel", true);
+        // must be called separately from above getPlayer since have to pass in gamestate
+        // TODO: can this be cleaned up?
+        this.pet.setAutoplay(this, true);
         this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         log.add("Welcome to Pearls of Wisdom!", MessageLog.MessageType.GAME_EVENT);

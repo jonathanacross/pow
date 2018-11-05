@@ -4,7 +4,6 @@ import pow.backend.*;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
-import pow.backend.behavior.AiBehavior;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
@@ -230,15 +229,8 @@ public class GameMainLayer extends AbstractWindow {
         if (player == null) {
             return;
         }
-        player.autoPlay = !player.autoPlay;
+        player.setAutoplay(gs, !player.autoPlay);
         System.out.println((pet ? "pet" : "player") + " autoplay: " + (player.autoPlay ? "on" : "off"));
-        // TODO: log status of autoplay
-        if (player.autoPlay) {
-            player.behavior = new AiBehavior(player, gs);
-        }
-        if (!player.autoPlay) {
-            player.behavior = null;
-        }
     }
 
     @Override
