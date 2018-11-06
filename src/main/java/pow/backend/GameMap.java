@@ -186,7 +186,7 @@ public class GameMap implements Serializable {
 
                 Actor a = actorAt(x, y);
                 if (a != null && a != player && a != pet) {
-                    player.knowledge.addMonster(a);
+                    player.party.knowledge.addMonster(a);
                 }
             }
         }

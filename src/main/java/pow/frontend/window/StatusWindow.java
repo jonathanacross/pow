@@ -92,20 +92,20 @@ public class StatusWindow extends AbstractWindow {
 
         int y = 10;
         int textX = TILE_SIZE + 2*MARGIN;
-        boolean selectPlayer = gs.selectedActor == gs.player;
-        boolean selectPet = gs.selectedActor == gs.pet;
-        drawActorSummary(graphics, gs.player, MARGIN, y, true, selectPlayer); y += 4*FONT_SIZE;
-        graphics.drawString("Exp:       " + gs.player.experience, textX, y); y += FONT_SIZE;
-        graphics.drawString("Exp next:  " + gs.player.getExpToNextLevel(), textX, y); y += FONT_SIZE;
-        graphics.drawString("Level:     " + gs.player.level, textX, y); y += FONT_SIZE;
-        graphics.drawString("Gold:      " + gs.player.gold, textX, y); y += FONT_SIZE;
+        boolean selectPlayer = gs.party.selectedActor == gs.party.player;
+        boolean selectPet = gs.party.selectedActor == gs.party.pet;
+        drawActorSummary(graphics, gs.party.player, MARGIN, y, true, selectPlayer); y += 4*FONT_SIZE;
+        graphics.drawString("Exp:       " + gs.party.player.experience, textX, y); y += FONT_SIZE;
+        graphics.drawString("Exp next:  " + gs.party.player.getExpToNextLevel(), textX, y); y += FONT_SIZE;
+        graphics.drawString("Level:     " + gs.party.player.level, textX, y); y += FONT_SIZE;
+        graphics.drawString("Gold:      " + gs.party.player.gold, textX, y); y += FONT_SIZE;
 
-        if (gs.pet != null && gs.player.canSeeLocation(gs, gs.pet.loc)) {
+        if (gs.party.pet != null && gs.party.player.canSeeLocation(gs, gs.party.pet.loc)) {
             y += 5;
-            drawActorSummary(graphics, gs.pet, MARGIN, y, true, selectPet); y += 4*FONT_SIZE;
-            graphics.drawString("Exp:       " + gs.pet.experience, textX, y); y += FONT_SIZE;
-            graphics.drawString("Exp next:  " + gs.pet.getExpToNextLevel(), textX, y); y += FONT_SIZE;
-            graphics.drawString("Level:     " + gs.pet.level, textX, y); y += FONT_SIZE;
+            drawActorSummary(graphics, gs.party.pet, MARGIN, y, true, selectPet); y += 4*FONT_SIZE;
+            graphics.drawString("Exp:       " + gs.party.pet.experience, textX, y); y += FONT_SIZE;
+            graphics.drawString("Exp next:  " + gs.party.pet.getExpToNextLevel(), textX, y); y += FONT_SIZE;
+            graphics.drawString("Level:     " + gs.party.pet.level, textX, y); y += FONT_SIZE;
         }
 
         y += 5;
@@ -115,8 +115,8 @@ public class StatusWindow extends AbstractWindow {
         y += FONT_SIZE;
 
         for (Actor a: gs.getCurrentMap().actors) {
-            if (a == gs.player || a == gs.pet) continue;
-            if (!gs.player.canSeeLocation(gs, a.loc)) continue;
+            if (gs.party.containsActor(a)) continue;
+            if (!gs.party.player.canSeeLocation(gs, a.loc)) continue;
             drawActorSummary(graphics, a, MARGIN, y, false, false); y += 40;
         }
     }

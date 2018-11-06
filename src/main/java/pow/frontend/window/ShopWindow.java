@@ -55,9 +55,9 @@ public class ShopWindow extends AbstractWindow {
 
         // Number you can buy is limited by gold, by the count in
         // the shop, and the number the player can carry.
-        int maxNum = gs.player.gold / entry.price;
+        int maxNum = gs.party.player.gold / entry.price;
         maxNum = Math.min(maxNum, item.count);
-        maxNum = Math.min(maxNum, gs.player.inventory.numCanAdd(item));
+        maxNum = Math.min(maxNum, gs.party.player.inventory.numCanAdd(item));
 
         return maxNum;
     }
@@ -75,7 +75,7 @@ public class ShopWindow extends AbstractWindow {
         Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Hi " + backend.getGameState().player.name + ", what would you like to buy?",
+        graphics.drawString("Hi " + backend.getGameState().party.player.name + ", what would you like to buy?",
                 MARGIN, MARGIN + FONT_SIZE);
 
         int priceX = dim.width - MARGIN - 40;

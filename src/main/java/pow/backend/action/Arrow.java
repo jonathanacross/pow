@@ -59,10 +59,10 @@ public class Arrow implements Action {
             events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
         }
 
-        if (attacker == gs.player) {
-            DungeonItem arrows = gs.player.findArrows();
+        if (attacker == gs.party.player) {
+            DungeonItem arrows = gs.party.player.findArrows();
             int count = arrows.count - 1;
-            gs.player.inventory.removeOneItem(arrows);
+            gs.party.player.inventory.removeOneItem(arrows);
             backend.logMessage("you have " + count + " arrows left", MessageLog.MessageType.GENERAL);
         }
 

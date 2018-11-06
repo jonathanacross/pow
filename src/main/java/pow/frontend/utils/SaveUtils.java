@@ -56,7 +56,7 @@ public class SaveUtils {
     }
 
     public static void saveToFile(GameState state) {
-        String characterName = state.player.name;
+        String characterName = state.party.player.name;
         File file = new File(SAVE_DIR, characterName);
         try (
                 OutputStream fos = new FileOutputStream(file);

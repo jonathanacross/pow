@@ -63,7 +63,7 @@ public class ItemActions {
             return false;
         }
 
-        Player player = gameState.player;
+        Player player = gameState.party.player;
         if (!player.hasBowEquipped()) {
             return false;
         }
@@ -77,7 +77,7 @@ public class ItemActions {
     }
 
     public static boolean canGive(GameState gameState, ItemLocation location) {
-        if (gameState.pet == null) {
+        if (gameState.party.pet == null) {
             return false;
         }
         return location == ItemLocation.INVENTORY || location == ItemLocation.PET;

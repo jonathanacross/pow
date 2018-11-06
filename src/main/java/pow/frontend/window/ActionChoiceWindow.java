@@ -54,9 +54,8 @@ public class ActionChoiceWindow extends AbstractWindow {
         }
 
         GameState gs = backend.getGameState();
-        Player player = gs.player;
-        Actor selectedActor = gs.selectedActor;
-        Actor nonselectedActor = (gs.selectedActor == gs.player) ? gs.pet : gs.player;
+        Player player = gs.party.player;
+        Actor selectedActor = gs.party.selectedActor;
         DungeonItem item = items.get(itemIndex);
 
         // TODO: change so can use f/q/d/g/w/W as alternates

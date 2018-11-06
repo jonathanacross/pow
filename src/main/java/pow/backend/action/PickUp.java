@@ -52,16 +52,16 @@ public class PickUp implements Action {
 
         // special case for artifacts
         if (item.artifactSlot != DungeonItem.ArtifactSlot.NONE) {
-            if (actor != gs.player) {
+            if (actor != gs.party.player) {
                 // don't let another monster pick up key game items. :)
                 return ActionResult.Failed(null);
             }
             // at this point we know that it's the player picking up the artifact
-            events.addAll(gs.player.addArtifact(item));
+            events.addAll(gs.party.addArtifact(item));
             square.items.items.remove(itemNum);
             // slight hack here.. update the visibility of the game map,
             // since picking up some artifacts may involve lanterns
-            gs.getCurrentMap().updatePlayerVisibilityData(gs.player, gs.pet);
+            gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
             backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
                     MessageLog.MessageType.GAME_EVENT);
             // Print the description too, so that the player knows what the artifact does.

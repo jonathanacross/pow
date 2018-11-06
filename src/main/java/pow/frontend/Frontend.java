@@ -229,7 +229,7 @@ public class Frontend {
                 gameBackend, this,
                 "Which area do you wish to go to?",
                 openPortalAreas,
-                (String areaId) -> gameBackend.tellSelectedActor(new ExitPortal(gameBackend.getGameState().player, areaId))
+                (String areaId) -> gameBackend.tellSelectedActor(new ExitPortal(gameBackend.getGameState().party.player, areaId))
         ));
     }
 

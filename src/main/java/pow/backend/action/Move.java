@@ -63,7 +63,7 @@ public class Move implements Action {
         // player is on a tile that lets them go to another area.
         if (!gs.getCurrentMap().isOnMap(newx, newy)) {
             // check for player changing maps
-            if (actor == gs.player) {
+            if (actor == gs.party.player) {
                 DungeonTerrain currSquareTerrain = gs.getCurrentMap().map[actor.loc.x][actor.loc.y].terrain;
                 if (currSquareTerrain.flags.teleport) {
                     DungeonExit exit = new DungeonExit(currSquareTerrain.actionParams.name);
@@ -124,8 +124,8 @@ public class Move implements Action {
             // move
             actor.loc.x = newx;
             actor.loc.y = newy;
-            if (actor == gs.selectedActor) {
-                gs.getCurrentMap().updatePlayerVisibilityData(gs.player, gs.pet);
+            if (actor == gs.party.selectedActor) {
+                gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {

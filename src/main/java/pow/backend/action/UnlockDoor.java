@@ -26,10 +26,10 @@ public class UnlockDoor implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         // make sure the player is capable of unlocking the door.
-        if (lockLevel == 1 && !backend.getGameState().player.artifacts.hasKey()) {
+        if (lockLevel == 1 && !backend.getGameState().party.artifacts.hasKey()) {
             return ActionResult.Failed(null);
         }
-        if (lockLevel == 2 && !backend.getGameState().player.artifacts.hasAllPearls()) {
+        if (lockLevel == 2 && !backend.getGameState().party.artifacts.hasAllPearls()) {
             return ActionResult.Failed(null);
         }
         GameMap map = backend.getGameState().getCurrentMap();

@@ -1,8 +1,6 @@
 package pow.backend;
 
-import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
-import pow.backend.dungeon.gen.CharacterGenerator;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -15,9 +13,7 @@ public class GameState implements Serializable {
     public final Random rng;
 
     // character data
-    public final Player player;
-    public Player pet;
-    public Actor selectedActor;  // which actor is the player controlling?
+    public final Party party;
 
     public int turnCount;
 
@@ -38,9 +34,7 @@ public class GameState implements Serializable {
         this.rng = new Random();
         this.gameInProgress = false;
         this.inPortal = false;
-        this.player = new Player();
-        this.selectedActor = this.player;
-        this.pet = null;
+        this.party = new Party(new Player());
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         this.turnCount = 0;
     }
@@ -51,10 +45,8 @@ public class GameState implements Serializable {
         int seed = (new Random()).nextInt();
         System.out.println("starting seed = " + seed);
         this.rng = new Random(seed);
-        this.player = player;
-        this.selectedActor = this.player;
-        this.pet = null;
-        this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
+        this.party = new Party(player);
+        this.world = new GameWorld(rng, party); // fixes positions of player and pet
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         log.add("Welcome to Pearls of Wisdom!", MessageLog.MessageType.GAME_EVENT);
         log.add("Press ? for help.", MessageLog.MessageType.GENERAL);

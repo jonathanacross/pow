@@ -39,9 +39,9 @@ public class AiBehavior implements Behavior, Serializable {
         }
 
         // if "far away" from the human controlled player, then try to catch up
-        int playerDist = dist2(actor.loc, gs.selectedActor.loc);
+        int playerDist = dist2(actor.loc, gs.party.selectedActor.loc);
         if (playerDist >= 9) {
-            return actor.movement.moveTowardTarget(actor, gs, gs.player.loc);
+            return actor.movement.moveTowardTarget(actor, gs, gs.party.player.loc);
         }
 
         // move randomly

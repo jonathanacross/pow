@@ -50,8 +50,8 @@ public class SpellChoiceWindow extends AbstractWindow {
     private static final int FONT_SIZE = 12;
 
     private boolean enabled(SpellParams params) {
-        return params.minLevel <= backend.getGameState().player.level &&
-                params.requiredMana <= backend.getGameState().player.getMana();
+        return params.minLevel <= backend.getGameState().party.selectedActor.level &&
+                params.requiredMana <= backend.getGameState().party.selectedActor.getMana();
     }
 
     @Override
@@ -89,7 +89,7 @@ public class SpellChoiceWindow extends AbstractWindow {
             graphics.drawString(spell.name, nameColumnX, y);
             graphics.drawString(Integer.toString(spell.minLevel), levelColumnX, y);
             graphics.drawString(Integer.toString(spell.requiredMana), manaColumnX, y);
-            graphics.drawString(spell.getDescription(backend.getGameState().player), infoColumnX, y);
+            graphics.drawString(spell.getDescription(backend.getGameState().party.selectedActor), infoColumnX, y);
 
             idx++;
             y += FONT_SIZE;

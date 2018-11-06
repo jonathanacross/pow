@@ -35,7 +35,7 @@ public class MonsterInfoWindow extends AbstractWindow {
             return;
         }
 
-        Player player = backend.getGameState().player;
+        Player player = backend.getGameState().party.player;
         Knowledge.MonsterSummary monsterSummary = new Knowledge.MonsterSummary(actor);
 
         // actual drawing here

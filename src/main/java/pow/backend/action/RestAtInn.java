@@ -14,8 +14,8 @@ public class RestAtInn implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        Player player = backend.getGameState().player;
-        Player pet = backend.getGameState().pet;
+        Player player = backend.getGameState().party.player;
+        Player pet = backend.getGameState().party.pet;
         ShopData shopData = backend.getGameState().getCurrentMap().shopData;
         shopData.state = ShopData.ShopState.NONE;
 

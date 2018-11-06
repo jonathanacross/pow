@@ -64,10 +64,10 @@ public class Phase implements Action {
             }
 
             actor.loc = targetLoc;
-            if (actor == gs.selectedActor) {
-                gs.player.floorTarget = null;
-                gs.player.monsterTarget = null;
-                gs.getCurrentMap().updatePlayerVisibilityData(gs.player, gs.pet);
+            if (actor == gs.party.selectedActor) {
+                gs.party.player.floorTarget = null;
+                gs.party.player.monsterTarget = null;
+                gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
             }
             backend.logMessage(actor.getPronoun() + " phase.", MessageLog.MessageType.GENERAL);
 

@@ -239,7 +239,7 @@ public class Monster extends Actor implements Serializable {
 
         Actor closestEnemy = movement.findNearestEnemy(this, gs);
         if (enemyIsWithinRange(closestEnemy, 3) ||
-                enemyIsWithinRange(gs.player, 3)) {
+                enemyIsWithinRange(gs.party.player, 3)) {
             // Randomly wake up if near an enemy or the player. (This
             // is two cases, because the player may wake nearby townspeople,
             // but your pet may wake a monster.)

@@ -47,7 +47,7 @@ public class AttackUtils {
                 : MessageLog.MessageType.COMBAT_GOOD;
         backend.logMessage(actor.getPronoun() + " died", messageType);
 
-        if (actor == gs.player) {
+        if (actor == gs.party.player) {
             gs.gameInProgress = false;
             return GameEvent.LostGame();
         }
@@ -66,7 +66,7 @@ public class AttackUtils {
 
         // with some probability, have the monster drop some random items
         for (int attempt = 0; attempt < actor.numDropAttempts; attempt++) {
-            double dropChance = gs.player.increaseWealth ? GameConstants.BONUS_MONSTER_DROP_CHANCE : GameConstants.MONSTER_DROP_CHANCE;
+            double dropChance = gs.party.player.increaseWealth ? GameConstants.BONUS_MONSTER_DROP_CHANCE : GameConstants.MONSTER_DROP_CHANCE;
             if (gs.rng.nextDouble() <= dropChance) {
                 int difficultyLevel = map.level;
                 DungeonItem item = GeneratorUtils.getRandomItemForLevel(difficultyLevel, gs.rng);
@@ -75,7 +75,7 @@ public class AttackUtils {
         }
 
         // with some probability, drop some gold
-        double multiplier = gs.player.increaseWealth ? GameConstants.BONUS_GOLD_DROP_RATE_MULTIPLIER : 1.0;
+        double multiplier = gs.party.player.increaseWealth ? GameConstants.BONUS_GOLD_DROP_RATE_MULTIPLIER : 1.0;
         double goldDropChance =
                 1 - (multiplier * Math.pow(1 - GameConstants.MONSTER_GOLD_DROP_CHANCE, actor.numDropAttempts + 1));
         if (gs.rng.nextDouble() <= goldDropChance) {
@@ -88,11 +88,11 @@ public class AttackUtils {
         // so that the player won't disappear from the map.
         map.removeActor(actor);
 
-        if (actor == gs.player.monsterTarget) {
-            gs.player.monsterTarget = null;
+        if (actor == gs.party.player.monsterTarget) {
+            gs.party.player.monsterTarget = null;
         }
-        if (actor == gs.pet) {
-            gs.pet = null;
+        if (actor == gs.party.pet) {
+            gs.party.pet = null;
         }
 
         return GameEvent.Killed();
@@ -123,10 +123,10 @@ public class AttackUtils {
                 // If the attacker is a party member, give some experience to other chars.
                 int partialExp = (int) Math.round(0.75 * defender.experience);
                 GameState gs = backend.getGameState();
-                if (attacker == gs.pet) {
-                    gs.player.gainExperience(backend, partialExp, defender);
-                } else if (attacker == gs.player && gs.pet != null) {
-                    gs.pet.gainExperience(backend, partialExp, defender);
+                if (attacker == gs.party.pet) {
+                    gs.party.player.gainExperience(backend, partialExp, defender);
+                } else if (attacker == gs.party.player && gs.party.pet != null) {
+                    gs.party.pet.gainExperience(backend, partialExp, defender);
                 }
             }
         }

@@ -50,7 +50,7 @@ public class UpgradeItem implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        Player player = gs.player;
+        Player player = gs.party.player;
 
         // pay for the upgrade
         if (player.gold < upgradeInfo.price) {

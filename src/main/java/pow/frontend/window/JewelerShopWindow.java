@@ -117,7 +117,7 @@ public class JewelerShopWindow extends AbstractWindow {
                              Consumer<UpgradeItem.UpgradeInfo> callback) {
         super(dim, visible, backend, frontend);
         this.callback = callback;
-        Player player = backend.getGameState().player;
+        Player player = backend.getGameState().party.player;
         List<ShopUtils.ItemInfo> equipment = ShopUtils.getListOfUpgradeableItems(player.equipment.items);
         List<ShopUtils.ItemInfo> inventory = ShopUtils.getListOfUpgradeableItems(player.inventory.items);
         List<ShopUtils.ItemInfo> gems = ShopUtils.getListOfGems(player);
@@ -177,7 +177,7 @@ public class JewelerShopWindow extends AbstractWindow {
     @Override
     public void drawContents(Graphics graphics) {
 
-        Player player = backend.getGameState().player;
+        Player player = backend.getGameState().party.player;
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);

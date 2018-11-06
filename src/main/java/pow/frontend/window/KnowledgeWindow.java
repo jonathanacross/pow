@@ -100,7 +100,7 @@ public class KnowledgeWindow extends AbstractWindow {
         }
 
         if (!monsterSummary.isEmpty()) {
-            Player player = backend.getGameState().player;
+            Player player = backend.getGameState().party.player;
             MonsterDisplay.drawMonsterInfo(
                     graphics,
                     monsterSummary.get(selectIndex),

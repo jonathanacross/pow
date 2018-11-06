@@ -21,20 +21,16 @@ public class Player extends Actor implements Serializable, LightSource {
     public final int viewRadius;
     private int lightRadius;
     public final ItemList equipment;
-    // TODO: move artifacts out, e.g., to a party
-    public final Artifacts artifacts;
     private final GainRatios gainRatios;
     public boolean increaseWealth;
-    private boolean winner;
+    public boolean winner;
     public boolean autoPlay;  // whether this character is controlled by computer
 
     public int experience;
 
     public Point floorTarget;
     public Actor monsterTarget;
-
-    // TODO: move this out, e.g., to party
-    public final Knowledge knowledge;
+    public Party party;  // link back to common data in the party.
 
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
@@ -62,6 +58,7 @@ public class Player extends Actor implements Serializable, LightSource {
     };
 
     // default (empty) player
+    // TODO: can this be replaced by a player builder? this is only needed for game start.
     public Player() {
         this(new DungeonObject.Params(
                         "player", // id
@@ -95,21 +92,20 @@ public class Player extends Actor implements Serializable, LightSource {
                 0,
                 spells));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
-        this.lightRadius = -1;  // filled in by updateStats
+        this.lightRadius = GameConstants.PLAYER_SMALL_LIGHT_RADIUS;
         this.equipment = new ItemList();
-        this.artifacts = new Artifacts();
         this.gainRatios = gainRatios;
         this.experience = 0;
-        updateStats();
+        //updateStats();
         this.health = this.baseStats.maxHealth;
         this.mana = this.baseStats.maxMana;
         this.floorTarget = null;
         this.monsterTarget = null;
         this.increaseWealth = false;
         this.winner = false;
-        this.knowledge = new Knowledge();
         this.autoPlay = autoPlay;
-   }
+        this.party = null;
+    }
 
     @Override
     public boolean canSeeLocation(GameState gs, Point point) {
@@ -153,7 +149,7 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     // update our stats, plus toHit, defense to include current equipped items and other bonuses.
-    private void updateStats() {
+    public void updateStats() {
 
         int innateStr = (int) Math.round(gainRatios.strRatio * (level + 6));
         int innateDex = (int) Math.round(gainRatios.dexRatio * (level + 6));
@@ -181,17 +177,17 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private void updateLightRadius() {
-        this.lightRadius = artifacts.getLightRadius();
+        this.lightRadius = party.artifacts.getLightRadius();
     }
 
     private void updateBagSize() {
-        if (this.artifacts.hasBag()) {
+        if (party.artifacts.hasBag()) {
             this.inventory.increaseMaxPerSlot(GameConstants.PLAYER_EXPANDED_ITEMS_PER_SLOT);
         }
     }
 
     private void updateAquatic() {
-        this.aquatic = this.artifacts.hasFloat();
+        this.aquatic = party.artifacts.hasFloat();
     }
 
     // returns the old item, if any
@@ -218,25 +214,6 @@ public class Player extends Actor implements Serializable, LightSource {
         return item;
     }
 
-    public List<GameEvent> addArtifact(DungeonItem item) {
-        artifacts.add(item);
-        updateStats();
-        List<GameEvent> events = new ArrayList<>();
-
-        // check for getting a pet
-        if (item.artifactSlot.equals(DungeonItem.ArtifactSlot.PETSTATUE)) {
-            events.add(GameEvent.GotPet());
-        }
-
-        // check for a win!
-        if (!winner && artifacts.hasAllPearls()) {
-            winner = true;
-            events.add(GameEvent.WonGame());
-        }
-
-        return events;
-    }
-
     @Override
     public void gainExperience(GameBackend backend, int experience, Actor source) {
         super.gainExperience(backend, experience, source);
@@ -244,7 +221,7 @@ public class Player extends Actor implements Serializable, LightSource {
         // TODO: big hack here -- don't include your pet in the kill count..
         // shouldn't have to key off the name 'pet', though
         if (source != null && !source.id.equals("pet")) {
-            this.knowledge.incrementKillCount(source);
+            party.knowledge.incrementKillCount(source);
         }
         checkIncreaseCharLevel(backend);
     }
@@ -293,12 +270,12 @@ public class Player extends Actor implements Serializable, LightSource {
 
     @Override
     public boolean canDig() {
-        return artifacts.hasPickAxe();
+        return party.artifacts.hasPickAxe();
     }
 
     @Override
     public boolean canSeeInvisible() {
-        return artifacts.hasGlasses();
+        return party.artifacts.hasGlasses();
     }
 
     public DungeonItem findArrows() {

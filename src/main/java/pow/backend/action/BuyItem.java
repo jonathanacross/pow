@@ -26,7 +26,7 @@ public class BuyItem implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        Player player = backend.getGameState().player;
+        Player player = backend.getGameState().party.player;
         ShopData.ShopEntry entry = shopEntries.get(idx);
 
         // sanity checks
