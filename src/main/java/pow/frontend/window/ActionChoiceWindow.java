@@ -86,9 +86,9 @@ public class ActionChoiceWindow extends AbstractWindow {
                         // TODO: support pets/or fix so this can't be called
                         backend.tellSelectedActor(new TakeOff(player, itemIndex));
                         break;
-                    case GIVE:
-                        // TODO: allow user to specify count
-                        backend.tellSelectedActor(new TransferItem(selectedActor, nonselectedActor, itemIndex, item.count));
+//                    case GIVE:
+//                        // TODO: allow user to specify count
+//                        backend.tellSelectedActor(new TransferItem(selectedActor, nonselectedActor, itemIndex, item.count));
                 }
                 frontend.close();
                 frontend.close();

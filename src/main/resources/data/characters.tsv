@@ -5,5 +5,5 @@ warrior	main_player	warrior	human_fighter	yourself	1.1	1.1	0.7	1.1	phase,lance,c
 rogue	main_player	rogue	human_thief	yourself	0.9	1.1	1	1	sleep monster,poison arrow,phase,lesser heal,backstab,boost attack
 dragonmaster	main_player	dragon master	dragonmaster	yourself	1.1	1.2	0.9	1.2	lance,lightning breath,phase,ice breath,lesser heal,poison breath,fire breath,greater heal,rift,resist elements
 gel	pet	gel	bot	a gelatinous spell caster	0.95	0.9	1.2	0.95	lesser heal,magic arrow,greater heal,mana cloud
-cat	pet	cat	bot	a quick warrior	1.0	1.2	0.8	1.0	magic arrow,circle cut,backstab
-pet rock	pet	pet rock	bot	a slow powerful warrior	1.1	1.1	0.6	1.2	lance,rift,quake
+#cat	pet	cat	bot	a quick warrior	1.0	1.2	0.8	1.0	magic arrow,circle cut,backstab
+#pet rock	pet	pet rock	bot	a slow powerful warrior	1.1	1.1	0.6	1.2	lesser heal,lance,rift,quake

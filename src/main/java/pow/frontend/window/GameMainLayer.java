@@ -28,6 +28,10 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void tryPickup(GameState gs) {
+        if (gs.selectedActor == gs.pet) {
+            backend.logMessage(gs.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
         Point playerLoc = gs.selectedActor.loc;
         ItemList items = gs.getCurrentMap().map[playerLoc.x][playerLoc.y].items;
 
@@ -52,6 +56,10 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void showGround(GameState gs) {
+        if (gs.selectedActor == gs.pet) {
+            backend.logMessage(gs.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
         Point playerLoc = gs.selectedActor.loc;
         ItemList items = gs.getCurrentMap().map[playerLoc.x][playerLoc.y].items;
         frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Ground:",
@@ -59,16 +67,25 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void showInventory(GameState gs) {
+        if (gs.selectedActor == gs.pet) {
+            backend.logMessage(gs.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
         frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Inventory:",
                        gs.selectedActor.inventory, ItemActions.ItemLocation.INVENTORY));
     }
 
     private void showEquipment(GameState gs) {
+        if (gs.selectedActor == gs.pet) {
+            backend.logMessage(gs.pet.name + " cannot wear/wield items.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
         frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Equipment:",
                 gs.player.equipment, ItemActions.ItemLocation.EQUIPMENT));
     }
 
     private void showPetInventory(GameState gs) {
+        backend.logMessage(gs.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
         frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Pet:",
                 gs.pet.inventory, ItemActions.ItemLocation.PET));
     }
@@ -90,9 +107,13 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void tryDrop(GameState gs) {
+        if (gs.selectedActor == gs.pet) {
+            backend.logMessage(gs.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
         Function<DungeonItem, Boolean> droppable = (DungeonItem item) -> true;
         if (countLegalItems(gs.selectedActor.inventory.items, droppable) == 0) {
-            backend.logMessage("You have nothing to drop.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(gs.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
@@ -106,6 +127,10 @@ public class GameMainLayer extends AbstractWindow {
 
 
     private void tryQuaff(GameState gs) {
+        if (gs.selectedActor == gs.pet) {
+            backend.logMessage(gs.pet.name + " cannot quaff potions.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
         Point loc = gs.selectedActor.loc;
         ItemList inventoryItems = gs.selectedActor.inventory;
         ItemList floorItems = gs.getCurrentMap().map[loc.x][loc.y].items;
@@ -137,7 +162,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void tryWear(GameState gs) {
         if (gs.selectedActor == gs.pet) {
-            backend.logMessage("your pet cannot equip/wear items.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(gs.pet.name + " cannot equip/wear items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
@@ -176,7 +201,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void tryTakeOff(GameState gs) {
         if (gs.selectedActor == gs.pet) {
-            backend.logMessage("your pet cannot unequip items.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(gs.pet.name + " cannot unequip items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
@@ -399,7 +424,7 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         if (gameState.selectedActor == gameState.pet) {
-            backend.logMessage("your pet cannot shoot arrows.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(gameState.pet.name + " cannot shoot arrows.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
