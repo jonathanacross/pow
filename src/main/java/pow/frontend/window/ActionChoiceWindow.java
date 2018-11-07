@@ -54,8 +54,7 @@ public class ActionChoiceWindow extends AbstractWindow {
         }
 
         GameState gs = backend.getGameState();
-        Player player = gs.party.player;
-        Actor selectedActor = gs.party.selectedActor;
+        Player selectedActor = gs.party.selectedActor;
         DungeonItem item = items.get(itemIndex);
 
         // TODO: change so can use f/q/d/g/w/W as alternates
@@ -71,19 +70,16 @@ public class ActionChoiceWindow extends AbstractWindow {
                         backend.tellSelectedActor(new Drop(selectedActor, itemIndex, item.count));
                         break;
                     case FIRE:
-                        // TODO: support pets/or fix so this can't be called
-                        backend.tellSelectedActor(new Arrow(player, player.getTarget(), player.getSecondaryAttack()));
+                        backend.tellSelectedActor(new Arrow(selectedActor, selectedActor.getTarget(), selectedActor.getSecondaryAttack()));
                         break;
                     case WEAR:
-                        // TODO: support pets/or fix so this can't be called
-                        backend.tellSelectedActor(new Wear(player, items, itemIndex));
+                        backend.tellSelectedActor(new Wear(selectedActor, items, itemIndex));
                         break;
                     case QUAFF:
                         backend.tellSelectedActor(new Quaff(selectedActor, items, itemIndex));
                         break;
                     case TAKE_OFF:
-                        // TODO: support pets/or fix so this can't be called
-                        backend.tellSelectedActor(new TakeOff(player, itemIndex));
+                        backend.tellSelectedActor(new TakeOff(selectedActor, itemIndex));
                         break;
 //                    case GIVE:
 //                        // TODO: allow user to specify count

@@ -28,12 +28,12 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void tryPickup(GameState gs) {
-        if (gs.party.selectedActor == gs.party.pet) {
+        if (gs.party.isPetSelected()) {
             backend.logMessage(gs.party.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
-        Point playerLoc = gs.party.selectedActor.loc;
-        ItemList items = gs.getCurrentMap().map[playerLoc.x][playerLoc.y].items;
+        Point loc = gs.party.selectedActor.loc;
+        ItemList items = gs.getCurrentMap().map[loc.x][loc.y].items;
 
         switch (items.size()) {
             case 0:
@@ -56,18 +56,18 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void showGround(GameState gs) {
-        if (gs.party.selectedActor == gs.party.pet) {
+        if (gs.party.isPetSelected()) {
             backend.logMessage(gs.party.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
-        Point playerLoc = gs.party.selectedActor.loc;
-        ItemList items = gs.getCurrentMap().map[playerLoc.x][playerLoc.y].items;
+        Point loc = gs.party.selectedActor.loc;
+        ItemList items = gs.getCurrentMap().map[loc.x][loc.y].items;
         frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Ground:",
                 items, ItemActions.ItemLocation.GROUND));
     }
 
     private void showInventory(GameState gs) {
-        if (gs.party.selectedActor == gs.party.pet) {
+        if (gs.party.isPetSelected()) {
             backend.logMessage(gs.party.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
@@ -76,12 +76,12 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void showEquipment(GameState gs) {
-        if (gs.party.selectedActor == gs.party.pet) {
+        if (gs.party.isPetSelected()) {
             backend.logMessage(gs.party.pet.name + " cannot wear/wield items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
         frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Equipment:",
-                gs.party.player.equipment, ItemActions.ItemLocation.EQUIPMENT));
+                gs.party.selectedActor.equipment, ItemActions.ItemLocation.EQUIPMENT));
     }
 
     private void showPetInventory(GameState gs) {
@@ -107,13 +107,13 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void tryDrop(GameState gs) {
-        if (gs.party.selectedActor == gs.party.pet) {
-            backend.logMessage(gs.party.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
+        if (gs.party.isPetSelected()) {
+            backend.logMessage(gs.party.pet.name + " has no items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
         Function<DungeonItem, Boolean> droppable = (DungeonItem item) -> true;
         if (countLegalItems(gs.party.selectedActor.inventory.items, droppable) == 0) {
-            backend.logMessage(gs.party.pet.name + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(gs.party.selectedActor.name + " has no items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
@@ -127,7 +127,7 @@ public class GameMainLayer extends AbstractWindow {
 
 
     private void tryQuaff(GameState gs) {
-        if (gs.party.selectedActor == gs.party.pet) {
+        if (gs.party.isPetSelected()) {
             backend.logMessage(gs.party.pet.name + " cannot quaff potions.", MessageLog.MessageType.USER_ERROR);
             return;
         }
@@ -161,7 +161,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void tryWear(GameState gs) {
-        if (gs.party.selectedActor == gs.party.pet) {
+        if (gs.party.isPetSelected()) {
             backend.logMessage(gs.party.pet.name + " cannot equip/wear items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
@@ -194,27 +194,27 @@ public class GameMainLayer extends AbstractWindow {
                         mainItemList.items, altItems, wearable,
                         (ItemChoiceWindow.ItemChoice choice) ->
                                 backend.tellSelectedActor(new Wear(
-                                        gs.party.player,
+                                        gs.party.selectedActor,
                                         choice.useSecondList ? altItemList : mainItemList,
                                         choice.itemIdx))));
     }
 
     private void tryTakeOff(GameState gs) {
-        if (gs.party.selectedActor == gs.party.pet) {
-            backend.logMessage(gs.party.pet.name + " cannot unequip items.", MessageLog.MessageType.USER_ERROR);
+        if (gs.party.isPetSelected()) {
+            backend.logMessage(gs.party.pet.name + " has no items equipped.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
         Function<DungeonItem, Boolean> removable = (DungeonItem item) -> true;
-        if (countLegalItems(gs.party.player.equipment.items, removable) == 0) {
+        if (countLegalItems(gs.party.selectedActor.equipment.items, removable) == 0) {
             backend.logMessage("You have nothing you can take off.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
         frontend.open(
                 new ItemChoiceWindow(632, 25, this.backend, this.frontend, "Take off which item?", null,
-                        gs.party.player.equipment.items, null, removable,
-                        (ItemChoiceWindow.ItemChoice choice) -> backend.tellSelectedActor(new TakeOff(gs.party.player, choice.itemIdx))));
+                        gs.party.selectedActor.equipment.items, null, removable,
+                        (ItemChoiceWindow.ItemChoice choice) -> backend.tellSelectedActor(new TakeOff(gs.party.selectedActor, choice.itemIdx))));
     }
 
     private void tryCastSpell(GameState gs) {
@@ -346,10 +346,10 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         // draw player targets
-        if (gs.party.player.floorTarget != null) {
-            mapView.drawCircle(graphics, Color.RED, gs.party.player.floorTarget.x, gs.party.player.floorTarget.y);
-        } else if (gs.party.player.monsterTarget != null) {
-            mapView.drawCircle(graphics, Color.RED, gs.party.player.monsterTarget.loc.x, gs.party.player.monsterTarget.loc.y);
+        if (gs.party.selectedActor.floorTarget != null) {
+            mapView.drawCircle(graphics, Color.RED, gs.party.selectedActor.floorTarget.x, gs.party.selectedActor.floorTarget.y);
+        } else if (gs.party.selectedActor.monsterTarget != null) {
+            mapView.drawCircle(graphics, Color.RED, gs.party.selectedActor.monsterTarget.loc.x, gs.party.selectedActor.monsterTarget.loc.y);
         }
 
         // draw effects
@@ -404,31 +404,32 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void tryFire(GameState gameState) {
-        Player player = gameState.party.player;
-
-        // make sure the player has a bow and arrows
-        if (!player.hasBowEquipped()) {
-            backend.logMessage("you do not have a bow equipped.", MessageLog.MessageType.USER_ERROR);
+        if (gameState.party.isPetSelected()) {
+            backend.logMessage(gameState.party.pet.name + " cannot fire arrows.", MessageLog.MessageType.USER_ERROR);
             return;
         }
-        if (player.findArrows() == null) {
-            backend.logMessage("you do not have any arrows.", MessageLog.MessageType.USER_ERROR);
+
+        Player actor = gameState.party.selectedActor;
+
+        // make sure the player has a bow and arrows
+        if (!actor.hasBowEquipped()) {
+            backend.logMessage(actor.getPronoun() + "does not have a bow equipped.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
+        if (actor.findArrows() == null) {
+            backend.logMessage(actor.getPronoun() + "does not have any arrows.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
         // make sure there's a target
-        Point target = player.getTarget();
+        Point target = actor.getTarget();
         if (target == null) {
-            backend.logMessage("no target selected.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(actor.getPronoun() + " does not have a target selected.", MessageLog.MessageType.USER_ERROR);
             return;
         }
 
-        if (gameState.party.selectedActor == gameState.party.pet) {
-            backend.logMessage(gameState.party.pet.name + " cannot shoot arrows.", MessageLog.MessageType.USER_ERROR);
-            return;
-        }
 
-        backend.tellSelectedActor(new Arrow(gameState.party.selectedActor, target, gameState.party.player.getSecondaryAttack()));
+        backend.tellSelectedActor(new Arrow(gameState.party.selectedActor, target, gameState.party.selectedActor.getSecondaryAttack()));
     }
 
     private void startLooking(GameState gameState) {
@@ -446,10 +447,10 @@ public class GameMainLayer extends AbstractWindow {
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,
                 (Point p) -> {
                     Actor m = gameState.getCurrentMap().actorAt(p.x, p.y);
-                    gameState.party.player.monsterTarget = null;
-                    gameState.party.player.floorTarget = null;
+                    gameState.party.selectedActor.monsterTarget = null;
+                    gameState.party.selectedActor.floorTarget = null;
                     if (!m.friendly) {
-                        gameState.party.player.monsterTarget = m;
+                        gameState.party.selectedActor.monsterTarget = m;
                     }
                 }
         ));
@@ -464,8 +465,8 @@ public class GameMainLayer extends AbstractWindow {
         }
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,
                 (Point p) -> {
-                    gameState.party.player.monsterTarget = null;
-                    gameState.party.player.floorTarget = p;
+                    gameState.party.selectedActor.monsterTarget = null;
+                    gameState.party.selectedActor.floorTarget = p;
                 }
         ));
     }

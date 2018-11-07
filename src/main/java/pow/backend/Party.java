@@ -13,8 +13,7 @@ import java.util.List;
 public class Party implements Serializable {
     public Player player;
     public Player pet;
-    // TODO: can this be a player?
-    public Actor selectedActor;  // which actor is the player controlling?
+    public Player selectedActor;  // which actor is the player controlling?
     public final Artifacts artifacts;   // set of artifacts the party is carrying.
     public final Knowledge knowledge;
 
@@ -36,8 +35,22 @@ public class Party implements Serializable {
         pet.party = this;
     }
 
+    public void setSelectedActor(Actor actor) {
+        if (actor == this.player) {
+            selectedActor = this.player;
+        } else if (actor == this.pet) {
+            selectedActor = this.pet;
+        } else {
+            selectedActor = null;
+        }
+    }
+
     public boolean containsActor(Actor actor) {
         return actor != null && (actor == this.player || actor == this.pet);
+    }
+
+    public boolean isPetSelected() {
+        return this.selectedActor != null && this.selectedActor == this.pet;
     }
 
     public List<GameEvent> addArtifact(DungeonItem item) {

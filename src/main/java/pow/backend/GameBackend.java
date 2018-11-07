@@ -100,7 +100,7 @@ public class GameBackend {
 
                 // if waiting for input, just return
                 if (actor.energy.canTakeTurn() && actor.needsInput(gameState)) {
-                    gameState.party.selectedActor = actor;
+                    gameState.party.setSelectedActor(actor);
                     return gameResult;
                     //return new GameResult(madeProgress, new ArrayList<>());
                 }
@@ -109,7 +109,7 @@ public class GameBackend {
                     // If the actor can move now, but needs input from the user, just
                     // return so we can wait for it.
                     if (actor.needsInput(gameState)) {
-                        gameState.party.selectedActor = actor;
+                        gameState.party.setSelectedActor(actor);
                         return gameResult;
                         //return new GameResult(madeProgress, new ArrayList<>());
                     }

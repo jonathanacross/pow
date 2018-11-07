@@ -52,6 +52,11 @@ public class MapView {
         graphics.drawRect(gameXToPixelX(x), gameYToPixelY(y), tileSize - 1, tileSize - 1);
     }
 
+    public void frameRoundRect(Graphics graphics, Color color, int x, int y) {
+        graphics.setColor(color);
+        graphics.drawRoundRect(gameXToPixelX(x), gameYToPixelY(y), tileSize - 1, tileSize - 1, 6, 6);
+    }
+
     public void drawTile(Graphics graphics, String tileName, int x, int y, ImageController.DrawMode drawMode) {
         ImageController.drawTile(graphics, tileName, gameXToPixelX(x), gameYToPixelY(y), drawMode, tileSize);
     }

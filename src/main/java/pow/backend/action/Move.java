@@ -63,7 +63,7 @@ public class Move implements Action {
         // player is on a tile that lets them go to another area.
         if (!gs.getCurrentMap().isOnMap(newx, newy)) {
             // check for player changing maps
-            if (actor == gs.party.player) {
+            if (gs.party.containsActor(actor)) {
                 DungeonTerrain currSquareTerrain = gs.getCurrentMap().map[actor.loc.x][actor.loc.y].terrain;
                 if (currSquareTerrain.flags.teleport) {
                     DungeonExit exit = new DungeonExit(currSquareTerrain.actionParams.name);

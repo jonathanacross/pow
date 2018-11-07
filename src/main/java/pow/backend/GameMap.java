@@ -174,8 +174,14 @@ public class GameMap implements Serializable {
         updatePlayerVisibilityData(player, pet);
     }
 
-
     private void updateSeenLocationsAndMonsters(Player player, Player pet) {
+        updateSeenLocationsAndMonsters(player);
+        if (pet != null) {
+            updateSeenLocationsAndMonsters(pet);
+        }
+    }
+
+    private void updateSeenLocationsAndMonsters(Player player) {
         for (Point p : Circle.getPointsInCircle(player.viewRadius)) {
             int x = p.x + player.loc.x;
             int y = p.y + player.loc.y;
@@ -185,7 +191,7 @@ public class GameMap implements Serializable {
                 map[x][y].seen = true;
 
                 Actor a = actorAt(x, y);
-                if (a != null && a != player && a != pet) {
+                if (a != null && !player.party.containsActor(a)) {
                     player.party.knowledge.addMonster(a);
                 }
             }

@@ -80,9 +80,8 @@ public class Targeting {
     public static List<Point> getMonsterFOVTargets(GameState gameState) {
         GameMap map = gameState.getCurrentMap();
 
-        // TODO: awkward that I have to use the player view radius; should use selectedActor.
         List<Point> squares = SpellUtils.getFieldOfView(gameState, gameState.party.selectedActor.loc,
-                gameState.party.player.viewRadius, Metric.euclideanMetric);
+                gameState.party.selectedActor.viewRadius, Metric.euclideanMetric);
         List<Point> msquares = new ArrayList<>();
         for (Point square : squares) {
             if (!gameState.party.selectedActor.canSeeLocation(gameState, square)) continue;
