@@ -50,7 +50,7 @@ public class StatusWindow extends AbstractWindow {
         graphics.setColor(saveColor);
     }
 
-    private void drawActorSummary(Graphics graphics, Actor a, int x, int y, boolean showExact) {
+    private void drawActorSummary(Graphics graphics, Actor a, int x, int y, boolean showExact, boolean selected) {
         int textX = x + TILE_SIZE + MARGIN;
 
         // draw bars
@@ -61,8 +61,15 @@ public class StatusWindow extends AbstractWindow {
             drawBar(graphics, textX, y + 2 * FONT_SIZE, BAR_WIDTH, FONT_SIZE - 1, manaColor, a.getMana(), a.getMaxMana());
         }
 
-        // draw the text
+        // draw character
         ImageController.drawTile(graphics, a.image, x, y);
+        if (selected) {
+            graphics.setColor(Color.YELLOW);
+            graphics.drawRect(x, y, TILE_SIZE - 1, TILE_SIZE - 1);
+        }
+
+        // draw the text
+        graphics.setColor(Color.WHITE);
         graphics.drawString(TextUtils.format(a.name, 1, false), textX, y + FONT_SIZE);
         if (showExact) {
             graphics.drawString("HP:" + a.getHealth() + "/" + a.getMaxHealth(), textX, y + 2*FONT_SIZE);
@@ -70,6 +77,7 @@ public class StatusWindow extends AbstractWindow {
         if (showExact && a.getMaxMana() > 0) {
             graphics.drawString("MP:" + a.getMana() + "/" + a.getMaxMana(), textX, y + 3*FONT_SIZE);
         }
+
     }
 
     @Override
@@ -84,15 +92,20 @@ public class StatusWindow extends AbstractWindow {
 
         int y = 10;
         int textX = TILE_SIZE + 2*MARGIN;
-        drawActorSummary(graphics, gs.player, MARGIN, y, true); y += 4*FONT_SIZE;
-        graphics.drawString("Exp:       " + gs.player.experience, textX, y); y += FONT_SIZE;
-        graphics.drawString("Exp next:  " + gs.player.getExpToNextLevel(), textX, y); y += FONT_SIZE;
-        graphics.drawString("Level:     " + gs.player.level, textX, y); y += FONT_SIZE;
-        graphics.drawString("Gold:      " + gs.player.gold, textX, y); y += FONT_SIZE;
+        boolean selectPlayer = gs.party.selectedActor == gs.party.player;
+        boolean selectPet = gs.party.selectedActor == gs.party.pet;
+        drawActorSummary(graphics, gs.party.player, MARGIN, y, true, selectPlayer); y += 4*FONT_SIZE;
+        graphics.drawString("Exp:       " + gs.party.player.experience, textX, y); y += FONT_SIZE;
+        graphics.drawString("Exp next:  " + gs.party.player.getExpToNextLevel(), textX, y); y += FONT_SIZE;
+        graphics.drawString("Level:     " + gs.party.player.level, textX, y); y += FONT_SIZE;
+        graphics.drawString("Gold:      " + gs.party.player.gold, textX, y); y += FONT_SIZE;
 
-        if (gs.pet != null && gs.player.canSeeLocation(gs, gs.pet.loc)) {
+        if (gs.party.pet != null) {
             y += 5;
-            drawActorSummary(graphics, gs.pet, MARGIN, y, true); y += 40;
+            drawActorSummary(graphics, gs.party.pet, MARGIN, y, true, selectPet); y += 4*FONT_SIZE;
+            graphics.drawString("Exp:       " + gs.party.pet.experience, textX, y); y += FONT_SIZE;
+            graphics.drawString("Exp next:  " + gs.party.pet.getExpToNextLevel(), textX, y); y += FONT_SIZE;
+            graphics.drawString("Level:     " + gs.party.pet.level, textX, y); y += FONT_SIZE;
         }
 
         y += 5;
@@ -102,9 +115,9 @@ public class StatusWindow extends AbstractWindow {
         y += FONT_SIZE;
 
         for (Actor a: gs.getCurrentMap().actors) {
-            if (a == gs.player || a == gs.pet) continue;
-            if (!gs.player.canSeeLocation(gs, a.loc)) continue;
-            drawActorSummary(graphics, a, MARGIN, y, false); y += 40;
+            if (gs.party.containsActor(a)) continue;
+            if (!gs.party.player.canSeeLocation(gs, a.loc)) continue;
+            drawActorSummary(graphics, a, MARGIN, y, false, false); y += 40;
         }
     }
 }

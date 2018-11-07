@@ -1,6 +1,5 @@
 package pow.backend;
 
-import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.RecentMaps;
 import pow.backend.dungeon.gen.GeneratorUtils;
@@ -18,8 +17,8 @@ public class GameWorld implements Serializable {
     public RecentMaps recentMaps;
     public MapTopologySummary topologySummary;
 
-    public GameWorld(Random rng, Player player, Pet pet) {
-        genMapWorld(rng, player, pet);
+    public GameWorld(Random rng, Party party) {
+        genMapWorld(rng, party);
     }
 
     private List<MapConnection> getConnections(MapTopology topology, Point3D fromLoc) {
@@ -36,7 +35,7 @@ public class GameWorld implements Serializable {
         return namedConnections;
     }
 
-    private void genMapWorld(Random rng, Player player, Pet pet) {
+    private void genMapWorld(Random rng, Party party) {
         // 1. generate overall structure of the world, and save a summary copy
         List<MapPoint> data = WorldDataGen.getMapPoints(GameConstants.USE_TEST_WORLD);
         MapTopology topology = new MapTopology(data, rng, GameConstants.PROB_CONNECT_ADJ_AREAS);
@@ -60,6 +59,6 @@ public class GameWorld implements Serializable {
         recentMaps.setMap(startArea);
         GeneratorUtils.regenMonstersForCurrentMap(startArea, rng);
         Point playerLoc = startArea.findRandomOpenSquare(rng);
-        startArea.placePlayerAndPet(player, playerLoc, pet);
+        startArea.placePlayerAndPet(party.player, playerLoc, party.pet);
     }
 }

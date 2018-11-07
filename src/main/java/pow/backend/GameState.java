@@ -1,13 +1,8 @@
 package pow.backend;
 
-import pow.backend.actors.Actor;
-import pow.backend.actors.Pet;
 import pow.backend.actors.Player;
-import pow.backend.dungeon.DungeonObject;
-import pow.util.Point;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Random;
 
 // class that just holds the data for the game state
@@ -18,8 +13,7 @@ public class GameState implements Serializable {
     public final Random rng;
 
     // character data
-    public final Player player;
-    public Pet pet;
+    public final Party party;
 
     public int turnCount;
 
@@ -40,8 +34,7 @@ public class GameState implements Serializable {
         this.rng = new Random();
         this.gameInProgress = false;
         this.inPortal = false;
-        this.player = new Player();
-        this.pet = null;
+        this.party = new Party(new Player());
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         this.turnCount = 0;
     }
@@ -52,30 +45,8 @@ public class GameState implements Serializable {
         int seed = (new Random()).nextInt();
         System.out.println("starting seed = " + seed);
         this.rng = new Random(seed);
-        this.player = player;
-        this.pet = new Pet(
-                new DungeonObject.Params(
-                        "pet", // id
-                        "your pet", // name
-                        "bot", // image
-                        "your pet", // description
-                        new Point(-1, -1), // location -- will be updated
-                        true), // solid
-                new Actor.Params(
-                        1,
-                        0,
-                        true,
-                        false,
-                        false,
-                        null,
-                        0,
-                        12,
-                        10,
-                        8,
-                        8,
-                        0,
-                        Collections.emptyList()));
-        this.world = new GameWorld(rng, player, pet); // fixes positions of player and pet
+        this.party = new Party(player);
+        this.world = new GameWorld(rng, party); // fixes positions of player and pet
         this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
         log.add("Welcome to Pearls of Wisdom!", MessageLog.MessageType.GAME_EVENT);
         log.add("Press ? for help.", MessageLog.MessageType.GENERAL);

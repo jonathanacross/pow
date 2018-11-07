@@ -25,12 +25,15 @@ public class GameBackend {
 
     public GameBackend() { this.gameState = new GameState(); }
 
-    public void tellPlayer(Action request) {
-        gameState.player.addCommand(request);
+    public void tellSelectedActor(Action request) {
+        gameState.party.selectedActor.addCommand(request);
     }
-    public void tellPlayer(Behavior behavior) { gameState.player.behavior = behavior; }
-    public void tellPet(Action request) {
-        gameState.pet.addCommand(request);
+    public void tellSelectedActor(Behavior behavior) { gameState.party.selectedActor.behavior = behavior; }
+
+    public void setPet(Player pet) {
+        this.gameState.party.addPet(pet);
+        this.gameState.party.pet.setAutoplay(this.gameState, true);
+        this.gameState.getCurrentMap().placePet(this.gameState.party.player, this.gameState.party.player.loc, this.gameState.party.pet);
     }
 
     public void setGameInProgress(boolean gameInProgress) {
@@ -68,7 +71,7 @@ public class GameBackend {
                     }
 
                     // update background things every time player takes a turn
-                    if (command.getActor() == gameState.player) {
+                    if (command.getActor() == gameState.party.player) {
                         gameResult.addEvents(updateBackgroundThings());
                     }
 
@@ -97,6 +100,7 @@ public class GameBackend {
 
                 // if waiting for input, just return
                 if (actor.energy.canTakeTurn() && actor.needsInput(gameState)) {
+                    gameState.party.setSelectedActor(actor);
                     return gameResult;
                     //return new GameResult(madeProgress, new ArrayList<>());
                 }
@@ -105,6 +109,7 @@ public class GameBackend {
                     // If the actor can move now, but needs input from the user, just
                     // return so we can wait for it.
                     if (actor.needsInput(gameState)) {
+                        gameState.party.setSelectedActor(actor);
                         return gameResult;
                         //return new GameResult(madeProgress, new ArrayList<>());
                     }
@@ -112,7 +117,7 @@ public class GameBackend {
                     commandQueue.add(actor.act(this));
                     gameResult.addEvents(actor.conditions.update(this));
 
-                    if (actor == gameState.player) {
+                    if (actor == gameState.party.selectedActor) {
                         // force return every time player takes turn
                         return gameResult;
                     }
@@ -133,12 +138,14 @@ public class GameBackend {
     private List<GameEvent> updateBackgroundThings() {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gameState.getCurrentMap();
-        Player player = gameState.player;
-        if (map.flags.poisonGas && !player.hasGasMask()) {
+        Party party = gameState.party;
+        Player player = gameState.party.player;
+        if (map.flags.poisonGas && !party.artifacts.hasGasMask()) {
             logMessage("the noxious air burns your lungs", MessageLog.MessageType.COMBAT_BAD);
+            // TODO: impact pet as well
             events.addAll(player.takeDamage(this, GameConstants.POISON_DAMAGE_PER_TURN));
         }
-        if (map.flags.hot && !player.hasHeatSuit()) {
+        if (map.flags.hot && !party.artifacts.hasHeatSuit()) {
             logMessage("you wither in the extreme heat", MessageLog.MessageType.COMBAT_BAD);
             events.addAll(player.takeDamage(this, GameConstants.HEAT_DAMAGE_PER_TURN));
         }

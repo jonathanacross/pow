@@ -25,13 +25,13 @@ public class GotoArea implements Action {
         GameState gs = backend.getGameState();
 
         // clear any targets
-        gs.player.floorTarget = null;
-        gs.player.monsterTarget = null;
+        gs.party.player.floorTarget = null;
+        gs.party.player.monsterTarget = null;
 
         // remove player and pet from current area
-        gs.getCurrentMap().removeActor(gs.player);
-        if (gs.pet != null) {
-            gs.getCurrentMap().removeActor(gs.pet);
+        gs.getCurrentMap().removeActor(gs.party.player);
+        if (gs.party.pet != null) {
+            gs.getCurrentMap().removeActor(gs.party.pet);
         }
 
         // set the new area, update monsters/shops if needed
@@ -47,7 +47,7 @@ public class GotoArea implements Action {
         }
 
         // set up player/pet in the new area
-        gs.getCurrentMap().placePlayerAndPet(gs.player, loc, gs.pet);
+        gs.getCurrentMap().placePlayerAndPet(gs.party.player, loc, gs.party.pet);
 
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());

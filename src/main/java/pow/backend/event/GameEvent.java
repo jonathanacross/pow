@@ -13,6 +13,7 @@ public class GameEvent {
         KILLED,
         WON_GAME,
         LOST_GAME,
+        GOT_PET,
         IN_STORE,
         HEALED,
         DUNGEON_UPDATED,  // indicates UI needs a redraw
@@ -35,6 +36,7 @@ public class GameEvent {
     public static GameEvent Killed() { return new GameEvent(EventType.KILLED, null); }
     public static GameEvent WonGame() { return new GameEvent(EventType.WON_GAME, null); }
     public static GameEvent LostGame() { return new GameEvent(EventType.LOST_GAME, null); }
+    public static GameEvent GotPet() { return new GameEvent(EventType.GOT_PET, null); }
     public static GameEvent InStore() { return new GameEvent(EventType.IN_STORE, null); }
     public static GameEvent InPortal() { return new GameEvent(EventType.IN_PORTAL, null); }
     public static GameEvent DungeonUpdated() { return new GameEvent(EventType.DUNGEON_UPDATED, null); }

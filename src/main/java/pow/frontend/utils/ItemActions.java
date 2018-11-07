@@ -22,10 +22,10 @@ public class ItemActions {
         WEAR("Wear"),
         TAKE_OFF("Take Off"),
         QUAFF("Quaff"),
-        FIRE("Fire"),
-        GIVE("Give");
+        FIRE("Fire");
+       // GIVE("Give")
 
-        private String text;
+        private final String text;
         Action(String text) {
             this.text = text;
         }
@@ -63,7 +63,7 @@ public class ItemActions {
             return false;
         }
 
-        Player player = gameState.player;
+        Player player = gameState.party.player;
         if (!player.hasBowEquipped()) {
             return false;
         }
@@ -77,7 +77,7 @@ public class ItemActions {
     }
 
     public static boolean canGive(GameState gameState, ItemLocation location) {
-        if (gameState.pet == null) {
+        if (gameState.party.pet == null) {
             return false;
         }
         return location == ItemLocation.INVENTORY || location == ItemLocation.PET;
@@ -100,9 +100,9 @@ public class ItemActions {
         if (canTakeOff(location)) {
             actions.add(Action.TAKE_OFF);
         }
-        if (canGive(gameState, location)) {
-            actions.add(Action.GIVE);
-        }
+//        if (canGive(gameState, location)) {
+//            actions.add(Action.GIVE);
+//        }
         if (canDrop(location)) {
             actions.add(Action.DROP);
         }

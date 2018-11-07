@@ -27,7 +27,7 @@ public class OpenPortal implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         // Require the player to have the portal key.
-        if (!backend.getGameState().player.hasPortalKey()) {
+        if (!backend.getGameState().party.artifacts.hasPortalKey()) {
             backend.logMessage(actor.getPronoun() + " don't have the right key to unlock this door", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }

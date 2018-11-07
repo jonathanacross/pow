@@ -5,25 +5,25 @@ import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.MoveRequest;
 import pow.backend.actors.Actor;
-import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonFeature;
 import pow.util.Point;
 import pow.util.Direction;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RunBehavior implements Behavior {
+public class RunBehavior implements Behavior, Serializable {
 
-    private final Player player;
+    private final Actor actor;
     private Direction direction;
     private int stepCount;
     private boolean openLeft;
     private boolean openRight;
 
-    public RunBehavior(Player player, Direction direction) {
-        this.player = player;
+    public RunBehavior(Actor actor, Direction direction) {
+        this.actor = actor;
         this.direction = direction;
         this.stepCount = 0;
     }
@@ -31,8 +31,8 @@ public class RunBehavior implements Behavior {
     @Override
     public boolean canPerform(GameState gs) {
         if (stepCount == 0) {
-            // On the first step, always allow the player to
-            // try to move this direction; this allows the player
+            // On the first step, always allow the actor to
+            // try to move this direction; this allows the actor
             // to open doors, dig, change levels, etc., even if
             // they have the Shift key down for running.
             return true;
@@ -43,15 +43,15 @@ public class RunBehavior implements Behavior {
         if (stepCount == 1) {
 
             // Get a list of the open directions nearby to the direction of
-            // interest. If the player is running straight (NSEW), allow up to a 90
+            // interest. If the actor is running straight (NSEW), allow up to a 90
             // degree turn. This covers cases like:
             //
             //     ####
             //     .@.#
             //     ##.#
             //
-            // If the player presses right here, we want to take a first step, then
-            // turn and run south. If the player is running diagonally, we only allow
+            // If the actor presses right here, we want to take a first step, then
+            // turn and run south. If the actor is running diagonally, we only allow
             // a 45 degree turn. That way it doesn't get confused by cases like:
             //
             //      #.#
@@ -59,7 +59,7 @@ public class RunBehavior implements Behavior {
             //     .@...
             //     #####
             //
-            // If the player presses NE here, we want to run north and not get
+            // If the actor presses NE here, we want to run north and not get
             // confused by the east passage.
             boolean include90Degrees = (direction == Direction.N || direction == Direction.E ||
                     direction == Direction.S || direction == Direction.W);
@@ -77,11 +77,11 @@ public class RunBehavior implements Behavior {
                 direction = openDirs.get(0);
             } else {
                 // Entering an open area.
-                openLeft = isDirectionOpen(gs.getCurrentMap(), gs.player.loc, direction.rotateLeft90);
-                openRight = isDirectionOpen(gs.getCurrentMap(), gs.player.loc, direction.rotateRight90);
+                openLeft = isDirectionOpen(gs.getCurrentMap(), actor.loc, direction.rotateLeft90);
+                openRight = isDirectionOpen(gs.getCurrentMap(), actor.loc, direction.rotateRight90);
             }
         } else {  // >= 2 steps
-            // sanity check in case we have some running bug or player is in some pathological path.
+            // sanity check in case we have some running bug or actor is in some pathological path.
             if (stepCount > 500) return false;
 
             if (!openLeft && !openRight) {
@@ -97,12 +97,12 @@ public class RunBehavior implements Behavior {
     @Override
     public Action getAction() {
         stepCount++;
-        return new MoveRequest(player, direction.dx, direction.dy, true);
+        return new MoveRequest(actor, direction.dx, direction.dy, true);
     }
 
-    // See if the player can take one step while in a corridor.
+    // See if the actor can take one step while in a corridor.
     //
-    // The player will follow curves and turns as long as there is only one
+    // The actor will follow curves and turns as long as there is only one
     // direction they can go. (This is more or less true, though right-angle
     // turns need special handling.)
     private boolean runInCorridor(GameState gs) {
@@ -130,7 +130,7 @@ public class RunBehavior implements Behavior {
         if (!openDirs.contains(direction)) return false;
         if (!openDirs.contains(direction.rotateLeft45) &&
                 !openDirs.contains(direction.rotateRight45)) return false;
-        Point oneStepAhead = gs.player.loc.add(direction);
+        Point oneStepAhead = actor.loc.add(direction);
         if (isDirectionOpen(gs.getCurrentMap(), oneStepAhead, direction)) return false;
 
         // If we got here, we're in a corner. Keep going straight.
@@ -138,14 +138,14 @@ public class RunBehavior implements Behavior {
     }
 
     // See if we can advance a step in the open.
-    // Whether or not the player's left and right sides are open cannot change.
+    // Whether or not the actor's left and right sides are open cannot change.
     // In other words, if he is running along a wall on his left (closed on
     // left, open on right), he will stop if he enters an open room (open on
     // both).
     private boolean runInOpen(GameState gs) {
         GameMap map = gs.getCurrentMap();
-        boolean nextLeft = isDirectionOpen(map, gs.player.loc, direction.rotateLeft45);
-        boolean nextRight = isDirectionOpen(map, gs.player.loc, direction.rotateRight45);
+        boolean nextLeft = isDirectionOpen(map, actor.loc, direction.rotateLeft45);
+        boolean nextRight = isDirectionOpen(map, actor.loc, direction.rotateRight45);
         return openLeft == nextLeft && openRight == nextRight;
     }
 
@@ -164,7 +164,7 @@ public class RunBehavior implements Behavior {
 
         List<Direction> openDirs = new ArrayList<>();
         for (Direction d : dirs) {
-            if (isDirectionOpen(gs.getCurrentMap(), gs.player.loc, d)) {
+            if (isDirectionOpen(gs.getCurrentMap(), actor.loc, d)) {
                 openDirs.add(d);
             }
         }
@@ -172,16 +172,16 @@ public class RunBehavior implements Behavior {
         return openDirs;
     }
 
-    // Returns true if the player can run one step in the current direction.
+    // Returns true if the actor can run one step in the current direction.
     // Returns false if they should stop because they'd hit a wall or enemy actor.
     private boolean canKeepRunning(GameState gs) {
-        Point nextLoc = gs.player.loc.add(direction);
+        Point nextLoc = actor.loc.add(direction);
         GameMap map = gs.getCurrentMap();
         return !landOrEnemyBlocked(map, nextLoc);
     }
 
     // Returns true if there are "interesting" things that should cause
-    // the player to stop running.
+    // the actor to stop running.
     private boolean seeInterestingThings(GameState gs) {
         GameMap map = gs.getCurrentMap();
 
@@ -194,7 +194,7 @@ public class RunBehavior implements Behavior {
 
         // adjacent squares: must not have any monsters, and shouldn't have interesting stuff
         for (Direction d : newAdjacentDirs) {
-            Point adj = gs.player.loc.add(d);
+            Point adj = actor.loc.add(d);
             if (!map.isOnMap(adj.x, adj.y)) return true;
             if (map.actorAt(adj.x, adj.y) != null) return true;
             DungeonFeature feature = map.map[adj.x][adj.y].feature;
@@ -208,12 +208,12 @@ public class RunBehavior implements Behavior {
     private boolean isDirectionOpen(GameMap map, Point point, Direction direction) {
         Point loc = point.add(direction);
         if (!map.isOnMap(loc.x, loc.y)) return false;
-        return (!map.isBlocked(player, loc.x, loc.y));
+        return (!map.isBlocked(actor, loc.x, loc.y));
     }
 
     private boolean landOrEnemyBlocked(GameMap map, Point loc) {
         if (!map.isOnMap(loc.x, loc.y)) return true;
-        if (map.isBlocked(player, loc.x, loc.y)) return true;
+        if (map.isBlocked(actor, loc.x, loc.y)) return true;
         Actor a = map.actorAt(loc.x, loc.y);
         return (a != null && !a.friendly);
     }

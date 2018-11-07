@@ -12,61 +12,34 @@ import pow.frontend.utils.KeyUtils;
 import pow.frontend.utils.SaveUtils;
 import pow.util.MathUtils;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 
-public class CreateCharWindow extends AbstractWindow {
+public class SetPetWindow extends AbstractWindow {
 
     private String name;
     private boolean onName;
     private int charSelectId;
     private final List<CharacterGenerator.CharacterData> characterData;
 
-    public CreateCharWindow(WindowDim dim, GameBackend backend, Frontend frontend) {
+    public SetPetWindow(WindowDim dim, GameBackend backend, Frontend frontend) {
         super(dim, true, backend, frontend);
         resetName();
         onName = false;
         charSelectId = 0;
-        characterData = CharacterGenerator.getPlayerCharacterData();
+        characterData = CharacterGenerator.getPetCharacterData();
     }
 
     public void resetName() {
         name = "";
     }
 
-    private void startNewGame() {
-        Player player = CharacterGenerator.getPlayer(name, characterData.get(charSelectId).id, false);
-        onName = false;
-        backend.newGame(player);
-        frontend.setState(Frontend.State.GAME);
-    }
-
-    // Start the game if
-    // (1) it's a new character name, or
-    // (2) an existing character name and user has confirmed they want to overwrite.
-    private void tryToStartNewGame() {
-        // see if there's already a character with this name
-        List<File> existingFiles = SaveUtils.findSaveFiles();
-        boolean alreadyExists = false;
-        for (File f : existingFiles) {
-            if (f.getName().equals(name)) {
-                alreadyExists = true;
-            }
-        }
-
-        if (alreadyExists) {
-            WindowDim dim = WindowDim.center(600, 120, frontend.width, frontend.height);
-            frontend.open(new ConfirmWindow(dim, true, this.backend, this.frontend,
-                    "The character '" + name + "' already exists.  Do you want to overwrite it?",
-                    "Overwrite", "Cancel",
-                    this::startNewGame));
-        } else {
-            startNewGame();
-        }
+    private void addPetToGame() {
+        Player pet = CharacterGenerator.getPlayer(name, characterData.get(charSelectId).id, true);
+        backend.setPet(pet);
+        frontend.close();
     }
 
     private void processNameKey(KeyEvent e) {
@@ -85,9 +58,9 @@ public class CreateCharWindow extends AbstractWindow {
         } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             name = name.trim();
             if (!name.isEmpty()) {
-                tryToStartNewGame();
+                addPetToGame();
             }
-        } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode() == KeyEvent.VK_UP) {
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             onName = false;
             frontend.setDirty(true);
         }
@@ -124,7 +97,7 @@ public class CreateCharWindow extends AbstractWindow {
         }
     }
 
-    private static final int FONT_SIZE = 18;
+    private static final int FONT_SIZE = 14;
     private static final int MARGIN = 20;
 
     @Override
@@ -136,19 +109,26 @@ public class CreateCharWindow extends AbstractWindow {
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString("Select your character:", MARGIN, MARGIN + FONT_SIZE);
-        int y = MARGIN + FONT_SIZE + 10;
+        int y = MARGIN + FONT_SIZE;
+        graphics.drawString("Congratulations, you got a pet!", MARGIN, y);
+        y += FONT_SIZE * 2;
+        graphics.drawString("Select your pet:", MARGIN, y);
+        y += FONT_SIZE * 2;
+
         for (int i = 0; i < characterData.size(); i++) {
             ImageController.drawTile(graphics, characterData.get(i).image, MARGIN + i*(ImageController.TILE_SIZE + 5), y);
         }
         graphics.setColor(Color.YELLOW);
         graphics.drawRect(MARGIN + charSelectId*(ImageController.TILE_SIZE + 5), y, ImageController.TILE_SIZE, ImageController.TILE_SIZE);
+        y += ImageController.TILE_SIZE + 2*FONT_SIZE;
 
         if (onName) {
             graphics.setColor(Color.WHITE);
-            graphics.drawString("Enter the name of your character,", MARGIN, MARGIN + 6*FONT_SIZE);
-            graphics.drawString("or press * for a random name:", MARGIN, MARGIN + 7 * FONT_SIZE);
-            graphics.drawString(name, MARGIN, MARGIN + 8 * FONT_SIZE + 10);
+            graphics.drawString("Enter the name of your character,", MARGIN, y);
+            y += FONT_SIZE;
+            graphics.drawString("or press * for a random name:", MARGIN, y);
+            y += 2*FONT_SIZE;
+            graphics.drawString(name, MARGIN, y);
         }
     }
 }

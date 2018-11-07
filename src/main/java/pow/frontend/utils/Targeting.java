@@ -25,7 +25,7 @@ public class Targeting {
                 points.add(new Point(x, y));
             }
         }
-        orderPointsByDistance(gameState.player.loc, points);
+        orderPointsByDistance(gameState.party.selectedActor.loc, points);
         return points;
     }
 
@@ -34,12 +34,12 @@ public class Targeting {
         GameMap map = gameState.getCurrentMap();
         for (int x = mapView.colMin; x <= mapView.colMax; x++) {
             for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
-                if (!gameState.player.canSeeLocation(gameState, new Point(x, y))) continue;
+                if (!gameState.party.selectedActor.canSeeLocation(gameState, new Point(x, y))) continue;
                 if (map.map[x][y].blockAir()) continue;
                 points.add(new Point(x, y));
             }
         }
-        orderPointsByDistance(gameState.player.loc, points);
+        orderPointsByDistance(gameState.party.selectedActor.loc, points);
         return points;
     }
 
@@ -48,19 +48,19 @@ public class Targeting {
         List<Point> points = new ArrayList<>();
         for (int x = mapView.colMin; x <= mapView.colMax; x++) {
             for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
-                if (!gameState.player.canSeeLocation(gameState, new Point(x, y))) continue;
+                if (!gameState.party.selectedActor.canSeeLocation(gameState, new Point(x, y))) continue;
                 Actor a = map.actorAt(x, y);
                 if (a != null && !a.friendly) {
                     points.add(new Point(x, y));
                 }
             }
         }
-        orderPointsByDistance(gameState.player.loc, points);
+        orderPointsByDistance(gameState.party.selectedActor.loc, points);
         return points;
     }
 
     public static List<Point> getCloseDoorTargets(GameState gameState) {
-        Point playerLoc = gameState.player.loc;
+        Point playerLoc = gameState.party.selectedActor.loc;
         GameMap map = gameState.getCurrentMap();
 
         List<Point> points = new ArrayList<>();
@@ -80,17 +80,17 @@ public class Targeting {
     public static List<Point> getMonsterFOVTargets(GameState gameState) {
         GameMap map = gameState.getCurrentMap();
 
-        List<Point> squares = SpellUtils.getFieldOfView(gameState, gameState.player.loc, gameState.player.viewRadius,
-                Metric.euclideanMetric);
+        List<Point> squares = SpellUtils.getFieldOfView(gameState, gameState.party.selectedActor.loc,
+                gameState.party.selectedActor.viewRadius, Metric.euclideanMetric);
         List<Point> msquares = new ArrayList<>();
         for (Point square : squares) {
-            if (!gameState.player.canSeeLocation(gameState, square)) continue;
+            if (!gameState.party.selectedActor.canSeeLocation(gameState, square)) continue;
             Actor a = map.actorAt(square.x, square.y);
             if (a != null && !a.friendly) {
                 msquares.add(square);
             }
         }
-        orderPointsByDistance(gameState.player.loc, msquares);
+        orderPointsByDistance(gameState.party.selectedActor.loc, msquares);
 
         return msquares;
     }

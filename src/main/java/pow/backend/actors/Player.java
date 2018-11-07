@@ -2,13 +2,12 @@ package pow.backend.actors;
 
 import pow.backend.*;
 import pow.backend.action.Action;
-import pow.backend.behavior.ActionBehavior;
-import pow.backend.behavior.Behavior;
+import pow.backend.actors.ai.StepMovement;
+import pow.backend.behavior.AiBehavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
 import pow.backend.dungeon.LightSource;
-import pow.backend.event.GameEvent;
 import pow.util.Circle;
 import pow.util.MathUtils;
 import pow.util.Point;
@@ -21,17 +20,16 @@ public class Player extends Actor implements Serializable, LightSource {
     public final int viewRadius;
     private int lightRadius;
     public final ItemList equipment;
-    public final Map<DungeonItem.ArtifactSlot, DungeonItem> artifacts;
     private final GainRatios gainRatios;
     public boolean increaseWealth;
-    private boolean winner;
+    public boolean winner;
+    public boolean autoPlay;  // whether this character is controlled by computer
 
     public int experience;
 
     public Point floorTarget;
     public Actor monsterTarget;
-
-    public final Knowledge knowledge;
+    public Party party;  // link back to common data in the party.
 
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
@@ -59,6 +57,7 @@ public class Player extends Actor implements Serializable, LightSource {
     };
 
     // default (empty) player
+    // TODO: can this be replaced by a player builder? this is only needed for game start.
     public Player() {
         this(new DungeonObject.Params(
                         "player", // id
@@ -68,18 +67,21 @@ public class Player extends Actor implements Serializable, LightSource {
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
              GainRatiosData.getGainRatios("player adventurer"),
-             Collections.emptyList());
+             Collections.emptyList(),
+                false);
     }
 
     public Player(DungeonObject.Params objectParams,
                    GainRatios gainRatios,
-                   List<SpellParams> spells) {
+                   List<SpellParams> spells,
+                  boolean autoPlay) {
         super(objectParams, new Actor.Params(
                 1,
                 0,
                 true,
                 false,
                 false,
+                new StepMovement(),
                 null,
                 0,
                 10,
@@ -89,25 +91,22 @@ public class Player extends Actor implements Serializable, LightSource {
                 0,
                 spells));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
-        this.lightRadius = -1;  // filled in by updateStats
+        this.lightRadius = GameConstants.PLAYER_SMALL_LIGHT_RADIUS;
         this.equipment = new ItemList();
-        this.artifacts = new HashMap<>();
         this.gainRatios = gainRatios;
         this.experience = 0;
-        updateStats();
+        //updateStats();
         this.health = this.baseStats.maxHealth;
         this.mana = this.baseStats.maxMana;
         this.floorTarget = null;
         this.monsterTarget = null;
         this.increaseWealth = false;
         this.winner = false;
-        this.knowledge = new Knowledge();
+        this.autoPlay = autoPlay;
+        this.party = null;
     }
 
-    public void addCommand(Action request) {
-        this.behavior = new ActionBehavior(this, request);
-    }
-
+    @Override
     public boolean canSeeLocation(GameState gs, Point point) {
         // must be on the map, within the player's view radius, and must be lit
         return (gs.getCurrentMap().isOnMap(point.x, point.y) &&
@@ -116,8 +115,15 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     @Override
-    public String getPronoun() {
-        return "you";
+    public String getPronoun() { return name; }
+
+    public void setAutoplay(GameState gameState, boolean autoPlay) {
+        this.autoPlay = autoPlay;
+        if (autoPlay) {
+            this.behavior = new AiBehavior(this, gameState);
+        } else {
+            this.behavior = null;
+        }
     }
 
     @Override
@@ -126,10 +132,6 @@ public class Player extends Actor implements Serializable, LightSource {
             clearBehavior();
         }
         return behavior == null;
-    }
-
-    public void waitForInput() {
-        this.behavior = null;
     }
 
     @Override
@@ -146,7 +148,7 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     // update our stats, plus toHit, defense to include current equipped items and other bonuses.
-    private void updateStats() {
+    public void updateStats() {
 
         int innateStr = (int) Math.round(gainRatios.strRatio * (level + 6));
         int innateDex = (int) Math.round(gainRatios.dexRatio * (level + 6));
@@ -174,23 +176,17 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private void updateLightRadius() {
-        this.lightRadius = GameConstants.PLAYER_SMALL_LIGHT_RADIUS;
-        if (artifacts.containsKey(DungeonItem.ArtifactSlot.LANTERN)) {
-            this.lightRadius = GameConstants.PLAYER_MED_LIGHT_RADIUS;
-        }
-        if (artifacts.containsKey(DungeonItem.ArtifactSlot.LANTERN2)) {
-            this.lightRadius = GameConstants.PLAYER_LARGE_LIGHT_RADIUS;
-        }
+        this.lightRadius = party.artifacts.getLightRadius();
     }
 
     private void updateBagSize() {
-        if (this.artifacts.containsKey(DungeonItem.ArtifactSlot.BAG)) {
+        if (party.artifacts.hasBag()) {
             this.inventory.increaseMaxPerSlot(GameConstants.PLAYER_EXPANDED_ITEMS_PER_SLOT);
         }
     }
 
     private void updateAquatic() {
-        this.aquatic = this.artifacts.containsKey(DungeonItem.ArtifactSlot.FLOAT);
+        this.aquatic = party.artifacts.hasFloat();
     }
 
     // returns the old item, if any
@@ -217,20 +213,6 @@ public class Player extends Actor implements Serializable, LightSource {
         return item;
     }
 
-    public List<GameEvent> addArtifact(DungeonItem item) {
-        artifacts.put(item.artifactSlot, item);
-        updateStats();
-        List<GameEvent> events = new ArrayList<>();
-
-        // check for a win!
-        if (!winner && hasAllPearls()) {
-            winner = true;
-            events.add(GameEvent.WonGame());
-        }
-
-        return events;
-    }
-
     @Override
     public void gainExperience(GameBackend backend, int experience, Actor source) {
         super.gainExperience(backend, experience, source);
@@ -238,7 +220,7 @@ public class Player extends Actor implements Serializable, LightSource {
         // TODO: big hack here -- don't include your pet in the kill count..
         // shouldn't have to key off the name 'pet', though
         if (source != null && !source.id.equals("pet")) {
-            this.knowledge.incrementKillCount(source);
+            party.knowledge.incrementKillCount(source);
         }
         checkIncreaseCharLevel(backend);
     }
@@ -273,7 +255,7 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private void gainLevel(GameBackend backend) {
-        backend.logMessage("congrats, you gained a level!", MessageLog.MessageType.GAME_EVENT);
+        backend.logMessage(this.name + " gained a level!", MessageLog.MessageType.GAME_EVENT);
         level++;
         updateStats();
     }
@@ -285,32 +267,14 @@ public class Player extends Actor implements Serializable, LightSource {
         return false;
     }
 
-    public boolean hasGasMask() {
-        return artifacts.containsKey(DungeonItem.ArtifactSlot.GASMASK);
-    }
-    public boolean hasHeatSuit() { return artifacts.containsKey(DungeonItem.ArtifactSlot.HEATSUIT); }
-    public boolean hasMap() { return artifacts.containsKey(DungeonItem.ArtifactSlot.MAP); }
-    public boolean hasKey() { return artifacts.containsKey(DungeonItem.ArtifactSlot.KEY); }
-    public boolean hasPortalKey() { return artifacts.containsKey(DungeonItem.ArtifactSlot.PORTALKEY); }
-    public boolean hasAllPearls() {
-        return  artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL1) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL2) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL3) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL4) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL5) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL6) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL7) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL8);
-    }
-
     @Override
     public boolean canDig() {
-        return artifacts.containsKey(DungeonItem.ArtifactSlot.PICKAXE);
+        return party.artifacts.hasPickAxe();
     }
 
     @Override
     public boolean canSeeInvisible() {
-        return artifacts.containsKey(DungeonItem.ArtifactSlot.GLASSES);
+        return party.artifacts.hasGlasses();
     }
 
     public DungeonItem findArrows() {
@@ -322,7 +286,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
     public boolean isWinner() { return winner; }
 
-    // TODO: put in actor class?
+    @Override
     public Point getTarget() {
         if (floorTarget != null) {
             return floorTarget;
