@@ -24,8 +24,10 @@ public class SpellParams implements Serializable {
         CHAIN,
         CIRCLE_CUT,
         HEAL,
+        GROUP_HEAL,
         BOLT,
         PHASE,
+        CALL_PET,
         QUAKE,
         RESIST_ELEMENTS,
         SPEED
@@ -155,8 +157,12 @@ public class SpellParams implements Serializable {
                 return new SpellAction(new ArrowSpell(actor, target, spellParams), spellParams);
             case PHASE:
                 return new SpellAction(new Phase(actor, spellParams.size), spellParams);
+            case CALL_PET:
+                return new SpellAction(new CallPet(actor), spellParams);
             case HEAL:
                 return new SpellAction(new Heal(actor, secondaryAmount), spellParams);
+            case GROUP_HEAL:
+                return new SpellAction(new GroupHeal(actor, secondaryAmount), spellParams);
             case BALL:
                 return new SpellAction(new BallSpell(actor, target, spellParams), spellParams);
             case BOLT:

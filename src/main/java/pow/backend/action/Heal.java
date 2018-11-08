@@ -27,7 +27,9 @@ public class Heal implements Action {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Healed());
 
-        int healAmount = actor.increaseHealth(this.amount);
+        // x% or x hp, whichever is greater
+        int desiredHealAmount = Math.max((int)Math.round(actor.getMaxHealth() * 0.01 * this.amount), this.amount);
+        int healAmount = actor.increaseHealth(desiredHealAmount);
         backend.logMessage(actor.getPronoun() + " healed " + healAmount, MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }

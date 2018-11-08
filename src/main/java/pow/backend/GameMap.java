@@ -262,8 +262,11 @@ public class GameMap implements Serializable {
     }
 
     // Finds the closest open square to the starting location.
-    // This assumes that there is at least one open square.
-    private Point findClosestOpenSquare(Actor actor, Point start) {
+    // Returns null if no place exists.
+    public Point findClosestOpenSquare(Actor actor, Point start) {
+        if (!hasOpenSquare(actor)) {
+            return null;
+        }
         int i = 0;
         Point loc;
         do {
