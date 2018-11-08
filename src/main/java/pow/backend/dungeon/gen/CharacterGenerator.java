@@ -27,6 +27,7 @@ public class CharacterGenerator {
         public final double dexGain;
         public final double intGain;
         public final double conGain;
+        public final double speedGain;
         public final List<SpellParams> spells;
 
         public CharacterData(String id,
@@ -38,6 +39,7 @@ public class CharacterGenerator {
                              double dexGain,
                              double intGain,
                              double conGain,
+                             double speedGain,
                              List<SpellParams> spells) {
             this.id = id;
             this.isPet = isPet;
@@ -48,6 +50,7 @@ public class CharacterGenerator {
             this.dexGain = dexGain;
             this.intGain = intGain;
             this.conGain = conGain;
+            this.speedGain = speedGain;
             this.spells = spells;
         }
     }
@@ -104,7 +107,7 @@ public class CharacterGenerator {
                 new Point(-1, -1), // location -- will be updated later
                 true);
         GainRatios gainRatios = new GainRatios("", characterData.strGain, characterData.dexGain,
-                characterData.intGain, characterData.conGain);
+                characterData.intGain, characterData.conGain, characterData.speedGain);
 
         return new Player(objectParams, gainRatios, characterData.spells, autoPlay);
     }
@@ -154,10 +157,11 @@ public class CharacterGenerator {
         double dexGain;
         double intGain;
         double conGain;
+        double speedGain;
         List<SpellParams> spells;
 
-        if (line.length != 10) {
-            throw new IllegalArgumentException("Expected 10 fields, but had " + line.length
+        if (line.length != 11) {
+            throw new IllegalArgumentException("Expected 11 fields, but had " + line.length
                     + ". Fields = \n" + String.join(",", line));
         }
 
@@ -171,9 +175,10 @@ public class CharacterGenerator {
             dexGain = Double.parseDouble(line[6]);
             intGain = Double.parseDouble(line[7]);
             conGain = Double.parseDouble(line[8]);
-            spells = parseSpells(line[9]);
+            speedGain = Double.parseDouble(line[9]);
+            spells = parseSpells(line[10]);
 
-            return new CharacterData(id, isPet, name, image, description, strGain, dexGain, intGain, conGain, spells);
+            return new CharacterData(id, isPet, name, image, description, strGain, dexGain, intGain, conGain, speedGain, spells);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" +
                     String.join(",", line), e);

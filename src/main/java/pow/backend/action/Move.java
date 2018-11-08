@@ -52,7 +52,7 @@ public class Move implements Action {
 
         // just stay still
         if (dx == 0 && dy == 0) {
-            return ActionResult.Succeeded(new ArrayList<>());
+            return ActionResult.Succeeded(addEvents(backend));
         }
 
         int newx = actor.loc.x + dx;

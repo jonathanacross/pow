@@ -1,9 +1,9 @@
-#id	type	name	image	description	str gain	dex gain	int gain	con gain	spells
-mage	main_player	mage	human_mage	yourself	0.9	0.9	1.3	0.9	magic arrow,phase,lesser heal,poison cloud,resist elements,teleport,ice bolt,boost armor,acid bolt,fireball,speed,greater heal,chain lightning,mana cloud
-adventurer	main_player	adventurer	human_adventurer	yourself	1	1	1	1	poison arrow,confuse monsters,lesser heal,resist elements,boost armor,rift
-warrior	main_player	warrior	human_fighter	yourself	1.1	1.1	0.7	1.1	phase,lance,circle cut,lesser heal,stun,quake,boost attack,boost armor
-rogue	main_player	rogue	human_thief	yourself	0.9	1.1	1	1	sleep monster,poison arrow,phase,lesser heal,backstab,boost attack
-dragonmaster	main_player	dragon master	dragonmaster	yourself	1.1	1.2	0.9	1.2	lance,lightning breath,phase,ice breath,lesser heal,poison breath,fire breath,greater heal,rift,resist elements
-gel	pet	gel	bot	a gelatinous spell caster	0.95	0.9	1.2	0.95	lesser heal,magic arrow,greater heal,mana cloud
-#cat	pet	cat	bot	a quick warrior	1.0	1.2	0.8	1.0	magic arrow,circle cut,backstab
-#pet rock	pet	pet rock	bot	a slow powerful warrior	1.1	1.1	0.6	1.2	lesser heal,lance,rift,quake
+#id	type	name	image	description	str gain	dex gain	int gain	con gain	speed gain	spells
+mage	main_player	mage	human_mage	yourself	0.9	0.9	1.3	0.9	0	call pet,magic arrow,phase,lesser heal,poison cloud,resist elements,teleport,ice bolt,boost armor,acid bolt,fireball,speed,greater heal,chain lightning,mana cloud,group heal
+adventurer	main_player	adventurer	human_adventurer	yourself	1	1	1	1	0	call pet,poison arrow,confuse monsters,lesser heal,resist elements,boost armor,rift
+warrior	main_player	warrior	human_fighter	yourself	1.1	1.1	0.7	1.1	0	call pet,phase,lance,circle cut,lesser heal,stun,quake,boost attack,boost armor
+rogue	main_player	rogue	human_thief	yourself	0.9	1.1	1	1	0	call pet,sleep monster,poison arrow,phase,lesser heal,backstab,boost attack
+dragonmaster	main_player	dragon master	dragonmaster	yourself	1.1	1.2	0.9	1.2	0	call pet,lance,lightning breath,phase,ice breath,lesser heal,poison breath,fire breath,greater heal,rift,resist elements
+gel	pet	gel	bot	a gelatinous spell caster	0.95	0.9	1.2	0.95	1.0	lesser heal,magic arrow,greater heal,mana cloud
+#cat	pet	cat	bot	a quick warrior	1	1.2	0.8	1	1.4	magic arrow,circle cut,backstab
+#pet rock	pet	pet rock	bot	a slow powerful warrior	1.1	1.1	0.6	1.2	0.6	lesser heal,lance,rift,quake

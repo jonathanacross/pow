@@ -1,4 +1,5 @@
 #id	name	min level	mana	effect	spell type	size	duration	primaryAmtBase	primaryAmtDelta	secondaryAmtBase	secondaryAmtDelta	stat	description
+call pet	call pet	2	1	call pet	none	0	0	0	0	0	0	none	+{2} to speed for {t} turns
 arrow	arrow	1	1	arrow	damage	8	0	2	1	0	0	attack	range {s}, dam {1}
 magic arrow	magic arrow	1	1	arrow	damage	8	0	2	1	0	0	intelligence	range {s}, dam {1}
 poison arrow	poison arrow	2	4	arrow	poison	8	10	3	1	0	0.2	dexterity	range {s}, dam {1}, poison {2} for {t} turns
@@ -28,7 +29,8 @@ rift	rift	6	20	breath	stun	7	10	40	1	0	0.3	strength	range {s}, dam {1}, stun {2}
 chain lightning	chain lightning	7	20	chain	lightning	7	0	30	2	0	0	intelligence	range {s}, dam {1}
 circle cut	circle cut	3	5	circle cut	damage	1	0	0	1	0	0	attack	range {s}, dam {1}
 lesser heal	lesser heal	4	3	heal	none	0	0	0	0	10	0	intelligence	heal {2}% / {2} hp
-greater heal	greater heal	7	15	heal	none	0	0	0	0	30	0	intelligence	heal {2}% / {2} hp
+greater heal	greater heal	7	15	heal	none	0	0	0	0	40	0	intelligence	heal {2}% / {2} hp
+group heal	group heal	10	25	group heal	none	0	0	0	0	30	0	intelligence	heal all {2}% / {2} hp
 blink	blink	2	5	phase	none	3	0	0	0	0	0	intelligence	max dist {s}
 phase	phase	2	5	phase	none	7	0	0	0	0	0	intelligence	max dist {s}
 teleport	teleport	4	10	phase	none	50	0	0	0	0	0	intelligence	max dist {s}

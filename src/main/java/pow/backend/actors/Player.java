@@ -13,7 +13,8 @@ import pow.util.MathUtils;
 import pow.util.Point;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class Player extends Actor implements Serializable, LightSource {
 
@@ -154,7 +155,7 @@ public class Player extends Actor implements Serializable, LightSource {
         int innateDex = (int) Math.round(gainRatios.dexRatio * (level + 6));
         int innateInt = (int) Math.round(gainRatios.intRatio * (level + 6));
         int innateCon = (int) Math.round(gainRatios.conRatio * (level + 6));
-        int innateSpd = 0;
+        int innateSpd = (int) Math.round(Math.max((level - 10) * 0.5 * gainRatios.speedRatio, 0));
 
         this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment.items);
         this.health = Math.min(health, getMaxHealth());

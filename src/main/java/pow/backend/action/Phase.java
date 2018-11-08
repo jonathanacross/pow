@@ -69,7 +69,7 @@ public class Phase implements Action {
                 gs.party.player.monsterTarget = null;
                 gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
             }
-            backend.logMessage(actor.getPronoun() + " phase.", MessageLog.MessageType.GENERAL);
+            backend.logMessage(actor.getPronoun() + " phases.", MessageLog.MessageType.GENERAL);
 
             events.add(GameEvent.DungeonUpdated());
         }
