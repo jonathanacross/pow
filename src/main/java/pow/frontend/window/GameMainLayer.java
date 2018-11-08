@@ -1,21 +1,26 @@
 package pow.frontend.window;
 
-import pow.backend.*;
+import pow.backend.GameMap;
+import pow.backend.GameState;
+import pow.backend.MessageLog;
+import pow.backend.SpellParams;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
+import pow.backend.actors.ai.MonsterDanger;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.*;
-import pow.util.Point;
 import pow.util.Direction;
+import pow.util.Point;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class GameMainLayer extends AbstractWindow {
@@ -312,6 +317,20 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
+    private static Map<MonsterDanger.Danger, Color> dangerColors;
+    private static Color friendlyColor;
+    static {
+        int alpha = 80;
+        dangerColors = new HashMap<>();
+        dangerColors.put(MonsterDanger.Danger.SAFE, new Color(0, 255, 0, alpha));  // green
+        dangerColors.put(MonsterDanger.Danger.NORMAL, new Color(255, 255, 0, alpha)); // yellow
+        dangerColors.put(MonsterDanger.Danger.UNSAFE, new Color(255, 153, 0, alpha));  // orange
+        dangerColors.put(MonsterDanger.Danger.DANGEROUS, new Color(255, 0, 0, alpha)); // red
+        dangerColors.put(MonsterDanger.Danger.DEADLY, new Color(204, 0, 204, alpha)); // magenta/purple
+        friendlyColor = new Color(0, 153, 255, alpha);
+    }
+
+
     @Override
     public void drawContents(Graphics graphics) {
         GameState gs = backend.getGameState();
@@ -340,6 +359,14 @@ public class GameMainLayer extends AbstractWindow {
         // draw monsters, player, pets
         for (Actor actor : gs.getCurrentMap().actors) {
             if (gs.party.selectedActor.canSeeLocation(gs, actor.loc) && gs.party.selectedActor.canSeeActor(actor)) {
+                // Hack: show how dangerous this is to the selected actor.
+                if (actor != gs.party.selectedActor) {
+                    Color dangerColor =
+                            actor.friendly ? friendlyColor :
+                                    dangerColors.get(MonsterDanger.getDanger(gs.party.selectedActor, actor));
+                    mapView.drawBlock(graphics, dangerColor, actor.loc.x, actor.loc.y);
+                }
+
                 ImageController.DrawMode drawMode = actor.invisible ? ImageController.DrawMode.TRANSPARENT : ImageController.DrawMode.NORMAL;
                 mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y, drawMode);
             }

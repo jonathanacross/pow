@@ -33,6 +33,17 @@ public class SpellParams implements Serializable {
         SPEED
     }
 
+    public static boolean isAttackSpell(SpellParams params) {
+        SpellType spellType = params.spellType;
+        return spellType == SpellType.ARROW ||
+                spellType == SpellType.BALL ||
+                spellType == SpellType.BREATH ||
+                spellType == SpellType.CHAIN ||
+                spellType == SpellType.CIRCLE_CUT ||
+                spellType == SpellType.BOLT ||
+                spellType == SpellType.QUAKE;
+    }
+
     // For area spells, what element/effect is done?
     public enum Element implements Serializable {
         NONE,
