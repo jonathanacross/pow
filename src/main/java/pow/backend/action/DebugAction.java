@@ -29,7 +29,7 @@ public class DebugAction implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        Player player = backend.getGameState().party.player;
+        Player player = backend.getGameState().party.selectedActor;
 
         switch (what) {
             case UNKNOWN:
