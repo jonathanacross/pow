@@ -24,7 +24,7 @@ public class GainRatiosData {
     public static GainRatios getGainRatios(String id) {
         if (!instance.gainRatiosMap.containsKey(id)) {
             //DebugLogger.info("warning: unknown gain ratio id '" + id + "'");
-            return new GainRatios(id, 1.0, 1.0, 1.0, 1.0);
+            return new GainRatios(id, 1.0, 1.0, 1.0, 1.0, 0.0);
         }
         return instance.gainRatiosMap.get(id);
     }
@@ -47,6 +47,7 @@ public class GainRatiosData {
         double dexRatio;
         double intRatio;
         double conRatio;
+        double speedRatio;
 
         if (line.length != 5) {
             throw new IllegalArgumentException("Expected 5 fields, but had " + line.length
@@ -59,8 +60,9 @@ public class GainRatiosData {
             dexRatio = Double.parseDouble(line[2]);
             intRatio = Double.parseDouble(line[3]);
             conRatio = Double.parseDouble(line[4]);
+            speedRatio = 0.0;
 
-            return new GainRatios(id, strRatio, dexRatio, intRatio, conRatio);
+            return new GainRatios(id, strRatio, dexRatio, intRatio, conRatio, speedRatio);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
         }
