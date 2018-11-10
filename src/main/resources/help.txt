@@ -39,5 +39,7 @@ Debugging commands (may be removed when the game is complete!)
       !    Heal player
       +    Gain a level
       S    Save
+      (    Show player AI
+      )    Show pet AI
 
 Press any key to continue.

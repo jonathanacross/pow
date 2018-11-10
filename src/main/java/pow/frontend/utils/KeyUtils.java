@@ -85,6 +85,10 @@ public class KeyUtils {
                 return hasShift(event) ? KeyInput.DEBUG_INCR_CHAR_LEVEL : KeyInput.UNKNOWN;
             case KeyEvent.VK_1:
                 return hasShift(event) ? KeyInput.DEBUG_HEAL_CHAR : KeyInput.UNKNOWN;
+            case KeyEvent.VK_9:
+                return hasShift(event) ? KeyInput.DEBUG_SHOW_PLAYER_AI : KeyInput.UNKNOWN;
+            case KeyEvent.VK_0:
+                return hasShift(event) ? KeyInput.DEBUG_SHOW_PET_AI : KeyInput.UNKNOWN;
 
             default:
                 return KeyInput.UNKNOWN;

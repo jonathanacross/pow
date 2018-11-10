@@ -27,10 +27,25 @@ import java.util.function.Function;
 public class GameMainLayer extends AbstractWindow {
 
     private final GameWindow parent;
+    private boolean showPetAi;   // not part of gamestate since just debugging
+    private boolean showPlayerAi;
 
     public GameMainLayer(GameWindow parent) {
         super(parent.dim, parent.visible, parent.backend, parent.frontend);
         this.parent = parent;
+        this.showPetAi = false;
+        this.showPlayerAi = false;
+    }
+
+    private void togglePetAi() {
+        showPetAi = !showPetAi;
+        showPlayerAi = false;
+        frontend.setDirty(true);
+    }
+    private void togglePlayerAi() {
+        showPetAi = false;
+        showPlayerAi = !showPlayerAi;
+        frontend.setDirty(true);
     }
 
     private void tryPickup(GameState gs) {
@@ -314,6 +329,8 @@ public class GameMainLayer extends AbstractWindow {
             case HELP: frontend.open(frontend.helpWindow); break;
             case DEBUG_INCR_CHAR_LEVEL: backend.tellSelectedActor(new DebugAction(DebugAction.What.INCREASE_CHAR_LEVEL)); break;
             case DEBUG_HEAL_CHAR: backend.tellSelectedActor(new DebugAction(DebugAction.What.HEAL)); break;
+            case DEBUG_SHOW_PET_AI: togglePetAi(); break;
+            case DEBUG_SHOW_PLAYER_AI: togglePlayerAi(); break;
             default: break;
         }
     }
@@ -365,16 +382,26 @@ public class GameMainLayer extends AbstractWindow {
         }
         for (Actor actor : gs.getCurrentMap().actors) {
             if (gs.party.selectedActor.canSeeLocation(gs, actor.loc) && gs.party.selectedActor.canSeeActor(actor)) {
-                // Hack: show how dangerous this is to the pet.
-                if (actor != pet) { //gs.party.selectedActor) {
-                    Color dangerColor =
-                            actor.friendly ? friendlyColor :
-                                    dangerColors.get(MonsterDanger.getDanger(pet, actor));
-                    mapView.drawBlock(graphics, dangerColor, actor.loc.x, actor.loc.y);
-                }
-                // Hack: show if the actor is a primary target of pet
-                if (petTarget != null && petTarget == actor) {
-                    mapView.frameRoundRect(graphics, Color.ORANGE, actor.loc.x, actor.loc.y);
+                if (this.showPetAi) {
+                    // show how dangerous this is to the pet.
+                    if (actor != pet) {
+                        Color dangerColor =
+                                actor.friendly ? friendlyColor :
+                                        dangerColors.get(MonsterDanger.getDanger(pet, actor));
+                        mapView.drawBlock(graphics, dangerColor, actor.loc.x, actor.loc.y);
+                    }
+                    // show if the actor is a primary target of pet
+                    if (petTarget != null && petTarget == actor) {
+                        mapView.frameRoundRect(graphics, Color.ORANGE, actor.loc.x, actor.loc.y);
+                    }
+                } else if (this.showPlayerAi) {
+                    // show how dangerous this is to the player.
+                    if (actor != gs.party.selectedActor) {
+                        Color dangerColor =
+                                actor.friendly ? friendlyColor :
+                                        dangerColors.get(MonsterDanger.getDanger(gs.party.selectedActor, actor));
+                        mapView.drawBlock(graphics, dangerColor, actor.loc.x, actor.loc.y);
+                    }
                 }
 
                 ImageController.DrawMode drawMode = actor.invisible ? ImageController.DrawMode.TRANSPARENT : ImageController.DrawMode.NORMAL;
