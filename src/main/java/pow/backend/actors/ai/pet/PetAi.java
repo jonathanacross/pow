@@ -1,7 +1,6 @@
 package pow.backend.actors.ai.pet;
 
 import pow.backend.AttackData;
-import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.SpellParams;
 import pow.backend.action.Action;
@@ -12,7 +11,6 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.actors.ai.MonsterDanger;
 import pow.backend.actors.ai.SpellAi;
-import pow.util.Bresenham;
 import pow.util.MathUtils;
 import pow.util.Point;
 
@@ -23,6 +21,7 @@ import java.util.Map;
 
 import static pow.util.MathUtils.dist2;
 
+// TODO: Refactor/reorgnanize AI code shared between PetAi, SpellAi, Monster
 public class PetAi {
 
     public static Action getAction(Actor actor, GameState gs) {
@@ -87,6 +86,7 @@ public class PetAi {
         return (me == gs.party.player) ? gs.party.pet : gs.party.player;
     }
 
+    // TODO: see if the healing can be simplified by making a score function on healing spells
     private static Action groupHealIfNecessary(Actor me, GameState gs) {
         // see if we need it
         Actor other = getOtherPartyActor(me, gs);
@@ -255,7 +255,7 @@ public class PetAi {
         return monsterTarget;
     }
 
-    // TODO: is this shared code anywhere?
+    // TODO: replace same function in Monster.java with this, move to better location
     private static boolean enemyIsWithinRange(Actor me, Actor target, int radius) {
         int dist2 = MathUtils.dist2(me.loc, target.loc);
         return dist2 < radius * radius;
@@ -290,21 +290,6 @@ public class PetAi {
         return targets;
     }
 
-    // TODO: is this shared code?
-    public static boolean actorHasLineOfSight(Actor actor, GameState gs, Point target) {
-        GameMap map = gs.getCurrentMap();
-        int radius = Math.abs(target.x - actor.loc.x) + Math.abs(target.y - actor.loc.y);
-        List<Point> ray = Bresenham.makeRay(actor.loc, target, radius + 1);
-        ray.remove(0); // remove the actor from the path
-        for (Point p : ray) {
-            if (!map.isOnMap(p.x, p.y)) return false;
-            if (map.map[p.x][p.y].blockAir()) return false;
-            if (p.x == target.x && p.y == target.y) return true;
-            if (map.actorAt(p.x, p.y) != null) return false;
-        }
-        return false;
-    }
-
     public static Actor getPrimaryTarget(Actor me, GameState gs) {
         Actor dangerousTarget = primaryDangerousActor(me, gs);
         if (dangerousTarget != null) {
@@ -316,7 +301,7 @@ public class PetAi {
 
         for (Actor target : targets) {
             int score = MathUtils.dist2(me.loc, target.loc) +
-                    (actorHasLineOfSight(me, gs, target.loc) ? 0 : 100);
+                    (SpellAi.actorHasLineOfSight(me, gs, target.loc) ? 0 : 100);
             if (bestTarget == null || score < bestScore) {
                 bestTarget = target;
                 bestScore = score;

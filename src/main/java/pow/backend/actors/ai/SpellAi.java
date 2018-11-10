@@ -64,6 +64,8 @@ public class SpellAi {
             if (!map.isOnMap(p.x, p.y)) return false;
             if (map.map[p.x][p.y].blockAir()) return false;
             if (p.x == target.x && p.y == target.y) return true;
+            // if not the target, avoid if going to hit another monster
+            if (map.actorAt(p.x, p.y) != null) return false;
         }
         return false;
     }
