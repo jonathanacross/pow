@@ -8,6 +8,7 @@ import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.actors.ai.MonsterDanger;
+import pow.backend.actors.ai.pet.PetAi;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
@@ -357,14 +358,23 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         // draw monsters, player, pets
+        Player pet = PetAi.getOtherPartyActor(gs.party.selectedActor, gs);
+        Actor petTarget = null;
+        if (pet != null) {
+            petTarget = PetAi.getPrimaryTarget(pet, gs);
+        }
         for (Actor actor : gs.getCurrentMap().actors) {
             if (gs.party.selectedActor.canSeeLocation(gs, actor.loc) && gs.party.selectedActor.canSeeActor(actor)) {
-                // Hack: show how dangerous this is to the selected actor.
-                if (actor != gs.party.selectedActor) {
+                // Hack: show how dangerous this is to the pet.
+                if (actor != pet) { //gs.party.selectedActor) {
                     Color dangerColor =
                             actor.friendly ? friendlyColor :
-                                    dangerColors.get(MonsterDanger.getDanger(gs.party.selectedActor, actor));
+                                    dangerColors.get(MonsterDanger.getDanger(pet, actor));
                     mapView.drawBlock(graphics, dangerColor, actor.loc.x, actor.loc.y);
+                }
+                // Hack: show if the actor is a primary target of pet
+                if (petTarget != null && petTarget == actor) {
+                    mapView.frameRoundRect(graphics, Color.ORANGE, actor.loc.x, actor.loc.y);
                 }
 
                 ImageController.DrawMode drawMode = actor.invisible ? ImageController.DrawMode.TRANSPARENT : ImageController.DrawMode.NORMAL;
