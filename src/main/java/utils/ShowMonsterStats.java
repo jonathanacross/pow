@@ -4,7 +4,6 @@ import pow.backend.actors.Monster;
 import pow.backend.dungeon.gen.MonsterGenerator;
 import pow.util.Point;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +12,7 @@ import java.util.Set;
 // Utility for displaying stats for all monsters, helpful for tuning.
 public class ShowMonsterStats {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         // get all the monsters, sorted by level
         Random rng = new Random(123);

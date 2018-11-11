@@ -9,12 +9,10 @@ import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
-import pow.frontend.utils.SaveUtils;
 import pow.util.MathUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.List;
 
 public class SetPetWindow extends AbstractWindow {
@@ -32,12 +30,12 @@ public class SetPetWindow extends AbstractWindow {
         characterData = CharacterGenerator.getPetCharacterData();
     }
 
-    public void resetName() {
+    private void resetName() {
         name = "";
     }
 
     private void addPetToGame() {
-        Player pet = CharacterGenerator.getPlayer(name, characterData.get(charSelectId).id, true);
+        Player pet = CharacterGenerator.getPlayer(name, characterData.get(charSelectId).id);
         backend.setPet(pet);
         frontend.close();
     }

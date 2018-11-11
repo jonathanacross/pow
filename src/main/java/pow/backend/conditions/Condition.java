@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Condition implements Serializable {
-    private IntensityTiming intensityTiming;
+    private final IntensityTiming intensityTiming;
     protected final Actor actor; // actor associated with this condition
 
     abstract String getStartMessage();

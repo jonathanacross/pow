@@ -25,7 +25,7 @@ public class Party implements Serializable {
         this.knowledge = new Knowledge();
     }
 
-    public void addPlayer(Player player) {
+    private void addPlayer(Player player) {
         this.player = player;
         player.party = this;
     }

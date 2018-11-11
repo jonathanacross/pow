@@ -7,7 +7,7 @@ import java.util.List;
 // helper class to keep track of changing intensities over time
 public class IntensityTiming implements Serializable {
     private static class IntensityDuration implements Serializable {
-        public int intensity;
+        public final int intensity;
         public int turnsRemaining;
 
         public IntensityDuration(int intensity, int turnsRemaining) {
@@ -16,7 +16,7 @@ public class IntensityTiming implements Serializable {
         }
     }
 
-    private List<IntensityDuration> intensities;
+    private final List<IntensityDuration> intensities;
 
     public IntensityTiming() {
         this.intensities = new LinkedList<>();

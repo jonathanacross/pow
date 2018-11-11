@@ -327,8 +327,8 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
-    private static Map<MonsterDanger.Danger, Color> dangerColors;
-    private static Color friendlyColor;
+    private static final Map<MonsterDanger.Danger, Color> dangerColors;
+    private static final Color friendlyColor;
     static {
         int alpha = 80;
         dangerColors = new HashMap<>();

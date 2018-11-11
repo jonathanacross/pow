@@ -24,7 +24,6 @@ public class Player extends Actor implements Serializable, LightSource {
     private final GainRatios gainRatios;
     public boolean increaseWealth;
     public boolean winner;
-    public boolean autoPlay;  // whether this character is controlled by computer
 
     public int experience;
 
@@ -68,14 +67,12 @@ public class Player extends Actor implements Serializable, LightSource {
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
              GainRatiosData.getGainRatios("player adventurer"),
-             Collections.emptyList(),
-                false);
+             Collections.emptyList());
     }
 
     public Player(DungeonObject.Params objectParams,
                    GainRatios gainRatios,
-                   List<SpellParams> spells,
-                  boolean autoPlay) {
+                   List<SpellParams> spells) {
         super(objectParams, new Actor.Params(
                 1,
                 0,
@@ -103,7 +100,6 @@ public class Player extends Actor implements Serializable, LightSource {
         this.monsterTarget = null;
         this.increaseWealth = false;
         this.winner = false;
-        this.autoPlay = autoPlay;
         this.party = null;
     }
 
@@ -119,7 +115,6 @@ public class Player extends Actor implements Serializable, LightSource {
     public String getPronoun() { return name; }
 
     public void setAutoplay(GameState gameState, boolean autoPlay) {
-        this.autoPlay = autoPlay;
         if (autoPlay) {
             this.behavior = new AiBehavior(this, gameState);
         } else {

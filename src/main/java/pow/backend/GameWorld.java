@@ -1,6 +1,5 @@
 package pow.backend;
 
-import pow.backend.actors.Player;
 import pow.backend.dungeon.RecentMaps;
 import pow.backend.dungeon.gen.GeneratorUtils;
 import pow.backend.dungeon.gen.MapConnection;

@@ -13,7 +13,7 @@ import java.util.Random;
 public class FractalMountain {
     private final int size;
     private final double roughness; // between 0 and 1; 1 is fully rough, 0 is perfectly smooth.
-    private double[][] data;
+    private final double[][] data;
 
     private final double OUTSIDE_RANGE = Double.MAX_VALUE;
 
@@ -133,7 +133,6 @@ public class FractalMountain {
                 }
                 writer.println();
             }
-            writer.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

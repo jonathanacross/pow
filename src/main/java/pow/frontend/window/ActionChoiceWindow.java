@@ -3,7 +3,6 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.action.*;
-import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.ItemList;

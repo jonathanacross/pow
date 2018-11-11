@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class HelpController {
 
     private List<String> readLines(InputStream stream) throws IOException {
         List<String> lines = new ArrayList<>();
-        try (InputStreamReader isr = new InputStreamReader(stream, "UTF-8");
+        try (InputStreamReader isr = new InputStreamReader(stream, StandardCharsets.UTF_8);
              BufferedReader br = new BufferedReader(isr)) {
             String line;
             while ((line = br.readLine()) != null) {

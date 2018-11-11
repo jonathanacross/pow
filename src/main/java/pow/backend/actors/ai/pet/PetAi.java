@@ -34,7 +34,7 @@ public class PetAi {
         if (preferredAction != null) {
             return preferredAction;
         }
-        preferredAction = healIfNecessary(actor, gs);
+        preferredAction = healIfNecessary(actor);
         if (preferredAction != null) {
             return preferredAction;
         }
@@ -112,7 +112,7 @@ public class PetAi {
         return SpellParams.buildAction(groupHealSpell, me, null);
     }
 
-    private static Action healIfNecessary(Actor me, GameState gs) {
+    private static Action healIfNecessary(Actor me) {
         List<SpellParams> healSpells = findSpells(me, SpellParams.SpellType.HEAL);
         if (healSpells.isEmpty()) {
             // don't have a heal spell
@@ -145,20 +145,20 @@ public class PetAi {
         return null;
     }
 
-    public static double attackScoreForPrimaryAttack(Actor me, Actor target) {
+    private static double attackScoreForPrimaryAttack(Actor me, Actor target) {
         AttackData attack = me.getPrimaryAttack();
         double hitProb = AttackUtils.hitProb(attack.plusToHit, target.getDefense());
         return attackScore(me, target, attack, SpellParams.Element.NONE, hitProb, 0.0);
     }
 
-    public static double attackScoreForSpell(Actor me, Actor target, SpellParams spell) {
+    private static double attackScoreForSpell(Actor me, Actor target, SpellParams spell) {
         AttackData attack = new AttackData(spell.getPrimaryAmount(me), 0, 0);
         return attackScore(me, target, attack, spell.element, 1.0, spell.requiredMana);
     }
 
     // Score represents the expected amount of total health lost if we try to kill a monster
     // with this attack.  The best attack is the one that minimize the score.
-    public static double attackScore(Actor me, Actor target, AttackData attack, SpellParams.Element element, double hitProb, double manaPerAttack) {
+    private static double attackScore(Actor me, Actor target, AttackData attack, SpellParams.Element element, double hitProb, double manaPerAttack) {
         double healthPerMana = getHealthPerMana(me);
         double avgMonsterDamage = MonsterDanger.getAverageDamagePerTurn(target, me);
         double avgMonsterTurnsPerPlayerTurn = getAverageMonsterTurnsPerPlayerTurn(target.getSpeed(), me.getSpeed());
@@ -181,8 +181,8 @@ public class PetAi {
 
     // See information about how speed works in Energy.java.
     // TODO: move inside energy.java?
-    private static double TURN_INCREASE_PER_UNIT_DIFF = Math.pow(2.0, 1.0/3.0);
-    private static double getAverageMonsterTurnsPerPlayerTurn(int monsterSpeed, int playerSpeed) {
+    private static final double TURN_INCREASE_PER_UNIT_DIFF = Math.pow(2.0, 1.0/3.0);
+    private static final double getAverageMonsterTurnsPerPlayerTurn(int monsterSpeed, int playerSpeed) {
         return Math.pow(TURN_INCREASE_PER_UNIT_DIFF, monsterSpeed - playerSpeed);
     }
 
@@ -261,7 +261,7 @@ public class PetAi {
         return dist2 < radius * radius;
     }
 
-    private static Map<MonsterDanger.Danger, Double> dangerToHurtAmount;
+    private static final Map<MonsterDanger.Danger, Double> dangerToHurtAmount;
     static {
         dangerToHurtAmount = new HashMap<>();
         dangerToHurtAmount.put(MonsterDanger.Danger.DEADLY, 0.2);
