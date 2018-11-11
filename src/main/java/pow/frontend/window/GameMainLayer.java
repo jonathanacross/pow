@@ -264,19 +264,12 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
-//    private void selectNextCharacter() {
-//        backend.selectNextCharacter();
-//        frontend.setDirty(true);
-//    }
-
-    private void toggleAutoplay(boolean pet) {
-        GameState gs = backend.getGameState();
-        Player player = pet ? gs.party.pet : gs.party.player;
-        if (player == null) {
-            return;
+    private void tryAutoplayOptions(GameState gs) {
+        if (gs.party.pet != null) {
+            frontend.open(frontend.autoplayOptionWindow);
+        } else {
+            backend.logMessage("You don't have a pet; no autoplay available.", MessageLog.MessageType.USER_ERROR);
         }
-        player.setAutoplay(gs, !player.autoPlay);
-        System.out.println((pet ? "pet" : "player") + " autoplay: " + (player.autoPlay ? "on" : "off"));
     }
 
     @Override
@@ -313,8 +306,7 @@ public class GameMainLayer extends AbstractWindow {
             case GROUND: showGround(gs); break;
             case EQUIPMENT: showEquipment(gs); break;
             //case PET: showPetInventory(gs); break;
-            case AUTO_PLAY: toggleAutoplay(false); break;
-            case AUTO_PLAY_PET: toggleAutoplay(true); break;
+            case AUTO_PLAY: tryAutoplayOptions(gs); break;
             //case SELECT_CHARACTER: backend.tellSelectedActor(new SelectNextCharacter()); break;
             //case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;

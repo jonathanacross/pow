@@ -30,6 +30,7 @@ public class Frontend {
     private final LoseWindow loseWindow;
     private final CreateCharWindow createCharWindow;
     private final SetPetWindow setPetWindow;
+    public final AutoplayOptionWindow autoplayOptionWindow;
     private final OpenGameWindow openGameWindow;
     public final MonsterInfoWindow monsterInfoWindow;
     public final PlayerInfoWindow playerInfoWindow;
@@ -74,6 +75,7 @@ public class Frontend {
         loseWindow = new LoseWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
         createCharWindow = new CreateCharWindow(WindowDim.center(480, 200, this.width, this.height), gameBackend, this);
         setPetWindow = new SetPetWindow(WindowDim.center(480, 240, this.width, this.height), gameBackend, this);
+        autoplayOptionWindow = new AutoplayOptionWindow(WindowDim.center(210, 140, this.width, this.height), gameBackend, this);
         openGameWindow = new OpenGameWindow(WindowDim.center(380, 300, this.width, this.height), true, gameBackend, this);
         // main game
         statusWindow = new StatusWindow(new WindowDim(5, 5, 200, 707), true, gameBackend, this);
