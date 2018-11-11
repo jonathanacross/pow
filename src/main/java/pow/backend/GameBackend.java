@@ -9,15 +9,12 @@ import pow.backend.behavior.Behavior;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GameBackend {
 
     private GameState gameState;
-    private final Deque<Action> commandQueue = new LinkedList<>();
+    private final Deque<Action> commandQueue = new ArrayDeque<>();
 
     public GameState getGameState() {
         return gameState;

@@ -29,7 +29,7 @@ public class MessageWindow extends AbstractWindow {
         Font f = new Font("Courier", Font.PLAIN, fontSize);
         graphics.setFont(f);
 
-        if (!frontend.messages.empty()) {
+        if (!frontend.messages.isEmpty()) {
             graphics.setColor(Color.WHITE);
             graphics.drawString(frontend.messages.peek(), 20, 20);
         }

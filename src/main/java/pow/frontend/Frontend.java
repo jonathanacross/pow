@@ -20,7 +20,7 @@ import java.util.Queue;
 // TODO: make interface for this
 public class Frontend {
 
-    private final Stack<AbstractWindow> windows;
+    private final Deque<AbstractWindow> windows;
 
     public int width;
     public int height;
@@ -46,7 +46,7 @@ public class Frontend {
 
     private final List<DungeonEffect> effects;
     private boolean dirty;  // need to redraw
-    public final Stack<String> messages;  // short messages/help suggestions
+    public final Deque<String> messages;  // short messages/help suggestions
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
@@ -65,8 +65,8 @@ public class Frontend {
         this.height = height;
         this.dirty = true;
         this.effects = new ArrayList<>();
-        this.keyEvents = new LinkedList<>();
-        this.messages = new Stack<>();
+        this.keyEvents = new ArrayDeque<>();
+        this.messages = new ArrayDeque<>();
 
         gameBackend = new GameBackend();
         // dialogs
@@ -89,7 +89,7 @@ public class Frontend {
         worldMapWindow = new WorldMapWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
         helpWindow = new HelpWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
 
-        windows = new Stack<>();
+        windows = new ArrayDeque<>();
         setState(State.WELCOME);
     }
 
@@ -252,8 +252,10 @@ public class Frontend {
 
         graphics.setColor(BACKGROUND_COLOR);
         graphics.fillRect(0, 0, width, height);
-        for (AbstractWindow w : windows) {
-            w.draw(graphics);
+        // draw back to front
+        Iterator<AbstractWindow> i = windows.descendingIterator();
+        while (i.hasNext()) {
+            i.next().draw(graphics);
         }
     }
 

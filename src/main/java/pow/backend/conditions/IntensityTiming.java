@@ -1,7 +1,7 @@
 package pow.backend.conditions;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 // helper class to keep track of changing intensities over time
@@ -19,7 +19,7 @@ public class IntensityTiming implements Serializable {
     private final List<IntensityDuration> intensities;
 
     public IntensityTiming() {
-        this.intensities = new LinkedList<>();
+        this.intensities = new ArrayList<>();
     }
 
     public int getIntensity() {

@@ -56,7 +56,7 @@ public class GeneratorUtils {
         int w = Array2D.width(data);
         int h = Array2D.height(data);
 
-        Stack<Point> stack = new Stack<>();
+        Deque<Point> stack = new ArrayDeque<>();
         stack.add(new Point(lx, ly));
 
         while (stack.size() > 0) {

@@ -6,17 +6,20 @@ import pow.frontend.WindowDim;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Iterator;
 import java.util.Stack;
 
 public class GameWindow extends AbstractWindow {
 
-    private final Stack<AbstractWindow> layers;
+    private final Deque<AbstractWindow> layers;
 
     public GameWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
         GameMainLayer mainLayer = new GameMainLayer(this);
-        layers = new Stack<>();
-        layers.add(mainLayer);
+        layers = new ArrayDeque<>();
+        layers.push(mainLayer);
     }
 
     public void removeLayer() {
@@ -25,7 +28,7 @@ public class GameWindow extends AbstractWindow {
     }
 
     public void addLayer(AbstractWindow layer) {
-        layers.add(layer);
+        layers.push(layer);
         frontend.setDirty(true);
     }
 
@@ -38,8 +41,10 @@ public class GameWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        for (AbstractWindow w : layers) {
-            w.drawContents(graphics);
+        // Draw from bottom to top
+        Iterator<AbstractWindow> i = layers.descendingIterator();
+        while (i.hasNext()) {
+            i.next().drawContents(graphics);
         }
     }
 
