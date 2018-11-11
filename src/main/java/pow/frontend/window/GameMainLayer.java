@@ -374,7 +374,7 @@ public class GameMainLayer extends AbstractWindow {
         }
         for (Actor actor : gs.getCurrentMap().actors) {
             if (gs.party.selectedActor.canSeeLocation(gs, actor.loc) && gs.party.selectedActor.canSeeActor(actor)) {
-                if (this.showPetAi) {
+                if (this.showPetAi && pet != null) {
                     // show how dangerous this is to the pet.
                     if (actor != pet) {
                         Color dangerColor =

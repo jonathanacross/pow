@@ -157,7 +157,7 @@ public class ImageUtils {
     }
 
     public static List<String> wrapText(String text, FontMetrics textMetrics, int firstWidth, int restWidth) {
-        String[] words = text.split(" ");
+        String[] words = text.split(" ", -1);
         int nIndex = 0;
         boolean first = true;
         List<String> lines = new ArrayList<>();

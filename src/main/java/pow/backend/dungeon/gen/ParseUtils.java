@@ -36,7 +36,7 @@ public class ParseUtils {
             return bonuses;
         }
 
-        String[] statBonuses = text.split(",");
+        String[] statBonuses = text.split(",", -1);
         for (String statBonus : statBonuses) {
             String[] tokens = statBonus.split(":", 2);
             // x indicates that we'll use the bonus calculated based on the level

@@ -27,7 +27,7 @@ public class DieRoll implements Serializable {
             return new DieRoll(0, 0);
         }
 
-        String[] parts = s.split("d");
+        String[] parts = s.split("d", 2);
         int roll = Integer.parseInt(parts[0]);
         int die = Integer.parseInt(parts[1]);
         return new DieRoll(roll, die);

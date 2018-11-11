@@ -22,7 +22,7 @@ public class DungeonExit {
     public String toString() { return areaId + "|" + locName; }
 
     public DungeonExit(String encoded) {
-        String[] fields = encoded.split("\\|");
+        String[] fields = encoded.split("\\|", -1);
         this.areaId = fields[0];
         this.locName = fields[1];
     }

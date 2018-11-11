@@ -177,7 +177,7 @@ public class MonsterGenerator {
         }
 
         private static Set<String> getFlags(String field) {
-            String[] fields = field.split(",");
+            String[] fields = field.split(",", -1);
             Set<String> flags = new HashSet<>();
             for (String tok : fields) {
                 if (!tok.isEmpty()) {
@@ -250,11 +250,13 @@ public class MonsterGenerator {
                 case BOOST_ARMOR:
                 case BOOST_ATTACK:
                 case HEAL:
+                case GROUP_HEAL:
                 case RESIST_ELEMENTS:
                 case SPEED: typeFactor = 1.0; break;
 
                 // this actually makes things easier since it doesn't directly attack the player
                 // and dilutes other more deadly spells
+                case CALL_PET:
                 case PHASE: typeFactor = 0.8; break;
             }
             return typeFactor;
