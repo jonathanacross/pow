@@ -39,7 +39,6 @@ public enum KeyInput {
     MAGIC,
     PET,
     AUTO_PLAY,
-    AUTO_PLAY_PET,
     KNOWLEDGE,
     INVENTORY,
     GROUND,
@@ -50,6 +49,8 @@ public enum KeyInput {
 
     DEBUG_INCR_CHAR_LEVEL, // debugging keys, remove at some point
     DEBUG_HEAL_CHAR,
+    DEBUG_SHOW_PET_AI,
+    DEBUG_SHOW_PLAYER_AI,
 
     UNKNOWN // user types something unknown
 }

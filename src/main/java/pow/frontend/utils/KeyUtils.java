@@ -52,7 +52,7 @@ public class KeyUtils {
             case KeyEvent.VK_NUMPAD5:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.REST;
             case KeyEvent.VK_A:
-                return hasShift(event) ? KeyInput.AUTO_PLAY_PET : KeyInput.AUTO_PLAY;
+                return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.AUTO_PLAY;
             case KeyEvent.VK_F:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.FIRE;
             case KeyEvent.VK_S:
@@ -85,6 +85,10 @@ public class KeyUtils {
                 return hasShift(event) ? KeyInput.DEBUG_INCR_CHAR_LEVEL : KeyInput.UNKNOWN;
             case KeyEvent.VK_1:
                 return hasShift(event) ? KeyInput.DEBUG_HEAL_CHAR : KeyInput.UNKNOWN;
+            case KeyEvent.VK_9:
+                return hasShift(event) ? KeyInput.DEBUG_SHOW_PLAYER_AI : KeyInput.UNKNOWN;
+            case KeyEvent.VK_0:
+                return hasShift(event) ? KeyInput.DEBUG_SHOW_PET_AI : KeyInput.UNKNOWN;
 
             default:
                 return KeyInput.UNKNOWN;

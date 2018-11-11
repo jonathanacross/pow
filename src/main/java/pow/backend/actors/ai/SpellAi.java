@@ -55,7 +55,7 @@ public class SpellAi {
         return actor.getHealth() < actor.getMaxHealth();
     }
 
-    private static boolean actorHasLineOfSight(Actor actor, GameState gs, Point target) {
+    public static boolean actorHasLineOfSight(Actor actor, GameState gs, Point target) {
         GameMap map = gs.getCurrentMap();
         int radius = Math.abs(target.x - actor.loc.x) + Math.abs(target.y - actor.loc.y);
         List<Point> ray = Bresenham.makeRay(actor.loc, target, radius + 1);
@@ -64,6 +64,8 @@ public class SpellAi {
             if (!map.isOnMap(p.x, p.y)) return false;
             if (map.map[p.x][p.y].blockAir()) return false;
             if (p.x == target.x && p.y == target.y) return true;
+            // if not the target, avoid if going to hit another monster
+            if (map.actorAt(p.x, p.y) != null) return false;
         }
         return false;
     }

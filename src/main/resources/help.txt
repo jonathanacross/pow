@@ -13,7 +13,7 @@ The keys . or number pad 5 indicate to stay still.
     ===    =========================     ===    ==========================
       .    Stay still
       /    See monster information         ?    See help
-                                           A    Toggle pet autoplay
+      a    Autoplay options
       b    Walk southwest                  B    Run southwest
       c    Close door                      C    Character description
       e    Show your equipment
@@ -39,5 +39,7 @@ Debugging commands (may be removed when the game is complete!)
       !    Heal player
       +    Gain a level
       S    Save
+      (    Show player AI info
+      )    Show pet AI info
 
 Press any key to continue.

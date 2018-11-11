@@ -21,7 +21,7 @@ public class AttackUtils {
     }
 
     // Adjusts the damage based on the damage type and the defender's resistances
-    private static int adjustDamage(int baseDamage, SpellParams.Element element, Actor defender) {
+    public static int adjustDamage(int baseDamage, SpellParams.Element element, Actor defender) {
         int bonus;
         switch (element) {
             case FIRE: bonus = defender.baseStats.resFire; break;

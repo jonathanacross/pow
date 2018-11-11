@@ -66,6 +66,13 @@ public class MapView {
         graphics.fillRect(gameXToPixelX(x), gameYToPixelY(y), tileSize, tileSize);
     }
 
+    public void drawTransparentBlock(Graphics graphics, Color color, int x, int y) {
+        Graphics2D g = (Graphics2D)graphics;
+        g.setComposite(AlphaComposite.SrcAtop);
+        g.setColor(color);
+        g.fillRect(gameXToPixelX(x), gameYToPixelY(y), tileSize, tileSize);
+    }
+
     public void drawCircle(Graphics graphics, Color color, int x, int y) {
         Graphics2D g2 = (Graphics2D) graphics;
         int tileCenterX = gameXToPixelX(x) + tileSize / 2;

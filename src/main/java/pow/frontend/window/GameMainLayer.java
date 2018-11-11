@@ -1,30 +1,51 @@
 package pow.frontend.window;
 
-import pow.backend.*;
+import pow.backend.GameMap;
+import pow.backend.GameState;
+import pow.backend.MessageLog;
+import pow.backend.SpellParams;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
+import pow.backend.actors.ai.MonsterDanger;
+import pow.backend.actors.ai.pet.PetAi;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.*;
-import pow.util.Point;
 import pow.util.Direction;
+import pow.util.Point;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class GameMainLayer extends AbstractWindow {
 
     private final GameWindow parent;
+    private boolean showPetAi;   // not part of gamestate since just debugging
+    private boolean showPlayerAi;
 
     public GameMainLayer(GameWindow parent) {
         super(parent.dim, parent.visible, parent.backend, parent.frontend);
         this.parent = parent;
+        this.showPetAi = false;
+        this.showPlayerAi = false;
+    }
+
+    private void togglePetAi() {
+        showPetAi = !showPetAi;
+        showPlayerAi = false;
+        frontend.setDirty(true);
+    }
+    private void togglePlayerAi() {
+        showPetAi = false;
+        showPlayerAi = !showPlayerAi;
+        frontend.setDirty(true);
     }
 
     private void tryPickup(GameState gs) {
@@ -243,19 +264,12 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
-//    private void selectNextCharacter() {
-//        backend.selectNextCharacter();
-//        frontend.setDirty(true);
-//    }
-
-    private void toggleAutoplay(boolean pet) {
-        GameState gs = backend.getGameState();
-        Player player = pet ? gs.party.pet : gs.party.player;
-        if (player == null) {
-            return;
+    private void tryAutoplayOptions(GameState gs) {
+        if (gs.party.pet != null) {
+            frontend.open(frontend.autoplayOptionWindow);
+        } else {
+            backend.logMessage("You don't have a pet; no autoplay available.", MessageLog.MessageType.USER_ERROR);
         }
-        player.setAutoplay(gs, !player.autoPlay);
-        System.out.println((pet ? "pet" : "player") + " autoplay: " + (player.autoPlay ? "on" : "off"));
     }
 
     @Override
@@ -292,8 +306,7 @@ public class GameMainLayer extends AbstractWindow {
             case GROUND: showGround(gs); break;
             case EQUIPMENT: showEquipment(gs); break;
             //case PET: showPetInventory(gs); break;
-            case AUTO_PLAY: toggleAutoplay(false); break;
-            case AUTO_PLAY_PET: toggleAutoplay(true); break;
+            case AUTO_PLAY: tryAutoplayOptions(gs); break;
             //case SELECT_CHARACTER: backend.tellSelectedActor(new SelectNextCharacter()); break;
             //case DROP: tryDrop(gs); break;
             case GET: tryPickup(gs); break;
@@ -308,9 +321,25 @@ public class GameMainLayer extends AbstractWindow {
             case HELP: frontend.open(frontend.helpWindow); break;
             case DEBUG_INCR_CHAR_LEVEL: backend.tellSelectedActor(new DebugAction(DebugAction.What.INCREASE_CHAR_LEVEL)); break;
             case DEBUG_HEAL_CHAR: backend.tellSelectedActor(new DebugAction(DebugAction.What.HEAL)); break;
+            case DEBUG_SHOW_PET_AI: togglePetAi(); break;
+            case DEBUG_SHOW_PLAYER_AI: togglePlayerAi(); break;
             default: break;
         }
     }
+
+    private static Map<MonsterDanger.Danger, Color> dangerColors;
+    private static Color friendlyColor;
+    static {
+        int alpha = 80;
+        dangerColors = new HashMap<>();
+        dangerColors.put(MonsterDanger.Danger.SAFE, new Color(0, 255, 0, alpha));  // green
+        dangerColors.put(MonsterDanger.Danger.NORMAL, new Color(255, 255, 0, alpha)); // yellow
+        dangerColors.put(MonsterDanger.Danger.UNSAFE, new Color(255, 153, 0, alpha));  // orange
+        dangerColors.put(MonsterDanger.Danger.DANGEROUS, new Color(255, 0, 0, alpha)); // red
+        dangerColors.put(MonsterDanger.Danger.DEADLY, new Color(204, 0, 204, alpha)); // magenta/purple
+        friendlyColor = new Color(0, 153, 255, alpha);
+    }
+
 
     @Override
     public void drawContents(Graphics graphics) {
@@ -338,8 +367,35 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         // draw monsters, player, pets
+        Player pet = PetAi.getOtherPartyActor(gs.party.selectedActor, gs);
+        Actor petTarget = null;
+        if (pet != null) {
+            petTarget = PetAi.getPrimaryTarget(pet, gs);
+        }
         for (Actor actor : gs.getCurrentMap().actors) {
             if (gs.party.selectedActor.canSeeLocation(gs, actor.loc) && gs.party.selectedActor.canSeeActor(actor)) {
+                if (this.showPetAi) {
+                    // show how dangerous this is to the pet.
+                    if (actor != pet) {
+                        Color dangerColor =
+                                actor.friendly ? friendlyColor :
+                                        dangerColors.get(MonsterDanger.getDanger(pet, actor));
+                        mapView.drawBlock(graphics, dangerColor, actor.loc.x, actor.loc.y);
+                    }
+                    // show if the actor is a primary target of pet
+                    if (petTarget != null && petTarget == actor) {
+                        mapView.frameRoundRect(graphics, Color.ORANGE, actor.loc.x, actor.loc.y);
+                    }
+                } else if (this.showPlayerAi) {
+                    // show how dangerous this is to the player.
+                    if (actor != gs.party.selectedActor) {
+                        Color dangerColor =
+                                actor.friendly ? friendlyColor :
+                                        dangerColors.get(MonsterDanger.getDanger(gs.party.selectedActor, actor));
+                        mapView.drawBlock(graphics, dangerColor, actor.loc.x, actor.loc.y);
+                    }
+                }
+
                 ImageController.DrawMode drawMode = actor.invisible ? ImageController.DrawMode.TRANSPARENT : ImageController.DrawMode.NORMAL;
                 mapView.drawTile(graphics, actor.image, actor.loc.x, actor.loc.y, drawMode);
             }
