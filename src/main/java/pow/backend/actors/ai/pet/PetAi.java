@@ -21,7 +21,7 @@ import java.util.Map;
 
 import static pow.util.MathUtils.dist2;
 
-// TODO: Refactor/reorgnanize AI code shared between PetAi, SpellAi, Monster
+// TODO: Refactor/reorganize AI code shared between PetAi, SpellAi, Monster
 public class PetAi {
 
     public static Action getAction(Actor actor, GameState gs) {
@@ -40,7 +40,7 @@ public class PetAi {
         }
 
         // if very far away from the player, then try to catch up
-        preferredAction = moveTowardOtherIfFar(actor, gs, 10*10);
+        preferredAction = moveTowardOtherIfFar(actor, gs, 10 * 10);
         if (preferredAction != null) {
             return preferredAction;
         }
@@ -54,7 +54,7 @@ public class PetAi {
         }
 
         // if modestly far, and nothing else to do, get closer
-        preferredAction = moveTowardOtherIfFar(actor, gs, 3*3);
+        preferredAction = moveTowardOtherIfFar(actor, gs, 3 * 3);
         if (preferredAction != null) {
             return preferredAction;
         }
@@ -96,7 +96,7 @@ public class PetAi {
         }
         boolean bothHurt = (me.health <= 0.4 * me.getMaxHealth()) &&
                 (other.health <= 0.4 * other.getMaxHealth());
-        if (! bothHurt) {
+        if (!bothHurt) {
             // both have to be sufficiently damaged
             return null;
         }
@@ -126,7 +126,7 @@ public class PetAi {
             SpellParams bestHeal = null;
             for (SpellParams heal : healSpells) {
                 if (bestHeal == null ||
-                                (heal.getSecondaryAmount(me) > bestHeal.getSecondaryAmount(me))) {
+                        (heal.getSecondaryAmount(me) > bestHeal.getSecondaryAmount(me))) {
                     bestHeal = heal;
                 }
             }
@@ -170,9 +170,7 @@ public class PetAi {
         double expectedTotalLifeLoss = expectedNumMonsterTurns * avgMonsterDamage;
         double expectedTotalManaLoss = expectedNumPlayerTurns * manaPerAttack;
 
-        double score = expectedTotalLifeLoss +  healthPerMana * expectedTotalManaLoss;
-
-        return score;
+        return expectedTotalLifeLoss + healthPerMana * expectedTotalManaLoss;
     }
 
     private static boolean canCastSpell(Actor actor, SpellParams spell) {
@@ -181,8 +179,9 @@ public class PetAi {
 
     // See information about how speed works in Energy.java.
     // TODO: move inside energy.java?
-    private static final double TURN_INCREASE_PER_UNIT_DIFF = Math.pow(2.0, 1.0/3.0);
-    private static final double getAverageMonsterTurnsPerPlayerTurn(int monsterSpeed, int playerSpeed) {
+    private static final double TURN_INCREASE_PER_UNIT_DIFF = Math.pow(2.0, 1.0 / 3.0);
+
+    private static double getAverageMonsterTurnsPerPlayerTurn(int monsterSpeed, int playerSpeed) {
         return Math.pow(TURN_INCREASE_PER_UNIT_DIFF, monsterSpeed - playerSpeed);
     }
 
@@ -262,6 +261,7 @@ public class PetAi {
     }
 
     private static final Map<MonsterDanger.Danger, Double> dangerToHurtAmount;
+
     static {
         dangerToHurtAmount = new HashMap<>();
         dangerToHurtAmount.put(MonsterDanger.Danger.DEADLY, 0.2);

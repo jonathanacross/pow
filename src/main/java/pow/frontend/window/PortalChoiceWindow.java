@@ -40,7 +40,7 @@ public class PortalChoiceWindow extends AbstractWindow {
 
         if (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z) {
             int areaNumber = keyCode - KeyEvent.VK_A;
-            if (areaNumber >= 0 && areaNumber < areaIds.size()) {
+            if (areaNumber < areaIds.size()) {
                 this.callback.accept(areaIds.get(areaNumber));
                 frontend.close();
             }

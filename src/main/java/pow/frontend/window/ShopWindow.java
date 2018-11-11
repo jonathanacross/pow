@@ -34,7 +34,7 @@ public class ShopWindow extends AbstractWindow {
 
         if (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z) {
             int itemNumber = keyCode - KeyEvent.VK_A;
-            if (itemNumber >= 0 && itemNumber < entries.size()) {
+            if (itemNumber < entries.size()) {
                 ShopData.ShopEntry entry = entries.get(itemNumber);
                 int maxNum = maxNumBuyable(entry);
                 if (maxNum > 0) {

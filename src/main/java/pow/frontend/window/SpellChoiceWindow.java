@@ -38,7 +38,7 @@ public class SpellChoiceWindow extends AbstractWindow {
 
         if (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z) {
             int spellNumber = keyCode - KeyEvent.VK_A;
-            if (spellNumber >= 0 && spellNumber < spells.size() &&
+            if (spellNumber < spells.size() &&
                     enabled(spells.get(spellNumber))) {
                 this.callback.accept(spellNumber);
                 frontend.close();

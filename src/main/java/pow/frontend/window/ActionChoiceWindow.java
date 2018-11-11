@@ -59,7 +59,7 @@ public class ActionChoiceWindow extends AbstractWindow {
         // TODO: change so can use f/q/d/g/w/W as alternates
         if (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z) {
             int actionNumber = keyCode - KeyEvent.VK_A;
-            if (actionNumber >= 0 && actionNumber < actions.size()) {
+            if (actionNumber < actions.size()) {
                 ItemActions.Action action = actions.get(actionNumber);
                 switch (action) {
                     case GET:
@@ -112,7 +112,6 @@ public class ActionChoiceWindow extends AbstractWindow {
         graphics.drawString(TextUtils.format(item.name, item.count, false),  MARGIN + 40, y + FONT_SIZE + 2);
         graphics.drawString(item.bonusString(), MARGIN + 40, y + 2*FONT_SIZE + 2);
 
-        y = 80;
         for (ItemActions.Action action : actions) {
             String label = (char) ((int) 'a' + idx) + ")";
             y = 80 + FONT_SPACING * idx;

@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.Stack;
 
 public class GameWindow extends AbstractWindow {
 

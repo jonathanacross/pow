@@ -42,25 +42,22 @@ public class AutoplayOptionWindow extends AbstractWindow {
     public void processKey(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        if (keyCode == KeyEvent.VK_ESCAPE) {
-            frontend.close();
-            return;
-        }
-
-        if (keyCode == KeyEvent.VK_A) {
-            setAutoplay(HumanControlSelection.PLAYER);
-            frontend.close();
-            return;
-        }
-        if (keyCode == KeyEvent.VK_B) {
-            setAutoplay(HumanControlSelection.PET);
-            frontend.close();
-            return;
-        }
-        if (keyCode == KeyEvent.VK_C) {
-            setAutoplay(HumanControlSelection.BOTH);
-            frontend.close();
-            return;
+        switch (keyCode) {
+            case KeyEvent.VK_ESCAPE:
+                frontend.close();
+                break;
+            case KeyEvent.VK_A:
+                setAutoplay(HumanControlSelection.PLAYER);
+                frontend.close();
+                break;
+            case KeyEvent.VK_B:
+                setAutoplay(HumanControlSelection.PET);
+                frontend.close();
+                break;
+            case KeyEvent.VK_C:
+                setAutoplay(HumanControlSelection.BOTH);
+                frontend.close();
+                break;
         }
     }
 
@@ -79,7 +76,7 @@ public class AutoplayOptionWindow extends AbstractWindow {
 
         GameState gs = backend.getGameState();
 
-        int textOffset = (FONT_SIZE + TILE_SIZE)/2;
+        int textOffset = (FONT_SIZE + TILE_SIZE) / 2;
 
         int y = MARGIN + FONT_SIZE;
         graphics.drawString("Who do you want to control?", MARGIN, y);
