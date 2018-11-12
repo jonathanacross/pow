@@ -9,10 +9,6 @@ import pow.util.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: see if this is game behavior we want.  It might be
-// nice to remove some energy from both parties, otherwise it
-// looks a little odd if you swap with a pet and then it moves;
-// it essentially got a free move!
 public class Swap implements Action {
     private final Actor first;
     private final Actor second;
@@ -33,7 +29,7 @@ public class Swap implements Action {
 
         if (first != second) {
             Point tmp = first.loc; first.loc = second.loc; second.loc = tmp;
-            backend.logMessage(first.getPronoun() + " and " + second.getPronoun() + " swap places",
+            backend.logMessage(first.getNoun() + " and " + second.getNoun() + " swap places",
                     MessageLog.MessageType.GENERAL);
             events.add(GameEvent.Moved());
             return ActionResult.Succeeded(events);

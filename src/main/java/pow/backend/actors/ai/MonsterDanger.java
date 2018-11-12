@@ -2,7 +2,7 @@ package pow.backend.actors.ai;
 
 import pow.backend.AttackData;
 import pow.backend.SpellParams;
-import pow.backend.action.AttackUtils;
+import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
 
 // This class allows evaluation for how dangerous a particular monster is.

@@ -33,7 +33,7 @@ public class ExitPortal implements Action {
 
         Point targetLoc = backend.getGameState().world.world.get(areaId).keyLocations.get(Constants.PORTAL_KEY_LOCATION_ID);
         //Point adjustedTargetLoc = new Point(targetLoc.x + dx, targetLoc.y + dy);
-        backend.logMessage(actor.getPronoun() + " feel space bend around you...", MessageLog.MessageType.USER_ERROR);
+        backend.logMessage(actor.getNoun() + " feel space bend around you...", MessageLog.MessageType.USER_ERROR);
         return ActionResult.Failed(new GotoArea(areaId, targetLoc));
     }
 

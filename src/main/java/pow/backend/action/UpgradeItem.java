@@ -43,7 +43,7 @@ public class UpgradeItem implements Action {
         // remove a socket
         item.bonuses[DungeonItem.SOCKETS_IDX]--;
 
-        backend.logMessage(player.getPronoun() + " upgrade " + TextUtils.format(item.name, 1, false),
+        backend.logMessage(player.getNoun() + " upgrade " + TextUtils.format(item.name, 1, false),
                 MessageLog.MessageType.GENERAL);
     }
 
@@ -92,7 +92,7 @@ public class UpgradeItem implements Action {
                     player.inventory.items.remove(item);
                     DungeonSquare square = gs.getCurrentMap().map[player.loc.x][player.loc.y];
                     square.items.add(item);
-                    backend.logMessage(player.getPronoun() + " drop " + TextUtils.format(item.name, item.count, false),
+                    backend.logMessage(player.getNoun() + " drop " + TextUtils.format(item.name, item.count, false),
                             MessageLog.MessageType.GENERAL);
                 }
                 player.inventory.add(newItem);

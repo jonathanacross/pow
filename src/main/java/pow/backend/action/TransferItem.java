@@ -31,7 +31,7 @@ public class TransferItem implements Action {
         DungeonItem item = giver.inventory.items.get(itemNum);
         int numCanTransfer = Math.min(numToTransfer, taker.inventory.numCanAdd(item));
         if (numCanTransfer == 0) {
-            backend.logMessage(taker.getPronoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(taker.getNoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
         if (numCanTransfer == item.count) {
@@ -45,8 +45,8 @@ public class TransferItem implements Action {
             item.count -= numCanTransfer;
             taker.inventory.add(cloneForTaker);
         }
-        backend.logMessage(giver.getPronoun() + " gives " +
-                TextUtils.format(item.name, numCanTransfer, true) + " to " + taker.getPronoun(),
+        backend.logMessage(giver.getNoun() + " gives " +
+                TextUtils.format(item.name, numCanTransfer, true) + " to " + taker.getNoun(),
                 MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }

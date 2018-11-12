@@ -73,7 +73,7 @@ public class Move implements Action {
                 }
             }
 
-            backend.logMessage(actor.getPronoun() + " can't go that way", MessageLog.MessageType.DEBUG);
+            backend.logMessage(actor.getNoun() + " can't go that way", MessageLog.MessageType.DEBUG);
             return ActionResult.Failed(null);
         }
 
@@ -129,7 +129,7 @@ public class Move implements Action {
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {
-            backend.logMessage(actor.getPronoun() + " can't go that way", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(actor.getNoun() + " can't go that way", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
     }

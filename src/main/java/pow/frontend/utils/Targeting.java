@@ -2,7 +2,7 @@ package pow.frontend.utils;
 
 import pow.backend.GameMap;
 import pow.backend.GameState;
-import pow.backend.action.SpellUtils;
+import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.frontend.window.MapView;

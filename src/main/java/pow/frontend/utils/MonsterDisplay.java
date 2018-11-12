@@ -1,6 +1,6 @@
 package pow.frontend.utils;
 
-import pow.backend.action.AttackUtils;
+import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Player;
 import pow.backend.actors.Knowledge;
 import pow.util.Point;

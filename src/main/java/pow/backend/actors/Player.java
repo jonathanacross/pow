@@ -112,7 +112,7 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     @Override
-    public String getPronoun() { return name; }
+    public String getNoun() { return name; }
 
     public void setAutoplay(GameState gameState, boolean autoPlay) {
         if (autoPlay) {
@@ -251,7 +251,7 @@ public class Player extends Actor implements Serializable, LightSource {
     }
 
     private void gainLevel(GameBackend backend) {
-        backend.logMessage(this.name + " gained a level!", MessageLog.MessageType.GAME_EVENT);
+        backend.logMessage(getNoun() + " gained a level!", MessageLog.MessageType.GAME_EVENT);
         level++;
         updateStats();
     }

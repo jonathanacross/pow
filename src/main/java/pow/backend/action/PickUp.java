@@ -36,7 +36,7 @@ public class PickUp implements Action {
 
         DungeonSquare square = gs.getCurrentMap().map[actor.loc.x][actor.loc.y];
         if (square.items.size() == 0) {
-            backend.logMessage(actor.getPronoun() + " can't pick up anything here.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(actor.getNoun() + " can't pick up anything here.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
 
@@ -45,7 +45,7 @@ public class PickUp implements Action {
         if (item.flags.money) {
             actor.gold += item.count;
             square.items.items.remove(itemNum);
-            backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
+            backend.logMessage(actor.getNoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
                     MessageLog.MessageType.GENERAL);
             return ActionResult.Succeeded(events);
         }
@@ -62,7 +62,7 @@ public class PickUp implements Action {
             // slight hack here.. update the visibility of the game map,
             // since picking up some artifacts may involve lanterns
             gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
-            backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
+            backend.logMessage(actor.getNoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
                     MessageLog.MessageType.GAME_EVENT);
             // Print the description too, so that the player knows what the artifact does.
             backend.logMessage(item.description, MessageLog.MessageType.GAME_EVENT);
@@ -81,7 +81,7 @@ public class PickUp implements Action {
 
         int numCanGet = Math.min(actor.inventory.numCanAdd(item), item.count);
         if (numCanGet <= 0) {
-            backend.logMessage(actor.getPronoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(actor.getNoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
 
@@ -97,7 +97,7 @@ public class PickUp implements Action {
             item.count -= numToAdd;
             actor.inventory.add(cloneForInventory);
         }
-        backend.logMessage(actor.getPronoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
+        backend.logMessage(actor.getNoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
                 MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }

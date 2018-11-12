@@ -3,7 +3,7 @@ package pow.backend.dungeon.gen.mapgen;
 import pow.backend.GameMap;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.MonsterIdGroup;
-import pow.backend.dungeon.gen.GeneratorUtils;
+import pow.backend.utils.GeneratorUtils;
 import pow.backend.dungeon.gen.MapConnection;
 import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Array2D;

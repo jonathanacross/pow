@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActionResult {
-    // TODO: make getters
     public final List<GameEvent> events;
     public final boolean succeeded;
     public final boolean done;

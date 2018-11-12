@@ -4,6 +4,8 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.SpellParams;
+import pow.backend.utils.AttackUtils;
+import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
@@ -14,7 +16,7 @@ import pow.util.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pow.backend.action.SpellUtils.getFieldOfView;
+import static pow.backend.utils.SpellUtils.getFieldOfView;
 
 public class BreathSpell implements Action {
 
@@ -33,7 +35,7 @@ public class BreathSpell implements Action {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
 
-        backend.logMessage(actor.getPronoun() + " breathes" +
+        backend.logMessage(actor.getNoun() + " breathes" +
                 AttackUtils.getDamageTypeString(spellParams.element), MessageLog.MessageType.COMBAT_NEUTRAL);
 
         // draw effects

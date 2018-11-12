@@ -38,7 +38,7 @@ public class BuyItem implements Action {
         DungeonItem item = entry.item;
         int numCanGet = Math.min(player.inventory.numCanAdd(item), item.count);
         if (numCanGet <= 0) {
-            backend.logMessage(player.getPronoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(player.getNoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
 
@@ -54,7 +54,7 @@ public class BuyItem implements Action {
             item.count -= count;
             player.inventory.add(cloneForInventory);
         }
-        backend.logMessage(player.getPronoun() + " buy " + TextUtils.format(item.name, count, true),
+        backend.logMessage(player.getNoun() + " buy " + TextUtils.format(item.name, count, true),
                 MessageLog.MessageType.GENERAL);
 
         List<GameEvent> events = new ArrayList<>();

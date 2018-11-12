@@ -5,7 +5,8 @@ import pow.backend.GameState;
 import pow.backend.SpellParams;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
-import pow.backend.action.AttackUtils;
+import pow.backend.actors.Energy;
+import pow.backend.utils.AttackUtils;
 import pow.backend.action.Move;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
@@ -40,7 +41,7 @@ public class PetAi {
         }
 
         // if very far away from the player, then try to catch up
-        preferredAction = moveTowardOtherIfFar(actor, gs, 10 * 10);
+        preferredAction = moveTowardOtherIfFar(actor, gs, 10);
         if (preferredAction != null) {
             return preferredAction;
         }
@@ -54,7 +55,7 @@ public class PetAi {
         }
 
         // if modestly far, and nothing else to do, get closer
-        preferredAction = moveTowardOtherIfFar(actor, gs, 3 * 3);
+        preferredAction = moveTowardOtherIfFar(actor, gs, 3);
         if (preferredAction != null) {
             return preferredAction;
         }
@@ -73,10 +74,10 @@ public class PetAi {
         return matchingSpells;
     }
 
-    private static Action moveTowardOtherIfFar(Actor me, GameState gs, int maxDistSq) {
+    private static Action moveTowardOtherIfFar(Actor me, GameState gs, int maxDist) {
         Actor other = getOtherPartyActor(me, gs);
         int distSq = dist2(me.loc, other.loc);
-        if (distSq >= maxDistSq) {
+        if (distSq >= maxDist * maxDist) {
             return me.movement.moveTowardTarget(me, gs, other.loc);
         }
         return null;
@@ -161,7 +162,7 @@ public class PetAi {
     private static double attackScore(Actor me, Actor target, AttackData attack, SpellParams.Element element, double hitProb, double manaPerAttack) {
         double healthPerMana = getHealthPerMana(me);
         double avgMonsterDamage = MonsterDanger.getAverageDamagePerTurn(target, me);
-        double avgMonsterTurnsPerPlayerTurn = getAverageMonsterTurnsPerPlayerTurn(target.getSpeed(), me.getSpeed());
+        double avgMonsterTurnsPerPlayerTurn = Energy.getAverageTurnRatio(target.getSpeed(), me.getSpeed());
 
         double avgPlayerDamage = MonsterDanger.getAverageDamageForAttack(hitProb, attack, me, element);
         double expectedNumPlayerTurns = Math.ceil(target.health / avgPlayerDamage);
@@ -175,14 +176,6 @@ public class PetAi {
 
     private static boolean canCastSpell(Actor actor, SpellParams spell) {
         return spell.minLevel <= actor.level && spell.requiredMana <= actor.mana;
-    }
-
-    // See information about how speed works in Energy.java.
-    // TODO: move inside energy.java?
-    private static final double TURN_INCREASE_PER_UNIT_DIFF = Math.pow(2.0, 1.0 / 3.0);
-
-    private static double getAverageMonsterTurnsPerPlayerTurn(int monsterSpeed, int playerSpeed) {
-        return Math.pow(TURN_INCREASE_PER_UNIT_DIFF, monsterSpeed - playerSpeed);
     }
 
     // Gets rough equivalency of health and mana based on assumption of lesser heal

@@ -416,7 +416,7 @@ public class WorldDataGen {
 
     private static MapGenerator buildPremadeGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         String[] subParams = params.split(",", 2);
-        PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.getLevel(subParams[0]);
+        PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.getArea(subParams[0]);
         ProtoTranslator style = getProtoTranslator(subParams[1]);
         return new PremadeGenerator(mapInfo, style, monsterIds, level, flags);
     }

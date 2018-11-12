@@ -66,21 +66,21 @@ public class Monster extends Actor implements Serializable {
 
         switch (newState) {
             case DUMB_AWAKE:
-                backend.logMessage(this.getPronoun() + " wakes up!", MessageLog.MessageType.GENERAL);
+                backend.logMessage(this.getNoun() + " wakes up!", MessageLog.MessageType.GENERAL);
                 break;
             case AFRAID:
                 // TODO: shouldn't be called for stationary creatures
-                backend.logMessage(this.getPronoun() + " flees in panic!", MessageLog.MessageType.GENERAL);
+                backend.logMessage(this.getNoun() + " flees in panic!", MessageLog.MessageType.GENERAL);
                 break;
             case ATTACKING:
-                backend.logMessage(this.getPronoun() + " recovers its courage.", MessageLog.MessageType.GENERAL);
+                backend.logMessage(this.getNoun() + " recovers its courage.", MessageLog.MessageType.GENERAL);
                 break;
             // TODO: shouldn't be called for stationary creatures
             case WANDERING:
-                backend.logMessage(this.getPronoun() + " wanders aimlessly.", MessageLog.MessageType.GENERAL);
+                backend.logMessage(this.getNoun() + " wanders aimlessly.", MessageLog.MessageType.GENERAL);
                 break;
             case SLEEPING:
-                backend.logMessage(this.getPronoun() + " falls asleep.", MessageLog.MessageType.GENERAL);
+                backend.logMessage(this.getNoun() + " falls asleep.", MessageLog.MessageType.GENERAL);
                 break;
         }
         this.state = newState;
@@ -315,8 +315,7 @@ public class Monster extends Actor implements Serializable {
     }
 
     @Override
-    public String getPronoun() {
-        // TODO: rename?  this returns the noun, not the pronoun
+    public String getNoun() {
         return TextUtils.format(this.name, 1, true);
     }
 

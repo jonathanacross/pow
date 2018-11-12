@@ -1,4 +1,4 @@
-package pow.backend.action;
+package pow.backend.utils;
 
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
@@ -6,7 +6,6 @@ import pow.backend.dungeon.DungeonItem;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: perhaps restructure project so that all these *Utils classes are in a separate package
 public class ShopUtils {
 
     public static class ItemInfo {

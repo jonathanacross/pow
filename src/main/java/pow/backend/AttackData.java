@@ -1,6 +1,7 @@
 package pow.backend;
 
 import pow.util.DieRoll;
+import pow.util.TextUtils;
 
 import java.io.Serializable;
 
@@ -15,15 +16,9 @@ public class AttackData implements Serializable {
         this.plusToDam = plusToDam;
     }
 
-    // TODO:common code with DungeonItem
-    private static String formatBonus(int x) {
-        if (x < 0) { return "-" + (-x); }
-        else { return "+" + x; }
-    }
-
     @Override
     public String toString() {
-        return this.dieRoll.toString() + " (" + formatBonus(plusToHit) + ", " + formatBonus(plusToDam) + ")";
+        return this.dieRoll.toString() + " (" + TextUtils.formatBonus(plusToHit) + ", " + TextUtils.formatBonus(plusToDam) + ")";
     }
 
     public double getAverageDamage() {

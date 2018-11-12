@@ -28,7 +28,7 @@ public class RestoreMana implements Action {
         events.add(GameEvent.Healed());
 
         int restoreAmount = actor.increaseMana(this.amount);
-        backend.logMessage(actor.getPronoun() + " restored " + restoreAmount + " mana", MessageLog.MessageType.GENERAL);
+        backend.logMessage(actor.getNoun() + " restored " + restoreAmount + " mana", MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }
 
