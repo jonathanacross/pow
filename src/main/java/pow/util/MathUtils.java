@@ -14,9 +14,7 @@ public class MathUtils {
     }
 
     public static int sign(int x) {
-        if (x > 0) { return 1; }
-        else if (x < 0) { return -1; }
-        else { return 0; }
+        return Integer.compare(x, 0);
     }
 
     public static int roundEven(int n) { return (n % 2 == 0) ? n : n - 1; }

@@ -12,25 +12,12 @@ public class DieRoll implements Serializable {
         this.die = die;
     }
 
-    // TODO: put in random class
     public int rollDice(Random rng) {
         int sum = 0;
         for (int i = 0; i < roll; i++) {
             sum += 1 + rng.nextInt(die);
         }
         return sum;
-    }
-
-    // parses a string of the form XdY
-    public static DieRoll parseDieRoll(String s) {
-        if (s == null || s.isEmpty() || s.equals("0")) {
-            return new DieRoll(0, 0);
-        }
-
-        String[] parts = s.split("d");
-        int roll = Integer.parseInt(parts[0]);
-        int die = Integer.parseInt(parts[1]);
-        return new DieRoll(roll, die);
     }
 
     @Override

@@ -9,7 +9,7 @@ public class DungeonObject implements Serializable {
     // we want a map of id -> dungeonObject, which would be filled out
     // during data file reading.
     public final String id;   // program id, e.g., "axe"
-    public String name; // english name, e.g., "& axe~"
+    public final String name; // english name, e.g., "& axe~"
     public final String image; // for display
     public final String description;
     public Point loc;

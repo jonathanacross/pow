@@ -26,9 +26,9 @@ public class LogWindow extends AbstractWindow {
     private static final int MESSAGE_SEP = 3;
     private static final int TEXT_INDENT = 16;
 
-    private static Color LAVENDER = new Color(192, 128, 255);
-    private static Color ORANGE = new Color(255, 172, 0);
-    private static Color LIGHT_BLUE = new Color(64, 128,255);
+    private static final Color LAVENDER = new Color(192, 128, 255);
+    private static final Color ORANGE = new Color(255, 172, 0);
+    private static final Color LIGHT_BLUE = new Color(64, 128,255);
 
     private static class LinePos {
         public final String line;

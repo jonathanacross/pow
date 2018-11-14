@@ -1,6 +1,8 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.utils.AttackUtils;
+import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
@@ -34,7 +36,7 @@ public class CircleCut implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        backend.logMessage(attacker.getPronoun() + " cut in a" +
+        backend.logMessage(attacker.getNoun() + " cut in a" +
                 AttackUtils.getDamageTypeString(spellParams.element) + " circle", MessageLog.MessageType.COMBAT_NEUTRAL);
 
         List<Point> fovSquares = SpellUtils.getFieldOfView(gs, attacker.loc, spellParams.size, Metric.rogueMetric);

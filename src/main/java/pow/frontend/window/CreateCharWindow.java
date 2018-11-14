@@ -39,7 +39,7 @@ public class CreateCharWindow extends AbstractWindow {
     }
 
     private void startNewGame() {
-        Player player = CharacterGenerator.getPlayer(name, characterData.get(charSelectId).id, false);
+        Player player = CharacterGenerator.getPlayer(name, characterData.get(charSelectId).id);
         onName = false;
         backend.newGame(player);
         frontend.setState(Frontend.State.GAME);

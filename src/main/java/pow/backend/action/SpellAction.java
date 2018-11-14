@@ -19,7 +19,7 @@ public class SpellAction implements Action {
     public ActionResult process(GameBackend backend) {
         Actor actor = action.getActor();
         if (actor.getMana() < params.requiredMana) {
-            backend.logMessage(actor.getPronoun() + " doesn't have enough mana.",
+            backend.logMessage(actor.getNoun() + " doesn't have enough mana.",
                     MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }

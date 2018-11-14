@@ -1,16 +1,15 @@
-package pow.backend.actors.ai.pet;
+package pow.backend.actors.ai;
 
 import pow.backend.AttackData;
 import pow.backend.GameState;
 import pow.backend.SpellParams;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
-import pow.backend.action.AttackUtils;
+import pow.backend.actors.Energy;
+import pow.backend.utils.AttackUtils;
 import pow.backend.action.Move;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
-import pow.backend.actors.ai.MonsterDanger;
-import pow.backend.actors.ai.SpellAi;
 import pow.util.MathUtils;
 import pow.util.Point;
 
@@ -21,7 +20,6 @@ import java.util.Map;
 
 import static pow.util.MathUtils.dist2;
 
-// TODO: Refactor/reorgnanize AI code shared between PetAi, SpellAi, Monster
 public class PetAi {
 
     public static Action getAction(Actor actor, GameState gs) {
@@ -34,13 +32,13 @@ public class PetAi {
         if (preferredAction != null) {
             return preferredAction;
         }
-        preferredAction = healIfNecessary(actor, gs);
+        preferredAction = healIfNecessary(actor);
         if (preferredAction != null) {
             return preferredAction;
         }
 
         // if very far away from the player, then try to catch up
-        preferredAction = moveTowardOtherIfFar(actor, gs, 10*10);
+        preferredAction = moveTowardOtherIfFar(actor, gs, 10);
         if (preferredAction != null) {
             return preferredAction;
         }
@@ -54,7 +52,7 @@ public class PetAi {
         }
 
         // if modestly far, and nothing else to do, get closer
-        preferredAction = moveTowardOtherIfFar(actor, gs, 3*3);
+        preferredAction = moveTowardOtherIfFar(actor, gs, 3);
         if (preferredAction != null) {
             return preferredAction;
         }
@@ -73,10 +71,10 @@ public class PetAi {
         return matchingSpells;
     }
 
-    private static Action moveTowardOtherIfFar(Actor me, GameState gs, int maxDistSq) {
+    private static Action moveTowardOtherIfFar(Actor me, GameState gs, int maxDist) {
         Actor other = getOtherPartyActor(me, gs);
         int distSq = dist2(me.loc, other.loc);
-        if (distSq >= maxDistSq) {
+        if (distSq >= maxDist * maxDist) {
             return me.movement.moveTowardTarget(me, gs, other.loc);
         }
         return null;
@@ -96,7 +94,7 @@ public class PetAi {
         }
         boolean bothHurt = (me.health <= 0.4 * me.getMaxHealth()) &&
                 (other.health <= 0.4 * other.getMaxHealth());
-        if (! bothHurt) {
+        if (!bothHurt) {
             // both have to be sufficiently damaged
             return null;
         }
@@ -112,7 +110,7 @@ public class PetAi {
         return SpellParams.buildAction(groupHealSpell, me, null);
     }
 
-    private static Action healIfNecessary(Actor me, GameState gs) {
+    private static Action healIfNecessary(Actor me) {
         List<SpellParams> healSpells = findSpells(me, SpellParams.SpellType.HEAL);
         if (healSpells.isEmpty()) {
             // don't have a heal spell
@@ -126,7 +124,7 @@ public class PetAi {
             SpellParams bestHeal = null;
             for (SpellParams heal : healSpells) {
                 if (bestHeal == null ||
-                                (heal.getSecondaryAmount(me) > bestHeal.getSecondaryAmount(me))) {
+                        (heal.getSecondaryAmount(me) > bestHeal.getSecondaryAmount(me))) {
                     bestHeal = heal;
                 }
             }
@@ -145,23 +143,23 @@ public class PetAi {
         return null;
     }
 
-    public static double attackScoreForPrimaryAttack(Actor me, Actor target) {
+    private static double attackScoreForPrimaryAttack(Actor me, Actor target) {
         AttackData attack = me.getPrimaryAttack();
         double hitProb = AttackUtils.hitProb(attack.plusToHit, target.getDefense());
         return attackScore(me, target, attack, SpellParams.Element.NONE, hitProb, 0.0);
     }
 
-    public static double attackScoreForSpell(Actor me, Actor target, SpellParams spell) {
+    private static double attackScoreForSpell(Actor me, Actor target, SpellParams spell) {
         AttackData attack = new AttackData(spell.getPrimaryAmount(me), 0, 0);
         return attackScore(me, target, attack, spell.element, 1.0, spell.requiredMana);
     }
 
     // Score represents the expected amount of total health lost if we try to kill a monster
     // with this attack.  The best attack is the one that minimize the score.
-    public static double attackScore(Actor me, Actor target, AttackData attack, SpellParams.Element element, double hitProb, double manaPerAttack) {
+    private static double attackScore(Actor me, Actor target, AttackData attack, SpellParams.Element element, double hitProb, double manaPerAttack) {
         double healthPerMana = getHealthPerMana(me);
         double avgMonsterDamage = MonsterDanger.getAverageDamagePerTurn(target, me);
-        double avgMonsterTurnsPerPlayerTurn = getAverageMonsterTurnsPerPlayerTurn(target.getSpeed(), me.getSpeed());
+        double avgMonsterTurnsPerPlayerTurn = Energy.getAverageTurnRatio(target.getSpeed(), me.getSpeed());
 
         double avgPlayerDamage = MonsterDanger.getAverageDamageForAttack(hitProb, attack, me, element);
         double expectedNumPlayerTurns = Math.ceil(target.health / avgPlayerDamage);
@@ -170,20 +168,11 @@ public class PetAi {
         double expectedTotalLifeLoss = expectedNumMonsterTurns * avgMonsterDamage;
         double expectedTotalManaLoss = expectedNumPlayerTurns * manaPerAttack;
 
-        double score = expectedTotalLifeLoss +  healthPerMana * expectedTotalManaLoss;
-
-        return score;
+        return expectedTotalLifeLoss + healthPerMana * expectedTotalManaLoss;
     }
 
     private static boolean canCastSpell(Actor actor, SpellParams spell) {
         return spell.minLevel <= actor.level && spell.requiredMana <= actor.mana;
-    }
-
-    // See information about how speed works in Energy.java.
-    // TODO: move inside energy.java?
-    private static double TURN_INCREASE_PER_UNIT_DIFF = Math.pow(2.0, 1.0/3.0);
-    private static double getAverageMonsterTurnsPerPlayerTurn(int monsterSpeed, int playerSpeed) {
-        return Math.pow(TURN_INCREASE_PER_UNIT_DIFF, monsterSpeed - playerSpeed);
     }
 
     // Gets rough equivalency of health and mana based on assumption of lesser heal
@@ -201,7 +190,7 @@ public class PetAi {
         SpellParams bestSpell = null;
 
         for (SpellParams spell : me.spells) {
-            if (!canCastSpell(me, spell) || !SpellParams.isAttackSpell(spell)) {
+            if (!canCastSpell(me, spell) || !SpellAi.canHitTarget(spell, me, gs, target)) {
                 continue;
             }
             double score = attackScoreForSpell(me, target, spell);
@@ -213,7 +202,7 @@ public class PetAi {
 
         // see if we can do the attack
         if (bestSpell != null) {
-            if (SpellAi.canCastSpell(bestSpell, me, gs, target)) {
+            if (SpellAi.shouldMonsterCastSpell(bestSpell, me, gs, target)) {
                 return SpellParams.buildAction(bestSpell, me, target.loc);
             }
         } else {
@@ -249,19 +238,14 @@ public class PetAi {
             // monster must be sufficiently dangerous.
             return null;
         }
-        if (!enemyIsWithinRange(me, monsterTarget, 11)) {
+        if (!AiUtils.enemyIsWithinRange(me, monsterTarget, 11)) {
             return null;
         }
         return monsterTarget;
     }
 
-    // TODO: replace same function in Monster.java with this, move to better location
-    private static boolean enemyIsWithinRange(Actor me, Actor target, int radius) {
-        int dist2 = MathUtils.dist2(me.loc, target.loc);
-        return dist2 < radius * radius;
-    }
+    private static final Map<MonsterDanger.Danger, Double> dangerToHurtAmount;
 
-    private static Map<MonsterDanger.Danger, Double> dangerToHurtAmount;
     static {
         dangerToHurtAmount = new HashMap<>();
         dangerToHurtAmount.put(MonsterDanger.Danger.DEADLY, 0.2);
@@ -277,7 +261,7 @@ public class PetAi {
             if (target.friendly == me.friendly) {
                 continue;
             }
-            if (!enemyIsWithinRange(me, target, 7)) {
+            if (!AiUtils.enemyIsWithinRange(me, target, 7)) {
                 continue;
             }
             MonsterDanger.Danger danger = MonsterDanger.getDanger(me, target);
@@ -301,7 +285,7 @@ public class PetAi {
 
         for (Actor target : targets) {
             int score = MathUtils.dist2(me.loc, target.loc) +
-                    (SpellAi.actorHasLineOfSight(me, gs, target.loc) ? 0 : 100);
+                    (AiUtils.actorHasLineOfSight(me, gs, target.loc) ? 0 : 100);
             if (bestTarget == null || score < bestScore) {
                 bestTarget = target;
                 bestScore = score;

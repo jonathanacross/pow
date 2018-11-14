@@ -1,6 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.dungeon.DungeonItem;
@@ -34,7 +35,7 @@ public class Arrow implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        backend.logMessage(attacker.getPronoun() + " fire an arrow.", MessageLog.MessageType.COMBAT_NEUTRAL);
+        backend.logMessage(attacker.getNoun() + " fire an arrow.", MessageLog.MessageType.COMBAT_NEUTRAL);
 
         List<Point> ray = Bresenham.makeRay(attacker.loc, target, GameConstants.ACTOR_ARROW_FIRE_RANGE + 1);
         String effectId = DungeonEffect.getEffectName(

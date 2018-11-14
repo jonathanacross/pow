@@ -1,6 +1,8 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.utils.AttackUtils;
+import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
@@ -48,7 +50,7 @@ public class ChainSpell implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        backend.logMessage(attacker.getPronoun() + " casts a" +
+        backend.logMessage(attacker.getNoun() + " casts a" +
                 AttackUtils.getDamageTypeString(spellParams.element) + " chain", MessageLog.MessageType.COMBAT_NEUTRAL);
 
         Set<Point> excluded = new HashSet<>();

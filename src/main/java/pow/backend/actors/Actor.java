@@ -2,7 +2,7 @@ package pow.backend.actors;
 
 import pow.backend.*;
 import pow.backend.action.Action;
-import pow.backend.action.AttackUtils;
+import pow.backend.utils.AttackUtils;
 import pow.backend.actors.ai.Movement;
 import pow.backend.behavior.ActionBehavior;
 import pow.backend.behavior.Behavior;
@@ -99,7 +99,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
 
     public abstract Action act(GameBackend backend);
     public abstract boolean needsInput(GameState gameState);
-    public abstract String getPronoun();
+    public abstract String getNoun();
 
     public void setFullHealth() { health = getMaxHealth(); }
     public void setFullMana() { mana = getMaxMana(); }

@@ -1,6 +1,7 @@
 package pow.util;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class BlockReader {
 
         List<String> lineGroup = new ArrayList<>();
 
-        try (InputStreamReader isr = new InputStreamReader(stream, "UTF-8");
+        try (InputStreamReader isr = new InputStreamReader(stream, StandardCharsets.UTF_8);
              BufferedReader br = new BufferedReader(isr)) {
             String line;
 

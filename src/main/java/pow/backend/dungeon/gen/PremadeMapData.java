@@ -28,7 +28,7 @@ public class PremadeMapData {
 
     public static Set<String> getRoomIds() { return instance.roomMap.keySet(); }
     public static Set<String> getVaultIds() { return instance.vaultMap.keySet(); }
-    public static Set<String> getLevelIds() { return instance.levelMap.keySet(); }
+    public static Set<String> getAreaIds() { return instance.areaMap.keySet(); }
 
     public static PremadeMapInfo getRoom(String id) {
         if (instance.roomMap.containsKey(id)) {
@@ -44,18 +44,18 @@ public class PremadeMapData {
             throw new IllegalArgumentException("Error: tried to get vault for nonexistent id " + id);
         }
     }
-    public static PremadeMapInfo getLevel(String id) {
-        if (instance.levelMap.containsKey(id)) {
-            return instance.levelMap.get(id);
+    public static PremadeMapInfo getArea(String id) {
+        if (instance.areaMap.containsKey(id)) {
+            return instance.areaMap.get(id);
         } else {
-            throw new IllegalArgumentException("Error: tried to get level for nonexistent id " + id);
+            throw new IllegalArgumentException("Error: tried to get area for nonexistent id " + id);
         }
     }
 
     private static final PremadeMapData instance;
     private Map<String, PremadeMapInfo> roomMap;
     private Map<String, PremadeMapInfo> vaultMap;
-    private Map<String, PremadeMapInfo> levelMap;
+    private Map<String, PremadeMapInfo> areaMap;
 
     static {
         try {
@@ -69,7 +69,7 @@ public class PremadeMapData {
     private PremadeMapData() throws IOException {
         this.roomMap = readMapFile("/data/rooms.txt");
         this.vaultMap = readMapFile("/data/vaults.txt");
-        this.levelMap = readMapFile("/data/maps.txt");  // TODO: rename for consistency
+        this.areaMap = readMapFile("/data/areas.txt");
     }
 
     private Map<String, PremadeMapInfo> readMapFile(String resourceName) throws IOException {

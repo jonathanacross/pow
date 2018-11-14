@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class AtlasMaker {
     private static List<AtlasEntry> readAtlas(InputStream stream)
             throws IOException {
         List<AtlasEntry> entries = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
             String line;
             while ((line = br.readLine()) != null) {
                 AtlasEntry entry = new AtlasEntry(line);

@@ -2,19 +2,15 @@ package pow.backend.behavior;
 
 import pow.backend.GameState;
 import pow.backend.action.Action;
-import pow.backend.action.Attack;
 import pow.backend.actors.Actor;
-import pow.backend.actors.ai.pet.PetAi;
-import pow.util.MathUtils;
+import pow.backend.actors.ai.PetAi;
 
 import java.io.Serializable;
 
-import static pow.util.MathUtils.dist2;
-
 public class AiBehavior implements Behavior, Serializable {
 
-    private Actor actor;
-    private GameState gs;
+    private final Actor actor;
+    private final GameState gs;
 
     public AiBehavior(Actor actor, GameState gs) {
         this.actor = actor;

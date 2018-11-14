@@ -4,7 +4,7 @@ import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.gen.FeatureData;
-import pow.backend.dungeon.gen.GeneratorUtils;
+import pow.backend.utils.GeneratorUtils;
 import pow.backend.dungeon.gen.TerrainData;
 import pow.util.Direction;
 import pow.util.Point;

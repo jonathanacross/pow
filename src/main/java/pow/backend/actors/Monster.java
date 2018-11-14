@@ -10,7 +10,6 @@ import pow.backend.action.Move;
 import pow.backend.actors.ai.*;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.event.GameEvent;
-import pow.util.MathUtils;
 import pow.util.Point;
 import pow.util.TextUtils;
 
@@ -66,21 +65,21 @@ public class Monster extends Actor implements Serializable {
 
         switch (newState) {
             case DUMB_AWAKE:
-                backend.logMessage(this.getPronoun() + " wakes up!", MessageLog.MessageType.GENERAL);
+                backend.logMessage(this.getNoun() + " wakes up!", MessageLog.MessageType.GENERAL);
                 break;
             case AFRAID:
                 // TODO: shouldn't be called for stationary creatures
-                backend.logMessage(this.getPronoun() + " flees in panic!", MessageLog.MessageType.GENERAL);
+                backend.logMessage(this.getNoun() + " flees in panic!", MessageLog.MessageType.GENERAL);
                 break;
             case ATTACKING:
-                backend.logMessage(this.getPronoun() + " recovers its courage.", MessageLog.MessageType.GENERAL);
+                backend.logMessage(this.getNoun() + " recovers its courage.", MessageLog.MessageType.GENERAL);
                 break;
             // TODO: shouldn't be called for stationary creatures
             case WANDERING:
-                backend.logMessage(this.getPronoun() + " wanders aimlessly.", MessageLog.MessageType.GENERAL);
+                backend.logMessage(this.getNoun() + " wanders aimlessly.", MessageLog.MessageType.GENERAL);
                 break;
             case SLEEPING:
-                backend.logMessage(this.getPronoun() + " falls asleep.", MessageLog.MessageType.GENERAL);
+                backend.logMessage(this.getNoun() + " falls asleep.", MessageLog.MessageType.GENERAL);
                 break;
         }
         this.state = newState;
@@ -112,20 +111,13 @@ public class Monster extends Actor implements Serializable {
     private List<SpellParams> getCastableSpells(GameState gs, Actor target) {
         List<SpellParams> castableSpells = new ArrayList<>();
         for (SpellParams spell : this.spells) {
-            if (SpellAi.canCastSpell(spell, this, gs, target)) {
+            if (SpellAi.shouldMonsterCastSpell(spell, this, gs, target)) {
                 castableSpells.add(spell);
             }
         }
         return castableSpells;
     }
 
-    private boolean enemyIsWithinRange(Actor target, int radius) {
-        if (target == null) {
-            return false;
-        }
-        int dist2 = MathUtils.dist2(loc, target.loc);
-        return dist2 < radius * radius;
-    }
 
     private Action trackTarget(GameState gs, Point target) {
         if (isConfused()) {
@@ -154,7 +146,7 @@ public class Monster extends Actor implements Serializable {
         GameState gs = backend.getGameState();
         if (!flags.passive) {
             Actor closestEnemy = movement.findNearestEnemy(this, gs);
-            if (enemyIsWithinRange(closestEnemy, 15)) {
+            if (AiUtils.enemyIsWithinRange(this, closestEnemy, 15)) {
                 updateState(ActorState.ATTACKING, backend);
                 return doAttack(backend);
             }
@@ -184,7 +176,7 @@ public class Monster extends Actor implements Serializable {
         Actor closestEnemy = movement.findNearestEnemy(this, gs);
 
         // if nothing nearby, then fall asleep
-        if (! enemyIsWithinRange(closestEnemy, 15)) {
+        if (! AiUtils.enemyIsWithinRange(this, closestEnemy, 15)) {
             updateState(ActorState.SLEEPING, backend);
             return doSleep(backend);
         }
@@ -214,7 +206,7 @@ public class Monster extends Actor implements Serializable {
         Actor closestEnemy = movement.findNearestEnemy(this, gs);
 
         // if nothing nearby, then just wander
-        if (! enemyIsWithinRange(closestEnemy, 15)) {
+        if (! AiUtils.enemyIsWithinRange(this, closestEnemy, 15)) {
             updateState(ActorState.WANDERING, backend);
             return doWander(backend);
         }
@@ -238,8 +230,8 @@ public class Monster extends Actor implements Serializable {
         GameState gs = backend.getGameState();
 
         Actor closestEnemy = movement.findNearestEnemy(this, gs);
-        if (enemyIsWithinRange(closestEnemy, 3) ||
-                enemyIsWithinRange(gs.party.player, 3)) {
+        if (AiUtils.enemyIsWithinRange(this, closestEnemy, 3) ||
+                AiUtils.enemyIsWithinRange(this, gs.party.player, 3)) {
             // Randomly wake up if near an enemy or the player. (This
             // is two cases, because the player may wake nearby townspeople,
             // but your pet may wake a monster.)
@@ -274,7 +266,7 @@ public class Monster extends Actor implements Serializable {
         Actor closestEnemy = movement.findNearestEnemy(this, gs);
 
         // if nothing nearby, then stop being afraid.
-        if (! enemyIsWithinRange(closestEnemy, 15)) {
+        if (! AiUtils.enemyIsWithinRange(this, closestEnemy, 15)) {
             updateState(ActorState.WANDERING, backend);
             return doWander(backend);
         }
@@ -315,8 +307,7 @@ public class Monster extends Actor implements Serializable {
     }
 
     @Override
-    public String getPronoun() {
-        // TODO: rename?  this returns the noun, not the pronoun
+    public String getNoun() {
         return TextUtils.format(this.name, 1, true);
     }
 

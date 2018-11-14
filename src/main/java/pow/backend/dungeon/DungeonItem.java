@@ -214,11 +214,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         return 0;
     }
 
-    private static String formatBonus(int x) {
-        if (x < 0) { return "-" + (-x); }
-        else { return "+" + x; }
-    }
-
     public String bonusString() {
         return formatGroupBonus(bonuses, bonusNames);
     }
@@ -253,7 +248,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
             for (int idx : statIdxs) {
                 stats.add(TextUtils.formatThing(names[idx], bonusAmt > 1));
             }
-            groups.add(formatBonus(bonusAmt) + " " + String.join("/", stats));
+            groups.add(TextUtils.formatBonus(bonusAmt) + " " + String.join("/", stats));
         }
         return "(" + String.join(", ", groups) + ")";
     }

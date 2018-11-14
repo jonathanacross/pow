@@ -1,7 +1,8 @@
-package pow.backend.dungeon.gen;
+package pow.backend.utils;
 
 import pow.backend.ActionParams;
 import pow.backend.dungeon.DungeonItem;
+import pow.util.DieRoll;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class ParseUtils {
             return bonuses;
         }
 
-        String[] statBonuses = text.split(",");
+        String[] statBonuses = text.split(",", -1);
         for (String statBonus : statBonuses) {
             String[] tokens = statBonus.split(":", 2);
             // x indicates that we'll use the bonus calculated based on the level
@@ -107,5 +108,17 @@ public class ParseUtils {
         }
 
         return params;
+    }
+
+    // parses a string of the form XdY
+    public static DieRoll parseDieRoll(String s) {
+        if (s == null || s.isEmpty() || s.equals("0")) {
+            return new DieRoll(0, 0);
+        }
+
+        String[] parts = s.split("d", 2);
+        int roll = Integer.parseInt(parts[0]);
+        int die = Integer.parseInt(parts[1]);
+        return new DieRoll(roll, die);
     }
 }

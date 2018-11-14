@@ -30,9 +30,7 @@ public class RecentMaps implements Serializable {
         }
 
         // update the stack
-        if (recentLocations.contains(map)) {
-            recentLocations.remove(map);
-        }
+        recentLocations.remove(map);
         recentLocations.addFirst(map);
 
         return needsRegen;

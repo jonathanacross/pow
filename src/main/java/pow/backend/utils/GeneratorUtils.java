@@ -1,10 +1,11 @@
-package pow.backend.dungeon.gen;
+package pow.backend.utils;
 
 import pow.backend.ActionParams;
 import pow.backend.GameConstants;
 import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.*;
+import pow.backend.dungeon.gen.*;
 import pow.backend.dungeon.gen.mapgen.TerrainFeatureTriplet;
 import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.util.Array2D;
@@ -56,7 +57,7 @@ public class GeneratorUtils {
         int w = Array2D.width(data);
         int h = Array2D.height(data);
 
-        Stack<Point> stack = new Stack<>();
+        Deque<Point> stack = new ArrayDeque<>();
         stack.add(new Point(lx, ly));
 
         while (stack.size() > 0) {
@@ -111,21 +112,6 @@ public class GeneratorUtils {
 
         // no point found; return somewhere off the map
         return new Point(-1, -1);
-    }
-
-    // useful to draw debug maps
-    public static String getMapString(int[][] map) {
-        int height = Array2D.height(map);
-        int width = Array2D.width(map);
-
-        StringBuilder sb = new StringBuilder();
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                sb.append(Constants.getChar(map[x][y]));
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
     }
 
     // Finds the location of 'value' in the array.

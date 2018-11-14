@@ -1,7 +1,7 @@
 package pow.backend;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageLog implements Serializable {
@@ -64,7 +64,7 @@ public class MessageLog implements Serializable {
 
     public MessageLog(int maxSize) {
         this.maxSize = maxSize;
-        this.messages = new LinkedList<>();
+        this.messages = new ArrayList<>();
     }
 
     public void add(String message, MessageType type) {

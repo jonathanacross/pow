@@ -30,12 +30,12 @@ public class Quaff implements Action {
     public ActionResult process(GameBackend backend) {
         DungeonItem item = itemList.items.get(itemIdx);
         if (!item.flags.potion) {
-            DebugLogger.fatal(new RuntimeException(actor.getPronoun() + " tried to quaff a non-potion, " + item.name));
+            DebugLogger.fatal(new RuntimeException(actor.getNoun() + " tried to quaff a non-potion, " + item.name));
             return ActionResult.Failed(null);
         }
 
         // get the real action from the potion and do it
-        backend.logMessage(actor.getPronoun() + " quaffed " + TextUtils.format(item.name, 1, false),
+        backend.logMessage(actor.getNoun() + " quaffed " + TextUtils.format(item.name, 1, false),
                 MessageLog.MessageType.GENERAL);
         itemList.removeOneItemAt(itemIdx);
         Action action = ActionParams.buildAction(this.actor, item.actionParams);

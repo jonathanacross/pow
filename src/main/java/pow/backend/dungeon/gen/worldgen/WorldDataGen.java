@@ -91,7 +91,7 @@ public class WorldDataGen {
 
         List<Direction> directions = new ArrayList<>();
         if (!line[3].isEmpty()) {
-            String[] dirs = line[3].split(",");
+            String[] dirs = line[3].split(",", -1);
             for (String d: dirs) {
                 directions.add(Direction.valueOf(d));
             }
@@ -99,7 +99,7 @@ public class WorldDataGen {
 
         Set<Integer> fromGroups = new HashSet<>();
         if (!line[4].isEmpty()) {
-            String[] groups = line[4].split(",");
+            String[] groups = line[4].split(",", -1);
             for (String g: groups) {
                 fromGroups.add(Integer.parseInt(g));
             }
@@ -107,7 +107,7 @@ public class WorldDataGen {
 
         Set<String> fromIds = new HashSet<>();
         if (!line[5].isEmpty()) {
-            String[] fids = line[5].split(",");
+            String[] fids = line[5].split(",", -1);
             Collections.addAll(fromIds, fids);
         }
 
@@ -142,7 +142,7 @@ public class WorldDataGen {
         if (field.isEmpty()) {
             return new ArrayList<>();
         }
-        String[] monsterIds = field.split(",");
+        String[] monsterIds = field.split(",", -1);
         // validate! important otherwise we might not detect a crashing error until late in the game
         Set<String> allMonsterIds = MonsterGenerator.getMonsterIds();
         for (String monsterId: monsterIds) {
@@ -378,7 +378,7 @@ public class WorldDataGen {
     }
 
     private static MapGenerator buildRogueGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
-        String[] subParams = params.split(",");
+        String[] subParams = params.split(",", 2);
         int vaultLevel = Integer.parseInt(subParams[0]);
         ProtoTranslator style = getProtoTranslator(subParams[1]);
         int areaSize = GameConstants.DEFAULT_AREA_SIZE;
@@ -402,7 +402,7 @@ public class WorldDataGen {
     }
 
     private static MapGenerator buildCellularAutomataGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
-        String[] subParams = params.split(",");
+        String[] subParams = params.split(",", 3);
         int layers = Integer.parseInt(subParams[0]);
         boolean makeLakes = Boolean.parseBoolean(subParams[1]);
         ProtoTranslator style = getProtoTranslator(subParams[2]);
@@ -415,8 +415,8 @@ public class WorldDataGen {
     }
 
     private static MapGenerator buildPremadeGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
-        String[] subParams = params.split(",");
-        PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.getLevel(subParams[0]);
+        String[] subParams = params.split(",", 2);
+        PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.getArea(subParams[0]);
         ProtoTranslator style = getProtoTranslator(subParams[1]);
         return new PremadeGenerator(mapInfo, style, monsterIds, level, flags);
     }

@@ -1,7 +1,7 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
-import pow.backend.action.ShopUtils;
+import pow.backend.utils.ShopUtils;
 import pow.backend.action.UpgradeItem;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;

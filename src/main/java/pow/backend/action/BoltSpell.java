@@ -1,6 +1,8 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.utils.AttackUtils;
+import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
@@ -34,7 +36,7 @@ public class BoltSpell implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        backend.logMessage(attacker.getPronoun() + " casts a" +
+        backend.logMessage(attacker.getNoun() + " casts a" +
                 AttackUtils.getDamageTypeString(spellParams.element) + " bolt", MessageLog.MessageType.COMBAT_NEUTRAL);
 
         List<Point> ray = Bresenham.makeRay(attacker.loc, target, spellParams.size + 1);

@@ -5,6 +5,7 @@ import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.MonsterIdGroup;
 import pow.backend.dungeon.gen.*;
 import pow.backend.dungeon.gen.worldgen.MapPoint;
+import pow.backend.utils.GeneratorUtils;
 import pow.util.Point;
 
 import java.util.*;

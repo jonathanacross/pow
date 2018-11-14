@@ -1,6 +1,8 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.utils.AttackUtils;
+import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.event.GameEvent;
@@ -25,7 +27,7 @@ public class QuakeSpell implements Action {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
 
-        backend.logMessage(actor.getPronoun() + " summons an earthquake",
+        backend.logMessage(actor.getNoun() + " summons an earthquake",
                 MessageLog.MessageType.COMBAT_NEUTRAL);
 
         AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, actor, backend.getGameState().rng);

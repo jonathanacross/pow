@@ -108,6 +108,11 @@ public class TextUtils {
         return replaceCustomPlural(simplePlural);
     }
 
+    public static String formatBonus(int x) {
+        if (x < 0) { return "-" + (-x); }
+        else { return "+" + x; }
+    }
+
     public static String repeat(String s, int count) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
