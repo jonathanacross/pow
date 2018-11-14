@@ -8,7 +8,7 @@ import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.actors.ai.MonsterDanger;
-import pow.backend.actors.ai.pet.PetAi;
+import pow.backend.actors.ai.PetAi;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;

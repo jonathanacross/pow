@@ -8,11 +8,11 @@ import pow.backend.actors.Actor;
 // This class allows evaluation for how dangerous a particular monster is.
 public class MonsterDanger {
     public enum Danger {
-        SAFE,  // green
-        NORMAL,       // yellow
-        UNSAFE,     // orange
-        DANGEROUS,  // red
-        DEADLY  // purple
+        SAFE,
+        NORMAL,
+        UNSAFE,
+        DANGEROUS,
+        DEADLY
     }
 
     public static Danger getDanger(Actor defender, Actor attacker) {

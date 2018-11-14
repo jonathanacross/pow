@@ -1,4 +1,4 @@
-package pow.backend.actors.ai.pet;
+package pow.backend.actors.ai;
 
 import pow.backend.AttackData;
 import pow.backend.GameState;
@@ -10,8 +10,6 @@ import pow.backend.utils.AttackUtils;
 import pow.backend.action.Move;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
-import pow.backend.actors.ai.MonsterDanger;
-import pow.backend.actors.ai.SpellAi;
 import pow.util.MathUtils;
 import pow.util.Point;
 
@@ -22,7 +20,6 @@ import java.util.Map;
 
 import static pow.util.MathUtils.dist2;
 
-// TODO: Refactor/reorganize AI code shared between PetAi, SpellAi, Monster
 public class PetAi {
 
     public static Action getAction(Actor actor, GameState gs) {
@@ -193,7 +190,7 @@ public class PetAi {
         SpellParams bestSpell = null;
 
         for (SpellParams spell : me.spells) {
-            if (!canCastSpell(me, spell) || !SpellParams.isAttackSpell(spell)) {
+            if (!canCastSpell(me, spell) || !SpellAi.canHitTarget(spell, me, gs, target)) {
                 continue;
             }
             double score = attackScoreForSpell(me, target, spell);
@@ -205,7 +202,7 @@ public class PetAi {
 
         // see if we can do the attack
         if (bestSpell != null) {
-            if (SpellAi.canCastSpell(bestSpell, me, gs, target)) {
+            if (SpellAi.shouldMonsterCastSpell(bestSpell, me, gs, target)) {
                 return SpellParams.buildAction(bestSpell, me, target.loc);
             }
         } else {
@@ -241,16 +238,10 @@ public class PetAi {
             // monster must be sufficiently dangerous.
             return null;
         }
-        if (!enemyIsWithinRange(me, monsterTarget, 11)) {
+        if (!AiUtils.enemyIsWithinRange(me, monsterTarget, 11)) {
             return null;
         }
         return monsterTarget;
-    }
-
-    // TODO: replace same function in Monster.java with this, move to better location
-    private static boolean enemyIsWithinRange(Actor me, Actor target, int radius) {
-        int dist2 = MathUtils.dist2(me.loc, target.loc);
-        return dist2 < radius * radius;
     }
 
     private static final Map<MonsterDanger.Danger, Double> dangerToHurtAmount;
@@ -270,7 +261,7 @@ public class PetAi {
             if (target.friendly == me.friendly) {
                 continue;
             }
-            if (!enemyIsWithinRange(me, target, 7)) {
+            if (!AiUtils.enemyIsWithinRange(me, target, 7)) {
                 continue;
             }
             MonsterDanger.Danger danger = MonsterDanger.getDanger(me, target);
@@ -294,7 +285,7 @@ public class PetAi {
 
         for (Actor target : targets) {
             int score = MathUtils.dist2(me.loc, target.loc) +
-                    (SpellAi.actorHasLineOfSight(me, gs, target.loc) ? 0 : 100);
+                    (AiUtils.actorHasLineOfSight(me, gs, target.loc) ? 0 : 100);
             if (bestTarget == null || score < bestScore) {
                 bestTarget = target;
                 bestScore = score;

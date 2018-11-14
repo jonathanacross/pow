@@ -3,7 +3,7 @@ package pow.backend.behavior;
 import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.actors.Actor;
-import pow.backend.actors.ai.pet.PetAi;
+import pow.backend.actors.ai.PetAi;
 
 import java.io.Serializable;
 
