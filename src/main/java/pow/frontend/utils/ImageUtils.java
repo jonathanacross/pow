@@ -156,6 +156,24 @@ public class ImageUtils {
         return new Color(rgbAvg[0], rgbAvg[1], rgbAvg[2]);
     }
 
+    public static BufferedImage makeColorBlocks(BufferedImage inImage, int tileSize) {
+        int width = inImage.getWidth();
+        int height = inImage.getHeight();
+        BufferedImage outImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = outImg.createGraphics();
+
+        for (int x = 0; x < width/tileSize; x++) {
+            for (int y = 0; y < height/tileSize; y++) {
+
+                Color avgColor = ImageUtils.getAverageColorOfSubImage(inImage, x*tileSize, y*tileSize, tileSize, tileSize);
+                g.setColor(avgColor);
+                g.fillRect(x*tileSize, y*tileSize, tileSize, tileSize);
+            }
+        }
+        return outImg;
+    }
+
+
     public static List<String> wrapText(String text, FontMetrics textMetrics, int firstWidth, int restWidth) {
         String[] words = text.split(" ", -1);
         int nIndex = 0;

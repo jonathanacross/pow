@@ -47,11 +47,10 @@ public class MapWindow extends AbstractWindow {
                 }
 
                 DungeonSquare square = gs.getCurrentMap().map[x][y];
-                mapView.drawBlock(graphics, ImageController.getColor(square.terrain.image), x, y);
-//                mapView.drawTile(graphics, square.terrain.image, x, y);
                 if (square.feature != null) {
-                    mapView.drawBlock(graphics, ImageController.getColor(square.feature.image), x, y);
-//                    mapView.drawTile(graphics, square.feature.image, x, y);
+                    mapView.drawTile(graphics, square.feature.image, x, y, ImageController.DrawMode.COLOR_BLOCK);
+                } else {
+                    mapView.drawTile(graphics, square.terrain.image, x, y, ImageController.DrawMode.COLOR_BLOCK);
                 }
             }
         }
