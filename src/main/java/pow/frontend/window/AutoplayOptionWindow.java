@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 public class AutoplayOptionWindow extends AbstractWindow {
 
     enum HumanControlSelection {
+        NEITHER,
         PLAYER,
         PET,
         BOTH
@@ -20,6 +21,11 @@ public class AutoplayOptionWindow extends AbstractWindow {
     private void setAutoplay(HumanControlSelection selection) {
         GameState gs = backend.getGameState();
         switch (selection) {
+            case NEITHER:
+                gs.party.player.setAutoplay(gs, true);
+                gs.party.pet.setAutoplay(gs, true);
+                System.out.println("full autoplay.");
+                break;
             case PLAYER:
                 gs.party.player.setAutoplay(gs, false);
                 gs.party.pet.setAutoplay(gs, true);
@@ -31,6 +37,7 @@ public class AutoplayOptionWindow extends AbstractWindow {
             case BOTH:
                 gs.party.player.setAutoplay(gs, false);
                 gs.party.pet.setAutoplay(gs, false);
+                break;
         }
     }
 
@@ -44,6 +51,10 @@ public class AutoplayOptionWindow extends AbstractWindow {
 
         switch (keyCode) {
             case KeyEvent.VK_ESCAPE:
+                frontend.close();
+                break;
+            case KeyEvent.VK_Z: // hidden option
+                setAutoplay(HumanControlSelection.NEITHER);
                 frontend.close();
                 break;
             case KeyEvent.VK_A:

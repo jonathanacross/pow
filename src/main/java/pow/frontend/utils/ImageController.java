@@ -28,12 +28,13 @@ public class ImageController {
     }
 
     public enum DrawMode {
-        NORMAL, GRAY, TRANSPARENT
+        NORMAL, GRAY, TRANSPARENT, COLOR_BLOCK
     }
 
     private BufferedImage tileImage;
     private BufferedImage grayTileImage;
     private BufferedImage transparentTileImage;
+    private BufferedImage colorBlockImage;
     private Map<String, Point> tileData;
     private Map<String, Color> colorData;
     public static final int TILE_SIZE = 32;
@@ -54,6 +55,7 @@ public class ImageController {
             case NORMAL: return instance.tileImage;
             case GRAY: return instance.grayTileImage;
             case TRANSPARENT: return instance.transparentTileImage;
+            case COLOR_BLOCK: return instance.colorBlockImage;
         }
         return null;
     }
@@ -93,6 +95,7 @@ public class ImageController {
         this.tileImage = ImageIO.read(imageStream);
         this.grayTileImage = ImageUtils.makeGrayscale(this.tileImage);
         this.transparentTileImage = ImageUtils.makeTransparent(this.tileImage);
+        this.colorBlockImage = ImageUtils.makeColorBlocks(this.tileImage, TILE_SIZE);
         this.tileData = readDataFile("/data/32x32.tsv");
         this.colorData = initColorsFromTiles(this.tileImage, this.tileData, TILE_SIZE);
     }

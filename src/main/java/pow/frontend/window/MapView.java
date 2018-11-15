@@ -61,16 +61,14 @@ public class MapView {
         ImageController.drawTile(graphics, tileName, gameXToPixelX(x), gameYToPixelY(y), drawMode, tileSize);
     }
 
+    // Turns out that graphics.fillRect is actually *really* slow, so that drawing the map
+    // with solid rectangles would take a large percentage of processing time and slows down
+    // debugging tremendously.
+    // So, if the color corresponds to the average color of a tile, prefer to use
+    // drawTile(graphics, tileName, x, y, DrawMode.COLOR_BLOCK) instead.
     public void drawBlock(Graphics graphics, Color color, int x, int y) {
         graphics.setColor(color);
         graphics.fillRect(gameXToPixelX(x), gameYToPixelY(y), tileSize, tileSize);
-    }
-
-    public void drawTransparentBlock(Graphics graphics, Color color, int x, int y) {
-        Graphics2D g = (Graphics2D)graphics;
-        g.setComposite(AlphaComposite.SrcAtop);
-        g.setColor(color);
-        g.fillRect(gameXToPixelX(x), gameYToPixelY(y), tileSize, tileSize);
     }
 
     public void drawCircle(Graphics graphics, Color color, int x, int y) {
