@@ -82,11 +82,11 @@ public class Player extends Actor implements Serializable, LightSource {
                 new StepMovement(),
                 null,
                 0,
-                10,
-                10,
-                10,
-                10,
-                0,
+                getInnateStr(gainRatios, 1),
+                getInnateDex(gainRatios, 1),
+                getInnateInt(gainRatios, 1),
+                getInnateCon(gainRatios, 1),
+                getInnateSpeed(gainRatios, 1),
                 spells));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = GameConstants.PLAYER_SMALL_LIGHT_RADIUS;
@@ -143,14 +143,34 @@ public class Player extends Actor implements Serializable, LightSource {
         return this.lightRadius;
     }
 
+    private static int getInnateStr(GainRatios gainRatios, int level) {
+        return (int) Math.round(gainRatios.strRatio * (level + 6));
+    }
+
+    private static int getInnateDex(GainRatios gainRatios, int level) {
+        return (int) Math.round(gainRatios.dexRatio * (level + 6));
+    }
+
+    private static int getInnateInt(GainRatios gainRatios, int level) {
+        return (int) Math.round(gainRatios.intRatio * (level + 6));
+    }
+
+    private static int getInnateCon(GainRatios gainRatios, int level) {
+        return (int) Math.round(gainRatios.conRatio * (level + 6));
+    }
+
+    private static int getInnateSpeed(GainRatios gainRatios, int level) {
+        return (int) Math.round(Math.max((level - 10) * 0.5 * gainRatios.speedRatio, 0));
+    }
+
     // update our stats, plus toHit, defense to include current equipped items and other bonuses.
     public void updateStats() {
 
-        int innateStr = (int) Math.round(gainRatios.strRatio * (level + 6));
-        int innateDex = (int) Math.round(gainRatios.dexRatio * (level + 6));
-        int innateInt = (int) Math.round(gainRatios.intRatio * (level + 6));
-        int innateCon = (int) Math.round(gainRatios.conRatio * (level + 6));
-        int innateSpd = (int) Math.round(Math.max((level - 10) * 0.5 * gainRatios.speedRatio, 0));
+        int innateStr = getInnateStr(gainRatios, level);
+        int innateDex = getInnateDex(gainRatios, level);
+        int innateInt = getInnateInt(gainRatios, level);
+        int innateCon = getInnateCon(gainRatios, level);
+        int innateSpd = getInnateSpeed(gainRatios, level);
 
         this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment.items);
         this.health = Math.min(health, getMaxHealth());

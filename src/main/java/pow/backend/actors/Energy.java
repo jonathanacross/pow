@@ -48,11 +48,15 @@ public class Energy implements Serializable {
         return energy >= ACTION_COST;
     }
 
+    private static int getEnergy(int speed) {
+        int index = MathUtils.clamp(speed + NORMAL_SPEED, MIN_SPEED, MAX_SPEED);
+        return gains[index];
+    }
+
     // Advances one game turn and gains an appropriate amount of energy. Returns
     // `true` if there is enough energy to take a turn.
     public boolean gain(int speed) {
-        int index = MathUtils.clamp(speed + NORMAL_SPEED, MIN_SPEED, MAX_SPEED);
-        energy += gains[index];
+        energy += getEnergy(speed);
         return canTakeTurn();
     }
 
@@ -67,6 +71,6 @@ public class Energy implements Serializable {
     // If actor1 has speed1 and actor2 has speed2, this returns how many turns
     // actor1 will have (on average) for each turn actor2 has.
     public static double getAverageTurnRatio(int speed1, int speed2) {
-        return 1.0 * gains[speed1 + NORMAL_SPEED] / gains[speed2 + NORMAL_SPEED];
+        return 1.0 * getEnergy(speed1) / getEnergy(speed2);
     }
 }
