@@ -67,6 +67,6 @@ public class Energy implements Serializable {
     // If actor1 has speed1 and actor2 has speed2, this returns how many turns
     // actor1 will have (on average) for each turn actor2 has.
     public static double getAverageTurnRatio(int speed1, int speed2) {
-        return 1.0 * gains[speed1] / gains[speed2];
+        return 1.0 * gains[speed1 + NORMAL_SPEED] / gains[speed2 + NORMAL_SPEED];
     }
 }
