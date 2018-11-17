@@ -114,48 +114,48 @@
 32x32	1	7	red portal	feature
 32x32	2	7	gray portal	feature
 32x32	3	7	dungeon entrance	feature
-32x32	4	7	tower	feature
-32x32	5	7	debug	debug
-32x32	6	7	dock	terrain
-32x32	7	7	big tree	feature
-32x32	8	7	sick big tree	feature
-32x32	9	7	gold tree	feature
-32x32	10	7	pine tree	feature
-32x32	11	7	snowy pine tree	feature
-32x32	12	7	small tree	feature
-32x32	13	7	white small tree	feature
-32x32	14	7	bush	feature
-32x32	15	7	berry bush	feature
-32x32	0	8	poison flower	feature
-32x32	1	8	dead tree	feature
-32x32	2	8	palm tree	feature
-32x32	3	8	cactus	feature
-32x32	4	8	light pebbles	feature
-32x32	5	8	dark pebbles	feature
-32x32	6	8	sign1	feature
-32x32	7	8	sign2	feature
-32x32	8	8	sign3	feature
-32x32	9	8	fountain	feature
-32x32	10	8	tombstone	feature
-32x32	11	8	wood chest	misc item
-32x32	12	8	bookcase	feature
-32x32	13	8	crate	feature
-32x32	14	8	throne	feature
-32x32	15	8	glass ball	feature
-32x32	0	9	red carpet	feature
-32x32	1	9	candle	feature
-32x32	2	9	candelabra	feature
-32x32	3	9	red curtain	feature
-32x32	4	9	blue curtain	feature
-32x32	5	9	green curtain	feature
-32x32	6	9	spikes	feature
-32x32	7	9	red rune	feature
-32x32	8	9	yellow rune	feature
-32x32	9	9	green rune	feature
-32x32	10	9	-:null:-	:null:
-32x32	11	9	-:null:-	:null:
-32x32	12	9	-:null:-	:null:
-32x32	13	9	-:null:-	:null:
+32x32	4	7	green cave entrance	feature
+32x32	5	7	brown cave entrance	feature
+32x32	6	7	tower	feature
+32x32	7	7	debug	debug
+32x32	8	7	dock	feature
+32x32	9	7	wood pearl tile	feature
+32x32	10	7	big tree	feature
+32x32	11	7	sick big tree	feature
+32x32	12	7	gold tree	feature
+32x32	13	7	pine tree	feature
+32x32	14	7	snowy pine tree	feature
+32x32	15	7	small tree	feature
+32x32	0	8	white small tree	feature
+32x32	1	8	bush	feature
+32x32	2	8	berry bush	feature
+32x32	3	8	poison flower	feature
+32x32	4	8	dead tree	feature
+32x32	5	8	palm tree	feature
+32x32	6	8	cactus	feature
+32x32	7	8	light pebbles	feature
+32x32	8	8	dark pebbles	feature
+32x32	9	8	sign1	feature
+32x32	10	8	sign2	feature
+32x32	11	8	sign3	feature
+32x32	12	8	fountain	feature
+32x32	13	8	tombstone	feature
+32x32	14	8	wood chest	misc item
+32x32	15	8	bookcase	feature
+32x32	0	9	crate	feature
+32x32	1	9	throne	feature
+32x32	2	9	glass ball	feature
+32x32	3	9	red carpet	feature
+32x32	4	9	candle	feature
+32x32	5	9	candelabra	feature
+32x32	6	9	fire urn	feature
+32x32	7	9	red curtain	feature
+32x32	8	9	blue curtain	feature
+32x32	9	9	green curtain	feature
+32x32	10	9	spikes	feature
+32x32	11	9	red rune	feature
+32x32	12	9	yellow rune	feature
+32x32	13	9	green rune	feature
 32x32	14	9	-:null:-	:null:
 32x32	15	9	-:null:-	:null:
 32x32	0	10	redorange pearl	misc item
@@ -179,7 +179,7 @@
 32x32	2	11	bag	misc item
 32x32	3	11	x-ray scope	misc item
 32x32	4	11	portal key	misc item
-32x32	5	11	crown	misc item
+32x32	5	11	turtleshell	misc item
 32x32	6	11	crooked staff	misc item
 32x32	7	11	shell	misc item
 32x32	8	11	mac plus	misc item
@@ -197,63 +197,63 @@
 32x32	4	12	long sword	weapon
 32x32	5	12	broad sword	weapon
 32x32	6	12	blade of chaos	weapon
-32x32	7	12	short bow	bow
-32x32	8	12	long bow	bow
-32x32	9	12	gold longbow	bow
-32x32	10	12	crossbow	bow
-32x32	11	12	large crossbow	bow
-32x32	12	12	gold crossbow	bow
-32x32	13	12	arrow	bow
-32x32	14	12	-:null:-	:null:
+32x32	7	12	-:null:-	:null:
+32x32	8	12	short bow	bow
+32x32	9	12	long bow	bow
+32x32	10	12	gold longbow	bow
+32x32	11	12	crossbow	bow
+32x32	12	12	large crossbow	bow
+32x32	13	12	gold crossbow	bow
+32x32	14	12	arrow	bow
 32x32	15	12	-:null:-	:null:
 32x32	0	13	cloak	armor
 32x32	1	13	fur cloak	armor
 32x32	2	13	blue cloak	armor
 32x32	3	13	purple cloak	armor
 32x32	4	13	light blue cloak	armor
-32x32	5	13	gloves	armor
-32x32	6	13	heavy gloves	armor
-32x32	7	13	green gloves	armor
-32x32	8	13	iron gloves	armor
-32x32	9	13	blue gloves	armor
-32x32	10	13	gold gloves	armor
-32x32	11	13	leather cap	armor
-32x32	12	13	hard leather cap	armor
-32x32	13	13	iron helmet	armor
-32x32	14	13	steel helmet	armor
-32x32	15	13	golden helmet	armor
+32x32	5	13	-:null:-	:null:
+32x32	6	13	-:null:-	:null:
+32x32	7	13	-:null:-	:null:
+32x32	8	13	gloves	armor
+32x32	9	13	heavy gloves	armor
+32x32	10	13	green gloves	armor
+32x32	11	13	iron gloves	armor
+32x32	12	13	blue gloves	armor
+32x32	13	13	gold gloves	armor
+32x32	14	13	-:null:-	:null:
+32x32	15	13	-:null:-	:null:
 32x32	0	14	soft leather boots	armor
 32x32	1	14	hard leather boots	armor
 32x32	2	14	steel boots	armor
 32x32	3	14	blue boots	armor
 32x32	4	14	green boots	armor
 32x32	5	14	gold boots	armor
-32x32	6	14	leather shield	armor
-32x32	7	14	large shield	armor
-32x32	8	14	buckler	armor
-32x32	9	14	crystal shield	armor
-32x32	10	14	death shield	armor
-32x32	11	14	golden shield	armor
-32x32	12	14	-:null:-	:null:
-32x32	13	14	-:null:-	:null:
+32x32	6	14	-:null:-	:null:
+32x32	7	14	-:null:-	:null:
+32x32	8	14	leather shield	armor
+32x32	9	14	large shield	armor
+32x32	10	14	buckler	armor
+32x32	11	14	crystal shield	armor
+32x32	12	14	death shield	armor
+32x32	13	14	golden shield	armor
 32x32	14	14	-:null:-	:null:
 32x32	15	14	-:null:-	:null:
-32x32	0	15	robe	armor
-32x32	1	15	soft leather armor	armor
-32x32	2	15	hard leather armor	armor
-32x32	3	15	chain mail	armor
-32x32	4	15	plate mail	armor
-32x32	5	15	ceramic mail	armor
-32x32	6	15	augmented mail	armor
-32x32	7	15	dragon scale mail	armor
-32x32	8	15	-:null:-	:null:
-32x32	9	15	-:null:-	:null:
-32x32	10	15	-:null:-	:null:
-32x32	11	15	-:null:-	:null:
-32x32	12	15	-:null:-	:null:
-32x32	13	15	-:null:-	:null:
-32x32	14	15	-:null:-	:null:
-32x32	15	15	-:null:-	:null:
+32x32	0	15	leather cap	armor
+32x32	1	15	hard leather cap	armor
+32x32	2	15	iron helmet	armor
+32x32	3	15	steel helmet	armor
+32x32	4	15	golden helmet	armor
+32x32	5	15	gold crown	armor
+32x32	6	15	-:null:-	:null:
+32x32	7	15	-:null:-	:null:
+32x32	8	15	robe	armor
+32x32	9	15	soft leather armor	armor
+32x32	10	15	hard leather armor	armor
+32x32	11	15	chain mail	armor
+32x32	12	15	plate mail	armor
+32x32	13	15	ceramic mail	armor
+32x32	14	15	augmented mail	armor
+32x32	15	15	dragon scale mail	armor
 32x32	0	16	onyx amulet	amulet
 32x32	1	16	coral amulet	amulet
 32x32	2	16	amber amulet	amulet
@@ -316,7 +316,7 @@
 32x32	11	19	aquamarine	gem
 32x32	12	19	sapphire	gem
 32x32	13	19	amethyst	gem
-32x32	14	19	-:null:-	:null:
+32x32	14	19	dragon egg	gem
 32x32	15	19	-:null:-	:null:
 32x32	0	20	human_adventurer	human
 32x32	1	20	human_fighter	human
@@ -331,9 +331,9 @@
 32x32	10	20	-:null:-	:null:
 32x32	11	20	-:null:-	:null:
 32x32	12	20	-:null:-	:null:
-32x32	13	20	-:null:-	:null:
-32x32	14	20	-:null:-	:null:
-32x32	15	20	-:null:-	:null:
+32x32	13	20	cat	pet
+32x32	14	20	fox	pet
+32x32	15	20	blackbear	pet
 32x32	0	21	green mushrooms	basement
 32x32	1	21	black ant	basement
 32x32	2	21	white rat	basement
@@ -457,7 +457,7 @@
 32x32	8	28	zombie	area7
 32x32	9	28	red cobra	area7
 32x32	10	28	sand worm	area7
-32x32	11	28	black orc	area7
+32x32	11	28	black troll	area7
 32x32	12	28	-:null:-	:null:
 32x32	13	28	-:null:-	:null:
 32x32	14	28	two headed ogre	area7
