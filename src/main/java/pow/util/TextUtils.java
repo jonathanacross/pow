@@ -1,5 +1,6 @@
 package pow.util;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class TextUtils {
@@ -125,4 +126,22 @@ public class TextUtils {
         return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 
+    public static String formatList(List<String> items) {
+        if (items.isEmpty()) {
+            return "";
+        }
+        else if (items.size() == 1) {
+            return items.get(0);
+        }
+        else if (items.size() == 2) {
+            return items.get(0) + " and " + items.get(1);
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < items.size() - 1; i++) {
+                sb.append(items.get(i) + ", ");
+            }
+            sb.append("and " + items.get(items.size()-1));
+            return sb.toString();
+        }
+    }
 }

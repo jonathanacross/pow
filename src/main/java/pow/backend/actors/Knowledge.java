@@ -1,6 +1,7 @@
 package pow.backend.actors;
 
 import pow.backend.AttackData;
+import pow.backend.SpellParams;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class Knowledge implements Serializable {
         public final int maxMana;
         public final int level;
         public final AttackData primaryAttack;
+        public final List<SpellParams> spells;
         public final int defense;
         public final int speed;
         public final int experience;
@@ -45,6 +47,7 @@ public class Knowledge implements Serializable {
             this.maxMana = m.getMaxMana();
             this.level = m.level;
             this.primaryAttack = m.getPrimaryAttack();
+            this.spells = m.spells;
             this.defense = m.getDefense();
             this.speed = m.getSpeed();
             this.experience = m.experience;
