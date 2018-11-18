@@ -43,6 +43,6 @@ public class GroupHeal implements Action {
     private void healOne(Player player, int amount, GameBackend backend) {
         int desiredHealAmount = Math.max((int)Math.round(actor.getMaxHealth() * 0.01 * amount), amount);
         int healAmount = player.increaseHealth(desiredHealAmount);
-        backend.logMessage(player.getNoun() + " healed " + healAmount, MessageLog.MessageType.GENERAL);
+        backend.logMessage(player.getNoun() + " heals " + healAmount, MessageLog.MessageType.GENERAL);
     }
 }

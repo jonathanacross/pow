@@ -25,13 +25,13 @@ public class TakeOff implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         DungeonItem item = player.takeOff(index);
-        backend.logMessage(player.getNoun() + " take off " + TextUtils.format(item.name, 1, true),
+        backend.logMessage(player.getNoun() + " takes off " + TextUtils.format(item.name, 1, true),
                 MessageLog.MessageType.GENERAL);
         // put the item somewhere
         int numCanAdd = player.inventory.numCanAdd(item);
         if (numCanAdd == 0) {
             // put on the ground
-            backend.logMessage(player.getNoun() + " drop " + TextUtils.format(item.name, 1, false),
+            backend.logMessage(player.getNoun() + " drops " + TextUtils.format(item.name, 1, false),
                     MessageLog.MessageType.GENERAL);
             gs.getCurrentMap().map[player.loc.x][player.loc.y].items.add(item);
         } else {

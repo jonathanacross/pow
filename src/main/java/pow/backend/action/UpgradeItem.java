@@ -43,7 +43,7 @@ public class UpgradeItem implements Action {
         // remove a socket
         item.bonuses[DungeonItem.SOCKETS_IDX]--;
 
-        backend.logMessage(player.getNoun() + " upgrade " + TextUtils.format(item.name, 1, false),
+        backend.logMessage(player.getNoun() + " upgrades " + TextUtils.format(item.name, 1, false),
                 MessageLog.MessageType.GENERAL);
     }
 
@@ -54,7 +54,7 @@ public class UpgradeItem implements Action {
 
         // pay for the upgrade
         if (player.gold < upgradeInfo.price) {
-            backend.logMessage("You do not have enough money.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(player.getNoun() + " does not have enough money.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
         player.gold -= upgradeInfo.price;
@@ -92,7 +92,7 @@ public class UpgradeItem implements Action {
                     player.inventory.items.remove(item);
                     DungeonSquare square = gs.getCurrentMap().map[player.loc.x][player.loc.y];
                     square.items.add(item);
-                    backend.logMessage(player.getNoun() + " drop " + TextUtils.format(item.name, item.count, false),
+                    backend.logMessage(player.getNoun() + " drops " + TextUtils.format(item.name, item.count, false),
                             MessageLog.MessageType.GENERAL);
                 }
                 player.inventory.add(newItem);

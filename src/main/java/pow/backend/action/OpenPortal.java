@@ -28,7 +28,7 @@ public class OpenPortal implements Action {
     public ActionResult process(GameBackend backend) {
         // Require the player to have the portal key.
         if (!backend.getGameState().party.artifacts.hasPortalKey()) {
-            backend.logMessage(actor.getNoun() + " don't have the right key to unlock this door", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(actor.getNoun() + " doesn't have the right key to unlock this door", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
 
@@ -41,7 +41,7 @@ public class OpenPortal implements Action {
         GameMap map = backend.getGameState().getCurrentMap();
         map.map[loc.x][loc.y].feature = newFeature;
 
-        backend.logMessage(actor.getNoun() + " unlock the portal door", MessageLog.MessageType.GENERAL);
+        backend.logMessage(actor.getNoun() + " unlocks the portal door", MessageLog.MessageType.GENERAL);
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());
         return ActionResult.Succeeded(events);

@@ -29,7 +29,7 @@ public class Restore implements Action {
 
         int hpAmount = actor.increaseHealth(this.amount);
         int mpAmount = actor.increaseMana(this.amount);
-        backend.logMessage(actor.getNoun() + " restored " + hpAmount + " health and " + mpAmount + " mana",
+        backend.logMessage(actor.getNoun() + " restores " + hpAmount + " health and " + mpAmount + " mana",
                 MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }

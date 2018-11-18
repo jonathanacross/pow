@@ -30,7 +30,7 @@ public class Heal implements Action {
         // x% or x hp, whichever is greater
         int desiredHealAmount = Math.max((int)Math.round(actor.getMaxHealth() * 0.01 * this.amount), this.amount);
         int healAmount = actor.increaseHealth(desiredHealAmount);
-        backend.logMessage(actor.getNoun() + " healed " + healAmount, MessageLog.MessageType.GENERAL);
+        backend.logMessage(actor.getNoun() + " heals " + healAmount, MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }
 

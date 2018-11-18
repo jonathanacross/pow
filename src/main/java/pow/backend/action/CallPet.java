@@ -37,7 +37,7 @@ public class CallPet implements Action {
         // Find squares we can phase to.
         Point targetLoc = gs.getCurrentMap().findClosestOpenSquare(party.pet, party.player.loc);
         if (targetLoc == null) {
-            backend.logMessage("there is no place nearby.",
+            backend.logMessage("there is no place nearby for " + party.pet.getNoun() + " to phase to.",
                     MessageLog.MessageType.USER_ERROR);
             return ActionResult.Succeeded(events);
         }

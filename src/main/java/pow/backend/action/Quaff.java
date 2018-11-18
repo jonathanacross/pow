@@ -35,7 +35,7 @@ public class Quaff implements Action {
         }
 
         // get the real action from the potion and do it
-        backend.logMessage(actor.getNoun() + " quaffed " + TextUtils.format(item.name, 1, false),
+        backend.logMessage(actor.getNoun() + " quaffs " + TextUtils.format(item.name, 1, false),
                 MessageLog.MessageType.GENERAL);
         itemList.removeOneItemAt(itemIdx);
         Action action = ActionParams.buildAction(this.actor, item.actionParams);

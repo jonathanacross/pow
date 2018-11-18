@@ -27,7 +27,7 @@ public class RestAtInn implements Action {
                 pet.setFullHealth();
                 pet.setFullMana();
             }
-            backend.logMessage("You feel refreshed.", MessageLog.MessageType.GENERAL);
+            backend.logMessage(player.getNoun() + " feels refreshed.", MessageLog.MessageType.GENERAL);
             List<GameEvent> events = new ArrayList<>();
 
             // save the game!
@@ -36,7 +36,7 @@ public class RestAtInn implements Action {
             events.add(GameEvent.DungeonUpdated());
             return ActionResult.Succeeded(events);
         } else {
-            backend.logMessage("You do not have enough money.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(player.getNoun() + " does not have enough money.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
     }

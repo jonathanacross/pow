@@ -45,7 +45,7 @@ public class PickUp implements Action {
         if (item.flags.money) {
             actor.gold += item.count;
             square.items.items.remove(itemNum);
-            backend.logMessage(actor.getNoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
+            backend.logMessage(actor.getNoun() + " picks up " + TextUtils.format(item.name, numToAdd, true),
                     MessageLog.MessageType.GENERAL);
             return ActionResult.Succeeded(events);
         }
@@ -62,7 +62,7 @@ public class PickUp implements Action {
             // slight hack here.. update the visibility of the game map,
             // since picking up some artifacts may involve lanterns
             gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
-            backend.logMessage(actor.getNoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
+            backend.logMessage(actor.getNoun() + " picks up " + TextUtils.format(item.name, numToAdd, true),
                     MessageLog.MessageType.GAME_EVENT);
             // Print the description too, so that the player knows what the artifact does.
             backend.logMessage(item.description, MessageLog.MessageType.GAME_EVENT);
@@ -73,7 +73,7 @@ public class PickUp implements Action {
                     backend.logMessage("Congratulations, you won!", MessageLog.MessageType.GAME_EVENT);
                 }
                 if (event.eventType.equals(GameEvent.EventType.GOT_PET)) {
-                    backend.logMessage("The pet statue glows as you pick it up.", MessageLog.MessageType.GAME_EVENT);
+                    backend.logMessage("The pet statue glows as " + gs.party.player.getNoun() + " picks it up.", MessageLog.MessageType.GAME_EVENT);
                 }
             }
             return ActionResult.Succeeded(events);
@@ -97,7 +97,7 @@ public class PickUp implements Action {
             item.count -= numToAdd;
             actor.inventory.add(cloneForInventory);
         }
-        backend.logMessage(actor.getNoun() + " pick up " + TextUtils.format(item.name, numToAdd, true),
+        backend.logMessage(actor.getNoun() + " picks up " + TextUtils.format(item.name, numToAdd, true),
                 MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }

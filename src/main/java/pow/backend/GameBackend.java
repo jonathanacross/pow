@@ -138,12 +138,12 @@ public class GameBackend {
         Party party = gameState.party;
         Player player = gameState.party.player;
         if (map.flags.poisonGas && !party.artifacts.hasGasMask()) {
-            logMessage("the noxious air burns your lungs", MessageLog.MessageType.COMBAT_BAD);
+            logMessage("the noxious air burns " + player.getNoun() + "'s lungs", MessageLog.MessageType.COMBAT_BAD);
             // TODO: impact pet as well
             events.addAll(player.takeDamage(this, GameConstants.POISON_DAMAGE_PER_TURN));
         }
         if (map.flags.hot && !party.artifacts.hasHeatSuit()) {
-            logMessage("you wither in the extreme heat", MessageLog.MessageType.COMBAT_BAD);
+            logMessage(player.getNoun() + " withers in the extreme heat", MessageLog.MessageType.COMBAT_BAD);
             events.addAll(player.takeDamage(this, GameConstants.HEAT_DAMAGE_PER_TURN));
         }
         gameState.turnCount++;

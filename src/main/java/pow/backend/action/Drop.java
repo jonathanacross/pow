@@ -47,7 +47,7 @@ public class Drop implements Action {
             item.count -= numToDrop;
             square.items.add(cloneForFloor);
         }
-        backend.logMessage(actor.getNoun() + " drop " + TextUtils.format(item.name, numToDrop, true),
+        backend.logMessage(actor.getNoun() + " drops " + TextUtils.format(item.name, numToDrop, true),
                 MessageLog.MessageType.GENERAL);
         return ActionResult.Succeeded(events);
     }
