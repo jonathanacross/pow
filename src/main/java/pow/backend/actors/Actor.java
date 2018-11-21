@@ -128,7 +128,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
                 conditions.get(ConditionTypes.STUN).getIntensity());
     }
     public int getSpeed() { return baseStats.speed + conditions.get(ConditionTypes.SPEED).getIntensity(); }
-    public boolean canSeeLocation(GameState gs, Point point) { return false; } // overridden in Player
+    public abstract boolean canSeeLocation(GameState gs, Point point);
 
     public AttackData getPrimaryAttack() {
         return new AttackData(
