@@ -13,6 +13,10 @@ public class SpellAi {
             return false;
         }
 
+        if (actor.canSeeLocation(gs, target.loc)) {
+            return false;
+        }
+
         switch (spell.spellType) {
             case ARROW: return targetVisibleAndWithinRange(spell, actor, gs, target);
             case BALL: return AiUtils.actorHasLineOfSight(actor, gs, target.loc);

@@ -86,6 +86,9 @@ public class GameConstants {
     // Light radius for player after getting the bright lantern.
     public final static int PLAYER_LARGE_LIGHT_RADIUS = 11;
 
+    // View radius for monsters.  Farther than this and they can't see you.
+    public final static int MONSTER_VIEW_RADIUS = 11;
+
     // Chance a monster will drop an item (for each drop attempt).
     public final static double MONSTER_DROP_CHANCE = 0.5;
 

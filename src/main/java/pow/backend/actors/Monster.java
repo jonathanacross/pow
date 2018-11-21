@@ -10,6 +10,9 @@ import pow.backend.action.Move;
 import pow.backend.actors.ai.*;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.event.GameEvent;
+import pow.backend.GameConstants;
+import pow.util.Circle;
+import pow.util.MathUtils;
 import pow.util.Point;
 import pow.util.TextUtils;
 
@@ -304,6 +307,13 @@ public class Monster extends Actor implements Serializable {
             case DUMB_AWAKE: return doDumbAwake(backend);
         }
         return null;
+    }
+
+    @Override
+    public boolean canSeeLocation(GameState gs, Point point) {
+        // must be on the map, and within the view radius.  Monsters can see unlit squares.
+        return (gs.getCurrentMap().isOnMap(point.x, point.y) &&
+                (MathUtils.dist2(loc, point) <= Circle.getRadiusSquared(GameConstants.MONSTER_VIEW_RADIUS)));
     }
 
     @Override

@@ -27,12 +27,8 @@ public class PetAi {
             return actor.movement.wander(actor, gs);
         }
 
-        // see if need to heal
-        Action preferredAction = groupHealIfNecessary(actor, gs);
-        if (preferredAction != null) {
-            return preferredAction;
-        }
-        preferredAction = healIfNecessary(actor);
+        // see if need to heal/group heal
+        Action preferredAction = healIfNecessary(actor, gs);
         if (preferredAction != null) {
             return preferredAction;
         }
@@ -61,16 +57,6 @@ public class PetAi {
         return new Move(actor, 0, 0);
     }
 
-    private static List<SpellParams> findSpells(Actor actor, SpellParams.SpellType spellType) {
-        List<SpellParams> matchingSpells = new ArrayList<>();
-        for (SpellParams params : actor.spells) {
-            if (canCastSpell(actor, params) && params.spellType == spellType) {
-                matchingSpells.add(params);
-            }
-        }
-        return matchingSpells;
-    }
-
     private static Action moveTowardOtherIfFar(Actor me, GameState gs, int maxDist) {
         Actor other = getOtherPartyActor(me, gs);
         int distSq = dist2(me.loc, other.loc);
@@ -84,63 +70,62 @@ public class PetAi {
         return (me == gs.party.player) ? gs.party.pet : gs.party.player;
     }
 
-    // TODO: see if the healing can be simplified by making a score function on healing spells
-    private static Action groupHealIfNecessary(Actor me, GameState gs) {
-        // see if we need it
-        Actor other = getOtherPartyActor(me, gs);
-        if (other == null) {
-            // only one party member.  Not worth using group heal.
-            return null;
-        }
-        boolean bothHurt = (me.health <= 0.4 * me.getMaxHealth()) &&
-                (other.health <= 0.4 * other.getMaxHealth());
-        if (!bothHurt) {
-            // both have to be sufficiently damaged
-            return null;
-        }
+    private static int healthDeltaMinusWasted(Actor actor, SpellParams spell) {
+        int idealDeltaHealth = spell.getSecondaryAmount(actor);
+        int actualDeltaHealth =
+                Math.min(actor.health + idealDeltaHealth, actor.getMaxHealth()) - actor.health;
+        int wasted = idealDeltaHealth - actualDeltaHealth;
 
-        List<SpellParams> groupHealSpells = findSpells(me, SpellParams.SpellType.GROUP_HEAL);
-        if (groupHealSpells.isEmpty()) {
-            // have to have the spell
-            return null;
-        }
-
-        SpellParams groupHealSpell = groupHealSpells.get(0);
-
-        return SpellParams.buildAction(groupHealSpell, me, null);
+        return actualDeltaHealth - wasted;
     }
 
-    private static Action healIfNecessary(Actor me) {
-        List<SpellParams> healSpells = findSpells(me, SpellParams.SpellType.HEAL);
-        if (healSpells.isEmpty()) {
-            // don't have a heal spell
+    private static double healScoreForSpell(Actor me, GameState gs, SpellParams spell) {
+        // The heal score is computed as:
+        // (change in health of party) - (mana to cast spell) - (amount of heath "wasted" by spell)
+        //
+        // The first term tries to maximize the health restored to the party,
+        // so that if players are badly wounded then we will try to cast a big spell.
+        // The second term tries to minimize the mana we waste, so if we can heal ourselves
+        // fully with less mana then we'll prefer to do that.
+        // The third term tries to avoid calling heal spells in an inefficient way;
+        // that is, if a spell could heal 10% of health, and we only need to heal 5%, then
+        // we're wasting our mana a bit.  This helps reduce healing when we're mostly full.
+        //
+        // An action of doing nothing corresponds to 0.  A positive score means the heal is
+        // useful, and a negative score means the heal is not helpful.  (So casting
+        // big expensive heal spells on nearly full health will have a large negative score.)
+
+        if (spell.spellType == SpellParams.SpellType.HEAL) {
+            return healthDeltaMinusWasted(me, spell) - spell.requiredMana;
+        } else if (spell.spellType == SpellParams.SpellType.GROUP_HEAL) {
+            Actor other = getOtherPartyActor(me, gs);
+            return healthDeltaMinusWasted(me, spell) + healthDeltaMinusWasted(other, spell) - spell.requiredMana;
+        } else {
+            // not a heal spell.
+            return 0.0;
+        }
+    }
+
+    private static Action healIfNecessary(Actor me, GameState gs) {
+        SpellParams bestSpell = null;
+        // Note that the scoring function for healing spells is such that 0
+        // is neutral, equivalent to doing nothing, so we must do strictly
+        // better to this.
+        double bestScore = 0;
+
+        for (SpellParams spell : me.spells) {
+            double score = healScoreForSpell(me, gs, spell);
+            if (score > bestScore) {
+                bestSpell = spell;
+                bestScore = score;
+            }
+        }
+
+        if (bestSpell != null) {
+            return SpellParams.buildAction(bestSpell, me, null);
+        } else {
             return null;
         }
-
-        boolean hurt = me.health <= 0.5 * me.getMaxHealth();
-        boolean badlyHurt = me.health <= 0.3 * me.getMaxHealth();
-        if (badlyHurt) {
-            // get the strongest spell we can use
-            SpellParams bestHeal = null;
-            for (SpellParams heal : healSpells) {
-                if (bestHeal == null ||
-                        (heal.getSecondaryAmount(me) > bestHeal.getSecondaryAmount(me))) {
-                    bestHeal = heal;
-                }
-            }
-            return SpellParams.buildAction(bestHeal, me, null);
-        } else if (hurt) {
-            // get the least-mana spell to use
-            SpellParams bestHeal = null;
-            for (SpellParams heal : healSpells) {
-                if (bestHeal == null || (heal.requiredMana < bestHeal.requiredMana)) {
-                    bestHeal = heal;
-                }
-            }
-            return SpellParams.buildAction(bestHeal, me, null);
-        }
-
-        return null;
     }
 
     private static double attackScoreForPrimaryAttack(Actor me, Actor target) {
@@ -259,6 +244,9 @@ public class PetAi {
         List<Actor> targets = new ArrayList<>();
         for (Actor target : gs.getCurrentMap().actors) {
             if (target.friendly == me.friendly) {
+                continue;
+            }
+            if (!me.canSeeLocation(gs, target.loc)) {
                 continue;
             }
             if (!AiUtils.enemyIsWithinRange(me, target, 7)) {
