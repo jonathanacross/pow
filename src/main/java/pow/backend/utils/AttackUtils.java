@@ -112,7 +112,7 @@ public class AttackUtils {
         MessageLog.MessageType messageType = defender.friendly
                 ? MessageLog.MessageType.COMBAT_BAD
                 : MessageLog.MessageType.COMBAT_GOOD;
-        backend.logMessage(attacker.getNoun() + " hit " + defender.getNoun() + " for " + adjustedDamage + damTypeString + " damage", messageType);
+        backend.logMessage(attacker.getNoun() + " hits " + defender.getNoun() + " for " + adjustedDamage + damTypeString + " damage", messageType);
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Attacked());
         List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage);

@@ -35,7 +35,7 @@ public class Arrow implements Action {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        backend.logMessage(attacker.getNoun() + " fire an arrow.", MessageLog.MessageType.COMBAT_NEUTRAL);
+        backend.logMessage(attacker.getNoun() + " fires an arrow.", MessageLog.MessageType.COMBAT_NEUTRAL);
 
         List<Point> ray = Bresenham.makeRay(attacker.loc, target, GameConstants.ACTOR_ARROW_FIRE_RANGE + 1);
         String effectId = DungeonEffect.getEffectName(
@@ -64,7 +64,7 @@ public class Arrow implements Action {
             DungeonItem arrows = gs.party.player.findArrows();
             int count = arrows.count - 1;
             gs.party.player.inventory.removeOneItem(arrows);
-            backend.logMessage("you have " + count + " arrows left", MessageLog.MessageType.GENERAL);
+            backend.logMessage(gs.party.player.getNoun() + " has " + count + " arrows left", MessageLog.MessageType.GENERAL);
         }
 
         events.add(GameEvent.DungeonUpdated());

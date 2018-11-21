@@ -32,7 +32,7 @@ public class BuyItem implements Action {
         // sanity checks
         int totalCost = entry.price * count;
         if (player.gold < totalCost) {
-            backend.logMessage("You do not have enough money.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(player.getNoun() + " does not have enough money.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.Failed(null);
         }
         DungeonItem item = entry.item;
@@ -54,7 +54,7 @@ public class BuyItem implements Action {
             item.count -= count;
             player.inventory.add(cloneForInventory);
         }
-        backend.logMessage(player.getNoun() + " buy " + TextUtils.format(item.name, count, true),
+        backend.logMessage(player.getNoun() + " buys " + TextUtils.format(item.name, count, true),
                 MessageLog.MessageType.GENERAL);
 
         List<GameEvent> events = new ArrayList<>();

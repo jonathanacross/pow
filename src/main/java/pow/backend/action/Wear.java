@@ -29,7 +29,7 @@ public class Wear implements Action {
         GameState gs = backend.getGameState();
         DungeonItem item = itemList.items.get(index);
         itemList.removeOneItemAt(index);
-        backend.logMessage(player.getNoun() + " wear " + TextUtils.format(item.name, 1, true),
+        backend.logMessage(player.getNoun() + " wears " + TextUtils.format(item.name, 1, true),
                 MessageLog.MessageType.GENERAL);
         DungeonItem oldItem = player.wear(item);
         // put the old item somewhere
@@ -37,7 +37,7 @@ public class Wear implements Action {
             int numCanAdd = player.inventory.numCanAdd(oldItem);
             if (numCanAdd == 0) {
                 // put on the ground
-                backend.logMessage(player.getNoun() + " drop " + TextUtils.format(item.name, 1, false),
+                backend.logMessage(player.getNoun() + " drops " + TextUtils.format(item.name, 1, false),
                         MessageLog.MessageType.GENERAL);
                 gs.getCurrentMap().map[player.loc.x][player.loc.y].items.add(oldItem);
             } else {
