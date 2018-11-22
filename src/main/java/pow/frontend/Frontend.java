@@ -5,14 +5,18 @@ import pow.backend.ShopData;
 import pow.backend.action.ExitPortal;
 import pow.backend.action.RestAtInn;
 import pow.backend.action.UpgradeItem;
+import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonEffect;
+import pow.backend.dungeon.gen.CharacterGenerator;
 import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
+import pow.frontend.utils.SaveUtils;
 import pow.frontend.window.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.*;
 import java.util.List;
 import java.util.Queue;
@@ -28,8 +32,6 @@ public class Frontend {
     private final WelcomeWindow welcomeWindow;
     private final WinWindow winWindow;
     private final LoseWindow loseWindow;
-    private final CreateCharWindow createCharWindow;
-    private final SetPetWindow setPetWindow;
     public final AutoplayOptionWindow autoplayOptionWindow;
     private final OpenGameWindow openGameWindow;
     public final MonsterInfoWindow monsterInfoWindow;
@@ -73,8 +75,6 @@ public class Frontend {
         welcomeWindow = new WelcomeWindow(WindowDim.center(600, 600, this.width, this.height), true, gameBackend, this);
         winWindow = new WinWindow(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
         loseWindow = new LoseWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
-        createCharWindow = new CreateCharWindow(WindowDim.center(480, 200, this.width, this.height), gameBackend, this);
-        setPetWindow = new SetPetWindow(WindowDim.center(480, 240, this.width, this.height), gameBackend, this);
         autoplayOptionWindow = new AutoplayOptionWindow(WindowDim.center(210, 140, this.width, this.height), gameBackend, this);
         openGameWindow = new OpenGameWindow(WindowDim.center(380, 300, this.width, this.height), true, gameBackend, this);
         // main game
@@ -123,9 +123,7 @@ public class Frontend {
                 gameBackend.setGameInProgress(false);
                 break;
             case CREATE_CHAR:
-                createCharWindow.resetName();
-                windows.push(createCharWindow);
-                gameBackend.setGameInProgress(false);
+                createMainCharacter();
                 break;
         }
         dirty = true;
@@ -168,7 +166,7 @@ public class Frontend {
                 case EFFECT: this.effects.add(event.effect); break;
                 case IN_STORE: processShopEntry(); break;
                 case IN_PORTAL: choosePortal(); break;
-                case GOT_PET: open(this.setPetWindow); break;
+                case GOT_PET: choosePet(); break;
                 default: break;
             }
         }
@@ -182,6 +180,60 @@ public class Frontend {
         if (!windows.isEmpty()) {
             windows.peek().processKey(e);
         }
+    }
+
+    private void startNewGame(SelectCharWindow.NamedCharData data) {
+        Player player = CharacterGenerator.getPlayer(data.name, data.characterData.id);
+        gameBackend.newGame(player);
+        this.setState(Frontend.State.GAME);
+    }
+
+    // Start the game if
+    // (1) it's a new character name, or
+    // (2) an existing character name and user has confirmed they want to overwrite.
+    private void tryToStartNewGame(SelectCharWindow.NamedCharData data) {
+        // see if there's already a character with this name
+        List<File> existingFiles = SaveUtils.findSaveFiles();
+        boolean alreadyExists = false;
+        for (File f : existingFiles) {
+            if (f.getName().equals(data.name)) {
+                alreadyExists = true;
+            }
+        }
+
+        if (alreadyExists) {
+            WindowDim dim = WindowDim.center(600, 120, width, height);
+            open(new ConfirmWindow(dim, true, gameBackend, this,
+                    "The character '" + data.name + "' already exists.  Do you want to overwrite it?",
+                    "Overwrite", "Cancel",
+                    () -> startNewGame(data)));
+        } else {
+            startNewGame(data);
+        }
+    }
+
+    private void createMainCharacter() {
+        gameBackend.setGameInProgress(false);
+        SelectCharWindow createCharWindow = new SelectCharWindow(
+                WindowDim.center(480, 240, this.width, this.height),
+                gameBackend, this,
+                Arrays.asList("Select your character:"), false,
+                this::tryToStartNewGame, () -> setState(Frontend.State.OPEN_GAME));
+        open(createCharWindow);
+    }
+
+    private void choosePet() {
+        SelectCharWindow createCharWindow = new SelectCharWindow(
+                WindowDim.center(480, 260, this.width, this.height),
+                gameBackend, this,
+                Arrays.asList("Congratulations, you got a pet!", "Select your character:"), true,
+                (data) -> {
+                    Player pet = CharacterGenerator.getPlayer(data.name, data.characterData.id);
+                    gameBackend.setPet(pet);
+                    close();
+                },
+                () -> {});
+        open(createCharWindow);
     }
 
     private void processShopEntry() {
