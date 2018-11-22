@@ -5,6 +5,10 @@ public class MathUtils {
         return Math.max(Math.min(value, hi), low);
     }
 
+    public static double clamp(double value, double low, double hi) {
+        return Math.max(Math.min(value, hi), low);
+    }
+
     public static int dist2(int x1, int y1, int x2, int y2) {
         return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
     }

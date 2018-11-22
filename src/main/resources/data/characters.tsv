@@ -1,6 +1,6 @@
 #id	type	name	image	description	str gain	dex gain	int gain	con gain	speed gain	spells
-mage	main_player	mage	human_mage	yourself	0.90	0.90	1.30	0.90	0.00	call pet,magic arrow,phase,lesser heal,poison cloud,resist elements,teleport,ice bolt,boost armor,acid bolt,fireball,speed,greater heal,chain lightning,mana cloud,group heal
 adventurer	main_player	adventurer	human_adventurer	yourself	1.00	1.00	1.00	1.00	0.00	call pet,poison arrow,confuse monsters,lesser heal,resist elements,boost armor,rift
+mage	main_player	mage	human_mage	yourself	0.90	0.90	1.30	0.90	0.00	call pet,magic arrow,phase,lesser heal,poison cloud,resist elements,teleport,ice bolt,boost armor,acid bolt,fireball,speed,greater heal,chain lightning,mana cloud,group heal
 warrior	main_player	warrior	human_fighter	yourself	1.10	1.10	0.70	1.10	0.00	call pet,phase,lance,circle cut,lesser heal,stun,quake,boost attack,boost armor
 rogue	main_player	rogue	human_thief	yourself	0.90	1.10	1.00	1.00	0.00	call pet,sleep monster,poison arrow,phase,lesser heal,backstab,boost attack
 dragonmaster	main_player	dragon master	dragonmaster	yourself	1.10	1.20	0.90	1.20	0.00	call pet,lance,lightning breath,phase,ice breath,lesser heal,poison breath,fire breath,greater heal,rift,resist elements
