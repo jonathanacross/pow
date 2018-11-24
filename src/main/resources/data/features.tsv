@@ -41,7 +41,7 @@ pearl locked rock door	pearl locked rock door	closed metal pearl rock door	actOn
 blue portal	blue portal	blue portal	blockWater,blockLava,blockAir,blockGround,interesting	
 red portal	red portal	red portal	blockWater,blockLava,blockAir,blockGround,interesting	
 gray portal	closed portal	gray portal	blockWater,blockLava,blockAir,blockGround,interesting	
-spikes	spikes	spikes		
+spikes	spikes	spikes	trap	
 candle	candle	candle	smallLight	
 candelabra	candelabra	candelabra	smallLight	
 big tree	big tree	big tree		

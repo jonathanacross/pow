@@ -332,6 +332,7 @@ public class GeneratorUtils {
                 up,
                 !up,
                 false,
+                false,
                 true);
         return new DungeonFeature(
                 featureTemplate.id,
@@ -372,6 +373,7 @@ public class GeneratorUtils {
                     false,
                     false,
                     false,
+                    false,
                     true);
 
             return new DungeonFeature(
@@ -398,6 +400,7 @@ public class GeneratorUtils {
                 false,
                 true,
                 true,
+                false,
                 false,
                 false,
                 false,

@@ -47,7 +47,7 @@ public class MapWindow extends AbstractWindow {
                 }
 
                 DungeonSquare square = gs.getCurrentMap().map[x][y];
-                if (square.feature != null) {
+                if (square.feature != null && gs.party.player.canSeeFeature(square.feature)) {
                     mapView.drawTile(graphics, square.feature.image, x, y, ImageController.DrawMode.COLOR_BLOCK);
                 } else {
                     mapView.drawTile(graphics, square.terrain.image, x, y, ImageController.DrawMode.COLOR_BLOCK);

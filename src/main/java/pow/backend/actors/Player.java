@@ -293,6 +293,9 @@ public class Player extends Actor implements Serializable, LightSource {
         return party.artifacts.hasGlasses();
     }
 
+    @Override
+    public boolean canSeeTraps() { return party.artifacts.hasXRayScope(); }
+
     public DungeonItem findArrows() {
         for (DungeonItem item : inventory.items)  {
             if (item.flags.arrow) return item;
