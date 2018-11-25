@@ -4,7 +4,7 @@ public class GameConstants {
     // --------------- world construction -----------------
 
     // Use test world (for debugging).
-    public final static boolean USE_TEST_WORLD = true;
+    public final static boolean USE_TEST_WORLD = false;
 
     // How many monsters per square there should be, on average.
     public final static double MONSTER_DENSITY = 1.0 / 100.0;
@@ -118,6 +118,9 @@ public class GameConstants {
     // If player doesn't have heat suit, they lose this much
     // health in certain areas.
     public final static int HEAT_DAMAGE_PER_TURN = 5;
+
+    // Amount of damage a trap inflicts.
+    public final static int TRAP_DAMAGE_PER_TURN = 40;
 
     // ------------------- other game constants ---------------
 

@@ -75,7 +75,8 @@ d8l1	75		D		volcano3		cellularAutomata	3,false,lava cave	hot		demon mage,demon w
 d8l2	76		D		d8l1		cellularAutomata	3,false,lava cave	hot	phoenix	demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
 d8l3	77		D		d8l2		cellularAutomata	3,false,lava cave	hot		demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
 d8l4	78		D		d8l3		cellularAutomata	3,false,lava cave	hot	Maeglor	demon mage,demon warrior,demon archer,green dragon,red dragon,mumak,iron golem,lava dragon
-golden desert1	80	11	N,E,S,W	10			recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
+valley of death	79		N,E,S,W	10			ripple		outside		magic whirlwind,djinn,spike dog
+golden desert1	80	11	N,E,S,W		valley of death		recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
 town5	81	11	N,E,S,W	11			town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
 golden desert2	82	11	N,E,S,W	11			recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog
 golden desert3	83	11	N,E,S,W	11			recursiveInterpolation	gold desert	outside		alien mage,alien archer,alien rogue,magic whirlwind,djinn,spike dog

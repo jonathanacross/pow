@@ -197,6 +197,9 @@ public class GeneratorUtils {
         // exits to other levels, where player may come in.
         for (int x = 1; x < width - 1; x++) {
             for (int y = 1; y < height - 1; y++) {
+                // don't place anyone on traps.
+                if (dungeonMap[x][y].feature != null && dungeonMap[x][y].feature.flags.trap) { continue; }
+
                 if (!dungeonMap[x][y].blockGround()) { availableGroundSquares.add(new Point(x,y)); }
                 if (!dungeonMap[x][y].blockWater()) { availableWaterSquares.add(new Point(x,y)); }
             }

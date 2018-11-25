@@ -19,10 +19,11 @@ public class StepMovement implements Movement, Serializable {
         return moveOrWait(actor, gs, dx, dy);
     }
 
+
     @Override
     public boolean canMoveTowardTarget(Actor actor, GameState gs, Point target) {
         Point dir = getDirectionTowardTarget(actor.loc, target);
-        return (!gs.getCurrentMap().isBlocked(actor, actor.loc.x + dir.x, actor.loc.y + dir.y));
+        return canMoveTo(actor, gs, actor.loc.x + dir.x, actor.loc.y + dir.y);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class StepMovement implements Movement, Serializable {
                 // need to be 2 steps away
                 if (Math.abs(dx) != 2 && Math.abs(dy) != 2) continue;
                 Point twoStep = new Point(actor.loc.x + dx, actor.loc.y + dy);
-                if ((twoStep.x != target.x || twoStep.y != target.y) && map.isBlocked(actor, twoStep.x, twoStep.y)) continue;
+                if ((twoStep.x != target.x || twoStep.y != target.y) && !canMoveTo(actor, gs, twoStep.x, twoStep.y)) continue;
                 int d2 = MathUtils.dist2(twoStep, target);
                 if (d2 < closestDist) {
                     closestDist = d2;
@@ -64,7 +65,7 @@ public class StepMovement implements Movement, Serializable {
             for (int dx = -1; dx <= 1; dx++) {
                 for (int dy = -1; dy <= 1; dy++) {
                     Point step = new Point(actor.loc.x + dx, actor.loc.y + dy);
-                    if (map.isBlocked(actor, step.x, step.y)) continue;
+                    if (!canMoveTo(actor, gs, step.x, step.y)) continue;
                     int d2 = MathUtils.dist2(step, twoStepTarget);
                     if (d2 < closestDist) {
                         closestDist = d2;
@@ -108,8 +109,16 @@ public class StepMovement implements Movement, Serializable {
         return MathUtils.dist2(actor.loc, target.loc) <= 2;
     }
 
+    private static boolean canMoveTo(Actor actor, GameState gs, int x, int y) {
+        GameMap map = gs.getCurrentMap();
+        boolean onMap = map.isOnMap(x, y);
+        boolean canSeeTrap = map.hasTrapAt(x, y) && actor.canSeeTraps();
+        boolean blocked = map.isBlocked(actor, x, y);
+        return (onMap && !blocked && !canSeeTrap);
+    }
+
     private static Action moveOrWait(Actor actor, GameState gs, int dx, int dy) {
-        if (!gs.getCurrentMap().isBlocked(actor, actor.loc.x + dx, actor.loc.y + dy)) {
+        if (canMoveTo(actor, gs, actor.loc.x + dx, actor.loc.y + dy)) {
             return new Move(actor, dx, dy);
         } else {
             return new Move(actor, 0, 0);

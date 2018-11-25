@@ -230,6 +230,13 @@ public class GameMap implements Serializable {
                 (!actor.aquatic || map[x][y].blockWater());
     }
 
+    public boolean hasTrapAt(int x, int y) {
+        if (!isOnMap(x,y)) return false;
+        DungeonFeature feature = map[x][y].feature;
+        if (feature == null) return false;
+        return feature.flags.trap;
+    }
+
     public boolean isBlocked(Actor actor, int x, int y) {
         if (!isOnMap(x,y)) return true;
         if (isTerrainBlocked(actor, x, y)) return true;
