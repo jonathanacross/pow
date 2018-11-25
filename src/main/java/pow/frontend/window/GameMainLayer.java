@@ -357,8 +357,9 @@ public class GameMainLayer extends AbstractWindow {
                     continue;
                 }
                 mapView.drawTile(graphics, square.terrain.image, x, y, ImageController.DrawMode.NORMAL);
-                if (square.feature != null) {
-                    mapView.drawTile(graphics, square.feature.image, x, y, ImageController.DrawMode.NORMAL);
+                if (square.feature != null && gs.party.selectedActor.canSeeFeature(square.feature)) {
+                    ImageController.DrawMode drawMode = square.feature.flags.trap ? ImageController.DrawMode.TRANSPARENT : ImageController.DrawMode.NORMAL;
+                    mapView.drawTile(graphics, square.feature.image, x, y, drawMode);
                 }
                 for (DungeonItem item : square.items.items) {
                     mapView.drawTile(graphics, item.image, x, y, ImageController.DrawMode.NORMAL);

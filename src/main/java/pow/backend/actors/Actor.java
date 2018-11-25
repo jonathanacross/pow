@@ -2,6 +2,8 @@ package pow.backend.actors;
 
 import pow.backend.*;
 import pow.backend.action.Action;
+import pow.backend.dungeon.DungeonFeature;
+import pow.backend.dungeon.gen.FeatureData;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.ai.Movement;
 import pow.backend.behavior.ActionBehavior;
@@ -159,7 +161,9 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public void putToSleep(GameBackend backend) { } // overridden in Monster
     public boolean canDig() { return false; }  // overridden in Player
     public boolean canSeeInvisible() { return true; }  // overridden in Player
+    public boolean canSeeTraps() { return true; }  // overridden in Player
     public boolean canSeeActor(Actor a) { return !a.invisible || this.canSeeInvisible(); }
+    public boolean canSeeFeature(DungeonFeature f) { return !f.flags.trap || this.canSeeTraps(); }
     public boolean isConfused() { return conditions.get(ConditionTypes.CONFUSE).getIntensity() > 0; }
 
     public void gainExperience(GameBackend backend, int experience, Actor source) {} // overridden in Player

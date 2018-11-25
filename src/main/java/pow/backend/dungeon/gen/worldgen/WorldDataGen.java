@@ -200,6 +200,7 @@ public class WorldDataGen {
             case "mountain": return buildMountainGenerator(params, monsterIds, level, flags);
             case "rogue": return buildRogueGenerator(params, monsterIds, level, flags);
             case "radial": return buildRadialGenerator(params, monsterIds, level, flags);
+            case "ripple": return buildRippleGenerator(params, monsterIds, level, flags);
             case "terrain test":
             case "run test":
             case "item test":
@@ -394,6 +395,22 @@ public class WorldDataGen {
     private static MapGenerator buildRadialGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         ProtoTranslator style = getProtoTranslator(params);
         return new RadialGenerator(GameConstants.RADIAL_NUM_CELLS, GameConstants.RADIAL_MATCH_PERCENT, style, monsterIds, level, flags);
+    }
+
+    private static MapGenerator buildRippleGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
+        int size = GameConstants.DEFAULT_AREA_SIZE;
+        String wallTerrainId = "rock";
+        String floorTerrainId = "sand";
+        String feature1Id = "spikes";
+        String feature2Id = "dead tree";
+        String feature3Id = "light pebbles";
+        RippleGenerator.MapStyle style = new RippleGenerator.MapStyle(
+                wallTerrainId, floorTerrainId, feature1Id, feature2Id, feature3Id,
+                TOWER_ENTRANCE_ID,
+                DUNGEON_ENTRANCE_ID,
+                OPEN_PORTAL_ID,
+                CLOSED_PORTAL_ID );
+        return new RippleGenerator(size, style, monsterIds, level, flags);
     }
 
     private static MapGenerator buildDelveGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {

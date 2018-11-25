@@ -14,6 +14,7 @@ public class DungeonFeature implements Serializable {
         public final boolean actOnStep;
         public final boolean stairsUp;
         public final boolean stairsDown;
+        public final boolean trap;
         public final boolean openDoor;
         public final boolean interesting;
 
@@ -24,6 +25,7 @@ public class DungeonFeature implements Serializable {
                      boolean actOnStep,
                      boolean stairsUp,
                      boolean stairsDown,
+                     boolean trap,
                      boolean openDoor,
                      boolean interesting) {
             this.blockGround = blockGround;
@@ -34,6 +36,7 @@ public class DungeonFeature implements Serializable {
             // TODO: merge stairsUp and stairsDown
             this.stairsUp = stairsUp;
             this.stairsDown = stairsDown;
+            this.trap = trap;
             this.openDoor = openDoor;
             this.interesting = interesting;
         }

@@ -119,6 +119,9 @@ public class GameConstants {
     // health in certain areas.
     public final static int HEAT_DAMAGE_PER_TURN = 5;
 
+    // Amount of damage a trap inflicts.
+    public final static int TRAP_DAMAGE_PER_TURN = 40;
+
     // ------------------- other game constants ---------------
 
     public final static int MESSAGE_LOG_SIZE = 50;

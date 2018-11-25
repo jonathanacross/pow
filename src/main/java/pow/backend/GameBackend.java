@@ -6,6 +6,7 @@ import pow.backend.action.Log;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.behavior.Behavior;
+import pow.backend.dungeon.DungeonFeature;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
 
@@ -145,6 +146,16 @@ public class GameBackend {
         if (map.flags.hot && !party.artifacts.hasHeatSuit()) {
             logMessage(player.getNoun() + " withers in the extreme heat", MessageLog.MessageType.COMBAT_BAD);
             events.addAll(player.takeDamage(this, GameConstants.HEAT_DAMAGE_PER_TURN));
+        }
+        // handle traps
+        for (Actor a : map.actors) {
+            if (map.hasTrapAt(a.loc.x, a.loc.y)) {
+                MessageLog.MessageType messageType = (a == player || a == party.pet) ?
+                        MessageLog.MessageType.COMBAT_BAD :
+                        MessageLog.MessageType.COMBAT_GOOD;
+                logMessage(a.getNoun() + " is caught in a trap.", messageType);
+                events.addAll(a.takeDamage(this, GameConstants.TRAP_DAMAGE_PER_TURN));
+            }
         }
         gameState.turnCount++;
         return events;

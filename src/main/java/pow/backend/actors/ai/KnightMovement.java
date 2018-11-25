@@ -1,5 +1,6 @@
 package pow.backend.actors.ai;
 
+import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.action.Action;
 import pow.backend.action.Move;
@@ -53,8 +54,7 @@ public class KnightMovement implements Movement, Serializable {
             int newy = actor.loc.y + move.y;
 
             // skip illegal moves
-            if (!gs.getCurrentMap().isOnMap(newx, newy) ||
-                    gs.getCurrentMap().isBlocked(actor, newx, newy)) {
+            if (!canMoveTo(actor, gs, newx, newy)) {
                 continue;
             }
 
@@ -116,6 +116,14 @@ public class KnightMovement implements Movement, Serializable {
         return dist2 == 5;
     }
 
+    private static boolean canMoveTo(Actor actor, GameState gs, int x, int y) {
+        GameMap map = gs.getCurrentMap();
+        boolean onMap = map.isOnMap(x, y);
+        boolean canSeeTrap = map.hasTrapAt(x, y) && actor.canSeeTraps();
+        boolean blocked = map.isBlocked(actor, x, y);
+        return (onMap && !blocked && !canSeeTrap);
+    }
+
     private static Point getClosestMoveTowardTarget(Actor actor, GameState gs, Point target) {
 
         Point bestMove = new Point(0,0);  // If nothing better found, stay put.
@@ -125,8 +133,7 @@ public class KnightMovement implements Movement, Serializable {
             int newy = actor.loc.y + move.y;
 
             // skip illegal moves
-            if (!gs.getCurrentMap().isOnMap(newx, newy) ||
-                    gs.getCurrentMap().isBlocked(actor, newx, newy)) {
+            if (!canMoveTo(actor, gs, newx, newy)) {
                 continue;
             }
 

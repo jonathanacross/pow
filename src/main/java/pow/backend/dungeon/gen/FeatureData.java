@@ -78,6 +78,7 @@ public class FeatureData {
         boolean glowing = false;
         boolean stairsUp = false;
         boolean stairsDown = false;
+        boolean trap = false;
         boolean openDoor = false;
         boolean interesting = false;
 
@@ -93,6 +94,7 @@ public class FeatureData {
                 case "closedDoor": break;
                 case "interesting": interesting = true; break;
                 case "downstairs": stairsDown = true; break;
+                case "trap": trap = true; break;
                 case "openDoor": openDoor = true; break;
                 case "smallLight": glowing = true; break;
                 case "upstairs": stairsUp = true; break;
@@ -101,6 +103,8 @@ public class FeatureData {
             }
         }
 
-        return new DungeonFeature.Flags(blockGround, blockWater, blockAir, glowing, actOnStep, stairsUp, stairsDown, openDoor, interesting);
+        return new DungeonFeature.Flags(
+                blockGround, blockWater, blockAir, glowing, actOnStep,
+                stairsUp, stairsDown, trap, openDoor, interesting);
     }
 }

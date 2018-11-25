@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Random;
 
 // makes a fractal mountain using recursive subdivision
-//public class MountainGenerator implements MapGenerator {
 public class MountainGenerator implements MapGenerator {
 
     public static class MapStyle {

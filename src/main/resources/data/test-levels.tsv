@@ -1,7 +1,8 @@
 #id	level	group	possible dirs	from groups	from id	teleport	generator	genParams	flags	boss	monsters
 terrain	0					open	terrain test	basement	permLight		
 #golddesert	30		S		terrain		recursiveInterpolation	gold desert	outside		goldfish,green fish,eel,pink jellyfish
-island	2		D		terrain		mountain		outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon
+#island	2		D		terrain		mountain		outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon
+island	2		D		terrain		ripple		outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon
 #volcano_test	2		D		terrain	open	radial	volcano		white rat	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
 #basement1	1		E		volcano_test	closed	premade	basementl1,basement	permLight		green mushrooms,black ant,white rat,brown beetle,crawling moss
 #rogue	2		D		terrain		rogue	1,dungeon		white rat	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
