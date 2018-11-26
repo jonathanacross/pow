@@ -33,7 +33,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public final boolean invisible;
         public final boolean aquatic;
         public final Movement movement;
-        public final String requiredItemDrops;
+        public final List<String> requiredItemDrops;
         public final int numDropAttempts;
         public final int strength;
         public final int dexterity;
@@ -48,7 +48,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
                       boolean invisible,
                       boolean aquatic,
                       Movement movement,
-                      String requiredItemDrops,
+                      List<String> requiredItemDrops,
                       int numDropAttempts,
                       int strength,
                       int dexterity,
@@ -95,7 +95,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     // we don't know how many items there should be until
     // they die.
     public final int numDropAttempts; // number of attempts of dropping an item, monster only?
-    public final String requiredItemDrops;
+    public final List<String> requiredItemDrops;
     public final List<SpellParams> spells;
     public Behavior behavior;
 

@@ -80,7 +80,7 @@ public class Player extends Actor implements Serializable, LightSource {
                 false,
                 false,
                 new StepMovement(),
-                null,
+                Collections.emptyList(),
                 0,
                 getInnateStr(gainRatios, 1),
                 getInnateDex(gainRatios, 1),

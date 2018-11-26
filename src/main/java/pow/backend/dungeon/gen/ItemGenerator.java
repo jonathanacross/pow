@@ -17,6 +17,8 @@ public class ItemGenerator {
         return instance.generatorMap.keySet();
     }
 
+    public static List<String> getSpecialItemIds() { return instance.specialItemIds; }
+
     public static List<String> getItemIdsForLevel(int level) {
         if (instance.levelToItemIds.containsKey(level)) {
             return instance.levelToItemIds.get(level);
@@ -54,6 +56,7 @@ public class ItemGenerator {
     private static final ItemGenerator instance;
     private Map<String, SpecificItemGenerator> generatorMap;
     private Map<Integer, List<String>> levelToItemIds;
+    private List<String> specialItemIds;
     private Map<Integer, List<String>> levelToMoneyIds;
     private int minLevel;
     private int maxLevel;
@@ -82,12 +85,15 @@ public class ItemGenerator {
         minLevel = Integer.MAX_VALUE;
         maxLevel = 0;
         for (SpecificItemGenerator sig : generatorMap.values()) {
-            minLevel = Math.min(minLevel, sig.minLevel);
+            // If an item has a negative level, don't allow it to be generated.
+            // This way, unique, non-artifact items can be specified.
+            minLevel = Math.min(minLevel, Math.max(sig.minLevel, 0));
             maxLevel = Math.max(maxLevel, sig.maxLevel);
         }
 
         // make the map of what items can be generated on each level,
         // since this is a 1-time computation.
+        specialItemIds = new ArrayList<>();
         levelToItemIds = new HashMap<>();
         levelToMoneyIds = new HashMap<>();
         for (int level = minLevel; level <= maxLevel; level++) {
@@ -100,6 +106,11 @@ public class ItemGenerator {
                         levelToMoneyIds.get(level).add(sig.id);
                     }
                 }
+            }
+        }
+        for (SpecificItemGenerator sig : generatorMap.values()) {
+            if (sig.minLevel < 0 && sig.maxLevel < 0) {
+                specialItemIds.add(sig.id);
             }
         }
     }

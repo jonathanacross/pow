@@ -741,4 +741,16 @@ public class GeneratorUtils {
         String itemId = possibleItemIds.get(rng.nextInt(possibleItemIds.size()));
         return ItemGenerator.genItem(itemId, perturbedLevel, rng);
     }
+
+    public static DungeonItem getArtifactOrItem(String itemId, int level, Random rng) {
+        int perturbedLevel = (int) Math.round(2 * rng.nextGaussian() + level);
+        boolean isSpecialItem = ItemGenerator.getSpecialItemIds().contains(itemId);
+        DungeonItem item = isSpecialItem
+                ? ItemGenerator.genItem(itemId, perturbedLevel, rng)
+                : ArtifactData.getArtifact(itemId);
+        if (item == null) {
+            throw new RuntimeException("could not getArtifactOrItem: " + itemId);
+        }
+        return item;
+    }
 }
