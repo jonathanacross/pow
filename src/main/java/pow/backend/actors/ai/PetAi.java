@@ -95,6 +95,10 @@ public class PetAi {
         // useful, and a negative score means the heal is not helpful.  (So casting
         // big expensive heal spells on nearly full health will have a large negative score.)
 
+        if (spell.requiredMana > me.mana || spell.minLevel > me.level) {
+            // can't cast the spell; skip.
+            return 0.0;
+        }
         if (spell.spellType == SpellParams.SpellType.HEAL) {
             return healthDeltaMinusWasted(me, spell) - spell.requiredMana;
         } else if (spell.spellType == SpellParams.SpellType.GROUP_HEAL) {
