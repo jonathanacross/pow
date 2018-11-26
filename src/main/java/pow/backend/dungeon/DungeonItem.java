@@ -105,6 +105,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         PETSTATUE,
         BAG,
         PORTALKEY,
+        TURTLESHELL,
         XRAYSCOPE,
         MAP
     }

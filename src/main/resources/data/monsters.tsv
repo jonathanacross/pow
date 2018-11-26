@@ -104,7 +104,7 @@
 16	zombie	warrior	erratic		-2		2	& zombie	zombie	A humanoid form encased in moldy wrappings, the result of some unspeakable spell that left him wandering the earth forever.
 15	red cobra	reptile	fearless	poison bolt	-1		0	& red cobra	red cobra	A great cobra with ruby scales.
 15	sandworm	reptile	fearless		-2		1	& sandworm	sand worm	An enormous worm with a fearsome array of crystalline teeth.
-14	black orc	warrior	boss,fearless,perfect	circle cut,lance	0	magic bag	4	!Algol the black orc	black orc	He has a huge hulking frame and nearly black skin.  Algol was chieftain of a savage orc tribe, known for his short temper.
+14	black troll	warrior	boss,fearless,perfect	circle cut,lance	0	magic bag	4	!Algol the black troll	black troll	He has a huge hulking frame and nearly black skin.  Algol was chieftain of a savage troll tribe, known for his short temper.
 16	two headed ogre	giant	boss,perfect	circle cut,lesser heal,lance	0	heat suit	4	& two headed ogre	two headed ogre	A giant orc-like figure with a two heads and an awesomely muscled frame. It regrows it heads as fast as you chop them off.
 16	oliphant	mammal	boss		-1	pearl 7	6	& oliphant	oliphant	A giant elephantine creature with four tusks, sharp teeth, and a foul temper.
 17	demon mage	mage	perfect,fearless	phase,ice bolt,lesser heal,fireball,fire bolt,blink	0		1	& demon mage	demon mage	A fearsome opponent. His spells are lethal and his combat blows crushingly hard.
@@ -133,7 +133,7 @@
 20	djinn	magical	passive	arrow,blink	1		3	& djinn	djinn	Free from his lamp, this creature uses his powerful magics to exact revenge upon the world for his entrapment.
 20	spike dog	mammal	fearless	lesser heal	0		0	& spike dog	spike dog	A great hound with spines along his back. He growls as you enter his territory, then ferociously lashes his spiked tail.
 20	Lugorith	dragon	boss,perfect,fearless	rift,quake,greater heal,fire breath,acid breath,poison breath,ice breath,lightning breath	4	bright lantern	16	!Lugorith	Lugorith	The lord of chaos, Lugorith is a massive dragon of changing form. As you watch, it appears first fair and then foul. Its body is twisted by chaotic forces as it strives to stay real. Its very existence distorts the universe around it.
-20	evil incarnate	giant,strong	boss,perfect,fearless	quake,greater heal,mana cloud,fireball,lance,circle cut,phase,backstab	5	magic bag	18	!Evil Incarnate	evil incarnate	A massive form cloaked in flame. His skeletal visage is twisted with evil, as he seeks forever to dominate all that is light and good in the world. He is the origin of man's fear of darkness and has created many foul creatures with his evil powers. He holds a great staff in his hand, and strides forward to destroy you.
+20	evil incarnate	giant,strong	boss,perfect,fearless	quake,greater heal,mana cloud,fireball,lance,circle cut,phase,backstab	5	dragon egg,golden crown	18	!Evil Incarnate	evil incarnate	A massive form cloaked in flame. His skeletal visage is twisted with evil, as he seeks forever to dominate all that is light and good in the world. He is the origin of man's fear of darkness and has created many foul creatures with his evil powers. He holds a great staff in his hand, and strides forward to destroy you.
 3	goldfish	fish	erratic,aquatic		0		0	& goldfish	goldfish	It looks just like the goldfish you used to keep in a glass bowl when you were a kid, but bigger.
 4	green fish	fish	erratic,aquatic		1		0	& green fish	green fish	Barracuda, known for their large size, fearsome appearance and ferocious behavior.
 4	eel	fish	aquatic		0		0	& eel	eel	An electric eel slipping through the water.
@@ -146,4 +146,4 @@
 15	sea dragon	dragon	aquatic	ice breath,acid breath	1		4	& sea dragon	sea dragon	A mighty sea dragon, with great horns and a long tail.
 16	yellow turtle	reptile	aquatic,perfect	lesser heal	-1		1	& yellow turtle	yellow turtle	A turtle with a yellow shell.
 17	red turtle	reptile	perfect,passive	backstab	-1		1	& red turtle	red turtle	A turtle with a red shell.
-17	purple turtle	reptile	boss,perfect,fearless	acid bolt,lesser heal,lightning bolt,fire bolt,lance	-1	magic bag	4	& elder turtle	purple turtle	This ancient testudine has a hard amethyst carapace and a magical aura.
+17	purple turtle	reptile	boss,perfect,fearless	acid bolt,lesser heal,lightning bolt,fire bolt,lance	-1	turtle shell	4	& elder turtle	purple turtle	This ancient testudine has a hard amethyst carapace and a magical aura.

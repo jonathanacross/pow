@@ -20,6 +20,7 @@ hard leather cap	& hard leather cap~	hard leather cap	hard leather cap	headgear	
 iron helmet	& iron helmet~	iron helmet	iron helmet	headgear				41	60	3	5	1	def:x	
 steel helmet	& steel helmet~	steel helmet	steel helmet	headgear				51	80	4	6	1	def:x	
 golden helmet	& golden helmet~	golden helmet	golden helmet	headgear				71	90	5	7	1	def:x,int:1	
+golden crown	& golden crown~	golden crown	golden crown	headgear				-1	-1	1	1	0	fire:2,cold:2,acid:2,elec:2,pois:2	res all
 # gloves														
 thin leather gloves	thin leather gloves	gloves	thin leather gloves	gloves				1	30	1	1	1	def:x	
 heavy leather gloves	heavy leather gloves	heavy gloves	heavy leather gloves	gloves				21	50	2	3	1	def:x	
@@ -102,7 +103,8 @@ emerald	& emerald~	emerald	emerald	none	gem			11	90	1	1	0	pois:1
 aquamarine	& aquamarine~	aquamarine	aquamarine	none	gem			11	90	1	1	0	int:1	
 sapphire	& sapphire~	sapphire	sapphire	none	gem			11	90	1	1	0	cold:1	
 amethyst	& amethyst~	amethyst	amethyst	none	gem			11	90	1	1	0	con:1	
-# potions														
+dragon egg	& dragon egg~	dragon egg	dragon egg	none	gem			-1	-1	1	1	0	str:2,dex:2,int:2,con:2	
+# potions
 small mana potion	& small mana potion~	small blue potion	small mana potion	none	potion	restoreMana:10:		1	30	0	0	0		
 small health potion	& small health potion~	small red potion	small health potion	none	potion	heal:10:		1	30	0	0	0		
 small restore potion	& small restore potion~	small purple potion	small restore potion	none	potion	restore:15:		11	40	0	0	0		

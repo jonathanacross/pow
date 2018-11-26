@@ -14,4 +14,4 @@ digdesert	25		E		terrain		recursiveInterpolation	dig desert	hot	white rat	blue g
 #town	1		E		terrain		town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
 item	2		W		terrain		item test	crypt			
 cave	17		D		island		cellularAutomata	1,true,basement	poisonGas	minotaur	brown scorpion,goldfish,chess knight,pink ghost
-arena	99		S		terrain		arena	dungeon			:all:
+arena	99		S		terrain		arena	dungeon		evil incarnate	:all:

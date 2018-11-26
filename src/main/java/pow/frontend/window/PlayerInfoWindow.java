@@ -128,9 +128,10 @@ public class PlayerInfoWindow extends AbstractWindow {
         artifactLocations.put(DungeonItem.ArtifactSlot.GLASSES, new Point(7,1));
         artifactLocations.put(DungeonItem.ArtifactSlot.PICKAXE, new Point(8,1));
         artifactLocations.put(DungeonItem.ArtifactSlot.BAG, new Point(9,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.HEATSUIT, new Point(10,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.XRAYSCOPE, new Point(11,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN2, new Point(12,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.TURTLESHELL, new Point(10,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.HEATSUIT, new Point(11,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.XRAYSCOPE, new Point(12,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN2, new Point(13,1));
 
         for (DungeonItem item : player.party.artifacts.getArtifacts().values()) {
             Point loc = artifactLocations.get(item.artifactSlot);

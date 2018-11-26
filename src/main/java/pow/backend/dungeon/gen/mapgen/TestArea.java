@@ -105,6 +105,13 @@ public class TestArea implements MapGenerator {
             dungeonSquares[width-2][idx+1].items.add(ArtifactData.getArtifact(id));
         }
 
+        // add special items
+        List<String> specialItemIds = new ArrayList<>(ItemGenerator.getSpecialItemIds());
+        for (int idx = 0; idx < specialItemIds.size(); idx++) {
+            String id = specialItemIds.get(idx);
+            dungeonSquares[width-3][idx+1].items.add(ItemGenerator.genItem(id, 0, rng));
+        }
+
         return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
     }
 

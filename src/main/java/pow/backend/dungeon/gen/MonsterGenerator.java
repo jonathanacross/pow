@@ -6,7 +6,6 @@ import pow.backend.actors.ai.KnightMovement;
 import pow.backend.actors.ai.Movement;
 import pow.backend.actors.ai.StationaryMovement;
 import pow.backend.actors.ai.StepMovement;
-import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.DebugLogger;
 import pow.util.Point;
@@ -85,7 +84,7 @@ public class MonsterGenerator {
         AllFlags flags;
         int experience;
         List<SpellParams> spells;
-        String artifactDrops;  // slight misnomer.. can only handle 1 artifact right now
+        List<String> artifactDrops;
         int numDropAttempts;
         Movement movement;
 
@@ -187,18 +186,20 @@ public class MonsterGenerator {
             return flags;
         }
 
-
-        private static String parseArtifact(String text) {
+        private static List<String> parseArtifacts(String text) {
             if (text.isEmpty()) {
-                return null;
+                return Collections.emptyList();
             }
-
-            // Validate that the artifact specified in the file actually exists
-            DungeonItem checkArtifact = ArtifactData.getArtifact(text);
-            if (checkArtifact == null) {
-                DebugLogger.fatal(new RuntimeException("error: unknown artifact " + text));
+            String[] itemIds = text.split(",", -1);
+            List<String> result = new ArrayList<>();
+            for (String itemId : itemIds) {
+                boolean isSpecialItem = ItemGenerator.getSpecialItemIds().contains(itemId);
+                if (!isSpecialItem && ArtifactData.getArtifact(itemId) == null) {
+                    DebugLogger.fatal(new RuntimeException("error: unknown artifact/special item " + itemId));
+                }
+                result.add(itemId);
             }
-            return text;
+            return result;
         }
 
         private static int getSpeed(int level, int relativeSpeed) {
@@ -302,7 +303,7 @@ public class MonsterGenerator {
             String gameFlagsStr = line[3];
             String spellFlagsStr = line[4];
             int relativeSpeed = Integer.parseInt(line[5]);
-            artifactDrops = parseArtifact(line[6]);
+            artifactDrops = parseArtifacts(line[6]);
             numDropAttempts = Integer.parseInt(line[7]);
             name = line[8];
             image = line[9];

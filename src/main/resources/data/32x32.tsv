@@ -179,7 +179,7 @@
 32x32	2	11	bag	misc item
 32x32	3	11	x-ray scope	misc item
 32x32	4	11	portal key	misc item
-32x32	5	11	turtleshell	misc item
+32x32	5	11	turtle shell	misc item
 32x32	6	11	crooked staff	misc item
 32x32	7	11	shell	misc item
 32x32	8	11	mac plus	misc item
@@ -243,7 +243,7 @@
 32x32	2	15	iron helmet	armor
 32x32	3	15	steel helmet	armor
 32x32	4	15	golden helmet	armor
-32x32	5	15	gold crown	armor
+32x32	5	15	golden crown	armor
 32x32	6	15	-:null:-	:null:
 32x32	7	15	-:null:-	:null:
 32x32	8	15	robe	armor

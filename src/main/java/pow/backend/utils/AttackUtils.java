@@ -1,10 +1,12 @@
 package pow.backend.utils;
 
+import com.sun.tools.javah.Gen;
 import pow.backend.*;
 import pow.backend.actors.Actor;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.gen.ArtifactData;
+import pow.backend.dungeon.gen.ItemGenerator;
 import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
@@ -56,10 +58,10 @@ public class AttackUtils {
             map.genMonsterIds.canGenBoss = false;
         }
 
-        // drop any artifacts
-        String artifactId = actor.requiredItemDrops;
-        if (artifactId != null) {
-            DungeonItem item = ArtifactData.getArtifact(artifactId);
+        // drop any artifacts/special items
+        List<String> itemIds = actor.requiredItemDrops;
+        for (String itemId : itemIds) {
+            DungeonItem item = GeneratorUtils.getArtifactOrItem(itemId, map.level, gs.rng);
             map.map[actor.loc.x][actor.loc.y].items.add(item);
         }
 
