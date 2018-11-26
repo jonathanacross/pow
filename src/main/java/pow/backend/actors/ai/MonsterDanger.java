@@ -2,8 +2,8 @@ package pow.backend.actors.ai;
 
 import pow.backend.AttackData;
 import pow.backend.SpellParams;
-import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
+import pow.backend.utils.AttackUtils;
 
 // This class allows evaluation for how dangerous a particular monster is.
 public class MonsterDanger {
@@ -41,9 +41,10 @@ public class MonsterDanger {
     // that don't cause damage.
     public static double getAverageDamagePerTurn(Actor attacker, Actor defender) {
         int numAttacks = 0;
+        double totalDamage = 0;
         AttackData physicalAttack = attacker.getPrimaryAttack();
         double physicalHitProb = AttackUtils.hitProb(physicalAttack.plusToHit, defender.getDefense());
-        double totalDamage = getAverageDamageForAttack(physicalHitProb, physicalAttack, defender, SpellParams.Element.NONE);
+        totalDamage += getAverageDamageForAttack(physicalHitProb, physicalAttack, defender, SpellParams.Element.NONE);
         numAttacks++;
 
         for (SpellParams spellParams : attacker.spells) {

@@ -13,7 +13,7 @@ public class SpellAi {
             return false;
         }
 
-        if (actor.canSeeLocation(gs, target.loc)) {
+        if (!actor.canSeeLocation(gs, target.loc)) {
             return false;
         }
 

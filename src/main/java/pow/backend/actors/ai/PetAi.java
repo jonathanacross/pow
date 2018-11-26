@@ -5,11 +5,11 @@ import pow.backend.GameState;
 import pow.backend.SpellParams;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
-import pow.backend.actors.Energy;
-import pow.backend.utils.AttackUtils;
 import pow.backend.action.Move;
 import pow.backend.actors.Actor;
+import pow.backend.actors.Energy;
 import pow.backend.actors.Player;
+import pow.backend.utils.AttackUtils;
 import pow.util.MathUtils;
 import pow.util.Point;
 
@@ -95,8 +95,7 @@ public class PetAi {
         // useful, and a negative score means the heal is not helpful.  (So casting
         // big expensive heal spells on nearly full health will have a large negative score.)
 
-        if (spell.requiredMana > me.mana || spell.minLevel > me.level) {
-            // can't cast the spell; skip.
+        if (!canCastSpell(me, spell)) {
             return 0.0;
         }
         if (spell.spellType == SpellParams.SpellType.HEAL) {
@@ -177,7 +176,6 @@ public class PetAi {
         // find best attack
         double bestScore = attackScoreForPrimaryAttack(me, target);
         SpellParams bestSpell = null;
-
         for (SpellParams spell : me.spells) {
             if (!canCastSpell(me, spell) || !SpellAi.canHitTarget(spell, me, gs, target)) {
                 continue;
@@ -239,8 +237,8 @@ public class PetAi {
         dangerToHurtAmount = new HashMap<>();
         dangerToHurtAmount.put(MonsterDanger.Danger.DEADLY, 0.2);
         dangerToHurtAmount.put(MonsterDanger.Danger.DANGEROUS, 0.4);
-        dangerToHurtAmount.put(MonsterDanger.Danger.UNSAFE, 0.7);
-        dangerToHurtAmount.put(MonsterDanger.Danger.NORMAL, 1.0);
+        dangerToHurtAmount.put(MonsterDanger.Danger.UNSAFE, 0.6);
+        dangerToHurtAmount.put(MonsterDanger.Danger.NORMAL, 0.8);
         dangerToHurtAmount.put(MonsterDanger.Danger.SAFE, 1.0);
     }
 
