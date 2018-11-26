@@ -6,7 +6,6 @@ import pow.backend.action.Log;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.behavior.Behavior;
-import pow.backend.dungeon.DungeonFeature;
 import pow.backend.event.GameEvent;
 import pow.backend.event.GameResult;
 

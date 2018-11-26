@@ -2,7 +2,6 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.backend.SpellParams;
-import pow.backend.actors.Player;
 import pow.backend.dungeon.gen.CharacterGenerator;
 import pow.backend.dungeon.gen.NameGenerator;
 import pow.frontend.Frontend;
@@ -13,11 +12,9 @@ import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.IntConsumer;
 
 public class SelectCharWindow extends AbstractWindow {
 

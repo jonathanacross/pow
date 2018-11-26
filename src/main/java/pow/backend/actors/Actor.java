@@ -3,7 +3,6 @@ package pow.backend.actors;
 import pow.backend.*;
 import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonFeature;
-import pow.backend.dungeon.gen.FeatureData;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.ai.Movement;
 import pow.backend.behavior.ActionBehavior;
