@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 public abstract class Actor extends DungeonObject implements Serializable {
 
     // Class to simplify constructor arguments
@@ -40,6 +39,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
         public final int constitution;
         public final int speed;
         public final List<SpellParams> spells;
+        public final Abilities abilities;
 
         public Params(int level,
                       int experience,
@@ -54,7 +54,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
                       int intelligence,
                       int constitution,
                       int speed,
-                      List<SpellParams> spells) {
+                      List<SpellParams> spells,
+                      Abilities abilities) {
             this.level = level;
             this.experience = experience;
             this.friendly = friendly;
@@ -69,6 +70,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
             this.constitution = constitution;
             this.speed = speed;
             this.spells = spells;
+            this.abilities = abilities;
         }
     }
 
@@ -97,6 +99,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public final List<String> requiredItemDrops;
     public final List<SpellParams> spells;
     public Behavior behavior;
+    public final Abilities abilities;
 
     public abstract Action act(GameBackend backend);
     public abstract boolean needsInput(GameState gameState);
@@ -184,7 +187,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
                 actorParams.intelligence,
                 actorParams.constitution,
                 actorParams.speed,
-                Collections.emptyList());
+                Collections.emptyList(),
+                actorParams.abilities.archeryBonus);
         this.health = baseStats.maxHealth;
         this.mana = baseStats.maxMana;
         this.spells = actorParams.spells;
@@ -200,5 +204,6 @@ public abstract class Actor extends DungeonObject implements Serializable {
         this.gold = 0;
         this.behavior = null;
         this.movement = actorParams.movement;
+        this.abilities = actorParams.abilities;
     }
 }

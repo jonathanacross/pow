@@ -30,7 +30,7 @@ public class ActorStats implements Serializable {
     public final int resElec;
     public final int resPois;
 
-    public ActorStats(int strength, int dexterity, int intelligence, int constitution, int speed, List<DungeonItem> equipment) {
+    public ActorStats(int strength, int dexterity, int intelligence, int constitution, int speed, List<DungeonItem> equipment, boolean archeryBonus) {
         // compute equipment bonuses
         int strBonus = 0;
         int dexBonus = 0;
@@ -99,7 +99,8 @@ public class ActorStats implements Serializable {
         this.rangedToHit = agility + rangedToHitBonus;
         this.rangedToDam = rangedToDamBonus;
         this.meleeDieRoll = StatComputations.findClosestDieRoll(baseDamage);
-        this.rangedDieRoll = StatComputations.findClosestDieRoll(0.75 * baseDamage);
+        double rangedMultiplier = archeryBonus ? 1.15 : 0.75;
+        this.rangedDieRoll = StatComputations.findClosestDieRoll(rangedMultiplier * baseDamage);
 
         this.resFire = resFireBonus;
         this.resCold = resColdBonus;

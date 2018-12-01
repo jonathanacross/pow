@@ -215,7 +215,7 @@ public class Frontend {
     private void createMainCharacter() {
         gameBackend.setGameInProgress(false);
         SelectCharWindow createCharWindow = new SelectCharWindow(
-                WindowDim.center(480, 240, this.width, this.height),
+                WindowDim.center(480, 260, this.width, this.height),
                 gameBackend, this,
                 Arrays.asList("Select your character:"), false,
                 this::tryToStartNewGame, () -> setState(Frontend.State.OPEN_GAME));
@@ -224,7 +224,7 @@ public class Frontend {
 
     private void choosePet() {
         SelectCharWindow createCharWindow = new SelectCharWindow(
-                WindowDim.center(480, 260, this.width, this.height),
+                WindowDim.center(480, 280, this.width, this.height),
                 gameBackend, this,
                 Arrays.asList("Congratulations, you got a pet!", "Select your character:"), true,
                 (data) -> {

@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.backend.SpellParams;
+import pow.backend.actors.Abilities;
 import pow.backend.dungeon.gen.CharacterGenerator;
 import pow.backend.dungeon.gen.NameGenerator;
 import pow.frontend.Frontend;
@@ -143,6 +144,17 @@ public class SelectCharWindow extends AbstractWindow {
         graphics.setColor(saveColor);
     }
 
+    private String getAbilityString(Abilities abilities) {
+        List<String> abilityStrings = new ArrayList<>();
+        if (abilities.archeryBonus) {
+            abilityStrings.add("especially good with bows");
+        }
+        if (abilities.continuedDamage) {
+            abilityStrings.add("can do extra long-term damage");
+        }
+        return TextUtils.formatList(abilityStrings);
+    }
+
     private void drawCharData(Graphics graphics, CharacterGenerator.CharacterData characterData, int x, int y, boolean showSpeed) {
         int barLeft = x + 60;
         String[] labels = {"Str   ", "Dex   ", "Int   ", "Con   ", "Speed "};
@@ -158,10 +170,13 @@ public class SelectCharWindow extends AbstractWindow {
         int textWidth = dim.width - 2*MARGIN;
         Font font = graphics.getFont();
         FontMetrics textMetrics = graphics.getFontMetrics(font);
-        List<String> spellLines =
-        ImageUtils.wrapText(
-                "Spells: " + TextUtils.formatList(getSpellNames(characterData.spells)), textMetrics, textWidth);
-        for (String line : spellLines) {
+        List<String> extraLines =
+                ImageUtils.wrapText(
+                        "Abilities: " + getAbilityString(characterData.abilities), textMetrics, textWidth);
+        extraLines.addAll(
+                ImageUtils.wrapText(
+                        "Spells: " + TextUtils.formatList(getSpellNames(characterData.spells)), textMetrics, textWidth));
+        for (String line : extraLines) {
             y += FONT_SIZE;
             graphics.drawString(line, x, y);
         }

@@ -66,13 +66,14 @@ public class Player extends Actor implements Serializable, LightSource {
                         "yourself", // description
                         new Point(-1, -1), // location -- will be updated later
                         true), // solid
-             GainRatiosData.getGainRatios("player adventurer"),
-             Collections.emptyList());
+                GainRatiosData.getGainRatios("player adventurer"),
+                Collections.emptyList(),
+                new Abilities());
     }
 
     public Player(DungeonObject.Params objectParams,
                    GainRatios gainRatios,
-                   List<SpellParams> spells) {
+                   List<SpellParams> spells, Abilities abilities) {
         super(objectParams, new Actor.Params(
                 1,
                 0,
@@ -87,7 +88,8 @@ public class Player extends Actor implements Serializable, LightSource {
                 getInnateInt(gainRatios, 1),
                 getInnateCon(gainRatios, 1),
                 getInnateSpeed(gainRatios, 1),
-                spells));
+                spells,
+                abilities));
         this.viewRadius = 11;  // how far can you see, assuming things are lit
         this.lightRadius = GameConstants.PLAYER_SMALL_LIGHT_RADIUS;
         this.equipment = new ItemList();
@@ -172,7 +174,7 @@ public class Player extends Actor implements Serializable, LightSource {
         int innateCon = getInnateCon(gainRatios, level);
         int innateSpd = getInnateSpeed(gainRatios, level);
 
-        this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment.items);
+        this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment.items, abilities.archeryBonus);
         this.health = Math.min(health, getMaxHealth());
         this.mana = Math.min(mana, getMaxMana());
 
