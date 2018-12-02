@@ -3,7 +3,9 @@ package pow.backend.actors;
 import pow.backend.GameState;
 import pow.util.Point;
 
-public class Target {
+import java.io.Serializable;
+
+public class Target implements Serializable {
     private Point floorTarget;
     private Actor monsterTarget;
     private Actor previousMonsterTarget;
