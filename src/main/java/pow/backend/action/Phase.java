@@ -66,8 +66,7 @@ public class Phase implements Action {
 
             actor.loc = targetLoc;
             if (actor == gs.party.selectedActor) {
-                gs.party.player.floorTarget = null;
-                gs.party.player.monsterTarget = null;
+                gs.party.player.clearTarget();
                 gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
             }
             backend.logMessage(actor.getNoun() + " phases.", MessageLog.MessageType.GENERAL);

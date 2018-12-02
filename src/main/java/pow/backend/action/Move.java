@@ -4,6 +4,7 @@ import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.ActionParams;
+import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
@@ -126,6 +127,11 @@ public class Move implements Action {
             actor.loc.y = newy;
             if (actor == gs.party.selectedActor) {
                 gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
+            }
+            for (Player p : gs.party.playersInParty()) {
+                // update the party's targeting, in case the player or target move
+                // out of visibility range.
+                p.updateMonsterTarget(gs);
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {

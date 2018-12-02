@@ -27,8 +27,8 @@ public class Player extends Actor implements Serializable, LightSource {
 
     public int experience;
 
-    public Point floorTarget;
-    public Actor monsterTarget;
+    private Point floorTarget;
+    private Actor monsterTarget;
     public Party party;  // link back to common data in the party.
 
     // computed as totals in MakePlayerExpLevels
@@ -311,5 +311,32 @@ public class Player extends Actor implements Serializable, LightSource {
         } else {
             return null;
         }
+    }
+
+    public void clearTarget() {
+        floorTarget = null;
+        monsterTarget = null;
+    }
+
+    // Checks to see if the monster target is still valid.
+    public void updateMonsterTarget(GameState gs) {
+        if (monsterTarget == null) {
+            return;
+        }
+        // Monster is gone (e.g., it died), or it's outside field of view
+        if (!gs.getCurrentMap().actors.contains(monsterTarget) ||
+                !canSeeLocation(gs, monsterTarget.loc)) {
+            monsterTarget = null;
+        }
+    }
+
+    public void setMonsterTarget(Actor a) {
+        floorTarget = null;
+        monsterTarget = a;
+    }
+
+    public void setFloorTarget(Point loc) {
+        monsterTarget = null;
+        floorTarget = loc;
     }
 }

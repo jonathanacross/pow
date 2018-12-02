@@ -3,6 +3,7 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
+import pow.backend.actors.Player;
 import pow.backend.utils.GeneratorUtils;
 import pow.backend.dungeon.gen.ShopGenerator;
 import pow.backend.event.GameEvent;
@@ -25,8 +26,9 @@ public class GotoArea implements Action {
         GameState gs = backend.getGameState();
 
         // clear any targets
-        gs.party.player.floorTarget = null;
-        gs.party.player.monsterTarget = null;
+        for (Player p : gs.party.playersInParty()) {
+            p.clearTarget();
+        }
 
         // remove player and pet from current area
         gs.getCurrentMap().removeActor(gs.party.player);

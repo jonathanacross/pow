@@ -2,6 +2,7 @@ package pow.backend.utils;
 
 import pow.backend.*;
 import pow.backend.actors.Actor;
+import pow.backend.actors.Player;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.event.GameEvent;
@@ -89,8 +90,8 @@ public class AttackUtils {
         // so that the player won't disappear from the map.
         map.removeActor(actor);
 
-        if (actor == gs.party.player.monsterTarget) {
-            gs.party.player.monsterTarget = null;
+        for (Player p : gs.party.playersInParty()) {
+            p.updateMonsterTarget(gs);
         }
         if (actor == gs.party.pet) {
             gs.party.pet = null;
