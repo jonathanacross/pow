@@ -235,11 +235,6 @@ public class Player extends Actor implements Serializable, LightSource {
     public void gainExperience(GameBackend backend, int experience, Actor source) {
         super.gainExperience(backend, experience, source);
         this.experience += experience;
-        // TODO: big hack here -- don't include your pet in the kill count..
-        // shouldn't have to key off the name 'pet', though
-        if (source != null && !source.id.equals("pet")) {
-            party.knowledge.incrementKillCount(source);
-        }
         checkIncreaseCharLevel(backend);
     }
 

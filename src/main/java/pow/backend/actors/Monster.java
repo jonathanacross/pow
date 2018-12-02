@@ -90,7 +90,7 @@ public class Monster extends Actor implements Serializable {
     }
 
     @Override
-    public List<GameEvent> takeDamage(GameBackend backend, int damage) {
+    public List<GameEvent> takeDamage(GameBackend backend, int damage, Actor source) {
         // don't bother changing state if we will die!
         if (damage <= this.getHealth()) {
             if (flags.erratic) {
@@ -103,7 +103,7 @@ public class Monster extends Actor implements Serializable {
                 }
             }
         }
-        return super.takeDamage(backend, damage);
+        return super.takeDamage(backend, damage, source);
     }
 
     @Override

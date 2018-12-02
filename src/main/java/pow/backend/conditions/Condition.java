@@ -11,7 +11,17 @@ import java.util.List;
 
 public abstract class Condition implements Serializable {
     private final IntensityTiming intensityTiming;
-    protected final Actor actor; // actor associated with this condition
+    // Actor associated with this condition.
+    protected final Actor actor;
+
+    // Actor (if any) who caused this condition, for experience tracking.
+    // Note that it's possible that multiple actors might be the source
+    // (e.g., multiple actors both shoot poison arrow), however this will
+    // just record the first one.  Also, it may be the case that there is
+    // no actor, e.g., because of outside dungeon circumstances such as
+    // traps.
+    protected Actor source;
+    public Actor getSource() { return source; }
 
     abstract String getStartMessage();
     abstract String getIncreaseMessage();
@@ -31,7 +41,8 @@ public abstract class Condition implements Serializable {
     // called each time the value changes (or a new condition was stacked)
     protected List<GameEvent> changeImpl(GameBackend backend, int delta) { return new ArrayList<>(); }
 
-    public List<GameEvent> start(GameBackend backend, int turnsRemaining, int intensity) {
+    public List<GameEvent> start(GameBackend backend, int turnsRemaining, int intensity, Actor source) {
+        this.source = source;
         int currIntensity = this.intensityTiming.getIntensity();
         int currTurnsRemaining = this.intensityTiming.getTurnsRemaining();
         List<GameEvent> events = new ArrayList<>();
@@ -70,6 +81,7 @@ public abstract class Condition implements Serializable {
         // if there's a change, then log for the user
         int newIntensity = intensityTiming.getIntensity();
         if (!this.intensityTiming.active()) {
+            source = null;  // condition is over, clear the cause.
             backend.logMessage(getEndMessage(), MessageLog.MessageType.STATUS);
         } else {
             if (currIntensity < newIntensity) {
