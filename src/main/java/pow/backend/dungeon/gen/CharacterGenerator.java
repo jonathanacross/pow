@@ -154,15 +154,17 @@ public class CharacterGenerator {
     private static Abilities parseAbilities(String text) {
         String[] tokens = text.split(",", -1);
         boolean archeryBonus = false;
-        boolean continuedDamage = false;
+        boolean poisonDamage = false;
+        boolean stunDamage = false;
 
         for (String t : tokens) {
             if (t.isEmpty()) continue;
             if (t.equals("archeryBonus")) { archeryBonus = true; }
-            if (t.equals("continuedDamage")) { continuedDamage = true; }
+            if (t.equals("poisonDamage")) { poisonDamage = true; }
+            if (t.equals("stunDamage")) { stunDamage = true; }
         }
 
-        return new Abilities(archeryBonus, continuedDamage);
+        return new Abilities(archeryBonus, poisonDamage, stunDamage);
     }
 
     private static CharacterData parseCharacter(String[] line) {

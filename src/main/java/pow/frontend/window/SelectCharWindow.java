@@ -149,8 +149,11 @@ public class SelectCharWindow extends AbstractWindow {
         if (abilities.archeryBonus) {
             abilityStrings.add("especially good with bows");
         }
-        if (abilities.continuedDamage) {
-            abilityStrings.add("can do extra long-term damage");
+        if (abilities.poisonDamage) {
+            abilityStrings.add("may do extra poison damage");
+        }
+        if (abilities.stunDamage) {
+            abilityStrings.add("may do extra stun damage");
         }
         return TextUtils.formatList(abilityStrings);
     }

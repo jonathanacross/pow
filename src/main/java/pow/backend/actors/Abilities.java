@@ -6,15 +6,19 @@ public class Abilities implements Serializable {
     // actor is especially good at archery
     public final boolean archeryBonus;
 
-    // actor does extra long-term damage
-    public final boolean continuedDamage;
+    // actor may do extra poison damage
+    public final boolean poisonDamage;
 
-    public Abilities(boolean archeryBonus, boolean continuedDamage) {
+    // actor may do extra stun damage
+    public final boolean stunDamage;
+
+    public Abilities(boolean archeryBonus, boolean poisonDamage, boolean stunDamage) {
         this.archeryBonus = archeryBonus;
-        this.continuedDamage = continuedDamage;
+        this.poisonDamage = poisonDamage;
+        this.stunDamage = stunDamage;
     }
 
     public Abilities() {
-        this(false, false);
+        this(false, false, false);
     }
 }
