@@ -149,26 +149,22 @@ public class GameMap implements Serializable {
         player.energy.setFull(); // make sure the player can move first
 
         if (pet != null) {
-            if (hasOpenSquare(pet)) {
+            Point nearestLocation = findClosestOpenSquare(pet, player.loc);
+            if (nearestLocation != null) {
                 addActor(pet);
-                pet.loc = findClosestOpenSquare(player, playerLoc);
-            }
-            else {
-                // TODO: log that the pet can't join..
+                pet.loc = nearestLocation;
             }
         }
 
         updatePlayerVisibilityData(player, pet);
     }
 
-    public void placePet(Player player, Point playerLoc, Player pet) {
+    public void placePet(Player player, Player pet) {
         if (pet != null) {
-            if (hasOpenSquare(pet)) {
+            Point nearestLocation = findClosestOpenSquare(pet, player.loc);
+            if (nearestLocation != null) {
                 addActor(pet);
-                pet.loc = findClosestOpenSquare(player, playerLoc);
-            }
-            else {
-                // TODO: log that the pet can't join..
+                pet.loc = nearestLocation;
             }
         }
         updatePlayerVisibilityData(player, pet);
@@ -253,36 +249,64 @@ public class GameMap implements Serializable {
         return null;
     }
 
-    // Checks to make sure the level has a place where the
-    // actor can be placed
-    private boolean hasOpenSquare(Actor actor) {
-        int width = Array2D.width(map);
-        int height = Array2D.height(map);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (!isBlocked(actor, x, y)) {
-                    return true;
+    // Finds squares that are possible for the actor to move to.
+    // They must not only be passable by the actor, free of monsters.
+    // but also contiguous to the point 'loc'.  If 'nearestOnly'
+    // is set, then this will break after the first (and nearest)
+    // square is found.
+    public List<Point> findAccessibleSquares(Actor actor, Point loc, boolean nearestOnly) {
+
+        List<Point> result = new ArrayList<>();
+
+        // Squares we've seen already.  These are contiguous to the actor area, but
+        // not good (e.g., because there's a monster already in the square).
+        Set<Point> seen = new HashSet<>();
+
+        // Squares that we know can't work, because they're off the map or
+        // have incompatible terrain or blocking features.
+        Set<Point> disallowed = new HashSet<>();
+
+        Deque<Point> toCheck = new ArrayDeque<>();
+        toCheck.add(loc);
+
+        while (!toCheck.isEmpty()) {
+            Point curr = toCheck.removeFirst();
+
+            // already seen point, or know point is not allowed.
+            if (seen.contains(curr) || disallowed.contains(curr)) {
+                continue;
+            }
+
+            // found a good spot.
+            if (!isBlocked(actor, curr.x, curr.y)) {
+                result.add(curr);
+                if (nearestOnly) {
+                    return result;
+                }
+            }
+
+            if (isTerrainBlocked(actor, curr.x, curr.y)) {
+                disallowed.add(curr);
+            } else {
+                seen.add(curr);
+                for (Direction d : Direction.ALL) {
+                    Point p = curr.add(d);
+                    toCheck.add(p);
                 }
             }
         }
-        return false;
+
+        return result;
     }
 
     // Finds the closest open square to the starting location.
     // Returns null if no place exists.
     public Point findClosestOpenSquare(Actor actor, Point start) {
-        if (!hasOpenSquare(actor)) {
+        List<Point> accessible = findAccessibleSquares(actor, start, true);
+        if (accessible.isEmpty()) {
             return null;
         }
-        int i = 0;
-        Point loc;
-        do {
-            loc = Spiral.position(i);
-            loc.shiftBy(start);
-            i++;
-        } while (isBlocked(actor, loc.x, loc.y));
-
-        return loc;
+        return accessible.get(0);
     }
 
     // Assumes that there is at least one open point.

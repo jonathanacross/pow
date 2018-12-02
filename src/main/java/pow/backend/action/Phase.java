@@ -48,6 +48,10 @@ public class Phase implements Action {
             }
         }
 
+        // Require that squares are also contiguous to the current player,
+        // to disallow phasing through locked doors, etc.
+        List<Point> contiguousSquares = gs.getCurrentMap().findAccessibleSquares(actor, actor.loc, false);
+        validSquares.retainAll(contiguousSquares);
 
         if (validSquares.isEmpty()) {
             backend.logMessage(actor.getNoun() + " can't phase anywhere.",

@@ -30,7 +30,7 @@ public class GameBackend {
     public void setPet(Player pet) {
         this.gameState.party.addPet(pet);
         this.gameState.party.pet.setAutoplay(this.gameState, true);
-        this.gameState.getCurrentMap().placePet(this.gameState.party.player, this.gameState.party.player.loc, this.gameState.party.pet);
+        this.gameState.getCurrentMap().placePet(this.gameState.party.player, this.gameState.party.pet);
     }
 
     public void setGameInProgress(boolean gameInProgress) {
