@@ -26,7 +26,7 @@ public class StartCondition implements Action {
     public ActionResult process(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
         for (ConditionTypes conditionType : conditionTypes) {
-            events.addAll(actor.conditions.get(conditionType).start(backend, turnCount, bonus));
+            events.addAll(actor.conditions.get(conditionType).start(backend, turnCount, bonus, null));
         }
         events.add(GameEvent.DungeonUpdated());
         return ActionResult.Succeeded(events);

@@ -46,7 +46,7 @@ public class Conditions {
 
         @Override
         protected List<GameEvent> updateImpl(GameBackend backend) {
-            return actor.takeDamage(backend, getIntensity());
+            return actor.takeDamage(backend, getIntensity(), source);
         }
     }
 

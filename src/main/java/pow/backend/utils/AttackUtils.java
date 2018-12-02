@@ -2,6 +2,7 @@ package pow.backend.utils;
 
 import pow.backend.*;
 import pow.backend.actors.Actor;
+import pow.backend.actors.Player;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.event.GameEvent;
@@ -36,7 +37,7 @@ public class AttackUtils {
 
     // TODO: given the cases here, this should eventually be moved into an internal
     // die method within each type of actor
-    public static GameEvent doDie(GameBackend backend, Actor actor) {
+    public static GameEvent doDie(GameBackend backend, Actor actor, Actor source) {
         GameState gs = backend.getGameState();
         GameMap map = gs.getCurrentMap();
 
@@ -44,6 +45,9 @@ public class AttackUtils {
                 ? MessageLog.MessageType.COMBAT_BAD
                 : MessageLog.MessageType.COMBAT_GOOD;
         backend.logMessage(actor.getNoun() + " died", messageType);
+
+        // Give experience to the source of the kill
+        updateExperience(backend, source, actor);
 
         if (actor == gs.party.player) {
             gs.gameInProgress = false;
@@ -86,8 +90,8 @@ public class AttackUtils {
         // so that the player won't disappear from the map.
         map.removeActor(actor);
 
-        if (actor == gs.party.player.monsterTarget) {
-            gs.party.player.monsterTarget = null;
+        for (Player p : gs.party.playersInParty()) {
+            p.target.update(gs, p);
         }
         if (actor == gs.party.pet) {
             gs.party.pet = null;
@@ -104,6 +108,22 @@ public class AttackUtils {
         return damTypeString;
     }
 
+    public static void updateExperience(GameBackend backend, Actor attacker, Actor defender) {
+        if (attacker == null) { return; }
+        attacker.gainExperience(backend, defender.experience, defender);
+        // If the attacker is a party member, give some experience to other character.
+        int partialExp = (int) Math.round(0.75 * defender.experience);
+        GameState gs = backend.getGameState();
+        if (attacker == gs.party.pet) {
+            gs.party.player.gainExperience(backend, partialExp, defender);
+        } else if (attacker == gs.party.player && gs.party.pet != null) {
+            gs.party.pet.gainExperience(backend, partialExp, defender);
+        }
+        if (gs.party.containsActor(attacker)) {
+            gs.party.knowledge.incrementKillCount(defender);
+        }
+    }
+
     public static List<GameEvent> doSimpleHit(GameBackend backend, Actor attacker, Actor defender,
                                         SpellParams.Element element, int damage) {
         String damTypeString = getDamageTypeString(element);
@@ -114,20 +134,7 @@ public class AttackUtils {
         backend.logMessage(attacker.getNoun() + " hits " + defender.getNoun() + " for " + adjustedDamage + damTypeString + " damage", messageType);
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.Attacked());
-        List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage);
-        for (GameEvent event : damageEvents) {
-            if (event.eventType == GameEvent.EventType.KILLED) {
-                attacker.gainExperience(backend, defender.experience, defender);
-                // If the attacker is a party member, give some experience to other chars.
-                int partialExp = (int) Math.round(0.75 * defender.experience);
-                GameState gs = backend.getGameState();
-                if (attacker == gs.party.pet) {
-                    gs.party.player.gainExperience(backend, partialExp, defender);
-                } else if (attacker == gs.party.player && gs.party.pet != null) {
-                    gs.party.pet.gainExperience(backend, partialExp, defender);
-                }
-            }
-        }
+        List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage, attacker);
         events.addAll(damageEvents);
 
         return events;
@@ -167,7 +174,7 @@ public class AttackUtils {
             case CONFUSE:
                 if (backend.getGameState().rng.nextInt(defender.level + 1) == 0) {
                     // TODO: have this not affect the caster?
-                    events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, hitParams.duration, hitParams.intensity));
+                    events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, hitParams.duration, hitParams.intensity, attacker));
                 } else {
                     backend.logMessage(attacker.getNoun() + " failed to confuse " + defender.getNoun(), MessageLog.MessageType.COMBAT_NEUTRAL);
                 }
@@ -180,11 +187,11 @@ public class AttackUtils {
                 }
                 break;
             case STUN:
-                events.addAll(defender.conditions.get(ConditionTypes.STUN).start(backend, hitParams.duration, hitParams.intensity));
+                events.addAll(defender.conditions.get(ConditionTypes.STUN).start(backend, hitParams.duration, hitParams.intensity, attacker));
                 events.addAll(doSimpleHit(backend, attacker, defender, hitParams.element, hitParams.damage));
                 break;
             case POISON:
-                events.addAll(defender.conditions.get(ConditionTypes.POISON).start(backend, hitParams.duration, hitParams.intensity));
+                events.addAll(defender.conditions.get(ConditionTypes.POISON).start(backend, hitParams.duration, hitParams.intensity, attacker));
                 events.addAll(doSimpleHit(backend, attacker, defender, hitParams.element, hitParams.damage));
                 break;
             default:

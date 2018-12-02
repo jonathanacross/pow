@@ -27,8 +27,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
     public int experience;
 
-    public Point floorTarget;
-    public Actor monsterTarget;
+    public Target target;
     public Party party;  // link back to common data in the party.
 
     // computed as totals in MakePlayerExpLevels
@@ -98,8 +97,7 @@ public class Player extends Actor implements Serializable, LightSource {
         //updateStats();
         this.health = this.baseStats.maxHealth;
         this.mana = this.baseStats.maxMana;
-        this.floorTarget = null;
-        this.monsterTarget = null;
+        this.target = new Target();
         this.increaseWealth = false;
         this.winner = false;
         this.party = null;
@@ -235,11 +233,6 @@ public class Player extends Actor implements Serializable, LightSource {
     public void gainExperience(GameBackend backend, int experience, Actor source) {
         super.gainExperience(backend, experience, source);
         this.experience += experience;
-        // TODO: big hack here -- don't include your pet in the kill count..
-        // shouldn't have to key off the name 'pet', though
-        if (source != null && !source.id.equals("pet")) {
-            party.knowledge.incrementKillCount(source);
-        }
         checkIncreaseCharLevel(backend);
     }
 
@@ -308,13 +301,5 @@ public class Player extends Actor implements Serializable, LightSource {
     public boolean isWinner() { return winner; }
 
     @Override
-    public Point getTarget() {
-        if (floorTarget != null) {
-            return floorTarget;
-        } else if (monsterTarget != null) {
-            return monsterTarget.loc;
-        } else {
-            return null;
-        }
-    }
+    public Point getTarget() { return target.get(); }
 }

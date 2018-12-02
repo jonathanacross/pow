@@ -3,6 +3,7 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
+import pow.backend.actors.Player;
 import pow.backend.utils.GeneratorUtils;
 import pow.backend.dungeon.gen.ShopGenerator;
 import pow.backend.event.GameEvent;
@@ -25,13 +26,13 @@ public class GotoArea implements Action {
         GameState gs = backend.getGameState();
 
         // clear any targets
-        gs.party.player.floorTarget = null;
-        gs.party.player.monsterTarget = null;
+        for (Player p : gs.party.playersInParty()) {
+            p.target.clear();
+        }
 
         // remove player and pet from current area
-        gs.getCurrentMap().removeActor(gs.party.player);
-        if (gs.party.pet != null) {
-            gs.getCurrentMap().removeActor(gs.party.pet);
+        for (Actor a : gs.party.playersInParty()) {
+            gs.getCurrentMap().removeActor(a);
         }
 
         // set the new area, update monsters/shops if needed
@@ -47,7 +48,7 @@ public class GotoArea implements Action {
         }
 
         // set up player/pet in the new area
-        gs.getCurrentMap().placePlayerAndPet(gs.party.player, loc, gs.party.pet);
+        gs.getCurrentMap().placePlayerAndPet(gs.party.selectedActor, loc, gs.party.otherPlayerInParty(gs.party.selectedActor));
 
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DungeonUpdated());

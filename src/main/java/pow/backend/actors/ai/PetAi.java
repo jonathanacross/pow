@@ -218,6 +218,9 @@ public class PetAi {
         if (monsterTarget == null) {
             return null;
         }
+        if (monsterTarget.friendly == me.friendly) {
+            return null;
+        }
         MonsterDanger.Danger danger = MonsterDanger.getDanger(other, monsterTarget);
         if (danger == MonsterDanger.Danger.SAFE ||
                 danger == MonsterDanger.Danger.NORMAL ||

@@ -150,12 +150,12 @@ public abstract class Actor extends DungeonObject implements Serializable {
                 baseStats.rangedToDam + conditions.get(ConditionTypes.TO_DAM).getIntensity());
     }
 
-    public List<GameEvent> takeDamage(GameBackend backend, int damage) {
+    public List<GameEvent> takeDamage(GameBackend backend, int damage, Actor source) {
         List<GameEvent> events = new ArrayList<>();
         this.health -= damage;
         events.add(GameEvent.DungeonUpdated());
         if (this.health < 0) {
-            events.add(AttackUtils.doDie(backend, this));
+            events.add(AttackUtils.doDie(backend, this, source));
         }
         return events;
     }

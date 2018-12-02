@@ -45,6 +45,25 @@ public class Party implements Serializable {
         }
     }
 
+    public List<Player> playersInParty() {
+        List<Player> players = new ArrayList<>();
+        players.add(player);
+        if (pet != null) {
+            players.add(pet);
+        }
+        return players;
+    }
+
+    public Player otherPlayerInParty(Actor a) {
+        if (a != player) {
+            return player;
+        }
+        if (pet != null && a != pet) {
+            return pet;
+        }
+        return null;
+    }
+
     public boolean containsActor(Actor actor) {
         return actor != null && (actor == this.player || actor == this.pet);
     }

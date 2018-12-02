@@ -42,12 +42,12 @@ public class Attack implements Action {
                 if (attacker.abilities.poisonDamage && gs.rng.nextInt(8) == 0) {
                     int duration = 10;
                     int intensity = (int) Math.ceil(0.1 * damage);
-                    events.addAll(target.conditions.get(ConditionTypes.POISON).start(backend, duration, intensity));
+                    events.addAll(target.conditions.get(ConditionTypes.POISON).start(backend, duration, intensity, attacker));
                 }
                 if (attacker.abilities.stunDamage && gs.rng.nextInt(8) == 0) {
                     int duration = 10;
                     int intensity = (int) Math.ceil(0.2 * damage);
-                    events.addAll(target.conditions.get(ConditionTypes.STUN).start(backend, duration, intensity));
+                    events.addAll(target.conditions.get(ConditionTypes.STUN).start(backend, duration, intensity, attacker));
                 }
 
                 events.addAll(AttackUtils.doHit(backend, attacker, target, new AttackUtils.HitParams(damage)));

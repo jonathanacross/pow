@@ -403,10 +403,9 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         // draw player targets
-        if (gs.party.selectedActor.floorTarget != null) {
-            mapView.drawCircle(graphics, Color.RED, gs.party.selectedActor.floorTarget.x, gs.party.selectedActor.floorTarget.y);
-        } else if (gs.party.selectedActor.monsterTarget != null) {
-            mapView.drawCircle(graphics, Color.RED, gs.party.selectedActor.monsterTarget.loc.x, gs.party.selectedActor.monsterTarget.loc.y);
+        Point target = gs.party.selectedActor.getTarget();
+        if (target != null) {
+            mapView.drawCircle(graphics, Color.RED, target.x, target.y);
         }
 
         // draw effects
@@ -504,10 +503,10 @@ public class GameMainLayer extends AbstractWindow {
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,
                 (Point p) -> {
                     Actor m = gameState.getCurrentMap().actorAt(p.x, p.y);
-                    gameState.party.selectedActor.monsterTarget = null;
-                    gameState.party.selectedActor.floorTarget = null;
                     if (!m.friendly) {
-                        gameState.party.selectedActor.monsterTarget = m;
+                        gameState.party.selectedActor.target.setMonster(m);
+                    } else {
+                        gameState.party.selectedActor.target.clear();
                     }
                 }
         ));
@@ -522,8 +521,7 @@ public class GameMainLayer extends AbstractWindow {
         }
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,
                 (Point p) -> {
-                    gameState.party.selectedActor.monsterTarget = null;
-                    gameState.party.selectedActor.floorTarget = p;
+                    gameState.party.selectedActor.target.setFloor(p);
                 }
         ));
     }

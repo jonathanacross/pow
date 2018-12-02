@@ -30,7 +30,7 @@ public class GameBackend {
     public void setPet(Player pet) {
         this.gameState.party.addPet(pet);
         this.gameState.party.pet.setAutoplay(this.gameState, true);
-        this.gameState.getCurrentMap().placePet(this.gameState.party.player, this.gameState.party.player.loc, this.gameState.party.pet);
+        this.gameState.getCurrentMap().placePet(this.gameState.party.player, this.gameState.party.pet);
     }
 
     public void setGameInProgress(boolean gameInProgress) {
@@ -140,11 +140,11 @@ public class GameBackend {
         if (map.flags.poisonGas && !party.artifacts.hasGasMask()) {
             logMessage("the noxious air burns " + player.getNoun() + "'s lungs", MessageLog.MessageType.COMBAT_BAD);
             // TODO: impact pet as well
-            events.addAll(player.takeDamage(this, GameConstants.POISON_DAMAGE_PER_TURN));
+            events.addAll(player.takeDamage(this, GameConstants.POISON_DAMAGE_PER_TURN, null));
         }
         if (map.flags.hot && !party.artifacts.hasHeatSuit()) {
             logMessage(player.getNoun() + " withers in the extreme heat", MessageLog.MessageType.COMBAT_BAD);
-            events.addAll(player.takeDamage(this, GameConstants.HEAT_DAMAGE_PER_TURN));
+            events.addAll(player.takeDamage(this, GameConstants.HEAT_DAMAGE_PER_TURN, null));
         }
         // handle traps
         for (Actor a : map.actors) {
@@ -153,7 +153,7 @@ public class GameBackend {
                         MessageLog.MessageType.COMBAT_BAD :
                         MessageLog.MessageType.COMBAT_GOOD;
                 logMessage(a.getNoun() + " is caught in a trap.", messageType);
-                events.addAll(a.takeDamage(this, GameConstants.TRAP_DAMAGE_PER_TURN));
+                events.addAll(a.takeDamage(this, GameConstants.TRAP_DAMAGE_PER_TURN, null));
             }
         }
         gameState.turnCount++;
