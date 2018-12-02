@@ -27,8 +27,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
     public int experience;
 
-    private Point floorTarget;
-    private Actor monsterTarget;
+    public Target target;
     public Party party;  // link back to common data in the party.
 
     // computed as totals in MakePlayerExpLevels
@@ -98,8 +97,7 @@ public class Player extends Actor implements Serializable, LightSource {
         //updateStats();
         this.health = this.baseStats.maxHealth;
         this.mana = this.baseStats.maxMana;
-        this.floorTarget = null;
-        this.monsterTarget = null;
+        this.target = new Target();
         this.increaseWealth = false;
         this.winner = false;
         this.party = null;
@@ -303,40 +301,5 @@ public class Player extends Actor implements Serializable, LightSource {
     public boolean isWinner() { return winner; }
 
     @Override
-    public Point getTarget() {
-        if (floorTarget != null) {
-            return floorTarget;
-        } else if (monsterTarget != null) {
-            return monsterTarget.loc;
-        } else {
-            return null;
-        }
-    }
-
-    public void clearTarget() {
-        floorTarget = null;
-        monsterTarget = null;
-    }
-
-    // Checks to see if the monster target is still valid.
-    public void updateMonsterTarget(GameState gs) {
-        if (monsterTarget == null) {
-            return;
-        }
-        // Monster is gone (e.g., it died), or it's outside field of view
-        if (!gs.getCurrentMap().actors.contains(monsterTarget) ||
-                !canSeeLocation(gs, monsterTarget.loc)) {
-            monsterTarget = null;
-        }
-    }
-
-    public void setMonsterTarget(Actor a) {
-        floorTarget = null;
-        monsterTarget = a;
-    }
-
-    public void setFloorTarget(Point loc) {
-        monsterTarget = null;
-        floorTarget = loc;
-    }
+    public Point getTarget() { return target.get(); }
 }

@@ -91,7 +91,7 @@ public class AttackUtils {
         map.removeActor(actor);
 
         for (Player p : gs.party.playersInParty()) {
-            p.updateMonsterTarget(gs);
+            p.target.update(gs, p);
         }
         if (actor == gs.party.pet) {
             gs.party.pet = null;

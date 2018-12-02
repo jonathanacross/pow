@@ -504,9 +504,9 @@ public class GameMainLayer extends AbstractWindow {
                 (Point p) -> {
                     Actor m = gameState.getCurrentMap().actorAt(p.x, p.y);
                     if (!m.friendly) {
-                        gameState.party.selectedActor.setMonsterTarget(m);
+                        gameState.party.selectedActor.target.setMonster(m);
                     } else {
-                        gameState.party.selectedActor.clearTarget();
+                        gameState.party.selectedActor.target.clear();
                     }
                 }
         ));
@@ -521,7 +521,7 @@ public class GameMainLayer extends AbstractWindow {
         }
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,
                 (Point p) -> {
-                    gameState.party.selectedActor.setFloorTarget(p);
+                    gameState.party.selectedActor.target.setFloor(p);
                 }
         ));
     }

@@ -27,7 +27,7 @@ public class GotoArea implements Action {
 
         // clear any targets
         for (Player p : gs.party.playersInParty()) {
-            p.clearTarget();
+            p.target.clear();
         }
 
         // remove player and pet from current area

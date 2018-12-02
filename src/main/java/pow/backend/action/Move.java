@@ -131,7 +131,7 @@ public class Move implements Action {
             for (Player p : gs.party.playersInParty()) {
                 // update the party's targeting, in case the player or target move
                 // out of visibility range.
-                p.updateMonsterTarget(gs);
+                p.target.update(gs, p);
             }
             return ActionResult.Succeeded(addEvents(backend));
         } else {

@@ -52,7 +52,7 @@ public class CallPet implements Action {
         }
 
         party.pet.loc = targetLoc;
-        party.pet.clearTarget();
+        party.pet.target.clear();
         gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
         backend.logMessage(party.pet.getNoun() + " phases.", MessageLog.MessageType.GENERAL);
 
