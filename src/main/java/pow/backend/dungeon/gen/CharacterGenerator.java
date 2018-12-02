@@ -1,6 +1,7 @@
 package pow.backend.dungeon.gen;
 
 import pow.backend.SpellParams;
+import pow.backend.actors.Abilities;
 import pow.backend.actors.GainRatios;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonObject;
@@ -28,6 +29,7 @@ public class CharacterGenerator {
         public final double intGain;
         public final double conGain;
         public final double speedGain;
+        public final Abilities abilities;
         public final List<SpellParams> spells;
 
         public CharacterData(String id,
@@ -40,6 +42,7 @@ public class CharacterGenerator {
                              double intGain,
                              double conGain,
                              double speedGain,
+                             Abilities abilities,
                              List<SpellParams> spells) {
             this.id = id;
             this.isPet = isPet;
@@ -51,6 +54,7 @@ public class CharacterGenerator {
             this.intGain = intGain;
             this.conGain = conGain;
             this.speedGain = speedGain;
+            this.abilities = abilities;
             this.spells = spells;
         }
     }
@@ -109,7 +113,7 @@ public class CharacterGenerator {
         GainRatios gainRatios = new GainRatios("", characterData.strGain, characterData.dexGain,
                 characterData.intGain, characterData.conGain, characterData.speedGain);
 
-        return new Player(objectParams, gainRatios, characterData.spells);
+        return new Player(objectParams, gainRatios, characterData.spells, characterData.abilities);
     }
 
     private CharacterGenerator() throws IOException {
@@ -147,6 +151,22 @@ public class CharacterGenerator {
         return spellList;
     }
 
+    private static Abilities parseAbilities(String text) {
+        String[] tokens = text.split(",", -1);
+        boolean archeryBonus = false;
+        boolean poisonDamage = false;
+        boolean stunDamage = false;
+
+        for (String t : tokens) {
+            if (t.isEmpty()) continue;
+            if (t.equals("archeryBonus")) { archeryBonus = true; }
+            if (t.equals("poisonDamage")) { poisonDamage = true; }
+            if (t.equals("stunDamage")) { stunDamage = true; }
+        }
+
+        return new Abilities(archeryBonus, poisonDamage, stunDamage);
+    }
+
     private static CharacterData parseCharacter(String[] line) {
         String id;
         boolean isPet;
@@ -159,9 +179,10 @@ public class CharacterGenerator {
         double conGain;
         double speedGain;
         List<SpellParams> spells;
+        Abilities abilities;
 
-        if (line.length != 11) {
-            throw new IllegalArgumentException("Expected 11 fields, but had " + line.length
+        if (line.length != 12) {
+            throw new IllegalArgumentException("Expected 12 fields, but had " + line.length
                     + ". Fields = \n" + String.join(",", line));
         }
 
@@ -176,9 +197,10 @@ public class CharacterGenerator {
             intGain = Double.parseDouble(line[7]);
             conGain = Double.parseDouble(line[8]);
             speedGain = Double.parseDouble(line[9]);
-            spells = parseSpells(line[10]);
+            abilities = parseAbilities(line[10]);
+            spells = parseSpells(line[11]);
 
-            return new CharacterData(id, isPet, name, image, description, strGain, dexGain, intGain, conGain, speedGain, spells);
+            return new CharacterData(id, isPet, name, image, description, strGain, dexGain, intGain, conGain, speedGain, abilities, spells);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" +
                     String.join(",", line), e);

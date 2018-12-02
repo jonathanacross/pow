@@ -3,6 +3,7 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
+import pow.backend.conditions.ConditionTypes;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
@@ -37,6 +38,18 @@ public class Attack implements Action {
                 backend.logMessage(attacker.getNoun() + " misses " + target.getNoun(),
                         MessageLog.MessageType.COMBAT_NEUTRAL);
             } else {
+                // handle special abilities
+                if (attacker.abilities.poisonDamage && gs.rng.nextInt(8) == 0) {
+                    int duration = 10;
+                    int intensity = (int) Math.ceil(0.1 * damage);
+                    events.addAll(target.conditions.get(ConditionTypes.POISON).start(backend, duration, intensity));
+                }
+                if (attacker.abilities.stunDamage && gs.rng.nextInt(8) == 0) {
+                    int duration = 10;
+                    int intensity = (int) Math.ceil(0.2 * damage);
+                    events.addAll(target.conditions.get(ConditionTypes.STUN).start(backend, duration, intensity));
+                }
+
                 events.addAll(AttackUtils.doHit(backend, attacker, target, new AttackUtils.HitParams(damage)));
             }
         }

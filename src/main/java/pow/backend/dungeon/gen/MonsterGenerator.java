@@ -329,7 +329,6 @@ public class MonsterGenerator {
                             (flags.monsterFlags.knight ? new KnightMovement() : new StepMovement());
         }
 
-
         // resolves die rolls, location to get a specific monster instance
         public Monster genMonster(Random rng, Point location) {
 
@@ -337,7 +336,7 @@ public class MonsterGenerator {
                     new DungeonObject.Params(id, name, image, description, location, true),
                     new Actor.Params(level, experience, flags.friendly, flags.invisible,
                             flags.aquatic, movement, artifactDrops, numDropAttempts, strength, dexterity,
-                            intelligence, constitution, speed, spells),
+                            intelligence, constitution, speed, spells, new Abilities()),
                     flags.monsterFlags);
         }
     }
