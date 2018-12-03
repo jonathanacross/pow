@@ -267,7 +267,9 @@ public class GameMap implements Serializable {
         Set<Point> disallowed = new HashSet<>();
 
         Deque<Point> toCheck = new ArrayDeque<>();
-        toCheck.add(loc);
+        // Duplicate the point so that we don't return an instance of
+        // an existing poing that might be modified by accident.
+        toCheck.add(new Point(loc.x, loc.y));
 
         while (!toCheck.isEmpty()) {
             Point curr = toCheck.removeFirst();
