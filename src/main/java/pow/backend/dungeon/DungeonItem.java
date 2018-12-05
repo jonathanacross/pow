@@ -46,10 +46,11 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     public static final int RES_ACID_IDX = 9;
     public static final int RES_ELEC_IDX = 10;
     public static final int RES_POIS_IDX = 11;
-    public static final int SPEED_IDX = 12;
-    public static final int WEALTH_IDX = 13;
-    public static final int SOCKETS_IDX = 14;
-    public static final int NUM_BONUSES = 15;
+    public static final int RES_DAM_IDX = 12;
+    public static final int SPEED_IDX = 13;
+    public static final int WEALTH_IDX = 14;
+    public static final int SOCKETS_IDX = 15;
+    public static final int NUM_BONUSES = 16;
 
     private static final String[] bonusNames = {
             "hit",
@@ -64,6 +65,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
             "rAcid",
             "rElec",
             "rPois",
+            "rDam",
             "speed",
             "wealth",
             "socket~"

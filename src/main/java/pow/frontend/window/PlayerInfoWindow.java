@@ -183,9 +183,10 @@ public class PlayerInfoWindow extends AbstractWindow {
         bonusData.put(DungeonItem.RES_ACID_IDX, new StringPosition("rAcid", 9));
         bonusData.put(DungeonItem.RES_ELEC_IDX, new StringPosition("rElec", 10));
         bonusData.put(DungeonItem.RES_POIS_IDX, new StringPosition("rPois", 11));
-        bonusData.put(DungeonItem.SPEED_IDX, new StringPosition("speed", 12));
-        bonusData.put(DungeonItem.WEALTH_IDX, new StringPosition("wealth", 13));
-        bonusData.put(DungeonItem.SOCKETS_IDX, new StringPosition("sockets", 14));
+        bonusData.put(DungeonItem.RES_DAM_IDX, new StringPosition("rDam", 12));
+        bonusData.put(DungeonItem.SPEED_IDX, new StringPosition("speed", 13));
+        bonusData.put(DungeonItem.WEALTH_IDX, new StringPosition("wealth", 14));
+        bonusData.put(DungeonItem.SOCKETS_IDX, new StringPosition("sockets", 15));
 
         int dx = TILE_SIZE;
         int dy = TILE_SIZE;

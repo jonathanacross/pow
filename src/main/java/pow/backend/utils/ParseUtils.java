@@ -26,6 +26,7 @@ public class ParseUtils {
         keyToBonusIdx.put("cold", DungeonItem.RES_COLD_IDX);
         keyToBonusIdx.put("acid", DungeonItem.RES_ACID_IDX);
         keyToBonusIdx.put("elec", DungeonItem.RES_ELEC_IDX);
+        keyToBonusIdx.put("dam", DungeonItem.RES_DAM_IDX);
         keyToBonusIdx.put("pois", DungeonItem.RES_POIS_IDX);
         keyToBonusIdx.put("speed", DungeonItem.SPEED_IDX);
         keyToBonusIdx.put("wealth", DungeonItem.WEALTH_IDX);

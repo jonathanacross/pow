@@ -17,10 +17,10 @@ gold crossbow	& gold crossbow~	gold crossbow	gold crossbow	bow				81	90	33	58	1	
 # hats														
 leather cap	& leather cap~	leather cap	leather cap	headgear				1	30	1	2	1	def:x	
 hard leather cap	& hard leather cap~	hard leather cap	hard leather cap	headgear				21	50	2	3	1	def:x	
-iron helmet	& iron helmet~	iron helmet	iron helmet	headgear				41	60	3	5	1	def:x	
+iron helmet	& iron helmet~	iron helmet	iron helmet	headgear				41	60	3	5	1	def:x,dam:1	
 steel helmet	& steel helmet~	steel helmet	steel helmet	headgear				51	80	4	6	1	def:x	
 golden helmet	& golden helmet~	golden helmet	golden helmet	headgear				71	90	5	7	1	def:x,int:1	
-golden crown	& golden crown~	golden crown	golden crown	headgear				-1	-1	1	1	0	fire:2,cold:2,acid:2,elec:2,pois:2	res all
+golden crown	& golden crown~	golden crown	golden crown	headgear				-1	-1	1	1	0	dam:2,fire:2,cold:2,acid:2,elec:2,pois:2	res all
 # gloves														
 thin leather gloves	thin leather gloves	gloves	thin leather gloves	gloves				1	30	1	1	1	def:x	
 heavy leather gloves	heavy leather gloves	heavy gloves	heavy leather gloves	gloves				21	50	2	3	1	def:x	
@@ -37,7 +37,7 @@ adept’s boots	adept’s boots	green boots	adept’s boots	boots				51	80	2	4	1
 gold boots	gold boots	gold boots	gold boots	boots				81	90	4	6	1	def:x,con:1,str:1	
 # cloaks														
 cloak	& cloak~	cloak	cloak	cloak				1	30	1	1	1	def:x	
-fur cloak	& fur cloak~	fur cloak	fur cloak	cloak				31	60	2	3	1	def:x	
+fur cloak	& fur cloak~	fur cloak	fur cloak	cloak				31	60	2	3	1	def:x,cold:1	
 shadow cloak	& shadow cloak~	blue cloak	shadow cloak	cloak				61	90	3	5	1	def:x,dex:1	
 wizard cloak	& wizard cloak~	purple cloak	wizard cloak	cloak				61	90	3	6	1	def:x,int:1	
 etherial cloak	& etherial cloak~	light blue cloak	etherial cloak	cloak				71	90	4	7	1	def:x,dex:1,acid:1	
@@ -45,9 +45,9 @@ etherial cloak	& etherial cloak~	light blue cloak	etherial cloak	cloak				71	90	
 small wood shield	& small wood shield~	leather shield	small wood shield	shield				1	30	1	2	1	def:x	
 large wood shield	& large wood shield~	large shield	large wood shield	shield				11	50	2	4	1	def:x	
 metal buckler	& metal buckler~	buckler	metal buckler	shield				31	70	4	7	1	def:x	
-diamond shield	& diamond shield~	crystal shield	diamond shield	shield				51	80	6	10	1	def:x	
+diamond shield	& diamond shield~	crystal shield	diamond shield	shield				51	80	6	10	1	def:x,dam:1	
 golden shield	& golden shield~	golden shield	golden shield	shield				71	90	7	11	1	def:x,con:1	
-shield of death	& shield~ of death	death shield	shield of death	shield				81	90	8	13	1	def:x,str:1,pois:1	reflect damage
+shield of death	& shield~ of death	death shield	shield of death	shield				81	90	8	13	1	def:x,str:1,pois:1,dam:1	reflect damage
 # armor														
 robe	& robe~	robe	robe	armor				1	20	1	2	1	def:x	
 soft leather armor	& soft leather armor~	soft leather armor	soft leather armor	armor				11	40	2	3	2	def:x	
@@ -104,7 +104,7 @@ aquamarine	& aquamarine~	aquamarine	aquamarine	none	gem			11	90	1	1	0	int:1
 sapphire	& sapphire~	sapphire	sapphire	none	gem			11	90	1	1	0	cold:1	
 amethyst	& amethyst~	amethyst	amethyst	none	gem			11	90	1	1	0	con:1	
 dragon egg	& dragon egg~	dragon egg	dragon egg	none	gem			-1	-1	1	1	0	str:2,dex:2,int:2,con:2	
-# potions
+# potions														
 small mana potion	& small mana potion~	small blue potion	small mana potion	none	potion	restoreMana:10:		1	30	0	0	0		
 small health potion	& small health potion~	small red potion	small health potion	none	potion	heal:10:		1	30	0	0	0		
 small restore potion	& small restore potion~	small purple potion	small restore potion	none	potion	restore:15:		11	40	0	0	0		
