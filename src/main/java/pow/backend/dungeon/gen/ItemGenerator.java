@@ -183,6 +183,15 @@ public class ItemGenerator {
             }
         }
 
+        // redistributes the points in 'fromIdx' randomly across the stats in 'toIndices'.
+        private void distributeMetaBonuses(int[] bonuses, int fromIdx, int[] toIndices, Random rng) {
+            while (bonuses[fromIdx] > 0) {
+                int toIdx = toIndices[rng.nextInt(toIndices.length)];
+                bonuses[toIdx]++;
+                bonuses[fromIdx]--;
+            }
+        }
+
         private int getMoneyAmountForLevel(double level, Random rng) {
             // made up; have to tune this later once money means something
             int maxAmt = Math.max((int) Math.round(Math.pow(1.1, level) * 10), 10);
@@ -200,14 +209,21 @@ public class ItemGenerator {
             for (int i = 0; i < DungeonItem.NUM_BONUSES; i++) {
                 specificItemBonuses[i] = (bonuses[i] == ParseUtils.MATCH_BONUS) ? bonus : bonuses[i];
             }
-            // split up attack into toHit, toDam.
-            int totalAttack = specificItemBonuses[ParseUtils.ATTACK_IDX];
-            specificItemBonuses[DungeonItem.TO_HIT_IDX] = 0;
-            specificItemBonuses[DungeonItem.TO_DAM_IDX] = 0;
-            if (totalAttack > 0) {
-                specificItemBonuses[DungeonItem.TO_HIT_IDX] = rng.nextInt(totalAttack);
-                specificItemBonuses[DungeonItem.TO_DAM_IDX] = totalAttack - specificItemBonuses[DungeonItem.TO_HIT_IDX];
-            }
+            distributeMetaBonuses(specificItemBonuses, DungeonItem.ATTACK_IDX,
+                    new int[]{DungeonItem.TO_HIT_IDX, DungeonItem.TO_DAM_IDX}, rng);
+            distributeMetaBonuses(specificItemBonuses, DungeonItem.COMBAT_IDX,
+                    new int[]{DungeonItem.TO_HIT_IDX, DungeonItem.TO_DAM_IDX, DungeonItem.DEF_IDX}, rng);
+            distributeMetaBonuses(specificItemBonuses, DungeonItem.RESIST_IDX,
+                    new int[]{DungeonItem.RES_ACID_IDX,
+                            DungeonItem.RES_COLD_IDX,
+                            DungeonItem.RES_FIRE_IDX,
+                            DungeonItem.RES_ELEC_IDX,
+                            DungeonItem.RES_POIS_IDX,
+                            DungeonItem.RES_DAM_IDX}, rng);
+            distributeMetaBonuses(specificItemBonuses, DungeonItem.ABILITY_IDX,
+                    new int[]{DungeonItem.STR_IDX, DungeonItem.INT_IDX,
+                            DungeonItem.DEX_IDX, DungeonItem.CON_IDX},
+                    rng);
 
             // add sockets with some (fairly low) probability, according to a geometric distribution
             int numSockets = (int) Math.floor(Math.log(rng.nextDouble()) / Math.log(GameConstants.PROB_GEN_SOCKET));

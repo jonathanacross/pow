@@ -50,7 +50,14 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     public static final int SPEED_IDX = 13;
     public static final int WEALTH_IDX = 14;
     public static final int SOCKETS_IDX = 15;
-    public static final int NUM_BONUSES = 16;
+    // meta bonuses
+    public static final int ATTACK_IDX = 16;  // +toHit, +toDam
+    public static final int COMBAT_IDX = 17;  // +toHit, +toDam, +defense
+    public static final int RESIST_IDX = 18;  // rFire, rCold, rAcid, rElec, rPois, rDam
+    public static final int ABILITY_IDX = 19; // str, dex, int, con
+    // total
+    public static final int NUM_BONUSES = 20;
+
 
     private static final String[] bonusNames = {
             "hit",
