@@ -17,7 +17,8 @@ public enum ConditionTypes {
     RESIST_FIRE(Conditions.ResistFire::new),
     RESIST_ACID(Conditions.ResistAcid::new),
     RESIST_POIS(Conditions.ResistPoison::new),
-    RESIST_ELEC(Conditions.ResistElectricity::new);
+    RESIST_ELEC(Conditions.ResistElectricity::new),
+    RESIST_DAM(Conditions.ResistDamage::new);
 
     private final Function<Actor, Condition> instanceGenerator;
 

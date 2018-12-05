@@ -161,4 +161,14 @@ public class Conditions {
         @Override String getDecreaseMessage() { return actor.getNoun() + " is less resistant to electricity."; }
         @Override String getExtendMessage() { return actor.getNoun() + " is resistant to electricity longer."; }
     }
+
+    public static class ResistDamage extends Condition implements Serializable {
+        public ResistDamage(Actor actor) { super(actor); }
+
+        @Override String getStartMessage() { return actor.getNoun() + " is resistant to damage."; }
+        @Override String getEndMessage() { return actor.getNoun() + " is susceptible to damage."; }
+        @Override String getIncreaseMessage() { return actor.getNoun() + " is more resistant to damage."; }
+        @Override String getDecreaseMessage() { return actor.getNoun() + " is less resistant to damage."; }
+        @Override String getExtendMessage() { return actor.getNoun() + " is resistant to damage longer."; }
+    }
 }
