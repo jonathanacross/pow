@@ -94,7 +94,8 @@ public class ShopGenerator {
                 item.bonuses[DungeonItem.RES_COLD_IDX] +
                 item.bonuses[DungeonItem.RES_ACID_IDX] +
                 item.bonuses[DungeonItem.RES_ELEC_IDX] +
-                item.bonuses[DungeonItem.RES_POIS_IDX];
+                item.bonuses[DungeonItem.RES_POIS_IDX] +
+                item.bonuses[DungeonItem.RES_DAM_IDX];
         if (numResists == 0) return 0;
         return 10 * Math.pow(3.9, numResists);
     }
@@ -130,7 +131,9 @@ public class ShopGenerator {
         switch (item.slot) {
             case BOW: slotScaleFactor = 3.2; break;  // bows are relatively more useful than melee weapons
             case WEAPON: slotScaleFactor = 1.0; break;
-            case RING: slotScaleFactor = 1.1; break;
+            case RING: slotScaleFactor = 1.0; break;
+            case AMULET: slotScaleFactor = 1.0; break;
+            case BRACELET: slotScaleFactor = 1.0; break;
             case BOOTS: slotScaleFactor = 0.9; break;
             case GLOVES: slotScaleFactor = 0.8; break;
             case HEADGEAR: slotScaleFactor = 0.9; break;
