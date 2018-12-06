@@ -116,47 +116,47 @@
 32x32	3	7	dungeon entrance	feature
 32x32	4	7	green cave entrance	feature
 32x32	5	7	brown cave entrance	feature
-32x32	6	7	tower	feature
-32x32	7	7	debug	debug
-32x32	8	7	dock	feature
-32x32	9	7	wood pearl tile	feature
-32x32	10	7	big tree	feature
-32x32	11	7	sick big tree	feature
-32x32	12	7	gold tree	feature
-32x32	13	7	pine tree	feature
-32x32	14	7	snowy pine tree	feature
-32x32	15	7	small tree	feature
-32x32	0	8	white small tree	feature
-32x32	1	8	bush	feature
-32x32	2	8	berry bush	feature
-32x32	3	8	poison flower	feature
-32x32	4	8	dead tree	feature
-32x32	5	8	palm tree	feature
-32x32	6	8	cactus	feature
-32x32	7	8	light pebbles	feature
-32x32	8	8	dark pebbles	feature
-32x32	9	8	sign1	feature
-32x32	10	8	sign2	feature
-32x32	11	8	sign3	feature
-32x32	12	8	fountain	feature
-32x32	13	8	tombstone	feature
-32x32	14	8	wood chest	misc item
-32x32	15	8	bookcase	feature
-32x32	0	9	crate	feature
-32x32	1	9	throne	feature
-32x32	2	9	glass ball	feature
-32x32	3	9	red carpet	feature
-32x32	4	9	candle	feature
-32x32	5	9	candelabra	feature
-32x32	6	9	fire urn	feature
-32x32	7	9	red curtain	feature
-32x32	8	9	blue curtain	feature
-32x32	9	9	green curtain	feature
-32x32	10	9	spikes	feature
-32x32	11	9	red rune	feature
-32x32	12	9	yellow rune	feature
-32x32	13	9	green rune	feature
-32x32	14	9	-:null:-	:null:
+32x32	6	7	temple	feature
+32x32	7	7	tower	feature
+32x32	8	7	debug	debug
+32x32	9	7	dock	feature
+32x32	10	7	wood pearl tile	feature
+32x32	11	7	big tree	feature
+32x32	12	7	sick big tree	feature
+32x32	13	7	gold tree	feature
+32x32	14	7	pine tree	feature
+32x32	15	7	snowy pine tree	feature
+32x32	0	8	small tree	feature
+32x32	1	8	white small tree	feature
+32x32	2	8	bush	feature
+32x32	3	8	berry bush	feature
+32x32	4	8	poison flower	feature
+32x32	5	8	dead tree	feature
+32x32	6	8	palm tree	feature
+32x32	7	8	cactus	feature
+32x32	8	8	light pebbles	feature
+32x32	9	8	dark pebbles	feature
+32x32	10	8	sign1	feature
+32x32	11	8	sign2	feature
+32x32	12	8	sign3	feature
+32x32	13	8	fountain	feature
+32x32	14	8	tombstone	feature
+32x32	15	8	wood chest	misc item
+32x32	0	9	bookcase	feature
+32x32	1	9	crate	feature
+32x32	2	9	throne	feature
+32x32	3	9	glass ball	feature
+32x32	4	9	red carpet	feature
+32x32	5	9	candle	feature
+32x32	6	9	candelabra	feature
+32x32	7	9	fire urn	feature
+32x32	8	9	red curtain	feature
+32x32	9	9	blue curtain	feature
+32x32	10	9	green curtain	feature
+32x32	11	9	spikes	feature
+32x32	12	9	red rune	feature
+32x32	13	9	yellow rune	feature
+32x32	14	9	green rune	feature
 32x32	15	9	-:null:-	:null:
 32x32	0	10	redorange pearl	misc item
 32x32	1	10	orange pearl	misc item
@@ -313,11 +313,11 @@
 32x32	8	19	citrine	gem
 32x32	9	19	topaz	gem
 32x32	10	19	emerald	gem
-32x32	11	19	aquamarine	gem
-32x32	12	19	sapphire	gem
-32x32	13	19	amethyst	gem
-32x32	14	19	dragon egg	gem
-32x32	15	19	-:null:-	:null:
+32x32	11	19	jade	gem
+32x32	12	19	aquamarine	gem
+32x32	13	19	sapphire	gem
+32x32	14	19	amethyst	gem
+32x32	15	19	dragon egg	gem
 32x32	0	20	human_adventurer	human
 32x32	1	20	human_fighter	human
 32x32	2	20	human_mage	human

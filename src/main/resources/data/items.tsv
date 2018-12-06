@@ -1,4 +1,4 @@
-# id	# name	image	description	slot	flags	action	num gen	min level	max level	min bonus	max bonus	max sockets	bonuses	extra
+# id	name	image	description	slot	flags	action	num gen	min level	max level	min bonus	max bonus	max sockets	bonuses	extra
 # weapons														
 dagger	& dagger~	dagger	dagger	weapon				1	30	1	5	2	attack:x	
 main gauche	& main gauche~	main gauche	main gauche	weapon				11	40	3	9	2	attack:x	
@@ -100,6 +100,7 @@ ruby	& ruby~	ruby	ruby	none	gem			11	90	1	1	0	fire:1
 citrine	& citrine~	citrine	citrine	none	gem			11	90	1	1	0	str:1	
 topaz	& topaz~	topaz	topaz	none	gem			11	90	1	1	0	dex:1	
 emerald	& emerald~	emerald	emerald	none	gem			11	90	1	1	0	pois:1	
+jade	& jade~	jade	jade	none	gem			11	90	1	1	0	dam:1	
 aquamarine	& aquamarine~	aquamarine	aquamarine	none	gem			11	90	1	1	0	int:1	
 sapphire	& sapphire~	sapphire	sapphire	none	gem			11	90	1	1	0	cold:1	
 amethyst	& amethyst~	amethyst	amethyst	none	gem			11	90	1	1	0	con:1	
