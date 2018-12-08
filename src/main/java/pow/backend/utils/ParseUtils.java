@@ -11,12 +11,10 @@ import java.util.Map;
 public class ParseUtils {
 
     // for item generation
-    public static final int ATTACK_IDX = DungeonItem.TO_HIT_IDX;
     public static final int MATCH_BONUS = -99999;
     private static final Map<String, Integer> keyToBonusIdx;
     static {
         keyToBonusIdx = new HashMap<>();
-        keyToBonusIdx.put("attack", ATTACK_IDX);
         keyToBonusIdx.put("def", DungeonItem.DEF_IDX);
         keyToBonusIdx.put("str", DungeonItem.STR_IDX);
         keyToBonusIdx.put("dex", DungeonItem.DEX_IDX);
@@ -26,9 +24,14 @@ public class ParseUtils {
         keyToBonusIdx.put("cold", DungeonItem.RES_COLD_IDX);
         keyToBonusIdx.put("acid", DungeonItem.RES_ACID_IDX);
         keyToBonusIdx.put("elec", DungeonItem.RES_ELEC_IDX);
+        keyToBonusIdx.put("dam", DungeonItem.RES_DAM_IDX);
         keyToBonusIdx.put("pois", DungeonItem.RES_POIS_IDX);
         keyToBonusIdx.put("speed", DungeonItem.SPEED_IDX);
         keyToBonusIdx.put("wealth", DungeonItem.WEALTH_IDX);
+        keyToBonusIdx.put("attack", DungeonItem.ATTACK_IDX);
+        keyToBonusIdx.put("combat", DungeonItem.COMBAT_IDX);
+        keyToBonusIdx.put("resist", DungeonItem.RESIST_IDX);
+        keyToBonusIdx.put("ability", DungeonItem.ABILITY_IDX);
     }
 
     public static int[] parseBonuses(String text) {
