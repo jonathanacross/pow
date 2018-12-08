@@ -89,15 +89,14 @@ public class ShopGenerator {
     }
 
     private static double resistBonus(DungeonItem item) {
-        int numResists =
-                item.bonuses[DungeonItem.RES_FIRE_IDX] +
-                item.bonuses[DungeonItem.RES_COLD_IDX] +
-                item.bonuses[DungeonItem.RES_ACID_IDX] +
-                item.bonuses[DungeonItem.RES_ELEC_IDX] +
-                item.bonuses[DungeonItem.RES_POIS_IDX] +
-                item.bonuses[DungeonItem.RES_DAM_IDX];
-        if (numResists == 0) return 0;
-        return 10 * Math.pow(3.9, numResists);
+        double weightedResistSum =
+                1.05 * item.bonuses[DungeonItem.RES_FIRE_IDX] +
+                0.95 * item.bonuses[DungeonItem.RES_COLD_IDX] +
+                0.9 * item.bonuses[DungeonItem.RES_ACID_IDX] +
+                0.85 * item.bonuses[DungeonItem.RES_ELEC_IDX] +
+                1.05 * item.bonuses[DungeonItem.RES_POIS_IDX] +
+                1.16 * item.bonuses[DungeonItem.RES_DAM_IDX];
+        return 40 * weightedResistSum * weightedResistSum;
     }
 
     private static double socketBonus(DungeonItem item) {
@@ -113,13 +112,13 @@ public class ShopGenerator {
         // While arbitrary, scalars here are fractional so that prices of
         // items don't all look the same.
         double price =
-            2.8 * sqr(item.bonuses[DungeonItem.TO_HIT_IDX]) +
-            3.1 * sqr(item.bonuses[DungeonItem.TO_DAM_IDX]) +
-            3.5 * sqr(item.bonuses[DungeonItem.DEF_IDX]) +
-            2.1 * sqr(item.bonuses[DungeonItem.STR_IDX]) +
-            3.3 * sqr(item.bonuses[DungeonItem.DEX_IDX]) +
-            1.7 * sqr(item.bonuses[DungeonItem.INT_IDX]) +
-            2.3 * sqr(item.bonuses[DungeonItem.CON_IDX]) +
+            2.5 * sqr(item.bonuses[DungeonItem.TO_HIT_IDX]) +
+            2.8 * sqr(item.bonuses[DungeonItem.TO_DAM_IDX]) +
+            3.0 * sqr(item.bonuses[DungeonItem.DEF_IDX]) +
+            42 * sqr(item.bonuses[DungeonItem.STR_IDX]) +
+            66 * sqr(item.bonuses[DungeonItem.DEX_IDX]) +
+            34 * sqr(item.bonuses[DungeonItem.INT_IDX]) +
+            46 * sqr(item.bonuses[DungeonItem.CON_IDX]) +
             1000 * sqr(item.bonuses[DungeonItem.SPEED_IDX]) +
             20 * sqr(item.bonuses[DungeonItem.WEALTH_IDX]) +
             1 * (item.flags.arrow ? 1 : 0) +

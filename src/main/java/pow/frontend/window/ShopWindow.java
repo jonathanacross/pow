@@ -98,9 +98,8 @@ public class ShopWindow extends AbstractWindow {
             int textY = y + 20;
             graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
             graphics.drawString(label, MARGIN, textY);
-            graphics.drawString(TextUtils.format(entry.item.name, 1, false),  50+MARGIN, textY - 5);
+            graphics.drawString(TextUtils.format(entry.item.name, entry.item.count, false),  50+MARGIN, textY - 5);
             graphics.drawString(entry.item.bonusString(), 50+MARGIN, textY + FONT_SIZE - 5);
-            //graphics.drawString(entry.item.stringWithInfo(), 50+MARGIN, textY);
 
             graphics.drawString(String.valueOf(entry.price), priceX, textY);
 
