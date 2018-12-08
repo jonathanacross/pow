@@ -267,9 +267,16 @@ public class GameMap implements Serializable {
         Set<Point> disallowed = new HashSet<>();
 
         Deque<Point> toCheck = new ArrayDeque<>();
+        // Start with both the original square and the immediate surrounding ones.
+        // This is to handle the case where the original square is not passable,
+        // notably when trying to find the nearest square by a teleport.
         // Duplicate the point so that we don't return an instance of
-        // an existing poing that might be modified by accident.
+        // an existing point that might be modified by accident.
         toCheck.add(new Point(loc.x, loc.y));
+        for (Direction d : Direction.ALL) {
+            Point p = loc.add(d);
+            toCheck.add(p);
+        }
 
         while (!toCheck.isEmpty()) {
             Point curr = toCheck.removeFirst();
