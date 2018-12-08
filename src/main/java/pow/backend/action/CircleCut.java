@@ -48,6 +48,10 @@ public class CircleCut implements Action {
                     SpellUtils.getEffectColor(spellParams.element),
                     dir);
             List<Point> squares = getHitSquares(attacker.loc.x, attacker.loc.y, dir, spellParams.size, fovSquareSet);
+            squares.removeIf( (Point p) -> {
+                Actor target = gs.getCurrentMap().actorAt(p.x, p.y);
+                return (target != null) && (target.friendly == attacker.friendly);
+            } );
             AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker, backend.getGameState().rng);
 
             for (Point p : squares) {
