@@ -5,6 +5,7 @@ import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
+import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -41,7 +42,7 @@ public class ItemChoiceWindow extends AbstractWindow {
                             Function<DungeonItem, Boolean> enabled,
                             Consumer<ItemChoice> callback) {
         super(new WindowDim(x, y, 400,
-                35 + 32 * Math.max(items.size(), altItems == null ? 0 : altItems.size())),
+                40 + 32 * Math.max(items.size(), altItems == null ? 0 : altItems.size())),
                 true, backend, frontend);
         this.message = message;
         this.altMessage = altMessage;
@@ -107,7 +108,8 @@ public class ItemChoiceWindow extends AbstractWindow {
             int textY = y + 20;
             graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
             graphics.drawString(label, MARGIN, textY);
-            graphics.drawString(item.stringWithInfo(), 60, textY);
+            graphics.drawString(TextUtils.format(item.name, item.count, false),  60, textY - 5);
+            graphics.drawString(item.bonusString(), 60, textY + FONT_SIZE - 5);
 
             idx++;
             y += TILE_SIZE;

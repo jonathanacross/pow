@@ -26,7 +26,7 @@ public class ItemActionWindow extends AbstractWindow {
                             String message,
                             ItemList items,
                             ItemActions.ItemLocation location) {
-        super(new WindowDim(x, y, 320,
+        super(new WindowDim(x, y, 400,
                 35 + 32 * items.size()), true, backend, frontend);
         this.message = message;
         this.items = items;
