@@ -86,7 +86,9 @@ public class MountainGenerator implements MapGenerator {
 
         // place the exits and get key locations
         GeneratorUtils.CommonIds commonIds = new GeneratorUtils.CommonIds(
-                mapStyle.terrainsAndFeatures[0].terrain,
+                // note: assuming that index 0 corresponds to outer wall and that 1
+                // is ground.
+                mapStyle.terrainsAndFeatures[1].terrain,
                 mapStyle.upstairsFeatureId,
                 mapStyle.downstairsFeatureId,
                 mapStyle.openPortalFeatureId,

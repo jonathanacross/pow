@@ -37,6 +37,10 @@ public class QuakeSpell implements Action {
                 Direction.N); // dummy
         for (int radius = 1; radius <= spellParams.size; radius++) {
             List<Point> hitSquares = getHitSquares(gs, actor.loc, radius);
+            hitSquares.removeIf( (Point p) -> {
+                Actor target = gs.getCurrentMap().actorAt(p.x, p.y);
+                return (target != null) && (target.friendly == actor.friendly);
+            } );
             events.add(GameEvent.Effect(new DungeonEffect(effectName, hitSquares)));
             for (Point s : hitSquares) {
                 Actor m = gs.getCurrentMap().actorAt(s.x, s.y);

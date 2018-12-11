@@ -37,7 +37,7 @@ public class Wear implements Action {
             int numCanAdd = player.inventory.numCanAdd(oldItem);
             if (numCanAdd == 0) {
                 // put on the ground
-                backend.logMessage(player.getNoun() + " drops " + TextUtils.format(item.name, 1, false),
+                backend.logMessage(player.getNoun() + " drops " + TextUtils.format(oldItem.name, 1, false),
                         MessageLog.MessageType.GENERAL);
                 gs.getCurrentMap().map[player.loc.x][player.loc.y].items.add(oldItem);
             } else {

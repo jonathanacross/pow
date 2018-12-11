@@ -79,7 +79,7 @@ public class RippleGenerator implements MapGenerator {
 
         // place the exits and get key locations
         GeneratorUtils.CommonIds commonIds = new GeneratorUtils.CommonIds(
-                mapStyle.wallTerrainId,
+                mapStyle.floorTerrainId,
                 mapStyle.upstairsFeatureId,
                 mapStyle.downstairsFeatureId,
                 mapStyle.openPortalFeatureId,
