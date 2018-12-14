@@ -33,7 +33,7 @@ public class ActionChoiceWindow extends AbstractWindow {
                               int itemIndex,
                               ItemActions.ItemLocation location,
                               List<ItemActions.Action> actions) {
-        super(new WindowDim(x, y, 320,
+        super(new WindowDim(x, y, 400,
                 80 + 17 * actions.size()),
                 true, backend, frontend);
         this.message = message;

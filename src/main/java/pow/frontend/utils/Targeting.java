@@ -69,7 +69,7 @@ public class Targeting {
             int y = playerLoc.y + dir.dy;
             if (!map.isOnMap(x,y)) continue;
             DungeonFeature feature = map.map[x][y].feature;
-            if (feature != null && feature.flags.openDoor) {
+            if (feature != null && feature.flags.openDoor && map.actorAt(x,y) == null) {
                 points.add(new Point(x, y));
             }
         }

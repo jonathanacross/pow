@@ -51,7 +51,9 @@ public class ArrowSpell implements Action {
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
-                events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+                if (defender.friendly != attacker.friendly) {
+                    events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+                }
                 break;
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
