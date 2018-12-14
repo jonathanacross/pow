@@ -11,7 +11,7 @@ public class MakePlayerExpLevels {
     // To compute experience levels:
     // 1. take avg monster experience (non-bosses) for each level, and curve fit.
     // 2. compute approx desired number of monsters to kill each level.
-    //    current thought is something like ln(level + 0.2)*50.
+    //    current thought is something like 50 - 40/level.
     // 3. multiply.
 
     // If it's too easy to go up levels using current monsters, then
@@ -37,7 +37,7 @@ public class MakePlayerExpLevels {
             Monster m = MonsterGenerator.genMonster(id, rng, new Point(-1,-1));
             int level = m.level;
             // hacky way to skip bosses
-            if (m.requiredItemDrops != null) continue;
+            if (m.requiredItemDrops.size() > 0) continue;
 
             if (!monstersByLevel.containsKey(level)) {
                 monstersByLevel.put(level, new ArrayList<>());
@@ -72,7 +72,8 @@ public class MakePlayerExpLevels {
         int[] amountToReachNextLevel = new int[numLevels];
         int[] total = new int[numLevels];
         for (int i = 0; i < numLevels; i++) {
-            double desiredMonstersToKill = 50.0 * Math.log(i + 0.2);
+            double desiredMonstersToKill = 50.0 - 40.0/i;
+            //double desiredMonstersToKill = 50.0 * Math.log(i + 0.2);
             double expPerMonster = monsterExpParams.a * Math.exp(monsterExpParams.b * i);
             amountToReachNextLevel[i] = (int) Math.round(desiredMonstersToKill * expPerMonster);
             if (i > 0) {
