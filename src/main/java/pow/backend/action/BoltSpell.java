@@ -49,7 +49,7 @@ public class BoltSpell implements Action {
         AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker, backend.getGameState().rng);
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
-            if (defender != null) {
+            if (defender != null && defender.friendly != attacker.friendly) {
                 events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit

@@ -196,7 +196,8 @@ public class SpellParams implements Serializable {
                 return new SpellAction(new StartCondition(actor,
                         Arrays.asList(ConditionTypes.RESIST_COLD, ConditionTypes.RESIST_FIRE,
                                 ConditionTypes.RESIST_ACID, ConditionTypes.RESIST_POIS,
-                                ConditionTypes.RESIST_ELEC), spellParams.duration, secondaryAmount), spellParams);
+                                ConditionTypes.RESIST_ELEC, ConditionTypes.RESIST_DAM),
+                        spellParams.duration, secondaryAmount), spellParams);
             case SPEED:
                 return new SpellAction(new StartCondition(actor,
                         Collections.singletonList(ConditionTypes.SPEED), spellParams.duration, secondaryAmount), spellParams);
