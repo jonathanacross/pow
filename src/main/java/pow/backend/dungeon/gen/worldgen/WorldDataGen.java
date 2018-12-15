@@ -78,49 +78,50 @@ public class WorldDataGen {
     }
 
     private static MapPoint parseMapLinkData(String[] line) {
-        if (line.length != 12) {
-            throw new RuntimeException("error: expected 12 fields in line: " + String.join(",", line));
+        if (line.length != 13) {
+            throw new RuntimeException("error: expected 13 fields in line: " + String.join(",", line));
         }
 
         String id = line[0];
+        String name = line[1];
 
-        int level = Integer.parseInt(line[1]);
+        int level = Integer.parseInt(line[2]);
 
-        String groupStr = line[2];
+        String groupStr = line[3];
         int group = groupStr.isEmpty() ? Integer.MIN_VALUE : Integer.parseInt(groupStr);
 
         List<Direction> directions = new ArrayList<>();
-        if (!line[3].isEmpty()) {
-            String[] dirs = line[3].split(",", -1);
+        if (!line[4].isEmpty()) {
+            String[] dirs = line[4].split(",", -1);
             for (String d: dirs) {
                 directions.add(Direction.valueOf(d));
             }
         }
 
         Set<Integer> fromGroups = new HashSet<>();
-        if (!line[4].isEmpty()) {
-            String[] groups = line[4].split(",", -1);
+        if (!line[5].isEmpty()) {
+            String[] groups = line[5].split(",", -1);
             for (String g: groups) {
                 fromGroups.add(Integer.parseInt(g));
             }
         }
 
         Set<String> fromIds = new HashSet<>();
-        if (!line[5].isEmpty()) {
-            String[] fids = line[5].split(",", -1);
+        if (!line[6].isEmpty()) {
+            String[] fids = line[6].split(",", -1);
             Collections.addAll(fromIds, fids);
         }
 
-        MapPoint.PortalStatus portalStatus = parsePortalStatus(line[6]);
-        String generatorName = line[7];
-        String generatorParams = line[8];
-        GameMap.Flags flags = parseFlags(line[9]);
-        String bossId = getBossId(line[10]);
-        List<String> monsterIds = getMonsterIds(line[11]);
+        MapPoint.PortalStatus portalStatus = parsePortalStatus(line[7]);
+        String generatorName = line[8];
+        String generatorParams = line[9];
+        GameMap.Flags flags = parseFlags(line[10]);
+        String bossId = getBossId(line[11]);
+        List<String> monsterIds = getMonsterIds(line[12]);
         MonsterIdGroup monsterIdGroup = new MonsterIdGroup(monsterIds, bossId != null, bossId);
         MapGenerator generator = buildGenerator(generatorName, generatorParams, monsterIdGroup, level, flags);
 
-        return new MapPoint(id, level, group, directions, fromGroups, fromIds, portalStatus, generator);
+        return new MapPoint(id, name, level, group, directions, fromGroups, fromIds, portalStatus, generator);
     }
 
     private static String getBossId(String field) {

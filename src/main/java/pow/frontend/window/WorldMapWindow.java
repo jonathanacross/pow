@@ -185,7 +185,7 @@ public class WorldMapWindow extends AbstractWindow {
             Point3D p3d = entry.getKey();
             Point p2d = new Point(p3d.x, p3d.y);
             boolean visited = gs.world.world.get(roomId).visited;
-            boolean active = roomId.equals(gs.getCurrentMap().name);
+            boolean active = roomId.equals(gs.getCurrentMap().id);
 
             if (p3d.z != 0) {
                 updateStatus(otherLayerStatus, p2d, visited, active);

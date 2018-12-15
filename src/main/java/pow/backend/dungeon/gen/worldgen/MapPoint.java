@@ -19,6 +19,7 @@ public class MapPoint {
     }
 
     public final String id;
+    public final String name;
     public final int level;
     public final int group;
     public final List<Direction> fromDirs;
@@ -28,6 +29,7 @@ public class MapPoint {
     public final MapGenerator mapGenerator;
 
     public MapPoint(String id,
+                    String name,
                     int level,
                     int group,
                     List<Direction> fromDirs,
@@ -36,6 +38,7 @@ public class MapPoint {
                     PortalStatus portalStatus,
                     MapGenerator mapGenerator) {
         this.id = id;
+        this.name = name;
         this.level = level;
         this.group = group;
         this.fromDirs = fromDirs;

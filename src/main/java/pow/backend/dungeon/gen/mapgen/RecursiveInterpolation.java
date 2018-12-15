@@ -71,13 +71,14 @@ public class RecursiveInterpolation implements MapGenerator {
     }
 
     @Override
-    public GameMap genMap(String name, List<MapConnection> connections,
+    public GameMap genMap(String id, String name, List<MapConnection> connections,
                           MapPoint.PortalStatus portalStatus, Random rng) {
-        return genMap(name, level, sourceSize, sourceSize, numInterpolationSteps, mapStyle, monsterIds,
+        return genMap(id, name, level, sourceSize, sourceSize, numInterpolationSteps, mapStyle, monsterIds,
                 connections, portalStatus, flags, rng);
     }
 
     private static GameMap genMap(
+            String id,
             String name,
             int level,
             int width,
@@ -125,7 +126,7 @@ public class RecursiveInterpolation implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(w, h, rng);
         GeneratorUtils.addItems(level, squares, numItems, rng);
 
-        return new GameMap(name, level, squares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
+        return new GameMap(id, name, level, squares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
     }
 
     // fills in squares such that the open squares are connected

@@ -30,7 +30,7 @@ public class Town implements MapGenerator {
     }
 
     @Override
-    public GameMap genMap(String name, List<MapConnection> connections,
+    public GameMap genMap(String id, String name, List<MapConnection> connections,
                           MapPoint.PortalStatus portalStatus, Random rng) {
         int[][] data = genMap(rng);
 
@@ -51,7 +51,7 @@ public class Town implements MapGenerator {
                 rng);
        ShopData shopData = ShopGenerator.genShop(level, rng);
 
-        return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags, shopData);
+        return new GameMap(id, name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags, shopData);
     }
 
     private int[][] genMap(Random rng) {

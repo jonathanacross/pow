@@ -68,7 +68,8 @@ public class RippleGenerator implements MapGenerator {
     }
 
     @Override
-    public GameMap genMap(String name, List<MapConnection> connections, MapPoint.PortalStatus portalStatus, Random rng) {
+    public GameMap genMap(String id, String name,
+                          List<MapConnection> connections, MapPoint.PortalStatus portalStatus, Random rng) {
         int[][] terrain = drawEdges(rng);
         int[][] features = drawRipple(rng);
 
@@ -100,7 +101,7 @@ public class RippleGenerator implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(size, size, rng);
         GeneratorUtils.addItems(level, squares, numItems, rng);
 
-        return new GameMap(name, level, squares, keyLocations, new MonsterIdGroup(monsterIds), flags, null);
+        return new GameMap(id, name, level, squares, keyLocations, new MonsterIdGroup(monsterIds), flags, null);
     }
 
     private TerrainFeatureTriplet[][] convertToTerrainAndFeatures(int[][] terrain, int[][] features) {
