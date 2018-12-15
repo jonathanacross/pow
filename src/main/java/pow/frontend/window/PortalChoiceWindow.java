@@ -11,18 +11,28 @@ import java.util.function.Consumer;
 
 public class PortalChoiceWindow extends AbstractWindow {
 
+    public static class AreaNameAndId {
+        public final String name;
+        public final String id;
+
+        public AreaNameAndId(String name, String id) {
+            this.name = name;
+            this.id = id;
+        }
+    }
+
     private final String message;
-    private final List<String> areaIds;
+    private final List<AreaNameAndId> areas;
     private final Consumer<String> callback;
 
     public PortalChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
                               String message,
-                              List<String> areaIds,
+                              List<AreaNameAndId> areas,
                               Consumer<String> callback) {
-        super( new WindowDim(x, y, 300, 50 + FONT_SIZE * areaIds.size()),
+        super( new WindowDim(x, y, 300, 50 + FONT_SIZE * areas.size()),
                 true, backend, frontend);
         this.message = message;
-        this.areaIds = areaIds;
+        this.areas = areas;
         this.callback = callback;
     }
 
@@ -40,8 +50,8 @@ public class PortalChoiceWindow extends AbstractWindow {
 
         if (keyCode >= KeyEvent.VK_A && keyCode <= KeyEvent.VK_Z) {
             int areaNumber = keyCode - KeyEvent.VK_A;
-            if (areaNumber < areaIds.size()) {
-                this.callback.accept(areaIds.get(areaNumber));
+            if (areaNumber < areas.size()) {
+                this.callback.accept(areas.get(areaNumber).id);
                 frontend.close();
             }
         }
@@ -65,10 +75,10 @@ public class PortalChoiceWindow extends AbstractWindow {
 
         int y = 45;
         int idx = 0;
-        for (String areaId : areaIds) {
+        for (AreaNameAndId areaId : areas) {
             String label = (char) ((int) 'a' + idx) + ")";
             graphics.drawString(label, MARGIN, y);
-            graphics.drawString(areaId, MARGIN + 20, y);
+            graphics.drawString(areaId.name, MARGIN + 20, y);
             idx++;
             y += FONT_SIZE;
         }

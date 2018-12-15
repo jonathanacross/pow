@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Random;
 
 public interface MapGenerator {
-    GameMap genMap(String name,
+    GameMap genMap(String id,
+                   String name,
                    List<MapConnection> connections,
                    MapPoint.PortalStatus portalStatus,
                    Random rng);

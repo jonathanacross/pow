@@ -34,7 +34,7 @@ public class OpenPortal implements Action {
 
         // Unlock the portal in the Gameworld.
         Map<String, MapPoint.PortalStatus> portals = backend.getGameState().world.topologySummary.getPortals();
-        String areaName = backend.getGameState().getCurrentMap().name;
+        String areaName = backend.getGameState().getCurrentMap().id;
         portals.put(areaName, MapPoint.PortalStatus.OPEN);
 
         // Update the feature.

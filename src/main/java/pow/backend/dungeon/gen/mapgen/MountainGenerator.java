@@ -57,7 +57,7 @@ public class MountainGenerator implements MapGenerator {
     }
 
     @Override
-    public GameMap genMap(String name, List<MapConnection> connections, MapPoint.PortalStatus portalStatus, Random rng) {
+    public GameMap genMap(String id, String name, List<MapConnection> connections, MapPoint.PortalStatus portalStatus, Random rng) {
         FractalMountain fractalMountain = new FractalMountain(iterations, roughness);
 
         // Generate an elevation map, and convert elevations into integer layers.
@@ -109,7 +109,7 @@ public class MountainGenerator implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(w, h, rng);
         GeneratorUtils.addItems(level, squares, numItems, rng);
 
-        return new GameMap(name, level, squares, keyLocations, new MonsterIdGroup(monsterIds), flags, null);
+        return new GameMap(id, name, level, squares, keyLocations, new MonsterIdGroup(monsterIds), flags, null);
     }
 
     private static int[][] discretizeElevations(double[][] elevations, double[] breakPoints) {

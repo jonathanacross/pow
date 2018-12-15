@@ -29,36 +29,39 @@ public class TestArea implements MapGenerator {
     }
 
     @Override
-    public GameMap genMap(String name,
+    public GameMap genMap(String id,
+                          String name,
                           List<MapConnection> connections,
                           MapPoint.PortalStatus portalStatus,
                           Random rng) {
         switch (type) {
             case "run test":
-                return genPremadeMap(name, RUN_TEST, connections, portalStatus, rng);
+                return genPremadeMap(id, name, RUN_TEST, connections, portalStatus, rng);
             case "terrain test":
-                return genPremadeMap(name, TERRAIN_TYPES_TEST, connections, portalStatus, rng);
+                return genPremadeMap(id, name, TERRAIN_TYPES_TEST, connections, portalStatus, rng);
             case "item test":
-                return genItemMap(name, connections, portalStatus, rng);
+                return genItemMap(id, name, connections, portalStatus, rng);
             case "arena":
-                return genArena(name, connections, portalStatus, rng);
+                return genArena(id, name, connections, portalStatus, rng);
             default:
                 throw new RuntimeException("unknown test area type '" + type + "'");
         }
     }
 
-    private GameMap genPremadeMap(String name,
+    private GameMap genPremadeMap(String id,
+                                  String name,
                                   String[] charData,
                                   List<MapConnection> connections,
                                   MapPoint.PortalStatus portalStatus,
                                   Random rng) {
         PremadeMapData.PremadeMapInfo mapInfo = PremadeMapData.parseMapInfo(Arrays.asList(charData));
         PremadeGenerator generator = new PremadeGenerator(mapInfo, translator, monsterIds, level, flags);
-        return generator.genMap(name, connections, portalStatus, rng);
+        return generator.genMap(id, name, connections, portalStatus, rng);
     }
 
     // Creates a map showing all items for all levels.
-    private GameMap genItemMap(String name,
+    private GameMap genItemMap(String id,
+                               String name,
                                List<MapConnection> connections,
                                MapPoint.PortalStatus portalStatus,
                                Random rng) {
@@ -93,26 +96,26 @@ public class TestArea implements MapGenerator {
         // add all items
         for (int level = 0; level < 99; level++) {
             List<String> itemIds = ItemGenerator.getItemIdsForLevel(level);
-            for (int id = 0; id < itemIds.size(); id++) {
-                dungeonSquares[id+1][level+1].items.add(ItemGenerator.genItem(itemIds.get(id), level, rng));
+            for (int idx = 0; idx < itemIds.size(); idx++) {
+                dungeonSquares[idx+1][level+1].items.add(ItemGenerator.genItem(itemIds.get(idx), level, rng));
             }
         }
 
         // add the artifacts
         List<String> artifactIds = new ArrayList<>(ArtifactData.getArtifactIds());
         for (int idx = 0; idx < artifactIds.size(); idx++) {
-            String id = artifactIds.get(idx);
-            dungeonSquares[width-2][idx+1].items.add(ArtifactData.getArtifact(id));
+            String artifactId = artifactIds.get(idx);
+            dungeonSquares[width-2][idx+1].items.add(ArtifactData.getArtifact(artifactId));
         }
 
         // add special items
         List<String> specialItemIds = new ArrayList<>(ItemGenerator.getSpecialItemIds());
         for (int idx = 0; idx < specialItemIds.size(); idx++) {
-            String id = specialItemIds.get(idx);
-            dungeonSquares[width-3][idx+1].items.add(ItemGenerator.genItem(id, 0, rng));
+            String itemId = specialItemIds.get(idx);
+            dungeonSquares[width-3][idx+1].items.add(ItemGenerator.genItem(itemId, 0, rng));
         }
 
-        return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
+        return new GameMap(id, name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
     }
 
     private static final String[] TERRAIN_TYPES_TEST = {
@@ -171,7 +174,7 @@ public class TestArea implements MapGenerator {
             "####################################"
     };
 
-    private GameMap genArena(String name,
+    private GameMap genArena(String id, String name,
                              List<MapConnection> connections,
                              MapPoint.PortalStatus portalStatus,
                              Random rng) {
@@ -203,6 +206,6 @@ public class TestArea implements MapGenerator {
                 commonIds,
                 rng);
 
-        return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
+        return new GameMap(id, name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
     }
 }

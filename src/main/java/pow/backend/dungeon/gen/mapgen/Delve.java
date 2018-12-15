@@ -77,7 +77,8 @@ public class Delve implements MapGenerator {
     }
 
     @Override
-    public GameMap genMap(String name,
+    public GameMap genMap(String id,
+                          String name,
                           List<MapConnection> connections,
                           MapPoint.PortalStatus portalStatus,
                           Random rng) {
@@ -103,7 +104,7 @@ public class Delve implements MapGenerator {
         int numItems = GeneratorUtils.getDefaultNumItems(data, rng);
         GeneratorUtils.addItems(level, dungeonSquares, numItems, rng);
 
-        return new GameMap(name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
+        return new GameMap(id, name, level, dungeonSquares, keyLocations, new MonsterIdGroup(monsterIds), flags,null);
     }
 
 

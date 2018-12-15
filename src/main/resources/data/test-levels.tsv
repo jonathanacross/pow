@@ -1,17 +1,17 @@
-#id	level	group	possible dirs	from groups	from id	teleport	generator	genParams	flags	boss	monsters
-terrain	0					open	terrain test	basement	permLight		
-#golddesert	30		S		terrain		recursiveInterpolation	gold desert	outside		goldfish,green fish,eel,pink jellyfish
-#island	2		D		terrain		mountain		outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon
-island	2		D		terrain		ripple		outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon
-#volcano_test	2		D		terrain	open	radial	volcano		white rat	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
-#basement1	1		E		volcano_test	closed	premade	basementl1,basement	permLight		green mushrooms,black ant,white rat,brown beetle,crawling moss
-#rogue	2		D		terrain		rogue	1,dungeon		white rat	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
-desert	30		N		terrain		recursiveInterpolation	desert	outside		gray wolf,brown scorpion
-blacktowerl1	24		U		desert		premade	blacktowerl1,black tower	permLight		bot,blue snake,blue beetle
-blacktowerl2	25		U		blacktowerl1		premade	blacktowerl2,black tower	permLight	blue wizard	bot,blue snake,blue beetle
-digdesert	25		E		terrain		recursiveInterpolation	dig desert	hot	white rat	blue ghost,pink ghost,evil eye
-#run	1		E		terrain		run test	dungeon			farmer,mangy leper,jester,beggar,salesman,yellow mushrooms
-#town	1		E		terrain		town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
-item	2		W		terrain		item test	crypt			
-cave	17		D		island		cellularAutomata	1,true,basement	poisonGas	minotaur	brown scorpion,goldfish,chess knight,pink ghost
-arena	99		S		terrain		arena	dungeon		evil incarnate	:all:
+#id	name	level	group	possible dirs	from groups	from id	teleport	generator	genParams	flags	boss	monsters
+terrain	Terrain Test	0					open	terrain test	basement	permLight		
+#golddesert	golddesert	30		S		terrain		recursiveInterpolation	gold desert	outside		goldfish,green fish,eel,pink jellyfish
+#island	island	2		D		terrain		mountain		outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon
+island	Island	2		D		terrain		ripple		outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon
+#volcano_test	volcano_test	2		D		terrain	open	radial	volcano		white rat	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
+#basement1	basement1	1		E		volcano_test	closed	premade	basementl1,basement	permLight		green mushrooms,black ant,white rat,brown beetle,crawling moss
+#rogue	rogue	2		D		terrain		rogue	1,dungeon		white rat	rabbit mage,rabbit warrior,black spider,green imp,small red spiny,yellow worm mass
+desert	Desert	30		N		terrain		recursiveInterpolation	desert	outside		gray wolf,brown scorpion
+blacktowerl1	Black tower 1	24		U		desert		premade	blacktowerl1,black tower	permLight		bot,blue snake,blue beetle
+blacktowerl2	Black Tower 2	25		U		blacktowerl1		premade	blacktowerl2,black tower	permLight	blue wizard	bot,blue snake,blue beetle
+digdesert	Dig desert	25		E		terrain		recursiveInterpolation	dig desert	hot	white rat	blue ghost,pink ghost,evil eye
+#run	run	1		E		terrain		run test	dungeon			farmer,mangy leper,jester,beggar,salesman,yellow mushrooms
+#town	town	1		E		terrain		town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
+item	Items	2		W		terrain		item test	crypt			
+cave	Cave	17		D		island		cellularAutomata	1,true,basement	poisonGas	minotaur	brown scorpion,goldfish,chess knight,pink ghost
+arena	Arena	99		S		terrain		arena	dungeon		evil incarnate	:all:

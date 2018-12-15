@@ -271,18 +271,21 @@ public class Frontend {
 
     private void choosePortal() {
         Map<String, MapPoint.PortalStatus> portals = gameBackend.getGameState().world.topologySummary.getPortals();
-        List<String> openPortalAreas = new ArrayList<>();
+        List<PortalChoiceWindow.AreaNameAndId> openPortals = new ArrayList<>();
         for (Map.Entry<String, MapPoint.PortalStatus> entry : portals.entrySet()) {
             if (entry.getValue() == MapPoint.PortalStatus.OPEN) {
-                openPortalAreas.add(entry.getKey());
+                String id = entry.getKey();
+                String name = gameBackend.getGameState().world.world.get(id).name;
+                openPortals.add(new PortalChoiceWindow.AreaNameAndId(name, id));
             }
         }
-        Collections.sort(openPortalAreas);
+        Collections.sort(openPortals,
+                Comparator.comparing((PortalChoiceWindow.AreaNameAndId p) -> p.name));
 
         open(new PortalChoiceWindow(300, 150,
                 gameBackend, this,
                 "Which area do you wish to go to?",
-                openPortalAreas,
+                openPortals,
                 (String areaId) -> gameBackend.tellSelectedActor(new ExitPortal(gameBackend.getGameState().party.player, areaId))
         ));
     }

@@ -36,7 +36,8 @@ public class GameMap implements Serializable {
     public List<Actor> actors;
     private List<LightSource> lightSources;
     public final Map<String, Point> keyLocations;  // useful for joining areas together
-    public final String name; // name of the area
+    public final String id; // internal id of area
+    public final String name; // user visible name
     public final int level;  // difficulty level
     public ShopData shopData; // for stores contained in this map
     public final Flags flags;
@@ -117,13 +118,15 @@ public class GameMap implements Serializable {
         addBrightness(pet);
     }
 
-    public GameMap(String name,
+    public GameMap(String id,
+                   String name,
                    int level,
                    DungeonSquare[][] map,
                    Map<String, Point> keyLocations,
                    MonsterIdGroup genMonsterIds,
                    Flags flags,
                    ShopData shopData) {
+        this.id = id;
         this.name = name;
         this.level = level;
         this.map = map;
