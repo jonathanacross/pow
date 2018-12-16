@@ -14,13 +14,18 @@ import java.util.*;
 public class GameBackend {
 
     private GameState gameState;
-    private final Deque<Action> commandQueue = new ArrayDeque<>();
+    private final Deque<Action> commandQueue;
+    private final Deque<GameEvent> eventQueue;
 
     public GameState getGameState() {
         return gameState;
     }
 
-    public GameBackend() { this.gameState = new GameState(); }
+    public GameBackend() {
+        this.gameState = new GameState();
+        this.commandQueue = new ArrayDeque<>();
+        this.eventQueue = new ArrayDeque<>();
+    }
 
     public void tellSelectedActor(Action request) {
         gameState.party.selectedActor.addCommand(request);
@@ -37,6 +42,37 @@ public class GameBackend {
         gameState.gameInProgress = gameInProgress;
     }
 
+    private List<GameEvent> processCommands(Deque<Action> commandQueue) {
+        List<GameEvent> events = new ArrayList<>();
+
+        // find alternate commands, if needed
+        Action command = commandQueue.peek();
+        ActionResult result = command.process(this);
+        while (result.alternate != null) {
+            commandQueue.removeFirst();  // replace action with alternate
+            commandQueue.addFirst(result.alternate);
+            command = commandQueue.peek();
+            result = command.process(this);
+        }
+
+        if (result.done) {
+            commandQueue.removeFirst();
+
+            if (result.succeeded && command.consumesEnergy()) {
+                command.getActor().energy.spend();
+                gameState.getCurrentMap().advanceActor();
+            }
+
+            // update background things every time player takes a turn
+            if (command.getActor() == gameState.party.player) {
+                events.addAll(updateBackgroundThings());
+            }
+        }
+        events.addAll(result.events);
+
+        return events;
+    }
+
     public GameResult update() {
         GameResult gameResult = new GameResult(new ArrayList<>());
 
@@ -46,47 +82,31 @@ public class GameBackend {
                 return gameResult;
             }
 
-            // process any ongoing/pending actions
-            while (!commandQueue.isEmpty()) {
-
-                // find alternate commands, if needed
-                Action command = commandQueue.peek();
-                ActionResult result = command.process(this);
-                while (result.alternate != null) {
-                    commandQueue.removeFirst();  // replace action with alternate
-                    commandQueue.addFirst(result.alternate);
-                    command = commandQueue.peek();
-                    result = command.process(this);
-                }
-
-                if (result.done) {
-                    commandQueue.removeFirst();
-
-                    if (result.succeeded && command.consumesEnergy()) {
-                        command.getActor().energy.spend();
-                        gameState.getCurrentMap().advanceActor();
-                    }
-
-                    // update background things every time player takes a turn
-                    if (command.getActor() == gameState.party.player) {
-                        gameResult.addEvents(updateBackgroundThings());
-                    }
-
-//                    // refresh every time player takes a turn
-//                    if (command.getActor() == gameState.player) {
-//                        gameResult.addEvents(result.events);
-//                        //return gameResult;
-//                        //return new GameResult(madeProgress, result.events);
-//                    }
-                }
-                if (!result.events.isEmpty()) {
-                    gameResult.addEvents(result.events);
-                    //return new GameResult(madeProgress, result.events);
+            // finish the existing action by processing any remaining events
+            while (!eventQueue.isEmpty()) {
+                GameEvent event = eventQueue.removeFirst();
+                gameResult.events.add(event);
+                // effect requiring a pause.  Return to frontend to pause for the
+                // appropriate amount of time.
+                this.gameState.getCurrentMap().effects.clear();
+                if (event.eventType == GameEvent.EventType.EFFECT) {
+                    // TODO: put this in an event "process" method.
+                    this.gameState.getCurrentMap().effects.add(event.effect);
+                    return gameResult;
                 }
             }
 
+            // process any ongoing/pending actions
+            while (!commandQueue.isEmpty()) {
+                gameResult.addEvents(processCommands(commandQueue));
+            }
+//            if (!gameResult.events.isEmpty()) {
+//                // if there are events, then go back to top to process them.
+//                continue;
+//            }
+
             // at this point, we've processed all pending actions, so advance
-            // the time.
+            // the time until some actor has an action.
             while (commandQueue.isEmpty()) {
 
                 if (!gameState.gameInProgress) {
@@ -95,39 +115,29 @@ public class GameBackend {
 
                 Actor actor = gameState.getCurrentMap().getCurrentActor();
 
-                // if waiting for input, just return
-                if (actor.energy.canTakeTurn() && actor.needsInput(gameState)) {
-                    gameState.party.setSelectedActor(actor);
-                    return gameResult;
-                    //return new GameResult(madeProgress, new ArrayList<>());
-                }
-
-                if (actor.energy.canTakeTurn() || actor.energy.gain(actor.getSpeed())) {
-                    // If the actor can move now, but needs input from the user, just
-                    // return so we can wait for it.
+                if (!actor.energy.canTakeTurn()) {
+                    actor.energy.gain(actor.getSpeed());
+                    gameState.getCurrentMap().advanceActor();
+                } else {
+                    // if waiting for input, just return
                     if (actor.needsInput(gameState)) {
                         gameState.party.setSelectedActor(actor);
-                        return gameResult;
-                        //return new GameResult(madeProgress, new ArrayList<>());
-                    }
-
-                    commandQueue.add(actor.act(this));
-                    gameResult.addEvents(actor.conditions.update(this));
-
-                    if (actor == gameState.party.selectedActor) {
-                        // force return every time player takes turn
+                        // TODO: need to change this to not RETURN, but just add events
+                        // to the event list and go back to event processing.
                         return gameResult;
                     }
-                } else {
-                    // This actor doesn't have enough energy yet, so move on to the next.
-                    gameState.getCurrentMap().advanceActor();
+                    else {
+                        commandQueue.add(actor.act(this));
+                        gameResult.addEvents(actor.conditions.update(this));
+
+                        if (actor == gameState.party.selectedActor) {
+                            // force return every time player takes turn
+                            // TODO: need to change this to not RETURN, but just add events
+                            // to the event list and go back to event processing.
+                            return gameResult;
+                        }
+                    }
                 }
-
-                // Each time we wrap around, process "idle" things that are ongoing and
-                // speed independent.
-                //if (actor == gameState.player) {
-                //    gameResult.addEvents(updateBackgroundThings());
-                //}
             }
         }
     }

@@ -45,6 +45,7 @@ public class Arrow implements Action {
 
         ray.remove(0); // remove the attacker from the path of the arrow.
         for (Point p : ray) {
+            events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
                 boolean hitsTarget = gs.rng.nextDouble() <= AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
@@ -57,7 +58,6 @@ public class Arrow implements Action {
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
             if (map.map[p.x][p.y].blockAir()) break;
-            events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
         }
 
         if (attacker == gs.party.player) {

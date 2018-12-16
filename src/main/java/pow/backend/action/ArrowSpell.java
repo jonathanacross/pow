@@ -49,16 +49,17 @@ public class ArrowSpell implements Action {
         ray.remove(0); // remove the attacker from the path of the arrow.
         AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker, backend.getGameState().rng);
         for (Point p : ray) {
+            events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
                 if (defender.friendly != attacker.friendly) {
+                    // TODO: need to encode "doHit" to be an event. [which can trigger other events]
                     events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
                 }
                 break;
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
             if (map.map[p.x][p.y].blockAir()) break;
-            events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
         }
 
         events.add(GameEvent.DungeonUpdated());

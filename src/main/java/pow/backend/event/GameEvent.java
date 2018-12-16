@@ -6,19 +6,21 @@ import pow.backend.dungeon.DungeonEffect;
 public class GameEvent {
 
     // TODO: collapse some of these (e.g., moved, healed, log_update?) into dungeon_updated
+    // Types marked with a * require special processing by frontend. Others may be good
+    // candidates for collapsing.
     public enum EventType {
         LOG_UPDATE,
-        MOVED,  // player or creature moved
+        MOVED,
         ATTACKED,
         KILLED,
-        WON_GAME,
-        LOST_GAME,
-        GOT_PET,
-        IN_STORE,
+        WON_GAME,  // * triggers window to show game won
+        LOST_GAME, // * triggers window to show game lost
+        GOT_PET,   // * triggers window to choose pet
+        IN_STORE,  // * triggers window to buy item
         HEALED,
-        DUNGEON_UPDATED,  // indicates UI needs a redraw
-        EFFECT,
-        IN_PORTAL,
+        DUNGEON_UPDATED,
+        EFFECT,    // * triggers delay while drawing
+        IN_PORTAL, // * triggers window to choose portal
     }
 
     public final EventType eventType;

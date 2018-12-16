@@ -2,6 +2,7 @@ package pow.backend;
 
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
+import pow.backend.dungeon.DungeonEffect;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.LightSource;
@@ -34,6 +35,7 @@ public class GameMap implements Serializable {
     public final int height;
     public final MonsterIdGroup genMonsterIds;  // monsters to generate for this level
     public List<Actor> actors;
+    public List<DungeonEffect> effects;
     private List<LightSource> lightSources;
     public final Map<String, Point> keyLocations;  // useful for joining areas together
     public final String id; // internal id of area
@@ -135,6 +137,7 @@ public class GameMap implements Serializable {
         this.keyLocations = keyLocations;
         this.genMonsterIds = genMonsterIds;
         this.actors = new ArrayList<>();
+        this.effects = new ArrayList<>();
         this.flags = flags;
         this.shopData = shopData;
         this.visited = false;
