@@ -1,15 +1,19 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.event.Effect;
+import pow.backend.event.GameEvent;
+import pow.backend.event.Hit;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Bresenham;
 import pow.util.Direction;
 import pow.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 // Spell that casts various types of arrows.  There's a fair amount of code
@@ -49,12 +53,11 @@ public class ArrowSpell implements Action {
         ray.remove(0); // remove the attacker from the path of the arrow.
         AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, attacker, backend.getGameState().rng);
         for (Point p : ray) {
-            events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
+            events.add(new Effect(new DungeonEffect(effectId, p)));
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
                 if (defender.friendly != attacker.friendly) {
-                    // TODO: need to encode "doHit" to be an event. [which can trigger other events]
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+                    events.add(new Hit(attacker, defender, hitParams));
                 }
                 break;
             }
@@ -62,7 +65,9 @@ public class ArrowSpell implements Action {
             if (map.map[p.x][p.y].blockAir()) break;
         }
 
-        events.add(GameEvent.DungeonUpdated());
+        // clear out last effect.
+        // TODO: should this be new dungeonupdated?
+        events.add(new Effect(new DungeonEffect(Collections.emptyList())));
         return ActionResult.Succeeded(events);
     }
 

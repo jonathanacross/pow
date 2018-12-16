@@ -3,10 +3,11 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Direction;
 import pow.util.Point;
 
@@ -65,7 +66,7 @@ public class Phase implements Action {
                     Direction.N); // dummy
             List<Point> arcPoints = SpellUtils.createArc(actor.loc, targetLoc);
             for (Point p : arcPoints) {
-                events.add(GameEvent.Effect(new DungeonEffect(effectName, p)));
+                events.add(GameEventOld.Effect(new DungeonEffect(effectName, p)));
             }
 
             actor.loc = targetLoc;
@@ -75,7 +76,7 @@ public class Phase implements Action {
             }
             backend.logMessage(actor.getNoun() + " phases.", MessageLog.MessageType.GENERAL);
 
-            events.add(GameEvent.DungeonUpdated());
+            events.add(GameEventOld.DungeonUpdated());
         }
         return ActionResult.Succeeded(events);
     }

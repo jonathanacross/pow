@@ -136,7 +136,7 @@ public class Frontend {
 
     // returns true if update needed.
     boolean processEvent(GameEvent event) {
-         switch (event.eventType) {
+         switch (event.getEventType()) {
             case WON_GAME: open(this.winWindow); return true;
             case LOST_GAME: open(this.loseWindow); return true;
             case EFFECT: return true;

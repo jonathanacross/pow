@@ -1,11 +1,12 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Direction;
 import pow.util.Point;
 
@@ -41,7 +42,7 @@ public class QuakeSpell implements Action {
                 Actor target = gs.getCurrentMap().actorAt(p.x, p.y);
                 return (target != null) && (target.friendly == actor.friendly);
             } );
-            events.add(GameEvent.Effect(new DungeonEffect(effectName, hitSquares)));
+            events.add(GameEventOld.Effect(new DungeonEffect(effectName, hitSquares)));
             for (Point s : hitSquares) {
                 Actor m = gs.getCurrentMap().actorAt(s.x, s.y);
                 if (m != null) {
@@ -50,7 +51,7 @@ public class QuakeSpell implements Action {
             }
         }
 
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
         return ActionResult.Succeeded(events);
     }
 

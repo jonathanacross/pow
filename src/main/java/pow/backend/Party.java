@@ -5,6 +5,7 @@ import pow.backend.actors.Knowledge;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -78,13 +79,13 @@ public class Party implements Serializable {
 
         // check for getting a pet
         if (item.artifactSlot.equals(DungeonItem.ArtifactSlot.PETSTATUE)) {
-            events.add(GameEvent.GotPet());
+            events.add(GameEventOld.GotPet());
         }
 
         // check for a win!
         if (!player.winner && artifacts.hasAllPearls()) {
             player.winner = true;
-            events.add(GameEvent.WonGame());
+            events.add(GameEventOld.WonGame());
         }
 
         player.updateStats();

@@ -4,11 +4,12 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.SpellParams;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Direction;
 import pow.util.Metric;
 import pow.util.Point;
@@ -45,7 +46,7 @@ public class BreathSpell implements Action {
                 Direction.N); // dummy
         for (int radius = 1; radius <= spellParams.size; radius++) {
             List<Point> effectSquares = getBreathArea(gs, actor.loc, target, radius);
-            events.add(GameEvent.Effect(new DungeonEffect(effectName, effectSquares)));
+            events.add(GameEventOld.Effect(new DungeonEffect(effectName, effectSquares)));
         }
 
         // hit everything in the large area once
@@ -62,7 +63,7 @@ public class BreathSpell implements Action {
             }
         }
 
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
         return ActionResult.Succeeded(events);
     }
 

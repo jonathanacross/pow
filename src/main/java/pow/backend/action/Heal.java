@@ -4,6 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class Heal implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.Healed());
+        events.add(GameEventOld.Healed());
 
         // x% or x hp, whichever is greater
         int desiredHealAmount = Math.max((int)Math.round(actor.getMaxHealth() * 0.01 * this.amount), this.amount);

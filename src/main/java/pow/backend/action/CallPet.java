@@ -4,10 +4,11 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.Party;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Direction;
 import pow.util.Point;
 
@@ -48,7 +49,7 @@ public class CallPet implements Action {
                 Direction.N); // dummy
         List<Point> arcPoints = SpellUtils.createArc(party.pet.loc, targetLoc);
         for (Point p : arcPoints) {
-            events.add(GameEvent.Effect(new DungeonEffect(effectName, p)));
+            events.add(GameEventOld.Effect(new DungeonEffect(effectName, p)));
         }
 
         party.pet.loc = targetLoc;
@@ -56,7 +57,7 @@ public class CallPet implements Action {
         gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
         backend.logMessage(party.pet.getNoun() + " phases.", MessageLog.MessageType.GENERAL);
 
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
         return ActionResult.Succeeded(events);
     }
 

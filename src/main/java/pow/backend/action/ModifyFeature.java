@@ -5,6 +5,7 @@ import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Point;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class ModifyFeature implements Action {
         GameMap map = backend.getGameState().getCurrentMap();
         map.map[loc.x][loc.y].feature = newFeature;
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
         return ActionResult.Succeeded(events);
     }
 

@@ -3,6 +3,7 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class EnterPortal implements Action {
         backend.getGameState().inPortal = true;
 
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.InPortal());  // trigger the frontend to pop open a window to see what to do.
+        events.add(GameEventOld.InPortal());  // trigger the frontend to pop open a window to see what to do.
 
         return ActionResult.Succeeded(events);
     }

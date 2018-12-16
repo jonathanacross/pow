@@ -6,6 +6,7 @@ import pow.backend.Party;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class GroupHeal implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.Healed());
+        events.add(GameEventOld.Healed());
 
         Party party = backend.getGameState().party;
         healOne(party.player, this.amount, backend);

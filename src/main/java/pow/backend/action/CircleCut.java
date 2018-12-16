@@ -1,11 +1,12 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Direction;
 import pow.util.Metric;
 import pow.util.Point;
@@ -63,10 +64,10 @@ public class CircleCut implements Action {
                     events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
                 }
             }
-            events.add(GameEvent.Effect(new DungeonEffect(effectId, squares)));
+            events.add(GameEventOld.Effect(new DungeonEffect(effectId, squares)));
         }
 
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
 
         return ActionResult.Succeeded(events);
     }

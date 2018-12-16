@@ -1,11 +1,12 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.dungeon.DungeonItem;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Bresenham;
 import pow.util.Direction;
 import pow.util.Point;
@@ -45,7 +46,7 @@ public class Arrow implements Action {
 
         ray.remove(0); // remove the attacker from the path of the arrow.
         for (Point p : ray) {
-            events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
+            events.add(GameEventOld.Effect(new DungeonEffect(effectId, p)));
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
                 boolean hitsTarget = gs.rng.nextDouble() <= AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
@@ -67,7 +68,7 @@ public class Arrow implements Action {
             backend.logMessage(gs.party.player.getNoun() + " has " + count + " arrows left", MessageLog.MessageType.GENERAL);
         }
 
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
 
         return ActionResult.Succeeded(events);
     }

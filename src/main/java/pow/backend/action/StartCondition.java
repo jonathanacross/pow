@@ -4,6 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class StartCondition implements Action {
         for (ConditionTypes conditionType : conditionTypes) {
             events.addAll(actor.conditions.get(conditionType).start(backend, turnCount, bonus, null));
         }
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
         return ActionResult.Succeeded(events);
     }
 

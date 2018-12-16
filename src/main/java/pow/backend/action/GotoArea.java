@@ -4,9 +4,10 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.GeneratorUtils;
 import pow.backend.dungeon.gen.ShopGenerator;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Point;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class GotoArea implements Action {
         gs.getCurrentMap().placePlayerAndPet(gs.party.selectedActor, loc, gs.party.otherPlayerInParty(gs.party.selectedActor));
 
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
         return ActionResult.Succeeded(events);
     }
 

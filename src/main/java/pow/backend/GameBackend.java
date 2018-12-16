@@ -7,6 +7,7 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.behavior.Behavior;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.backend.event.GameResult;
 
 import java.util.*;
@@ -73,6 +74,35 @@ public class GameBackend {
         return events;
     }
 
+    // TODO: would like to refactor this to return both new commands and new events
+    // or better yet, somehow split into one that just gets commands.
+    private List<GameEvent> processActor(Actor actor) {
+        List<GameEvent> events = new ArrayList<>();
+
+        if (!actor.energy.canTakeTurn()) {
+            actor.energy.gain(actor.getSpeed());
+            gameState.getCurrentMap().advanceActor();
+        } else {
+            // if waiting for input, just return
+            if (actor.needsInput(gameState)) {
+                gameState.party.setSelectedActor(actor);
+                events.add(GameEventOld.UserInput());
+            }
+            else {
+                commandQueue.add(actor.act(this));
+                events.addAll(actor.conditions.update(this));
+
+                if (actor == gameState.party.selectedActor) {
+                    // TODO: not correct event, fix this.
+                    // Maybe change to effect, or new type/function to return need to
+                    // draw update.
+                    events.add(GameEventOld.UserInput());
+                }
+            }
+        }
+        return events;
+    }
+
     public GameResult update() {
         GameResult gameResult = new GameResult(new ArrayList<>());
 
@@ -85,59 +115,27 @@ public class GameBackend {
             // finish the existing action by processing any remaining events
             while (!eventQueue.isEmpty()) {
                 GameEvent event = eventQueue.removeFirst();
+                event.process(this);
+
                 gameResult.events.add(event);
+
                 // effect requiring a pause.  Return to frontend to pause for the
                 // appropriate amount of time.
-                this.gameState.getCurrentMap().effects.clear();
-                if (event.eventType == GameEvent.EventType.EFFECT) {
-                    // TODO: put this in an event "process" method.
-                    this.gameState.getCurrentMap().effects.add(event.effect);
+                if (event.showUpdate()) {
                     return gameResult;
                 }
             }
 
             // process any ongoing/pending actions
             while (!commandQueue.isEmpty()) {
-                gameResult.addEvents(processCommands(commandQueue));
+                eventQueue.addAll(processCommands(commandQueue));
             }
-//            if (!gameResult.events.isEmpty()) {
-//                // if there are events, then go back to top to process them.
-//                continue;
-//            }
 
             // at this point, we've processed all pending actions, so advance
             // the time until some actor has an action.
-            while (commandQueue.isEmpty()) {
-
-                if (!gameState.gameInProgress) {
-                    return gameResult;
-                }
-
+            while (commandQueue.isEmpty() && eventQueue.isEmpty()) {
                 Actor actor = gameState.getCurrentMap().getCurrentActor();
-
-                if (!actor.energy.canTakeTurn()) {
-                    actor.energy.gain(actor.getSpeed());
-                    gameState.getCurrentMap().advanceActor();
-                } else {
-                    // if waiting for input, just return
-                    if (actor.needsInput(gameState)) {
-                        gameState.party.setSelectedActor(actor);
-                        // TODO: need to change this to not RETURN, but just add events
-                        // to the event list and go back to event processing.
-                        return gameResult;
-                    }
-                    else {
-                        commandQueue.add(actor.act(this));
-                        gameResult.addEvents(actor.conditions.update(this));
-
-                        if (actor == gameState.party.selectedActor) {
-                            // force return every time player takes turn
-                            // TODO: need to change this to not RETURN, but just add events
-                            // to the event list and go back to event processing.
-                            return gameResult;
-                        }
-                    }
-                }
+                eventQueue.addAll(processActor(actor));
             }
         }
     }

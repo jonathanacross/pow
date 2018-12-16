@@ -8,6 +8,7 @@ import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.TextUtils;
 
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class UpgradeItem implements Action {
         }
 
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
         return ActionResult.Succeeded(events);
     }
 

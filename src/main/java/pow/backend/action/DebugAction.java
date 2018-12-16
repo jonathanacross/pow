@@ -5,6 +5,7 @@ import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class DebugAction implements Action {
                 break;
         }
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
         return ActionResult.Succeeded(events);
     }
 

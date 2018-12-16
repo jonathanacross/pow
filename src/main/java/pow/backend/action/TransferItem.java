@@ -5,6 +5,7 @@ import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class TransferItem implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
         DungeonItem item = giver.inventory.items.get(itemNum);
         int numCanTransfer = Math.min(numToTransfer, taker.inventory.numCanAdd(item));
         if (numCanTransfer == 0) {

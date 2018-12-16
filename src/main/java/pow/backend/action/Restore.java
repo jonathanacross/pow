@@ -4,6 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class Restore implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.Healed());
+        events.add(GameEventOld.Healed());
 
         int hpAmount = actor.increaseHealth(this.amount);
         int mpAmount = actor.increaseMana(this.amount);

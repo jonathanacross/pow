@@ -10,6 +10,7 @@ import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Point;
 
 import java.util.ArrayList;
@@ -35,9 +36,9 @@ public class Move implements Action {
 
     private List<GameEvent> addEvents(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.Moved());
+        events.add(GameEventOld.Moved());
         if (pause) {
-            events.add(GameEvent.Effect(new DungeonEffect(Collections.emptyList())));
+            events.add(GameEventOld.Effect(new DungeonEffect(Collections.emptyList())));
         }
         return events;
     }

@@ -1,11 +1,12 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.*;
 
 import java.util.ArrayList;
@@ -78,12 +79,12 @@ public class ChainSpell implements Action {
                 }
                 if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
                 if (map.map[p.x][p.y].blockAir()) break;
-                events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
+                events.add(GameEventOld.Effect(new DungeonEffect(effectId, p)));
             }
 
             curr = target;
         }
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
 
         return ActionResult.Succeeded(events);
     }

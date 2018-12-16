@@ -6,6 +6,7 @@ import pow.backend.actors.Player;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class AttackUtils {
 
         if (actor == gs.party.player) {
             gs.gameInProgress = false;
-            return GameEvent.LostGame();
+            return GameEventOld.LostGame();
         }
 
         // see if this is a boss; if so, update the map so it won't regenerate
@@ -97,7 +98,7 @@ public class AttackUtils {
             gs.party.pet = null;
         }
 
-        return GameEvent.Killed();
+        return GameEventOld.Killed();
     }
 
     public static String getDamageTypeString(SpellParams.Element element) {
@@ -125,7 +126,7 @@ public class AttackUtils {
     }
 
     public static List<GameEvent> doSimpleHit(GameBackend backend, Actor attacker, Actor defender,
-                                        SpellParams.Element element, int damage) {
+                                                 SpellParams.Element element, int damage) {
         String damTypeString = getDamageTypeString(element);
         int adjustedDamage = adjustDamage(damage, element, defender);
         MessageLog.MessageType messageType = defender.friendly
@@ -133,7 +134,7 @@ public class AttackUtils {
                 : MessageLog.MessageType.COMBAT_GOOD;
         backend.logMessage(attacker.getNoun() + " hits " + defender.getNoun() + " for " + adjustedDamage + damTypeString + " damage", messageType);
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.Attacked());
+        events.add(GameEventOld.Attacked());
         List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage, attacker);
         events.addAll(damageEvents);
 

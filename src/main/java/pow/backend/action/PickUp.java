@@ -7,6 +7,7 @@ import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.TextUtils;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class PickUp implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
 
         DungeonSquare square = gs.getCurrentMap().map[actor.loc.x][actor.loc.y];
         if (square.items.size() == 0) {
@@ -69,10 +70,10 @@ public class PickUp implements Action {
 
             // log if the player won the game
             for (GameEvent event : events) {
-                if (event.eventType.equals(GameEvent.EventType.WON_GAME)) {
+                if (event.getEventType().equals(GameEventOld.EventType.WON_GAME)) {
                     backend.logMessage("Congratulations, you won!", MessageLog.MessageType.GAME_EVENT);
                 }
-                if (event.eventType.equals(GameEvent.EventType.GOT_PET)) {
+                if (event.getEventType().equals(GameEventOld.EventType.GOT_PET)) {
                     backend.logMessage("The pet statue glows as " + gs.party.player.getNoun() + " picks it up.", MessageLog.MessageType.GAME_EVENT);
                 }
             }

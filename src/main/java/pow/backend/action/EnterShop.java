@@ -4,6 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.ShopData;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class EnterShop implements Action {
         backend.getGameState().getCurrentMap().shopData.state = this.state;
 
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.InStore());  // trigger the frontend to pop open a window to see what to do.
+        events.add(GameEventOld.InStore());  // trigger the frontend to pop open a window to see what to do.
 
         return ActionResult.Succeeded(events);
     }

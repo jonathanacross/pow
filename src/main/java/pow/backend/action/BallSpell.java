@@ -1,11 +1,12 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
+import pow.backend.event.GameEventOld;
 import pow.util.Bresenham;
 import pow.util.Direction;
 import pow.util.Metric;
@@ -68,11 +69,11 @@ public class BallSpell implements Action {
                 Direction.N); // dummy
         for (int radius = 1; radius <= spellParams.size; radius++) {
             List<Point> effectSquares = getBallArea(gs, visibleTarget, radius);
-            events.add(GameEvent.Effect(new DungeonEffect(effectName, effectSquares)));
+            events.add(GameEventOld.Effect(new DungeonEffect(effectName, effectSquares)));
         }
         for (int radius = spellParams.size - 1; radius >= 1; radius--) {
             List<Point> effectSquares = getBallArea(gs, visibleTarget, radius);
-            events.add(GameEvent.Effect(new DungeonEffect(effectName, effectSquares)));
+            events.add(GameEventOld.Effect(new DungeonEffect(effectName, effectSquares)));
         }
 
         // hit everything in the large ball once
@@ -85,7 +86,7 @@ public class BallSpell implements Action {
             }
         }
 
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEventOld.DungeonUpdated());
         return ActionResult.Succeeded(events);
     }
 
