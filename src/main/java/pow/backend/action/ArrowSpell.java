@@ -7,7 +7,6 @@ import pow.backend.event.Hit;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEventOld;
 import pow.util.Bresenham;
 import pow.util.Direction;
 import pow.util.Point;

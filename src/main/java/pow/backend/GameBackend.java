@@ -115,7 +115,7 @@ public class GameBackend {
             // finish the existing action by processing any remaining events
             while (!eventQueue.isEmpty()) {
                 GameEvent event = eventQueue.removeFirst();
-                event.process(this);
+                eventQueue.addAll(event.process(this));
 
                 gameResult.events.add(event);
 

@@ -4,17 +4,19 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.SpellParams;
+import pow.backend.event.Effect;
 import pow.backend.event.GameEvent;
+import pow.backend.event.Hit;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEventOld;
 import pow.util.Direction;
 import pow.util.Metric;
 import pow.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static pow.backend.utils.SpellUtils.getFieldOfView;
@@ -46,7 +48,7 @@ public class BreathSpell implements Action {
                 Direction.N); // dummy
         for (int radius = 1; radius <= spellParams.size; radius++) {
             List<Point> effectSquares = getBreathArea(gs, actor.loc, target, radius);
-            events.add(GameEventOld.Effect(new DungeonEffect(effectName, effectSquares)));
+            events.add(new Effect(new DungeonEffect(effectName, effectSquares)));
         }
 
         // hit everything in the large area once
@@ -59,11 +61,13 @@ public class BreathSpell implements Action {
         for (Point s : hitSquares) {
             Actor m = gs.getCurrentMap().actorAt(s.x, s.y);
             if (m != null) {
-                events.addAll(AttackUtils.doHit(backend, actor, m, hitParams));
+                events.add(new Hit(actor, m, hitParams));
             }
         }
 
-        events.add(GameEventOld.DungeonUpdated());
+        // clear out last effect.
+        // TODO: should this be new dungeonupdated?
+        events.add(new Effect(new DungeonEffect(Collections.emptyList())));
         return ActionResult.Succeeded(events);
     }
 

@@ -24,8 +24,9 @@ public class SpellAction implements Action {
             return ActionResult.Failed(null);
         }
 
+        // Use the mana, then requeue the actual spell action.
         actor.useMana(params.requiredMana);
-        return action.process(backend);
+        return ActionResult.Failed(action);
     }
 
     @Override

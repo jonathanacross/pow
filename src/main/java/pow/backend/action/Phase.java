@@ -3,15 +3,16 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
+import pow.backend.event.Effect;
 import pow.backend.event.GameEvent;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEventOld;
 import pow.util.Direction;
 import pow.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Phase implements Action {
@@ -66,17 +67,15 @@ public class Phase implements Action {
                     Direction.N); // dummy
             List<Point> arcPoints = SpellUtils.createArc(actor.loc, targetLoc);
             for (Point p : arcPoints) {
-                events.add(GameEventOld.Effect(new DungeonEffect(effectName, p)));
+                events.add(new Effect(new DungeonEffect(effectName, p)));
             }
 
-            actor.loc = targetLoc;
-            if (actor == gs.party.selectedActor) {
-                gs.party.player.target.clear();
-                gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
-            }
-            backend.logMessage(actor.getNoun() + " phases.", MessageLog.MessageType.GENERAL);
+            pow.backend.event.Phase phaseEvent = new pow.backend.event.Phase(actor, targetLoc);
+            events.add(phaseEvent);
 
-            events.add(GameEventOld.DungeonUpdated());
+            // clear out last effect.
+            // TODO: should this be new dungeonupdated?
+            events.add(new Effect(new DungeonEffect(Collections.emptyList())));
         }
         return ActionResult.Succeeded(events);
     }

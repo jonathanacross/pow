@@ -5,9 +5,9 @@ import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.event.GameEvent;
+import pow.backend.event.Hit;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
-import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class Attack implements Action {
                     events.addAll(target.conditions.get(ConditionTypes.STUN).start(backend, duration, intensity, attacker));
                 }
 
-                events.addAll(AttackUtils.doHit(backend, attacker, target, new AttackUtils.HitParams(damage)));
+                events.add(new Hit(attacker, target, new AttackUtils.HitParams(damage)));
             }
         }
         return ActionResult.Succeeded(events);

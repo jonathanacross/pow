@@ -151,8 +151,7 @@ public class Frontend {
 
         // Remove the current effect from our list to draw so that the
         // next one will display.
-
-        if (! events.isEmpty()) {
+        while (! events.isEmpty()) {
             boolean needsUpdate = processEvent(events.get(0));
             events.remove(0);
             if (needsUpdate) {

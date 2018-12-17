@@ -1,16 +1,18 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.event.Effect;
 import pow.backend.event.GameEvent;
+import pow.backend.event.Hit;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEventOld;
 import pow.util.Direction;
 import pow.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class QuakeSpell implements Action {
@@ -42,16 +44,18 @@ public class QuakeSpell implements Action {
                 Actor target = gs.getCurrentMap().actorAt(p.x, p.y);
                 return (target != null) && (target.friendly == actor.friendly);
             } );
-            events.add(GameEventOld.Effect(new DungeonEffect(effectName, hitSquares)));
+            events.add(new Effect(new DungeonEffect(effectName, hitSquares)));
             for (Point s : hitSquares) {
                 Actor m = gs.getCurrentMap().actorAt(s.x, s.y);
                 if (m != null) {
-                    events.addAll(AttackUtils.doHit(backend, actor, m, hitParams));
+                    events.add(new Hit(actor, m, hitParams));
                 }
             }
         }
 
-        events.add(GameEventOld.DungeonUpdated());
+        // clear out last effect.
+        // TODO: should this be new dungeonupdated?
+        events.add(new Effect(new DungeonEffect(Collections.emptyList())));
         return ActionResult.Succeeded(events);
     }
 

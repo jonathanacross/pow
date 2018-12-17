@@ -3,7 +3,6 @@ package pow.backend.conditions;
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 
 import java.io.Serializable;
 import java.util.ArrayList;

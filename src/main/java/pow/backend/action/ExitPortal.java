@@ -5,7 +5,6 @@ import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.gen.Constants;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 import pow.util.Point;
 
 import java.util.ArrayList;

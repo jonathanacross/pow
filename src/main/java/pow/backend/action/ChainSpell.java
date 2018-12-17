@@ -1,18 +1,16 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.event.Effect;
 import pow.backend.event.GameEvent;
+import pow.backend.event.Hit;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEventOld;
 import pow.util.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ChainSpell implements Action {
 
@@ -73,18 +71,20 @@ public class ChainSpell implements Action {
             for (Point p : ray) {
                 Actor defender = map.actorAt(p.x, p.y);
                 if (defender != null) {
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+                    events.add(new Hit(attacker, defender, hitParams));
                     excluded.add(defender.loc);
                     break;
                 }
                 if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
                 if (map.map[p.x][p.y].blockAir()) break;
-                events.add(GameEventOld.Effect(new DungeonEffect(effectId, p)));
+                events.add(new Effect(new DungeonEffect(effectId, p)));
             }
 
             curr = target;
         }
-        events.add(GameEventOld.DungeonUpdated());
+        // clear out last effect.
+        // TODO: should this be new dungeonupdated?
+        events.add(new Effect(new DungeonEffect(Collections.emptyList())));
 
         return ActionResult.Succeeded(events);
     }

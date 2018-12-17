@@ -1,20 +1,18 @@
 package pow.backend.action;
 
 import pow.backend.*;
+import pow.backend.event.Effect;
 import pow.backend.event.GameEvent;
+import pow.backend.event.Hit;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEventOld;
 import pow.util.Direction;
 import pow.util.Metric;
 import pow.util.Point;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CircleCut implements Action {
 
@@ -61,13 +59,15 @@ public class CircleCut implements Action {
                     MessageLog.MessageType messageType = defender.friendly
                             ? MessageLog.MessageType.COMBAT_BAD
                             : MessageLog.MessageType.COMBAT_GOOD;
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+                    events.add(new Hit(attacker, defender, hitParams));
                 }
             }
-            events.add(GameEventOld.Effect(new DungeonEffect(effectId, squares)));
+            events.add(new Effect(new DungeonEffect(effectId, squares)));
         }
 
-        events.add(GameEventOld.DungeonUpdated());
+        // clear out last effect.
+        // TODO: should this be new dungeonupdated?
+        events.add(new Effect(new DungeonEffect(Collections.emptyList())));
 
         return ActionResult.Succeeded(events);
     }
