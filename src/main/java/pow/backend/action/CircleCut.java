@@ -69,7 +69,7 @@ public class CircleCut implements Action {
         // TODO: should this be new dungeonupdated?
         events.add(new Effect(new DungeonEffect(Collections.emptyList())));
 
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

@@ -12,7 +12,7 @@ public class Log implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        return ActionResult.Succeeded(Collections.singletonList(GameEventOld.LogUpdate()));
+        return ActionResult.succeeded(Collections.singletonList(GameEventOld.LogUpdate()));
     }
 
     @Override

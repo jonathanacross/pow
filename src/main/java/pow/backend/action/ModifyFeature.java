@@ -28,7 +28,7 @@ public class ModifyFeature implements Action {
         map.map[loc.x][loc.y].feature = newFeature;
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEventOld.DungeonUpdated());
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

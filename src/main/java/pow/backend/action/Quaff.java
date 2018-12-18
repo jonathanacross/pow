@@ -31,7 +31,7 @@ public class Quaff implements Action {
         DungeonItem item = itemList.items.get(itemIdx);
         if (!item.flags.potion) {
             DebugLogger.fatal(new RuntimeException(actor.getNoun() + " tried to quaff a non-potion, " + item.name));
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
 
         // get the real action from the potion and do it

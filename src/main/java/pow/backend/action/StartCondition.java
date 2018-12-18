@@ -30,7 +30,7 @@ public class StartCondition implements Action {
             events.addAll(actor.conditions.get(conditionType).start(backend, turnCount, bonus, null));
         }
         events.add(GameEventOld.DungeonUpdated());
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

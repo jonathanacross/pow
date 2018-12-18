@@ -35,7 +35,7 @@ public class GroupHeal implements Action {
         if (party.pet != null) {
             healOne(party.pet, this.amount, backend);
         }
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

@@ -50,7 +50,7 @@ public class Drop implements Action {
         }
         backend.logMessage(actor.getNoun() + " drops " + TextUtils.format(item.name, numToDrop, true),
                 MessageLog.MessageType.GENERAL);
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

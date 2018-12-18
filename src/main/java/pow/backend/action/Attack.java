@@ -54,7 +54,7 @@ public class Attack implements Action {
                 events.add(new Hit(attacker, target, new AttackUtils.HitParams(damage)));
             }
         }
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

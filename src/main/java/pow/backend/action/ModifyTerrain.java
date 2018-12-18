@@ -28,7 +28,7 @@ public class ModifyTerrain implements Action {
         map.map[loc.x][loc.y].terrain = newTerrain;
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEventOld.DungeonUpdated());
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

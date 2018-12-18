@@ -75,7 +75,7 @@ public class Arrow implements Action {
         events.add(new Effect(new DungeonEffect(Collections.emptyList())));
         //events.add(GameEventOld.DungeonUpdated());
 
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

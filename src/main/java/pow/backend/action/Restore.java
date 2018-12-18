@@ -32,7 +32,7 @@ public class Restore implements Action {
         int mpAmount = actor.increaseMana(this.amount);
         backend.logMessage(actor.getNoun() + " restores " + hpAmount + " health and " + mpAmount + " mana",
                 MessageLog.MessageType.GENERAL);
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

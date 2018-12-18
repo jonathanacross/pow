@@ -33,10 +33,10 @@ public class Swap implements Action {
             backend.logMessage(first.getNoun() + " and " + second.getNoun() + " swap places",
                     MessageLog.MessageType.GENERAL);
             events.add(GameEventOld.Moved());
-            return ActionResult.Succeeded(events);
+            return ActionResult.succeeded(events);
         } else {
             // tried to swap self.
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
     }
 

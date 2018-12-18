@@ -38,7 +38,7 @@ public class PickUp implements Action {
         DungeonSquare square = gs.getCurrentMap().map[actor.loc.x][actor.loc.y];
         if (square.items.size() == 0) {
             backend.logMessage(actor.getNoun() + " can't pick up anything here.", MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
 
         DungeonItem item = square.items.items.get(itemNum);
@@ -48,14 +48,14 @@ public class PickUp implements Action {
             square.items.items.remove(itemNum);
             backend.logMessage(actor.getNoun() + " picks up " + TextUtils.format(item.name, numToAdd, true),
                     MessageLog.MessageType.GENERAL);
-            return ActionResult.Succeeded(events);
+            return ActionResult.succeeded(events);
         }
 
         // special case for artifacts
         if (item.artifactSlot != DungeonItem.ArtifactSlot.NONE) {
             if (actor != gs.party.player) {
                 // don't let another monster pick up key game items. :)
-                return ActionResult.Failed(null);
+                return ActionResult.failed();
             }
             // at this point we know that it's the player picking up the artifact
             events.addAll(gs.party.addArtifact(item));
@@ -77,13 +77,13 @@ public class PickUp implements Action {
                     backend.logMessage("The pet statue glows as " + gs.party.player.getNoun() + " picks it up.", MessageLog.MessageType.GAME_EVENT);
                 }
             }
-            return ActionResult.Succeeded(events);
+            return ActionResult.succeeded(events);
         }
 
         int numCanGet = Math.min(actor.inventory.numCanAdd(item), item.count);
         if (numCanGet <= 0) {
             backend.logMessage(actor.getNoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
 
         numToAdd = Math.min(numToAdd, numCanGet); // make sure we don't add more than we are able!
@@ -100,7 +100,7 @@ public class PickUp implements Action {
         }
         backend.logMessage(actor.getNoun() + " picks up " + TextUtils.format(item.name, numToAdd, true),
                 MessageLog.MessageType.GENERAL);
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

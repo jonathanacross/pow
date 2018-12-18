@@ -21,12 +21,12 @@ public class SpellAction implements Action {
         if (actor.getMana() < params.requiredMana) {
             backend.logMessage(actor.getNoun() + " doesn't have enough mana.",
                     MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
 
         // Use the mana, then requeue the actual spell action.
         actor.useMana(params.requiredMana);
-        return ActionResult.Failed(action);
+        return ActionResult.failed(action);
     }
 
     @Override

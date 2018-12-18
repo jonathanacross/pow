@@ -54,7 +54,7 @@ public class Move implements Action {
 
         // just stay still
         if (dx == 0 && dy == 0) {
-            return ActionResult.Succeeded(addEvents(backend));
+            return ActionResult.succeeded(addEvents(backend));
         }
 
         int newx = actor.loc.x + dx;
@@ -71,12 +71,12 @@ public class Move implements Action {
                     DungeonExit exit = new DungeonExit(currSquareTerrain.actionParams.name);
                     String targetArea = exit.areaId;
                     Point targetLoc = gs.world.world.get(exit.areaId).keyLocations.get(exit.locName);
-                    return ActionResult.Failed(new GotoArea(targetArea, targetLoc));
+                    return ActionResult.failed(new GotoArea(targetArea, targetLoc));
                 }
             }
 
             backend.logMessage(actor.getNoun() + " can't go that way", MessageLog.MessageType.DEBUG);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
 
         // Check if we should attack
@@ -84,11 +84,11 @@ public class Move implements Action {
         if (defender != null) {
             if (!defender.friendly)  {
                 // attack
-                return ActionResult.Failed(new Attack(this.actor, defender));
+                return ActionResult.failed(new Attack(this.actor, defender));
             }
             else {
                 // friendly, swap positions
-                return ActionResult.Failed(new Swap(this.actor, defender));
+                return ActionResult.failed(new Swap(this.actor, defender));
             }
         }
 
@@ -99,7 +99,7 @@ public class Move implements Action {
                 ActionParams params = new ActionParams(terrain.actionParams);
                 params.point = loc;
                 Action newAction = ActionParams.buildAction(this.actor, params);
-                return ActionResult.Failed(newAction);
+                return ActionResult.failed(newAction);
             }
         }
 
@@ -112,13 +112,13 @@ public class Move implements Action {
                 String targetArea = exit.areaId;
                 Point targetLoc = gs.world.world.get(exit.areaId).keyLocations.get(exit.locName);
                 Point adjustedTargetLoc = new Point(targetLoc.x + dx, targetLoc.y + dy);
-                return ActionResult.Failed(new GotoArea(targetArea, adjustedTargetLoc));
+                return ActionResult.failed(new GotoArea(targetArea, adjustedTargetLoc));
             } else {
                 Point loc = new Point(newx, newy);
                 ActionParams params = new ActionParams(feature.actionParams);
                 params.point = loc;
                 Action newAction = ActionParams.buildAction(this.actor, params);
-                return ActionResult.Failed(newAction);
+                return ActionResult.failed(newAction);
             }
         }
 
@@ -134,10 +134,10 @@ public class Move implements Action {
                 // out of visibility range.
                 p.target.update(gs, p);
             }
-            return ActionResult.Succeeded(addEvents(backend));
+            return ActionResult.succeeded(addEvents(backend));
         } else {
             backend.logMessage(actor.getNoun() + " can't go that way", MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
     }
 

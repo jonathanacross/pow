@@ -26,7 +26,7 @@ public class EnterShop implements Action {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEventOld.InStore());  // trigger the frontend to pop open a window to see what to do.
 
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

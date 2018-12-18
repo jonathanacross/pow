@@ -51,7 +51,7 @@ public class DebugAction implements Action {
         }
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEventOld.DungeonUpdated());
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

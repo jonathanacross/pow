@@ -34,7 +34,7 @@ public class CallPet implements Action {
         if (party.pet == null) {
             backend.logMessage(party.player.getNoun() + " doesn't have a pet.",
                     MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Succeeded(events);
+            return ActionResult.succeeded(events);
         }
 
         // Find squares we can phase to.
@@ -42,7 +42,7 @@ public class CallPet implements Action {
         if (targetLoc == null) {
             backend.logMessage("there is no place nearby for " + party.pet.getNoun() + " to phase to.",
                     MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Succeeded(events);
+            return ActionResult.succeeded(events);
         }
 
         String effectName = DungeonEffect.getEffectName(
@@ -59,7 +59,7 @@ public class CallPet implements Action {
         // clear out last effect.
         // TODO: should this be new dungeonupdated?
         events.add(new Effect(new DungeonEffect(Collections.emptyList())));
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

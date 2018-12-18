@@ -28,13 +28,13 @@ public class ExitPortal implements Action {
 
         // If no area given, then exit back at current area.
         if (areaId == null || areaId.isEmpty()) {
-            return ActionResult.Succeeded(events);
+            return ActionResult.succeeded(events);
         }
 
         Point targetLoc = backend.getGameState().world.world.get(areaId).keyLocations.get(Constants.PORTAL_KEY_LOCATION_ID);
         //Point adjustedTargetLoc = new Point(targetLoc.x + dx, targetLoc.y + dy);
         backend.logMessage(actor.getNoun() + " feels time and space bending...", MessageLog.MessageType.USER_ERROR);
-        return ActionResult.Failed(new GotoArea(areaId, targetLoc));
+        return ActionResult.failed(new GotoArea(areaId, targetLoc));
     }
 
     @Override

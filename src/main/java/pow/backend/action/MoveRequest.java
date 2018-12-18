@@ -35,10 +35,10 @@ public class MoveRequest implements Action {
         if (actor.isConfused()) {
             int confuseDx = gs.rng.nextInt(3) - 1;
             int confuseDy = gs.rng.nextInt(3) - 1;
-            return ActionResult.Failed(new Move(this.actor, confuseDx, confuseDy, pause));
+            return ActionResult.failed(new Move(this.actor, confuseDx, confuseDy, pause));
         }
         else {
-            return ActionResult.Failed(new Move(this.actor, dx, dy, pause));
+            return ActionResult.failed(new Move(this.actor, dx, dy, pause));
         }
     }
 

@@ -34,13 +34,13 @@ public class BuyItem implements Action {
         int totalCost = entry.price * count;
         if (player.gold < totalCost) {
             backend.logMessage(player.getNoun() + " does not have enough money.", MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
         DungeonItem item = entry.item;
         int numCanGet = Math.min(player.inventory.numCanAdd(item), item.count);
         if (numCanGet <= 0) {
             backend.logMessage(player.getNoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
 
         player.gold -= totalCost;
@@ -60,7 +60,7 @@ public class BuyItem implements Action {
 
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEventOld.DungeonUpdated());
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

@@ -56,7 +56,7 @@ public class QuakeSpell implements Action {
         // clear out last effect.
         // TODO: should this be new dungeonupdated?
         events.add(new Effect(new DungeonEffect(Collections.emptyList())));
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

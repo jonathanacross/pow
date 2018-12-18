@@ -43,33 +43,29 @@ public class GameBackend {
         gameState.gameInProgress = gameInProgress;
     }
 
-    private List<GameEvent> processCommands(Deque<Action> commandQueue) {
+    private List<GameEvent> processCommand(Deque<Action> commandQueue) {
         List<GameEvent> events = new ArrayList<>();
 
-        // find alternate commands, if needed
-        Action command = commandQueue.peek();
+        Action command = commandQueue.removeFirst();
         ActionResult result = command.process(this);
-        while (result.alternate != null) {
-            commandQueue.removeFirst();  // replace action with alternate
-            commandQueue.addFirst(result.alternate);
-            command = commandQueue.peek();
-            result = command.process(this);
-        }
+        events.addAll(result.events);
 
-        if (result.done) {
-            commandQueue.removeFirst();
+        List<Action> derivedActions = new ArrayList(result.derivedActions);
 
-            if (result.succeeded && command.consumesEnergy()) {
-                command.getActor().energy.spend();
-                gameState.getCurrentMap().advanceActor();
-            }
+        if (result.succeeded && command.consumesEnergy()) {
+            command.getActor().energy.spend();
+            gameState.getCurrentMap().advanceActor();
 
             // update background things every time player takes a turn
             if (command.getActor() == gameState.party.player) {
                 events.addAll(updateBackgroundThings());
             }
         }
-        events.addAll(result.events);
+
+        // Add all the elements to the head of the commandQueue.
+        for (int i = derivedActions.size() - 1; i >=0; i--) {
+            commandQueue.addFirst(derivedActions.get(i));
+        }
 
         return events;
     }
@@ -128,7 +124,7 @@ public class GameBackend {
 
             // process any ongoing/pending actions
             while (!commandQueue.isEmpty()) {
-                eventQueue.addAll(processCommands(commandQueue));
+                eventQueue.addAll(processCommand(commandQueue));
             }
 
             // at this point, we've processed all pending actions, so advance
