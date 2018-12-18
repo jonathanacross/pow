@@ -1,26 +1,24 @@
-package pow.backend.event;
+package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
+import pow.backend.event.GameEventOld;
 import pow.util.Point;
 
-import java.util.Collections;
-import java.util.List;
-
-public class Phase implements GameEvent {
+public class PhaseImpl implements Action {
 
     private final Actor actor;
     private final Point targetLoc;
 
-    public Phase(Actor actor, Point targetLoc) {
+    public PhaseImpl(Actor actor, Point targetLoc) {
         this.actor = actor;
         this.targetLoc = targetLoc;
     }
 
     @Override
-    public List<GameEvent> process(GameBackend backend) {
+    public ActionResult process(GameBackend backend) {
         actor.loc = targetLoc;
         GameState gs = backend.getGameState();
         if (actor == gs.party.player) {
@@ -31,16 +29,16 @@ public class Phase implements GameEvent {
             gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
         }
         backend.logMessage(actor.getNoun() + " phases.", MessageLog.MessageType.GENERAL);
-        return Collections.emptyList();
+        return ActionResult.succeeded(GameEventOld.DungeonUpdated());
     }
 
     @Override
-    public EventType getEventType() {
-        return EventType.DUNGEON_UPDATED;
+    public boolean consumesEnergy() {
+        return true;
     }
 
     @Override
-    public boolean showUpdate() {
-        return false;
+    public Actor getActor() {
+        return actor;
     }
 }

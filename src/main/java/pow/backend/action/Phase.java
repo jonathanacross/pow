@@ -3,8 +3,6 @@ package pow.backend.action;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
-import pow.backend.event.Effect;
-import pow.backend.event.GameEvent;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
@@ -28,7 +26,8 @@ public class Phase implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        List<GameEvent> events = new ArrayList<>();
+        List<Action> subactions = new ArrayList<>();
+        //List<GameEvent> events = new ArrayList<>();
 
         // Find squares we can phase to.
         // Legal locations appear in a square annulus centered on the player
@@ -67,22 +66,22 @@ public class Phase implements Action {
                     Direction.N); // dummy
             List<Point> arcPoints = SpellUtils.createArc(actor.loc, targetLoc);
             for (Point p : arcPoints) {
-                events.add(new Effect(new DungeonEffect(effectName, p)));
+                subactions.add(new ShowEffect(new DungeonEffect(effectName, p)));
             }
 
-            pow.backend.event.Phase phaseEvent = new pow.backend.event.Phase(actor, targetLoc);
-            events.add(phaseEvent);
+            PhaseImpl phase = new PhaseImpl(actor, targetLoc);
+            subactions.add(phase);
 
             // clear out last effect.
             // TODO: should this be new dungeonupdated?
-            events.add(new Effect(new DungeonEffect(Collections.emptyList())));
+            subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
         }
-        return ActionResult.succeeded(events);
+        return ActionResult.failed(subactions);
     }
 
     @Override
     public boolean consumesEnergy() {
-        return true;
+        return false;
     }
 
     @Override

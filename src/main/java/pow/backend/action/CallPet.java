@@ -4,12 +4,10 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.Party;
-import pow.backend.event.Effect;
 import pow.backend.event.GameEvent;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.Phase;
 import pow.util.Direction;
 import pow.util.Point;
 
@@ -28,6 +26,7 @@ public class CallPet implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
+        List<Action> subactions = new ArrayList<>();
         List<GameEvent> events = new ArrayList<>();
 
         Party party = gs.party;
@@ -51,15 +50,15 @@ public class CallPet implements Action {
                 Direction.N); // dummy
         List<Point> arcPoints = SpellUtils.createArc(party.pet.loc, targetLoc);
         for (Point p : arcPoints) {
-            events.add(new Effect(new DungeonEffect(effectName, p)));
+            subactions.add(new ShowEffect(new DungeonEffect(effectName, p)));
         }
 
-        events.add(new Phase(party.pet, targetLoc));
+        subactions.add(new PhaseImpl(party.pet, targetLoc));
 
         // clear out last effect.
         // TODO: should this be new dungeonupdated?
-        events.add(new Effect(new DungeonEffect(Collections.emptyList())));
-        return ActionResult.succeeded(events);
+        subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+        return ActionResult.failed(subactions);
     }
 
     @Override

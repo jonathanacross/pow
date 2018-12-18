@@ -49,6 +49,6 @@ public class GameEventOld implements GameEvent {
     public static GameEvent InStore() { return new GameEventOld(GameEvent.EventType.IN_STORE, null); }
     public static GameEvent InPortal() { return new GameEventOld(GameEvent.EventType.IN_PORTAL, null); }
     public static GameEvent DungeonUpdated() { return new GameEventOld(GameEvent.EventType.DUNGEON_UPDATED, null); }
-    public static GameEvent Effect(DungeonEffect effect) { return new GameEventOld(GameEvent.EventType.EFFECT, effect); }
+    public static GameEvent Effect(DungeonEffect effect) { return new GameEventOld(GameEvent.EventType.EFFECT, effect, true); }
     public static GameEvent UserInput() { return new GameEventOld(EventType.WAITING_USER_INPUT, null, true); }
 }

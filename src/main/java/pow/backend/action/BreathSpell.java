@@ -4,9 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.SpellParams;
-import pow.backend.event.Effect;
 import pow.backend.event.GameEvent;
-import pow.backend.event.Hit;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
@@ -36,7 +34,7 @@ public class BreathSpell implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        List<GameEvent> events = new ArrayList<>();
+        List<Action> subactions = new ArrayList<>();
 
         backend.logMessage(actor.getNoun() + " breathes" +
                 AttackUtils.getDamageTypeString(spellParams.element), MessageLog.MessageType.COMBAT_NEUTRAL);
@@ -48,7 +46,7 @@ public class BreathSpell implements Action {
                 Direction.N); // dummy
         for (int radius = 1; radius <= spellParams.size; radius++) {
             List<Point> effectSquares = getBreathArea(gs, actor.loc, target, radius);
-            events.add(new Effect(new DungeonEffect(effectName, effectSquares)));
+            subactions.add(new ShowEffect(new DungeonEffect(effectName, effectSquares)));
         }
 
         // hit everything in the large area once
@@ -61,14 +59,14 @@ public class BreathSpell implements Action {
         for (Point s : hitSquares) {
             Actor m = gs.getCurrentMap().actorAt(s.x, s.y);
             if (m != null) {
-                events.add(new Hit(actor, m, hitParams));
+                subactions.add(new Hit(actor, m, hitParams));
             }
         }
 
         // clear out last effect.
         // TODO: should this be new dungeonupdated?
-        events.add(new Effect(new DungeonEffect(Collections.emptyList())));
-        return ActionResult.succeeded(events);
+        subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+        return ActionResult.failed(subactions);
     }
 
     private static List<Point> getBreathArea(GameState gameState, Point center, Point target, int radius) {

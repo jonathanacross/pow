@@ -1,9 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.*;
-import pow.backend.event.Effect;
 import pow.backend.event.GameEvent;
-import pow.backend.event.Hit;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
@@ -36,7 +34,7 @@ public class BoltSpell implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        List<GameEvent> events = new ArrayList<>();
+        List<Action> subactions = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
         backend.logMessage(attacker.getNoun() + " casts a" +
@@ -53,17 +51,17 @@ public class BoltSpell implements Action {
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null && defender.friendly != attacker.friendly) {
-                events.add(new Hit(attacker, defender, hitParams));
+                subactions.add(new Hit(attacker, defender, hitParams));
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
             if (map.map[p.x][p.y].blockAir()) break;
-            events.add(new Effect(new DungeonEffect(effectId, p)));
+            subactions.add(new ShowEffect(new DungeonEffect(effectId, p)));
         }
 
         // clear out last effect.
         // TODO: should this be new dungeonupdated?
-        events.add(new Effect(new DungeonEffect(Collections.emptyList())));
-        return ActionResult.succeeded(events);
+        subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+        return ActionResult.failed(subactions);
     }
 
     @Override

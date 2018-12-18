@@ -123,7 +123,7 @@ public class GameBackend {
             }
 
             // process any ongoing/pending actions
-            while (!commandQueue.isEmpty()) {
+            if (!commandQueue.isEmpty()) {
                 eventQueue.addAll(processCommand(commandQueue));
             }
 

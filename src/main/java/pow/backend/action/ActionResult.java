@@ -19,6 +19,14 @@ public class ActionResult {
         return new ActionResult(events, Collections.emptyList(), true);
     }
 
+    public static ActionResult succeeded(GameEvent event) {
+        return new ActionResult(Arrays.asList(event), Collections.emptyList(), true);
+    }
+
+    public static ActionResult succeeded() {
+        return new ActionResult(Collections.emptyList(), Collections.emptyList(), true);
+    }
+
     public static ActionResult failed(List<Action> derivedActions) {
         return new ActionResult(Collections.emptyList(), derivedActions, false);
     }

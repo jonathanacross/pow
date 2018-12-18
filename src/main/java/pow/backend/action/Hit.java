@@ -1,0 +1,39 @@
+package pow.backend.action;
+
+import pow.backend.GameBackend;
+import pow.backend.actors.Actor;
+import pow.backend.event.GameEvent;
+import pow.backend.utils.AttackUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Hit implements Action {
+
+    private Actor attacker;
+    private Actor defender;
+    private AttackUtils.HitParams hitParams;
+
+    public Hit(Actor attacker, Actor defender, AttackUtils.HitParams hitParams) {
+        this.attacker = attacker;
+        this.defender = defender;
+        this.hitParams = hitParams;
+    }
+
+    @Override
+    public ActionResult process(GameBackend backend) {
+        List<GameEvent> events = new ArrayList<>();
+        events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+        return ActionResult.succeeded(events);
+    }
+
+    @Override
+    public boolean consumesEnergy() {
+        return true;
+    }
+
+    @Override
+    public Actor getActor() {
+        return attacker;
+    }
+}
