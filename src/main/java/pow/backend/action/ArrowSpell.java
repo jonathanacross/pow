@@ -64,9 +64,12 @@ public class ArrowSpell implements Action {
         // clear out last effect.
         // TODO: should this be new dungeonupdated?
         subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+        subactions.add(new CompletedAction(attacker));
         return ActionResult.failed(subactions);
     }
 
     @Override
-    public boolean consumesEnergy() { return true; }
+    public boolean consumesEnergy() {
+        return true;
+    }
 }

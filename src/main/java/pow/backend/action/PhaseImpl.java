@@ -9,10 +9,12 @@ import pow.util.Point;
 
 public class PhaseImpl implements Action {
 
+    private final Actor caller;
     private final Actor actor;
     private final Point targetLoc;
 
-    public PhaseImpl(Actor actor, Point targetLoc) {
+    public PhaseImpl(Actor caller, Actor actor, Point targetLoc) {
+        this.caller = caller;
         this.actor = actor;
         this.targetLoc = targetLoc;
     }
@@ -34,11 +36,13 @@ public class PhaseImpl implements Action {
 
     @Override
     public boolean consumesEnergy() {
-        return true;
+        // While phasing should use energy, this is called only as a subaction;
+        // the source action should call CompleteAction to use energy.
+        return false;
     }
 
     @Override
     public Actor getActor() {
-        return actor;
+        return caller;
     }
 }

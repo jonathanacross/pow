@@ -27,7 +27,6 @@ public class Phase implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         List<Action> subactions = new ArrayList<>();
-        //List<GameEvent> events = new ArrayList<>();
 
         // Find squares we can phase to.
         // Legal locations appear in a square annulus centered on the player
@@ -69,19 +68,20 @@ public class Phase implements Action {
                 subactions.add(new ShowEffect(new DungeonEffect(effectName, p)));
             }
 
-            PhaseImpl phase = new PhaseImpl(actor, targetLoc);
+            PhaseImpl phase = new PhaseImpl(actor, actor, targetLoc);
             subactions.add(phase);
 
             // clear out last effect.
             // TODO: should this be new dungeonupdated?
             subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+            subactions.add(new CompletedAction(actor));
         }
         return ActionResult.failed(subactions);
     }
 
     @Override
     public boolean consumesEnergy() {
-        return false;
+        return true;
     }
 
     @Override

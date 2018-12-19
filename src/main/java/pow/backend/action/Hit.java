@@ -29,7 +29,9 @@ public class Hit implements Action {
 
     @Override
     public boolean consumesEnergy() {
-        return true;
+        // This is called only as a subaction, so this should
+        // be followed by another "CompletedAction" to consume energy.
+        return false;
     }
 
     @Override

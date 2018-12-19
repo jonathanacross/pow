@@ -30,9 +30,7 @@ public class SpellAction implements Action {
     }
 
     @Override
-    public boolean consumesEnergy() {
-        return action.consumesEnergy();
-    }
+    public boolean consumesEnergy() { return true; }
 
     @Override
     public Actor getActor() {

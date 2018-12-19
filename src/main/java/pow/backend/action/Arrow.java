@@ -71,6 +71,7 @@ public class Arrow implements Action {
         // TODO: should this be new dungeonupdated?
         subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
         //events.add(GameEventOld.DungeonUpdated());
+        subactions.add(new CompletedAction(attacker));
         return ActionResult.failed(subactions);
     }
 
