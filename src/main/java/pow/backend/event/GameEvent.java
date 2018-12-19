@@ -1,27 +1,28 @@
 package pow.backend.event;
 
-import pow.backend.GameBackend;
+public enum GameEvent {
+   LOG_UPDATE(false),
+   MOVED(false),
+   ATTACKED(false),
+   KILLED(false),
+   WON_GAME(false),  // triggers window to show game won
+   LOST_GAME(false), // triggers window to show game lost
+   GOT_PET(false),   // triggers window to choose pet
+   IN_STORE(false),  // triggers window to buy item
+   HEALED(false),
+   DUNGEON_UPDATED(false),
+   EFFECT(true),    // triggers delay while drawing
+   IN_PORTAL(false), // triggers window to choose portal
+   WAITING_USER_INPUT(true),
+   UPDATE_NEED_REDRAW(true);
 
-import java.util.List;
+    private boolean showUpdate;
 
-public interface GameEvent {
-    public enum EventType {
-        LOG_UPDATE,
-        MOVED,
-        ATTACKED,
-        KILLED,
-        WON_GAME,  // * triggers window to show game won
-        LOST_GAME, // * triggers window to show game lost
-        GOT_PET,   // * triggers window to choose pet
-        IN_STORE,  // * triggers window to buy item
-        HEALED,
-        DUNGEON_UPDATED,
-        EFFECT,    // * triggers delay while drawing
-        IN_PORTAL, // * triggers window to choose portal
-        WAITING_USER_INPUT,
+    GameEvent(boolean showUpdate) {
+        this.showUpdate = showUpdate;
     }
 
-    public List<GameEvent> process(GameBackend backend);
-    public EventType getEventType();
-    public boolean showUpdate();
+    public boolean showUpdate() {
+        return this.showUpdate;
+    }
 }

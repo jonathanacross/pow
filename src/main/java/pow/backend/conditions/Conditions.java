@@ -3,7 +3,6 @@ package pow.backend.conditions;
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -30,7 +29,7 @@ public class Conditions {
             // Moreover, if maxHealth decreases, this ensures current health doesn't
             // stay larger than maxHealth.
             actor.increaseHealth(Math.max(delta, 0));
-            return Collections.singletonList(GameEventOld.DungeonUpdated());
+            return Collections.singletonList(GameEvent.DUNGEON_UPDATED);
         }
     }
 

@@ -5,7 +5,6 @@ import pow.backend.GameMap;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 import pow.util.Point;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class UnlockDoor implements Action {
         GameMap map = backend.getGameState().getCurrentMap();
         map.map[loc.x][loc.y].feature = newFeature;
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEventOld.DungeonUpdated());
+        events.add(GameEvent.DUNGEON_UPDATED);
         return ActionResult.succeeded(events);
     }
 

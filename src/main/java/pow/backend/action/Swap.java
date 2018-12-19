@@ -4,7 +4,6 @@ import pow.backend.GameBackend;
 import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 import pow.util.Point;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class Swap implements Action {
             Point tmp = first.loc; first.loc = second.loc; second.loc = tmp;
             backend.logMessage(first.getNoun() + " and " + second.getNoun() + " swap places",
                     MessageLog.MessageType.GENERAL);
-            events.add(GameEventOld.Moved());
+            events.add(GameEvent.MOVED);
             return ActionResult.succeeded(events);
         } else {
             // tried to swap self.

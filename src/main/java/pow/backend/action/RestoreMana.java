@@ -4,7 +4,6 @@ import pow.backend.GameBackend;
 import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class RestoreMana implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEventOld.Healed());
+        events.add(GameEvent.HEALED);
 
         int restoreAmount = actor.increaseMana(this.amount);
         backend.logMessage(actor.getNoun() + " restores " + restoreAmount + " mana", MessageLog.MessageType.GENERAL);

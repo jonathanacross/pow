@@ -6,7 +6,6 @@ import pow.backend.ShopData;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,7 @@ public class RestAtInn implements Action {
             // save the game!
             backend.tellSelectedActor(new Save());
 
-            events.add(GameEventOld.DungeonUpdated());
+            events.add(GameEvent.DUNGEON_UPDATED);
             return ActionResult.succeeded(events);
         } else {
             backend.logMessage(player.getNoun() + " does not have enough money.", MessageLog.MessageType.USER_ERROR);

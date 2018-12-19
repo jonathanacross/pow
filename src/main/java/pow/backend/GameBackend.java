@@ -7,7 +7,6 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.behavior.Behavior;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 import pow.backend.event.GameResult;
 
 import java.util.*;
@@ -82,17 +81,14 @@ public class GameBackend {
             // if waiting for input, just return
             if (actor.needsInput(gameState)) {
                 gameState.party.setSelectedActor(actor);
-                events.add(GameEventOld.UserInput());
+                events.add(GameEvent.WAITING_USER_INPUT);
             }
             else {
                 commandQueue.add(actor.act(this));
                 events.addAll(actor.conditions.update(this));
 
                 if (actor == gameState.party.selectedActor) {
-                    // TODO: not correct event, fix this.
-                    // Maybe change to effect, or new type/function to return need to
-                    // draw update.
-                    events.add(GameEventOld.UserInput());
+                    events.add(GameEvent.UPDATE_NEED_REDRAW);
                 }
             }
         }
@@ -111,8 +107,6 @@ public class GameBackend {
             // finish the existing action by processing any remaining events
             while (!eventQueue.isEmpty()) {
                 GameEvent event = eventQueue.removeFirst();
-                eventQueue.addAll(event.process(this));
-
                 gameResult.events.add(event);
 
                 // effect requiring a pause.  Return to frontend to pause for the

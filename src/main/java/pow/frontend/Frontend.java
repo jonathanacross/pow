@@ -16,9 +16,9 @@ import pow.frontend.window.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.*;
 import java.util.List;
 import java.util.Queue;
+import java.util.*;
 
 // TODO: make interface for this
 public class Frontend {
@@ -136,10 +136,11 @@ public class Frontend {
 
     // returns true if update needed.
     boolean processEvent(GameEvent event) {
-         switch (event.getEventType()) {
+        switch (event) {
             case WON_GAME: open(this.winWindow); return true;
             case LOST_GAME: open(this.loseWindow); return true;
             case EFFECT: return true;
+            case UPDATE_NEED_REDRAW: return true;
             case IN_STORE: processShopEntry(); return true;
             case IN_PORTAL: choosePortal(); return true;
             case GOT_PET: choosePet(); return true;

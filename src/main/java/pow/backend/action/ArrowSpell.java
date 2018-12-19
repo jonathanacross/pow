@@ -1,8 +1,6 @@
 package pow.backend.action;
 
 import pow.backend.*;
-import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;

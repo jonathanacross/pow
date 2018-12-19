@@ -5,16 +5,13 @@ import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.ActionParams;
 import pow.backend.actors.Player;
-import pow.backend.dungeon.DungeonEffect;
 import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.dungeon.DungeonTerrain;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 import pow.util.Point;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Move implements Action {
@@ -36,9 +33,9 @@ public class Move implements Action {
 
     private List<GameEvent> addEvents(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEventOld.Moved());
+        events.add(GameEvent.MOVED);
         if (pause) {
-            events.add(GameEventOld.Effect(new DungeonEffect(Collections.emptyList())));
+            events.add(GameEvent.EFFECT);
         }
         return events;
     }

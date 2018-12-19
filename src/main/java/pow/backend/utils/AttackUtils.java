@@ -6,7 +6,6 @@ import pow.backend.actors.Player;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +51,7 @@ public class AttackUtils {
 
         if (actor == gs.party.player) {
             gs.gameInProgress = false;
-            return GameEventOld.LostGame();
+            return GameEvent.LOST_GAME;
         }
 
         // see if this is a boss; if so, update the map so it won't regenerate
@@ -98,7 +97,7 @@ public class AttackUtils {
             gs.party.pet = null;
         }
 
-        return GameEventOld.Killed();
+        return GameEvent.KILLED;
     }
 
     public static String getDamageTypeString(SpellParams.Element element) {
@@ -134,7 +133,7 @@ public class AttackUtils {
                 : MessageLog.MessageType.COMBAT_GOOD;
         backend.logMessage(attacker.getNoun() + " hits " + defender.getNoun() + " for " + adjustedDamage + damTypeString + " damage", messageType);
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEventOld.Attacked());
+        events.add(GameEvent.ATTACKED);
         List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage, attacker);
         events.addAll(damageEvents);
 

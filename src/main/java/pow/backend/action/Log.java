@@ -2,7 +2,7 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.actors.Actor;
-import pow.backend.event.GameEventOld;
+import pow.backend.event.GameEvent;
 
 import java.util.Collections;
 
@@ -12,7 +12,7 @@ public class Log implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        return ActionResult.succeeded(Collections.singletonList(GameEventOld.LogUpdate()));
+        return ActionResult.succeeded(Collections.singletonList(GameEvent.LOG_UPDATE));
     }
 
     @Override

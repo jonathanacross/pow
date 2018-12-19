@@ -7,7 +7,6 @@ import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.event.GameEvent;
-import pow.backend.event.GameEventOld;
 import pow.util.TextUtils;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class Drop implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEventOld.DungeonUpdated());
+        events.add(GameEvent.DUNGEON_UPDATED);
 
         DungeonSquare square = gs.getCurrentMap().map[actor.loc.x][actor.loc.y];
         DungeonItem item = actor.inventory.items.get(itemNum);
