@@ -1,8 +1,6 @@
 package pow.backend;
 
-import pow.backend.action.Action;
-import pow.backend.action.ActionResult;
-import pow.backend.action.Log;
+import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.behavior.Behavior;
@@ -16,6 +14,7 @@ public class GameBackend {
     private GameState gameState;
     private final Deque<Action> commandQueue;
     private final Deque<GameEvent> eventQueue;
+    private boolean dirty;
 
     public GameState getGameState() {
         return gameState;
@@ -25,6 +24,7 @@ public class GameBackend {
         this.gameState = new GameState();
         this.commandQueue = new ArrayDeque<>();
         this.eventQueue = new ArrayDeque<>();
+        this.dirty = false;
     }
 
     public void tellSelectedActor(Action request) {
@@ -82,14 +82,13 @@ public class GameBackend {
             if (actor.needsInput(gameState)) {
                 gameState.party.setSelectedActor(actor);
                 events.add(GameEvent.WAITING_USER_INPUT);
+                if (dirty) {
+                    events.add(GameEvent.UPDATE_NEED_REDRAW);
+                }
             }
             else {
                 commandQueue.add(actor.act(this));
-                events.addAll(actor.conditions.update(this));
-
-                if (actor == gameState.party.selectedActor) {
-                    events.add(GameEvent.UPDATE_NEED_REDRAW);
-                }
+                commandQueue.add(new UpdateConditions(actor));
             }
         }
         return events;
@@ -105,9 +104,14 @@ public class GameBackend {
             }
 
             // finish the existing action by processing any remaining events
+            dirty = false;
             while (!eventQueue.isEmpty()) {
                 GameEvent event = eventQueue.removeFirst();
                 gameResult.events.add(event);
+
+                if (event != GameEvent.WAITING_USER_INPUT) {
+                    dirty = true;
+                }
 
                 // effect requiring a pause.  Return to frontend to pause for the
                 // appropriate amount of time.

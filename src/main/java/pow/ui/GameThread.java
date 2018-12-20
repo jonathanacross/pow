@@ -27,7 +27,7 @@ public class GameThread implements Runnable {
     private final Queue<KeyEvent> queue;
     private final Observer observer;
 
-    private static final int ANIMATION_DELAY_MILLIS = 20;
+    private static final int ANIMATION_DELAY_MILLIS = 5;
 
 
     public GameThread(Frontend gameFrontend, Queue<KeyEvent> queue, Observer observer) {

@@ -149,9 +149,7 @@ public class Frontend {
     }
 
     public void update() {
-
-        // Remove the current effect from our list to draw so that the
-        // next one will display.
+        // Process any remaining events, if necessary.
         while (! events.isEmpty()) {
             boolean needsUpdate = processEvent(events.get(0));
             events.remove(0);
@@ -169,8 +167,16 @@ public class Frontend {
 
         GameResult result = gameBackend.update();
         this.events.addAll(result.events);
-        if (!result.events.isEmpty()) {
-            dirty = true;
+
+        // process the events for the last result, so we can display
+        // any changes immediately.
+        while (! events.isEmpty()) {
+            boolean needsUpdate = processEvent(events.get(0));
+            events.remove(0);
+            if (needsUpdate) {
+                dirty = true;
+                return;
+            }
         }
     }
 

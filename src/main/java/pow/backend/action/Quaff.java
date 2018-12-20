@@ -34,12 +34,13 @@ public class Quaff implements Action {
             return ActionResult.failed();
         }
 
-        // get the real action from the potion and do it
         backend.logMessage(actor.getNoun() + " quaffs " + TextUtils.format(item.name, 1, false),
                 MessageLog.MessageType.GENERAL);
         itemList.removeOneItemAt(itemIdx);
+
+        // get the real action from the potion and do it
         Action action = ActionParams.buildAction(this.actor, item.actionParams);
-        return action.process(backend);
+        return ActionResult.failed(action);
     }
 
     @Override
