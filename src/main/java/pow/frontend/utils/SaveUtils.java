@@ -40,18 +40,11 @@ public class SaveUtils {
         }
     }
 
-    public static GameState readFromFile(File file) {
-        // File file = new File(SAVE_DIR, characterName);
-        GameState state = null;
-        try (
-                InputStream fis = new FileInputStream(file);
-                InputStream bis = new BufferedInputStream(fis);
-                ObjectInput input = new ObjectInputStream(bis)
-        ) {
-            state = (GameState) input.readObject();
-        } catch (Exception ex) {
-            DebugLogger.fatal(ex);
-        }
+    public static GameState readFromFile(File file) throws IOException, ClassNotFoundException {
+        InputStream fis = new FileInputStream(file);
+        InputStream bis = new BufferedInputStream(fis);
+        ObjectInput input = new ObjectInputStream(bis);
+        GameState state = (GameState) input.readObject();
         return state;
     }
 
