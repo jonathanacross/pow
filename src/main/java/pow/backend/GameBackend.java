@@ -99,11 +99,7 @@ public class GameBackend {
 
         for (;;) {
 
-            if (!gameState.gameInProgress) {
-                return gameResult;
-            }
-
-            // finish the existing action by processing any remaining events
+            // finish any remaining events
             dirty = false;
             while (!eventQueue.isEmpty()) {
                 GameEvent event = eventQueue.removeFirst();
@@ -119,6 +115,11 @@ public class GameBackend {
                     return gameResult;
                 }
             }
+
+            if (!gameState.gameInProgress) {
+                return gameResult;
+            }
+
 
             // process any ongoing/pending actions
             if (!commandQueue.isEmpty()) {

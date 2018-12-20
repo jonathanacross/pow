@@ -19,6 +19,7 @@ public class ItemActions {
     public enum Action {
         GET("Get"),
         DROP("Drop"),
+        DROP_EQUIPMENT("Drop"),
         WEAR("Wear"),
         TAKE_OFF("Take Off"),
         QUAFF("Quaff"),
@@ -38,7 +39,11 @@ public class ItemActions {
     }
 
     private static boolean canDrop(ItemLocation location) {
-        return location != ItemLocation.GROUND;
+        return location == ItemLocation.INVENTORY;
+    }
+
+    private static boolean canDropEquipent(ItemLocation location) {
+        return location == ItemLocation.EQUIPMENT;
     }
 
     private static boolean canWear(DungeonItem item, ItemLocation location) {
@@ -105,6 +110,9 @@ public class ItemActions {
 //        }
         if (canDrop(location)) {
             actions.add(Action.DROP);
+        }
+        if (canDropEquipent(location)) {
+            actions.add(Action.DROP_EQUIPMENT);
         }
         return actions;
     }
