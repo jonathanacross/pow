@@ -68,6 +68,9 @@ public class ActionChoiceWindow extends AbstractWindow {
                     case DROP:
                         backend.tellSelectedActor(new Drop(selectedActor, itemIndex, item.count));
                         break;
+                    case DROP_EQUIPMENT:
+                        backend.tellSelectedActor(new DropEquipment(selectedActor, itemIndex));
+                        break;
                     case FIRE:
                         backend.tellSelectedActor(new Arrow(selectedActor, selectedActor.getTarget(), selectedActor.getSecondaryAttack()));
                         break;
