@@ -8,8 +8,4 @@ public class GameResult {
     public GameResult(List<GameEvent> events) {
         this.events = events;
     }
-
-    public void addEvents(List<GameEvent> events) {
-        this.events.addAll(events);
-    }
 }

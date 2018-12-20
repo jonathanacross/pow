@@ -3,6 +3,7 @@ package pow.backend.actors;
 import pow.backend.*;
 import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonFeature;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.ai.Movement;
 import pow.backend.behavior.ActionBehavior;
@@ -11,7 +12,6 @@ import pow.backend.conditions.ConditionGroup;
 import pow.backend.conditions.ConditionTypes;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.dungeon.ItemList;
-import pow.backend.event.GameEvent;
 import pow.util.Point;
 
 import java.io.Serializable;
@@ -153,7 +153,7 @@ public abstract class Actor extends DungeonObject implements Serializable {
     public List<GameEvent> takeDamage(GameBackend backend, int damage, Actor source) {
         List<GameEvent> events = new ArrayList<>();
         this.health -= damage;
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEvent.DUNGEON_UPDATED);
         if (this.health < 0) {
             events.add(AttackUtils.doDie(backend, this, source));
         }

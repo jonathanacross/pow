@@ -51,7 +51,7 @@ public class AttackUtils {
 
         if (actor == gs.party.player) {
             gs.gameInProgress = false;
-            return GameEvent.LostGame();
+            return GameEvent.LOST_GAME;
         }
 
         // see if this is a boss; if so, update the map so it won't regenerate
@@ -97,7 +97,7 @@ public class AttackUtils {
             gs.party.pet = null;
         }
 
-        return GameEvent.Killed();
+        return GameEvent.KILLED;
     }
 
     public static String getDamageTypeString(SpellParams.Element element) {
@@ -108,7 +108,7 @@ public class AttackUtils {
         return damTypeString;
     }
 
-    public static void updateExperience(GameBackend backend, Actor attacker, Actor defender) {
+    private static void updateExperience(GameBackend backend, Actor attacker, Actor defender) {
         if (attacker == null) { return; }
         attacker.gainExperience(backend, defender.experience, defender);
         // If the attacker is a party member, give some experience to other character.
@@ -124,8 +124,8 @@ public class AttackUtils {
         }
     }
 
-    public static List<GameEvent> doSimpleHit(GameBackend backend, Actor attacker, Actor defender,
-                                        SpellParams.Element element, int damage) {
+    private static List<GameEvent> doSimpleHit(GameBackend backend, Actor attacker, Actor defender,
+                                               SpellParams.Element element, int damage) {
         String damTypeString = getDamageTypeString(element);
         int adjustedDamage = adjustDamage(damage, element, defender);
         MessageLog.MessageType messageType = defender.friendly
@@ -133,7 +133,7 @@ public class AttackUtils {
                 : MessageLog.MessageType.COMBAT_GOOD;
         backend.logMessage(attacker.getNoun() + " hits " + defender.getNoun() + " for " + adjustedDamage + damTypeString + " damage", messageType);
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.Attacked());
+        events.add(GameEvent.ATTACKED);
         List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage, attacker);
         events.addAll(damageEvents);
 

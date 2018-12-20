@@ -33,11 +33,11 @@ public class RestAtInn implements Action {
             // save the game!
             backend.tellSelectedActor(new Save());
 
-            events.add(GameEvent.DungeonUpdated());
-            return ActionResult.Succeeded(events);
+            events.add(GameEvent.DUNGEON_UPDATED);
+            return ActionResult.succeeded(events);
         } else {
             backend.logMessage(player.getNoun() + " does not have enough money.", MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
     }
 

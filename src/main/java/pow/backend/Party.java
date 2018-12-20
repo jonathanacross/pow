@@ -78,13 +78,13 @@ public class Party implements Serializable {
 
         // check for getting a pet
         if (item.artifactSlot.equals(DungeonItem.ArtifactSlot.PETSTATUE)) {
-            events.add(GameEvent.GotPet());
+            events.add(GameEvent.GOT_PET);
         }
 
         // check for a win!
         if (!player.winner && artifacts.hasAllPearls()) {
             player.winner = true;
-            events.add(GameEvent.WonGame());
+            events.add(GameEvent.WON_GAME);
         }
 
         player.updateStats();

@@ -40,8 +40,8 @@ public class TakeOff implements Action {
         }
 
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
-        return ActionResult.Succeeded(events);
+        events.add(GameEvent.DUNGEON_UPDATED);
+        return ActionResult.succeeded(events);
     }
 
     @Override

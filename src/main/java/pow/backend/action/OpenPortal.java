@@ -29,7 +29,7 @@ public class OpenPortal implements Action {
         // Require the player to have the portal key.
         if (!backend.getGameState().party.artifacts.hasPortalKey()) {
             backend.logMessage(actor.getNoun() + " doesn't have the right key to unlock this door", MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
 
         // Unlock the portal in the Gameworld.
@@ -43,8 +43,8 @@ public class OpenPortal implements Action {
 
         backend.logMessage(actor.getNoun() + " unlocks the portal door", MessageLog.MessageType.GENERAL);
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
-        return ActionResult.Succeeded(events);
+        events.add(GameEvent.DUNGEON_UPDATED);
+        return ActionResult.succeeded(events);
     }
 
     @Override

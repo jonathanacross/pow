@@ -5,15 +5,11 @@ import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
 import pow.util.Direction;
 import pow.util.Metric;
 import pow.util.Point;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CircleCut implements Action {
 
@@ -33,7 +29,7 @@ public class CircleCut implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        List<GameEvent> events = new ArrayList<>();
+        List<Action> subactions = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
         backend.logMessage(attacker.getNoun() + " cuts in a" +
@@ -57,18 +53,17 @@ public class CircleCut implements Action {
             for (Point p : squares) {
                 Actor defender = map.actorAt(p.x, p.y);
                 if (defender != null) {
-                    MessageLog.MessageType messageType = defender.friendly
-                            ? MessageLog.MessageType.COMBAT_BAD
-                            : MessageLog.MessageType.COMBAT_GOOD;
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+                    subactions.add(new Hit(attacker, defender, hitParams));
                 }
             }
-            events.add(GameEvent.Effect(new DungeonEffect(effectId, squares)));
+            subactions.add(new ShowEffect(new DungeonEffect(effectId, squares)));
         }
 
-        events.add(GameEvent.DungeonUpdated());
-
-        return ActionResult.Succeeded(events);
+        // clear out last effect.
+        // TODO: should this be new dungeonupdated?
+        subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+        subactions.add(new CompletedAction(attacker));
+        return ActionResult.failed(subactions);
     }
 
     @Override

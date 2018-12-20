@@ -5,12 +5,12 @@ import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
 import pow.backend.dungeon.DungeonItem;
-import pow.backend.event.GameEvent;
 import pow.util.Bresenham;
 import pow.util.Direction;
 import pow.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Arrow implements Action {
@@ -32,7 +32,7 @@ public class Arrow implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        List<GameEvent> events = new ArrayList<>();
+        List<Action> subactions = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
         backend.logMessage(attacker.getNoun() + " fires an arrow.", MessageLog.MessageType.COMBAT_NEUTRAL);
@@ -45,19 +45,19 @@ public class Arrow implements Action {
 
         ray.remove(0); // remove the attacker from the path of the arrow.
         for (Point p : ray) {
+            subactions.add(new ShowEffect(new DungeonEffect(effectId, p)));
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null) {
                 boolean hitsTarget = gs.rng.nextDouble() <= AttackUtils.hitProb(attackData.plusToHit, defender.getDefense());
                 int damage = attackData.dieRoll.rollDice(gs.rng) + attackData.plusToDam;
                 if (hitsTarget && damage > 0) {
                     AttackUtils.HitParams hitParams = new AttackUtils.HitParams(damage);
-                    events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+                    subactions.add(new Hit(attacker, defender, hitParams));
                     break;
                 }
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
             if (map.map[p.x][p.y].blockAir()) break;
-            events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
         }
 
         if (attacker == gs.party.player) {
@@ -67,9 +67,12 @@ public class Arrow implements Action {
             backend.logMessage(gs.party.player.getNoun() + " has " + count + " arrows left", MessageLog.MessageType.GENERAL);
         }
 
-        events.add(GameEvent.DungeonUpdated());
-
-        return ActionResult.Succeeded(events);
+        // clear out last effect.
+        // TODO: should this be new dungeonupdated?
+        subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+        //events.add(GameEventOld.DungeonUpdated());
+        subactions.add(new CompletedAction(attacker));
+        return ActionResult.failed(subactions);
     }
 
     @Override

@@ -25,11 +25,11 @@ public class RestoreMana implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.Healed());
+        events.add(GameEvent.HEALED);
 
         int restoreAmount = actor.increaseMana(this.amount);
         backend.logMessage(actor.getNoun() + " restores " + restoreAmount + " mana", MessageLog.MessageType.GENERAL);
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

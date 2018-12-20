@@ -4,9 +4,9 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.conditions.ConditionTypes;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Actor;
-import pow.backend.event.GameEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class Attack implements Action {
                 events.addAll(AttackUtils.doHit(backend, attacker, target, new AttackUtils.HitParams(damage)));
             }
         }
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

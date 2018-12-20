@@ -32,7 +32,7 @@ public class Drop implements Action {
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEvent.DUNGEON_UPDATED);
 
         DungeonSquare square = gs.getCurrentMap().map[actor.loc.x][actor.loc.y];
         DungeonItem item = actor.inventory.items.get(itemNum);
@@ -49,7 +49,7 @@ public class Drop implements Action {
         }
         backend.logMessage(actor.getNoun() + " drops " + TextUtils.format(item.name, numToDrop, true),
                 MessageLog.MessageType.GENERAL);
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

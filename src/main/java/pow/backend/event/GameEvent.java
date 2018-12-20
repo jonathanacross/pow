@@ -1,44 +1,28 @@
 package pow.backend.event;
 
-import pow.backend.dungeon.DungeonEffect;
+public enum GameEvent {
+   LOG_UPDATE(false),
+   MOVED(false),
+   ATTACKED(false),
+   KILLED(false),
+   WON_GAME(false),  // triggers window to show game won
+   LOST_GAME(false), // triggers window to show game lost
+   GOT_PET(false),   // triggers window to choose pet
+   IN_STORE(false),  // triggers window to buy item
+   HEALED(false),
+   DUNGEON_UPDATED(false),
+   EFFECT(true),    // triggers delay while drawing
+   IN_PORTAL(false), // triggers window to choose portal
+   WAITING_USER_INPUT(true),
+   UPDATE_NEED_REDRAW(true);
 
-// class to report back interesting things that the UI should show
-public class GameEvent {
+    private final boolean showUpdate;
 
-    // TODO: collapse some of these (e.g., moved, healed, log_update?) into dungeon_updated
-    public enum EventType {
-        LOG_UPDATE,
-        MOVED,  // player or creature moved
-        ATTACKED,
-        KILLED,
-        WON_GAME,
-        LOST_GAME,
-        GOT_PET,
-        IN_STORE,
-        HEALED,
-        DUNGEON_UPDATED,  // indicates UI needs a redraw
-        EFFECT,
-        IN_PORTAL,
+    GameEvent(boolean showUpdate) {
+        this.showUpdate = showUpdate;
     }
 
-    public final EventType eventType;
-    public final DungeonEffect effect;
-
-    private GameEvent(EventType eventType, DungeonEffect effect) {
-        this.eventType = eventType;
-        this.effect = effect;
+    public boolean showUpdate() {
+        return this.showUpdate;
     }
-
-    public static GameEvent LogUpdate() { return new GameEvent(EventType.LOG_UPDATE, null); }
-    public static GameEvent Moved() { return new GameEvent(EventType.MOVED, null); }
-    public static GameEvent Healed() { return new GameEvent(EventType.HEALED, null); }
-    public static GameEvent Attacked() { return new GameEvent(EventType.ATTACKED, null); }
-    public static GameEvent Killed() { return new GameEvent(EventType.KILLED, null); }
-    public static GameEvent WonGame() { return new GameEvent(EventType.WON_GAME, null); }
-    public static GameEvent LostGame() { return new GameEvent(EventType.LOST_GAME, null); }
-    public static GameEvent GotPet() { return new GameEvent(EventType.GOT_PET, null); }
-    public static GameEvent InStore() { return new GameEvent(EventType.IN_STORE, null); }
-    public static GameEvent InPortal() { return new GameEvent(EventType.IN_PORTAL, null); }
-    public static GameEvent DungeonUpdated() { return new GameEvent(EventType.DUNGEON_UPDATED, null); }
-    public static GameEvent Effect(DungeonEffect effect) { return new GameEvent(EventType.EFFECT, effect); }
 }

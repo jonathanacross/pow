@@ -6,11 +6,11 @@ import pow.backend.MessageLog;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
 import pow.util.Direction;
 import pow.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Phase implements Action {
@@ -26,7 +26,7 @@ public class Phase implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        List<GameEvent> events = new ArrayList<>();
+        List<Action> subactions = new ArrayList<>();
 
         // Find squares we can phase to.
         // Legal locations appear in a square annulus centered on the player
@@ -65,19 +65,18 @@ public class Phase implements Action {
                     Direction.N); // dummy
             List<Point> arcPoints = SpellUtils.createArc(actor.loc, targetLoc);
             for (Point p : arcPoints) {
-                events.add(GameEvent.Effect(new DungeonEffect(effectName, p)));
+                subactions.add(new ShowEffect(new DungeonEffect(effectName, p)));
             }
 
-            actor.loc = targetLoc;
-            if (actor == gs.party.selectedActor) {
-                gs.party.player.target.clear();
-                gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
-            }
-            backend.logMessage(actor.getNoun() + " phases.", MessageLog.MessageType.GENERAL);
+            PhaseImpl phase = new PhaseImpl(actor, actor, targetLoc);
+            subactions.add(phase);
 
-            events.add(GameEvent.DungeonUpdated());
+            // clear out last effect.
+            // TODO: should this be new dungeonupdated?
+            subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+            subactions.add(new CompletedAction(actor));
         }
-        return ActionResult.Succeeded(events);
+        return ActionResult.failed(subactions);
     }
 
     @Override

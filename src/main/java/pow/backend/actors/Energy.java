@@ -54,10 +54,8 @@ public class Energy implements Serializable {
     }
 
     // Advances one game turn and gains an appropriate amount of energy. Returns
-    // `true` if there is enough energy to take a turn.
-    public boolean gain(int speed) {
+    public void gain(int speed) {
         energy += getEnergy(speed);
-        return canTakeTurn();
     }
 
     // Spends a turn's worth of energy.

@@ -2,31 +2,40 @@ package pow.backend.action;
 
 import pow.backend.event.GameEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ActionResult {
     public final List<GameEvent> events;
+    public final List<Action> derivedActions;
     public final boolean succeeded;
-    public final boolean done;
-    public final Action alternate;
 
-    private ActionResult(List<GameEvent> events, boolean succeeded, boolean done, Action alternate) {
+    private ActionResult(List<GameEvent> events, List<Action> derivedActions, boolean succeeded) {
         this.events = events;
+        this.derivedActions = derivedActions;
         this.succeeded = succeeded;
-        this.done = done;
-        this.alternate = alternate;
     }
 
-    public static ActionResult Succeeded(List<GameEvent> events) {
-        return new ActionResult(events, true, true, null);
+    public static ActionResult succeeded(List<GameEvent> events) {
+        return new ActionResult(events, Collections.emptyList(), true);
     }
 
-    public static ActionResult Failed(Action alternate) {
-        return new ActionResult(new ArrayList<>(), false, true, alternate);
+    public static ActionResult succeeded(GameEvent event) {
+        return new ActionResult(Arrays.asList(event), Collections.emptyList(), true);
     }
 
-    public static ActionResult NotDone(List<GameEvent> events) {
-        return new ActionResult(events, true, false, null);
+    public static ActionResult succeeded() {
+        return new ActionResult(Collections.emptyList(), Collections.emptyList(), true);
+    }
+
+    public static ActionResult failed(List<Action> derivedActions) {
+        return new ActionResult(Collections.emptyList(), derivedActions, false);
+    }
+
+    public static ActionResult failed(Action derivedAction) {
+        return new ActionResult(Collections.emptyList(), Arrays.asList(derivedAction), false);
+    }
+
+    public static ActionResult failed() {
+        return new ActionResult(Collections.emptyList(), Collections.emptyList(), false);
     }
 }

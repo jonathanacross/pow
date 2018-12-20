@@ -29,7 +29,7 @@ public class Conditions {
             // Moreover, if maxHealth decreases, this ensures current health doesn't
             // stay larger than maxHealth.
             actor.increaseHealth(Math.max(delta, 0));
-            return Collections.singletonList(GameEvent.DungeonUpdated());
+            return Collections.singletonList(GameEvent.DUNGEON_UPDATED);
         }
     }
 

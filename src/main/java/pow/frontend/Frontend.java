@@ -6,7 +6,6 @@ import pow.backend.action.ExitPortal;
 import pow.backend.action.RestAtInn;
 import pow.backend.action.UpgradeItem;
 import pow.backend.actors.Player;
-import pow.backend.dungeon.DungeonEffect;
 import pow.backend.dungeon.gen.CharacterGenerator;
 import pow.backend.dungeon.gen.worldgen.MapPoint;
 import pow.backend.event.GameEvent;
@@ -17,9 +16,9 @@ import pow.frontend.window.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.*;
 import java.util.List;
 import java.util.Queue;
+import java.util.*;
 
 // TODO: make interface for this
 public class Frontend {
@@ -46,9 +45,9 @@ public class Frontend {
     private final GameBackend gameBackend;
     private final Queue<KeyEvent> keyEvents;
 
-    private final List<DungeonEffect> effects;
     private boolean dirty;  // need to redraw
     public final Deque<String> messages;  // short messages/help suggestions
+    private List<GameEvent> events;
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
@@ -58,17 +57,13 @@ public class Frontend {
         return dirty;
     }
 
-    public List<DungeonEffect> getEffects() {
-        return effects;
-    }
-
     public Frontend(int width, int height) {
         this.width = width;
         this.height = height;
         this.dirty = true;
-        this.effects = new ArrayList<>();
         this.keyEvents = new ArrayDeque<>();
         this.messages = new ArrayDeque<>();
+        this.events = new ArrayList<>();
 
         gameBackend = new GameBackend();
         // dialogs
@@ -139,14 +134,29 @@ public class Frontend {
         dirty = true;
     }
 
-    public void update() {
+    // returns true if update needed.
+    boolean processEvent(GameEvent event) {
+        switch (event) {
+            case WON_GAME: open(this.winWindow); return true;
+            case LOST_GAME: open(this.loseWindow); return true;
+            case EFFECT: return true;
+            case UPDATE_NEED_REDRAW: return true;
+            case IN_STORE: processShopEntry(); return true;
+            case IN_PORTAL: choosePortal(); return true;
+            case GOT_PET: choosePet(); return true;
+            default: return false;
+        }
+    }
 
-        // Remove the current effect from our list to draw so that the
-        // next one will display.
-        if (! effects.isEmpty()) {
-            effects.remove(0);
-            dirty = true;
-            return;
+    public void update() {
+        // Process any remaining events, if necessary.
+        while (! events.isEmpty()) {
+            boolean needsUpdate = processEvent(events.get(0));
+            events.remove(0);
+            if (needsUpdate) {
+                dirty = true;
+                return;
+            }
         }
 
         // finished all visual effects; now process future actions
@@ -156,18 +166,16 @@ public class Frontend {
         }
 
         GameResult result = gameBackend.update();
-        if (!result.events.isEmpty()) {
-            dirty = true;
-        }
-        for (GameEvent event : result.events) {
-            switch (event.eventType) {
-                case WON_GAME: open(this.winWindow); break;
-                case LOST_GAME: open(this.loseWindow); break;
-                case EFFECT: this.effects.add(event.effect); break;
-                case IN_STORE: processShopEntry(); break;
-                case IN_PORTAL: choosePortal(); break;
-                case GOT_PET: choosePet(); break;
-                default: break;
+        this.events.addAll(result.events);
+
+        // process the events for the last result, so we can display
+        // any changes immediately.
+        while (! events.isEmpty()) {
+            boolean needsUpdate = processEvent(events.get(0));
+            events.remove(0);
+            if (needsUpdate) {
+                dirty = true;
+                return;
             }
         }
     }

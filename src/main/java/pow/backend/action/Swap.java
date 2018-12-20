@@ -31,11 +31,11 @@ public class Swap implements Action {
             Point tmp = first.loc; first.loc = second.loc; second.loc = tmp;
             backend.logMessage(first.getNoun() + " and " + second.getNoun() + " swap places",
                     MessageLog.MessageType.GENERAL);
-            events.add(GameEvent.Moved());
-            return ActionResult.Succeeded(events);
+            events.add(GameEvent.MOVED);
+            return ActionResult.succeeded(events);
         } else {
             // tried to swap self.
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
     }
 

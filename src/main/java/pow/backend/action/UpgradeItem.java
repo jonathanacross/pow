@@ -55,7 +55,7 @@ public class UpgradeItem implements Action {
         // pay for the upgrade
         if (player.gold < upgradeInfo.price) {
             backend.logMessage(player.getNoun() + " does not have enough money.", MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
         player.gold -= upgradeInfo.price;
 
@@ -100,8 +100,8 @@ public class UpgradeItem implements Action {
         }
 
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
-        return ActionResult.Succeeded(events);
+        events.add(GameEvent.DUNGEON_UPDATED);
+        return ActionResult.succeeded(events);
     }
 
     @Override

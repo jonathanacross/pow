@@ -5,14 +5,14 @@ import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.frontend.utils.SaveUtils;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 public class Save implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         SaveUtils.saveToFile(backend.getGameState());
         backend.logMessage("saved.", MessageLog.MessageType.GAME_EVENT);
-        return ActionResult.Succeeded(new ArrayList<>());
+        return ActionResult.succeeded(Collections.emptyList());
     }
 
     @Override

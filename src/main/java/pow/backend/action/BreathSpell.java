@@ -8,12 +8,12 @@ import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
 import pow.util.Direction;
 import pow.util.Metric;
 import pow.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static pow.backend.utils.SpellUtils.getFieldOfView;
@@ -33,7 +33,7 @@ public class BreathSpell implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        List<GameEvent> events = new ArrayList<>();
+        List<Action> subactions = new ArrayList<>();
 
         backend.logMessage(actor.getNoun() + " breathes" +
                 AttackUtils.getDamageTypeString(spellParams.element), MessageLog.MessageType.COMBAT_NEUTRAL);
@@ -45,7 +45,7 @@ public class BreathSpell implements Action {
                 Direction.N); // dummy
         for (int radius = 1; radius <= spellParams.size; radius++) {
             List<Point> effectSquares = getBreathArea(gs, actor.loc, target, radius);
-            events.add(GameEvent.Effect(new DungeonEffect(effectName, effectSquares)));
+            subactions.add(new ShowEffect(new DungeonEffect(effectName, effectSquares)));
         }
 
         // hit everything in the large area once
@@ -58,12 +58,15 @@ public class BreathSpell implements Action {
         for (Point s : hitSquares) {
             Actor m = gs.getCurrentMap().actorAt(s.x, s.y);
             if (m != null) {
-                events.addAll(AttackUtils.doHit(backend, actor, m, hitParams));
+                subactions.add(new Hit(actor, m, hitParams));
             }
         }
 
-        events.add(GameEvent.DungeonUpdated());
-        return ActionResult.Succeeded(events);
+        // clear out last effect.
+        // TODO: should this be new dungeonupdated?
+        subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+        subactions.add(new CompletedAction(actor));
+        return ActionResult.failed(subactions);
     }
 
     private static List<Point> getBreathArea(GameState gameState, Point center, Point target, int radius) {

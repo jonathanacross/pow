@@ -4,14 +4,15 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
 import pow.backend.Party;
+import pow.backend.event.GameEvent;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
 import pow.util.Direction;
 import pow.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CallPet implements Action {
@@ -25,13 +26,14 @@ public class CallPet implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
+        List<Action> subactions = new ArrayList<>();
         List<GameEvent> events = new ArrayList<>();
 
         Party party = gs.party;
         if (party.pet == null) {
             backend.logMessage(party.player.getNoun() + " doesn't have a pet.",
                     MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Succeeded(events);
+            return ActionResult.succeeded(events);
         }
 
         // Find squares we can phase to.
@@ -39,7 +41,7 @@ public class CallPet implements Action {
         if (targetLoc == null) {
             backend.logMessage("there is no place nearby for " + party.pet.getNoun() + " to phase to.",
                     MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Succeeded(events);
+            return ActionResult.succeeded(events);
         }
 
         String effectName = DungeonEffect.getEffectName(
@@ -48,16 +50,16 @@ public class CallPet implements Action {
                 Direction.N); // dummy
         List<Point> arcPoints = SpellUtils.createArc(party.pet.loc, targetLoc);
         for (Point p : arcPoints) {
-            events.add(GameEvent.Effect(new DungeonEffect(effectName, p)));
+            subactions.add(new ShowEffect(new DungeonEffect(effectName, p)));
         }
 
-        party.pet.loc = targetLoc;
-        party.pet.target.clear();
-        gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
-        backend.logMessage(party.pet.getNoun() + " phases.", MessageLog.MessageType.GENERAL);
+        subactions.add(new PhaseImpl(actor, party.pet, targetLoc));
 
-        events.add(GameEvent.DungeonUpdated());
-        return ActionResult.Succeeded(events);
+        // clear out last effect.
+        // TODO: should this be new dungeonupdated?
+        subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+        subactions.add(new CompletedAction(actor));
+        return ActionResult.failed(subactions);
     }
 
     @Override

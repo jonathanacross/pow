@@ -23,9 +23,9 @@ public class EnterShop implements Action {
         backend.getGameState().getCurrentMap().shopData.state = this.state;
 
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.InStore());  // trigger the frontend to pop open a window to see what to do.
+        events.add(GameEvent.IN_STORE);  // trigger the frontend to pop open a window to see what to do.
 
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
 
     @Override

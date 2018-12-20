@@ -5,12 +5,12 @@ import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonEffect;
-import pow.backend.event.GameEvent;
 import pow.util.Bresenham;
 import pow.util.Direction;
 import pow.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BoltSpell implements Action {
@@ -33,7 +33,7 @@ public class BoltSpell implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
-        List<GameEvent> events = new ArrayList<>();
+        List<Action> subactions = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
         backend.logMessage(attacker.getNoun() + " casts a" +
@@ -50,15 +50,18 @@ public class BoltSpell implements Action {
         for (Point p : ray) {
             Actor defender = map.actorAt(p.x, p.y);
             if (defender != null && defender.friendly != attacker.friendly) {
-                events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+                subactions.add(new Hit(attacker, defender, hitParams));
             }
             if (!map.isOnMap(p.x, p.y)) break; // can happen if we fire through an exit
             if (map.map[p.x][p.y].blockAir()) break;
-            events.add(GameEvent.Effect(new DungeonEffect(effectId, p)));
+            subactions.add(new ShowEffect(new DungeonEffect(effectId, p)));
         }
-        events.add(GameEvent.DungeonUpdated());
 
-        return ActionResult.Succeeded(events);
+        // clear out last effect.
+        // TODO: should this be new dungeonupdated?
+        subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
+        subactions.add(new CompletedAction(attacker));
+        return ActionResult.failed(subactions);
     }
 
     @Override

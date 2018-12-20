@@ -27,12 +27,12 @@ public class TransferItem implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         List<GameEvent> events = new ArrayList<>();
-        events.add(GameEvent.DungeonUpdated());
+        events.add(GameEvent.DUNGEON_UPDATED);
         DungeonItem item = giver.inventory.items.get(itemNum);
         int numCanTransfer = Math.min(numToTransfer, taker.inventory.numCanAdd(item));
         if (numCanTransfer == 0) {
             backend.logMessage(taker.getNoun() + " can't hold any more.", MessageLog.MessageType.USER_ERROR);
-            return ActionResult.Failed(null);
+            return ActionResult.failed();
         }
         if (numCanTransfer == item.count) {
             // giving all of this item
@@ -48,7 +48,7 @@ public class TransferItem implements Action {
         backend.logMessage(giver.getNoun() + " gives " +
                 TextUtils.format(item.name, numCanTransfer, true) + " to " + taker.getNoun(),
                 MessageLog.MessageType.GENERAL);
-        return ActionResult.Succeeded(events);
+        return ActionResult.succeeded(events);
     }
     @Override
     public boolean consumesEnergy() { return true; }

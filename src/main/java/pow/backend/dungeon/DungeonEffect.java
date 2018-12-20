@@ -4,11 +4,12 @@ package pow.backend.dungeon;
 import pow.util.Direction;
 import pow.util.Point;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DungeonEffect {
+public class DungeonEffect implements Serializable {
 
     public enum EffectType {
         ARROW,

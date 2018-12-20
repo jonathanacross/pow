@@ -409,8 +409,7 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         // draw effects
-        if (!frontend.getEffects().isEmpty()) {
-            DungeonEffect effect = frontend.getEffects().get(0);
+        for (DungeonEffect effect : gs.getCurrentMap().effects) {
             for (DungeonEffect.ImageLoc imageLoc : effect.imageLocs) {
                 if (gs.party.selectedActor.canSeeLocation(gs, imageLoc.loc)) {
                     mapView.drawTile(graphics, imageLoc.imageName, imageLoc.loc.x, imageLoc.loc.y, ImageController.DrawMode.NORMAL);

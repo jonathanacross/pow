@@ -20,8 +20,8 @@ import java.util.function.Consumer;
 public class SelectCharWindow extends AbstractWindow {
 
     public static class NamedCharData {
-        public String name;
-        public CharacterGenerator.CharacterData characterData;
+        public final String name;
+        public final CharacterGenerator.CharacterData characterData;
 
         public NamedCharData(String name, CharacterGenerator.CharacterData characterData) {
             this.name = name;
@@ -33,10 +33,10 @@ public class SelectCharWindow extends AbstractWindow {
     private boolean onName;
     private int charSelectId;
     private final List<CharacterGenerator.CharacterData> characterData;
-    private Consumer<NamedCharData> successCallback;
-    private Runnable cancelCallback;
-    private List<String> messages;
-    private boolean showSpeed;
+    private final Consumer<NamedCharData> successCallback;
+    private final Runnable cancelCallback;
+    private final List<String> messages;
+    private final boolean showSpeed;
 
     public SelectCharWindow(WindowDim dim, GameBackend backend, Frontend frontend,
                             List<String> messages, boolean showPets,
