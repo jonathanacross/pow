@@ -108,7 +108,7 @@ public class AttackUtils {
         return damTypeString;
     }
 
-    public static void updateExperience(GameBackend backend, Actor attacker, Actor defender) {
+    private static void updateExperience(GameBackend backend, Actor attacker, Actor defender) {
         if (attacker == null) { return; }
         attacker.gainExperience(backend, defender.experience, defender);
         // If the attacker is a party member, give some experience to other character.
@@ -124,8 +124,8 @@ public class AttackUtils {
         }
     }
 
-    public static List<GameEvent> doSimpleHit(GameBackend backend, Actor attacker, Actor defender,
-                                                 SpellParams.Element element, int damage) {
+    private static List<GameEvent> doSimpleHit(GameBackend backend, Actor attacker, Actor defender,
+                                               SpellParams.Element element, int damage) {
         String damTypeString = getDamageTypeString(element);
         int adjustedDamage = adjustDamage(damage, element, defender);
         MessageLog.MessageType messageType = defender.friendly

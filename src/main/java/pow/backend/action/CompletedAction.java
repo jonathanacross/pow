@@ -7,7 +7,7 @@ import pow.backend.actors.Actor;
 // to mark the original action as complete and use energy.
 public class CompletedAction implements Action {
 
-    private Actor actor;
+    private final Actor actor;
 
     public CompletedAction(Actor actor) {
         this.actor = actor;

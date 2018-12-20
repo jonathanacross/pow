@@ -53,9 +53,6 @@ public class CircleCut implements Action {
             for (Point p : squares) {
                 Actor defender = map.actorAt(p.x, p.y);
                 if (defender != null) {
-                    MessageLog.MessageType messageType = defender.friendly
-                            ? MessageLog.MessageType.COMBAT_BAD
-                            : MessageLog.MessageType.COMBAT_GOOD;
                     subactions.add(new Hit(attacker, defender, hitParams));
                 }
             }

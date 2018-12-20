@@ -31,7 +31,7 @@ public class Move implements Action {
         this.pause = pause;
     }
 
-    private List<GameEvent> addEvents(GameBackend backend) {
+    private List<GameEvent> addEvents() {
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.MOVED);
         if (pause) {
@@ -51,7 +51,7 @@ public class Move implements Action {
 
         // just stay still
         if (dx == 0 && dy == 0) {
-            return ActionResult.succeeded(addEvents(backend));
+            return ActionResult.succeeded(addEvents());
         }
 
         int newx = actor.loc.x + dx;
@@ -131,7 +131,7 @@ public class Move implements Action {
                 // out of visibility range.
                 p.target.update(gs, p);
             }
-            return ActionResult.succeeded(addEvents(backend));
+            return ActionResult.succeeded(addEvents());
         } else {
             backend.logMessage(actor.getNoun() + " can't go that way", MessageLog.MessageType.USER_ERROR);
             return ActionResult.failed();

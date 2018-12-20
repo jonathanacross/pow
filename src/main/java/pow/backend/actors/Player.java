@@ -27,7 +27,7 @@ public class Player extends Actor implements Serializable, LightSource {
 
     public int experience;
 
-    public Target target;
+    public final Target target;
     public Party party;  // link back to common data in the party.
 
     // computed as totals in MakePlayerExpLevels

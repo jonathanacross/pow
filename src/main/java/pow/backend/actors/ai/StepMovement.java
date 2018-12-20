@@ -35,7 +35,6 @@ public class StepMovement implements Movement, Serializable {
     // powerful as a full A* search, but is simple and lets
     // monsters follow around corners.
     private Action moveTowardTargetTwoStep(Actor actor, GameState gs, Point target) {
-        GameMap map = gs.getCurrentMap();
         // find which square 2 steps ahead is closest to the target
         int closestDist = Integer.MAX_VALUE;
         Point twoStepTarget = null;

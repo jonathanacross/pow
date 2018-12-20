@@ -10,9 +10,9 @@ import java.util.List;
 
 public class Hit implements Action {
 
-    private Actor attacker;
-    private Actor defender;
-    private AttackUtils.HitParams hitParams;
+    private final Actor attacker;
+    private final Actor defender;
+    private final AttackUtils.HitParams hitParams;
 
     public Hit(Actor attacker, Actor defender, AttackUtils.HitParams hitParams) {
         this.attacker = attacker;

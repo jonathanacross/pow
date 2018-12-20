@@ -16,7 +16,7 @@ public enum GameEvent {
    WAITING_USER_INPUT(true),
    UPDATE_NEED_REDRAW(true);
 
-    private boolean showUpdate;
+    private final boolean showUpdate;
 
     GameEvent(boolean showUpdate) {
         this.showUpdate = showUpdate;

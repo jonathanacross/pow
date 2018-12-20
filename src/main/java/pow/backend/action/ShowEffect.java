@@ -7,7 +7,7 @@ import pow.backend.event.GameEvent;
 
 public class ShowEffect implements Action {
 
-    private DungeonEffect effect;
+    private final DungeonEffect effect;
 
     public ShowEffect(DungeonEffect effect) {
         this.effect = effect;

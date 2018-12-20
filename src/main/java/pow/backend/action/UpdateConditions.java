@@ -5,7 +5,7 @@ import pow.backend.actors.Actor;
 
 public class UpdateConditions implements Action {
 
-    private Actor actor;
+    private final Actor actor;
 
     public UpdateConditions(Actor actor) {
         this.actor = actor;
