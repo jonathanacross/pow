@@ -6,12 +6,14 @@ import pow.frontend.Frontend;
 import pow.frontend.utils.SaveUtils;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.KeyUtils;
+import pow.util.DebugLogger;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.InvalidClassException;
 import java.util.List;
 
 public class OpenGameWindow extends AbstractWindow {
@@ -60,9 +62,19 @@ public class OpenGameWindow extends AbstractWindow {
                 break;
             case KeyEvent.VK_ENTER:
                 if (! files.isEmpty()) {
-                    GameState state = SaveUtils.readFromFile(files.get(selectIndex));
-                    backend.load(state);
-                    frontend.setState(Frontend.State.GAME);
+                    try {
+                        GameState state = SaveUtils.readFromFile(files.get(selectIndex));
+                        backend.load(state);
+                        frontend.setState(Frontend.State.GAME);
+                    } catch (InvalidClassException ex) {
+                        // May happen if the GameState has a different serialVersionUID if
+                        // E.g., from code updates.  Alert the user that we can't open this.
+                        WindowDim dim = WindowDim.center(550, 40, frontend.width, frontend.height);
+                        frontend.open(new NotificationWindow(dim, true, this.backend, this.frontend,
+                                "This file was created with an older version of PoW, and cannot be opened."));
+                    } catch (Exception ex) {
+                        DebugLogger.fatal(ex);
+                    }
                 }
                 break;
         }
