@@ -9,7 +9,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 public abstract class AbstractWindow {
-    public final WindowDim dim;
+    public WindowDim dim;
     protected boolean visible;
     protected final GameBackend backend;
     protected final Frontend frontend;

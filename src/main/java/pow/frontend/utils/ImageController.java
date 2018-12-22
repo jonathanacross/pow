@@ -31,6 +31,11 @@ public class ImageController {
         NORMAL, GRAY, TRANSPARENT, COLOR_BLOCK
     }
 
+    // big pictures
+    private BufferedImage splashScreenImage;
+    private BufferedImage gameOverImage;
+
+    // tile images
     private BufferedImage tileImage;
     private BufferedImage grayTileImage;
     private BufferedImage transparentTileImage;
@@ -48,6 +53,14 @@ public class ImageController {
             return Color.MAGENTA;
         }
         return instance.colorData.get(tileName);
+    }
+
+    public static BufferedImage getSplashScreenImage() {
+        return instance.splashScreenImage;
+    }
+
+    public static BufferedImage getGameOverImage() {
+        return instance.gameOverImage;
     }
 
     private static BufferedImage getSrcImage(DrawMode drawMode)  {
@@ -90,9 +103,15 @@ public class ImageController {
                 null);
     }
 
+    private BufferedImage readImageFromResourceFile(String name) throws IOException {
+        InputStream imageStream = this.getClass().getResourceAsStream(name);
+        return ImageIO.read(imageStream);
+    }
+
     private ImageController() throws IOException, DataFormatException {
-        InputStream imageStream = this.getClass().getResourceAsStream("/images/32x32.png");
-        this.tileImage = ImageIO.read(imageStream);
+        this.splashScreenImage = readImageFromResourceFile("/images/splashscreen.png");
+        this.gameOverImage = readImageFromResourceFile("/images/tombstone.png");
+        this.tileImage = readImageFromResourceFile("/images/32x32.png");
         this.grayTileImage = ImageUtils.makeGrayscale(this.tileImage);
         this.transparentTileImage = ImageUtils.makeTransparent(this.tileImage);
         this.colorBlockImage = ImageUtils.makeColorBlocks(this.tileImage, TILE_SIZE);
