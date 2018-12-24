@@ -34,6 +34,7 @@ public class ImageController {
     // big pictures
     private BufferedImage splashScreenImage;
     private BufferedImage gameOverImage;
+    private BufferedImage landscapeImage;
 
     // tile images
     private BufferedImage tileImage;
@@ -58,10 +59,10 @@ public class ImageController {
     public static BufferedImage getSplashScreenImage() {
         return instance.splashScreenImage;
     }
-
     public static BufferedImage getGameOverImage() {
         return instance.gameOverImage;
     }
+    public static BufferedImage getLandscapeImage() { return instance.landscapeImage; }
 
     private static BufferedImage getSrcImage(DrawMode drawMode)  {
         switch (drawMode) {
@@ -111,6 +112,7 @@ public class ImageController {
     private ImageController() throws IOException, DataFormatException {
         this.splashScreenImage = readImageFromResourceFile("/images/splashscreen.png");
         this.gameOverImage = readImageFromResourceFile("/images/tombstone.png");
+        this.landscapeImage = readImageFromResourceFile("/images/landscape.png");
         this.tileImage = readImageFromResourceFile("/images/32x32.png");
         this.grayTileImage = ImageUtils.makeGrayscale(this.tileImage);
         this.transparentTileImage = ImageUtils.makeTransparent(this.tileImage);
