@@ -6,6 +6,7 @@ public enum GameEvent {
    ATTACKED(false),
    KILLED(false),
    WON_GAME(false),  // triggers window to show game won
+   WON_GAME2(false), // triggers window to show game won2
    LOST_GAME(false), // triggers window to show game lost
    GOT_PET(false),   // triggers window to choose pet
    IN_STORE(false),  // triggers window to buy item

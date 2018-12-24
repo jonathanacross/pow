@@ -97,6 +97,11 @@ public class AttackUtils {
             gs.party.pet = null;
         }
 
+        // Check for win.
+        if (actor.id.equals("evil incarnate")) {
+            return GameEvent.WON_GAME2;
+        }
+
         return GameEvent.KILLED;
     }
 

@@ -3,11 +3,13 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
+import pow.frontend.utils.ImageController;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -15,10 +17,18 @@ import java.util.Properties;
 public class WelcomeWindow extends AbstractWindow {
 
     private final String version;
+    private final BufferedImage splashImage;
+
+    private final int MARGIN = 10;
 
     public WelcomeWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
         version = getVersion();
+        splashImage = ImageController.getSplashScreenImage();
+        int width = splashImage.getWidth();
+        int height = splashImage.getHeight();
+        this.dim = WindowDim.center(width + 2*MARGIN, height + 2*MARGIN,
+                this.frontend.width, this.frontend.height);
     }
 
     @Override
@@ -28,20 +38,15 @@ public class WelcomeWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
+
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
+        graphics.drawImage(splashImage, MARGIN, MARGIN, null);
 
-        int squareSize = 18;
-        Font f = new Font("Courier", Font.PLAIN, 2*squareSize);
-        graphics.setFont(f);
-        graphics.setColor(Color.YELLOW);
-        graphics.drawString("Pearls of Wisdom", 30, 50);
-
-        f = new Font("Courier", Font.PLAIN, squareSize);
+        Font f = new Font("Courier", Font.PLAIN, 18);
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
-
-        graphics.drawString(version, 30, 100);
+        graphics.drawString(version, 30, 120);
         graphics.drawString("Press any key to begin.", 30, 150);
     }
 

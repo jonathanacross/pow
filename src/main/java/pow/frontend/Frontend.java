@@ -30,6 +30,7 @@ public class Frontend {
     private final GameWindow gameWindow;
     private final WelcomeWindow welcomeWindow;
     private final WinWindow winWindow;
+    private final Win2Window win2Window;
     private final LoseWindow loseWindow;
     public final AutoplayOptionWindow autoplayOptionWindow;
     private final OpenGameWindow openGameWindow;
@@ -69,6 +70,7 @@ public class Frontend {
         // dialogs
         welcomeWindow = new WelcomeWindow(WindowDim.center(600, 600, this.width, this.height), true, gameBackend, this);
         winWindow = new WinWindow(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
+        win2Window = new Win2Window(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
         loseWindow = new LoseWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
         autoplayOptionWindow = new AutoplayOptionWindow(WindowDim.center(210, 140, this.width, this.height), gameBackend, this);
         openGameWindow = new OpenGameWindow(WindowDim.center(380, 300, this.width, this.height), true, gameBackend, this);
@@ -138,6 +140,7 @@ public class Frontend {
     boolean processEvent(GameEvent event) {
         switch (event) {
             case WON_GAME: open(this.winWindow); return true;
+            case WON_GAME2: open(this.win2Window); return true;
             case LOST_GAME: open(this.loseWindow); return true;
             case EFFECT: return true;
             case UPDATE_NEED_REDRAW: return true;

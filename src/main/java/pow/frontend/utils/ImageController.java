@@ -31,6 +31,13 @@ public class ImageController {
         NORMAL, GRAY, TRANSPARENT, COLOR_BLOCK
     }
 
+    // big pictures
+    private BufferedImage splashScreenImage;
+    private BufferedImage gameOverImage;
+    private BufferedImage pearlImage;
+    private BufferedImage landscapeImage;
+
+    // tile images
     private BufferedImage tileImage;
     private BufferedImage grayTileImage;
     private BufferedImage transparentTileImage;
@@ -49,6 +56,15 @@ public class ImageController {
         }
         return instance.colorData.get(tileName);
     }
+
+    public static BufferedImage getSplashScreenImage() {
+        return instance.splashScreenImage;
+    }
+    public static BufferedImage getGameOverImage() {
+        return instance.gameOverImage;
+    }
+    public static BufferedImage getLandscapeImage() { return instance.landscapeImage; }
+    public static BufferedImage getPearlImage() { return instance.pearlImage; }
 
     private static BufferedImage getSrcImage(DrawMode drawMode)  {
         switch (drawMode) {
@@ -90,9 +106,17 @@ public class ImageController {
                 null);
     }
 
+    private BufferedImage readImageFromResourceFile(String name) throws IOException {
+        InputStream imageStream = this.getClass().getResourceAsStream(name);
+        return ImageIO.read(imageStream);
+    }
+
     private ImageController() throws IOException, DataFormatException {
-        InputStream imageStream = this.getClass().getResourceAsStream("/images/32x32.png");
-        this.tileImage = ImageIO.read(imageStream);
+        this.splashScreenImage = readImageFromResourceFile("/images/splashscreen.png");
+        this.gameOverImage = readImageFromResourceFile("/images/tombstone.png");
+        this.pearlImage = readImageFromResourceFile("/images/pearls.png");
+        this.landscapeImage = readImageFromResourceFile("/images/landscape.png");
+        this.tileImage = readImageFromResourceFile("/images/32x32.png");
         this.grayTileImage = ImageUtils.makeGrayscale(this.tileImage);
         this.transparentTileImage = ImageUtils.makeTransparent(this.tileImage);
         this.colorBlockImage = ImageUtils.makeColorBlocks(this.tileImage, TILE_SIZE);

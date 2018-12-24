@@ -7,21 +7,19 @@ import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-public class WinWindow extends AbstractWindow {
+public class Win2Window extends AbstractWindow {
 
     private final BufferedImage splashImage;
 
     private final int MARGIN = 10;
 
-    public WinWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
+    public Win2Window(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
-        splashImage = ImageController.getPearlImage();
+        splashImage = ImageController.getLandscapeImage();
         int width = splashImage.getWidth();
         int height = splashImage.getHeight();
         this.dim = WindowDim.center(width + 2*MARGIN, height + 2*MARGIN,
@@ -46,8 +44,9 @@ public class WinWindow extends AbstractWindow {
         Font f = new Font("Courier", Font.PLAIN, 18);
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Congratulations, you collected all the pearls!", 20, 50);
+        graphics.drawString("Congratulations, you have defeated Evil Incarnate!", 20, 50);
+        graphics.drawString("The world is a happier place.", 30, 70);
 
-        graphics.drawString("Press enter to continue.", 20, dim.height - 35);
+        graphics.drawString("Press enter to continue.", 30, dim.height - 35);
     }
 }
