@@ -34,7 +34,7 @@ public class MakePlayerExpLevels {
 
         Map<Integer, List<Monster>> monstersByLevel = new HashMap<>();
         for (String id: allMonsters) {
-            Monster m = MonsterGenerator.genMonster(id, rng, new Point(-1,-1));
+            Monster m = MonsterGenerator.genMonster(id, rng, false, new Point(-1,-1));
             int level = m.level;
             // hacky way to skip bosses
             if (m.requiredItemDrops.size() > 0) continue;
@@ -54,8 +54,8 @@ public class MakePlayerExpLevels {
             System.out.println(level + "\t" + getAvgExperience(monstersByLevel.get(level)));
         }
 
-        double x[] = new double[levels.size()];
-        double y[] = new double[levels.size()];
+        double[] x = new double[levels.size()];
+        double[] y = new double[levels.size()];
         for (int i = 0; i < levels.size(); i++) {
             x[i] = levels.get(i);
             y[i] = getAvgExperience(monstersByLevel.get(i));

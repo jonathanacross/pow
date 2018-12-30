@@ -8,9 +8,7 @@ import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.*;
 import pow.backend.dungeon.gen.mapgen.TerrainFeatureTriplet;
 import pow.backend.dungeon.gen.worldgen.MapPoint;
-import pow.util.Array2D;
-import pow.util.Direction;
-import pow.util.Point;
+import pow.util.*;
 
 import java.util.*;
 
@@ -182,6 +180,54 @@ public class GeneratorUtils {
         return dungeonMap;
     }
 
+    // Given the blockMap (= true if blocked) finds at most maxPoints that are connected
+    // to the start point, center.
+    private static List<Point> getNearbyAvailPoints(boolean[][] blockMap, Point center, int maxPoints) {
+        List<Point> result = new ArrayList<>();
+
+        Set<Point> seen = new HashSet<>();
+        Deque<Point> toCheck = new ArrayDeque<>();
+        toCheck.add(new Point(center.x, center.y));
+
+        while (!toCheck.isEmpty() && result.size() < maxPoints) {
+            Point curr = toCheck.removeFirst();
+
+            if (seen.contains(curr) || blockMap[curr.x][curr.y]) {
+                continue;
+            }
+
+            result.add(curr);
+            seen.add(curr);
+            for (Direction d : Direction.ALL) {
+                Point p = curr.add(d);
+                toCheck.add(p);
+            }
+        }
+
+        return result;
+    }
+
+    // gets the desired number of monsters in a group.
+    // A geometric distribution.
+    private static int getGroupSize(Random rng) {
+        int groupSize = 2;
+        while (rng.nextDouble() < 0.6666) {
+            groupSize += 1;
+        }
+        groupSize = Math.min(groupSize, 30);
+        return groupSize;
+    }
+
+    private static Point getAvailLocation(boolean[][] blockMap, Random rng) {
+        int x = rng.nextInt(Array2D.width(blockMap));
+        int y = rng.nextInt(Array2D.height(blockMap));
+        while (blockMap[x][y]) {
+            x = rng.nextInt(Array2D.width(blockMap));
+            y = rng.nextInt(Array2D.height(blockMap));
+        }
+        return new Point(x, y);
+    }
+
     private static List<Actor> createMonsters(DungeonSquare[][] dungeonMap,
                                              double density,  // # monsters per square
                                              MonsterIdGroup monsterIdGroup,
@@ -191,8 +237,15 @@ public class GeneratorUtils {
         int width = Array2D.width(dungeonMap);
         int height = Array2D.height(dungeonMap);
 
-        List<Point> availableGroundSquares = new ArrayList<>();
-        List<Point> availableWaterSquares = new ArrayList<>();
+        int numAvailableGroundSquares = 0;
+        int numAvailableWaterSquares = 0;
+        boolean[][] groundBlockMap = new boolean[width][height];
+        boolean[][] waterBlockMap = new boolean[width][height];
+        for (int x = 0; x < width; x++) {
+            Arrays.fill(groundBlockMap[x], true);
+            Arrays.fill(waterBlockMap[x], true);
+        }
+
         // Skip outer edge, since we don't want to put monsters right on
         // exits to other levels, where player may come in.
         for (int x = 1; x < width - 1; x++) {
@@ -200,46 +253,59 @@ public class GeneratorUtils {
                 // don't place anyone on traps.
                 if (dungeonMap[x][y].feature != null && dungeonMap[x][y].feature.flags.trap) { continue; }
 
-                if (!dungeonMap[x][y].blockGround()) { availableGroundSquares.add(new Point(x,y)); }
-                if (!dungeonMap[x][y].blockWater()) { availableWaterSquares.add(new Point(x,y)); }
+                if (!dungeonMap[x][y].blockGround()) {
+                    groundBlockMap[x][y] = false;
+                    numAvailableGroundSquares++;
+                }
+                if (!dungeonMap[x][y].blockWater()) {
+                    waterBlockMap[x][y] = false;
+                    numAvailableWaterSquares++;
+                }
             }
         }
 
-        int numGroundMonsters = (int) Math.round(density * availableGroundSquares.size());
-        int numWaterMonsters = (int) Math.round(density * availableWaterSquares.size());
+        int numGroundMonsters = (int) Math.round(density * numAvailableGroundSquares);
+        int numWaterMonsters = (int) Math.round(density * numAvailableWaterSquares);
 
         List<Actor> actors = new ArrayList<>();
 
         // place the boss, if any.  For now, assuming boss will go on land
         if (monsterIdGroup.canGenBoss) {
-            int idx = rng.nextInt(availableGroundSquares.size());
-            Point location = availableGroundSquares.get(idx);
+            Point location = getAvailLocation(groundBlockMap, rng);
             String id = monsterIdGroup.bossId;
-            actors.add(MonsterGenerator.genMonster(id, rng, location));
-            availableGroundSquares.remove(idx);
+            actors.add(MonsterGenerator.genMonster(id, rng, false, location));
+            groundBlockMap[location.x][location.y] = true;
         }
 
-        // place ground monsters
+        // Place ground monsters
         List<String> groundIds = monsterIdGroup.getGroundMonsterIds();
         if (!groundIds.isEmpty()) {
             for (int i = 0; i < numGroundMonsters; i++) {
-                int idx = rng.nextInt(availableGroundSquares.size());
-                Point location = availableGroundSquares.get(idx);
+                Point location = getAvailLocation(groundBlockMap, rng);
                 String id = groundIds.get(rng.nextInt(groundIds.size()));
-                actors.add(MonsterGenerator.genMonster(id, rng, location));
-                availableGroundSquares.remove(idx);
+                if (rng.nextDouble() < GameConstants.MONSTER_GROUP_PROBABILITY) {
+                    // generate a group of monsters
+                    List<Point> groupLocs = getNearbyAvailPoints(groundBlockMap, location, getGroupSize(rng));
+                    for (Point p : groupLocs) {
+                        actors.add(MonsterGenerator.genMonster(id, rng, true, p));
+                        groundBlockMap[p.x][p.y] = true;
+                    }
+                } else {
+                    // single monster
+                    actors.add(MonsterGenerator.genMonster(id, rng, true, location));
+                    groundBlockMap[location.x][location.y] = true;
+                }
             }
         }
 
-        // place water monsters
+        // Place water monsters.  Note we don't add groups here.
         List<String> waterIds = monsterIdGroup.getWaterMonsterIds();
         if (!waterIds.isEmpty()) {
             for (int i = 0; i < numWaterMonsters; i++) {
-                int idx = rng.nextInt(availableWaterSquares.size());
-                Point location = availableWaterSquares.get(idx);
+                Point location = getAvailLocation(waterBlockMap, rng);
                 String id = waterIds.get(rng.nextInt(waterIds.size()));
-                actors.add(MonsterGenerator.genMonster(id, rng, location));
-                availableWaterSquares.remove(idx);
+                actors.add(MonsterGenerator.genMonster(id, rng, true, location));
+                waterBlockMap[location.x][location.y] = true;
             }
         }
 
@@ -248,7 +314,7 @@ public class GeneratorUtils {
 
     // note: this also removes the player and pet from the map!
     public static void regenMonstersForCurrentMap(GameMap map, Random rng) {
-        map.actors = createMonsters(map.map, GameConstants.MONSTER_DENSITY, map.genMonsterIds, rng);
+        map.setActors(createMonsters(map.map, GameConstants.MONSTER_DENSITY, map.genMonsterIds, rng));
     }
 
     public static void healAllMonsters(GameMap map) {
@@ -281,7 +347,7 @@ public class GeneratorUtils {
             } while (dungeonMap[x][y].blockGround() || monsterAt[x][y]);
             Point location = new Point(x,y);
 
-            actors.add(MonsterGenerator.genMonster(monster, rng, location));
+            actors.add(MonsterGenerator.genMonster(monster, rng, false, location));
             monsterAt[location.x][location.y] = true;
         }
         return actors;
@@ -390,8 +456,7 @@ public class GeneratorUtils {
     private static DungeonFeature buildClosedPortalFeature(
             String openPortalFeatureId, String closedPortalFeatureId,
             Point loc) {
-        String featureId = closedPortalFeatureId;
-        DungeonFeature featureTemplate = FeatureData.getFeature(featureId);
+        DungeonFeature featureTemplate = FeatureData.getFeature(closedPortalFeatureId);
 
         ActionParams params = new ActionParams();
         params.actionName = ActionParams.ActionName.OPEN_PORTAL_ACTION;
@@ -697,10 +762,9 @@ public class GeneratorUtils {
         if (portalStatus != MapPoint.PortalStatus.NONE) {
             boolean isOpen = (portalStatus == MapPoint.PortalStatus.OPEN);
             Point loc = GeneratorUtils.findStairsLocation(squares, rng);
-            DungeonFeature portal = isOpen
+            squares[loc.x][loc.y].feature = isOpen
                     ? GeneratorUtils.buildOpenPortalFeature(ids.openPortalFeature)
                     : GeneratorUtils.buildClosedPortalFeature(ids.openPortalFeature, ids.closedPortalFeature, loc);
-            squares[loc.x][loc.y].feature = portal;
             keyLocations.put(Constants.PORTAL_KEY_LOCATION_ID, loc);
         }
         return keyLocations;

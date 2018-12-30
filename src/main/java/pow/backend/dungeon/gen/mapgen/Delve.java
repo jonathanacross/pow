@@ -115,7 +115,7 @@ public class Delve implements MapGenerator {
 
         int desiredNumCellsToDig = estimateCellsToDig(width * height, this.neighborMin, this.neighborMax);
 
-        int numDugcells = cavern(map, width / 2, height / 2,
+        cavern(map, width / 2, height / 2,
                 this.neighborMin, this.neighborMax, this.connChance, desiredNumCellsToDig,
                 Constants.TERRAIN_FLOOR, Constants.TERRAIN_WALL, rng);
 
@@ -206,10 +206,9 @@ public class Delve implements MapGenerator {
     // nbrMin to nbrMax flo neighbours, and digging won't open new
     // connections; the last condition is ignored with percent chance
     // connChance.
-    // returns number of cells dug
-    private int delveOn(int[][] map, CellStore cellStore, int nbrMin, int nbrMax, int connChance, int cellNum, int flo, int ava, Random rng) {
+    private void delveOn(int[][] map, CellStore cellStore, int nbrMin, int nbrMax, int connChance, int cellNum, int flo, int ava, Random rng) {
 
-        int count = 0;
+        int count = 0; // number of cells dug
 
         while ((count < cellNum) && cellStore.isNotEmpty()) {
             Point p = cellStore.getRandomCell(rng);
@@ -222,14 +221,12 @@ public class Delve implements MapGenerator {
                 count += digCell(map, cellStore, x, y, flo, ava, rng);
             }
         }
-
-        return count;
     }
 
     // Generate a random cavern of cellNum cells.
-    private int cavern(int[][] map, int xOrig, int yOrig, int nbrMin, int nbrMax, int connChance, int cellNum, int flo, int ava, Random rng) {
+    private void cavern(int[][] map, int xOrig, int yOrig, int nbrMin, int nbrMax, int connChance, int cellNum, int flo, int ava, Random rng) {
         CellStore cellStore = new CellStore();
-        int count = 0;
+        int count = 0;  // number of cells that were dug
 
         cellStore.store(xOrig, yOrig);
 
@@ -250,10 +247,8 @@ public class Delve implements MapGenerator {
         }
 
         if (count < cellNum) {
-            count += delveOn(map, cellStore, nbrMin, nbrMax, connChance, cellNum - count, flo, ava, rng);
+            delveOn(map, cellStore, nbrMin, nbrMax, connChance, cellNum - count, flo, ava, rng);
         }
-
-        return count;
     }
 
     // Estimate a sensible number of cells for given nbrMin, nbrMax.

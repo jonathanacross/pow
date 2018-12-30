@@ -519,9 +519,7 @@ public class GameMainLayer extends AbstractWindow {
             return;
         }
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,
-                (Point p) -> {
-                    gameState.party.selectedActor.target.setFloor(p);
-                }
+                (Point p) -> gameState.party.selectedActor.target.setFloor(p)
         ));
     }
 }

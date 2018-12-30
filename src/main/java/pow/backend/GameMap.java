@@ -35,7 +35,7 @@ public class GameMap implements Serializable {
     public final int height;
     public final MonsterIdGroup genMonsterIds;  // monsters to generate for this level
     public List<Actor> actors;
-    public List<DungeonEffect> effects;
+    public final List<DungeonEffect> effects;
     private List<LightSource> lightSources;
     public final Map<String, Point> keyLocations;  // useful for joining areas together
     public final String id; // internal id of area
@@ -218,6 +218,11 @@ public class GameMap implements Serializable {
             currActorIdx--;
         }
         actors.remove(a);
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
+        this.currActorIdx = 0;
     }
 
     public boolean isOnMap(int x, int y) {

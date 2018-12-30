@@ -182,7 +182,6 @@ public class RadialGenerator implements MapGenerator {
 
     private int[][] genMap(Random rng) {
         Map<Point, MazeCell> cells = genCells(rng);
-        int[][] grid = toGrid(cells);
-        return grid;
+        return toGrid(cells);
     }
 }

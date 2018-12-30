@@ -63,7 +63,6 @@ public class BreathSpell implements Action {
         }
 
         // clear out last effect.
-        // TODO: should this be new dungeonupdated?
         subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
         subactions.add(new CompletedAction(actor));
         return ActionResult.failed(subactions);

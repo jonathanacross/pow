@@ -19,7 +19,7 @@ public class ShowMonsterStats {
         Set<String> allMonsters = MonsterGenerator.getMonsterIds();
         List<Monster> monsters = new ArrayList<>();
         for (String id : allMonsters) {
-            Monster m = MonsterGenerator.genMonster(id, rng, new Point(-1, -1));
+            Monster m = MonsterGenerator.genMonster(id, rng, false, new Point(-1, -1));
             monsters.add(m);
         }
 

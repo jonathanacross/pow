@@ -44,8 +44,7 @@ public class SaveUtils {
         InputStream fis = new FileInputStream(file);
         InputStream bis = new BufferedInputStream(fis);
         ObjectInput input = new ObjectInputStream(bis);
-        GameState state = (GameState) input.readObject();
-        return state;
+        return (GameState) input.readObject();
     }
 
     public static void saveToFile(GameState state) {

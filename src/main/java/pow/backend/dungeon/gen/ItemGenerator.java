@@ -131,7 +131,6 @@ public class ItemGenerator {
         int maxSockets;
         MinMax count; // number to generate
         int[] bonuses;
-        String extra;
 
         public static class MinMax {
             public final int min;
@@ -173,7 +172,7 @@ public class ItemGenerator {
                 maxBonus = Integer.parseInt(line[11]);
                 maxSockets = Integer.parseInt(line[12]);
                 bonuses = ParseUtils.parseBonuses(line[13]);
-                extra = line[14];
+                // Note that field 14 is currently unused.
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
             }
