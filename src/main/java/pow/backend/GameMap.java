@@ -220,6 +220,11 @@ public class GameMap implements Serializable {
         actors.remove(a);
     }
 
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
+        this.currActorIdx = 0;
+    }
+
     public boolean isOnMap(int x, int y) {
         return x >= 0 && y >= 0 && x < width && y < height;
     }
