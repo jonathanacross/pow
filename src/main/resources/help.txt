@@ -26,7 +26,6 @@ The keys . or number pad 5 indicate to stay still.
       l    Walk east                       L    Run east
       m    Cast magic                      M    Show world map
       n    Walk southeast                  N    Run southeast
-      s    Select character
       t    Target a monster                T    Target a spot on the ground
       u    Walk northeast                  U    Run northeast
       x    Examine nearby things

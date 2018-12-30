@@ -21,11 +21,6 @@ have it, just double-click the .jar file.
 
 **A:** In `~/.pearls_of_wisdom/save`.  (~ is your home directory).
 
-**Q:** I upgraded to a new version, and now my old characters crash when loading!
-
-**A:** Yup, sorry about that.  Improving savefile compatibility may become
-a bigger priority after the game is complete and I'm not adding new features.
-
 ## Developer Information
 
 PoW is written in Java. If you are building from source, you can compile it
