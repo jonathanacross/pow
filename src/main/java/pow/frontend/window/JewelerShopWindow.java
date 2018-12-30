@@ -1,16 +1,19 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
-import pow.backend.utils.ShopUtils;
 import pow.backend.action.UpgradeItem;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
-import pow.backend.dungeon.gen.ShopGenerator;
+import pow.backend.utils.ItemUtils;
+import pow.backend.utils.ShopUtils;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.function.Consumer;
@@ -56,7 +59,7 @@ public class JewelerShopWindow extends AbstractWindow {
         }
 
         public int getCostOfSelectedItems() {
-            return ShopGenerator.priceItem(getSelectedItem()) / 2 + ShopGenerator.priceItem(getSelectedGem());
+            return ItemUtils.priceItem(getSelectedItem()) / 2 + ItemUtils.priceItem(getSelectedGem());
         }
 
         public boolean playerCanAffordUpgrade() {

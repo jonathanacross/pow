@@ -56,8 +56,6 @@ public class SpellChoiceWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        String currMessage = this.message;
-
         final int nameColumnX = MARGIN + 20;
         final int levelColumnX = MARGIN + 160;
         final int manaColumnX = MARGIN + 200;
@@ -70,7 +68,7 @@ public class SpellChoiceWindow extends AbstractWindow {
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(currMessage, MARGIN, MARGIN + FONT_SIZE);
+        graphics.drawString(this.message, MARGIN, MARGIN + FONT_SIZE);
 
         int y = 45;
         graphics.drawString("Spell", nameColumnX,y);

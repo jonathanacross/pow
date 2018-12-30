@@ -65,8 +65,7 @@ public class MonsterDanger {
         int baseDamage = (int) Math.ceil(hitProb * attack.getAverageDamage());
 
         // Take into account resistances.
-        double adjustedDamage = AttackUtils.adjustDamage(baseDamage, element, defender);
-        return adjustedDamage;
+        return (double) AttackUtils.adjustDamage(baseDamage, element, defender);
     }
 
     // Considers each possible type of attack (physical and all spells) and get the estimated
@@ -99,8 +98,7 @@ public class MonsterDanger {
         int baseDamage = (int) Math.ceil(scale * upper95(attack));
 
         // Take into account resistances.
-        double adjustedDamage = AttackUtils.adjustDamage(baseDamage, element, defender);
-        return adjustedDamage;
+        return (double) AttackUtils.adjustDamage(baseDamage, element, defender);
     }
 
     // Damage from upper 95% confidence interval.

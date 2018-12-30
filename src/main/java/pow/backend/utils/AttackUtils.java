@@ -15,8 +15,7 @@ public class AttackUtils {
     public static double hitProb(int toHit, int defense) {
         // squaring everything pushes away from 50% probability faster,
         // so changes between toHit and defense are more significant.
-        double z = (double) (toHit * toHit) / (toHit * toHit + defense * defense);
-        return z;
+        return (double) (toHit * toHit) / (toHit * toHit + defense * defense);
     }
 
     // Adjusts the damage based on the damage type and the defender's resistances

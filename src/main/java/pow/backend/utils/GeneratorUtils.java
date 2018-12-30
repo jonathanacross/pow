@@ -390,8 +390,7 @@ public class GeneratorUtils {
     private static DungeonFeature buildClosedPortalFeature(
             String openPortalFeatureId, String closedPortalFeatureId,
             Point loc) {
-        String featureId = closedPortalFeatureId;
-        DungeonFeature featureTemplate = FeatureData.getFeature(featureId);
+        DungeonFeature featureTemplate = FeatureData.getFeature(closedPortalFeatureId);
 
         ActionParams params = new ActionParams();
         params.actionName = ActionParams.ActionName.OPEN_PORTAL_ACTION;
@@ -697,10 +696,9 @@ public class GeneratorUtils {
         if (portalStatus != MapPoint.PortalStatus.NONE) {
             boolean isOpen = (portalStatus == MapPoint.PortalStatus.OPEN);
             Point loc = GeneratorUtils.findStairsLocation(squares, rng);
-            DungeonFeature portal = isOpen
+            squares[loc.x][loc.y].feature = isOpen
                     ? GeneratorUtils.buildOpenPortalFeature(ids.openPortalFeature)
                     : GeneratorUtils.buildClosedPortalFeature(ids.openPortalFeature, ids.closedPortalFeature, loc);
-            squares[loc.x][loc.y].feature = portal;
             keyLocations.put(Constants.PORTAL_KEY_LOCATION_ID, loc);
         }
         return keyLocations;

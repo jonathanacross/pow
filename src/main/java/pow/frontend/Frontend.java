@@ -48,7 +48,7 @@ public class Frontend {
 
     private boolean dirty;  // need to redraw
     public final Deque<String> messages;  // short messages/help suggestions
-    private List<GameEvent> events;
+    private final List<GameEvent> events;
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
@@ -228,7 +228,7 @@ public class Frontend {
         SelectCharWindow createCharWindow = new SelectCharWindow(
                 WindowDim.center(480, 260, this.width, this.height),
                 gameBackend, this,
-                Arrays.asList("Select your character:"), false,
+                Collections.singletonList("Select your character:"), false,
                 this::tryToStartNewGame, () -> setState(Frontend.State.OPEN_GAME));
         open(createCharWindow);
     }
@@ -290,8 +290,7 @@ public class Frontend {
                 openPortals.add(new PortalChoiceWindow.AreaNameAndId(name, id));
             }
         }
-        Collections.sort(openPortals,
-                Comparator.comparing((PortalChoiceWindow.AreaNameAndId p) -> p.name));
+        openPortals.sort(Comparator.comparing((PortalChoiceWindow.AreaNameAndId p) -> p.name));
 
         open(new PortalChoiceWindow(300, 150,
                 gameBackend, this,

@@ -22,8 +22,7 @@ public class Hit implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        List<GameEvent> events = new ArrayList<>();
-        events.addAll(AttackUtils.doHit(backend, attacker, defender, hitParams));
+        List<GameEvent> events = new ArrayList<>(AttackUtils.doHit(backend, attacker, defender, hitParams));
         return ActionResult.succeeded(events);
     }
 

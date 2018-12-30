@@ -54,8 +54,8 @@ public class MakePlayerExpLevels {
             System.out.println(level + "\t" + getAvgExperience(monstersByLevel.get(level)));
         }
 
-        double x[] = new double[levels.size()];
-        double y[] = new double[levels.size()];
+        double[] x = new double[levels.size()];
+        double[] y = new double[levels.size()];
         for (int i = 0; i < levels.size(); i++) {
             x[i] = levels.get(i);
             y[i] = getAvgExperience(monstersByLevel.get(i));

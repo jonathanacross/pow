@@ -43,13 +43,12 @@ public class GameBackend {
     }
 
     private List<GameEvent> processCommand(Deque<Action> commandQueue) {
-        List<GameEvent> events = new ArrayList<>();
 
         Action command = commandQueue.removeFirst();
         ActionResult result = command.process(this);
-        events.addAll(result.events);
+        List<GameEvent> events = new ArrayList<>(result.events);
 
-        List<Action> derivedActions = new ArrayList(result.derivedActions);
+        List<Action> derivedActions = new ArrayList<>(result.derivedActions);
 
         if (result.succeeded && command.consumesEnergy()) {
             command.getActor().energy.spend();

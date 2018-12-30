@@ -13,13 +13,10 @@ public class DungeonSquare implements Serializable {
     // Has the player seen the square?
     public boolean seen;
 
-    // How bright is the square -- recomputed based on lightsources in the dungeon
+    // How bright is the square -- recomputed based on light sources in the dungeon
     // (currently only depending on the player and static dungeon features).
+    // See comments in GameMap.updateBrightness for how this is used.
     public int brightness;
-
-    // Is the square is illuminated or not? squares will be lit on easy dungeons,
-    // if outside, or if the player has cast a spell to light an area
-    public boolean illuminated;
 
     public DungeonSquare(DungeonTerrain terrain, DungeonFeature feature) {
         this.terrain = terrain;

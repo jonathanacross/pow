@@ -20,7 +20,7 @@ public class ActionResult {
     }
 
     public static ActionResult succeeded(GameEvent event) {
-        return new ActionResult(Arrays.asList(event), Collections.emptyList(), true);
+        return new ActionResult(Collections.singletonList(event), Collections.emptyList(), true);
     }
 
     public static ActionResult succeeded() {
@@ -32,7 +32,7 @@ public class ActionResult {
     }
 
     public static ActionResult failed(Action derivedAction) {
-        return new ActionResult(Collections.emptyList(), Arrays.asList(derivedAction), false);
+        return new ActionResult(Collections.emptyList(), Collections.singletonList(derivedAction), false);
     }
 
     public static ActionResult failed() {

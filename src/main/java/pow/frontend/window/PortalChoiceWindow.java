@@ -62,8 +62,6 @@ public class PortalChoiceWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        String currMessage = this.message;
-
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
@@ -71,7 +69,7 @@ public class PortalChoiceWindow extends AbstractWindow {
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(currMessage, MARGIN, MARGIN + FONT_SIZE);
+        graphics.drawString(this.message, MARGIN, MARGIN + FONT_SIZE);
 
         int y = 45;
         int idx = 0;
