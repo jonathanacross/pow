@@ -27,7 +27,7 @@ poison breath	poison breath	10	12	breath	poison	6	10	12	2	1	0.3	intelligence	ran
 fire breath	fire breath	10	14	breath	fire	7	0	14	2	0	0	intelligence	range {s}, dam {1}
 rift	rift	6	20	breath	stun	7	10	40	1	0	0.3	strength	range {s}, dam {1}, stun {2} for {t} turns
 chain lightning	chain lightning	7	20	chain	lightning	7	0	30	2	0	0	intelligence	range {s}, dam {1}
-circle cut	circle cut	3	5	circle cut	damage	1	0	0	1	0	0	attack	range {s}, dam {1}
+circle cut	circle cut	3	5	circle cut	damage	2	0	0	1	0	0	attack	range {s}, dam {1}
 lesser heal	lesser heal	4	3	heal	none	0	0	0	0	10	0	intelligence	heal {2}% / {2} hp
 greater heal	greater heal	7	15	heal	none	0	0	0	0	40	0	intelligence	heal {2}% / {2} hp
 group heal	group heal	10	25	group heal	none	0	0	0	0	30	0	intelligence	heal all {2}% / {2} hp
