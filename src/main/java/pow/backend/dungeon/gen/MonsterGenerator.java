@@ -28,12 +28,12 @@ public class MonsterGenerator {
     public static Set<String> getWaterMonsterIds() { return instance.waterMonsterIds; }
 
     // generates a single monster
-    public static Monster genMonster(String id, Random rng, Point location) {
+    public static Monster genMonster(String id, Random rng, boolean perturb, Point location) {
         if (!instance.generatorMap.containsKey(id)) {
             DebugLogger.error("unknown monster id '" + id + "'");
         }
         SpecificMonsterGenerator generator = instance.generatorMap.get(id);
-        return generator.genMonster(rng, location);
+        return generator.genMonster(rng, perturb, location);
     }
 
     private static final MonsterGenerator instance;
@@ -329,14 +329,45 @@ public class MonsterGenerator {
                             (flags.monsterFlags.knight ? new KnightMovement() : new StepMovement());
         }
 
+        private static class BaseStats {
+            private int[] stats;
+
+            public BaseStats(int strength, int dexterity, int intelligence, int constitution) {
+                stats = new int[] {strength, dexterity, intelligence, constitution};
+            }
+
+            public void perturb(Random rng) {
+                int sum = stats[0] + stats[1] + stats[2] + stats[3];
+                int numPerturbs = sum / 15;
+
+                for (int i = 0; i < numPerturbs; i++) {
+                    int idx1 = rng.nextInt(4);
+                    int idx2 = rng.nextInt(4);
+                    stats[idx1]--;
+                    stats[idx2]++;
+                }
+            }
+
+            public int getStr() { return stats[0]; }
+            public int getDex() { return stats[1]; }
+            public int getInt() { return stats[2]; }
+            public int getCon() { return stats[3]; }
+        }
+
         // resolves die rolls, location to get a specific monster instance
-        public Monster genMonster(Random rng, Point location) {
+        public Monster genMonster(Random rng, boolean perturb, Point location) {
+            // add a little variability to the monster's stats
+            BaseStats baseStats = new BaseStats(strength, dexterity, intelligence, constitution);
+            if (perturb) {
+                baseStats.perturb(rng);
+            }
 
             return new Monster(
                     new DungeonObject.Params(id, name, image, description, location, true),
                     new Actor.Params(level, experience, flags.friendly, flags.invisible,
-                            flags.aquatic, movement, artifactDrops, numDropAttempts, strength, dexterity,
-                            intelligence, constitution, speed, spells, new Abilities()),
+                            flags.aquatic, movement, artifactDrops, numDropAttempts,
+                            baseStats.getStr(), baseStats.getDex(), baseStats.getInt(), baseStats.getCon(),
+                            speed, spells, new Abilities()),
                     flags.monsterFlags);
         }
     }

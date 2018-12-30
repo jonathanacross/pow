@@ -34,7 +34,7 @@ public class MakePlayerExpLevels {
 
         Map<Integer, List<Monster>> monstersByLevel = new HashMap<>();
         for (String id: allMonsters) {
-            Monster m = MonsterGenerator.genMonster(id, rng, new Point(-1,-1));
+            Monster m = MonsterGenerator.genMonster(id, rng, false, new Point(-1,-1));
             int level = m.level;
             // hacky way to skip bosses
             if (m.requiredItemDrops.size() > 0) continue;

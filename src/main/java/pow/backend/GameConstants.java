@@ -92,6 +92,9 @@ public class GameConstants {
     // Chance a monster will drop an item (for each drop attempt).
     public final static double MONSTER_DROP_CHANCE = 0.5;
 
+    // Probability that monsters will be generated in a group.
+    public final static double MONSTER_GROUP_PROBABILITY = 0.05;
+
     // Chance a monster will drop an item when player has an
     // amulet of wealth.
     public final static double BONUS_MONSTER_DROP_CHANCE = 0.75;

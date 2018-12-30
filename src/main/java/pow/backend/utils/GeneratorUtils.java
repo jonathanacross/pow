@@ -273,7 +273,7 @@ public class GeneratorUtils {
         if (monsterIdGroup.canGenBoss) {
             Point location = getAvailLocation(groundBlockMap, rng);
             String id = monsterIdGroup.bossId;
-            actors.add(MonsterGenerator.genMonster(id, rng, location));
+            actors.add(MonsterGenerator.genMonster(id, rng, false, location));
             groundBlockMap[location.x][location.y] = true;
         }
 
@@ -283,16 +283,16 @@ public class GeneratorUtils {
             for (int i = 0; i < numGroundMonsters; i++) {
                 Point location = getAvailLocation(groundBlockMap, rng);
                 String id = groundIds.get(rng.nextInt(groundIds.size()));
-                if (rng.nextInt(20) == 0) {
+                if (rng.nextDouble() < GameConstants.MONSTER_GROUP_PROBABILITY) {
                     // generate a group of monsters
                     List<Point> groupLocs = getNearbyAvailPoints(groundBlockMap, location, getGroupSize(rng));
                     for (Point p : groupLocs) {
-                        actors.add(MonsterGenerator.genMonster(id, rng, p));
+                        actors.add(MonsterGenerator.genMonster(id, rng, true, p));
                         groundBlockMap[p.x][p.y] = true;
                     }
                 } else {
                     // single monster
-                    actors.add(MonsterGenerator.genMonster(id, rng, location));
+                    actors.add(MonsterGenerator.genMonster(id, rng, true, location));
                     groundBlockMap[location.x][location.y] = true;
                 }
             }
@@ -304,7 +304,7 @@ public class GeneratorUtils {
             for (int i = 0; i < numWaterMonsters; i++) {
                 Point location = getAvailLocation(waterBlockMap, rng);
                 String id = waterIds.get(rng.nextInt(waterIds.size()));
-                actors.add(MonsterGenerator.genMonster(id, rng, location));
+                actors.add(MonsterGenerator.genMonster(id, rng, true, location));
                 waterBlockMap[location.x][location.y] = true;
             }
         }
@@ -347,7 +347,7 @@ public class GeneratorUtils {
             } while (dungeonMap[x][y].blockGround() || monsterAt[x][y]);
             Point location = new Point(x,y);
 
-            actors.add(MonsterGenerator.genMonster(monster, rng, location));
+            actors.add(MonsterGenerator.genMonster(monster, rng, false, location));
             monsterAt[location.x][location.y] = true;
         }
         return actors;
