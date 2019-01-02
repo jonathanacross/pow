@@ -171,7 +171,7 @@ public class PetAi {
     }
 
     private static Action moveTowardTarget(Actor actor, GameState gs, Point target) {
-        MultiPathFinder pathFinder = new MultiPathFinder(actor, gs);
+        ShortestPathFinder pathFinder = new ShortestPathFinder(actor, gs);
         List<Point> path = pathFinder.reconstructPath(target);
         if (path.isEmpty()) {
             return new Move(actor, 0, 0);
@@ -281,13 +281,13 @@ public class PetAi {
         if (dangerousTarget != null) {
             return dangerousTarget;
         }
-        MultiPathFinder pathFinder = new MultiPathFinder(me, gs);
+        ShortestPathFinder pathFinder = new ShortestPathFinder(me, gs);
         List<Actor> targets = getTargets(me, gs);
 
         Actor bestTarget = null;
         double bestScore = Double.MAX_VALUE;
         for (Actor target : targets) {
-            Double score = pathFinder.gScore.get(target.loc);
+            Double score = pathFinder.cost.get(target.loc);
             if (score != null && (bestTarget == null || score < bestScore)) {
                 bestTarget = target;
                 bestScore = score;

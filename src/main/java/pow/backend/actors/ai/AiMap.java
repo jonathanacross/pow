@@ -11,35 +11,35 @@ import java.util.List;
 
 // class to summarize a map in a form useful for AI
 public class AiMap {
-    public double[][] squareWeights;  // smaller weight is better.
+    public final double[][] squareWeights;  // smaller weight is better.
 
     // bounds of the array we fill in above.
-    private int xMin;
-    private int yMin;
-    private int xMax;
-    private int yMax;
+    private final int xMin;
+    private final int yMin;
+    private final int xMax;
+    private final int yMax;
 
     // Points of interest
-    public Point actorLoc;  // location of actor
-    public List<Point> monsterLocs;  // locations of monsters
-    public List<Point> partyLocs;  // locations of other party members
-    public List<Point> unseenLocs;  // locations of unseen squares.
+    public final Point actorLoc;  // location of actor
+    public final List<Point> monsterLocs;  // locations of monsters
+    public final List<Point> partyLocs;  // locations of other party members
+    public final List<Point> unseenLocs;  // locations of unseen squares.
 
-    private static double TRAP = 200;
-    private static double IMPASSABLE = 1e10;
+    private static final double TRAP = 200;
+    private static final double IMPASSABLE = 1e10;
 
     // Danger by distance.
     // 0 distance means we have to kill the monster.
     // Within 1 monsters can directly attack; within 3 monsters can wake up.
     // Within 7 monsters might hit with arrows/spells.
-    private static double[][] DANGER_WEIGHTS =
+    private static final double[][] DANGER_WEIGHTS =
         // distance   0   1  2  3  4  5  6  7
                    {{ 2,  1, 0, 0, 0, 0, 0, 0}, // SAFE
                     { 4,  2, 1, 1, 0, 0, 0, 0}, // NORMAL
                     { 8,  4, 2, 2, 1, 1, 1, 1}, // UNSAFE
                     {16,  8, 4, 4, 2, 2, 2, 2}, // DANGEROUS
                     {32, 16, 8, 8, 4, 4, 4, 4}}; // DEADLY
-    private static double FRIENDLY_BLOCK = 500;
+    private static final double FRIENDLY_BLOCK = 500;
 
     public boolean canMoveTo(Point p) {
         return xMin <= p.x && p.x < xMax && yMin <= p.y && p.y < yMax &&

@@ -8,7 +8,7 @@ import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.actors.ai.MonsterDanger;
-import pow.backend.actors.ai.MultiPathFinder;
+import pow.backend.actors.ai.ShortestPathFinder;
 import pow.backend.actors.ai.PetAi;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
@@ -434,11 +434,9 @@ public class GameMainLayer extends AbstractWindow {
 
         // show pet path
         if (this.showPetAi && pet != null) {
-            MultiPathFinder pathFinder = new MultiPathFinder(pet, gs);
+            ShortestPathFinder pathFinder = new ShortestPathFinder(pet, gs);
             if (petTarget != null) {
                 List<pow.util.Point> path = pathFinder.reconstructPath(petTarget.loc);
-                //AStarPathFinder pathFinder = new AStarPathFinder(pet, gs);
-                //List<pow.util.Point> path = pathFinder.findPath(pet.loc, petTarget.loc);
                 if (!path.isEmpty()) {
                     int[] x = new int[path.size()];
                     int[] y = new int[path.size()];
@@ -451,23 +449,22 @@ public class GameMainLayer extends AbstractWindow {
                     graphics.drawPolyline(x, y, path.size());
                 }
             }
-            graphics.setFont(new Font("Courier", Font.PLAIN, 9));
-            for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
-                for (int x = mapView.colMin; x <= mapView.colMax; x++) {
-                    if (pathFinder.aiMap.canMoveTo(new Point(x,y))) {
-                        Point tileCenter = mapView.gamePointToTileCenter(new Point(x,y));
-                        double mapWeight = pathFinder.aiMap.squareWeights[x][y];
-                        drawWeight(graphics, Color.GREEN, mapWeight, tileCenter.x - 16, tileCenter.y - 5);
-
-                        Double pathWeight = pathFinder.gScore.get(new Point(x,y));
-                        if (pathWeight != null) {
-                            List<Point> path = pathFinder.reconstructPath(new Point(x,y));
-                            drawWeight(graphics, Color.ORANGE, pathFinder.maxDanger(path), tileCenter.x - 16, tileCenter.y + 5);
-                            drawWeight(graphics, Color.YELLOW, pathWeight, tileCenter.x - 16, tileCenter.y + 15);
-                        }
-                    }
-                }
-            }
+//            // show square/shortest path costing information
+//            graphics.setFont(new Font("Courier", Font.PLAIN, 9));
+//            for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
+//                for (int x = mapView.colMin; x <= mapView.colMax; x++) {
+//                    if (pathFinder.aiMap.canMoveTo(new Point(x, y))) {
+//                        Point tileCenter = mapView.gamePointToTileCenter(new Point(x, y));
+//                        double mapWeight = pathFinder.aiMap.squareWeights[x][y];
+//                        drawWeight(graphics, Color.GREEN, mapWeight, tileCenter.x - 16, tileCenter.y);
+//
+//                        Double pathWeight = pathFinder.cost.get(new Point(x, y));
+//                        if (pathWeight != null) {
+//                            drawWeight(graphics, Color.YELLOW, pathWeight, tileCenter.x - 16, tileCenter.y + 10);
+//                        }
+//                    }
+//                }
+//            }
         }
 
         // add shadow
