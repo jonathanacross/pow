@@ -19,7 +19,6 @@ public class StepMovement implements Movement, Serializable {
         return moveOrWait(actor, gs, dx, dy);
     }
 
-
     @Override
     public boolean canMoveTowardTarget(Actor actor, GameState gs, Point target) {
         Point dir = getDirectionTowardTarget(actor.loc, target);

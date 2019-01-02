@@ -32,6 +32,11 @@ public class Point implements Serializable {
         return 32768*x + y;
     }
 
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
     public Point add(Direction direction) {
         return new Point(x + direction.dx, y + direction.dy);
     }

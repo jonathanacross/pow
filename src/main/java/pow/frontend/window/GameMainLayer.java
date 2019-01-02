@@ -8,6 +8,7 @@ import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.actors.ai.MonsterDanger;
+import pow.backend.actors.ai.MultiPathFinder;
 import pow.backend.actors.ai.PetAi;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
@@ -340,6 +341,20 @@ public class GameMainLayer extends AbstractWindow {
         friendlyColor = new Color(0, 153, 255, alpha);
     }
 
+    private static String weightString(double weight) {
+        return Integer.toString((int) Math.round(weight * 10));
+    }
+
+    private void drawWeight(Graphics graphics, Color c, double weight, int x, int y) {
+        graphics.setColor(Color.BLACK);
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                graphics.drawString(weightString(weight), x + dx, y + dy);
+            }
+        }
+        graphics.setColor(c);
+        graphics.drawString(weightString(weight), x, y);
+    }
 
     @Override
     public void drawContents(Graphics graphics) {
@@ -413,6 +428,44 @@ public class GameMainLayer extends AbstractWindow {
             for (DungeonEffect.ImageLoc imageLoc : effect.imageLocs) {
                 if (gs.party.selectedActor.canSeeLocation(gs, imageLoc.loc)) {
                     mapView.drawTile(graphics, imageLoc.imageName, imageLoc.loc.x, imageLoc.loc.y, ImageController.DrawMode.NORMAL);
+                }
+            }
+        }
+
+        // show pet path
+        if (this.showPetAi && pet != null) {
+            MultiPathFinder pathFinder = new MultiPathFinder(pet, gs);
+            if (petTarget != null) {
+                List<pow.util.Point> path = pathFinder.reconstructPath(petTarget.loc);
+                //AStarPathFinder pathFinder = new AStarPathFinder(pet, gs);
+                //List<pow.util.Point> path = pathFinder.findPath(pet.loc, petTarget.loc);
+                if (!path.isEmpty()) {
+                    int[] x = new int[path.size()];
+                    int[] y = new int[path.size()];
+                    for (int i = 0; i < path.size(); i++) {
+                        pow.util.Point tileCenter = mapView.gamePointToTileCenter(path.get(i));
+                        x[i] = tileCenter.x;
+                        y[i] = tileCenter.y;
+                    }
+                    graphics.setColor(Color.GREEN);
+                    graphics.drawPolyline(x, y, path.size());
+                }
+            }
+            graphics.setFont(new Font("Courier", Font.PLAIN, 9));
+            for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
+                for (int x = mapView.colMin; x <= mapView.colMax; x++) {
+                    if (pathFinder.aiMap.canMoveTo(new Point(x,y))) {
+                        Point tileCenter = mapView.gamePointToTileCenter(new Point(x,y));
+                        double mapWeight = pathFinder.aiMap.squareWeights[x][y];
+                        drawWeight(graphics, Color.GREEN, mapWeight, tileCenter.x - 16, tileCenter.y - 5);
+
+                        Double pathWeight = pathFinder.gScore.get(new Point(x,y));
+                        if (pathWeight != null) {
+                            List<Point> path = pathFinder.reconstructPath(new Point(x,y));
+                            drawWeight(graphics, Color.ORANGE, pathFinder.maxDanger(path), tileCenter.x - 16, tileCenter.y + 5);
+                            drawWeight(graphics, Color.YELLOW, pathWeight, tileCenter.x - 16, tileCenter.y + 15);
+                        }
+                    }
                 }
             }
         }
