@@ -18,8 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static pow.util.MathUtils.dist2;
-
 public class PetAi {
 
     public static Action getAction(Actor actor, GameState gs) {
@@ -59,9 +57,9 @@ public class PetAi {
 
     private static Action moveTowardOtherIfFar(Actor me, GameState gs, int maxDist) {
         Actor other = getOtherPartyActor(me, gs);
-        int distSq = dist2(me.loc, other.loc);
+        int distSq = MathUtils.dist2(me.loc, other.loc);
         if (distSq >= maxDist * maxDist) {
-            return me.movement.moveTowardTarget(me, gs, other.loc);
+            return moveTowardTarget(me, gs, other.loc);
         }
         return null;
     }
@@ -172,6 +170,17 @@ public class PetAi {
         return healthPerCast / manaPerCast;
     }
 
+    private static Action moveTowardTarget(Actor actor, GameState gs, Point target) {
+        ShortestPathFinder pathFinder = new ShortestPathFinder(actor, gs);
+        List<Point> path = pathFinder.reconstructPath(target);
+        if (path.isEmpty()) {
+            return new Move(actor, 0, 0);
+        } else {
+            Point nearby = path.size() == 1 ? path.get(0) : path.get(1);
+            return new Move(actor, nearby.x - actor.loc.x, nearby.y - actor.loc.y);
+        }
+    }
+
     private static Action attackOrMoveToTarget(Actor me, GameState gs, Actor target) {
         // find best attack
         double bestScore = attackScoreForPrimaryAttack(me, target);
@@ -201,7 +210,7 @@ public class PetAi {
 
         // Couldn't do attack, but have a target.  Move towards it
         // so we can attack it next turn.
-        return me.movement.moveTowardTarget(me, gs, target.loc);
+        return moveTowardTarget(me, gs, target.loc);
     }
 
     // return if there's a dangerous actor that the other player is engaging.
@@ -272,14 +281,14 @@ public class PetAi {
         if (dangerousTarget != null) {
             return dangerousTarget;
         }
+        ShortestPathFinder pathFinder = new ShortestPathFinder(me, gs);
         List<Actor> targets = getTargets(me, gs);
-        Actor bestTarget = null;
-        double bestScore = 10000000;
 
+        Actor bestTarget = null;
+        double bestScore = Double.MAX_VALUE;
         for (Actor target : targets) {
-            int score = MathUtils.dist2(me.loc, target.loc) +
-                    (AiUtils.actorHasLineOfSight(me, gs, target.loc) ? 0 : 100);
-            if (bestTarget == null || score < bestScore) {
+            Double score = pathFinder.cost.get(target.loc);
+            if (score != null && (bestTarget == null || score < bestScore)) {
                 bestTarget = target;
                 bestScore = score;
             }

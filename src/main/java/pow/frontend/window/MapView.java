@@ -61,6 +61,10 @@ public class MapView {
         ImageController.drawTile(graphics, tileName, gameXToPixelX(x), gameYToPixelY(y), drawMode, tileSize);
     }
 
+    public pow.util.Point gamePointToTileCenter(pow.util.Point p) {
+        return new pow.util.Point(gameXToPixelX(p.x) + tileSize / 2, gameYToPixelY(p.y) + tileSize / 2);
+    }
+
     // Turns out that graphics.fillRect is actually *really* slow, so that drawing the map
     // with solid rectangles would take a large percentage of processing time and slows down
     // debugging tremendously.

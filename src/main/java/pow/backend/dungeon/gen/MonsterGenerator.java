@@ -330,7 +330,7 @@ public class MonsterGenerator {
         }
 
         private static class BaseStats {
-            private int[] stats;
+            private final int[] stats;
 
             public BaseStats(int strength, int dexterity, int intelligence, int constitution) {
                 stats = new int[] {strength, dexterity, intelligence, constitution};
