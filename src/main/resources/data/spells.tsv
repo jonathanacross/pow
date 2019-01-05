@@ -1,7 +1,7 @@
 #id	name	min level	mana	effect	spell type	size	duration	primaryAmtBase	primaryAmtDelta	secondaryAmtBase	secondaryAmtDelta	stat	description
-call pet	call pet	2	1	call pet	none	0	0	0	0	0	0	none	phases your pet near you
+call pet	call pet	1	1	call pet	none	0	0	0	0	0	0	none	phases your pet near you
 arrow	arrow	1	1	arrow	damage	8	0	2	1	0	0	attack	range {s}, dam {1}
-magic arrow	magic arrow	1	1	arrow	damage	8	0	2	1	0	0	intelligence	range {s}, dam {1}
+magic arrow	magic arrow	1	1	arrow	damage	8	0	0	1	0	0	intelligence	range {s}, dam {1}
 poison arrow	poison arrow	2	4	arrow	poison	8	10	3	1	0	0.2	dexterity	range {s}, dam {1}, poison {2} for {t} turns
 confuse monsters	confuse monsters	3	8	ball	confuse	2	15	0	0	0	0	none	radius {s}, {t} turns
 ice ball	ice ball	5	10	ball	ice	2	0	12	1	0	0	intelligence	radius {s}, dam {1}
