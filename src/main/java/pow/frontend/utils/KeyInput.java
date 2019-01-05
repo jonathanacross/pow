@@ -46,6 +46,7 @@ public enum KeyInput {
     TARGET,
     TARGET_FLOOR,
     SHOW_WORLD_MAP,
+    OPTIMIZE_EQUIPMENT,
 
     DEBUG_INCR_CHAR_LEVEL, // debugging keys, remove at some point
     DEBUG_HEAL_CHAR,

@@ -78,7 +78,7 @@ public class ItemList implements Serializable {
 
     // finds the index of an item
     // if not found, returns -1
-    private int findIdx(DungeonItem item) {
+    public int findIdx(DungeonItem item) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).equals(item))
                 return i;
