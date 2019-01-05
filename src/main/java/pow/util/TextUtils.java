@@ -23,6 +23,11 @@ public class TextUtils {
         return count == 1 ? replaceSingular(prefixed) : replacePlural(prefixed);
     }
 
+    public static String formatWithBonus(String name, String bonus, int count, boolean definite) {
+        String formattedName = format(name, count, definite);
+        return bonus.isEmpty() ? formattedName : formattedName + " " + bonus;
+    }
+
     // returns just the thing, no extra words
     // e.g., formatThing("mace", true) -> "maces"
     // e.g., formatThing("ewok", false) -> "ewok"

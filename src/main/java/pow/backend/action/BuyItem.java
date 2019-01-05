@@ -54,7 +54,8 @@ public class BuyItem implements Action {
             item.count -= count;
             player.inventory.add(cloneForInventory);
         }
-        backend.logMessage(player.getNoun() + " buys " + TextUtils.format(item.name, count, true),
+        backend.logMessage(player.getNoun() + " buys "
+                        + TextUtils.formatWithBonus(item.name, item.bonusString(), count, true),
                 MessageLog.MessageType.GENERAL);
 
         List<GameEvent> events = new ArrayList<>();
