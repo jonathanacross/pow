@@ -45,7 +45,8 @@ public class PickUp implements Action {
         if (item.flags.money) {
             actor.gold += item.count;
             square.items.items.remove(itemNum);
-            backend.logMessage(actor.getNoun() + " picks up " + TextUtils.format(item.name, numToAdd, true),
+            backend.logMessage(actor.getNoun() + " picks up "
+                            + TextUtils.formatWithBonus(item.name, item.bonusString(), numToAdd, true),
                     MessageLog.MessageType.GENERAL);
             return ActionResult.succeeded(events);
         }
@@ -62,7 +63,8 @@ public class PickUp implements Action {
             // slight hack here.. update the visibility of the game map,
             // since picking up some artifacts may involve lanterns
             gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
-            backend.logMessage(actor.getNoun() + " picks up " + TextUtils.format(item.name, numToAdd, true),
+            backend.logMessage(actor.getNoun() + " picks up "
+                            + TextUtils.formatWithBonus(item.name, item.bonusString(), numToAdd, true),
                     MessageLog.MessageType.GAME_EVENT);
             // Print the description too, so that the player knows what the artifact does.
             backend.logMessage(item.description, MessageLog.MessageType.GAME_EVENT);
@@ -97,7 +99,8 @@ public class PickUp implements Action {
             item.count -= numToAdd;
             actor.inventory.add(cloneForInventory);
         }
-        backend.logMessage(actor.getNoun() + " picks up " + TextUtils.format(item.name, numToAdd, true),
+        backend.logMessage(actor.getNoun() + " picks up "
+                        + TextUtils.formatWithBonus(item.name, item.bonusString(), numToAdd, true),
                 MessageLog.MessageType.GENERAL);
         return ActionResult.succeeded(events);
     }

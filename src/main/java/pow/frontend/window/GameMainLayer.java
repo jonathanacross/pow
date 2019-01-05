@@ -10,6 +10,7 @@ import pow.backend.actors.Player;
 import pow.backend.actors.ai.MonsterDanger;
 import pow.backend.actors.ai.ShortestPathFinder;
 import pow.backend.actors.ai.PetAi;
+import pow.backend.behavior.AutoItemBehavior;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
@@ -75,6 +76,15 @@ public class GameMainLayer extends AbstractWindow {
                                         backend.tellSelectedActor(new PickUp(gs.party.selectedActor, choice.itemIdx, items.items.get(choice.itemIdx).count))));
                 break;
         }
+    }
+
+    private void optimizeEquipment(GameState gs) {
+        if (gs.party.isPetSelected()) {
+            backend.logMessage(gs.party.pet.getNoun() + " cannot optimize equipment.", MessageLog.MessageType.USER_ERROR);
+            return;
+        }
+
+        backend.tellSelectedActor(new AutoItemBehavior(gs));
     }
 
     private void showGround(GameState gs) {
@@ -316,6 +326,7 @@ public class GameMainLayer extends AbstractWindow {
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
             case SHOW_WORLD_MAP: tryShowMap(gs); break;
             case KNOWLEDGE: showKnowledge(gs); break;
+            case OPTIMIZE_EQUIPMENT: optimizeEquipment(gs); break;
             //case QUAFF: tryQuaff(gs); break;
             //case WEAR: tryWear(gs); break;
             //case TAKE_OFF: tryTakeOff(gs); break;

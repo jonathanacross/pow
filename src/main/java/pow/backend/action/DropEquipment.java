@@ -37,7 +37,8 @@ public class DropEquipment implements Action {
         DungeonItem item = player.equipment.items.get(itemNum);
         player.equipment.items.remove(itemNum);
         square.items.add(item);
-        backend.logMessage(player.getNoun() + " drops " + TextUtils.format(item.name, 1, true),
+        backend.logMessage(player.getNoun() + " drops "
+                        + TextUtils.formatWithBonus(item.name, item.bonusString(), 1, true),
                 MessageLog.MessageType.GENERAL);
         return ActionResult.succeeded(events);
     }

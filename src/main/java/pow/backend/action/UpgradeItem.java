@@ -92,7 +92,8 @@ public class UpgradeItem implements Action {
                     player.inventory.items.remove(item);
                     DungeonSquare square = gs.getCurrentMap().map[player.loc.x][player.loc.y];
                     square.items.add(item);
-                    backend.logMessage(player.getNoun() + " drops " + TextUtils.format(item.name, item.count, false),
+                    backend.logMessage(player.getNoun() + " drops "
+                                    + TextUtils.formatWithBonus(item.name, item.bonusString(), item.count, false),
                             MessageLog.MessageType.GENERAL);
                 }
                 player.inventory.add(newItem);
