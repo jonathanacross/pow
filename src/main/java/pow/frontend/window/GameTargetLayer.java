@@ -130,6 +130,7 @@ public class GameTargetLayer extends AbstractWindow {
         parent.removeLayer();
     }
 
+    // TODO: same as TextUtils.formatList
     // makes a list of things into an English list:
     // {a} -> a
     // {a,b} -> a and b

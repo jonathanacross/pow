@@ -89,7 +89,7 @@ public class ShortestPathFinder {
             List<Point> neighbors = new ArrayList<>();
             for (Direction dir : Direction.ALL) {
                 Point p = new Point(current.x + dir.dx, current.y + dir.dy);
-                if (aiMap.canMoveTo(p)) {
+                if (aiMap.onAiMap(p)) {
                     neighbors.add(p);
                 }
             }

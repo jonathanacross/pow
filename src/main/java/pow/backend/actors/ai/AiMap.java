@@ -26,7 +26,7 @@ public class AiMap {
     public final List<Point> unseenLocs;  // locations of unseen squares.
 
     private static final double TRAP = 200;
-    private static final double IMPASSABLE = 1e10;
+    public static final double IMPASSABLE = 1e10;
 
     // Danger by distance.
     // 0 distance means we have to kill the monster.
@@ -39,11 +39,11 @@ public class AiMap {
                     { 8,  4, 2, 2, 1, 1, 1, 1}, // UNSAFE
                     {16,  8, 4, 4, 2, 2, 2, 2}, // DANGEROUS
                     {32, 16, 8, 8, 4, 4, 4, 4}}; // DEADLY
-    private static final double FRIENDLY_BLOCK = 500;
+    // Don't allow to swap places with friendly actors.
+    private static final double FRIENDLY_BLOCK = IMPASSABLE;
 
-    public boolean canMoveTo(Point p) {
-        return xMin <= p.x && p.x < xMax && yMin <= p.y && p.y < yMax &&
-                squareWeights[p.x][p.y] < IMPASSABLE;
+    public boolean onAiMap(Point p) {
+        return xMin <= p.x && p.x < xMax && yMin <= p.y && p.y < yMax;
     }
 
     private void addDanger(Actor actor, Actor target) {
