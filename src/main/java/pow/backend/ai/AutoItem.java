@@ -7,16 +7,13 @@ import pow.backend.action.DropEquipment;
 import pow.backend.action.PickUp;
 import pow.backend.action.Wear;
 import pow.backend.actors.Player;
-import pow.backend.behavior.Behavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.ItemList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 // Class to optimize current equipment/inventory based on current holdings
 // and what's on the ground.  Note that this is mostly designed for player
@@ -137,8 +134,8 @@ public class AutoItem {
     }
 
     private static class ItemLoc {
-        DungeonItem item;
-        Location loc;
+        final DungeonItem item;
+        final Location loc;
 
         public ItemLoc(DungeonItem item, Location loc) {
             this.item = item;
@@ -375,7 +372,7 @@ public class AutoItem {
         for (ItemLoc candidate : candidates) {
             if (isBetter(candidate, base)) {
                 int totalBonus = getTotalBonus(candidate.item);
-                if (bestItemLoc == null || totalBonus > bestBonus) {
+                if (totalBonus > bestBonus) {
                     bestBonus = totalBonus;
                     bestItemLoc = candidate;
                 }
