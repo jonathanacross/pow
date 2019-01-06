@@ -1,6 +1,7 @@
 package pow.backend.behavior;
 
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.action.*;
 import pow.backend.actors.Player;
 import pow.backend.ai.AutoItem;
@@ -17,19 +18,34 @@ public class AutoItemBehavior implements Behavior {
 
     private final List<AutoItem.ItemMovement> plannedMovements;
     private final GameState gs;
+    private final boolean hasItemsOnGround;
+    private boolean needLogMessage;
 
     public AutoItemBehavior(GameState gs) {
         this.gs = gs;
         this.plannedMovements = AutoItem.simplifyMovements(AutoItem.optimizeItems(gs));
+        Player player = gs.party.player;
+        ItemList groundItems = gs.getCurrentMap().map[player.loc.x][player.loc.y].items;
+        this.hasItemsOnGround = !groundItems.items.isEmpty();
+        this.needLogMessage = plannedMovements.isEmpty();
     }
 
     @Override
     public boolean canPerform(GameState gameState) {
-        return !plannedMovements.isEmpty();
+        return needLogMessage || !plannedMovements.isEmpty();
     }
 
     @Override
     public Action getAction() {
+        if (needLogMessage) {
+            needLogMessage = false;
+            if (hasItemsOnGround) {
+                gs.log.add("Equipment is optimal.  Press 'G' to pick up remaining items.", MessageLog.MessageType.USER_ERROR);
+            } else {
+                gs.log.add("Equipment is optimal.", MessageLog.MessageType.USER_ERROR);
+            }
+            return new Log();
+        }
         return makeAction(plannedMovements.remove(0), gs);
     }
 

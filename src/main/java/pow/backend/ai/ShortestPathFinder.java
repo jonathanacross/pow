@@ -101,22 +101,24 @@ public class ShortestPathFinder {
                 }
 
                 // The distance from start to a neighbor
-                double distToNeighbor =
+                double costToNeighbor =
                         weightedManhattanDist(current, neighbor)  // cost of moving between nodes
                                 + aiMap.squareWeights[neighbor.x][neighbor.y]; // cost of the new node
 
-                double tentative_gScore = cost.get(current) + distToNeighbor;
+                double tentativeCost = cost.get(current) + costToNeighbor;
 
                 if (!openSet.contains(neighbor)) {
                     // Discover a new location
-                    openSet.add(neighbor);
-                } else if (tentative_gScore >= cost.get(neighbor)) {
+                    if (aiMap.canMoveTo(neighbor)) {
+                        openSet.add(neighbor);
+                    }
+                } else if (tentativeCost >= cost.get(neighbor)) {
                     continue;
                 }
 
                 // This path is the best until now. Record it.
                 cameFrom.put(neighbor, current);
-                cost.put(neighbor, tentative_gScore);
+                cost.put(neighbor, tentativeCost);
             }
         }
     }

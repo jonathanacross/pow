@@ -46,6 +46,11 @@ public class AiMap {
         return xMin <= p.x && p.x < xMax && yMin <= p.y && p.y < yMax;
     }
 
+    // assumes that the point p is on the map
+    public boolean canMoveTo(Point p) {
+        return squareWeights[p.x][p.y] < IMPASSABLE;
+    }
+
     private void addDanger(Actor actor, Actor target) {
         if (target.friendly == actor.friendly) {
             squareWeights[target.loc.x][target.loc.y] += FRIENDLY_BLOCK;
