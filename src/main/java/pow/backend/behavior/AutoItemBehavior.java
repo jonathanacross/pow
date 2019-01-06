@@ -27,7 +27,7 @@ import java.util.*;
 // This will find that the item that is strictly >= the current equipment
 // is the sword +0, +0, +2.  All other items in inventory are worse than
 // this, except for the sword +1, +2, +0, which is not better in the 3rd
-// bonus.  This item is still kept in inventory.  All others are dopped on
+// bonus.  This item is still kept in inventory.  All others are dropped on
 // the ground.
 public class AutoItemBehavior implements Behavior {
 

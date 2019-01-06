@@ -2,10 +2,10 @@ package pow.backend.dungeon.gen;
 
 import pow.backend.SpellParams;
 import pow.backend.actors.*;
-import pow.backend.actors.ai.KnightMovement;
-import pow.backend.actors.ai.Movement;
-import pow.backend.actors.ai.StationaryMovement;
-import pow.backend.actors.ai.StepMovement;
+import pow.backend.ai.KnightMovement;
+import pow.backend.ai.Movement;
+import pow.backend.ai.StationaryMovement;
+import pow.backend.ai.StepMovement;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.DebugLogger;
 import pow.util.Point;

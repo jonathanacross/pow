@@ -5,7 +5,7 @@ import pow.backend.action.Action;
 import pow.backend.dungeon.DungeonFeature;
 import pow.backend.event.GameEvent;
 import pow.backend.utils.AttackUtils;
-import pow.backend.actors.ai.Movement;
+import pow.backend.ai.Movement;
 import pow.backend.behavior.ActionBehavior;
 import pow.backend.behavior.Behavior;
 import pow.backend.conditions.ConditionGroup;
