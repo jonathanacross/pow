@@ -1,4 +1,4 @@
-package pow.backend.actors.ai;
+package pow.backend.ai;
 
 import pow.backend.GameState;
 import pow.backend.SpellParams;

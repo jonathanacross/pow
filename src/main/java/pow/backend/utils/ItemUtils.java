@@ -100,8 +100,6 @@ public class ItemUtils {
         else return Math.pow(10, numSockets + 1);
     }
 
-    // TODO: should this be part of DungeonItem?
-    // or part of storeUtils?
     public static int priceItem(DungeonItem item) {
         // Very arbitrary now.  Have to balance this.
         // While arbitrary, scalars here are fractional so that prices of
@@ -144,5 +142,4 @@ public class ItemUtils {
         }
         return (int) Math.round(price);
     }
-
 }

@@ -7,9 +7,10 @@ import pow.backend.SpellParams;
 import pow.backend.action.*;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
-import pow.backend.actors.ai.MonsterDanger;
-import pow.backend.actors.ai.ShortestPathFinder;
-import pow.backend.actors.ai.PetAi;
+import pow.backend.ai.AiMap;
+import pow.backend.ai.MonsterDanger;
+import pow.backend.ai.ShortestPathFinder;
+import pow.backend.ai.PetAi;
 import pow.backend.behavior.AutoItemBehavior;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
@@ -353,7 +354,11 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private static String weightString(double weight) {
-        return Integer.toString((int) Math.round(weight * 10));
+        if (weight >= AiMap.IMPASSABLE) {
+            return "-";
+        } else {
+            return Integer.toString((int) Math.round(weight * 10));
+        }
     }
 
     private void drawWeight(Graphics graphics, Color c, double weight, int x, int y) {
@@ -464,7 +469,7 @@ public class GameMainLayer extends AbstractWindow {
 //            graphics.setFont(new Font("Courier", Font.PLAIN, 9));
 //            for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
 //                for (int x = mapView.colMin; x <= mapView.colMax; x++) {
-//                    if (pathFinder.aiMap.canMoveTo(new Point(x, y))) {
+//                    if (pathFinder.aiMap.onAiMap(new Point(x, y))) {
 //                        Point tileCenter = mapView.gamePointToTileCenter(new Point(x, y));
 //                        double mapWeight = pathFinder.aiMap.squareWeights[x][y];
 //                        drawWeight(graphics, Color.GREEN, mapWeight, tileCenter.x - 16, tileCenter.y);

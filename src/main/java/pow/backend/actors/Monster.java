@@ -7,7 +7,7 @@ import pow.backend.SpellParams;
 import pow.backend.action.Action;
 import pow.backend.action.Attack;
 import pow.backend.action.Move;
-import pow.backend.actors.ai.*;
+import pow.backend.ai.*;
 import pow.backend.dungeon.DungeonObject;
 import pow.backend.GameConstants;
 import pow.backend.event.GameEvent;

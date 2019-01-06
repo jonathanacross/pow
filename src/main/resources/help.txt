@@ -18,7 +18,7 @@ The keys . or number pad 5 indicate to stay still.
       c    Close door                      C    Character description
       e    Show your equipment
       f    Fire an arrow
-      g    Get objects on the ground       G    Show objects on the ground
+      g    Get/optimize equipment          G    Show objects on the ground
       h    Walk west                       H    Run west
       i    Show your inventory
       j    Walk south                      J    Run south

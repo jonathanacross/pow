@@ -130,32 +130,6 @@ public class GameTargetLayer extends AbstractWindow {
         parent.removeLayer();
     }
 
-    // makes a list of things into an English list:
-    // {a} -> a
-    // {a,b} -> a and b
-    // {a,b,c} -> a, b, and c
-    // {a,b,c,d} -> a, b, c, and d
-    private String makeListString(List<String> items) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < items.size(); i++) {
-            String join;
-            if (i == 0) {
-                join = "";
-            } else if (i < items.size() - 1) {
-                join = ", ";
-            } else {
-                if (items.size() == 2) {
-                    join = " and ";
-                } else {
-                    join = ", and ";
-                }
-            }
-            sb.append(join);
-            sb.append(items.get(i));
-        }
-        return sb.toString();
-    }
-
     private String featureOrTerrain(DungeonSquare square) {
         if (square.feature != null) {
             return TextUtils.format(square.feature.name, 1, false);
@@ -185,7 +159,7 @@ public class GameTargetLayer extends AbstractWindow {
                 }
             }
             if (!interestingThings.isEmpty()) {
-                sb.append(makeListString(interestingThings));
+                sb.append(TextUtils.formatList(interestingThings));
                 sb.append(" on ");
             }
 

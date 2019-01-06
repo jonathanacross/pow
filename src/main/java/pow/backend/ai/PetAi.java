@@ -1,4 +1,4 @@
-package pow.backend.actors.ai;
+package pow.backend.ai;
 
 import pow.backend.AttackData;
 import pow.backend.GameState;
@@ -173,10 +173,12 @@ public class PetAi {
     private static Action moveTowardTarget(Actor actor, GameState gs, Point target) {
         ShortestPathFinder pathFinder = new ShortestPathFinder(actor, gs);
         List<Point> path = pathFinder.reconstructPath(target);
-        if (path.isEmpty()) {
+        if (path.isEmpty() || path.size() < 2 || !path.get(0).equals(actor.loc)) {
+            // If path is empty or doesn't contain the starting point, then we couldn't
+            // reach the target from the starting location.  Don't move.
             return new Move(actor, 0, 0);
         } else {
-            Point nearby = path.size() == 1 ? path.get(0) : path.get(1);
+            Point nearby = path.get(1);
             return new Move(actor, nearby.x - actor.loc.x, nearby.y - actor.loc.y);
         }
     }

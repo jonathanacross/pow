@@ -2,7 +2,7 @@ package pow.backend.actors;
 
 import pow.backend.*;
 import pow.backend.action.Action;
-import pow.backend.actors.ai.StepMovement;
+import pow.backend.ai.StepMovement;
 import pow.backend.behavior.AiBehavior;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
