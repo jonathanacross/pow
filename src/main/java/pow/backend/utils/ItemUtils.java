@@ -47,7 +47,6 @@ public class ItemUtils {
         throw new RuntimeException("shouldn't get here.");
     }
 
-
     // --------------- functions related to item pricing -------
 
     private static double sqr(int x) {
