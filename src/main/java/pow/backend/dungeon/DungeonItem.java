@@ -14,18 +14,21 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         public final boolean arrow;
         public final boolean gem;
         public final boolean pearl;
+        public final boolean special;
 
         public Flags(
                 boolean potion,
                 boolean money,
                 boolean arrow,
                 boolean gem,
-                boolean pearl) {
+                boolean pearl,
+                boolean special) {
             this.potion = potion;
             this.money = money;
             this.arrow = arrow;
             this.gem = gem;
             this.pearl = pearl;
+            this.special = special;
         }
 
         public int getSortValue() {

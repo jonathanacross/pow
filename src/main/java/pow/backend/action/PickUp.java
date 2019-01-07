@@ -98,9 +98,10 @@ public class PickUp implements Action {
             actor.inventory.add(cloneForInventory);
         }
 
+        MessageLog.MessageType messageType = item.flags.special ? MessageLog.MessageType.GAME_EVENT : MessageLog.MessageType.GENERAL;
         backend.logMessage(actor.getNoun() + " picks up "
                         + TextUtils.formatWithBonus(item.name, item.bonusString(), numToAdd, true),
-                MessageLog.MessageType.GENERAL);
+                messageType);
         // special case for pearls
         if (item.flags.pearl) {
             backend.logMessage("Return the pearl to the pearl temple.", MessageLog.MessageType.GAME_EVENT);

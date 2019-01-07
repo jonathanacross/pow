@@ -104,6 +104,7 @@ public class AutoItem {
         }
 
         result.addAll(pickUpDuplicateItems(gs));
+        result.addAll(pickUpImportantItems(gs));
 
         return result;
     }
@@ -424,11 +425,35 @@ public class AutoItem {
         return result;
     }
 
+    private static List<ItemMovement> pickUpImportantItems(GameState gs) {
+        List<ItemMovement> result = new ArrayList<>();
+        Player player = gs.party.player;
+        DungeonSquare square = gs.getCurrentMap().map[player.loc.x][player.loc.y];
+        ItemList ground = square.items;
+        ItemList inventory = player.inventory;
+
+        for (DungeonItem item : ground.items) {
+            // pick up artifacts by default
+            if (item.artifactSlot != DungeonItem.ArtifactSlot.NONE) {
+                result.add(new ItemMovement(item, Location.GROUND, Location.INVENTORY));
+                continue;
+            }
+
+            // pick up special items if possible
+            int numCanAdd = inventory.numCanAdd(item);
+            if (item.flags.special && (numCanAdd > 0)) {
+                result.add(new ItemMovement(item, Location.GROUND, Location.INVENTORY));
+            }
+        }
+
+        return result;
+    }
+
 
     private static DungeonItem makeItem(String id, DungeonItem.Slot slot, int toHit, int toDam, int toDef) {
         return new DungeonItem(id, id, id, id, slot,
                 DungeonItem.ArtifactSlot.NONE,
-                new DungeonItem.Flags(false, false, false, false, false),
+                new DungeonItem.Flags(false, false, false, false, false, false),
                 new int[]{toHit, toDam, toDef, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 1, null);
     }

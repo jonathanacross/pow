@@ -67,6 +67,7 @@ public class ParseUtils {
         boolean arrow = false;
         boolean gem = false;
         boolean pearl = false;
+        boolean special = false;
         for (String t : tokens) {
             switch (t) {
                 case "": break;  // will happen if we have an empty string
@@ -75,12 +76,13 @@ public class ParseUtils {
                 case "arrow": arrow = true; break;
                 case "gem": gem = true; break;
                 case "pearl": pearl = true; break;
+                case "special": special = true; break;
                 default:
                     throw new IllegalArgumentException("unknown item flag '" + t + "'");
             }
         }
 
-        return new DungeonItem.Flags(potion, money, arrow, gem, pearl);
+        return new DungeonItem.Flags(potion, money, arrow, gem, pearl, special);
     }
 
     public static ActionParams parseActionParams(String text) {

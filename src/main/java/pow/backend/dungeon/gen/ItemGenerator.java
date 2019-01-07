@@ -152,8 +152,8 @@ public class ItemGenerator {
         // Parses the generator from text.
         // For now, assumes TSV, but may change this later.
         public SpecificItemGenerator(String[] line) {
-            if (line.length != 15) {
-                throw new IllegalArgumentException("Expected 15 fields, but had " + line.length
+            if (line.length != 14) {
+                throw new IllegalArgumentException("Expected 14 fields, but had " + line.length
                 + ". Fields = \n" + String.join(",", line));
             }
 
@@ -172,7 +172,6 @@ public class ItemGenerator {
                 maxBonus = Integer.parseInt(line[11]);
                 maxSockets = Integer.parseInt(line[12]);
                 bonuses = ParseUtils.parseBonuses(line[13]);
-                // Note that field 14 is currently unused.
             } catch (RuntimeException e) {
                 throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
             }

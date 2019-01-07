@@ -1,137 +1,137 @@
-# id	name	image	description	slot	flags	action	num gen	min level	max level	min bonus	max bonus	max sockets	bonuses	extra
-# weapons														
-dagger	& dagger~	dagger	dagger	weapon				1	30	1	5	2	attack:x	
-main gauche	& main gauche~	main gauche	main gauche	weapon				11	40	3	9	2	attack:x	
-short sword	& short sword~	short sword	short sword	weapon				31	60	5	14	2	attack:x	
-scimitar	& scimitar~	cutlass	scimitar	weapon				41	70	9	22	2	attack:x	
-long sword	& long sword~	long sword	long sword	weapon				51	80	16	34	2	attack:x	
-broad sword	& broad sword~	broad sword	broad sword	weapon				61	90	27	51	2	attack:x	
-blade of chaos	& blade~ of chaos	blade of chaos	blade of chaos	weapon				71	90	52	83	2	attack:x	
-# bows														
-short bow	& short bow~	short bow	short bow	bow				1	30	1	4	1	attack:x	
-long bow	& long bow~	long bow	long bow	bow				21	50	2	7	1	attack:x	
-gold longbow	& gold longbow~	gold longbow	gold longbow	bow				41	60	4	12	1	attack:x	
-crossbow	& crossbow~	crossbow	crossbow	bow				51	70	8	20	1	attack:x	
-large crossbow	& large crossbow~	large crossbow	large crossbow	bow				61	80	17	35	1	attack:x	
-gold crossbow	& gold crossbow~	gold crossbow	gold crossbow	bow				81	90	33	58	1	attack:x	
-# hats														
-leather cap	& leather cap~	leather cap	leather cap	headgear				1	30	1	2	1	def:x	
-hard leather cap	& hard leather cap~	hard leather cap	hard leather cap	headgear				21	50	2	3	1	def:x	
-iron helmet	& iron helmet~	iron helmet	iron helmet	headgear				41	60	3	5	1	def:x,dam:1	
-steel helmet	& steel helmet~	steel helmet	steel helmet	headgear				51	80	4	6	1	def:x	
-golden helmet	& golden helmet~	golden helmet	golden helmet	headgear				71	90	5	7	1	def:x,int:1	
-golden crown	& golden crown~	golden crown	golden crown	headgear				-1	-1	1	1	0	dam:2,fire:2,cold:2,acid:2,elec:2,pois:2	res all
-# gloves														
-thin leather gloves	thin leather gloves	gloves	thin leather gloves	gloves				1	30	1	1	1	def:x	
-heavy leather gloves	heavy leather gloves	heavy gloves	heavy leather gloves	gloves				21	50	2	3	1	def:x	
-adept’s gloves	adept’s gloves	green gloves	adept’s gloves	gloves				31	60	2	3	1	def:x,int:1	
-iron gloves	iron gloves	iron gloves	iron gloves	gloves				41	70	3	5	1	def:x	
-crystal gloves	crystal gloves	blue gloves	crystal gloves	gloves				51	80	4	6	1	def:x,cold:1	
-gold gloves	gold gloves	gold gloves	gold gloves	gloves				71	90	4	6	1	def:x,str:1	
-# boots														
-soft leather boots	soft leather boots	soft leather boots	soft leather boots	boots				1	30	1	1	1	def:x	
-hard leather boots	hard leather boots	hard leather boots	hard leather boots	boots				21	50	2	3	1	def:x	
-steel boots	steel boots	steel boots	steel boots	boots				41	70	3	5	1	def:x	
-adventurer’s boots	adventurer’s boots	blue boots	adventurer’s boots	boots				51	80	2	5	1	def:x,dex:1,pois:1	
-adept’s boots	adept’s boots	green boots	adept’s boots	boots				51	80	2	4	1	def:x,int:1	
-gold boots	gold boots	gold boots	gold boots	boots				81	90	4	6	1	def:x,con:1,str:1	
-# cloaks														
-cloak	& cloak~	cloak	cloak	cloak				1	30	1	1	1	def:x	
-fur cloak	& fur cloak~	fur cloak	fur cloak	cloak				31	60	2	3	1	def:x,cold:1	
-shadow cloak	& shadow cloak~	blue cloak	shadow cloak	cloak				61	90	3	5	1	def:x,dex:1	
-wizard cloak	& wizard cloak~	purple cloak	wizard cloak	cloak				61	90	3	6	1	def:x,int:1	
-etherial cloak	& etherial cloak~	light blue cloak	etherial cloak	cloak				71	90	4	7	1	def:x,dex:1,acid:1	
-# shields														
-small wood shield	& small wood shield~	leather shield	small wood shield	shield				1	30	1	2	1	def:x	
-large wood shield	& large wood shield~	large shield	large wood shield	shield				11	50	2	4	1	def:x	
-metal buckler	& metal buckler~	buckler	metal buckler	shield				31	70	4	7	1	def:x	
-diamond shield	& diamond shield~	crystal shield	diamond shield	shield				51	80	6	10	1	def:x,dam:1	
-golden shield	& golden shield~	golden shield	golden shield	shield				71	90	7	11	1	def:x,con:1	
-shield of death	& shield~ of death	death shield	shield of death	shield				81	90	8	13	1	def:x,str:1,pois:1,dam:1	reflect damage
-# armor														
-robe	& robe~	robe	robe	armor				1	20	1	2	1	def:x	
-soft leather armor	& soft leather armor~	soft leather armor	soft leather armor	armor				11	40	2	3	2	def:x	
-studded leather armor	& studded leather armor~	hard leather armor	studded leather armor	armor				31	60	4	6	2	def:x	
-chain mail	chain mail~	chain mail	chain mail	armor				41	70	6	9	2	def:x	
-plate mail	plate mail~	plate mail	plate mail	armor				51	80	8	13	2	def:x	
-augmented mail	augmented mail~	augmented mail	augmented mail	armor				61	90	12	20	2	def:x,int:1	+1 int
-ceramic armor	ceramic armor~	ceramic mail	ceramic armor	armor				71	90	16	28	2	def:x,con:1	+1 con
-dragon scale mail	dragon scale mail~	dragon scale mail	dragon scale mail	armor				81	90	22	38	2	def:x,str:1,fire:1	+1 str
-# rings														
-ring of combat	& ring~ of combat	copper ring	ring of combat	ring				3	90	1	60	0	combat:x	
-ring of ability	& ring~ of ability	silver ring	ring of ability	ring				13	90	1	10	0	ability:x	
-ring of resistance	& ring~ of resistance	gold ring	ring of resistance	ring				23	90	2	10	0	resist:x	
-#ring of intelligence	& ring~ of intelligence	goldgreen ring	ring of intelligence	ring				21	60	1	4	0	int:x	
-#ring of dexterity	& ring~ of dexterity	goldblue ring	ring of dexterity	ring				21	60	1	4	0	dex:x	
-#ring of constitution	& ring~ of constitution	goldred ring	ring of constitution	ring				21	60	1	4	0	con:x	
-#ring of strength	& ring~ of strength	golddkblue ring	ring of strength	ring				21	60	1	4	0	str:x	
-ring of speed	& ring~ of speed	platinum ring	ring of speed	ring				41	90	1	5	0	speed:x	
-#ring of fire	& ring~ of fire	red ring	ring of fire	ring				18	38	1	1	0	fire:x	res fire + fire brand
-#ring of acid	& ring~ of acid	black ring	ring of acid	ring				30	44	1	1	0	acid:x	res acid + acid brand
-#ring of cold	& ring~ of cold	white ring	ring of cold	ring				18	38	1	1	0	cold:x	res col + cold brand
-#ring of poison	& ring~ of poison	green ring	ring of poison	ring				30	44	1	1	0	pois:x	res. poison + poisonbrand
-# bracelets														
-bracelet of combat	& bracelet~ of combat	copper bracelet	bracelet of combat	bracelet				5	90	1	60	0	combat:x	
-bracelet of ability	& bracelet~ of ability	silver bracelet	bracelet of ability	bracelet				15	90	1	10	0	ability:x	
-bracelet of resistance	& bracelet~ of resistance	gold bracelet	bracelet of resistance	bracelet				25	90	2	10	0	resist:x	
-#bracelet of fire	& bracelet~ of fire	red bracelet	bracelet of fire	bracelet				18	38	1	3	0	fire:x	
-#bracelet of poison	& bracelet~ of poison	green bracelet	bracelet of poison	bracelet				30	44	1	3	0	pois:x	
-#bracelet of cold	& bracelet~ of cold	blue bracelet	bracelet of cold	bracelet				18	38	1	3	0	cold:x	
-#bracelet of acid	& bracelet~ of acid	black bracelet	bracelet of acid	bracelet				30	44	1	3	0	acid:x	
-#bracelet of reflection	& bracelet~ of reflection	purple bracelet	bracelet of reflection	bracelet				70	90	0	0	0		reflect x% (0-35) dam
-# amulets														
-amulet of wealth	& amulet~ of wealth	onyx amulet	amulet of wealth	amulet				1	30	0	0	0	wealth:1	better gold drops
-amulet of combat	& amulet~ of combat	coral amulet	amulet of combat	amulet				1	90	1	60	0	combat:x	
-amulet of ability	& amulet~ of ability	sapphire amulet	amulet of ability	amulet				11	90	1	10	0	ability:x	
-amulet of resistance	& amulet~ of resistance	stone amulet	amulet of resistance	amulet				21	90	2	10	0	resist:x	
-#amulet of resistance	& amulet~ of resistance	amber amulet	amulet of resistance	amulet				31	90	1	1	0	fire:x,cold:x,acid:x,elec:x,pois:x	res all
-#amulet of regeneration	& amulet~ of regeneration	smoky quartz amulet	amulet of regeneration	amulet				60	90	0	0	0		regen mana/hp
-#amulet of reflection	& amulet~ of reflection	aquamarine amulet	amulet of reflection	amulet				70	90	0	0	0		reflect x% (0-35) damage
-# money														
-copper	& copper piece~	copper	copper	none	money			0	30	0	0	0		money
-silver	& silver piece~	silver	silver	none	money			11	50	0	0	0		money
-gold	& gold piece~	gold	gold	none	money			31	70	0	0	0		money
-platinum	& platinum piece~	platinum	platinum	none	money			51	90	0	0	0		money
-adamantium	& adamantium piece~	adamantium	adamantium	none	money			71	90	0	0	0		money
-# gems														
-diamond	& diamond~	diamond	diamond	none	gem			11	90	1	1	0	elec:1	
-onyx	& onyx~	onyx	onyx	none	gem			11	90	1	1	0	acid:1	
-ruby	& ruby~	ruby	ruby	none	gem			11	90	1	1	0	fire:1	
-citrine	& citrine~	citrine	citrine	none	gem			11	90	1	1	0	str:1	
-topaz	& topaz~	topaz	topaz	none	gem			11	90	1	1	0	dex:1	
-emerald	& emerald~	emerald	emerald	none	gem			11	90	1	1	0	pois:1	
-jade	& jade~	jade	jade	none	gem			11	90	1	1	0	dam:1	
-aquamarine	& aquamarine~	aquamarine	aquamarine	none	gem			11	90	1	1	0	int:1	
-sapphire	& sapphire~	sapphire	sapphire	none	gem			11	90	1	1	0	cold:1	
-amethyst	& amethyst~	amethyst	amethyst	none	gem			11	90	1	1	0	con:1	
-dragon egg	& dragon egg~	dragon egg	dragon egg	none	gem			-1	-1	1	1	0	str:2,dex:2,int:2,con:2	
-# potions														
-small mana potion	& small mana potion~	small blue potion	small mana potion	none	potion	restoreMana:10:		1	30	0	0	0		
-small health potion	& small health potion~	small red potion	small health potion	none	potion	heal:10:		1	30	0	0	0		
-small restore potion	& small restore potion~	small purple potion	small restore potion	none	potion	restore:15:		11	40	0	0	0		
-mana potion	& mana potion~	medium blue potion	mana potion	none	potion	restoreMana:40:		31	60	0	0	0		
-health potion	& health potion~	medium red potion	health potion	none	potion	heal:40:		31	60	0	0	0		
-restore potion	& restore potion~	medium purple potion	restore potion	none	potion	restore:60:		41	70	0	0	0		
-large mana potion	& large mana potion~	large blue potion	large mana potion	none	potion	restoreMana:160:		61	90	0	0	0		
-large health potion	& large health potion~	large red potion	large health potion	none	potion	heal:160:		61	90	0	0	0		
-large restore potion	& large restore potion~	large purple potion	large restore potion	none	potion	restore:240:		71	90	0	0	0		
-mountain dew potion	& potion~ of mountain dew	small green potion	mountain dew	none	potion	modifySpeed:1:		0	60	0	0	0		30 turns?
-#test poison potion	& potion~ of poison	white potion	poison	none	potion	poison:1:		0	60	0	0	0		30 turns?
-speed potion	& speed potion~	large green potion	speed potion	none	potion	modifySpeed:3:		51	90	0	0	0		30 turns
-heroism potion	& potion~ of heroism	small orange potion	potion of heroism	none	potion	heroism:8:		11	60	0	0	0		+temp hp, toDam
-might potion	& potion~ of might	large orange potion	potion of might	none	potion	heroism:16:		51	90	0	0	0		+temp hp, toDam
-nimbleness potion	& potion~ of nimbleness	small yellow potion	potion of nimbleness	none	potion	agility:8:		11	60	0	0	0		+ to dex
-agility potion	& potion~ of agility	large yellow potion	potion of agility	none	potion	agility:16:		51	90	0	0	0		+ to dex
-#insulation potion	& potion~ of insulation	dark gray potion	potion of insulation	none	potion	insulation::		41	90	0	0	0		res cold/fire
-#chemistry potion	& potion~ of chemistry	white potion	potion of chemistry	none	potion	chemistry::		41	90	0	0	0		res acid/elec/pois
-# pearls														
-pearl 1	& orange pearl	redorange pearl	Pearl 1: it is inscribed in tiny lettering, 'You always find something in the last place you look.' 	none	pearl			-1	-1	0	0	0		
-pearl 2	& amber pearl	orange pearl	Pearl 2: it is inscribed in tiny lettering, 'Smile today, tomorrow could be worse.'	none	pearl			-1	-1	0	0	0		
-pearl 3	& yellow pearl	yellow pearl	Pearl 3: it is inscribed in tiny lettering, 'If you think nothing is impossible, try slamming a revolving door.'	none	pearl			-1	-1	0	0	0		
-pearl 4	& green pearl	green pearl	Pearl 4: it is inscribed in tiny lettering, 'If you don't succeed at first, hide all evidence that you tried.'	none	pearl			-1	-1	0	0	0		
-pearl 5	& blue pearl	blue pearl	Pearl 5: it is inscribed in tiny lettering, 'He who laughs last didn't get it.'	none	pearl			-1	-1	0	0	0		
-pearl 6	& indigo pearl	indigo pearl	Pearl 6: it is inscribed in tiny lettering, 'Never test how deep the water is with both feet.'	none	pearl			-1	-1	0	0	0		
-pearl 7	& violet pearl	violet pearl	Pearl 7: it is inscribed in tiny lettering, 'No good deed goes unpunished.'	none	pearl			-1	-1	0	0	0		
-pearl 8	& rose pearl	rose pearl	Pearl 8: it is inscribed in tiny lettering, 'To make time fly, throw your watch out the window.'	none	pearl			-1	-1	0	0	0		
-# other stuff														
-arrow	& arrow~	arrow	arrows	none	arrow		15:45	1	90	0	0	0		
+# id	name	image	description	slot	flags	action	num gen	min level	max level	min bonus	max bonus	max sockets	bonuses
+# weapons													
+dagger	& dagger~	dagger	dagger	weapon				1	30	1	5	2	attack:x
+main gauche	& main gauche~	main gauche	main gauche	weapon				11	40	3	9	2	attack:x
+short sword	& short sword~	short sword	short sword	weapon				31	60	5	14	2	attack:x
+scimitar	& scimitar~	cutlass	scimitar	weapon				41	70	9	22	2	attack:x
+long sword	& long sword~	long sword	long sword	weapon				51	80	16	34	2	attack:x
+broad sword	& broad sword~	broad sword	broad sword	weapon				61	90	27	51	2	attack:x
+blade of chaos	& blade~ of chaos	blade of chaos	blade of chaos	weapon				71	90	52	83	2	attack:x
+# bows													
+short bow	& short bow~	short bow	short bow	bow				1	30	1	4	1	attack:x
+long bow	& long bow~	long bow	long bow	bow				21	50	2	7	1	attack:x
+gold longbow	& gold longbow~	gold longbow	gold longbow	bow				41	60	4	12	1	attack:x
+crossbow	& crossbow~	crossbow	crossbow	bow				51	70	8	20	1	attack:x
+large crossbow	& large crossbow~	large crossbow	large crossbow	bow				61	80	17	35	1	attack:x
+gold crossbow	& gold crossbow~	gold crossbow	gold crossbow	bow				81	90	33	58	1	attack:x
+# hats													
+leather cap	& leather cap~	leather cap	leather cap	headgear				1	30	1	2	1	def:x
+hard leather cap	& hard leather cap~	hard leather cap	hard leather cap	headgear				21	50	2	3	1	def:x
+iron helmet	& iron helmet~	iron helmet	iron helmet	headgear				41	60	3	5	1	def:x,dam:1
+steel helmet	& steel helmet~	steel helmet	steel helmet	headgear				51	80	4	6	1	def:x
+golden helmet	& golden helmet~	golden helmet	golden helmet	headgear				71	90	5	7	1	def:x,int:1
+golden crown	& golden crown~	golden crown	golden crown	headgear	special			-1	-1	1	1	0	dam:2,fire:2,cold:2,acid:2,elec:2,pois:2
+# gloves													
+thin leather gloves	thin leather gloves	gloves	thin leather gloves	gloves				1	30	1	1	1	def:x
+heavy leather gloves	heavy leather gloves	heavy gloves	heavy leather gloves	gloves				21	50	2	3	1	def:x
+adept’s gloves	adept’s gloves	green gloves	adept’s gloves	gloves				31	60	2	3	1	def:x,int:1
+iron gloves	iron gloves	iron gloves	iron gloves	gloves				41	70	3	5	1	def:x
+crystal gloves	crystal gloves	blue gloves	crystal gloves	gloves				51	80	4	6	1	def:x,cold:1
+gold gloves	gold gloves	gold gloves	gold gloves	gloves				71	90	4	6	1	def:x,str:1
+# boots													
+soft leather boots	soft leather boots	soft leather boots	soft leather boots	boots				1	30	1	1	1	def:x
+hard leather boots	hard leather boots	hard leather boots	hard leather boots	boots				21	50	2	3	1	def:x
+steel boots	steel boots	steel boots	steel boots	boots				41	70	3	5	1	def:x
+adventurer’s boots	adventurer’s boots	blue boots	adventurer’s boots	boots				51	80	2	5	1	def:x,dex:1,pois:1
+adept’s boots	adept’s boots	green boots	adept’s boots	boots				51	80	2	4	1	def:x,int:1
+gold boots	gold boots	gold boots	gold boots	boots				81	90	4	6	1	def:x,con:1,str:1
+# cloaks													
+cloak	& cloak~	cloak	cloak	cloak				1	30	1	1	1	def:x
+fur cloak	& fur cloak~	fur cloak	fur cloak	cloak				31	60	2	3	1	def:x,cold:1
+shadow cloak	& shadow cloak~	blue cloak	shadow cloak	cloak				61	90	3	5	1	def:x,dex:1
+wizard cloak	& wizard cloak~	purple cloak	wizard cloak	cloak				61	90	3	6	1	def:x,int:1
+etherial cloak	& etherial cloak~	light blue cloak	etherial cloak	cloak				71	90	4	7	1	def:x,dex:1,acid:1
+# shields													
+small wood shield	& small wood shield~	leather shield	small wood shield	shield				1	30	1	2	1	def:x
+large wood shield	& large wood shield~	large shield	large wood shield	shield				11	50	2	4	1	def:x
+metal buckler	& metal buckler~	buckler	metal buckler	shield				31	70	4	7	1	def:x
+diamond shield	& diamond shield~	crystal shield	diamond shield	shield				51	80	6	10	1	def:x,dam:1
+golden shield	& golden shield~	golden shield	golden shield	shield				71	90	7	11	1	def:x,con:1
+shield of death	& shield~ of death	death shield	shield of death	shield				81	90	8	13	1	def:x,str:1,pois:1,dam:1
+# armor													
+robe	& robe~	robe	robe	armor				1	20	1	2	1	def:x
+soft leather armor	& soft leather armor~	soft leather armor	soft leather armor	armor				11	40	2	3	2	def:x
+studded leather armor	& studded leather armor~	hard leather armor	studded leather armor	armor				31	60	4	6	2	def:x
+chain mail	chain mail~	chain mail	chain mail	armor				41	70	6	9	2	def:x
+plate mail	plate mail~	plate mail	plate mail	armor				51	80	8	13	2	def:x
+augmented mail	augmented mail~	augmented mail	augmented mail	armor				61	90	12	20	2	def:x,int:1
+ceramic armor	ceramic armor~	ceramic mail	ceramic armor	armor				71	90	16	28	2	def:x,con:1
+dragon scale mail	dragon scale mail~	dragon scale mail	dragon scale mail	armor				81	90	22	38	2	def:x,str:1,fire:1
+# rings													
+ring of combat	& ring~ of combat	copper ring	ring of combat	ring				3	90	1	60	0	combat:x
+ring of ability	& ring~ of ability	silver ring	ring of ability	ring				13	90	1	10	0	ability:x
+ring of resistance	& ring~ of resistance	gold ring	ring of resistance	ring				23	90	2	10	0	resist:x
+#ring of intelligence	& ring~ of intelligence	goldgreen ring	ring of intelligence	ring				21	60	1	4	0	int:x
+#ring of dexterity	& ring~ of dexterity	goldblue ring	ring of dexterity	ring				21	60	1	4	0	dex:x
+#ring of constitution	& ring~ of constitution	goldred ring	ring of constitution	ring				21	60	1	4	0	con:x
+#ring of strength	& ring~ of strength	golddkblue ring	ring of strength	ring				21	60	1	4	0	str:x
+ring of speed	& ring~ of speed	platinum ring	ring of speed	ring				41	90	1	5	0	speed:x
+#ring of fire	& ring~ of fire	red ring	ring of fire	ring				18	38	1	1	0	fire:x
+#ring of acid	& ring~ of acid	black ring	ring of acid	ring				30	44	1	1	0	acid:x
+#ring of cold	& ring~ of cold	white ring	ring of cold	ring				18	38	1	1	0	cold:x
+#ring of poison	& ring~ of poison	green ring	ring of poison	ring				30	44	1	1	0	pois:x
+# bracelets													
+bracelet of combat	& bracelet~ of combat	copper bracelet	bracelet of combat	bracelet				5	90	1	60	0	combat:x
+bracelet of ability	& bracelet~ of ability	silver bracelet	bracelet of ability	bracelet				15	90	1	10	0	ability:x
+bracelet of resistance	& bracelet~ of resistance	gold bracelet	bracelet of resistance	bracelet				25	90	2	10	0	resist:x
+#bracelet of fire	& bracelet~ of fire	red bracelet	bracelet of fire	bracelet				18	38	1	3	0	fire:x
+#bracelet of poison	& bracelet~ of poison	green bracelet	bracelet of poison	bracelet				30	44	1	3	0	pois:x
+#bracelet of cold	& bracelet~ of cold	blue bracelet	bracelet of cold	bracelet				18	38	1	3	0	cold:x
+#bracelet of acid	& bracelet~ of acid	black bracelet	bracelet of acid	bracelet				30	44	1	3	0	acid:x
+#bracelet of reflection	& bracelet~ of reflection	purple bracelet	bracelet of reflection	bracelet				70	90	0	0	0	
+# amulets													
+amulet of wealth	& amulet~ of wealth	onyx amulet	amulet of wealth	amulet				1	30	0	0	0	wealth:1
+amulet of combat	& amulet~ of combat	coral amulet	amulet of combat	amulet				1	90	1	60	0	combat:x
+amulet of ability	& amulet~ of ability	sapphire amulet	amulet of ability	amulet				11	90	1	10	0	ability:x
+amulet of resistance	& amulet~ of resistance	stone amulet	amulet of resistance	amulet				21	90	2	10	0	resist:x
+#amulet of resistance	& amulet~ of resistance	amber amulet	amulet of resistance	amulet				31	90	1	1	0	fire:x,cold:x,acid:x,elec:x,pois:x
+#amulet of regeneration	& amulet~ of regeneration	smoky quartz amulet	amulet of regeneration	amulet				60	90	0	0	0	
+#amulet of reflection	& amulet~ of reflection	aquamarine amulet	amulet of reflection	amulet				70	90	0	0	0	
+# money													
+copper	& copper piece~	copper	copper	none	money			0	30	0	0	0	
+silver	& silver piece~	silver	silver	none	money			11	50	0	0	0	
+gold	& gold piece~	gold	gold	none	money			31	70	0	0	0	
+platinum	& platinum piece~	platinum	platinum	none	money			51	90	0	0	0	
+adamantium	& adamantium piece~	adamantium	adamantium	none	money			71	90	0	0	0	
+# gems													
+diamond	& diamond~	diamond	diamond	none	gem			11	90	1	1	0	elec:1
+onyx	& onyx~	onyx	onyx	none	gem			11	90	1	1	0	acid:1
+ruby	& ruby~	ruby	ruby	none	gem			11	90	1	1	0	fire:1
+citrine	& citrine~	citrine	citrine	none	gem			11	90	1	1	0	str:1
+topaz	& topaz~	topaz	topaz	none	gem			11	90	1	1	0	dex:1
+emerald	& emerald~	emerald	emerald	none	gem			11	90	1	1	0	pois:1
+jade	& jade~	jade	jade	none	gem			11	90	1	1	0	dam:1
+aquamarine	& aquamarine~	aquamarine	aquamarine	none	gem			11	90	1	1	0	int:1
+sapphire	& sapphire~	sapphire	sapphire	none	gem			11	90	1	1	0	cold:1
+amethyst	& amethyst~	amethyst	amethyst	none	gem			11	90	1	1	0	con:1
+dragon egg	& dragon egg~	dragon egg	dragon egg	none	gem,special			-1	-1	1	1	0	str:2,dex:2,int:2,con:2
+# potions													
+small mana potion	& small mana potion~	small blue potion	small mana potion	none	potion	restoreMana:10:		1	30	0	0	0	
+small health potion	& small health potion~	small red potion	small health potion	none	potion	heal:10:		1	30	0	0	0	
+small restore potion	& small restore potion~	small purple potion	small restore potion	none	potion	restore:15:		11	40	0	0	0	
+mana potion	& mana potion~	medium blue potion	mana potion	none	potion	restoreMana:40:		31	60	0	0	0	
+health potion	& health potion~	medium red potion	health potion	none	potion	heal:40:		31	60	0	0	0	
+restore potion	& restore potion~	medium purple potion	restore potion	none	potion	restore:60:		41	70	0	0	0	
+large mana potion	& large mana potion~	large blue potion	large mana potion	none	potion	restoreMana:160:		61	90	0	0	0	
+large health potion	& large health potion~	large red potion	large health potion	none	potion	heal:160:		61	90	0	0	0	
+large restore potion	& large restore potion~	large purple potion	large restore potion	none	potion	restore:240:		71	90	0	0	0	
+mountain dew potion	& potion~ of mountain dew	small green potion	mountain dew	none	potion	modifySpeed:1:		0	60	0	0	0	
+#test poison potion	& potion~ of poison	white potion	poison	none	potion	poison:1:		0	60	0	0	0	
+speed potion	& speed potion~	large green potion	speed potion	none	potion	modifySpeed:3:		51	90	0	0	0	
+heroism potion	& potion~ of heroism	small orange potion	potion of heroism	none	potion	heroism:8:		11	60	0	0	0	
+might potion	& potion~ of might	large orange potion	potion of might	none	potion	heroism:16:		51	90	0	0	0	
+nimbleness potion	& potion~ of nimbleness	small yellow potion	potion of nimbleness	none	potion	agility:8:		11	60	0	0	0	
+agility potion	& potion~ of agility	large yellow potion	potion of agility	none	potion	agility:16:		51	90	0	0	0	
+#insulation potion	& potion~ of insulation	dark gray potion	potion of insulation	none	potion	insulation::		41	90	0	0	0	
+#chemistry potion	& potion~ of chemistry	white potion	potion of chemistry	none	potion	chemistry::		41	90	0	0	0	
+# pearls													
+pearl 1	& orange pearl	redorange pearl	Pearl 1: it is inscribed in tiny lettering, 'You always find something in the last place you look.' 	none	pearl,special			-1	-1	0	0	0	
+pearl 2	& amber pearl	orange pearl	Pearl 2: it is inscribed in tiny lettering, 'Smile today, tomorrow could be worse.'	none	pearl,special			-1	-1	0	0	0	
+pearl 3	& yellow pearl	yellow pearl	Pearl 3: it is inscribed in tiny lettering, 'If you think nothing is impossible, try slamming a revolving door.'	none	pearl,special			-1	-1	0	0	0	
+pearl 4	& green pearl	green pearl	Pearl 4: it is inscribed in tiny lettering, 'If you don't succeed at first, hide all evidence that you tried.'	none	pearl,special			-1	-1	0	0	0	
+pearl 5	& blue pearl	blue pearl	Pearl 5: it is inscribed in tiny lettering, 'He who laughs last didn't get it.'	none	pearl,special			-1	-1	0	0	0	
+pearl 6	& indigo pearl	indigo pearl	Pearl 6: it is inscribed in tiny lettering, 'Never test how deep the water is with both feet.'	none	pearl,special			-1	-1	0	0	0	
+pearl 7	& violet pearl	violet pearl	Pearl 7: it is inscribed in tiny lettering, 'No good deed goes unpunished.'	none	pearl,special			-1	-1	0	0	0	
+pearl 8	& rose pearl	rose pearl	Pearl 8: it is inscribed in tiny lettering, 'To make time fly, throw your watch out the window.'	none	pearl,special			-1	-1	0	0	0	
+# other stuff													
+arrow	& arrow~	arrow	arrows	none	arrow		15:45	1	90	0	0	0	
