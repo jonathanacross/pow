@@ -428,7 +428,7 @@ public class AutoItem {
     private static DungeonItem makeItem(String id, DungeonItem.Slot slot, int toHit, int toDam, int toDef) {
         return new DungeonItem(id, id, id, id, slot,
                 DungeonItem.ArtifactSlot.NONE,
-                new DungeonItem.Flags(false, false, false, false),
+                new DungeonItem.Flags(false, false, false, false, false),
                 new int[]{toHit, toDam, toDef, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 1, null);
     }

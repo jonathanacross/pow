@@ -124,5 +124,14 @@ nimbleness potion	& potion~ of nimbleness	small yellow potion	potion of nimblene
 agility potion	& potion~ of agility	large yellow potion	potion of agility	none	potion	agility:16:		51	90	0	0	0		+ to dex
 #insulation potion	& potion~ of insulation	dark gray potion	potion of insulation	none	potion	insulation::		41	90	0	0	0		res cold/fire
 #chemistry potion	& potion~ of chemistry	white potion	potion of chemistry	none	potion	chemistry::		41	90	0	0	0		res acid/elec/pois
+# pearls														
+pearl 1	& orange pearl	redorange pearl	Pearl 1: it is inscribed in tiny lettering, 'You always find something in the last place you look.' 	none	pearl			-1	-1	0	0	0		
+pearl 2	& amber pearl	orange pearl	Pearl 2: it is inscribed in tiny lettering, 'Smile today, tomorrow could be worse.'	none	pearl			-1	-1	0	0	0		
+pearl 3	& yellow pearl	yellow pearl	Pearl 3: it is inscribed in tiny lettering, 'If you think nothing is impossible, try slamming a revolving door.'	none	pearl			-1	-1	0	0	0		
+pearl 4	& green pearl	green pearl	Pearl 4: it is inscribed in tiny lettering, 'If you don't succeed at first, hide all evidence that you tried.'	none	pearl			-1	-1	0	0	0		
+pearl 5	& blue pearl	blue pearl	Pearl 5: it is inscribed in tiny lettering, 'He who laughs last didn't get it.'	none	pearl			-1	-1	0	0	0		
+pearl 6	& indigo pearl	indigo pearl	Pearl 6: it is inscribed in tiny lettering, 'Never test how deep the water is with both feet.'	none	pearl			-1	-1	0	0	0		
+pearl 7	& violet pearl	violet pearl	Pearl 7: it is inscribed in tiny lettering, 'No good deed goes unpunished.'	none	pearl			-1	-1	0	0	0		
+pearl 8	& rose pearl	rose pearl	Pearl 8: it is inscribed in tiny lettering, 'To make time fly, throw your watch out the window.'	none	pearl			-1	-1	0	0	0		
 # other stuff														
 arrow	& arrow~	arrow	arrows	none	arrow		15:45	1	90	0	0	0		

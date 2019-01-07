@@ -455,6 +455,33 @@ public class GeneratorUtils {
                     params);
     }
 
+    private static DungeonFeature buildPearlTile(String pearlTileFeatureId, Point loc) {
+        DungeonFeature featureTemplate = FeatureData.getFeature(pearlTileFeatureId);
+
+        ActionParams params = new ActionParams();
+        params.actionName = ActionParams.ActionName.DROP_PEARL_ACTION;
+        params.point = loc;
+        DungeonFeature.Flags flags = new DungeonFeature.Flags(
+                true,
+                true,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                true,
+                false,
+                true);
+
+        return new DungeonFeature(
+                featureTemplate.id,
+                featureTemplate.name,
+                featureTemplate.image,
+                flags,
+                params);
+    }
+
     private static DungeonFeature buildClosedPortalFeature(
             String openPortalFeatureId, String closedPortalFeatureId,
             Point loc) {

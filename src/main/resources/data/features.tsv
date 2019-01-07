@@ -73,7 +73,7 @@ blue curtain	blue curtain	blue curtain
 green curtain	green curtain	green curtain		
 red carpet	red carpet	red carpet		
 fire urn	fire urn	fire urn	blockGround	
-pearl tile	pearl tile	wood pearl tile	pearlTile	
+pearl tile	pearl tile	wood pearl tile	pearlTile,actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	dropPearl::
 inn	inn	inn	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	enterShop::inn
 weapon shop	weapon shop	weapon shop	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	enterShop::weaponShop
 magic shop	magic shop	magic shop	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	enterShop::magicShop

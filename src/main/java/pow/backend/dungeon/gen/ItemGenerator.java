@@ -173,7 +173,7 @@ public class ItemGenerator {
                 maxSockets = Integer.parseInt(line[12]);
                 bonuses = ParseUtils.parseBonuses(line[13]);
                 // Note that field 14 is currently unused.
-            } catch (NumberFormatException e) {
+            } catch (RuntimeException e) {
                 throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" + String.join(",", line), e);
             }
 

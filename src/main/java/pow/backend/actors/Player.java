@@ -278,6 +278,7 @@ public class Player extends Actor implements Serializable, LightSource {
         return false;
     }
 
+
     @Override
     public boolean canDig() {
         return party.artifacts.hasPickAxe();
