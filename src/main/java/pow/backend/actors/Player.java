@@ -67,12 +67,13 @@ public class Player extends Actor implements Serializable, LightSource {
                         true), // solid
                 GainRatiosData.getGainRatios("player adventurer"),
                 Collections.emptyList(),
-                new Abilities());
+                new Abilities(),
+                Collections.emptyList());
     }
 
     public Player(DungeonObject.Params objectParams,
                    GainRatios gainRatios,
-                   List<SpellParams> spells, Abilities abilities) {
+                   List<SpellParams> spells, Abilities abilities, List<DungeonItem> startItems) {
         super(objectParams, new Actor.Params(
                 1,
                 0,
@@ -101,6 +102,14 @@ public class Player extends Actor implements Serializable, LightSource {
         this.increaseWealth = false;
         this.winner = false;
         this.party = null;
+
+        for (DungeonItem item : startItems) {
+            if (item.slot != DungeonItem.Slot.NONE) {
+                this.equipment.add(item);
+            } else {
+                this.inventory.add(item);
+            }
+        }
     }
 
     @Override
