@@ -76,15 +76,13 @@ public class FeatureData {
         boolean blockWater = false;
         boolean blockAir = false;
         boolean glowing = false;
-        boolean stairsUp = false;
-        boolean stairsDown = false;
+        boolean stairs = false;
         boolean trap = false;
         boolean openDoor = false;
         boolean interesting = false;
 
         for (String t : tokens) {
             switch (t) {
-                // TODO: fix names to agree: stairsDown, stairsUp, glowing
                 case "": break;  // will happen if we have an empty string
                 case "actOnStep": actOnStep = true; break;
                 case "blockAir": blockAir = true; break;
@@ -93,11 +91,10 @@ public class FeatureData {
                 case "blockWater": blockWater = true; break;
                 case "closedDoor": break;
                 case "interesting": interesting = true; break;
-                case "downstairs": stairsDown = true; break;
+                case "stairs": stairs = true; break;
                 case "trap": trap = true; break;
                 case "openDoor": openDoor = true; break;
-                case "smallLight": glowing = true; break;
-                case "upstairs": stairsUp = true; break;
+                case "glowing": glowing = true; break;
                 default:
                     throw new IllegalArgumentException("unknown feature flag '" + t + "'");
             }
@@ -105,6 +102,6 @@ public class FeatureData {
 
         return new DungeonFeature.Flags(
                 blockGround, blockWater, blockAir, glowing, actOnStep,
-                stairsUp, stairsDown, trap, openDoor, interesting);
+                stairs, trap, openDoor, interesting);
     }
 }

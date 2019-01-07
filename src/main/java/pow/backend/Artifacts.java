@@ -45,15 +45,5 @@ public class Artifacts implements Serializable {
     public boolean hasKey() { return artifacts.containsKey(DungeonItem.ArtifactSlot.KEY); }
     public boolean hasPortalKey() { return artifacts.containsKey(DungeonItem.ArtifactSlot.PORTALKEY); }
     public boolean hasXRayScope() { return artifacts.containsKey(DungeonItem.ArtifactSlot.XRAYSCOPE); }
-    public boolean hasAllPearls() {
-        return  artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL1) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL2) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL3) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL4) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL5) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL6) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL7) &&
-                artifacts.containsKey(DungeonItem.ArtifactSlot.PEARL8);
-    }
 
 }

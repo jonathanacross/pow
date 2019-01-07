@@ -35,6 +35,8 @@ public class Constants {
     public static final int FEATURE_JEWELER_SHOP_DOOR = 20 << 8;
     public static final int FEATURE_OPEN_PORTAL = 21 << 8;
     public static final int FEATURE_CLOSED_PORTAL = 22 << 8;
+    public static final int FEATURE_PEARL_TILE = 23 << 8;
+    public static final int FEATURE_FIRE_URN = 24 << 8;
 
     public static final String PORTAL_KEY_LOCATION_ID = "_PORTAL_";
 
@@ -67,9 +69,11 @@ public class Constants {
                 case Constants.FEATURE_INN_DOOR: return '1';
                 case Constants.FEATURE_WEAPON_SHOP_DOOR: return '2';
                 case Constants.FEATURE_MAGIC_SHOP_DOOR: return '3';
-                case Constants.FEATURE_JEWELER_SHOP_DOOR: return '3';
+                case Constants.FEATURE_JEWELER_SHOP_DOOR: return '4';
                 case Constants.FEATURE_OPEN_PORTAL: return 'P';
                 case Constants.FEATURE_CLOSED_PORTAL: return 'Q';
+                case Constants.FEATURE_PEARL_TILE: return 'R';
+                case Constants.FEATURE_FIRE_URN: return 'S';
                 default: throw new IllegalArgumentException("unknown feature " + feature);
             }
         } else {
@@ -113,6 +117,8 @@ public class Constants {
             case 'J': return Constants.TERRAIN_FLOOR + Constants.FEATURE_THRONE;
             case 'P': return Constants.TERRAIN_FLOOR + Constants.FEATURE_OPEN_PORTAL;
             case 'Q': return Constants.TERRAIN_FLOOR + Constants.FEATURE_CLOSED_PORTAL;
+            case 'R': return Constants.TERRAIN_FLOOR + Constants.FEATURE_PEARL_TILE;
+            case 'S': return Constants.TERRAIN_FLOOR + Constants.FEATURE_FIRE_URN;
             case '<': return Constants.TERRAIN_FLOOR + Constants.FEATURE_UP_STAIRS;
             case '>': return Constants.TERRAIN_FLOOR + Constants.FEATURE_DOWN_STAIRS;
             case 'f': return Constants.TERRAIN_FLOOR + Constants.FEATURE_FOUNTAIN;

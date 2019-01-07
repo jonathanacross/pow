@@ -127,6 +127,8 @@ public class GameConstants {
 
     // ------------------- other game constants ---------------
 
+    public final static int NUM_PEARLS_TO_WIN = 8;
+
     public final static int MESSAGE_LOG_SIZE = 50;
 
     // In the world map, can players see unvisited areas?

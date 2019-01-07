@@ -48,6 +48,8 @@ public class WorldDataGen {
     private static final DungeonFeature GREEN_CURTAIN = FeatureData.getFeature("green curtain");
     private static final DungeonFeature RED_CARPET = FeatureData.getFeature("red carpet");
     private static final DungeonFeature THRONE = FeatureData.getFeature("throne");
+    private static final DungeonFeature PEARL_TILE = FeatureData.getFeature("pearl tile");
+    private static final DungeonFeature FIRE_URN = FeatureData.getFeature("fire urn");
 
     private static final DungeonFeature FOUNTAIN = FeatureData.getFeature("fountain");
     private static final DungeonFeature INN_DOOR = FeatureData.getFeature("inn");
@@ -234,6 +236,8 @@ public class WorldDataGen {
         featureMap.put(Constants.FEATURE_RED_CARPET, RED_CARPET);
         featureMap.put(Constants.FEATURE_THRONE, THRONE);
         featureMap.put(Constants.FEATURE_FOUNTAIN, FOUNTAIN);
+        featureMap.put(Constants.FEATURE_PEARL_TILE, PEARL_TILE);
+        featureMap.put(Constants.FEATURE_FIRE_URN, FIRE_URN);
         featureMap.put(Constants.FEATURE_WEAPON_SHOP_DOOR, WEAPON_SHOP_DOOR);
         featureMap.put(Constants.FEATURE_MAGIC_SHOP_DOOR, MAGIC_SHOP_DOOR);
         featureMap.put(Constants.FEATURE_INN_DOOR, INN_DOOR);

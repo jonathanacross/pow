@@ -46,8 +46,9 @@ public class WinWindow extends AbstractWindow {
         Font f = new Font("Courier", Font.PLAIN, 18);
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Congratulations, you collected all the pearls!", 20, 50);
+        graphics.drawString("Congratulations, you have won!", 20, 50);
+        graphics.drawString("You have returned all the pearls to the temple.", 20, 68);
 
-        graphics.drawString("Press enter to continue.", 20, dim.height - 35);
+        graphics.drawString("Press enter to continue playing.", 20, dim.height - 35);
     }
 }

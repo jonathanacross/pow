@@ -13,23 +13,30 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
         public final boolean money;
         public final boolean arrow;
         public final boolean gem;
+        public final boolean pearl;
+        public final boolean special;
 
         public Flags(
                 boolean potion,
                 boolean money,
                 boolean arrow,
-                boolean gem) {
+                boolean gem,
+                boolean pearl,
+                boolean special) {
             this.potion = potion;
             this.money = money;
             this.arrow = arrow;
             this.gem = gem;
+            this.pearl = pearl;
+            this.special = special;
         }
 
         public int getSortValue() {
             return (potion ? 1 : 0) +
                     (money ? 2 : 0) +
                     (arrow ? 4 : 0) +
-                    (gem ? 8 : 0);
+                    (gem ? 8 : 0) +
+                    (pearl ? 16 : 0);
         }
 
     }
@@ -95,14 +102,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     public enum ArtifactSlot {
         NONE,
-        PEARL1,
-        PEARL2,
-        PEARL3,
-        PEARL4,
-        PEARL5,
-        PEARL6,
-        PEARL7,
-        PEARL8,
         LANTERN,
         LANTERN2,
         KEY,
@@ -175,7 +174,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
         DungeonItem that = (DungeonItem) o;
 
-        if (!name.equals(that.name)) return false;
+        if (!id.equals(that.id)) return false;
         return Arrays.equals(bonuses, that.bonuses);
     }
 

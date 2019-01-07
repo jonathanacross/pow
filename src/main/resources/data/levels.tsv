@@ -3,6 +3,7 @@ town1	Coello Village	1	1					town	town	outside,permLight		farmer,mangy leper,jes
 basement1	Basement 1	1		D		town1		premade	basementl1,basement	permLight		green mushrooms,black ant,white rat,brown beetle,crawling moss
 basement2	Basement 2	2		D		basement1		premade	basementl2,basement	permLight	giant salamander	green mushrooms,black ant,white rat,brown beetle,crawling moss
 grassyfields1	Esteri Plains	2	1	N,E,S,W	1			recursiveInterpolation	grass	outside		bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
+pearl room	Pearl Temple	1		D		grassyfields1		premade	pearlroom,basement	permLight		farmer,jester,beggar,salesman
 grassyfields2	Esteri Plains	3	1	N,E,S,W	1			recursiveInterpolation	grass	outside		bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
 grassyfields3	Esteri Plains	4	1	N,E,S,W	1			recursiveInterpolation	grass	outside		bit,bot,yellow ant,pigeon,yellow snake,scruffy dog
 grassyfields4	Esteri Plains	5	1	N,E,S,W	1			recursiveInterpolation	grass	outside		bot,yellow ant,pigeon,yellow snake,scruffy dog

@@ -43,13 +43,16 @@ public class ParseUtils {
         String[] statBonuses = text.split(",", -1);
         for (String statBonus : statBonuses) {
             String[] tokens = statBonus.split(":", 2);
+            if (tokens.length < 2) {
+                throw new RuntimeException("error: couldn't parse item stat bonus. Expected 2 fields. " + text);
+            }
             // x indicates that we'll use the bonus calculated based on the level
             int bonusAmt = (tokens[1].charAt(0) == 'x') ? MATCH_BONUS : Integer.parseInt(tokens[1]);
             String stat = tokens[0];
             if (keyToBonusIdx.containsKey(stat)) {
                 bonuses[keyToBonusIdx.get(stat)] = bonusAmt;
             } else {
-                throw new RuntimeException("error: couldn't parse item stat bonus: " + stat);
+                throw new RuntimeException("error: couldn't parse item stat bonus. Unknown key. " + text);
             }
         }
 
@@ -63,6 +66,8 @@ public class ParseUtils {
         boolean money = false;
         boolean arrow = false;
         boolean gem = false;
+        boolean pearl = false;
+        boolean special = false;
         for (String t : tokens) {
             switch (t) {
                 case "": break;  // will happen if we have an empty string
@@ -70,12 +75,14 @@ public class ParseUtils {
                 case "money": money = true; break;
                 case "arrow": arrow = true; break;
                 case "gem": gem = true; break;
+                case "pearl": pearl = true; break;
+                case "special": special = true; break;
                 default:
                     throw new IllegalArgumentException("unknown item flag '" + t + "'");
             }
         }
 
-        return new DungeonItem.Flags(potion, money, arrow, gem);
+        return new DungeonItem.Flags(potion, money, arrow, gem, pearl, special);
     }
 
     public static ActionParams parseActionParams(String text) {
@@ -99,6 +106,7 @@ public class ParseUtils {
             case "heroism": params.actionName = ActionParams.ActionName.HEROISM_ACTION; break;
             case "agility": params.actionName = ActionParams.ActionName.AGILITY_ACTION; break;
             case "unlockDoor": params.actionName = ActionParams.ActionName.UNLOCK_DOOR_ACTION; break;
+            case "dropPearl": params.actionName = ActionParams.ActionName.DROP_PEARL_ACTION; break;
             default: throw new IllegalArgumentException("unknown action name " + tokens[0]);
         }
 

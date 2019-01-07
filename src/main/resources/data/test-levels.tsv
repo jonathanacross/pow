@@ -1,5 +1,6 @@
 #id	name	level	group	possible dirs	from groups	from id	teleport	generator	genParams	flags	boss	monsters
 terrain	Terrain Test	0					open	terrain test	basement	permLight		
+pearl room	Pearl Temple	1		U		terrain		premade	pearlroom,basement	permLight		farmer,jester,beggar,salesman
 #golddesert	golddesert	30		S		terrain		recursiveInterpolation	gold desert	outside		goldfish,green fish,eel,pink jellyfish
 #island	island	2		D		terrain		mountain		outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon
 island	Island	2		D		terrain		ripple		outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon

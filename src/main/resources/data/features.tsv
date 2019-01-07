@@ -2,38 +2,38 @@
 debug	debug	debug		
 open door	open door	open door	openDoor,blockWater,blockLava,interesting	modifyFeature::closed door
 closed door	closed door	closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::open door
-stairs down	stairs down	stairs down	downstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-stairs up	stairs up	stairs up	upstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+stairs down	stairs down	stairs down	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+stairs up	stairs up	stairs up	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
 ivy stone open door	ivy stone open door	ivy stone open door	openDoor,blockWater,blockLava,interesting	modifyFeature::ivy stone closed door
 ivy stone closed door	ivy stone closed door	ivy stone closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::ivy stone open door
-ivy stone stairs down	ivy stone stairs down	ivy stone stairs down	downstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-ivy stone stairs up	ivy stone stairs up	ivy stone stairs up	upstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+ivy stone stairs down	ivy stone stairs down	ivy stone stairs down	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+ivy stone stairs up	ivy stone stairs up	ivy stone stairs up	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
 brown stone open door	brown stone open door	brown stone open door	openDoor,blockWater,blockLava,interesting	modifyFeature::brown stone closed door
 brown stone closed door	brown stone closed door	brown stone closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::brown stone open door
 dark brick open door	dark brick open door	dark brick open door	openDoor,blockWater,blockLava,interesting	modifyFeature::dark brick closed door
 dark brick closed door	dark brick closed door	dark brick closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::dark brick open door
-brown stone stairs down	brown stone stairs down	brown stone stairs down	downstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-brown stone stairs up	brown stone stairs up	brown stone stairs up	upstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+brown stone stairs down	brown stone stairs down	brown stone stairs down	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+brown stone stairs up	brown stone stairs up	brown stone stairs up	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
 green moss open door	green moss open door	green moss open door	openDoor,blockWater,blockLava,interesting	modifyFeature::green moss closed door
 green moss closed door	green moss closed door	green moss closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::green moss open door
-green moss stairs down	green moss stairs down	green moss stairs down	downstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-green moss stairs up	green moss stairs up	green moss stairs up	upstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+green moss stairs down	green moss stairs down	green moss stairs down	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+green moss stairs up	green moss stairs up	green moss stairs up	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
 ice open door	ice open door	ice open door	openDoor,blockWater,blockLava,interesting	modifyFeature::ice closed door
 ice closed door	ice closed door	ice closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::ice open door
-ice stairs down	ice stairs down	ice stairs down	downstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-ice stairs up	ice stairs up	ice stairs up	upstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-dark brick stairs down	dark brick stairs down	dark brick stairs down	downstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-dark brick stairs up	dark brick stairs up	dark brick stairs up	upstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-dungeon entrance	dungeon entrance	dungeon entrance	downstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-tower	tower	tower	upstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+ice stairs down	ice stairs down	ice stairs down	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+ice stairs up	ice stairs up	ice stairs up	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+dark brick stairs down	dark brick stairs down	dark brick stairs down	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+dark brick stairs up	dark brick stairs up	dark brick stairs up	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+dungeon entrance	dungeon entrance	dungeon entrance	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+tower	tower	tower	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
 hot stone open door	hot stone open door	hot stone open door	openDoor,blockWater,blockLava,interesting	modifyFeature::hot stone closed door
 hot stone closed door	hot stone closed door	hot stone closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::hot stone open door
-hot stone stairs down	hot stone stairs down	hot stone stairs down	downstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-hot stone stairs up	hot stone stairs up	hot stone stairs up	upstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+hot stone stairs down	hot stone stairs down	hot stone stairs down	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+hot stone stairs up	hot stone stairs up	hot stone stairs up	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
 blue open door	blue open door	blue open door	openDoor,blockWater,blockLava,interesting	modifyFeature::blue closed door
 blue closed door	blue closed door	blue closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::blue open door
-blue stairs down	blue stairs down	blue stairs down	downstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
-blue stairs up	blue stairs up	blue stairs up	upstairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+blue stairs down	blue stairs down	blue stairs down	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+blue stairs up	blue stairs up	blue stairs up	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
 rock open door	open rock door	open rock door	openDoor,blockWater,blockLava,interesting	modifyFeature::rock closed door
 rock closed door	closed rock door	closed metal rock door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::rock open door
 key locked rock door	key locked rock door	closed metal key rock door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	unlockDoor:1:rock open door
@@ -42,8 +42,8 @@ blue portal	blue portal	blue portal	blockWater,blockLava,blockAir,blockGround,in
 red portal	red portal	red portal	blockWater,blockLava,blockAir,blockGround,interesting	
 gray portal	closed portal	gray portal	blockWater,blockLava,blockAir,blockGround,interesting	
 spikes	spikes	spikes	trap	
-candle	candle	candle	smallLight	
-candelabra	candelabra	candelabra	smallLight	
+candle	candle	candle	glowing	
+candelabra	candelabra	candelabra	glowing	
 big tree	big tree	big tree		
 sick big tree	sick big tree	sick big tree		
 gold tree	gold tree	gold tree		
@@ -72,6 +72,8 @@ red curtain	red curtain	red curtain
 blue curtain	blue curtain	blue curtain		
 green curtain	green curtain	green curtain		
 red carpet	red carpet	red carpet		
+fire urn	fire urn	fire urn	blockGround	
+pearl tile	pearl tile	wood pearl tile	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	dropPearl::
 inn	inn	inn	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	enterShop::inn
 weapon shop	weapon shop	weapon shop	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	enterShop::weaponShop
 magic shop	magic shop	magic shop	actOnStep,blockWater,blockLava,blockAir,blockGround,interesting	enterShop::magicShop

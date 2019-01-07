@@ -51,6 +51,7 @@ public class PickUp implements Action {
             return ActionResult.succeeded(events);
         }
 
+
         // special case for artifacts
         if (item.artifactSlot != DungeonItem.ArtifactSlot.NONE) {
             if (actor != gs.party.player) {
@@ -71,9 +72,6 @@ public class PickUp implements Action {
 
             // log if the player won the game
             for (GameEvent event : events) {
-                if (event.equals(GameEvent.WON_GAME)) {
-                    backend.logMessage("Congratulations, you won!", MessageLog.MessageType.GAME_EVENT);
-                }
                 if (event.equals(GameEvent.GOT_PET)) {
                     backend.logMessage("The pet statue glows as " + gs.party.player.getNoun() + " picks it up.", MessageLog.MessageType.GAME_EVENT);
                 }
@@ -99,9 +97,15 @@ public class PickUp implements Action {
             item.count -= numToAdd;
             actor.inventory.add(cloneForInventory);
         }
+
+        MessageLog.MessageType messageType = item.flags.special ? MessageLog.MessageType.GAME_EVENT : MessageLog.MessageType.GENERAL;
         backend.logMessage(actor.getNoun() + " picks up "
                         + TextUtils.formatWithBonus(item.name, item.bonusString(), numToAdd, true),
-                MessageLog.MessageType.GENERAL);
+                messageType);
+        // special case for pearls
+        if (item.flags.pearl) {
+            backend.logMessage("Return the pearl to the pearl temple.", MessageLog.MessageType.GAME_EVENT);
+        }
         return ActionResult.succeeded(events);
     }
 

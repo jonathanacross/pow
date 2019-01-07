@@ -31,6 +31,7 @@ public class ActionParams implements Serializable {
         ENTER_SHOP_ACTION,
         ENTER_PORTAL_ACTION,
         OPEN_PORTAL_ACTION,
+        DROP_PEARL_ACTION,
         DEBUG_ACTION,
     }
 
@@ -94,6 +95,8 @@ public class ActionParams implements Serializable {
                 return new OpenPortal(actor, params.point, GeneratorUtils.buildOpenPortalFeature(params.name));
             case ENTER_PORTAL_ACTION:
                 return new EnterPortal(actor);
+            case DROP_PEARL_ACTION:
+                return new DropPearl(actor, params.point);
             case DEBUG_ACTION:
                 return new DebugAction(DebugAction.What.valueOf(params.name));
             default:
