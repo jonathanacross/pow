@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
+import pow.backend.utils.AttackUtils;
 import pow.frontend.Frontend;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
@@ -10,6 +11,7 @@ import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
 
@@ -55,6 +57,16 @@ public class PlayerInfoWindow extends AbstractWindow {
     final private int MARGIN = 15;
     final private int FONT_SIZE = 12;
 
+    private String getResistPercent(int bonus) {
+        double hitFactor = AttackUtils.getResistance(bonus);
+        // Convert to amount resisted, rather than amount hit.
+        double resistFactor = (1 - hitFactor);
+
+        DecimalFormat df = new DecimalFormat("##%");
+        return df.format(resistFactor);
+
+    }
+
     private void drawMainInfo(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
@@ -88,6 +100,12 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("Defense:   " + player.getDefense()); // [19, +5]
         lines.add("Speed:     " + player.getSpeed());
         lines.add("");
+        lines.add("rFire:     " + getResistPercent(player.baseStats.resFire));
+        lines.add("rCold:     " + getResistPercent(player.baseStats.resCold));
+        lines.add("rAcid:     " + getResistPercent(player.baseStats.resAcid));
+        lines.add("rElec:     " + getResistPercent(player.baseStats.resElec));
+        lines.add("rPois:     " + getResistPercent(player.baseStats.resPois));
+        lines.add("rDam:      " + getResistPercent(player.baseStats.resDam));
 
         Font f = new Font("Courier", Font.PLAIN, FONT_SIZE);
         graphics.setFont(f);
