@@ -109,24 +109,36 @@ public class AutoItem {
         return result;
     }
 
+    // Needed for the corner case where we pick up a special item -- we might
+    // optimize to put these somewhere already, and then try to pick up again
+    // in pickUpImportantItemts.
+    private static boolean alreadyMoved(ItemMovement candidate, List<ItemMovement> movements) {
+        for (ItemMovement movement : movements) {
+            if (movement.from == candidate.from && movement.item == candidate.item) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static List<ItemMovement> simplifyMovements(List<ItemMovement> movements) {
         List<ItemMovement> result = new ArrayList<>();
 
         // Do drop actions first
         for (ItemMovement movement : movements) {
-            if (movement.to == Location.GROUND && movement.from != Location.GROUND) {
+            if (movement.to == Location.GROUND && movement.from != Location.GROUND && !alreadyMoved(movement, result)) {
                 result.add(movement);
             }
         }
         // Next wear items
         for (ItemMovement movement : movements) {
-            if (movement.to == Location.EQUIPMENT && movement.from != Location.EQUIPMENT) {
+            if (movement.to == Location.EQUIPMENT && movement.from != Location.EQUIPMENT && !alreadyMoved(movement, result)) {
                 result.add(movement);
             }
         }
         // Finally pick up.
         for (ItemMovement movement : movements) {
-            if (movement.to == Location.INVENTORY && movement.from != Location.INVENTORY) {
+            if (movement.to == Location.INVENTORY && movement.from != Location.INVENTORY && !alreadyMoved(movement, result)) {
                 result.add(movement);
             }
         }
