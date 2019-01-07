@@ -4,6 +4,7 @@ import pow.backend.SpellParams;
 import pow.backend.actors.Abilities;
 import pow.backend.actors.GainRatios;
 import pow.backend.actors.Player;
+import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonObject;
 import pow.util.DebugLogger;
 import pow.util.Point;
@@ -11,10 +12,7 @@ import pow.util.TsvReader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CharacterGenerator {
 
@@ -30,6 +28,7 @@ public class CharacterGenerator {
         public final double conGain;
         public final double speedGain;
         public final Abilities abilities;
+        public final List<DungeonItem> startItems;
         public final List<SpellParams> spells;
 
         public CharacterData(String id,
@@ -43,6 +42,7 @@ public class CharacterGenerator {
                              double conGain,
                              double speedGain,
                              Abilities abilities,
+                             List<DungeonItem> startItems,
                              List<SpellParams> spells) {
             this.id = id;
             this.isPet = isPet;
@@ -55,6 +55,7 @@ public class CharacterGenerator {
             this.conGain = conGain;
             this.speedGain = speedGain;
             this.abilities = abilities;
+            this.startItems = startItems;
             this.spells = spells;
         }
     }
@@ -113,7 +114,7 @@ public class CharacterGenerator {
         GainRatios gainRatios = new GainRatios("", characterData.strGain, characterData.dexGain,
                 characterData.intGain, characterData.conGain, characterData.speedGain);
 
-        return new Player(objectParams, gainRatios, characterData.spells, characterData.abilities);
+        return new Player(objectParams, gainRatios, characterData.spells, characterData.abilities, characterData.startItems);
     }
 
     private CharacterGenerator() throws IOException {
@@ -167,6 +168,19 @@ public class CharacterGenerator {
         return new Abilities(archeryBonus, poisonDamage, stunDamage);
     }
 
+    private static List<DungeonItem> parseStartItems(String text) {
+        List<DungeonItem> items = new ArrayList<>();
+        String[] tokens = text.split(",", -1);
+        Random rng = new Random(123); // use fixed generator; will always have the same..
+        for (String itemId : tokens) {
+            if (itemId.isEmpty()) continue;
+
+            items.add(ItemGenerator.genItem(itemId, 1, rng));
+        }
+
+        return items;
+    }
+
     private static CharacterData parseCharacter(String[] line) {
         String id;
         boolean isPet;
@@ -178,11 +192,12 @@ public class CharacterGenerator {
         double intGain;
         double conGain;
         double speedGain;
+        List<DungeonItem> startItems;
         List<SpellParams> spells;
         Abilities abilities;
 
-        if (line.length != 12) {
-            throw new IllegalArgumentException("Expected 12 fields, but had " + line.length
+        if (line.length != 13) {
+            throw new IllegalArgumentException("Expected 13 fields, but had " + line.length
                     + ". Fields = \n" + String.join(",", line));
         }
 
@@ -198,9 +213,12 @@ public class CharacterGenerator {
             conGain = Double.parseDouble(line[8]);
             speedGain = Double.parseDouble(line[9]);
             abilities = parseAbilities(line[10]);
-            spells = parseSpells(line[11]);
+            startItems = parseStartItems(line[11]);
+            spells = parseSpells(line[12]);
 
-            return new CharacterData(id, isPet, name, image, description, strGain, dexGain, intGain, conGain, speedGain, abilities, spells);
+            return new CharacterData(id, isPet, name, image, description,
+                    strGain, dexGain, intGain, conGain, speedGain,
+                    abilities, startItems, spells);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage() + "\nFields = \n" +
                     String.join(",", line), e);
