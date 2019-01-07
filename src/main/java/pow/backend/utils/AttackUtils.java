@@ -18,6 +18,10 @@ public class AttackUtils {
         return (double) (toHit * toHit) / (toHit * toHit + defense * defense);
     }
 
+    public static double getResistance(int bonus) {
+        return Math.pow(0.7, bonus);
+    }
+
     // Adjusts the damage based on the damage type and the defender's resistances
     public static int adjustDamage(int baseDamage, SpellParams.Element element, Actor defender) {
         int bonus;
@@ -27,11 +31,11 @@ public class AttackUtils {
             case ACID: bonus = defender.baseStats.resAcid; break;
             case LIGHTNING: bonus = defender.baseStats.resElec; break;
             case POISON: bonus = defender.baseStats.resPois; break;
+            case DAMAGE: bonus = defender.baseStats.resDam; break;
             default: bonus = 0;
         }
 
-        double scale = Math.pow(0.7, bonus);
-        return (int) Math.round(scale * baseDamage);
+        return (int) Math.round(getResistance(bonus) * baseDamage);
     }
 
     // TODO: given the cases here, this should eventually be moved into an internal
@@ -135,7 +139,8 @@ public class AttackUtils {
         MessageLog.MessageType messageType = defender.friendly
                 ? MessageLog.MessageType.COMBAT_BAD
                 : MessageLog.MessageType.COMBAT_GOOD;
-        backend.logMessage(attacker.getNoun() + " hits " + defender.getNoun() + " for " + adjustedDamage + damTypeString + " damage", messageType);
+        backend.logMessage(attacker.getNoun() + " hits " + defender.getNoun() + " for "
+                + adjustedDamage + damTypeString + " damage", messageType);
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.ATTACKED);
         List<GameEvent> damageEvents = defender.takeDamage(backend, adjustedDamage, attacker);
