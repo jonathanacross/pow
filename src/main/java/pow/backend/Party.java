@@ -83,12 +83,6 @@ public class Party implements Serializable {
             events.add(GameEvent.GOT_PET);
         }
 
-        // check for a win!
-        if (!player.winner && artifacts.hasAllPearls()) {
-            player.winner = true;
-            events.add(GameEvent.WON_GAME);
-        }
-
         player.updateStats();
         if (pet != null) {
             pet.updateStats();

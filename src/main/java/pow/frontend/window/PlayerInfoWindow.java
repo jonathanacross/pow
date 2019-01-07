@@ -110,14 +110,6 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         // draw artifacts
         Map<DungeonItem.ArtifactSlot, Point> artifactLocations = new HashMap<>();
-        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL1, new Point(0,0));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL2, new Point(1,0));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL3, new Point(2,0));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL4, new Point(3,0));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL5, new Point(4,0));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL6, new Point(5,0));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL7, new Point(6,0));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PEARL8, new Point(7,0));
         artifactLocations.put(DungeonItem.ArtifactSlot.PETSTATUE, new Point(0,1));
         artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN, new Point(1,1));
         artifactLocations.put(DungeonItem.ArtifactSlot.KEY, new Point(2,1));

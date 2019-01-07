@@ -99,14 +99,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     public enum ArtifactSlot {
         NONE,
-        PEARL1,
-        PEARL2,
-        PEARL3,
-        PEARL4,
-        PEARL5,
-        PEARL6,
-        PEARL7,
-        PEARL8,
         LANTERN,
         LANTERN2,
         KEY,

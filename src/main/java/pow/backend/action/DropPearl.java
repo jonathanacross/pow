@@ -1,6 +1,7 @@
 package pow.backend.action;
 
 import pow.backend.GameBackend;
+import pow.backend.GameConstants;
 import pow.backend.GameMap;
 import pow.backend.GameState;
 import pow.backend.MessageLog;
@@ -10,7 +11,6 @@ import pow.backend.dungeon.DungeonSquare;
 import pow.backend.dungeon.ItemList;
 import pow.backend.event.GameEvent;
 import pow.util.Point;
-import pow.util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class DropPearl implements Action {
         }
 
         if (pearlIdx < 0) {
-            backend.logMessage(actor.name + " has no pearl to drop there.", MessageLog.MessageType.USER_ERROR);
+            backend.logMessage(actor.getNoun() + " has no pearl to drop there.", MessageLog.MessageType.USER_ERROR);
             return ActionResult.succeeded(events);
         }
 
@@ -56,9 +56,11 @@ public class DropPearl implements Action {
         actor.inventory.items.remove(pearlIdx);
         tile.items.add(item);
         gs.party.numPearlsReturned++;
+        backend.logMessage(actor.getNoun() + " returns a pearl!", MessageLog.MessageType.GAME_EVENT);
 
-        if (!gs.party.player.winner && gs.party.numPearlsReturned >= 8) {
+        if (!gs.party.player.winner && gs.party.numPearlsReturned >= GameConstants.NUM_PEARLS_TO_WIN) {
             gs.party.player.winner = true;
+            backend.logMessage("Congratulations, you won!", MessageLog.MessageType.GAME_EVENT);
             events.add(GameEvent.WON_GAME);
         }
 

@@ -29,7 +29,7 @@ public class UnlockDoor implements Action {
         if (lockLevel == 1 && !backend.getGameState().party.artifacts.hasKey()) {
             return ActionResult.failed();
         }
-        if (lockLevel == 2 && !backend.getGameState().party.artifacts.hasAllPearls()) {
+        if (lockLevel == 2 && !backend.getGameState().party.player.winner) {
             return ActionResult.failed();
         }
         GameMap map = backend.getGameState().getCurrentMap();
