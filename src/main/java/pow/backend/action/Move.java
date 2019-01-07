@@ -102,7 +102,7 @@ public class Move implements Action {
 
         DungeonFeature feature = gs.getCurrentMap().map[newx][newy].feature;
         if (feature != null && feature.flags.actOnStep) {
-            if (feature.flags.stairsDown || feature.flags.stairsUp) {
+            if (feature.flags.stairs) {
                 // special case if the feature is stairs, as we have to compute final destination
                 // location based on the direction of the player.
                 DungeonExit exit = new DungeonExit(feature.actionParams.name);

@@ -12,11 +12,9 @@ public class DungeonFeature implements Serializable {
         public final boolean blockAir;
         public final boolean glowing;
         public final boolean actOnStep;
-        public final boolean stairsUp;
-        public final boolean stairsDown;
+        public final boolean stairs;
         public final boolean trap;
         public final boolean openDoor;
-        public final boolean pearlTile;
         public final boolean interesting;
 
         public Flags(boolean blockGround,
@@ -24,10 +22,8 @@ public class DungeonFeature implements Serializable {
                      boolean blockAir,
                      boolean glowing,
                      boolean actOnStep,
-                     boolean stairsUp,
-                     boolean stairsDown,
+                     boolean stairs,
                      boolean trap,
-                     boolean pearlTile,
                      boolean openDoor,
                      boolean interesting) {
             this.blockGround = blockGround;
@@ -36,11 +32,9 @@ public class DungeonFeature implements Serializable {
             this.glowing = glowing;
             this.actOnStep = actOnStep;
             // TODO: merge stairsUp and stairsDown
-            this.stairsUp = stairsUp;
-            this.stairsDown = stairsDown;
+            this.stairs = stairs;
             this.trap = trap;
             this.openDoor = openDoor;
-            this.pearlTile = pearlTile;
             this.interesting = interesting;
         }
     }

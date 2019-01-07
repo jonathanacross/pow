@@ -398,9 +398,7 @@ public class GeneratorUtils {
                 false,
                 false,
                 true,
-                up,
-                !up,
-                false,
+                true,
                 false,
                 false,
                 true);
@@ -443,8 +441,6 @@ public class GeneratorUtils {
                     false,
                     false,
                     false,
-                    false,
-                    false,
                     true);
 
             return new DungeonFeature(
@@ -470,8 +466,6 @@ public class GeneratorUtils {
                 false,
                 true,
                 true,
-                false,
-                false,
                 false,
                 false,
                 false,
