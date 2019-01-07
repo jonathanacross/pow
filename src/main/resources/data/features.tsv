@@ -26,6 +26,9 @@ dark brick stairs down	dark brick stairs down	dark brick stairs down	stairs,actO
 dark brick stairs up	dark brick stairs up	dark brick stairs up	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
 dungeon entrance	dungeon entrance	dungeon entrance	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
 tower	tower	tower	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+temple	temple	temple	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+green cave entrance	green cave entrance	green cave entrance	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
+brown cave entrance	brown cave entrance	brown cave entrance	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
 hot stone open door	hot stone open door	hot stone open door	openDoor,blockWater,blockLava,interesting	modifyFeature::hot stone closed door
 hot stone closed door	hot stone closed door	hot stone closed door	actOnStep,closedDoor,blockWater,blockLava,blockAir,blockGround,interesting	modifyFeature::hot stone open door
 hot stone stairs down	hot stone stairs down	hot stone stairs down	stairs,actOnStep,blockGround,blockWater,blockLava,interesting	
