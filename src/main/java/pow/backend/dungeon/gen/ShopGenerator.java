@@ -36,11 +36,11 @@ public class ShopGenerator {
 
         List<ShopData.ShopEntry> weaponItems = new ArrayList<>();
         for (DungeonItem item : weaponItemList.items) {
-            weaponItems.add(new ShopData.ShopEntry(item, ItemUtils.priceItem(item)));
+            weaponItems.add(new ShopData.ShopEntry(item, ItemUtils.priceItem(item, rng)));
         }
         List<ShopData.ShopEntry> magicItems = new ArrayList<>();
         for (DungeonItem item : magicItemList.items) {
-            magicItems.add(new ShopData.ShopEntry(item, ItemUtils.priceItem(item)));
+            magicItems.add(new ShopData.ShopEntry(item, ItemUtils.priceItem(item, rng)));
         }
 
         return new ShopData(innCost, weaponItems, magicItems);

@@ -1,7 +1,10 @@
 package pow.backend.utils;
 
 import pow.backend.dungeon.DungeonItem;
+import pow.util.MathUtils;
 import pow.util.TextUtils;
+
+import java.util.Random;
 
 public class ItemUtils {
     public static boolean isWeapon(DungeonItem item) {
@@ -100,6 +103,18 @@ public class ItemUtils {
         else return Math.pow(10, numSockets + 1);
     }
 
+    // Price an item with some random variability
+    public static int priceItem(DungeonItem item, Random rng) {
+        double price = priceItem(item);
+
+        // Give a random variance to the item price, between 25% and 400%.
+        double scale = Math.pow(2.0, rng.nextDouble()*4 - 2);
+        price *= scale;
+        price = MathUtils.clamp(price, 1, 99998);
+
+        return (int) Math.round(price);
+    }
+
     public static int priceItem(DungeonItem item) {
         // Very arbitrary now.  Have to balance this.
         // While arbitrary, scalars here are fractional so that prices of
@@ -140,6 +155,7 @@ public class ItemUtils {
             System.out.println("Warning: " + TextUtils.format(item.name, 1, true) +
                     " is not priced correctly in stores");
         }
+
         return (int) Math.round(price);
     }
 }

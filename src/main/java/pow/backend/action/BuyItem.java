@@ -7,6 +7,7 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.event.GameEvent;
+import pow.backend.utils.StatsLogUtils;
 import pow.util.TextUtils;
 
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class BuyItem implements Action {
         backend.logMessage(player.getNoun() + " buys "
                         + TextUtils.formatWithBonus(item.name, item.bonusString(), count, true),
                 MessageLog.MessageType.GENERAL);
+        StatsLogUtils.recordItemBought(item, entry.price);
 
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DUNGEON_UPDATED);
