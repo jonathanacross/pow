@@ -138,24 +138,31 @@ public class GameBackend {
         List<GameEvent> events = new ArrayList<>();
         GameMap map = gameState.getCurrentMap();
         Party party = gameState.party;
-        Player player = gameState.party.player;
         if (map.flags.poisonGas && !party.artifacts.hasGasMask()) {
-            logMessage("the noxious air burns " + player.getNoun() + "'s lungs", MessageLog.MessageType.COMBAT_BAD);
-            // TODO: impact pet as well
-            events.addAll(player.takeDamage(this, GameConstants.POISON_DAMAGE_PER_TURN, null));
+            for (Actor a : party.playersInParty()) {
+                int dam = GameConstants.POISON_DAMAGE_PER_TURN;
+                logMessage("the noxious air burns " + a.getNoun() + "'s lungs for " + dam + " damage.",
+                        MessageLog.MessageType.COMBAT_BAD);
+                events.addAll(a.takeDamage(this, dam, null));
+            }
         }
         if (map.flags.hot && !party.artifacts.hasHeatSuit()) {
-            logMessage(player.getNoun() + " withers in the extreme heat", MessageLog.MessageType.COMBAT_BAD);
-            events.addAll(player.takeDamage(this, GameConstants.HEAT_DAMAGE_PER_TURN, null));
+            for (Actor a : party.playersInParty()) {
+                int dam = GameConstants.HEAT_DAMAGE_PER_TURN;
+                logMessage(a.getNoun() + " withers in the extreme heat, taking " + dam + " damage.",
+                        MessageLog.MessageType.COMBAT_BAD);
+                events.addAll(a.takeDamage(this, dam, null));
+            }
         }
         // handle traps
         for (Actor a : map.actors) {
             if (map.hasTrapAt(a.loc.x, a.loc.y)) {
-                MessageLog.MessageType messageType = (a == player || a == party.pet) ?
+                int dam = GameConstants.TRAP_DAMAGE_PER_TURN;
+                MessageLog.MessageType messageType = (party.containsActor(a)) ?
                         MessageLog.MessageType.COMBAT_BAD :
                         MessageLog.MessageType.COMBAT_GOOD;
-                logMessage(a.getNoun() + " is caught in a trap.", messageType);
-                events.addAll(a.takeDamage(this, GameConstants.TRAP_DAMAGE_PER_TURN, null));
+                logMessage(a.getNoun() + " is caught in a trap, taking " + dam + " damage.", messageType);
+                events.addAll(a.takeDamage(this, dam, null));
             }
         }
         gameState.turnCount++;

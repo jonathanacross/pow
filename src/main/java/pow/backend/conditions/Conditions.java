@@ -1,6 +1,7 @@
 package pow.backend.conditions;
 
 import pow.backend.GameBackend;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.event.GameEvent;
 
@@ -46,6 +47,10 @@ public class Conditions {
 
         @Override
         protected List<GameEvent> updateImpl(GameBackend backend) {
+            MessageLog.MessageType messageType = actor.friendly
+                    ? MessageLog.MessageType.COMBAT_BAD
+                    : MessageLog.MessageType.COMBAT_GOOD;
+            backend.logMessage(actor.getNoun() + " takes " + getIntensity() + " poison damage.", messageType);
             return actor.takeDamage(backend, getIntensity(), source);
         }
     }
