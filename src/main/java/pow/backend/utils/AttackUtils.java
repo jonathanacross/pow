@@ -181,7 +181,7 @@ public class AttackUtils {
         List<GameEvent> events = new ArrayList<>();
         switch (hitParams.element) {
             case CONFUSE:
-                if (backend.getGameState().rng.nextInt(defender.level + 1) == 0) {
+                if (backend.getGameState().rng.nextDouble() < hitProb(attacker.level, defender.level)) {
                     // TODO: have this not affect the caster?
                     events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, hitParams.duration, hitParams.intensity, attacker));
                 } else {
@@ -189,7 +189,7 @@ public class AttackUtils {
                 }
                 break;
             case SLEEP:
-                if (backend.getGameState().rng.nextInt(defender.level + 1) == 0) {
+                if (backend.getGameState().rng.nextDouble() < hitProb(attacker.level, defender.level)) {
                     defender.putToSleep(backend);
                 } else {
                     backend.logMessage(attacker.getNoun() + " failed to put " + defender.getNoun() + " to sleep", MessageLog.MessageType.COMBAT_NEUTRAL);
