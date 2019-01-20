@@ -68,7 +68,7 @@ public class ItemUtils {
         return a * (x - x1) + y1;
     }
 
-    private static double actionBonus(DungeonItem item) {
+    private static double actionCost(DungeonItem item) {
         double bonus;
         int actionValue = item.actionParams.number;
         switch (item.actionParams.actionName) {
@@ -83,57 +83,50 @@ public class ItemUtils {
         return bonus;
     }
 
-    private static double resistBonus(DungeonItem item) {
-        double weightedResistSum =
-                1.05 * item.bonuses[DungeonItem.RES_FIRE_IDX] +
-                0.95 * item.bonuses[DungeonItem.RES_COLD_IDX] +
-                0.9 * item.bonuses[DungeonItem.RES_ACID_IDX] +
-                0.85 * item.bonuses[DungeonItem.RES_ELEC_IDX] +
-                1.05 * item.bonuses[DungeonItem.RES_POIS_IDX] +
-                1.16 * item.bonuses[DungeonItem.RES_DAM_IDX];
-        return 40 * weightedResistSum * weightedResistSum;
+    private static double slotScaleFactor(DungeonItem item) {
+        switch (item.slot) {
+            case BOW: return 3.2;  // bows are relatively more useful than melee weapons
+            case WEAPON: return 1.0;
+            case RING: return 1.0;
+            case AMULET: return 1.0;
+            case BRACELET: return 1.0;
+            case BOOTS: return 0.9;
+            case GLOVES: return 0.8;
+            case HEADGEAR: return 0.9;
+            case SHIELD: return 1.0;
+            case ARMOR: return 1.0;
+            default: return 1.0;
+        }
     }
 
-    private static double socketBonus(DungeonItem item) {
-        int numSockets = item.bonuses[DungeonItem.SOCKETS_IDX];
-        if (numSockets == 0) return 0;
-        else return Math.pow(10, numSockets + 1);
+    private static double bonusCost(DungeonItem item) {
+        // These are somewhat ad-hoc.  Note that we use slightly different
+        // constants to give some slight variability between item prices.
+        double totalWeightedBonus =
+                1.58 * item.bonuses[DungeonItem.TO_HIT_IDX] +
+                1.67 * item.bonuses[DungeonItem.TO_DAM_IDX] +
+                1.73 * item.bonuses[DungeonItem.DEF_IDX] +
+                6.48 * item.bonuses[DungeonItem.STR_IDX] +
+                8.12 * item.bonuses[DungeonItem.DEX_IDX] +
+                5.83 * item.bonuses[DungeonItem.INT_IDX] +
+                6.78 * item.bonuses[DungeonItem.CON_IDX] +
+                6.48 * item.bonuses[DungeonItem.RES_FIRE_IDX] +
+                6.16 * item.bonuses[DungeonItem.RES_COLD_IDX] +
+                6.00 * item.bonuses[DungeonItem.RES_ACID_IDX] +
+                5.83 * item.bonuses[DungeonItem.RES_ELEC_IDX] +
+                6.60 * item.bonuses[DungeonItem.RES_POIS_IDX] +
+                6.81 * item.bonuses[DungeonItem.RES_DAM_IDX] +
+                31.62 * item.bonuses[DungeonItem.SPEED_IDX] +
+                4.47 * item.bonuses[DungeonItem.WEALTH_IDX] +
+                8.00 * item.bonuses[DungeonItem.SOCKETS_IDX];
+        return totalWeightedBonus * totalWeightedBonus;
     }
 
     public static int priceItem(DungeonItem item) {
-        // Very arbitrary now.  Have to balance this.
-        // While arbitrary, scalars here are fractional so that prices of
-        // items don't all look the same.
         double price =
-                2.5 * sqr(item.bonuses[DungeonItem.TO_HIT_IDX]) +
-                2.8 * sqr(item.bonuses[DungeonItem.TO_DAM_IDX]) +
-                3.0 * sqr(item.bonuses[DungeonItem.DEF_IDX]) +
-                42 * sqr(item.bonuses[DungeonItem.STR_IDX]) +
-                66 * sqr(item.bonuses[DungeonItem.DEX_IDX]) +
-                34 * sqr(item.bonuses[DungeonItem.INT_IDX]) +
-                46 * sqr(item.bonuses[DungeonItem.CON_IDX]) +
-                1000 * sqr(item.bonuses[DungeonItem.SPEED_IDX]) +
-                20 * sqr(item.bonuses[DungeonItem.WEALTH_IDX]) +
-                1 * (item.flags.arrow ? 1 : 0) +
-                actionBonus(item) +
-                resistBonus(item) +
-                socketBonus(item);
-
-        double slotScaleFactor;
-        switch (item.slot) {
-            case BOW: slotScaleFactor = 3.2; break;  // bows are relatively more useful than melee weapons
-            case WEAPON: slotScaleFactor = 1.0; break;
-            case RING: slotScaleFactor = 1.0; break;
-            case AMULET: slotScaleFactor = 1.0; break;
-            case BRACELET: slotScaleFactor = 1.0; break;
-            case BOOTS: slotScaleFactor = 0.9; break;
-            case GLOVES: slotScaleFactor = 0.8; break;
-            case HEADGEAR: slotScaleFactor = 0.9; break;
-            case SHIELD: slotScaleFactor = 1.0; break;
-            case ARMOR: slotScaleFactor = 1.0; break;
-            default: slotScaleFactor = 1.0; break;
-        }
-        price *= slotScaleFactor;
+                slotScaleFactor(item) * bonusCost(item) + // price for equipment and gems
+                actionCost(item) + // price for potions
+                1 * (item.flags.arrow ? 1 : 0); // arrows
 
         if (price <= 0) {
             price = 99999; // setting price to this should be a hint that something was amiss.
