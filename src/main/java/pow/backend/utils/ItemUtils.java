@@ -85,7 +85,7 @@ public class ItemUtils {
 
     private static double slotScaleFactor(DungeonItem item) {
         switch (item.slot) {
-            case BOW: return 3.2;  // bows are relatively more useful than melee weapons
+            case BOW: return 1.8;  // bows are relatively more useful than melee weapons
             case WEAPON: return 1.0;
             case RING: return 1.0;
             case AMULET: return 1.0;
@@ -105,20 +105,20 @@ public class ItemUtils {
         double totalWeightedBonus =
                 1.58 * item.bonuses[DungeonItem.TO_HIT_IDX] +
                 1.67 * item.bonuses[DungeonItem.TO_DAM_IDX] +
-                1.73 * item.bonuses[DungeonItem.DEF_IDX] +
-                6.48 * item.bonuses[DungeonItem.STR_IDX] +
-                8.12 * item.bonuses[DungeonItem.DEX_IDX] +
-                5.83 * item.bonuses[DungeonItem.INT_IDX] +
-                6.78 * item.bonuses[DungeonItem.CON_IDX] +
-                6.48 * item.bonuses[DungeonItem.RES_FIRE_IDX] +
-                6.16 * item.bonuses[DungeonItem.RES_COLD_IDX] +
-                6.00 * item.bonuses[DungeonItem.RES_ACID_IDX] +
-                5.83 * item.bonuses[DungeonItem.RES_ELEC_IDX] +
-                6.60 * item.bonuses[DungeonItem.RES_POIS_IDX] +
-                6.81 * item.bonuses[DungeonItem.RES_DAM_IDX] +
+                2.40 * item.bonuses[DungeonItem.DEF_IDX] +
+                7.77 * item.bonuses[DungeonItem.STR_IDX] +
+                9.70 * item.bonuses[DungeonItem.DEX_IDX] +
+                7.00 * item.bonuses[DungeonItem.INT_IDX] +
+                8.14 * item.bonuses[DungeonItem.CON_IDX] +
+                8.42 * item.bonuses[DungeonItem.RES_FIRE_IDX] +
+                8.00 * item.bonuses[DungeonItem.RES_COLD_IDX] +
+                7.80 * item.bonuses[DungeonItem.RES_ACID_IDX] +
+                7.58 * item.bonuses[DungeonItem.RES_ELEC_IDX] +
+                8.58 * item.bonuses[DungeonItem.RES_POIS_IDX] +
+                8.85 * item.bonuses[DungeonItem.RES_DAM_IDX] +
                 31.62 * item.bonuses[DungeonItem.SPEED_IDX] +
                 4.47 * item.bonuses[DungeonItem.WEALTH_IDX] +
-                8.00 * item.bonuses[DungeonItem.SOCKETS_IDX];
+                10.00 * item.bonuses[DungeonItem.SOCKETS_IDX];
         return totalWeightedBonus * totalWeightedBonus;
     }
 
@@ -126,7 +126,9 @@ public class ItemUtils {
         double price =
                 slotScaleFactor(item) * bonusCost(item) + // price for equipment and gems
                 actionCost(item) + // price for potions
-                1 * (item.flags.arrow ? 1 : 0); // arrows
+                (item.flags.arrow ? 1 : 0) +  // arrows
+                (item.flags.money ? 1 : 0); // money (for completeness, not that you would ever buy it)
+
 
         if (price <= 0) {
             price = 99999; // setting price to this should be a hint that something was amiss.
