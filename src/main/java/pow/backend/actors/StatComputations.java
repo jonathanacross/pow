@@ -9,11 +9,11 @@ import java.util.List;
 public class StatComputations {
 
     public static int constitutionToHealth(int stat) {
-        return (int) Math.round(0.25 * stat * stat);
+        return (int) Math.round(0.6 * stat * stat);
     }
 
     public static int intelligenceToMana(int stat) {
-        return (int) Math.round(0.25 * stat * stat);
+        return (int) Math.round(0.4 * stat * stat);
     }
 
     public static int dexterityToDefenseAndAttack(int stat) {
