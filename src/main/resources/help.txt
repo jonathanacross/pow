@@ -15,7 +15,7 @@ The keys . or number pad 5 indicate to stay still.
       /    See monster information         ?    See help
       a    Autoplay options
       b    Walk southwest                  B    Run southwest
-      c    Close door                      C    Character description
+      c    Character information           c    Close door
       e    Show your equipment
       f    Fire an arrow
       g    Get/optimize equipment          G    Show objects on the ground
