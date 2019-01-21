@@ -83,9 +83,8 @@ public class Party implements Serializable {
             events.add(GameEvent.GOT_PET);
         }
 
-        player.updateStats();
-        if (pet != null) {
-            pet.updateStats();
+        for (Player p : this.playersInParty()) {
+            p.updateStats();
         }
 
         return events;

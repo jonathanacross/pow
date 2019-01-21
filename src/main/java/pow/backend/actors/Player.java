@@ -172,16 +172,20 @@ public class Player extends Actor implements Serializable, LightSource {
         return (int) Math.round(Math.max((level - 10) * 0.5 * gainRatios.speedRatio, 0));
     }
 
-    // update our stats, plus toHit, defense to include current equipped items and other bonuses.
+    // Update our stats, plus toHit, defense to include current equipped items and other bonuses.
     public void updateStats() {
-
         int innateStr = getInnateStr(gainRatios, level);
         int innateDex = getInnateDex(gainRatios, level);
         int innateInt = getInnateInt(gainRatios, level);
         int innateCon = getInnateCon(gainRatios, level);
         int innateSpd = getInnateSpeed(gainRatios, level);
 
-        this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment.items, abilities.archeryBonus);
+        // Turtle shell only confers bonus if the wearer isn't wearing anything
+        // (notably, for the pet).
+        int extraResistBonus = (equipment.items.isEmpty() && party.artifacts.hasTurtleShell()) ? 2 : 0;
+
+        this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment.items,
+                abilities.archeryBonus, extraResistBonus);
         this.health = Math.min(health, getMaxHealth());
         this.mana = Math.min(mana, getMaxMana());
 

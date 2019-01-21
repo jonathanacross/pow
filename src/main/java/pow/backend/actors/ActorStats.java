@@ -32,7 +32,7 @@ public class ActorStats implements Serializable {
     public final int resPois;
     public final int resDam;
 
-    public ActorStats(int strength, int dexterity, int intelligence, int constitution, int speed, List<DungeonItem> equipment, boolean archeryBonus) {
+    public ActorStats(int strength, int dexterity, int intelligence, int constitution, int speed, List<DungeonItem> equipment, boolean archeryBonus, int extraResistBonus) {
         // compute equipment bonuses
         int strBonus = 0;
         int dexBonus = 0;
@@ -44,12 +44,12 @@ public class ActorStats implements Serializable {
         int meleeToDamBonus = 0;
         int rangedToHitBonus = 0;
         int rangedToDamBonus = 0;
-        int resFireBonus = 0;
-        int resColdBonus = 0;
-        int resAcidBonus = 0;
-        int resElecBonus = 0;
-        int resPoisBonus = 0;
-        int resDamBonus = 0;
+        int resFireBonus = extraResistBonus;
+        int resColdBonus = extraResistBonus;
+        int resAcidBonus = extraResistBonus;
+        int resElecBonus = extraResistBonus;
+        int resPoisBonus = extraResistBonus;
+        int resDamBonus = extraResistBonus;
 
         for (DungeonItem item : equipment) {
             strBonus += item.bonuses[DungeonItem.STR_IDX];
