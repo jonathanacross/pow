@@ -22,13 +22,13 @@ public class MonsterDanger {
         if (likelyDamage >= remainingHealth) {
             return Danger.DEADLY;
         }
-        if (likelyDamage >= remainingHealth / 2) {
+        if (likelyDamage >= remainingHealth / 5) {
             return Danger.DANGEROUS;
         }
-        if (likelyDamage < remainingHealth / 10) {
+        if (likelyDamage < remainingHealth / 20) {
             return Danger.SAFE;
         }
-        if (likelyDamage < remainingHealth / 4) {
+        if (likelyDamage < remainingHealth / 10) {
             return Danger.NORMAL;
         }
         return Danger.UNSAFE;
