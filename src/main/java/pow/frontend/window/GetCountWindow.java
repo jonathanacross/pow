@@ -9,21 +9,22 @@ import pow.util.MathUtils;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.function.IntConsumer;
+import java.util.List;
 
 public class GetCountWindow extends AbstractWindow {
 
     private String countString;
     private final String imageName;
-    private final String message;
+    private final List<String> messages;
     private final int maxNum;
     private final IntConsumer callback;
 
     public GetCountWindow(WindowDim dim, GameBackend backend, Frontend frontend, String imageName,
-                          String message, int maxNum, IntConsumer callback) {
+                          List<String> messages, int maxNum, IntConsumer callback) {
         super(dim, true, backend, frontend);
         this.countString = "";
         this.imageName = imageName;
-        this.message = message;
+        this.messages = messages;
         this.maxNum = maxNum;
         this.callback = callback;
     }
@@ -74,9 +75,10 @@ public class GetCountWindow extends AbstractWindow {
         Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
-        graphics.drawString(message, 2*MARGIN + TILE_SIZE, MARGIN + FONT_SIZE);
-        graphics.drawString("(max " + maxNum + ")", 2*MARGIN + TILE_SIZE, MARGIN + 2*FONT_SIZE);
+        for (int i = 0; i < messages.size(); i++) {
+            graphics.drawString(messages.get(i), 2 * MARGIN + TILE_SIZE, MARGIN + (i+1)*FONT_SIZE);
+        }
 
-        graphics.drawString("> " + countString, 2*MARGIN + TILE_SIZE, MARGIN + 4*FONT_SIZE);
+        graphics.drawString("> " + countString, 2*MARGIN + TILE_SIZE, MARGIN + (messages.size() + 2)*FONT_SIZE);
     }
 }

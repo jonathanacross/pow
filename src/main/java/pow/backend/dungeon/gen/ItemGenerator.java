@@ -191,7 +191,7 @@ public class ItemGenerator {
         }
 
         private int getMoneyAmountForLevel(double level, Random rng) {
-            int maxAmt = (int) (0.01 * level * level * level + 10);
+            int maxAmt = (int) (0.3 * level * level + 10);
             return rng.nextInt(maxAmt) + 1;
         }
 

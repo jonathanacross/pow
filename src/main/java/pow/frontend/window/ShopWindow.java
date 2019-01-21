@@ -12,6 +12,7 @@ import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopWindow extends AbstractWindow {
@@ -39,10 +40,15 @@ public class ShopWindow extends AbstractWindow {
                 int maxNum = maxNumBuyable(entry);
                 if (maxNum > 0) {
                     WindowDim cDim = new WindowDim(dim.x, dim.y, dim.width, 90);
+                    List<String> messages = new ArrayList<>();
+                    messages.add("How many " + TextUtils.plural(entry.item.name));
+                    String bonus = entry.item.bonusString();
+                    if (!bonus.isEmpty()) {
+                        messages.add(entry.item.bonusString());
+                    }
+                    messages.add("do you want? (max " + maxNum + ")?");
                     frontend.open(new GetCountWindow(cDim, this.backend, this.frontend,
-                            entry.item.image,
-                            "How many " + TextUtils.plural(entry.item.name) + " do you want?",
-                            maxNum,
+                            entry.item.image, messages, maxNum,
                             (int count) -> backend.tellSelectedActor(new BuyItem(entries, itemNumber, count))));
                 }
             }

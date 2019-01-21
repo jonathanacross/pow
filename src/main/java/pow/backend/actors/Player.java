@@ -33,26 +33,26 @@ public class Player extends Actor implements Serializable, LightSource {
     // computed as totals in MakePlayerExpLevels
     private static final int[] levelBreakpoints = {
             0,
-            43,
-            206,
-            458,
-            807,
-            1271,
-            1878,
-            2664,
-            3676,
-            4975,
-            6637,
-            8760,
-            11468,
-            14919,
-            19314,
-            24906,
-            32018,
-            41059,
-            52548,
-            67144,
-            85682
+            58,
+            279,
+            621,
+            1093,
+            1720,
+            2540,
+            3601,
+            4966,
+            6715,
+            8951,
+            11805,
+            15442,
+            20072,
+            25962,
+            33450,
+            42964,
+            55048,
+            70390,
+            89863,
+            114573
     };
 
     // default (empty) player
@@ -172,16 +172,20 @@ public class Player extends Actor implements Serializable, LightSource {
         return (int) Math.round(Math.max((level - 10) * 0.5 * gainRatios.speedRatio, 0));
     }
 
-    // update our stats, plus toHit, defense to include current equipped items and other bonuses.
+    // Update our stats, plus toHit, defense to include current equipped items and other bonuses.
     public void updateStats() {
-
         int innateStr = getInnateStr(gainRatios, level);
         int innateDex = getInnateDex(gainRatios, level);
         int innateInt = getInnateInt(gainRatios, level);
         int innateCon = getInnateCon(gainRatios, level);
         int innateSpd = getInnateSpeed(gainRatios, level);
 
-        this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment.items, abilities.archeryBonus);
+        // Turtle shell only confers bonus if the wearer isn't wearing anything
+        // (notably, for the pet).
+        int extraResistBonus = (equipment.items.isEmpty() && party.artifacts.hasTurtleShell()) ? 2 : 0;
+
+        this.baseStats = new ActorStats(innateStr, innateDex, innateInt, innateCon, innateSpd, equipment.items,
+                abilities.archeryBonus, extraResistBonus);
         this.health = Math.min(health, getMaxHealth());
         this.mana = Math.min(mana, getMaxMana());
 

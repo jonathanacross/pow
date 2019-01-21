@@ -64,7 +64,7 @@
 7	big red spiny	mammal			0		0	& big red spiny	big red spiny	A great lizard with a horn, sharp spines, and a spiked tail.
 8	frost giant	giant	fearless		-1		2	& frost giant	frost giant	A twelve foot tall giant covered in furs.
 8	Hagar the Merciless	giant	boss,perfect,fearless	lance	0	gas mask	4	!Hagar the Merciless	Hagar the Merciless	Hagar, warrior-king from the East, is legendary for his skill in combat and excessive cruelty.
-8	ice creature	giant	boss,fearless	ice breath,ice bolt	0	pearl 4	4	& ice creature	ice creature	It is a towering glacier of ice, moving inexorably towards you.
+8	ice creature	giant	boss,fearless	ice breath,ice bolt	0	pearl 4	4	& ice elemental	ice creature	It is a towering mass of ice, moving inexorably towards you.
 10	orc mage	mage	perfect	phase,fire bolt,lesser heal	0		1	& orc mage	orc mage	An orc dressed in skins who gestures wildly.
 10	orc warrior	warrior	perfect		0		1	& orc warrior	orc warrior	An armored orc with an air of authority.
 9	orc archer	archer	perfect	arrow	0		1	& orc archer	orc archer	An orc archer who moves with confidence.
@@ -105,7 +105,7 @@
 15	red cobra	reptile	fearless	poison bolt	-1		0	& red cobra	red cobra	A great cobra with ruby scales.
 15	sandworm	reptile	fearless		-2		1	& sandworm	sand worm	An enormous worm with a fearsome array of crystalline teeth.
 14	black troll	warrior	boss,fearless,perfect	circle cut,lance	0	magic bag	4	!Algol the black troll	black troll	He has a huge hulking frame and nearly black skin.  Algol was chieftain of a savage troll tribe, known for his short temper.
-16	two headed ogre	giant	boss,perfect	circle cut,lesser heal,lance	0	heat suit	4	& two headed ogre	two headed ogre	A giant orc-like figure with a two heads and an awesomely muscled frame. It regrows it heads as fast as you chop them off.
+16	two headed ogre	giant	boss,perfect	circle cut,lesser heal,lance	0	heat suit	4	& two headed ogre	two headed ogre	A giant orc-like figure with a two heads and an awesomely muscled frame. It regrows its heads as fast as you chop them off.
 16	oliphant	mammal	boss		-1	pearl 7	6	& oliphant	oliphant	A giant elephantine creature with four tusks, sharp teeth, and a foul temper.
 17	demon mage	mage	perfect,fearless	phase,ice bolt,lesser heal,fireball,fire bolt,blink	0		1	& demon mage	demon mage	A fearsome opponent. His spells are lethal and his combat blows crushingly hard.
 17	demon warrior	warrior	perfect,fearless	lance	0		1	& demon warrior	demon warrior	A demon wielding a massive sword. Feared by all when it flies into one of its berserk rages, it will cut down anything in its path.

@@ -60,7 +60,7 @@ public class KeyUtils {
             case KeyEvent.VK_X:
                 return hasShift(event) ? KeyInput.UNKNOWN : KeyInput.LOOK;
             case KeyEvent.VK_C:
-                return hasShift(event) ? KeyInput.PLAYER_INFO : KeyInput.CLOSE_DOOR;
+                return hasShift(event) ? KeyInput.CLOSE_DOOR : KeyInput.PLAYER_INFO;
             case KeyEvent.VK_G:
                 return hasShift(event) ? KeyInput.GROUND : KeyInput.OPTIMIZE_EQUIPMENT;
             case KeyEvent.VK_D:

@@ -188,7 +188,8 @@ public abstract class Actor extends DungeonObject implements Serializable {
                 actorParams.constitution,
                 actorParams.speed,
                 Collections.emptyList(),
-                actorParams.abilities.archeryBonus);
+                actorParams.abilities.archeryBonus,
+                0);
         this.health = baseStats.maxHealth;
         this.mana = baseStats.maxMana;
         this.spells = actorParams.spells;
