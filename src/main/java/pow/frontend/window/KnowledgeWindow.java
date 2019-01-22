@@ -99,6 +99,19 @@ public class KnowledgeWindow extends AbstractWindow {
             y += TILE_SIZE;
         }
 
+        // draw scrollbar
+        int sbTop = 60;
+        int sbLeft = 295;
+        int sbHeight = numViewableMonsters * TILE_SIZE;
+        int centerTop = sbHeight * minIndex / monsterSummary.size();
+        int centerBottom = sbHeight * maxIndex / monsterSummary.size();
+        graphics.setColor(Color.GRAY);
+        graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
+        graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
+
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Press up/down to scroll through monsters, any other key to close.", MARGIN, dim.height - MARGIN);
+
         if (!monsterSummary.isEmpty()) {
             Player player = backend.getGameState().party.player;
             MonsterDisplay.drawMonsterInfo(
