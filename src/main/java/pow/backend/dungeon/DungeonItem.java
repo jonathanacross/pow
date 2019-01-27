@@ -224,7 +224,13 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     }
 
     public String bonusString() {
-        return formatGroupBonus(bonuses, bonusNames);
+        // For potions, return description, which is more meaningful than an empty bonus string
+        // TODO: consider adding artifacts too.
+        if (flags.potion) {
+            return "(" + description + ")";
+        } else {
+            return formatGroupBonus(bonuses, bonusNames);
+        }
     }
 
     private static String formatGroupBonus(int[] bonusAmts, String[] names) {
@@ -265,6 +271,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
     // Formats an item in a nice way, showing all the stats
     public String stringWithInfo() {
         return (TextUtils.format(name, count, false) + " " +
-                formatGroupBonus(bonuses, bonusNames)).trim();
+                bonusString()).trim();
     }
 }

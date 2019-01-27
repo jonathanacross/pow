@@ -103,7 +103,7 @@ public class ActorStats implements Serializable {
         this.rangedToHit = agility + rangedToHitBonus;
         this.rangedToDam = rangedToDamBonus;
         this.meleeDieRoll = StatComputations.findClosestDieRoll(baseDamage);
-        double rangedMultiplier = archeryBonus ? 1.15 : 0.75;
+        double rangedMultiplier = archeryBonus ? 1.25 : 0.75;
         this.rangedDieRoll = StatComputations.findClosestDieRoll(rangedMultiplier * baseDamage);
 
         this.resFire = resFireBonus;
