@@ -6,8 +6,8 @@ import pow.backend.action.Action;
 import pow.backend.action.MoveRequest;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonFeature;
-import pow.util.Point;
 import pow.util.Direction;
+import pow.util.Point;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,11 +21,13 @@ public class RunBehavior implements Behavior, Serializable {
     private int stepCount;
     private boolean openLeft;
     private boolean openRight;
+    private int initialHealth;
 
     public RunBehavior(Actor actor, Direction direction) {
         this.actor = actor;
         this.direction = direction;
         this.stepCount = 0;
+        this.initialHealth = actor.health;
     }
 
     @Override
@@ -36,6 +38,11 @@ public class RunBehavior implements Behavior, Serializable {
             // to open doors, dig, change levels, etc., even if
             // they have the Shift key down for running.
             return true;
+        }
+
+        // Check to see if we've lost health. If we're hit, stop running!
+        if (actor.health < initialHealth) {
+            return false;
         }
 
         // on the second step, figure out if we're in a corridor and
@@ -200,6 +207,30 @@ public class RunBehavior implements Behavior, Serializable {
             DungeonFeature feature = map.map[adj.x][adj.y].feature;
             if (feature != null && feature.flags.interesting) return true;
             if (!map.map[adj.x][adj.y].items.items.isEmpty()) return true;
+        }
+
+        // Check squares up to 2 away: should not have any enemy monsters
+        Point v1 = new Point(direction.rotateLeft90.dx, direction.rotateLeft90.dy);
+        Point v2 = new Point(direction.rotateLeft45.dx, direction.rotateLeft45.dy);
+        Point v3 = new Point(direction.dx, direction.dy);
+        Point v4 = new Point(direction.rotateRight45.dx, direction.rotateRight45.dy);
+        Point v5 = new Point(direction.rotateRight90.dx, direction.rotateRight90.dy);
+        Point[] newTwoAway = {
+                new Point(2 * v1.x, 2 * v1.y),
+                new Point(v1.x + v2.x, v1.y + v2.y),
+                new Point(2 * v2.x, 2 * v2.y),
+                new Point(v2.x + v3.x, v2.y + v3.y),
+                new Point(2 * v3.x, 2 * v3.y),
+                new Point(v3.x + v4.x, v3.y + v4.y),
+                new Point(2 * v4.x, 2 * v4.y),
+                new Point(v4.x + v5.x, v4.y + v5.y),
+                new Point(2 * v5.x, 2 * v5.y)
+        };
+        for (Point dir : newTwoAway) {
+            Point nearby = new Point(actor.loc.x + dir.x, actor.loc.y + dir.y);
+            if (!map.isOnMap(nearby.x, nearby.y)) continue;
+            Actor a = map.actorAt(nearby.x, nearby.y);
+            if (a != null && !a.friendly) return true;
         }
 
         return false;
