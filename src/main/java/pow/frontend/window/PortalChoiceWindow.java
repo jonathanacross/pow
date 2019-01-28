@@ -29,7 +29,7 @@ public class PortalChoiceWindow extends AbstractWindow {
                               String message,
                               List<AreaNameAndId> areas,
                               Consumer<String> callback) {
-        super( new WindowDim(x, y, 300, 50 + FONT_SIZE * areas.size()),
+        super( new WindowDim(x, y, 300, 70 + FONT_SIZE * areas.size()),
                 true, backend, frontend);
         this.message = message;
         this.areas = areas;
@@ -80,5 +80,10 @@ public class PortalChoiceWindow extends AbstractWindow {
             idx++;
             y += FONT_SIZE;
         }
+
+        Font helpFont = new Font("Courier", Font.PLAIN, 12);
+        graphics.setFont(helpFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Select an area or press [esc] to cancel.", MARGIN, dim.height - MARGIN);
     }
 }

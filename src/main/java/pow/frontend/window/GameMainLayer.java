@@ -284,6 +284,10 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
+    private void showHelp() {
+        backend.logMessage("Unknown command. Press ? for help.", MessageLog.MessageType.USER_ERROR);
+    }
+
     @Override
     public void processKey(KeyEvent e) {
         GameState gs = backend.getGameState();
@@ -336,7 +340,7 @@ public class GameMainLayer extends AbstractWindow {
             case DEBUG_HEAL_CHAR: backend.tellSelectedActor(new DebugAction(DebugAction.What.HEAL)); break;
             case DEBUG_SHOW_PET_AI: togglePetAi(); break;
             case DEBUG_SHOW_PLAYER_AI: togglePlayerAi(); break;
-            default: break;
+            default: showHelp(); break;
         }
     }
 

@@ -8,12 +8,11 @@ import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 import pow.frontend.utils.Targeting;
 import pow.util.Bresenham;
+import pow.util.Direction;
 import pow.util.Point;
 import pow.util.TextUtils;
-import pow.util.Direction;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,9 @@ public class GameTargetLayer extends AbstractWindow {
     private final MapView mapView;
     private final TargetMode mode;
     private final Consumer<Point> callback;
+
+    private final int MARGIN = 20;
+    private final int FONT_SIZE = 12;
 
     public GameTargetLayer(GameWindow parent, List<Point> targetableSquares, TargetMode mode, Consumer<Point> callback) {
         super(parent.dim, parent.visible, parent.backend, parent.frontend);
@@ -92,6 +94,17 @@ public class GameTargetLayer extends AbstractWindow {
                 }
             }
         }
+
+//        String description = makeMessage();
+//        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
+//        graphics.setFont(font);
+//        graphics.setColor(Color.BLACK);
+//        graphics.drawString(description, MARGIN - 1, dim.height - MARGIN - 1);
+//        graphics.drawString(description, MARGIN - 1, dim.height - MARGIN + 1);
+//        graphics.drawString(description, MARGIN + 1, dim.height - MARGIN - 1);
+//        graphics.drawString(description, MARGIN + 1, dim.height - MARGIN + 1);
+//        graphics.setColor(Color.WHITE);
+//        graphics.drawString(description, MARGIN, dim.height - MARGIN);
     }
 
     private void moveCursor(int dx, int dy) {
@@ -109,8 +122,25 @@ public class GameTargetLayer extends AbstractWindow {
         Point cursorPosition = targetableSquares.get(targetIdx);
         GameState gs = backend.getGameState();
 
+        String helpMsg;
+        switch (mode) {
+            case LOOK:
+                helpMsg = "Press a direction or [space] to look at a location, x/[enter]/[esc] to cancel.";
+                break;
+            case CLOSE_DOOR:
+                helpMsg = "Press a direction or [space] to select a door, c/[enter] to close, [esc] to cancel.";
+                break;
+            case TARGET:
+                helpMsg = "Press a direction or [space] to select a target, t/[enter] to accept, [esc] to cancel.";
+                break;
+            default:
+                helpMsg = "";
+        }
+
+
         frontend.messages.pop();
-        frontend.messages.push(makeMessage());
+        frontend.messages.push(helpMsg);
+        frontend.lookMessage = makeMessage();
         Actor selectedActor = backend.getGameState().getCurrentMap().actorAt(cursorPosition.x, cursorPosition.y);
         // even if there's an actor there, don't show it if the player can't see it
         if (selectedActor != null) {
@@ -125,6 +155,7 @@ public class GameTargetLayer extends AbstractWindow {
 
     private void stopLooking() {
         frontend.messages.pop();
+        frontend.lookMessage = "";
         frontend.monsterInfoWindow.setActor(null);
         frontend.monsterInfoWindow.visible = false;
         parent.removeLayer();

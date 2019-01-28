@@ -47,6 +47,6 @@ public class LoseWindow extends AbstractWindow {
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
         graphics.drawString("You died.", 50, 45);
-        graphics.drawString("Press enter to continue.", 50, dim.height - 35);
+        graphics.drawString("Press [enter] to continue.", 50, dim.height - 35);
     }
 }

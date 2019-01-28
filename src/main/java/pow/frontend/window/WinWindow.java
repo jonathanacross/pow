@@ -49,6 +49,6 @@ public class WinWindow extends AbstractWindow {
         graphics.drawString("Congratulations, you have won!", 20, 50);
         graphics.drawString("You have returned all the pearls to the temple.", 20, 68);
 
-        graphics.drawString("Press enter to continue playing.", 20, dim.height - 35);
+        graphics.drawString("Press [enter] to continue playing.", 20, dim.height - 35);
     }
 }

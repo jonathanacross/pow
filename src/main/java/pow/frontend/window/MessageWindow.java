@@ -28,10 +28,13 @@ public class MessageWindow extends AbstractWindow {
         int fontSize = 12;
         Font f = new Font("Courier", Font.PLAIN, fontSize);
         graphics.setFont(f);
+        graphics.setColor(Color.WHITE);
 
+        if (frontend.lookMessage != null) {
+            graphics.drawString(frontend.lookMessage, 20, 12);
+        }
         if (!frontend.messages.isEmpty()) {
-            graphics.setColor(Color.WHITE);
-            graphics.drawString(frontend.messages.peek(), 20, 20);
+            graphics.drawString(frontend.messages.peek(), 20, 26);
         }
     }
 }

@@ -42,7 +42,7 @@ public class ItemChoiceWindow extends AbstractWindow {
                             Function<DungeonItem, Boolean> enabled,
                             Consumer<ItemChoice> callback) {
         super(new WindowDim(x, y, 400,
-                40 + 32 * Math.max(items.size(), altItems == null ? 0 : altItems.size())),
+                60 + 32 * Math.max(items.size(), altItems == null ? 0 : altItems.size())),
                 true, backend, frontend);
         this.message = message;
         this.altMessage = altMessage;
@@ -114,5 +114,10 @@ public class ItemChoiceWindow extends AbstractWindow {
             idx++;
             y += TILE_SIZE;
         }
+
+        Font helpFont = new Font("Courier", Font.PLAIN, 12);
+        graphics.setFont(helpFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Select an item, or press [esc] to cancel.", MARGIN, dim.height - MARGIN);
     }
 }

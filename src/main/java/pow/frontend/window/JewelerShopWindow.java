@@ -195,7 +195,7 @@ public class JewelerShopWindow extends AbstractWindow {
             graphics.drawString("Hi " + player.name + ", come back when you have a socketed item and a gem.",
                     MARGIN, MARGIN + FONT_SIZE);
 
-            graphics.drawString("Press Esc to exit.", MARGIN, dim.height - MARGIN);
+            graphics.drawString("Press [esc] to exit.", MARGIN, dim.height - MARGIN);
             return;
         }
 
@@ -285,7 +285,7 @@ public class JewelerShopWindow extends AbstractWindow {
             graphics.drawString("You don't have enough money.", MARGIN, y);
             y += 2 * FONT_SIZE;
             graphics.setColor(Color.WHITE);
-            graphics.drawString("Choose another combination or press Esc to cancel.", MARGIN, y);
+            graphics.drawString("Choose another combination or press [esc] to cancel.", MARGIN, y);
 
         }
     }

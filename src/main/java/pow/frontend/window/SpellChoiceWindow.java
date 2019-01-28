@@ -20,7 +20,7 @@ public class SpellChoiceWindow extends AbstractWindow {
                              String message,
                              List<SpellParams> spells,
                              Consumer<Integer> callback) {
-        super( new WindowDim(x, y, 550, 60 + FONT_SIZE * spells.size()),
+        super( new WindowDim(x, y, 570, 100 + FONT_SIZE * spells.size()),
                 true, backend, frontend);
         this.message = message;
         this.spells = spells;
@@ -46,7 +46,7 @@ public class SpellChoiceWindow extends AbstractWindow {
         }
     }
 
-    private static final int MARGIN = 10;
+    private static final int MARGIN = 20;
     private static final int FONT_SIZE = 12;
 
     private boolean enabled(SpellParams params) {
@@ -70,13 +70,13 @@ public class SpellChoiceWindow extends AbstractWindow {
 
         graphics.drawString(this.message, MARGIN, MARGIN + FONT_SIZE);
 
-        int y = 45;
+        int y = 55;
         graphics.drawString("Spell", nameColumnX,y);
         graphics.drawString("Level", levelColumnX,y);
         graphics.drawString("Mana", manaColumnX, y);
         graphics.drawString("Info", infoColumnX, y);
 
-        y = 60;
+        y = 70;
         int idx = 0;
         for (SpellParams spell : spells) {
             boolean isEnabled = enabled(spell);
@@ -92,5 +92,10 @@ public class SpellChoiceWindow extends AbstractWindow {
             idx++;
             y += FONT_SIZE;
         }
+
+        Font helpFont = new Font("Courier", Font.PLAIN, 12);
+        graphics.setFont(helpFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Select a spell, or press [esc] to cancel.", MARGIN, dim.height - MARGIN);
     }
 }

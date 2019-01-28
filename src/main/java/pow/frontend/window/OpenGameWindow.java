@@ -91,11 +91,8 @@ public class OpenGameWindow extends AbstractWindow {
         graphics.setColor(Color.WHITE);
         graphics.drawString("Select your game.", 30, 30);
 
-        graphics.setFont(new Font("Courier", Font.PLAIN, 12));
-        graphics.drawString("up/down to select, D to delete, n for new game", 30, 50);
-
         graphics.setFont(font);
-        int y = 90;
+        int y = 70;
         int idx = 0;
         for (File f: files) {
             if (idx == selectIndex) {
@@ -108,5 +105,10 @@ public class OpenGameWindow extends AbstractWindow {
             idx++;
             y += 20;
         }
+
+        Font helpFont = new Font("Courier", Font.PLAIN, 12);
+        graphics.setFont(helpFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Press up/down, [enter] to select, D to delete, n for new game", 20, dim.height - 20);
     }
 }

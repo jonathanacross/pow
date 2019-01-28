@@ -27,7 +27,7 @@ public class ItemActionWindow extends AbstractWindow {
                             ItemList items,
                             ItemActions.ItemLocation location) {
         super(new WindowDim(x, y, 400,
-                35 + 32 * items.size()), true, backend, frontend);
+                55 + 32 * items.size()), true, backend, frontend);
         this.message = message;
         this.items = items;
         this.location = location;
@@ -87,5 +87,10 @@ public class ItemActionWindow extends AbstractWindow {
             idx++;
             y += TILE_SIZE;
         }
+
+        Font helpFont = new Font("Courier", Font.PLAIN, 12);
+        graphics.setFont(helpFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Select an item or press [esc] to cancel.", MARGIN, dim.height - MARGIN);
     }
 }

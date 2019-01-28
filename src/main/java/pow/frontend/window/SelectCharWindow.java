@@ -211,13 +211,19 @@ public class SelectCharWindow extends AbstractWindow {
             graphics.setColor(Color.WHITE);
             y += FONT_SIZE;
             graphics.drawString("Enter the name of your character,", MARGIN, y);
-            y += FONT_SIZE;
-            graphics.drawString("or press * for a random name:", MARGIN, y);
             y += 2*FONT_SIZE;
             graphics.drawString(name, MARGIN, y);
         } else {
             graphics.setColor(Color.WHITE);
             drawCharData(graphics, characterData.get(charSelectId), MARGIN, y, showSpeed);
         }
+
+        String helpString = onName
+                ? "Press * for a random name, [enter] to select, [esc] to cancel."
+                : "Press left/right to choose, [enter] to select, [esc] to cancel.";
+        Font helpFont = new Font("Courier", Font.PLAIN, 12);
+        graphics.setFont(helpFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString(helpString, MARGIN, dim.height - MARGIN);
     }
 }

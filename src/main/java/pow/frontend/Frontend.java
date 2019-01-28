@@ -48,6 +48,7 @@ public class Frontend {
 
     private boolean dirty;  // need to redraw
     public final Deque<String> messages;  // short messages/help suggestions
+    public String lookMessage;  // description of current floor TODO: cleanup
     private final List<GameEvent> events;
 
     public void setDirty(boolean dirty) {
@@ -72,8 +73,8 @@ public class Frontend {
         winWindow = new WinWindow(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
         win2Window = new Win2Window(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
         loseWindow = new LoseWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
-        autoplayOptionWindow = new AutoplayOptionWindow(WindowDim.center(210, 140, this.width, this.height), gameBackend, this);
-        openGameWindow = new OpenGameWindow(WindowDim.center(380, 300, this.width, this.height), true, gameBackend, this);
+        autoplayOptionWindow = new AutoplayOptionWindow(WindowDim.center(210, 160, this.width, this.height), gameBackend, this);
+        openGameWindow = new OpenGameWindow(WindowDim.center(460, 300, this.width, this.height), true, gameBackend, this);
         // main game
         statusWindow = new StatusWindow(new WindowDim(5, 5, 200, 707), true, gameBackend, this);
         gameWindow = new GameWindow(new WindowDim(210, 5, 672, 672), true, gameBackend, this);
@@ -226,7 +227,7 @@ public class Frontend {
     private void createMainCharacter() {
         gameBackend.setGameInProgress(false);
         SelectCharWindow createCharWindow = new SelectCharWindow(
-                WindowDim.center(480, 260, this.width, this.height),
+                WindowDim.center(490, 280, this.width, this.height),
                 gameBackend, this,
                 Collections.singletonList("Select your character:"), false,
                 this::tryToStartNewGame, () -> setState(Frontend.State.OPEN_GAME));
@@ -235,7 +236,7 @@ public class Frontend {
 
     private void choosePet() {
         SelectCharWindow createCharWindow = new SelectCharWindow(
-                WindowDim.center(480, 280, this.width, this.height),
+                WindowDim.center(490, 300, this.width, this.height),
                 gameBackend, this,
                 Arrays.asList("Congratulations, you got a pet!", "Select your character:"), true,
                 (data) -> {
@@ -261,12 +262,12 @@ public class Frontend {
                         () -> gameBackend.tellSelectedActor(new RestAtInn())));
                 break;
             case WEAPON_SHOP:
-                dim = WindowDim.center(400, 500, width, height);
+                dim = WindowDim.center(400, 520, width, height);
                 entries = shopData.weaponItems;
                 open(new ShopWindow(dim, true, gameBackend, this, entries));
                 break;
             case MAGIC_SHOP:
-                dim = WindowDim.center(400, 500, width, height);
+                dim = WindowDim.center(400, 520, width, height);
                 entries = shopData.magicItems;
                 open(new ShopWindow(dim, true, gameBackend, this, entries));
                 break;

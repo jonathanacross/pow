@@ -34,7 +34,7 @@ public class ActionChoiceWindow extends AbstractWindow {
                               ItemActions.ItemLocation location,
                               List<ItemActions.Action> actions) {
         super(new WindowDim(x, y, 400,
-                80 + 17 * actions.size()),
+                100 + 17 * actions.size()),
                 true, backend, frontend);
         this.message = message;
         this.items = items;
@@ -122,5 +122,10 @@ public class ActionChoiceWindow extends AbstractWindow {
             graphics.drawString(action.getText(), 60, y);
             idx++;
         }
+
+        Font helpFont = new Font("Courier", Font.PLAIN, 12);
+        graphics.setFont(helpFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Select an action or press [esc] to cancel.", MARGIN, dim.height - MARGIN);
     }
 }

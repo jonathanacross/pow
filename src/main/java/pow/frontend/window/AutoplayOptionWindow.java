@@ -107,5 +107,10 @@ public class AutoplayOptionWindow extends AbstractWindow {
         graphics.drawString("both", 70 + TILE_SIZE, y + textOffset);
         ImageController.drawTile(graphics, gs.party.player.image, MARGIN + 20, y);
         ImageController.drawTile(graphics, gs.party.pet.image, MARGIN + 20 + TILE_SIZE, y);
+
+        Font helpFont = new Font("Courier", Font.PLAIN, 12);
+        graphics.setFont(helpFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Press [esc] to cancel.", MARGIN, dim.height - MARGIN);
     }
 }

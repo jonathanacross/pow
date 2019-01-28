@@ -80,5 +80,10 @@ public class GetCountWindow extends AbstractWindow {
         }
 
         graphics.drawString("> " + countString, 2*MARGIN + TILE_SIZE, MARGIN + (messages.size() + 2)*FONT_SIZE);
+
+        Font helpFont = new Font("Courier", Font.PLAIN, 12);
+        graphics.setFont(helpFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Press [esc] to cancel.", 2*MARGIN + TILE_SIZE, dim.height - MARGIN);
     }
 }

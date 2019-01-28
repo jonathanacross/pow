@@ -47,6 +47,6 @@ public class Win2Window extends AbstractWindow {
         graphics.drawString("Congratulations, you have defeated Evil Incarnate!", 20, 50);
         graphics.drawString("The world is a happier place.", 30, 70);
 
-        graphics.drawString("Press enter to continue.", 30, dim.height - 35);
+        graphics.drawString("Press [enter] to continue.", 30, dim.height - 35);
     }
 }

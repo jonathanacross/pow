@@ -152,7 +152,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         // bottom text
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press space/tab to change view, esc to close.", MARGIN, dim.height - MARGIN);
+        graphics.drawString("Press [space]/[tab] to change view, [esc] to close.", MARGIN, dim.height - MARGIN);
     }
 
     private void drawStatsInfo(Graphics graphics) {
@@ -260,7 +260,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         // bottom text
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press space/tab to change view, esc to close.", MARGIN, dim.height - MARGIN);
+        graphics.drawString("Press [space]/[tab] to change view, [esc] to close.", MARGIN, dim.height - MARGIN);
     }
 
     // right justifies string, assumes bonus is <= 999.

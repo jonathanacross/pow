@@ -39,7 +39,7 @@ public class ShopWindow extends AbstractWindow {
                 ShopData.ShopEntry entry = entries.get(itemNumber);
                 int maxNum = maxNumBuyable(entry);
                 if (maxNum > 0) {
-                    WindowDim cDim = new WindowDim(dim.x, dim.y, dim.width, 90);
+                    WindowDim cDim = new WindowDim(dim.x, dim.y, dim.width, 120);
                     List<String> messages = new ArrayList<>();
                     messages.add("How many " + TextUtils.plural(entry.item.name));
                     String bonus = entry.item.bonusString();
@@ -112,5 +112,10 @@ public class ShopWindow extends AbstractWindow {
             idx++;
             y += TILE_SIZE;
         }
+
+        Font helpFont = new Font("Courier", Font.PLAIN, 12);
+        graphics.setFont(helpFont);
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Select an item to buy or press [esc] to cancel.", MARGIN, dim.height - MARGIN);
     }
 }
