@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 public class MainWindow extends JFrame implements KeyListener, MouseMotionListener {
     private final MainDraw draw;
 
-    private static Cursor blankCursor;
+    private static final Cursor blankCursor;
     static {
         BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(

@@ -21,7 +21,7 @@ public class RunBehavior implements Behavior, Serializable {
     private int stepCount;
     private boolean openLeft;
     private boolean openRight;
-    private int initialHealth;
+    private final int initialHealth;
 
     public RunBehavior(Actor actor, Direction direction) {
         this.actor = actor;

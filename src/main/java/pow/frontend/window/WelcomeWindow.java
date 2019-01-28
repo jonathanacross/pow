@@ -7,7 +7,6 @@ import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;

@@ -12,7 +12,6 @@ import pow.frontend.utils.ItemActions;
 import pow.util.TextUtils;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -54,7 +53,7 @@ public class ItemActionWindow extends AbstractWindow {
                 int y = Math.min(this.dim.y + 32 * itemNumber, this.frontend.height - 140);
                 frontend.open(new ActionChoiceWindow(x, y, this.backend, this.frontend,
                         "What do you want to do with ",
-                        items, itemNumber, location, actions));
+                        items, itemNumber, actions));
                 // parent will close this window, too.
             }
         }

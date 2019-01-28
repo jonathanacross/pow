@@ -24,14 +24,12 @@ public class ActionChoiceWindow extends AbstractWindow {
     private final String message;
     private final ItemList items;
     private final int itemIndex;
-    private final ItemActions.ItemLocation location;
     private final List<ItemActions.Action> actions;
 
     public ActionChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
                               String message,
                               ItemList items,
                               int itemIndex,
-                              ItemActions.ItemLocation location,
                               List<ItemActions.Action> actions) {
         super(new WindowDim(x, y, 400,
                 100 + 17 * actions.size()),
@@ -39,7 +37,6 @@ public class ActionChoiceWindow extends AbstractWindow {
         this.message = message;
         this.items = items;
         this.itemIndex = itemIndex;
-        this.location = location;
         this.actions = actions;
     }
 

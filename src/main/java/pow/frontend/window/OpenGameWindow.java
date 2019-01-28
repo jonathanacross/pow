@@ -10,7 +10,6 @@ import pow.frontend.utils.KeyUtils;
 import pow.util.DebugLogger;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.io.File;
