@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 
@@ -19,15 +20,13 @@ public class WelcomeWindow extends AbstractWindow {
     private final String version;
     private final BufferedImage splashImage;
 
-    private final int MARGIN = 10;
-
     public WelcomeWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
         version = getVersion();
         splashImage = ImageController.getSplashScreenImage();
         int width = splashImage.getWidth();
         int height = splashImage.getHeight();
-        this.dim = WindowDim.center(width + 2*MARGIN, height + 2*MARGIN,
+        this.dim = WindowDim.center(width + 2*Style.SMALL_MARGIN, height + 2* Style.SMALL_MARGIN,
                 this.frontend.width, this.frontend.height);
     }
 
@@ -41,10 +40,9 @@ public class WelcomeWindow extends AbstractWindow {
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
-        graphics.drawImage(splashImage, MARGIN, MARGIN, null);
+        graphics.drawImage(splashImage, Style.SMALL_MARGIN, Style.SMALL_MARGIN, null);
 
-        Font f = new Font("Courier", Font.PLAIN, 18);
-        graphics.setFont(f);
+        graphics.setFont(Style.getBigFont());
         graphics.setColor(Color.WHITE);
         graphics.drawString(version, 30, 120);
         graphics.drawString("Press any key to begin.", 30, 150);

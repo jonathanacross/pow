@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 
@@ -72,45 +73,38 @@ public class AutoplayOptionWindow extends AbstractWindow {
         }
     }
 
-    private static final int MARGIN = 10;
-    private static final int FONT_SIZE = 12;
-    private static final int TILE_SIZE = 32;
-
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
         GameState gs = backend.getGameState();
 
-        int textOffset = (FONT_SIZE + TILE_SIZE) / 2;
+        int textOffset = (Style.FONT_SIZE + Style.TILE_SIZE) / 2;
 
-        int y = MARGIN + FONT_SIZE;
-        graphics.drawString("Who do you want to control?", MARGIN, y);
-        y += FONT_SIZE;
+        int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
+        graphics.drawString("Who do you want to control?", Style.SMALL_MARGIN, y);
+        y += Style.FONT_SIZE;
 
-        graphics.drawString("a) ", MARGIN, y + textOffset);
+        graphics.drawString("a) ", Style.SMALL_MARGIN, y + textOffset);
         graphics.drawString(gs.party.player.name, 70, y + textOffset);
-        ImageController.drawTile(graphics, gs.party.player.image, MARGIN + 20, y);
-        y += TILE_SIZE;
+        ImageController.drawTile(graphics, gs.party.player.image, Style.SMALL_MARGIN + 20, y);
+        y += Style.TILE_SIZE;
 
-        graphics.drawString("b) ", MARGIN, y + textOffset);
+        graphics.drawString("b) ", Style.SMALL_MARGIN, y + textOffset);
         graphics.drawString(gs.party.pet.name, 70, y + textOffset);
-        ImageController.drawTile(graphics, gs.party.pet.image, MARGIN + 20, y);
-        y += TILE_SIZE;
+        ImageController.drawTile(graphics, gs.party.pet.image, Style.SMALL_MARGIN + 20, y);
+        y += Style.TILE_SIZE;
 
-        graphics.drawString("c) ", MARGIN, y + textOffset);
-        graphics.drawString("both", 70 + TILE_SIZE, y + textOffset);
-        ImageController.drawTile(graphics, gs.party.player.image, MARGIN + 20, y);
-        ImageController.drawTile(graphics, gs.party.pet.image, MARGIN + 20 + TILE_SIZE, y);
+        graphics.drawString("c) ", Style.SMALL_MARGIN, y + textOffset);
+        graphics.drawString("both", 70 + Style.TILE_SIZE, y + textOffset);
+        ImageController.drawTile(graphics, gs.party.player.image, Style.SMALL_MARGIN + 20, y);
+        ImageController.drawTile(graphics, gs.party.pet.image, Style.SMALL_MARGIN + 20 + Style.TILE_SIZE, y);
 
-        Font helpFont = new Font("Courier", Font.PLAIN, 12);
-        graphics.setFont(helpFont);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press [esc] to cancel.", MARGIN, dim.height - MARGIN);
+        graphics.drawString("Press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 }

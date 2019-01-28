@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.util.MathUtils;
@@ -61,29 +62,22 @@ public class GetCountWindow extends AbstractWindow {
         }
     }
 
-    final private int MARGIN = 20;
-    final private int FONT_SIZE = 12;
-    final private int TILE_SIZE = 32;
-
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        ImageController.drawTile(graphics, imageName, MARGIN, MARGIN, ImageController.DrawMode.NORMAL);
+        ImageController.drawTile(graphics, imageName, Style.MARGIN, Style.MARGIN, ImageController.DrawMode.NORMAL);
 
-        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
         for (int i = 0; i < messages.size(); i++) {
-            graphics.drawString(messages.get(i), 2 * MARGIN + TILE_SIZE, MARGIN + (i+1)*FONT_SIZE);
+            graphics.drawString(messages.get(i), 2 * Style.MARGIN + Style.TILE_SIZE, Style.MARGIN + (i+1)*Style.FONT_SIZE);
         }
 
-        graphics.drawString("> " + countString, 2*MARGIN + TILE_SIZE, MARGIN + (messages.size() + 2)*FONT_SIZE);
+        graphics.drawString("> " + countString, 2*Style.MARGIN + Style.TILE_SIZE, Style.MARGIN + (messages.size() + 2)*Style.FONT_SIZE);
 
-        Font helpFont = new Font("Courier", Font.PLAIN, 12);
-        graphics.setFont(helpFont);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press [esc] to cancel.", 2*MARGIN + TILE_SIZE, dim.height - MARGIN);
+        graphics.drawString("Press [esc] to cancel.", 2*Style.MARGIN + Style.TILE_SIZE, dim.height - Style.MARGIN);
     }
 }

@@ -6,6 +6,7 @@ import pow.backend.ShopData;
 import pow.backend.action.BuyItem;
 import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.util.TextUtils;
@@ -68,54 +69,47 @@ public class ShopWindow extends AbstractWindow {
         return maxNum;
     }
 
-    final private int TILE_SIZE = 32;
-    final private int MARGIN = 20;
-    final private int FONT_SIZE = 12;
-
     @Override
     public void drawContents(Graphics graphics) {
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
         graphics.drawString("Hi " + backend.getGameState().party.player.name + ", what would you like to buy?",
-                MARGIN, MARGIN + FONT_SIZE);
+                Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
 
-        int priceX = dim.width - MARGIN - 40;
-        graphics.drawString("Item", 20 + MARGIN, MARGIN + 3*FONT_SIZE);
-        graphics.drawString("Price", priceX, MARGIN + 3*FONT_SIZE);
+        int priceX = dim.width - Style.MARGIN - 40;
+        graphics.drawString("Item", 20 + Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE);
+        graphics.drawString("Price", priceX, Style.MARGIN + 3*Style.FONT_SIZE);
 
         graphics.setColor(Color.DARK_GRAY);
-        graphics.drawLine(30, MARGIN + 3*FONT_SIZE + 5,
-                dim.width - MARGIN, MARGIN + 3*FONT_SIZE + 5);
+        graphics.drawLine(30, Style.MARGIN + 3*Style.FONT_SIZE + 5,
+                dim.width - Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE + 5);
 
-        int y = MARGIN + 4*FONT_SIZE;
+        int y = Style.MARGIN + 4*Style.FONT_SIZE;
 
         int idx = 0;
         for (ShopData.ShopEntry entry : this.entries) {
             boolean isEnabled = maxNumBuyable(entry) > 0;
             ImageController.DrawMode drawMode = isEnabled ? ImageController.DrawMode.NORMAL : ImageController.DrawMode.GRAY;
-            ImageController.drawTile(graphics, entry.item.image, 15 + MARGIN, y, drawMode);
+            ImageController.drawTile(graphics, entry.item.image, 15 + Style.MARGIN, y, drawMode);
 
             String label = (char) ((int) 'a' + idx) + ")";
             int textY = y + 20;
             graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
-            graphics.drawString(label, MARGIN, textY);
-            graphics.drawString(TextUtils.format(entry.item.name, entry.item.count, false),  50+MARGIN, textY - 5);
-            graphics.drawString(entry.item.bonusString(), 50+MARGIN, textY + FONT_SIZE - 5);
+            graphics.drawString(label, Style.MARGIN, textY);
+            graphics.drawString(TextUtils.format(entry.item.name, entry.item.count, false),  50+Style.MARGIN, textY - 5);
+            graphics.drawString(entry.item.bonusString(), 50+Style.MARGIN, textY + Style.FONT_SIZE - 5);
 
             graphics.drawString(String.valueOf(entry.price), priceX, textY);
 
             idx++;
-            y += TILE_SIZE;
+            y += Style.TILE_SIZE;
         }
 
-        Font helpFont = new Font("Courier", Font.PLAIN, 12);
-        graphics.setFont(helpFont);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Select an item to buy or press [esc] to cancel.", MARGIN, dim.height - MARGIN);
+        graphics.drawString("Select an item to buy or press [esc] to cancel.", Style.MARGIN, dim.height - Style.MARGIN);
     }
 }

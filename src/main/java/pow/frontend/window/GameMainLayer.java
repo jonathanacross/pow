@@ -470,7 +470,7 @@ public class GameMainLayer extends AbstractWindow {
                 }
             }
 //            // show square/shortest path costing information
-//            graphics.setFont(new Font("Courier", Font.PLAIN, 9));
+//            graphics.setFont(Style.getSmallFont());
 //            for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
 //                for (int x = mapView.colMin; x <= mapView.colMax; x++) {
 //                    if (pathFinder.aiMap.onAiMap(new Point(x, y))) {

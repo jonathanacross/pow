@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.ItemList;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ItemActions;
@@ -59,38 +60,31 @@ public class ItemActionWindow extends AbstractWindow {
         }
     }
 
-    final private int TILE_SIZE = 32;
-    final private int MARGIN = 10;
-    final private int FONT_SIZE = 12;
-
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(message, MARGIN, MARGIN + FONT_SIZE);
+        graphics.drawString(message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
 
         int y = 30;
         int idx = 0;
         for (DungeonItem item : items.items) {
             String label = (char) ((int) 'a' + idx) + ")";
-            graphics.drawString(label, MARGIN, y + 20);
+            graphics.drawString(label, Style.SMALL_MARGIN, y + 20);
 
-            ImageController.drawTile(graphics, item.image, MARGIN + 20, y);
-            graphics.drawString(TextUtils.format(item.name, item.count, false),  MARGIN + 60, y + FONT_SIZE + 2);
-            graphics.drawString(item.bonusString(), MARGIN + 60, y + 2*FONT_SIZE + 2);
+            ImageController.drawTile(graphics, item.image, Style.SMALL_MARGIN + 20, y);
+            graphics.drawString(TextUtils.format(item.name, item.count, false),  Style.SMALL_MARGIN + 60, y + Style.FONT_SIZE + 2);
+            graphics.drawString(item.bonusString(), Style.SMALL_MARGIN + 60, y + 2*Style.FONT_SIZE + 2);
 
             idx++;
-            y += TILE_SIZE;
+            y += Style.TILE_SIZE;
         }
 
-        Font helpFont = new Font("Courier", Font.PLAIN, 12);
-        graphics.setFont(helpFont);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Select an item or press [esc] to cancel.", MARGIN, dim.height - MARGIN);
+        graphics.drawString("Select an item or press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 }

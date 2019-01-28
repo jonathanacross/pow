@@ -7,11 +7,11 @@ import pow.backend.dungeon.DungeonItem;
 import pow.backend.utils.ItemUtils;
 import pow.backend.utils.ShopUtils;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -159,10 +159,6 @@ public class JewelerShopWindow extends AbstractWindow {
         return idx < 0 ? -1 : itemInfoList.get(idx).listIndex;
     }
 
-    final private int TILE_SIZE = 32;
-    final private int MARGIN = 20;
-    final private int FONT_SIZE = 12;
-
     private void drawItem(Graphics graphics, Point position, int idx, DungeonItem item, boolean isSelected, boolean isEnabled) {
         ImageController.DrawMode drawMode =
                 isEnabled ? ImageController.DrawMode.NORMAL : ImageController.DrawMode.GRAY;
@@ -185,25 +181,24 @@ public class JewelerShopWindow extends AbstractWindow {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
 
         // if insufficient items, then let the player know and skip the complex drawing logic.
         if (!selections.haveNeededItems()) {
             graphics.drawString("Hi " + player.name + ", come back when you have a socketed item and a gem.",
-                    MARGIN, MARGIN + FONT_SIZE);
+                    Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
 
-            graphics.drawString("Press [esc] to exit.", MARGIN, dim.height - MARGIN);
+            graphics.drawString("Press [esc] to exit.", Style.MARGIN, dim.height - Style.MARGIN);
             return;
         }
 
         graphics.drawString("Hi " + player.name + ", select an item and a gem.",
-                MARGIN, MARGIN + FONT_SIZE);
+                Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
 
-        final int yHeader = MARGIN + 3 * FONT_SIZE;
-        final int col1x = MARGIN;
+        final int yHeader = Style.MARGIN + 3 * Style.FONT_SIZE;
+        final int col1x = Style.MARGIN;
         final int col2x = 430;
 
         int y = yHeader;
@@ -214,13 +209,13 @@ public class JewelerShopWindow extends AbstractWindow {
             graphics.setColor(Color.DARK_GRAY);
             graphics.drawLine(col1x, y + 5, col2x - 30, y + 5);
             graphics.setColor(Color.WHITE);
-            graphics.drawString("Equipment:", MARGIN, y);
-            y += FONT_SIZE;
+            graphics.drawString("Equipment:", Style.MARGIN, y);
+            y += Style.FONT_SIZE;
             for (ShopUtils.ItemInfo entry : selections.equipment) {
                 boolean isSelected = idx == selections.equipmentSelectIdx;
-                drawItem(graphics, new Point(MARGIN, y), idx, entry.item, isSelected, true);
+                drawItem(graphics, new Point(Style.MARGIN, y), idx, entry.item, isSelected, true);
                 idx++;
-                y += TILE_SIZE;
+                y += Style.TILE_SIZE;
             }
 
             y += 20;
@@ -232,13 +227,13 @@ public class JewelerShopWindow extends AbstractWindow {
             graphics.setColor(Color.DARK_GRAY);
             graphics.drawLine(col1x, y + 5, col2x - 30, y + 5);
             graphics.setColor(Color.WHITE);
-            graphics.drawString("Inventory:", MARGIN, y);
-            y += FONT_SIZE;
+            graphics.drawString("Inventory:", Style.MARGIN, y);
+            y += Style.FONT_SIZE;
             for (ShopUtils.ItemInfo entry : selections.inventory) {
                 boolean isSelected = idx - baseInventoryIdx == selections.inventorySelectIdx;
-                drawItem(graphics, new Point(MARGIN, y), idx, entry.item, isSelected, true);
+                drawItem(graphics, new Point(Style.MARGIN, y), idx, entry.item, isSelected, true);
                 idx++;
-                y += TILE_SIZE;
+                y += Style.TILE_SIZE;
             }
         }
 
@@ -246,46 +241,46 @@ public class JewelerShopWindow extends AbstractWindow {
         int baseGemIdx = idx;
         y = yHeader;
         graphics.setColor(Color.DARK_GRAY);
-        graphics.drawLine(col2x, y + 5, dim.width - MARGIN, y + 5);
+        graphics.drawLine(col2x, y + 5, dim.width - Style.MARGIN, y + 5);
         graphics.setColor(Color.WHITE);
         graphics.drawString("Gems:", col2x, y);
-        y += FONT_SIZE;
+        y += Style.FONT_SIZE;
         for (ShopUtils.ItemInfo entry : selections.gems) {
             boolean isSelected = idx - baseGemIdx == selections.gemsSelect;
             drawItem(graphics, new Point(col2x, y), idx, entry.item, isSelected, true);
             idx++;
-            y += TILE_SIZE;
+            y += Style.TILE_SIZE;
         }
 
         // status at the bottom
         y = dim.height - 125;
         graphics.setColor(Color.DARK_GRAY);
-        graphics.drawLine(MARGIN, y + 5, dim.width - MARGIN, y + 5);
+        graphics.drawLine(Style.MARGIN, y + 5, dim.width - Style.MARGIN, y + 5);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Items to combine:", MARGIN, y);
+        graphics.drawString("Items to combine:", Style.MARGIN, y);
 
         DungeonItem upgradeItem = selections.getSelectedItem();
         DungeonItem gem = selections.getSelectedGem();
         boolean enabled = selections.playerCanAffordUpgrade();
 
-        y += FONT_SIZE;
+        y += Style.FONT_SIZE;
         drawItem(graphics, new Point(col1x, y), -1, upgradeItem, false, enabled);
         drawItem(graphics, new Point(col2x, y), -1, gem, false, enabled);
 
-        y += TILE_SIZE + 2 * FONT_SIZE;
+        y += Style.TILE_SIZE + 2 * Style.FONT_SIZE;
         graphics.setColor(Color.WHITE);
         graphics.drawString("It costs " + selections.getCostOfSelectedItems() +
-                " gold to combine these items.", MARGIN, y);
-        y += FONT_SIZE;
+                " gold to combine these items.", Style.MARGIN, y);
+        y += Style.FONT_SIZE;
         if (selections.playerCanAffordUpgrade()) {
-            y += 2 * FONT_SIZE;
-            graphics.drawString("Press return to accept, Esc to cancel.", MARGIN, y);
+            y += 2 * Style.FONT_SIZE;
+            graphics.drawString("Press return to accept, Esc to cancel.", Style.MARGIN, y);
         } else {
             graphics.setColor(Color.RED);
-            graphics.drawString("You don't have enough money.", MARGIN, y);
-            y += 2 * FONT_SIZE;
+            graphics.drawString("You don't have enough money.", Style.MARGIN, y);
+            y += 2 * Style.FONT_SIZE;
             graphics.setColor(Color.WHITE);
-            graphics.drawString("Choose another combination or press [esc] to cancel.", MARGIN, y);
+            graphics.drawString("Choose another combination or press [esc] to cancel.", Style.MARGIN, y);
 
         }
     }

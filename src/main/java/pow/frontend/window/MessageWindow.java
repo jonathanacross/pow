@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 
 import java.awt.Color;
@@ -25,9 +26,7 @@ public class MessageWindow extends AbstractWindow {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        int fontSize = 12;
-        Font f = new Font("Courier", Font.PLAIN, fontSize);
-        graphics.setFont(f);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
         if (frontend.lookMessage != null) {

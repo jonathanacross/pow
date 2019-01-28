@@ -5,6 +5,7 @@ import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.utils.AttackUtils;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.util.TextUtils;
@@ -53,10 +54,6 @@ public class PlayerInfoWindow extends AbstractWindow {
         }
     }
 
-    final private int TILE_SIZE = 32;
-    final private int MARGIN = 15;
-    final private int FONT_SIZE = 12;
-
     private String getResistPercent(int bonus) {
         double hitFactor = AttackUtils.getResistance(bonus);
         // Convert to amount resisted, rather than amount hit.
@@ -73,7 +70,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         Player player = backend.getGameState().party.player;
 
-        ImageController.drawTile(graphics, player.image, MARGIN, MARGIN);
+        ImageController.drawTile(graphics, player.image, Style.SMALL_MARGIN, Style.SMALL_MARGIN);
 
         List<String> lines = new ArrayList<>();
         String winnerString = player.isWinner() ? " (Winner!)" : "";
@@ -107,23 +104,23 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("rPois:     " + getResistPercent(player.baseStats.resPois));
         lines.add("rDam:      " + getResistPercent(player.baseStats.resDam));
 
-        Font f = new Font("Courier", Font.PLAIN, FONT_SIZE);
+        Font f = new Font("Courier", Font.PLAIN, Style.FONT_SIZE);
         graphics.setFont(f);
         graphics.setColor(Color.WHITE);
         for (int i = 0; i < lines.size(); i++) {
-            graphics.drawString(lines.get(i), TILE_SIZE + 2 * MARGIN, MARGIN + (i + 1) * FONT_SIZE);
+            graphics.drawString(lines.get(i), Style.TILE_SIZE + 2 * Style.SMALL_MARGIN, Style.SMALL_MARGIN + (i + 1) * Style.FONT_SIZE);
         }
 
         // draw slot stuff
         for (StringPosition sd : slotData.values()) {
-            graphics.drawString(sd.name, 260, MARGIN + TILE_SIZE * sd.position + TILE_SIZE/2 + FONT_SIZE/2);
+            graphics.drawString(sd.name, 260, Style.SMALL_MARGIN + Style.TILE_SIZE * sd.position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2);
         }
         for (DungeonItem item: player.equipment.items) {
             int position = slotData.get(item.slot).position;
-            int y = TILE_SIZE * position + MARGIN;
+            int y = Style.TILE_SIZE * position + Style.SMALL_MARGIN;
             ImageController.drawTile(graphics, item.image, 315, y);
-            graphics.drawString(TextUtils.format(item.name, 1, false),  355, y + FONT_SIZE + 2);
-            graphics.drawString(item.bonusString(), 355, y + 2*FONT_SIZE + 2);
+            graphics.drawString(TextUtils.format(item.name, 1, false),  355, y + Style.FONT_SIZE + 2);
+            graphics.drawString(item.bonusString(), 355, y + 2*Style.FONT_SIZE + 2);
         }
 
         // draw artifacts
@@ -145,14 +142,14 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         for (DungeonItem item : player.party.artifacts.getArtifacts().values()) {
             Point loc = artifactLocations.get(item.artifactSlot);
-            int x = 15 + TILE_SIZE * loc.x;
-            int y = 370 + TILE_SIZE * loc.y;
+            int x = 15 + Style.TILE_SIZE * loc.x;
+            int y = 370 + Style.TILE_SIZE * loc.y;
             ImageController.drawTile(graphics, item.image, x, y);
         }
 
         // bottom text
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press [space]/[tab] to change view, [esc] to close.", MARGIN, dim.height - MARGIN);
+        graphics.drawString("Press [space]/[tab] to change view, [esc] to close.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 
     private void drawStatsInfo(Graphics graphics) {
@@ -160,10 +157,9 @@ public class PlayerInfoWindow extends AbstractWindow {
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         Player player = backend.getGameState().party.player;
-        ImageController.drawTile(graphics, player.image, MARGIN, MARGIN);
+        ImageController.drawTile(graphics, player.image, Style.SMALL_MARGIN, Style.SMALL_MARGIN);
 
-        Font f = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(f);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
         // draw slot stuff
@@ -198,13 +194,13 @@ public class PlayerInfoWindow extends AbstractWindow {
         bonusData.put(DungeonItem.WEALTH_IDX, new StringPosition("wealth", 14));
         bonusData.put(DungeonItem.SOCKETS_IDX, new StringPosition("sockets", 15));
 
-        int dx = TILE_SIZE;
-        int dy = TILE_SIZE;
+        int dx = Style.TILE_SIZE;
+        int dy = Style.TILE_SIZE;
         int numSlots = slotData.size();
         int numBonuses = bonusData.size();
 
-        int gridTop = MARGIN + 50;  // top of interior of grid (excluding header)
-        int gridLeft = MARGIN + 105;  // left of interior of grid (excluding header)
+        int gridTop = Style.SMALL_MARGIN + 50;  // top of interior of grid (excluding header)
+        int gridLeft = Style.SMALL_MARGIN + 105;  // left of interior of grid (excluding header)
 
         // header on top
         for (StringPosition bonus : bonusData.values()) {
@@ -223,14 +219,14 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         // left item types
         for (StringPosition sd : slotData.values()) {
-            int y = gridTop + dy * sd.position + TILE_SIZE/2 + FONT_SIZE/2;
+            int y = gridTop + dy * sd.position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2;
             graphics.drawString(sd.name, gridLeft - 100, y);
         }
 
         // grid interior
         for (DungeonItem item: player.equipment.items) {
             int position = slotData.get(item.slot).position;
-            int y = gridTop + dy * position + TILE_SIZE/2 + FONT_SIZE/2;
+            int y = gridTop + dy * position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2;
 
             for (Map.Entry<Integer, StringPosition> entry : bonusData.entrySet()) {
                 int bonusIdx = entry.getKey();
@@ -260,7 +256,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         // bottom text
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press [space]/[tab] to change view, [esc] to close.", MARGIN, dim.height - MARGIN);
+        graphics.drawString("Press [space]/[tab] to change view, [esc] to close.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 
     // right justifies string, assumes bonus is <= 999.

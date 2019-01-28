@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.utils.SaveUtils;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.KeyUtils;
@@ -85,30 +86,25 @@ public class OpenGameWindow extends AbstractWindow {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        int squareSize = 18;
-        Font font = new Font("Courier", Font.PLAIN, squareSize);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Select your game.", 30, 30);
+        graphics.drawString("Select your game.", Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
 
-        graphics.setFont(font);
-        int y = 70;
+        int y = 60;
         int idx = 0;
         for (File f: files) {
             if (idx == selectIndex) {
                 graphics.setColor(Color.YELLOW);
-                graphics.drawString(">", 10, y);
+                graphics.drawString(">", Style.MARGIN, y);
             } else {
                 graphics.setColor(Color.WHITE);
             }
-            graphics.drawString(f.getName(), 30, y);
+            graphics.drawString(f.getName(), Style.MARGIN + 20, y);
             idx++;
-            y += 20;
+            y += Style.FONT_SIZE;
         }
 
-        Font helpFont = new Font("Courier", Font.PLAIN, 12);
-        graphics.setFont(helpFont);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press up/down, [enter] to select, D to delete, n for new game", 20, dim.height - 20);
+        graphics.drawString("Press up/down, [enter] to select, D to delete, n for new game", Style.MARGIN, dim.height - Style.MARGIN);
     }
 }
