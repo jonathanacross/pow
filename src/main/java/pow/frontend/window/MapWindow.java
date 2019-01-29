@@ -72,9 +72,9 @@ public class MapWindow extends AbstractWindow {
         }
 
         // show what map we're on
-        graphics.setFont(Style.getLargeFont());
+        graphics.setFont(Style.getDefaultFont());
         int x = Style.SMALL_MARGIN;
-        int y = Style.SMALL_MARGIN + Style.LARGE_FONT_SIZE;
+        int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
         // cheap way of drawing an outline
         graphics.setColor(Color.BLACK);
         graphics.drawString(gs.getCurrentMap().name, x - 1, y - 1);

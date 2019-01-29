@@ -58,7 +58,7 @@ public class KnowledgeWindow extends AbstractWindow {
 
         graphics.setColor(Color.WHITE);
 
-        graphics.setFont(Style.getLargeFont());
+        graphics.setFont(Style.getDefaultFont());
         graphics.drawString("Monster Knowledge", Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
 
         final int nameX = 70;
@@ -67,7 +67,6 @@ public class KnowledgeWindow extends AbstractWindow {
 
 
         int y = 50;
-        graphics.setFont(Style.getDefaultFont());
         graphics.drawString("Name", nameX, y);
         graphics.drawString("Killed", killedX, y);
 

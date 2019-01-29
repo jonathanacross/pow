@@ -67,6 +67,7 @@ public class PlayerInfoWindow extends AbstractWindow {
     private void drawMainInfo(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
+        graphics.setFont(Style.getDefaultFont());
 
         Player player = backend.getGameState().party.player;
 
@@ -104,8 +105,6 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("rPois:     " + getResistPercent(player.baseStats.resPois));
         lines.add("rDam:      " + getResistPercent(player.baseStats.resDam));
 
-        Font f = new Font("Courier", Font.PLAIN, Style.FONT_SIZE);
-        graphics.setFont(f);
         graphics.setColor(Color.WHITE);
         for (int i = 0; i < lines.size(); i++) {
             graphics.drawString(lines.get(i), Style.TILE_SIZE + 2 * Style.SMALL_MARGIN, Style.SMALL_MARGIN + (i + 1) * Style.FONT_SIZE);

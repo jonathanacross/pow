@@ -49,7 +49,7 @@ public class LogWindow extends AbstractWindow {
                                            int textWidth) {
         List<LinePos> linePositions = new ArrayList<>();
 
-        int y = Style.LARGE_FONT_SIZE + Style.SMALL_MARGIN;
+        int y = Style.FONT_SIZE + Style.SMALL_MARGIN;
         for (MessageLog.Message message : messages) {
             boolean firstLine = true;
             List<String> messageLines = ImageUtils.wrapText("> " + message.toString(),
@@ -58,7 +58,7 @@ public class LogWindow extends AbstractWindow {
                 linePositions.add(new LinePos(line, getMessageColor(message),
                         Style.SMALL_MARGIN + (firstLine ? 0 : TEXT_INDENT), y));
                 firstLine = false;
-                y += Style.LARGE_FONT_SIZE;
+                y += Style.FONT_SIZE;
             }
             y += MESSAGE_SEP;
         }
@@ -86,7 +86,7 @@ public class LogWindow extends AbstractWindow {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = Style.getLargeFont();
+        Font font = Style.getDefaultFont();
         graphics.setFont(font);
 
         int textWidth = dim.width - 2*Style.SMALL_MARGIN;
