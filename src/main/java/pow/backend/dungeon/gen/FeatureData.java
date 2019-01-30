@@ -96,7 +96,7 @@ public class FeatureData {
                 case "openDoor": openDoor = true; break;
                 case "glowing": glowing = true; break;
                 default:
-                    throw new IllegalArgumentException("unknown feature flag '" + t + "'");
+                    throw new IllegalArgumentException("unknown feature flag '" + t + "'" + "in " + text);
             }
         }
 
