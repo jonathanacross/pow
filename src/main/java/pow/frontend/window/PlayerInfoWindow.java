@@ -122,7 +122,7 @@ public class PlayerInfoWindow extends AbstractWindow {
             graphics.drawString(item.bonusString(), 355, y + 2*Style.FONT_SIZE + 2);
         }
 
-        // draw artifacts
+        // draw artifacts and returned pearls
         Map<DungeonItem.ArtifactSlot, Point> artifactLocations = new HashMap<>();
         artifactLocations.put(DungeonItem.ArtifactSlot.PETSTATUE, new Point(0,1));
         artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN, new Point(1,1));
@@ -139,8 +139,27 @@ public class PlayerInfoWindow extends AbstractWindow {
         artifactLocations.put(DungeonItem.ArtifactSlot.XRAYSCOPE, new Point(12,1));
         artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN2, new Point(13,1));
 
+        Map<String, Point> pearlLocations = new HashMap<>();
+        pearlLocations.put("pearl 1", new Point(0, 0));
+        pearlLocations.put("pearl 2", new Point(1, 0));
+        pearlLocations.put("pearl 3", new Point(2, 0));
+        pearlLocations.put("pearl 4", new Point(3, 0));
+        pearlLocations.put("pearl 5", new Point(4, 0));
+        pearlLocations.put("pearl 6", new Point(5, 0));
+        pearlLocations.put("pearl 7", new Point(6, 0));
+        pearlLocations.put("pearl 8", new Point(7, 0));
+
         for (DungeonItem item : player.party.artifacts.getArtifacts().values()) {
             Point loc = artifactLocations.get(item.artifactSlot);
+            int x = 15 + Style.TILE_SIZE * loc.x;
+            int y = 370 + Style.TILE_SIZE * loc.y;
+            ImageController.drawTile(graphics, item.image, x, y);
+        }
+        for (DungeonItem item : player.party.returnedPearls) {
+            if (!pearlLocations.containsKey(item.id)) {
+                continue;
+            }
+            Point loc = pearlLocations.get(item.id);
             int x = 15 + Style.TILE_SIZE * loc.x;
             int y = 370 + Style.TILE_SIZE * loc.y;
             ImageController.drawTile(graphics, item.image, x, y);

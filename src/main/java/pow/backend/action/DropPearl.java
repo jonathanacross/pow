@@ -55,10 +55,10 @@ public class DropPearl implements Action {
         DungeonItem item = actor.inventory.items.get(pearlIdx);
         actor.inventory.items.remove(pearlIdx);
         tile.items.add(item);
-        gs.party.numPearlsReturned++;
+        gs.party.returnedPearls.add(item);
         backend.logMessage(actor.getNoun() + " returns a pearl!", MessageLog.MessageType.GAME_EVENT);
 
-        if (!gs.party.player.winner && gs.party.numPearlsReturned >= GameConstants.NUM_PEARLS_TO_WIN) {
+        if (!gs.party.player.winner && gs.party.returnedPearls.size() >= GameConstants.NUM_PEARLS_TO_WIN) {
             gs.party.player.winner = true;
             backend.logMessage("Congratulations, you won!", MessageLog.MessageType.GAME_EVENT);
             events.add(GameEvent.WON_GAME);
