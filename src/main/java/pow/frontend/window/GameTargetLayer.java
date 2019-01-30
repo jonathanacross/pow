@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
+import pow.frontend.Style;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
@@ -27,14 +28,14 @@ public class GameTargetLayer extends AbstractWindow {
     }
 
     private final GameWindow parent;
-    private int targetIdx;
     private final List<Point> targetableSquares;
     private final MapView mapView;
     private final TargetMode mode;
     private final Consumer<Point> callback;
 
-    private final int MARGIN = 20;
-    private final int FONT_SIZE = 12;
+    private int targetIdx;
+    private String lookMessage;
+    private String helpMessage;
 
     public GameTargetLayer(GameWindow parent, List<Point> targetableSquares, TargetMode mode, Consumer<Point> callback) {
         super(parent.dim, parent.visible, parent.backend, parent.frontend);
@@ -44,9 +45,10 @@ public class GameTargetLayer extends AbstractWindow {
         this.mode = mode;
         this.callback = callback;
         GameState gs = backend.getGameState();
-        mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gs);
+        mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gs);
 
-        frontend.messages.push("");
+        lookMessage = "";
+        helpMessage = "";
         update();
     }
 
@@ -94,6 +96,11 @@ public class GameTargetLayer extends AbstractWindow {
                 }
             }
         }
+
+        graphics.setFont(Style.getDefaultFont());
+        graphics.setColor(Color.WHITE);
+        graphics.drawString(lookMessage, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN - Style.FONT_SIZE);
+        graphics.drawString(helpMessage, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 
     private void moveCursor(int dx, int dy) {
@@ -111,9 +118,8 @@ public class GameTargetLayer extends AbstractWindow {
         Point cursorPosition = targetableSquares.get(targetIdx);
         GameState gs = backend.getGameState();
 
-        frontend.messages.pop();
-        frontend.messages.push(getHelpMessage());
-        frontend.lookMessage = getLookMessage();
+        helpMessage = getHelpMessage();
+        lookMessage = getLookMessage();
         Actor selectedActor = backend.getGameState().getCurrentMap().actorAt(cursorPosition.x, cursorPosition.y);
         // even if there's an actor there, don't show it if the player can't see it
         if (selectedActor != null) {
@@ -127,8 +133,6 @@ public class GameTargetLayer extends AbstractWindow {
     }
 
     private void stopLooking() {
-        frontend.messages.pop();
-        frontend.lookMessage = "";
         frontend.monsterInfoWindow.setActor(null);
         frontend.monsterInfoWindow.visible = false;
         parent.removeLayer();

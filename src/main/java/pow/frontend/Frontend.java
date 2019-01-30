@@ -40,15 +40,12 @@ public class Frontend {
     private final LogWindow logWindow;
     private final StatusWindow statusWindow;
     private final MapWindow mapWindow;
-    private final MessageWindow messageWindow;
     public final HelpWindow helpWindow;
 
     private final GameBackend gameBackend;
     private final Queue<KeyEvent> keyEvents;
 
     private boolean dirty;  // need to redraw
-    public final Deque<String> messages;  // short messages/help suggestions
-    public String lookMessage;  // description of current floor TODO: cleanup
     private final List<GameEvent> events;
 
     public void setDirty(boolean dirty) {
@@ -64,7 +61,6 @@ public class Frontend {
         this.height = height;
         this.dirty = true;
         this.keyEvents = new ArrayDeque<>();
-        this.messages = new ArrayDeque<>();
         this.events = new ArrayList<>();
 
         gameBackend = new GameBackend();
@@ -77,10 +73,9 @@ public class Frontend {
         openGameWindow = new OpenGameWindow(WindowDim.center(460, 300, this.width, this.height), true, gameBackend, this);
         // main game
         statusWindow = new StatusWindow(new WindowDim(5, 5, 200, 707), true, gameBackend, this);
-        gameWindow = new GameWindow(new WindowDim(210, 5, 672, 672), true, gameBackend, this);
+        gameWindow = new GameWindow(new WindowDim(210, 5, 672, 672 + 40), true, gameBackend, this);
         mapWindow = new MapWindow(new WindowDim(887, 5, 300, 250), true, gameBackend, this);
         logWindow = new LogWindow(new WindowDim(887, 260, 300, 452), true, gameBackend, this);
-        messageWindow = new MessageWindow(new WindowDim(210, 682, 672, 30), true, gameBackend, this);
         // popups in main game
         monsterInfoWindow = new MonsterInfoWindow(new WindowDim(887, 260,300,452), false, gameBackend, this);
         playerInfoWindow = new PlayerInfoWindow(WindowDim.center(668, 470, this.width, this.height), true, gameBackend, this);
@@ -105,7 +100,6 @@ public class Frontend {
             case GAME:
                 windows.push(statusWindow);
                 windows.push(logWindow);
-                windows.push(messageWindow);
                 windows.push(mapWindow);
                 windows.push(monsterInfoWindow);
                 windows.push(gameWindow);

@@ -379,7 +379,7 @@ public class GameMainLayer extends AbstractWindow {
     @Override
     public void drawContents(Graphics graphics) {
         GameState gs = backend.getGameState();
-        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, backend.getGameState());
+        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, backend.getGameState());
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
@@ -504,6 +504,11 @@ public class GameMainLayer extends AbstractWindow {
                 mapView.makeShadow(graphics, x, y, darkness);
             }
         }
+
+        // draw line at the bottom
+        graphics.setColor(Color.DARK_GRAY);
+        int lineHeight = dim.height - parent.MESSAGE_BAR_HEIGHT;
+        graphics.drawLine(0, lineHeight, dim.width, lineHeight);
     }
 
     private void closeDoor(GameState gameState, Point p) {
