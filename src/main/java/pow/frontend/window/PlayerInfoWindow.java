@@ -238,7 +238,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         }
 
         // grid interior lines
-        graphics.setColor(Color.DARK_GRAY);
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
         for (int bonusIdx = 1; bonusIdx < numBonuses; bonusIdx++) {
             graphics.drawLine(gridLeft + dy*bonusIdx, gridTop, gridLeft + dy*bonusIdx, gridTop + dy*numSlots);
         }

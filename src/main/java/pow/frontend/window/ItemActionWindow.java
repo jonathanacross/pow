@@ -67,9 +67,14 @@ public class ItemActionWindow extends AbstractWindow {
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
+        int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
+        graphics.drawString(message, Style.SMALL_MARGIN, y);
 
-        int y = 30;
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        graphics.drawLine(Style.SMALL_MARGIN, y + 5, dim.width - Style.SMALL_MARGIN, y + 5);
+
+        graphics.setColor(Color.WHITE);
+        y = 30;
         int idx = 0;
         for (DungeonItem item : items.items) {
             String label = (char) ((int) 'a' + idx) + ")";

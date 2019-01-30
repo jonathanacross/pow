@@ -15,6 +15,7 @@ import pow.backend.behavior.AutoItemBehavior;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.*;
 import pow.util.Direction;
@@ -507,7 +508,7 @@ public class GameMainLayer extends AbstractWindow {
         }
 
         // draw line at the bottom
-        graphics.setColor(Color.DARK_GRAY);
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
         int lineHeight = dim.height - parent.MESSAGE_BAR_HEIGHT;
         graphics.drawLine(0, lineHeight, dim.width, lineHeight);
     }

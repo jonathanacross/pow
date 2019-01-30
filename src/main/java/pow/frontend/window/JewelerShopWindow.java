@@ -206,7 +206,7 @@ public class JewelerShopWindow extends AbstractWindow {
 
         // equipment, first column
         if (!selections.equipment.isEmpty()) {
-            graphics.setColor(Color.DARK_GRAY);
+            graphics.setColor(Style.SEPARATOR_LINE_COLOR);
             graphics.drawLine(col1x, y + 5, col2x - 30, y + 5);
             graphics.setColor(Color.WHITE);
             graphics.drawString("Equipment:", Style.MARGIN, y);
@@ -224,7 +224,7 @@ public class JewelerShopWindow extends AbstractWindow {
         // inventory, first column
         int baseInventoryIdx = idx;
         if (!selections.inventory.isEmpty()) {
-            graphics.setColor(Color.DARK_GRAY);
+            graphics.setColor(Style.SEPARATOR_LINE_COLOR);
             graphics.drawLine(col1x, y + 5, col2x - 30, y + 5);
             graphics.setColor(Color.WHITE);
             graphics.drawString("Inventory:", Style.MARGIN, y);
@@ -240,7 +240,7 @@ public class JewelerShopWindow extends AbstractWindow {
         // gems, second column
         int baseGemIdx = idx;
         y = yHeader;
-        graphics.setColor(Color.DARK_GRAY);
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
         graphics.drawLine(col2x, y + 5, dim.width - Style.MARGIN, y + 5);
         graphics.setColor(Color.WHITE);
         graphics.drawString("Gems:", col2x, y);
@@ -254,7 +254,7 @@ public class JewelerShopWindow extends AbstractWindow {
 
         // status at the bottom
         y = dim.height - 125;
-        graphics.setColor(Color.DARK_GRAY);
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
         graphics.drawLine(Style.MARGIN, y + 5, dim.width - Style.MARGIN, y + 5);
         graphics.setColor(Color.WHITE);
         graphics.drawString("Items to combine:", Style.MARGIN, y);

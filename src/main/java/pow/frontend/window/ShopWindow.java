@@ -84,7 +84,7 @@ public class ShopWindow extends AbstractWindow {
         graphics.drawString("Item", 20 + Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE);
         graphics.drawString("Price", priceX, Style.MARGIN + 3*Style.FONT_SIZE);
 
-        graphics.setColor(Color.DARK_GRAY);
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
         graphics.drawLine(30, Style.MARGIN + 3*Style.FONT_SIZE + 5,
                 dim.width - Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE + 5);
 

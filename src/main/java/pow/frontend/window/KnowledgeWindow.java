@@ -65,7 +65,6 @@ public class KnowledgeWindow extends AbstractWindow {
         final int killedX = 220;
         final int fontOffsetY = (Style.TILE_SIZE + Style.FONT_SIZE)/2;
 
-
         int y = 50;
         graphics.drawString("Name", nameX, y);
         graphics.drawString("Killed", killedX, y);
@@ -79,6 +78,22 @@ public class KnowledgeWindow extends AbstractWindow {
             minIndex = Math.max(0, centerIndex - radius);
             maxIndex = Math.min(monsterSummary.size(), centerIndex + radius);
         }
+
+        // draw scrollbar
+        int sbTop = 60;
+        int sbLeft = 295;
+        int sbHeight = numViewableMonsters * Style.TILE_SIZE;
+        int centerTop = sbHeight * minIndex / monsterSummary.size();
+        int centerBottom = sbHeight * maxIndex / monsterSummary.size();
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
+        graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
+
+        // underline the header
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        graphics.drawLine(nameX,y + 5, sbLeft - Style.MARGIN, y + 5);
+
+        graphics.setColor(Color.WHITE);
 
         y = 60;
         for (int index = minIndex; index < maxIndex; index++) {
@@ -94,15 +109,6 @@ public class KnowledgeWindow extends AbstractWindow {
             y += Style.TILE_SIZE;
         }
 
-        // draw scrollbar
-        int sbTop = 60;
-        int sbLeft = 295;
-        int sbHeight = numViewableMonsters * Style.TILE_SIZE;
-        int centerTop = sbHeight * minIndex / monsterSummary.size();
-        int centerBottom = sbHeight * maxIndex / monsterSummary.size();
-        graphics.setColor(Color.GRAY);
-        graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
-        graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
 
         graphics.setColor(Color.WHITE);
         graphics.drawString("Press up/down to scroll through monsters, any other key to close.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);

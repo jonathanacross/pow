@@ -106,7 +106,7 @@ public class StatusWindow extends AbstractWindow {
         }
 
         y += 5;
-        graphics.setColor(Color.DARK_GRAY);
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
         graphics.drawLine(Style.SMALL_MARGIN, y, dim.width - Style.SMALL_MARGIN, y);
         graphics.setColor(Color.WHITE);
         y += Style.FONT_SIZE;

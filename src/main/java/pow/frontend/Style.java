@@ -1,5 +1,6 @@
 package pow.frontend;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
@@ -45,4 +46,7 @@ public class Style {
     public static Font getSmallFont() { return smallFont; }
     public static Font getDefaultFont() { return defaultFont; }
     public static Font getBigFont() { return bigFont; }
+
+    // Colors
+    public static final Color SEPARATOR_LINE_COLOR = Color.DARK_GRAY;
 }

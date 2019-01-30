@@ -21,7 +21,7 @@ public class SpellChoiceWindow extends AbstractWindow {
                              String message,
                              List<SpellParams> spells,
                              Consumer<Integer> callback) {
-        super( new WindowDim(x, y, 570, 100 + Style.FONT_SIZE * spells.size()),
+        super( new WindowDim(x, y, 570, 105 + Style.FONT_SIZE * spells.size()),
                 true, backend, frontend);
         this.message = message;
         this.spells = spells;
@@ -73,7 +73,12 @@ public class SpellChoiceWindow extends AbstractWindow {
         graphics.drawString("Mana", manaColumnX, y);
         graphics.drawString("Info", infoColumnX, y);
 
-        y = 70;
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        graphics.drawLine(nameColumnX, y + 5, dim.width - Style.MARGIN, y + 5);
+
+        graphics.setColor(Color.WHITE);
+
+        y = 75;
         int idx = 0;
         for (SpellParams spell : spells) {
             boolean isEnabled = enabled(spell);
