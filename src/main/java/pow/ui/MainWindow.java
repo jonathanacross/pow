@@ -19,6 +19,10 @@ public class MainWindow extends JFrame implements KeyListener, MouseMotionListen
                 cursorImg, new Point(0, 0), "blank cursor");
     }
 
+    // Handle pressed keys (as opposed to full characters, as done by overriding keyTyped).
+    // This is so that we can handle keys such as "down", or distinguish between numpad and
+    // keyboard numbers.  Note this means we have to do some special filtering in
+    // KeyUtils.java to prune out some keys we're NOT interested in.
     @Override
     public void keyPressed(KeyEvent e) {
         draw.processKey(e);
