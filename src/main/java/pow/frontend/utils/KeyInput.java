@@ -53,5 +53,6 @@ public enum KeyInput {
     DEBUG_SHOW_PET_AI,
     DEBUG_SHOW_PLAYER_AI,
 
+    NOTHING, // user types something of no importance (e.g., modifiers, like shift)
     UNKNOWN // user types something unknown
 }

@@ -7,13 +7,13 @@ import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.ItemList;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ItemActions;
 import pow.util.TextUtils;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -24,22 +24,19 @@ public class ActionChoiceWindow extends AbstractWindow {
     private final String message;
     private final ItemList items;
     private final int itemIndex;
-    private final ItemActions.ItemLocation location;
     private final List<ItemActions.Action> actions;
 
     public ActionChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
                               String message,
                               ItemList items,
                               int itemIndex,
-                              ItemActions.ItemLocation location,
                               List<ItemActions.Action> actions) {
         super(new WindowDim(x, y, 400,
-                80 + 17 * actions.size()),
+                100 + 17 * actions.size()),
                 true, backend, frontend);
         this.message = message;
         this.items = items;
         this.itemIndex = itemIndex;
-        this.location = location;
         this.actions = actions;
     }
 
@@ -93,34 +90,32 @@ public class ActionChoiceWindow extends AbstractWindow {
         }
     }
 
-    final private int MARGIN = 10;
-    final private int FONT_SIZE = 12;
-    final private int FONT_SPACING = FONT_SIZE + 5;
-
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(message, MARGIN, MARGIN + FONT_SIZE);
+        graphics.drawString(message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
 
         int y = 30;
         int idx = 0;
         DungeonItem item = items.get(itemIndex);
-        ImageController.drawTile(graphics, item.image, MARGIN, y);
-        graphics.drawString(TextUtils.format(item.name, item.count, false),  MARGIN + 40, y + FONT_SIZE + 2);
-        graphics.drawString(item.bonusString(), MARGIN + 40, y + 2*FONT_SIZE + 2);
+        ImageController.drawTile(graphics, item.image, Style.SMALL_MARGIN, y);
+        graphics.drawString(TextUtils.format(item.name, item.count, false),  Style.SMALL_MARGIN + 40, y + Style.FONT_SIZE + 2);
+        graphics.drawString(item.bonusString(), Style.SMALL_MARGIN + 40, y + 2*Style.FONT_SIZE + 2);
 
         for (ItemActions.Action action : actions) {
             String label = (char) ((int) 'a' + idx) + ")";
-            y = 80 + FONT_SPACING * idx;
-            graphics.drawString(label, MARGIN, y);
+            y = 80 + Style.FONT_SPACING * idx;
+            graphics.drawString(label, Style.SMALL_MARGIN, y);
             graphics.drawString(action.getText(), 60, y);
             idx++;
         }
+
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Select an action or press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 }

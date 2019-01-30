@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 
 import java.awt.*;
@@ -29,7 +30,7 @@ public class PortalChoiceWindow extends AbstractWindow {
                               String message,
                               List<AreaNameAndId> areas,
                               Consumer<String> callback) {
-        super( new WindowDim(x, y, 300, 50 + FONT_SIZE * areas.size()),
+        super( new WindowDim(x, y, 300, 70 + Style.FONT_SIZE * areas.size()),
                 true, backend, frontend);
         this.message = message;
         this.areas = areas;
@@ -57,28 +58,27 @@ public class PortalChoiceWindow extends AbstractWindow {
         }
     }
 
-    private static final int MARGIN = 10;
-    private static final int FONT_SIZE = 12;
-
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(this.message, MARGIN, MARGIN + FONT_SIZE);
+        graphics.drawString(this.message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
 
         int y = 45;
         int idx = 0;
         for (AreaNameAndId areaId : areas) {
             String label = (char) ((int) 'a' + idx) + ")";
-            graphics.drawString(label, MARGIN, y);
-            graphics.drawString(areaId.name, MARGIN + 20, y);
+            graphics.drawString(label, Style.SMALL_MARGIN, y);
+            graphics.drawString(areaId.name, Style.SMALL_MARGIN + 20, y);
             idx++;
-            y += FONT_SIZE;
+            y += Style.FONT_SIZE;
         }
+
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Select an area or press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 }

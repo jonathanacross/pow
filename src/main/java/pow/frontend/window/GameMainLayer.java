@@ -15,6 +15,7 @@ import pow.backend.behavior.AutoItemBehavior;
 import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.*;
 import pow.util.Direction;
@@ -284,6 +285,10 @@ public class GameMainLayer extends AbstractWindow {
         }
     }
 
+    private void showHelp() {
+        backend.logMessage("Unknown command. Press ? for help.", MessageLog.MessageType.USER_ERROR);
+    }
+
     @Override
     public void processKey(KeyEvent e) {
         GameState gs = backend.getGameState();
@@ -336,7 +341,8 @@ public class GameMainLayer extends AbstractWindow {
             case DEBUG_HEAL_CHAR: backend.tellSelectedActor(new DebugAction(DebugAction.What.HEAL)); break;
             case DEBUG_SHOW_PET_AI: togglePetAi(); break;
             case DEBUG_SHOW_PLAYER_AI: togglePlayerAi(); break;
-            default: break;
+            case NOTHING: break; // (do nothing when user presses shift/control by themselves)
+            default: showHelp(); break;
         }
     }
 
@@ -375,7 +381,7 @@ public class GameMainLayer extends AbstractWindow {
     @Override
     public void drawContents(Graphics graphics) {
         GameState gs = backend.getGameState();
-        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, backend.getGameState());
+        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, backend.getGameState());
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
@@ -466,7 +472,7 @@ public class GameMainLayer extends AbstractWindow {
                 }
             }
 //            // show square/shortest path costing information
-//            graphics.setFont(new Font("Courier", Font.PLAIN, 9));
+//            graphics.setFont(Style.getSmallFont());
 //            for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
 //                for (int x = mapView.colMin; x <= mapView.colMax; x++) {
 //                    if (pathFinder.aiMap.onAiMap(new Point(x, y))) {
@@ -500,6 +506,11 @@ public class GameMainLayer extends AbstractWindow {
                 mapView.makeShadow(graphics, x, y, darkness);
             }
         }
+
+        // draw line at the bottom
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        int lineHeight = dim.height - parent.MESSAGE_BAR_HEIGHT;
+        graphics.drawLine(0, lineHeight, dim.width, lineHeight);
     }
 
     private void closeDoor(GameState gameState, Point p) {
@@ -554,7 +565,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startLooking(GameState gameState) {
-        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getLookTargets(gameState, mapView);
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.LOOK, Point -> {}));
     }
@@ -578,7 +589,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startFloorTargeting(GameState gameState) {
-        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getFloorTargets(gameState, mapView);
         if (targetableSquares.isEmpty()) {
             backend.logMessage("you can't see anything!", MessageLog.MessageType.USER_ERROR);

@@ -3,6 +3,7 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.SpellParams;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 
 import java.awt.*;
@@ -20,7 +21,7 @@ public class SpellChoiceWindow extends AbstractWindow {
                              String message,
                              List<SpellParams> spells,
                              Consumer<Integer> callback) {
-        super( new WindowDim(x, y, 550, 60 + FONT_SIZE * spells.size()),
+        super( new WindowDim(x, y, 570, 105 + Style.FONT_SIZE * spells.size()),
                 true, backend, frontend);
         this.message = message;
         this.spells = spells;
@@ -46,9 +47,6 @@ public class SpellChoiceWindow extends AbstractWindow {
         }
     }
 
-    private static final int MARGIN = 10;
-    private static final int FONT_SIZE = 12;
-
     private boolean enabled(SpellParams params) {
         return params.minLevel <= backend.getGameState().party.selectedActor.level &&
                 params.requiredMana <= backend.getGameState().party.selectedActor.getMana();
@@ -56,41 +54,48 @@ public class SpellChoiceWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        final int nameColumnX = MARGIN + 20;
-        final int levelColumnX = MARGIN + 160;
-        final int manaColumnX = MARGIN + 200;
-        final int infoColumnX = MARGIN + 240;
+        final int nameColumnX = Style.MARGIN + 20;
+        final int levelColumnX = Style.MARGIN + 160;
+        final int manaColumnX = Style.MARGIN + 200;
+        final int infoColumnX = Style.MARGIN + 240;
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(this.message, MARGIN, MARGIN + FONT_SIZE);
+        graphics.drawString(this.message, Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
 
-        int y = 45;
+        int y = 55;
         graphics.drawString("Spell", nameColumnX,y);
         graphics.drawString("Level", levelColumnX,y);
         graphics.drawString("Mana", manaColumnX, y);
         graphics.drawString("Info", infoColumnX, y);
 
-        y = 60;
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        graphics.drawLine(nameColumnX, y + 5, dim.width - Style.MARGIN, y + 5);
+
+        graphics.setColor(Color.WHITE);
+
+        y = 75;
         int idx = 0;
         for (SpellParams spell : spells) {
             boolean isEnabled = enabled(spell);
 
             String label = (char) ((int) 'a' + idx) + ")";
             graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
-            graphics.drawString(label, MARGIN, y);
+            graphics.drawString(label, Style.MARGIN, y);
             graphics.drawString(spell.name, nameColumnX, y);
             graphics.drawString(Integer.toString(spell.minLevel), levelColumnX, y);
             graphics.drawString(Integer.toString(spell.requiredMana), manaColumnX, y);
             graphics.drawString(spell.getDescription(backend.getGameState().party.selectedActor), infoColumnX, y);
 
             idx++;
-            y += FONT_SIZE;
+            y += Style.FONT_SIZE;
         }
+
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Select a spell, or press [esc] to cancel.", Style.MARGIN, dim.height - Style.MARGIN);
     }
 }

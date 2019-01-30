@@ -16,7 +16,7 @@ public class Party implements Serializable {
     public Player selectedActor;  // which actor is the player controlling?
     public final Artifacts artifacts;   // set of artifacts the party is carrying.
     public final Knowledge knowledge;
-    public int numPearlsReturned;
+    public List<DungeonItem> returnedPearls;
 
     public Party(Player player) {
         addPlayer(player);
@@ -24,7 +24,7 @@ public class Party implements Serializable {
         this.pet = null;
         this.artifacts = new Artifacts();
         this.knowledge = new Knowledge();
-        this.numPearlsReturned = 0;
+        this.returnedPearls = new ArrayList<>();
     }
 
     private void addPlayer(Player player) {

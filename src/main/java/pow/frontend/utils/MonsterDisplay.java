@@ -4,6 +4,7 @@ import pow.backend.SpellParams;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Player;
 import pow.backend.actors.Knowledge;
+import pow.frontend.Style;
 import pow.util.Point;
 import pow.util.TextUtils;
 
@@ -34,16 +35,15 @@ public class MonsterDisplay {
             int width,
             Point position
     ) {
-        final int fontSize = 12;
-        final int tileSize = 32;
-        final int margin = 10;
+        final int fontSize = Style.FONT_SIZE;
+        final int tileSize = Style.TILE_SIZE;
+        final int margin = Style.SMALL_MARGIN;
 
         // figure out the description; it's a multi-line mess
-        Font font = new Font("Courier", Font.PLAIN, fontSize);
         int textWidth = width - 3*margin - tileSize;
 
-        graphics.setFont(font);
-        FontMetrics textMetrics = graphics.getFontMetrics(font);
+        graphics.setFont(Style.getDefaultFont());
+        FontMetrics textMetrics = graphics.getFontMetrics(Style.getDefaultFont());
         List<String> descriptionLines = ImageUtils.wrapText(monster.description, textMetrics, textWidth);
         List<String> spellLines = monster.spells.isEmpty()
                 ? Collections.emptyList()

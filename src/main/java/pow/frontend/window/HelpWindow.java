@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.HelpController;
 
@@ -19,22 +20,18 @@ public class HelpWindow extends AbstractWindow {
         frontend.close();
     }
 
-    private static final int TEXT_SIZE = 14;
-    private static final int MARGIN = 10;
-
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = new Font("Courier", Font.PLAIN, TEXT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        int y = TEXT_SIZE + MARGIN;
+        int y = Style.FONT_SIZE + Style.MARGIN;
         for (String line: HelpController.getHelpText()) {
-            graphics.drawString(line, MARGIN, y);
-            y += TEXT_SIZE;
+            graphics.drawString(line, Style.MARGIN, y);
+            y += Style.FONT_SIZE;
         }
     }
 }

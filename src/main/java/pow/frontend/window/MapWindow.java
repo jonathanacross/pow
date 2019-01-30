@@ -5,6 +5,7 @@ import pow.backend.GameState;
 import pow.backend.actors.Actor;
 import pow.backend.dungeon.DungeonSquare;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.utils.ImageController;
 import pow.frontend.WindowDim;
 
@@ -12,10 +13,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class MapWindow extends AbstractWindow {
-
-    final private int MARGIN = 10;
-    final private int FONT_SIZE = 14;
-    private static final int TILE_SIZE = 4;
 
     private static final Color MONSTER_COLOR = Color.MAGENTA;
     private static final Color PLAYER_COLOR = Color.YELLOW;
@@ -33,7 +30,7 @@ public class MapWindow extends AbstractWindow {
     public void drawContents(Graphics graphics) {
 
         GameState gs = backend.getGameState();
-        MapView mapView = new MapView(dim.width, dim.height, TILE_SIZE, backend.getGameState());
+        MapView mapView = new MapView(dim.width, dim.height, Style.MAP_TILE_SIZE, backend.getGameState());
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
@@ -75,15 +72,16 @@ public class MapWindow extends AbstractWindow {
         }
 
         // show what map we're on
-        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
+        int x = Style.SMALL_MARGIN;
+        int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
         // cheap way of drawing an outline
         graphics.setColor(Color.BLACK);
-        graphics.drawString(gs.getCurrentMap().name, MARGIN - 1, MARGIN + FONT_SIZE - 1);
-        graphics.drawString(gs.getCurrentMap().name, MARGIN - 1, MARGIN + FONT_SIZE + 1);
-        graphics.drawString(gs.getCurrentMap().name, MARGIN + 1, MARGIN + FONT_SIZE - 1);
-        graphics.drawString(gs.getCurrentMap().name, MARGIN + 1, MARGIN + FONT_SIZE + 1);
+        graphics.drawString(gs.getCurrentMap().name, x - 1, y - 1);
+        graphics.drawString(gs.getCurrentMap().name, x - 1, y + 1);
+        graphics.drawString(gs.getCurrentMap().name, x + 1, y - 1);
+        graphics.drawString(gs.getCurrentMap().name, x + 1, y + 1);
         graphics.setColor(Color.WHITE);
-        graphics.drawString(gs.getCurrentMap().name, MARGIN, MARGIN + FONT_SIZE);
+        graphics.drawString(gs.getCurrentMap().name, x, y);
     }
 }

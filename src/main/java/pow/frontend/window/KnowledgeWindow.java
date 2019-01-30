@@ -4,6 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.actors.Knowledge;
 import pow.backend.actors.Player;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.MonsterDisplay;
@@ -11,7 +12,6 @@ import pow.util.MathUtils;
 import pow.util.TextUtils;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -51,10 +51,6 @@ public class KnowledgeWindow extends AbstractWindow {
         }
     }
 
-    final private int TILE_SIZE = 32;
-    final private int MARGIN = 10;
-    final private int FONT_SIZE = 12;
-
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Color.BLACK);
@@ -62,16 +58,14 @@ public class KnowledgeWindow extends AbstractWindow {
 
         graphics.setColor(Color.WHITE);
 
-        graphics.setFont(new Font("Courier", Font.PLAIN, 14));
-        graphics.drawString("Monster Knowledge", MARGIN, MARGIN + FONT_SIZE);
+        graphics.setFont(Style.getDefaultFont());
+        graphics.drawString("Monster Knowledge", Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
 
         final int nameX = 70;
         final int killedX = 220;
-        final int fontOffsetY = (TILE_SIZE + FONT_SIZE)/2;
-
+        final int fontOffsetY = (Style.TILE_SIZE + Style.FONT_SIZE)/2;
 
         int y = 50;
-        graphics.setFont(new Font("Courier", Font.PLAIN, 12));
         graphics.drawString("Name", nameX, y);
         graphics.drawString("Killed", killedX, y);
 
@@ -85,10 +79,26 @@ public class KnowledgeWindow extends AbstractWindow {
             maxIndex = Math.min(monsterSummary.size(), centerIndex + radius);
         }
 
+        // draw scrollbar
+        int sbTop = 60;
+        int sbLeft = 295;
+        int sbHeight = numViewableMonsters * Style.TILE_SIZE;
+        int centerTop = sbHeight * minIndex / monsterSummary.size();
+        int centerBottom = sbHeight * maxIndex / monsterSummary.size();
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
+        graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
+
+        // underline the header
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        graphics.drawLine(nameX,y + 5, sbLeft - Style.MARGIN, y + 5);
+
+        graphics.setColor(Color.WHITE);
+
         y = 60;
         for (int index = minIndex; index < maxIndex; index++) {
             Knowledge.MonsterSummary ms = monsterSummary.get(index);
-            ImageController.drawTile(graphics, ms.image, MARGIN, y);
+            ImageController.drawTile(graphics, ms.image, Style.SMALL_MARGIN, y);
             if (index == selectIndex) {
                 graphics.setColor(Color.YELLOW);
             } else {
@@ -96,21 +106,12 @@ public class KnowledgeWindow extends AbstractWindow {
             }
             graphics.drawString(TextUtils.singular(ms.name), nameX, y + fontOffsetY);
             graphics.drawString(String.valueOf(ms.numKilled), killedX, y + fontOffsetY);
-            y += TILE_SIZE;
+            y += Style.TILE_SIZE;
         }
 
-        // draw scrollbar
-        int sbTop = 60;
-        int sbLeft = 295;
-        int sbHeight = numViewableMonsters * TILE_SIZE;
-        int centerTop = sbHeight * minIndex / monsterSummary.size();
-        int centerBottom = sbHeight * maxIndex / monsterSummary.size();
-        graphics.setColor(Color.GRAY);
-        graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
-        graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
 
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press up/down to scroll through monsters, any other key to close.", MARGIN, dim.height - MARGIN);
+        graphics.drawString("Press up/down to scroll through monsters, any other key to close.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
 
         if (!monsterSummary.isEmpty()) {
             Player player = backend.getGameState().party.player;

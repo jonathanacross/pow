@@ -47,6 +47,10 @@ public class MapView {
         cameraDy = -(rowMin + rowMax) / 2 + yRadius;
     }
 
+    public boolean isVisible(int x, int y) {
+        return colMin <= x && x <= colMax && rowMin <= y && y <= rowMax;
+    }
+
     public void frameRect(Graphics graphics, Color color, int x, int y) {
         graphics.setColor(color);
         graphics.drawRect(gameXToPixelX(x), gameYToPixelY(y), tileSize - 1, tileSize - 1);

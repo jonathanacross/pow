@@ -6,6 +6,7 @@ import pow.backend.actors.Abilities;
 import pow.backend.dungeon.gen.CharacterGenerator;
 import pow.backend.dungeon.gen.NameGenerator;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.*;
 import pow.util.MathUtils;
@@ -110,9 +111,6 @@ public class SelectCharWindow extends AbstractWindow {
         }
     }
 
-    private static final int FONT_SIZE = 14;
-    private static final int MARGIN = 20;
-
     // TODO: same function as in MonsterDisplay.java
     private static List<String> getSpellNames(List<SpellParams> spells) {
         List<String> strings = new ArrayList<>(spells.size());
@@ -165,12 +163,12 @@ public class SelectCharWindow extends AbstractWindow {
         int maxGains = showSpeed ? gains.length : gains.length - 1;
         for (int i = 0; i < maxGains; i++) {
             int width = (int) Math.round(gains[i] * 100);
-            drawBar(graphics, barLeft, y + i * FONT_SIZE, width, FONT_SIZE, gains[i]);
-            graphics.drawString(labels[i], x, y + (i+1) * FONT_SIZE);
+            drawBar(graphics, barLeft, y + i * Style.FONT_SIZE, width, Style.FONT_SIZE, gains[i]);
+            graphics.drawString(labels[i], x, y + (i+1) * Style.FONT_SIZE);
         }
-        y += (maxGains + 1) * FONT_SIZE;
+        y += (maxGains + 1) * Style.FONT_SIZE;
 
-        int textWidth = dim.width - 2*MARGIN;
+        int textWidth = dim.width - 2*Style.SMALL_MARGIN;
         Font font = graphics.getFont();
         FontMetrics textMetrics = graphics.getFontMetrics(font);
         List<String> extraLines =
@@ -180,7 +178,7 @@ public class SelectCharWindow extends AbstractWindow {
                 ImageUtils.wrapText(
                         "Spells: " + TextUtils.formatList(getSpellNames(characterData.spells)), textMetrics, textWidth));
         for (String line : extraLines) {
-            y += FONT_SIZE;
+            y += Style.FONT_SIZE;
             graphics.drawString(line, x, y);
         }
     }
@@ -190,34 +188,37 @@ public class SelectCharWindow extends AbstractWindow {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(font);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        int y = MARGIN + FONT_SIZE;
+        int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
         for (String message : messages) {
-            graphics.drawString(message, MARGIN, y);
-            y += 2 * FONT_SIZE;
+            graphics.drawString(message, Style.SMALL_MARGIN, y);
+            y += 2 * Style.FONT_SIZE;
         }
-        y -= FONT_SIZE;
+        y -= Style.FONT_SIZE;
         for (int i = 0; i < characterData.size(); i++) {
-            ImageController.drawTile(graphics, characterData.get(i).image, MARGIN + i*(ImageController.TILE_SIZE + 5), y);
+            ImageController.drawTile(graphics, characterData.get(i).image, Style.SMALL_MARGIN + i*(ImageController.TILE_SIZE + 5), y);
         }
         graphics.setColor(Color.YELLOW);
-        graphics.drawRect(MARGIN + charSelectId*(ImageController.TILE_SIZE + 5), y, ImageController.TILE_SIZE, ImageController.TILE_SIZE);
-        y += ImageController.TILE_SIZE + FONT_SIZE;
+        graphics.drawRect(Style.SMALL_MARGIN + charSelectId*(ImageController.TILE_SIZE + 5), y, ImageController.TILE_SIZE, ImageController.TILE_SIZE);
+        y += ImageController.TILE_SIZE + Style.FONT_SIZE;
 
         if (onName) {
             graphics.setColor(Color.WHITE);
-            y += FONT_SIZE;
-            graphics.drawString("Enter the name of your character,", MARGIN, y);
-            y += FONT_SIZE;
-            graphics.drawString("or press * for a random name:", MARGIN, y);
-            y += 2*FONT_SIZE;
-            graphics.drawString(name, MARGIN, y);
+            y += Style.FONT_SIZE;
+            graphics.drawString("Enter the name of your character.", Style.SMALL_MARGIN, y);
+            y += 2*Style.FONT_SIZE;
+            graphics.drawString(name, Style.SMALL_MARGIN, y);
         } else {
             graphics.setColor(Color.WHITE);
-            drawCharData(graphics, characterData.get(charSelectId), MARGIN, y, showSpeed);
+            drawCharData(graphics, characterData.get(charSelectId), Style.SMALL_MARGIN, y, showSpeed);
         }
+
+        String helpString = onName
+                ? "Press * for a random name, [enter] to select, [esc] to cancel."
+                : "Press left/right to choose, [enter] to select, [esc] to cancel.";
+        graphics.setColor(Color.WHITE);
+        graphics.drawString(helpString, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 }

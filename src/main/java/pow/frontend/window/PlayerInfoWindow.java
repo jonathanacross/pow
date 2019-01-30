@@ -5,6 +5,7 @@ import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.utils.AttackUtils;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.util.TextUtils;
@@ -53,10 +54,6 @@ public class PlayerInfoWindow extends AbstractWindow {
         }
     }
 
-    final private int TILE_SIZE = 32;
-    final private int MARGIN = 15;
-    final private int FONT_SIZE = 12;
-
     private String getResistPercent(int bonus) {
         double hitFactor = AttackUtils.getResistance(bonus);
         // Convert to amount resisted, rather than amount hit.
@@ -70,10 +67,11 @@ public class PlayerInfoWindow extends AbstractWindow {
     private void drawMainInfo(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
+        graphics.setFont(Style.getDefaultFont());
 
         Player player = backend.getGameState().party.player;
 
-        ImageController.drawTile(graphics, player.image, MARGIN, MARGIN);
+        ImageController.drawTile(graphics, player.image, Style.SMALL_MARGIN, Style.SMALL_MARGIN);
 
         List<String> lines = new ArrayList<>();
         String winnerString = player.isWinner() ? " (Winner!)" : "";
@@ -107,26 +105,24 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("rPois:     " + getResistPercent(player.baseStats.resPois));
         lines.add("rDam:      " + getResistPercent(player.baseStats.resDam));
 
-        Font f = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(f);
         graphics.setColor(Color.WHITE);
         for (int i = 0; i < lines.size(); i++) {
-            graphics.drawString(lines.get(i), TILE_SIZE + 2 * MARGIN, MARGIN + (i + 1) * FONT_SIZE);
+            graphics.drawString(lines.get(i), Style.TILE_SIZE + 2 * Style.SMALL_MARGIN, Style.SMALL_MARGIN + (i + 1) * Style.FONT_SIZE);
         }
 
         // draw slot stuff
         for (StringPosition sd : slotData.values()) {
-            graphics.drawString(sd.name, 260, MARGIN + TILE_SIZE * sd.position + TILE_SIZE/2 + FONT_SIZE/2);
+            graphics.drawString(sd.name, 260, Style.SMALL_MARGIN + Style.TILE_SIZE * sd.position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2);
         }
         for (DungeonItem item: player.equipment.items) {
             int position = slotData.get(item.slot).position;
-            int y = TILE_SIZE * position + MARGIN;
+            int y = Style.TILE_SIZE * position + Style.SMALL_MARGIN;
             ImageController.drawTile(graphics, item.image, 315, y);
-            graphics.drawString(TextUtils.format(item.name, 1, false),  355, y + FONT_SIZE + 2);
-            graphics.drawString(item.bonusString(), 355, y + 2*FONT_SIZE + 2);
+            graphics.drawString(TextUtils.format(item.name, 1, false),  355, y + Style.FONT_SIZE + 2);
+            graphics.drawString(item.bonusString(), 355, y + 2*Style.FONT_SIZE + 2);
         }
 
-        // draw artifacts
+        // draw artifacts and returned pearls
         Map<DungeonItem.ArtifactSlot, Point> artifactLocations = new HashMap<>();
         artifactLocations.put(DungeonItem.ArtifactSlot.PETSTATUE, new Point(0,1));
         artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN, new Point(1,1));
@@ -143,16 +139,35 @@ public class PlayerInfoWindow extends AbstractWindow {
         artifactLocations.put(DungeonItem.ArtifactSlot.XRAYSCOPE, new Point(12,1));
         artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN2, new Point(13,1));
 
+        Map<String, Point> pearlLocations = new HashMap<>();
+        pearlLocations.put("pearl 1", new Point(0, 0));
+        pearlLocations.put("pearl 2", new Point(1, 0));
+        pearlLocations.put("pearl 3", new Point(2, 0));
+        pearlLocations.put("pearl 4", new Point(3, 0));
+        pearlLocations.put("pearl 5", new Point(4, 0));
+        pearlLocations.put("pearl 6", new Point(5, 0));
+        pearlLocations.put("pearl 7", new Point(6, 0));
+        pearlLocations.put("pearl 8", new Point(7, 0));
+
         for (DungeonItem item : player.party.artifacts.getArtifacts().values()) {
             Point loc = artifactLocations.get(item.artifactSlot);
-            int x = 15 + TILE_SIZE * loc.x;
-            int y = 370 + TILE_SIZE * loc.y;
+            int x = 15 + Style.TILE_SIZE * loc.x;
+            int y = 370 + Style.TILE_SIZE * loc.y;
+            ImageController.drawTile(graphics, item.image, x, y);
+        }
+        for (DungeonItem item : player.party.returnedPearls) {
+            if (!pearlLocations.containsKey(item.id)) {
+                continue;
+            }
+            Point loc = pearlLocations.get(item.id);
+            int x = 15 + Style.TILE_SIZE * loc.x;
+            int y = 370 + Style.TILE_SIZE * loc.y;
             ImageController.drawTile(graphics, item.image, x, y);
         }
 
         // bottom text
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press space/tab to change view, esc to close.", MARGIN, dim.height - MARGIN);
+        graphics.drawString("Press [space]/[tab] to change view, [esc] to close.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 
     private void drawStatsInfo(Graphics graphics) {
@@ -160,10 +175,9 @@ public class PlayerInfoWindow extends AbstractWindow {
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         Player player = backend.getGameState().party.player;
-        ImageController.drawTile(graphics, player.image, MARGIN, MARGIN);
+        ImageController.drawTile(graphics, player.image, Style.SMALL_MARGIN, Style.SMALL_MARGIN);
 
-        Font f = new Font("Courier", Font.PLAIN, FONT_SIZE);
-        graphics.setFont(f);
+        graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
         // draw slot stuff
@@ -198,13 +212,13 @@ public class PlayerInfoWindow extends AbstractWindow {
         bonusData.put(DungeonItem.WEALTH_IDX, new StringPosition("wealth", 14));
         bonusData.put(DungeonItem.SOCKETS_IDX, new StringPosition("sockets", 15));
 
-        int dx = TILE_SIZE;
-        int dy = TILE_SIZE;
+        int dx = Style.TILE_SIZE;
+        int dy = Style.TILE_SIZE;
         int numSlots = slotData.size();
         int numBonuses = bonusData.size();
 
-        int gridTop = MARGIN + 50;  // top of interior of grid (excluding header)
-        int gridLeft = MARGIN + 105;  // left of interior of grid (excluding header)
+        int gridTop = Style.SMALL_MARGIN + 50;  // top of interior of grid (excluding header)
+        int gridLeft = Style.SMALL_MARGIN + 105;  // left of interior of grid (excluding header)
 
         // header on top
         for (StringPosition bonus : bonusData.values()) {
@@ -223,14 +237,14 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         // left item types
         for (StringPosition sd : slotData.values()) {
-            int y = gridTop + dy * sd.position + TILE_SIZE/2 + FONT_SIZE/2;
+            int y = gridTop + dy * sd.position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2;
             graphics.drawString(sd.name, gridLeft - 100, y);
         }
 
         // grid interior
         for (DungeonItem item: player.equipment.items) {
             int position = slotData.get(item.slot).position;
-            int y = gridTop + dy * position + TILE_SIZE/2 + FONT_SIZE/2;
+            int y = gridTop + dy * position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2;
 
             for (Map.Entry<Integer, StringPosition> entry : bonusData.entrySet()) {
                 int bonusIdx = entry.getKey();
@@ -243,7 +257,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         }
 
         // grid interior lines
-        graphics.setColor(Color.DARK_GRAY);
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
         for (int bonusIdx = 1; bonusIdx < numBonuses; bonusIdx++) {
             graphics.drawLine(gridLeft + dy*bonusIdx, gridTop, gridLeft + dy*bonusIdx, gridTop + dy*numSlots);
         }
@@ -260,7 +274,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         // bottom text
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press space/tab to change view, esc to close.", MARGIN, dim.height - MARGIN);
+        graphics.drawString("Press [space]/[tab] to change view, [esc] to close.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 
     // right justifies string, assumes bonus is <= 999.
