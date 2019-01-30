@@ -340,6 +340,7 @@ public class GameMainLayer extends AbstractWindow {
             case DEBUG_HEAL_CHAR: backend.tellSelectedActor(new DebugAction(DebugAction.What.HEAL)); break;
             case DEBUG_SHOW_PET_AI: togglePetAi(); break;
             case DEBUG_SHOW_PLAYER_AI: togglePlayerAi(); break;
+            case NOTHING: break; // (do nothing when user presses shift/control by themselves)
             default: showHelp(); break;
         }
     }
