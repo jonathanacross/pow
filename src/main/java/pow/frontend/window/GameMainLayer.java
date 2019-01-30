@@ -565,7 +565,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startLooking(GameState gameState) {
-        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getLookTargets(gameState, mapView);
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.LOOK, Point -> {}));
     }
@@ -589,7 +589,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startFloorTargeting(GameState gameState) {
-        MapView mapView = new MapView(dim.width, dim.height, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getFloorTargets(gameState, mapView);
         if (targetableSquares.isEmpty()) {
             backend.logMessage("you can't see anything!", MessageLog.MessageType.USER_ERROR);

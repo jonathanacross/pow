@@ -91,6 +91,7 @@ public class GameTargetLayer extends AbstractWindow {
                 List<Point> ray = Bresenham.makeRay(gs.party.selectedActor.loc, cursorPosition, radius + 1);
                 for (Point p : ray) {
                     if (!gs.party.selectedActor.canSeeLocation(gs, p)) break;
+                    if (!mapView.isVisible(p.x, p.y)) break;
                     mapView.drawCircle(graphics, Color.GREEN, p.x, p.y);
                     if (gs.getCurrentMap().map[p.x][p.y].blockAir()) break;
                 }
