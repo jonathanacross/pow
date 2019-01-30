@@ -2,9 +2,6 @@ package pow.frontend;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class Style {
 
@@ -24,24 +21,9 @@ public class Style {
     public static final int TILE_SIZE = 32;
     public static final int MAP_TILE_SIZE = 4;
 
-    private static Font smallFont;
-    private static Font defaultFont;
-    private static Font bigFont;
-    static {
-        try {
-            InputStream fontStream = Style.class.getResourceAsStream("/fonts/OverpassMono-Regular.ttf");
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
-            smallFont = customFont.deriveFont((float) SMALL_FONT_SIZE);
-            defaultFont = customFont.deriveFont((float) FONT_SIZE);
-            bigFont = customFont.deriveFont((float) BIG_FONT_SIZE);
-        } catch (IOException | FontFormatException e) {
-            System.out.println("Couldn't load font, using default.");
-            e.printStackTrace();
-            smallFont = new Font(Font.MONOSPACED, Font.PLAIN, SMALL_FONT_SIZE);
-            defaultFont = new Font(Font.MONOSPACED, Font.PLAIN, FONT_SIZE);
-            bigFont = new Font(Font.MONOSPACED, Font.PLAIN, BIG_FONT_SIZE);
-        }
-    }
+    private static final Font smallFont = new Font("Courier", Font.PLAIN, SMALL_FONT_SIZE);
+    private static final Font defaultFont = new Font("Courier", Font.PLAIN, FONT_SIZE);
+    private static final Font bigFont = new Font("Courier", Font.PLAIN, BIG_FONT_SIZE);
 
     public static Font getSmallFont() { return smallFont; }
     public static Font getDefaultFont() { return defaultFont; }
