@@ -35,8 +35,7 @@ public class BreathSpell implements Action {
         GameState gs = backend.getGameState();
         List<Action> subactions = new ArrayList<>();
 
-        backend.logMessage(actor.getNoun() + " breathes" +
-                AttackUtils.getDamageTypeString(spellParams.element), MessageLog.MessageType.COMBAT_NEUTRAL);
+        backend.logMessage(spellParams.getCastMessage(actor), MessageLog.MessageType.COMBAT_NEUTRAL);
 
         // draw effects
         String effectName = DungeonEffect.getEffectName(

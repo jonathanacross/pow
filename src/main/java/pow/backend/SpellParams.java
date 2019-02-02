@@ -71,6 +71,7 @@ public class SpellParams implements Serializable {
     public final String id;
     public final String name;
     private final String description;
+    private final String castMessage; // message logged when casted
     public final int minLevel; // min level for a character to cast this
     public final int requiredMana;
     public final SpellType spellType;
@@ -87,6 +88,7 @@ public class SpellParams implements Serializable {
     public SpellParams(String id,
                        String name,
                        String description,
+                       String castMessage,
                        int minLevel,
                        int requiredMana,
                        SpellType spellType,
@@ -101,6 +103,7 @@ public class SpellParams implements Serializable {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.castMessage = castMessage;
         this.minLevel = minLevel;
         this.requiredMana = requiredMana;
         this.spellType = spellType;
@@ -152,6 +155,9 @@ public class SpellParams implements Serializable {
         return (int) Math.round(getAmount(actor, secondaryAmtBase, secondaryAmtDelta, powerStat));
     }
 
+    public String getCastMessage(Actor actor) {
+        return actor.getNoun() + " " + castMessage;
+    }
 
     public String getDescription(Actor actor) {
         return description

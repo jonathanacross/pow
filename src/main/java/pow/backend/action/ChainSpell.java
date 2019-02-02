@@ -46,8 +46,7 @@ public class ChainSpell implements Action {
         List<Action> subactions = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        backend.logMessage(attacker.getNoun() + " casts a" +
-                AttackUtils.getDamageTypeString(spellParams.element) + " chain", MessageLog.MessageType.COMBAT_NEUTRAL);
+        backend.logMessage(spellParams.getCastMessage(attacker), MessageLog.MessageType.COMBAT_NEUTRAL);
 
         Set<Point> excluded = new HashSet<>();
         Point curr = attacker.loc;
