@@ -46,8 +46,6 @@ public class ChainSpell implements Action {
         List<Action> subactions = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        backend.logMessage(spellParams.getCastMessage(attacker), MessageLog.MessageType.COMBAT_NEUTRAL);
-
         Set<Point> excluded = new HashSet<>();
         Point curr = attacker.loc;
         for (int i = 0; i < 10; i++) {  // unlikely there will ever be this many monsters, but if so..

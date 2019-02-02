@@ -26,6 +26,7 @@ public class SpellAction implements Action {
 
         // Use the mana, then requeue the actual spell action.
         actor.useMana(params.requiredMana);
+        backend.logMessage(params.getCastMessage(actor), MessageLog.MessageType.COMBAT_NEUTRAL);
         return ActionResult.failed(action);
     }
 

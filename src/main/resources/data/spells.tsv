@@ -1,5 +1,5 @@
 #id	name	min level	mana	effect	spell type	size	duration	primaryAmtBase	primaryAmtDelta	secondaryAmtBase	secondaryAmtDelta	stat	description	castMessage
-call pet	call pet	1	1	call pet	none	0	0	0	0	0	0	none	phases your pet near you	phases
+call pet	call pet	1	1	call pet	none	0	0	0	0	0	0	none	phases your pet near you	calls their pet
 arrow	arrow	1	1	arrow	none	8	0	2	1	0	0	attack	range {s}, dam {1}	fires an arrow
 magic arrow	magic arrow	1	1	arrow	damage	8	0	0	1	0	0	intelligence	range {s}, dam {1}	fires a magical arrow
 poison arrow	poison arrow	2	4	arrow	poison	8	10	3	2	0	0.2	dexterity	range {s}, dam {1}, poison {2} for {t} turns	fires a poison arrow
@@ -31,9 +31,9 @@ circle cut	circle cut	3	5	circle cut	damage	2	0	0	1	0	0	attack	range {s}, dam {1
 lesser heal	lesser heal	4	3	heal	none	0	0	0	0	10	0	intelligence	heal {2}% / {2} hp	casts lesser heal
 greater heal	greater heal	7	15	heal	none	0	0	0	0	40	0	intelligence	heal {2}% / {2} hp	casts greater heal
 group heal	group heal	10	25	group heal	none	0	0	0	0	30	0	intelligence	heal all {2}% / {2} hp	casts group heal
-blink	blink	2	5	phase	none	3	0	0	0	0	0	intelligence	max dist {s}	blinks
-phase	phase	2	5	phase	none	7	0	0	0	0	0	intelligence	max dist {s}	phases
-teleport	teleport	4	10	phase	none	50	0	0	0	0	0	intelligence	max dist {s}	teleports
+blink	blink	2	5	phase	none	3	0	0	0	0	0	intelligence	max dist {s}	casts blink
+phase	phase	2	5	phase	none	7	0	0	0	0	0	intelligence	max dist {s}	casts phase
+teleport	teleport	4	10	phase	none	50	0	0	0	0	0	intelligence	max dist {s}	casts teleport
 stun	stun	5	20	quake	stun	2	10	0	1	0	0.3	attack	radius {s}, dam {1}, stun {2} for {t} turns	casts stun
 quake	quake	7	20	quake	damage	5	0	30	1	0	0	strength	radius {s}, dam {1}	summons an earthquake
 resist elements	resist elements	5	5	resist elements	none	0	30	0	0	1	0	intelligence	+{2} res. elements for {t} turns	casts resist elements

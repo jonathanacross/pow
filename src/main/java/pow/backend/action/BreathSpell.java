@@ -35,8 +35,6 @@ public class BreathSpell implements Action {
         GameState gs = backend.getGameState();
         List<Action> subactions = new ArrayList<>();
 
-        backend.logMessage(spellParams.getCastMessage(actor), MessageLog.MessageType.COMBAT_NEUTRAL);
-
         // draw effects
         String effectName = DungeonEffect.getEffectName(
                 DungeonEffect.EffectType.LARGE_BALL,
