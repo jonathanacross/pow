@@ -47,6 +47,7 @@ public class SpellData {
         String id;
         String name;
         String description;
+        String castMessage;
         int minLevel; // min level for a character to cast this
         int requiredMana;
         SpellParams.SpellType spellType;
@@ -60,8 +61,8 @@ public class SpellData {
         double secondaryAmtDelta;
 
 
-        if (line.length != 14) {
-            throw new IllegalArgumentException("Expected 14 fields, but had " + line.length
+        if (line.length != 15) {
+            throw new IllegalArgumentException("Expected 15 fields, but had " + line.length
                     + ". Fields = \n" + String.join(",", line));
         }
 
@@ -80,8 +81,9 @@ public class SpellData {
             secondaryAmtDelta = Double.parseDouble(line[11]);
             powerStat = SpellParams.PowerStat.valueOf(line[12].toUpperCase().replace(" ", "_"));
             description = line[13];
+            castMessage = line[14];
 
-            return new SpellParams(id, name, description, minLevel, requiredMana,
+            return new SpellParams(id, name, description, castMessage, minLevel, requiredMana,
                     spellType, element, powerStat, size, duration, primaryAmtBase, primaryAmtDelta,
                     secondaryAmtBase, secondaryAmtDelta);
         } catch (Exception e) {

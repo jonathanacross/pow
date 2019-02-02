@@ -27,9 +27,6 @@ public class QuakeSpell implements Action {
         GameState gs = backend.getGameState();
         List<Action> subactions = new ArrayList<>();
 
-        backend.logMessage(actor.getNoun() + " summons an earthquake",
-                MessageLog.MessageType.COMBAT_NEUTRAL);
-
         AttackUtils.HitParams hitParams = new AttackUtils.HitParams(spellParams, actor, backend.getGameState().rng);
         String effectName = DungeonEffect.getEffectName(
                 DungeonEffect.EffectType.SMALL_BALL,

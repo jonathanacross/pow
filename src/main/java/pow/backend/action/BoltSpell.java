@@ -36,9 +36,6 @@ public class BoltSpell implements Action {
         List<Action> subactions = new ArrayList<>();
         GameMap map = gs.getCurrentMap();
 
-        backend.logMessage(attacker.getNoun() + " casts a" +
-                AttackUtils.getDamageTypeString(spellParams.element) + " bolt", MessageLog.MessageType.COMBAT_NEUTRAL);
-
         List<Point> ray = Bresenham.makeRay(attacker.loc, target, spellParams.size + 1);
         String effectId = DungeonEffect.getEffectName(
                 DungeonEffect.EffectType.BOLT,

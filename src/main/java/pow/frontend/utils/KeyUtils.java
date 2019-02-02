@@ -90,10 +90,12 @@ public class KeyUtils {
             case KeyEvent.VK_0:
                 return hasShift(event) ? KeyInput.DEBUG_SHOW_PET_AI : KeyInput.UNKNOWN;
 
-            // Modifiers that correspond to incomplete keypresses
+            // Key events that do not correspond to characters.
+            case KeyEvent.KEY_LOCATION_UNKNOWN:  // e.g., the 'fn' key on macbook pros.
             case KeyEvent.VK_ALT:
             case KeyEvent.VK_CAPS_LOCK:
             case KeyEvent.VK_CONTROL:
+            case KeyEvent.VK_META:
             case KeyEvent.VK_NUM_LOCK:
             case KeyEvent.VK_SCROLL_LOCK:
             case KeyEvent.VK_SHIFT:
