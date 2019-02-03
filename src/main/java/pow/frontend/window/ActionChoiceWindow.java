@@ -51,6 +51,7 @@ public class ActionChoiceWindow extends AbstractWindow {
 
         GameState gs = backend.getGameState();
         Player selectedActor = gs.party.selectedActor;
+        Player pet = gs.party.pet;
         DungeonItem item = items.get(itemIndex);
 
         // TODO: change so can use f/q/d/g/w/W as alternates
@@ -76,6 +77,9 @@ public class ActionChoiceWindow extends AbstractWindow {
                         break;
                     case QUAFF:
                         backend.tellSelectedActor(new Quaff(selectedActor, items, itemIndex));
+                        break;
+                    case FEED:
+                        backend.tellSelectedActor(new FeedPet(selectedActor, pet, items, itemIndex));
                         break;
                     case TAKE_OFF:
                         backend.tellSelectedActor(new TakeOff(selectedActor, itemIndex));

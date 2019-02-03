@@ -61,7 +61,6 @@ public class BreathSpell implements Action {
 
         // clear out last effect.
         subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
-        subactions.add(new CompletedAction(actor));
         return ActionResult.failed(subactions);
     }
 
@@ -91,7 +90,7 @@ public class BreathSpell implements Action {
 
     @Override
     public boolean consumesEnergy() {
-        return true;
+        return false;
     }
 
     @Override

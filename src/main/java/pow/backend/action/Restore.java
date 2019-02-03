@@ -35,5 +35,5 @@ public class Restore implements Action {
     }
 
     @Override
-    public boolean consumesEnergy() { return true; }
+    public boolean consumesEnergy() { return false; }
 }

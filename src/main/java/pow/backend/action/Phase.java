@@ -73,7 +73,6 @@ public class Phase implements Action {
 
             // clear out last effect.
             subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
-            subactions.add(new CompletedAction(actor));
         }
         return ActionResult.failed(subactions);
     }
