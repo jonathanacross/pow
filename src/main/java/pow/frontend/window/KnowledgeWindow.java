@@ -82,12 +82,14 @@ public class KnowledgeWindow extends AbstractWindow {
         // draw scrollbar
         int sbTop = 60;
         int sbLeft = 295;
-        int sbHeight = numViewableMonsters * Style.TILE_SIZE;
-        int centerTop = sbHeight * minIndex / monsterSummary.size();
-        int centerBottom = sbHeight * maxIndex / monsterSummary.size();
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
-        graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
+        if (monsterSummary.size() > 0) {
+            int sbHeight = numViewableMonsters * Style.TILE_SIZE;
+            int centerTop = sbHeight * minIndex / monsterSummary.size();
+            int centerBottom = sbHeight * maxIndex / monsterSummary.size();
+            graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+            graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
+            graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
+        }
 
         // underline the header
         graphics.setColor(Style.SEPARATOR_LINE_COLOR);

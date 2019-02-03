@@ -73,14 +73,14 @@ public class Frontend {
         openGameWindow = new OpenGameWindow(WindowDim.center(460, 300, this.width, this.height), true, gameBackend, this);
         // main game
         statusWindow = new StatusWindow(new WindowDim(5, 5, 200, 707), true, gameBackend, this);
-        gameWindow = new GameWindow(new WindowDim(210, 5, 672, 672 + 40), true, gameBackend, this);
+        gameWindow = new GameWindow(new WindowDim(210, 5, 672, 712), true, gameBackend, this);
         mapWindow = new MapWindow(new WindowDim(887, 5, 300, 250), true, gameBackend, this);
         logWindow = new LogWindow(new WindowDim(887, 260, 300, 452), true, gameBackend, this);
         // popups in main game
         monsterInfoWindow = new MonsterInfoWindow(new WindowDim(887, 260,300,452), false, gameBackend, this);
         playerInfoWindow = new PlayerInfoWindow(WindowDim.center(668, 470, this.width, this.height), true, gameBackend, this);
-        worldMapWindow = new WorldMapWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
-        helpWindow = new HelpWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
+        worldMapWindow = new WorldMapWindow(new WindowDim(210, 5,672,712), true, gameBackend, this);
+        helpWindow = new HelpWindow(new WindowDim(210, 5,672,712), true, gameBackend, this);
 
         windows = new ArrayDeque<>();
         setState(State.WELCOME);

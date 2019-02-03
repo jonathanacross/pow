@@ -126,7 +126,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void showKnowledge(GameState gs) {
         frontend.open(
-                new KnowledgeWindow(new WindowDim(210, 5, 672, 672), true, this.backend, this.frontend,
+                new KnowledgeWindow(new WindowDim(210, 5, 672, 712), true, this.backend, this.frontend,
                         gs.party.knowledge.getMonsterSummary()));
     }
 
@@ -411,7 +411,8 @@ public class GameMainLayer extends AbstractWindow {
             petTarget = PetAi.getPrimaryTarget(pet, gs);
         }
         for (Actor actor : gs.getCurrentMap().actors) {
-            if (gs.party.selectedActor.canSeeLocation(gs, actor.loc) && gs.party.selectedActor.canSeeActor(actor)) {
+            if (mapView.isVisible(actor.loc.x, actor.loc.y) &&
+                    gs.party.selectedActor.canSeeLocation(gs, actor.loc) && gs.party.selectedActor.canSeeActor(actor)) {
                 if (this.showPetAi && pet != null) {
                     // show how dangerous this is to the pet.
                     if (actor != pet) {
@@ -441,14 +442,14 @@ public class GameMainLayer extends AbstractWindow {
 
         // draw player targets
         Point target = gs.party.selectedActor.getTarget();
-        if (target != null) {
+        if ((target != null) && mapView.isVisible(target.x, target.y)) {
             mapView.drawCircle(graphics, Color.RED, target.x, target.y);
         }
 
         // draw effects
         for (DungeonEffect effect : gs.getCurrentMap().effects) {
             for (DungeonEffect.ImageLoc imageLoc : effect.imageLocs) {
-                if (gs.party.selectedActor.canSeeLocation(gs, imageLoc.loc)) {
+                if (mapView.isVisible(imageLoc.loc.x, imageLoc.loc.y) && gs.party.selectedActor.canSeeLocation(gs, imageLoc.loc)) {
                     mapView.drawTile(graphics, imageLoc.imageName, imageLoc.loc.x, imageLoc.loc.y, ImageController.DrawMode.NORMAL);
                 }
             }
