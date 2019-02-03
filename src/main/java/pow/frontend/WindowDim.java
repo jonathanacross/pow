@@ -14,9 +14,4 @@ public class WindowDim {
         this.height = height;
     }
 
-    public static WindowDim center(int windowWidth, int windowHeight, int screenWidth, int screenHeight) {
-        int x = (screenWidth - windowWidth) / 2;
-        int y = (screenHeight - windowHeight) / 3; // don't vertically center perfectly; weight toward the top
-        return new WindowDim(x, y, windowWidth, windowHeight);
-    }
 }

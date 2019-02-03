@@ -21,14 +21,11 @@ public abstract class AbstractWindow {
         this.frontend = frontend;
     }
 
-    public void resize(int width, int height) {
-        this.dim.width = width;
-        this.dim.height = height;
-    }
-
-    public void move(int x, int y) {
-        this.dim.x = x;
-        this.dim.y = y;
+    public void resize(WindowDim dim) {
+        this.dim.x = dim.x;
+        this.dim.y = dim.y;
+        this.dim.width = dim.width;
+        this.dim.height = dim.height;
     }
 
     // to be filled out by subclasses

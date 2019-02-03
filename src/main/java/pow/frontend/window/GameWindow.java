@@ -13,7 +13,7 @@ import java.util.Iterator;
 public class GameWindow extends AbstractWindow {
 
     private final Deque<AbstractWindow> layers;
-    public final int MESSAGE_BAR_HEIGHT = 40;  // height of the info bar at the bottom.
+    public static final int MESSAGE_BAR_HEIGHT = 40;  // height of the info bar at the bottom.
 
     public GameWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);

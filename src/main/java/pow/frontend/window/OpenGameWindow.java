@@ -4,6 +4,7 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
+import pow.frontend.WindowLayout;
 import pow.frontend.utils.SaveUtils;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.KeyUtils;
@@ -69,7 +70,7 @@ public class OpenGameWindow extends AbstractWindow {
                     } catch (InvalidClassException ex) {
                         // May happen if the GameState has a different serialVersionUID if
                         // E.g., from code updates.  Alert the user that we can't open this.
-                        WindowDim dim = WindowDim.center(550, 40, frontend.width, frontend.height);
+                        WindowDim dim = this.frontend.layout.center(550, 40);
                         frontend.open(new NotificationWindow(dim, true, this.backend, this.frontend,
                                 "This file was created with an older version of PoW, and cannot be opened."));
                     } catch (Exception ex) {

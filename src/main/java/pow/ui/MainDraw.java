@@ -26,7 +26,7 @@ public class MainDraw extends JPanel implements Observer, ComponentListener {
 
     private Image dbImage = null;
     public static final int PANEL_WIDTH = 1200;
-    public static final int PANEL_HEIGHT = 740;
+    public static final int PANEL_HEIGHT = 745;
 
     private final Frontend frontend;
     private final Queue<KeyEvent> keyEventQueue;

@@ -6,8 +6,7 @@ import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -25,8 +24,7 @@ public class WelcomeWindow extends AbstractWindow {
         splashImage = ImageController.getSplashScreenImage();
         int width = splashImage.getWidth();
         int height = splashImage.getHeight();
-        this.dim = WindowDim.center(width + 2*Style.SMALL_MARGIN, height + 2* Style.SMALL_MARGIN,
-                this.frontend.width, this.frontend.height);
+        this.dim = this.frontend.layout.center(width + 2 * Style.SMALL_MARGIN, height + 2 * Style.SMALL_MARGIN);
     }
 
     @Override
