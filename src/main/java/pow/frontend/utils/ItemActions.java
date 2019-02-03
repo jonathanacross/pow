@@ -21,8 +21,9 @@ public class ItemActions {
         DROP("Drop"),
         DROP_EQUIPMENT("Drop"),
         WEAR("Wear"),
-        TAKE_OFF("Take Off"),
-        QUAFF("Quaff"),
+        TAKE_OFF("Take off"),
+        QUAFF("Drink"),
+        FEED("Feed to pet"),
         FIRE("Fire");
        // GIVE("Give")
 
@@ -57,6 +58,10 @@ public class ItemActions {
 
     private static boolean canQuaff(DungeonItem item) {
         return item.flags.potion;
+    }
+
+    private static boolean canFeedPet(DungeonItem item, GameState gameState) {
+        return (gameState.party.pet != null) && item.flags.potion;
     }
 
     private static boolean canFire(DungeonItem item, GameState gameState, ItemLocation location) {
@@ -104,6 +109,9 @@ public class ItemActions {
         }
         if (canTakeOff(location)) {
             actions.add(Action.TAKE_OFF);
+        }
+        if (canFeedPet(item, gameState)) {
+            actions.add(Action.FEED);
         }
 //        if (canGive(gameState, location)) {
 //            actions.add(Action.GIVE);

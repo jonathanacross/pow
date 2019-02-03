@@ -13,39 +13,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Quaff implements Action {
-    private final Actor actor;
+public class FeedPet implements Action {
+    private final Actor player;
+    private final Actor pet;
     private final ItemList itemList;
     private final int itemIdx;
 
-    public Quaff(Actor actor, ItemList itemList, int itemIdx) {
-        this.actor = actor;
+    public FeedPet(Actor player, Actor pet, ItemList itemList, int itemIdx) {
+        this.player = player;
+        this.pet = pet;
         this.itemList = itemList;
         this.itemIdx = itemIdx;
     }
 
     @Override
     public Actor getActor() {
-        return this.actor;
+        return this.player;
     }
 
     @Override
     public ActionResult process(GameBackend backend) {
         DungeonItem item = itemList.items.get(itemIdx);
         if (!item.flags.potion) {
-            DebugLogger.fatal(new RuntimeException(actor.getNoun() + " tried to quaff a non-potion, " + item.name));
+            DebugLogger.fatal(new RuntimeException(player.getNoun() + " tried to feed a non-potion, " + item.name));
             return ActionResult.failed();
         }
 
-        backend.logMessage(actor.getNoun() + " quaffs " + TextUtils.format(item.name, 1, false),
+        backend.logMessage(player.getNoun() + " feeds " + TextUtils.format(item.name, 1, false)
+                        + " to " + pet.getNoun(),
                 MessageLog.MessageType.GENERAL);
         itemList.removeOneItemAt(itemIdx);
 
         // get the real action from the potion and do it
-        Action action = ActionParams.buildAction(this.actor, item.actionParams);
+        Action action = ActionParams.buildAction(this.pet, item.actionParams);
         List<Action> subactions = new ArrayList<>();
         subactions.add(action);
-        subactions.add(new CompletedAction(actor));
+        subactions.add(new CompletedAction(player));
         return ActionResult.failed(subactions);
     }
 

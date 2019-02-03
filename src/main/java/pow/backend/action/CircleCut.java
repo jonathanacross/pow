@@ -58,12 +58,11 @@ public class CircleCut implements Action {
 
         // clear out last effect.
         subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
-        subactions.add(new CompletedAction(attacker));
         return ActionResult.failed(subactions);
     }
 
     @Override
-    public boolean consumesEnergy() { return true; }
+    public boolean consumesEnergy() { return false; }
 
     private List<Point> getHitSquares(int x, int y, Direction dir, int size, Set<Point> fovSquares) {
         List<Point> squares = new ArrayList<>();

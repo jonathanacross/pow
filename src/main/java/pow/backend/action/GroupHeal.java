@@ -38,7 +38,7 @@ public class GroupHeal implements Action {
     }
 
     @Override
-    public boolean consumesEnergy() { return true; }
+    public boolean consumesEnergy() { return false; }
 
     private void healOne(Player player, int amount, GameBackend backend) {
         int desiredHealAmount = Math.max((int)Math.round(actor.getMaxHealth() * 0.01 * amount), amount);

@@ -5,6 +5,9 @@ import pow.backend.MessageLog;
 import pow.backend.SpellParams;
 import pow.backend.actors.Actor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SpellAction implements Action {
 
     private final Action action;
@@ -27,11 +30,15 @@ public class SpellAction implements Action {
         // Use the mana, then requeue the actual spell action.
         actor.useMana(params.requiredMana);
         backend.logMessage(params.getCastMessage(actor), MessageLog.MessageType.COMBAT_NEUTRAL);
-        return ActionResult.failed(action);
+
+        List<Action> subactions = new ArrayList<>();
+        subactions.add(action);
+        subactions.add(new CompletedAction(actor));
+        return ActionResult.failed(subactions);
     }
 
     @Override
-    public boolean consumesEnergy() { return true; }
+    public boolean consumesEnergy() { return false; }
 
     @Override
     public Actor getActor() {

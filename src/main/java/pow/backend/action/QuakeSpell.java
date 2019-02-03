@@ -49,13 +49,12 @@ public class QuakeSpell implements Action {
 
         // clear out last effect.
         subactions.add(new ShowEffect(new DungeonEffect(Collections.emptyList())));
-        subactions.add(new CompletedAction(actor));
         return ActionResult.failed(subactions);
     }
 
     @Override
     public boolean consumesEnergy() {
-        return true;
+        return false;
     }
 
     @Override
