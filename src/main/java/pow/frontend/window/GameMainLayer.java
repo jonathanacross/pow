@@ -16,7 +16,6 @@ import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
 import pow.frontend.Style;
-import pow.frontend.WindowDim;
 import pow.frontend.utils.*;
 import pow.util.Direction;
 import pow.util.Point;
@@ -96,7 +95,7 @@ public class GameMainLayer extends AbstractWindow {
         }
         Point loc = gs.party.selectedActor.loc;
         ItemList items = gs.getCurrentMap().map[loc.x][loc.y].items;
-        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Ground:",
+        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Ground:",
                 items, ItemActions.ItemLocation.GROUND));
     }
 
@@ -105,7 +104,7 @@ public class GameMainLayer extends AbstractWindow {
             backend.logMessage(gs.party.pet.getNoun() + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
-        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Inventory:",
+        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Inventory:",
                        gs.party.selectedActor.inventory, ItemActions.ItemLocation.INVENTORY));
     }
 
@@ -114,19 +113,19 @@ public class GameMainLayer extends AbstractWindow {
             backend.logMessage(gs.party.pet.getNoun() + " cannot wear/wield items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
-        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Equipment:",
+        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Equipment:",
                 gs.party.selectedActor.equipment, ItemActions.ItemLocation.EQUIPMENT));
     }
 
     private void showPetInventory(GameState gs) {
         backend.logMessage(gs.party.pet.getNoun() + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
-        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Pet:",
+        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Pet:",
                 gs.party.pet.inventory, ItemActions.ItemLocation.PET));
     }
 
     private void showKnowledge(GameState gs) {
         frontend.open(
-                new KnowledgeWindow(new WindowDim(210, 5, 672, 712), true, this.backend, this.frontend,
+                new KnowledgeWindow(frontend.layout.getCenterPaneDim(), true, this.backend, this.frontend,
                         gs.party.knowledge.getMonsterSummary()));
     }
 
@@ -326,7 +325,7 @@ public class GameMainLayer extends AbstractWindow {
             case AUTO_PLAY: tryAutoplayOptions(gs); break;
             //case SELECT_CHARACTER: backend.tellSelectedActor(new SelectNextCharacter()); break;
             //case DROP: tryDrop(gs); break;
-            case GET: tryPickup(gs); break;
+            //case GET: tryPickup(gs); break;
             case FIRE: tryFire(gs); break;
             case MAGIC: tryCastSpell(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;

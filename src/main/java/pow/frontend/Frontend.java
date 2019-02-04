@@ -290,7 +290,7 @@ public class Frontend {
         }
         openPortals.sort(Comparator.comparing((PortalChoiceWindow.AreaNameAndId p) -> p.name));
 
-        open(new PortalChoiceWindow(300, 150,
+        open(new PortalChoiceWindow(
                 gameBackend, this,
                 "Which area do you wish to go to?",
                 openPortals,

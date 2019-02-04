@@ -69,7 +69,10 @@ public class KnowledgeWindow extends AbstractWindow {
         graphics.drawString("Name", nameX, y);
         graphics.drawString("Killed", killedX, y);
 
-        int numViewableMonsters = 18; // must be even
+        // compute the number of monsters we can show given the window size
+        // Note that the number must be even.
+        int numViewableMonsters = ((dim.height - 75) / (2*Style.TILE_SIZE)) * 2;
+
         int minIndex = 0;
         int maxIndex = monsterSummary.size();
         if (monsterSummary.size() > numViewableMonsters) {
