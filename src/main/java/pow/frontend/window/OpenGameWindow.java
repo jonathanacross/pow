@@ -69,7 +69,7 @@ public class OpenGameWindow extends AbstractWindow {
                     } catch (InvalidClassException ex) {
                         // May happen if the GameState has a different serialVersionUID if
                         // E.g., from code updates.  Alert the user that we can't open this.
-                        WindowDim dim = WindowDim.center(550, 40, frontend.width, frontend.height);
+                        WindowDim dim = this.frontend.layout.center(550, 40);
                         frontend.open(new NotificationWindow(dim, true, this.backend, this.frontend,
                                 "This file was created with an older version of PoW, and cannot be opened."));
                     } catch (Exception ex) {
@@ -82,7 +82,7 @@ public class OpenGameWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         graphics.setFont(Style.getDefaultFont());

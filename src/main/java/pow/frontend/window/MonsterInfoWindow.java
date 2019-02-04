@@ -5,6 +5,7 @@ import pow.backend.actors.Actor;
 import pow.backend.actors.Knowledge;
 import pow.backend.actors.Player;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.MonsterDisplay;
 import pow.util.Point;
@@ -39,7 +40,7 @@ public class MonsterInfoWindow extends AbstractWindow {
         Knowledge.MonsterSummary monsterSummary = new Knowledge.MonsterSummary(actor);
 
         // actual drawing here
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         MonsterDisplay.drawMonsterInfo(

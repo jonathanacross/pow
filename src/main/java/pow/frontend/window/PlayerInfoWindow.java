@@ -65,7 +65,7 @@ public class PlayerInfoWindow extends AbstractWindow {
     }
 
     private void drawMainInfo(Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
         graphics.setFont(Style.getDefaultFont());
 
@@ -171,7 +171,7 @@ public class PlayerInfoWindow extends AbstractWindow {
     }
 
     private void drawStatsInfo(Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         Player player = backend.getGameState().party.player;

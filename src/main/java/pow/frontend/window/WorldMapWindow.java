@@ -6,6 +6,7 @@ import pow.backend.GameState;
 import pow.backend.dungeon.gen.worldgen.MapTopologySummary;
 import pow.backend.dungeon.gen.worldgen.SpacialConnection;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.util.Point3D;
 
@@ -53,7 +54,7 @@ public class WorldMapWindow extends AbstractWindow {
         extractDimensions();
         extractRoomStatuses();
 
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         GameState gs = backend.getGameState();

@@ -11,11 +11,6 @@ public class Point implements Serializable {
         this.y = y;
     }
 
-    public void shiftBy(Point other) {
-        this.x += other.x;
-        this.y += other.y;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

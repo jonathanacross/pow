@@ -2,6 +2,7 @@ package pow.frontend.window;
 
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
+import pow.frontend.Style;
 import pow.frontend.WindowDim;
 
 import java.awt.Color;
@@ -21,14 +22,11 @@ public abstract class AbstractWindow {
         this.frontend = frontend;
     }
 
-    public void resize(int width, int height) {
-        this.dim.width = width;
-        this.dim.height = height;
-    }
-
-    public void move(int x, int y) {
-        this.dim.x = x;
-        this.dim.y = y;
+    public void resize(WindowDim dim) {
+        this.dim.x = dim.x;
+        this.dim.y = dim.y;
+        this.dim.width = dim.width;
+        this.dim.height = dim.height;
     }
 
     // to be filled out by subclasses
@@ -38,7 +36,7 @@ public abstract class AbstractWindow {
 
     private void drawFrame(Graphics graphics) {
         int margin = 1;
-        graphics.setColor(Color.DARK_GRAY);
+        graphics.setColor(Style.WINDOW_FRAME_COLOR);
         graphics.drawRect(dim.x - margin, dim.y - margin, dim.width + margin, dim.height + margin);
     }
 

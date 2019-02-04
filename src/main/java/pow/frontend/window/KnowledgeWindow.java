@@ -53,7 +53,7 @@ public class KnowledgeWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         graphics.setColor(Color.WHITE);
@@ -69,7 +69,10 @@ public class KnowledgeWindow extends AbstractWindow {
         graphics.drawString("Name", nameX, y);
         graphics.drawString("Killed", killedX, y);
 
-        int numViewableMonsters = 18; // must be even
+        // compute the number of monsters we can show given the window size
+        // Note that the number must be even.
+        int numViewableMonsters = ((dim.height - 75) / (2*Style.TILE_SIZE)) * 2;
+
         int minIndex = 0;
         int maxIndex = monsterSummary.size();
         if (monsterSummary.size() > numViewableMonsters) {
@@ -82,12 +85,14 @@ public class KnowledgeWindow extends AbstractWindow {
         // draw scrollbar
         int sbTop = 60;
         int sbLeft = 295;
-        int sbHeight = numViewableMonsters * Style.TILE_SIZE;
-        int centerTop = sbHeight * minIndex / monsterSummary.size();
-        int centerBottom = sbHeight * maxIndex / monsterSummary.size();
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
-        graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
+        if (monsterSummary.size() > 0) {
+            int sbHeight = numViewableMonsters * Style.TILE_SIZE;
+            int centerTop = sbHeight * minIndex / monsterSummary.size();
+            int centerBottom = sbHeight * maxIndex / monsterSummary.size();
+            graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+            graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
+            graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
+        }
 
         // underline the header
         graphics.setColor(Style.SEPARATOR_LINE_COLOR);

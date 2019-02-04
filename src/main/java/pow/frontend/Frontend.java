@@ -24,6 +24,7 @@ import java.util.*;
 public class Frontend {
 
     private final Deque<AbstractWindow> windows;
+    public final WindowLayout layout;
 
     public int width;
     public int height;
@@ -63,24 +64,26 @@ public class Frontend {
         this.keyEvents = new ArrayDeque<>();
         this.events = new ArrayList<>();
 
+        this.layout = new WindowLayout(width, height);
+
         gameBackend = new GameBackend();
         // dialogs
-        welcomeWindow = new WelcomeWindow(WindowDim.center(600, 600, this.width, this.height), true, gameBackend, this);
-        winWindow = new WinWindow(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
-        win2Window = new Win2Window(WindowDim.center(580, 200, this.width, this.height), true, gameBackend, this);
-        loseWindow = new LoseWindow(WindowDim.center(480, 200, this.width, this.height), true, gameBackend, this);
-        autoplayOptionWindow = new AutoplayOptionWindow(WindowDim.center(210, 160, this.width, this.height), gameBackend, this);
-        openGameWindow = new OpenGameWindow(WindowDim.center(460, 300, this.width, this.height), true, gameBackend, this);
+        welcomeWindow = new WelcomeWindow(layout.center(600, 600), true, gameBackend, this);
+        winWindow = new WinWindow(layout.center(580, 200), true, gameBackend, this);
+        win2Window = new Win2Window(layout.center(580, 200), true, gameBackend, this);
+        loseWindow = new LoseWindow(layout.center(480, 200), true, gameBackend, this);
+        autoplayOptionWindow = new AutoplayOptionWindow(layout.center(210, 160), gameBackend, this);
+        openGameWindow = new OpenGameWindow(layout.center(490, 300), true, gameBackend, this);
         // main game
-        statusWindow = new StatusWindow(new WindowDim(5, 5, 200, 707), true, gameBackend, this);
-        gameWindow = new GameWindow(new WindowDim(210, 5, 672, 672 + 40), true, gameBackend, this);
-        mapWindow = new MapWindow(new WindowDim(887, 5, 300, 250), true, gameBackend, this);
-        logWindow = new LogWindow(new WindowDim(887, 260, 300, 452), true, gameBackend, this);
+        statusWindow = new StatusWindow(layout.getStatusPaneDim(), true, gameBackend, this);
+        gameWindow = new GameWindow(layout.getCenterPaneDim(), true, gameBackend, this);
+        mapWindow = new MapWindow(layout.getMapPaneDim(), true, gameBackend, this);
+        logWindow = new LogWindow(layout.getLogPaneDim(), true, gameBackend, this);
         // popups in main game
-        monsterInfoWindow = new MonsterInfoWindow(new WindowDim(887, 260,300,452), false, gameBackend, this);
-        playerInfoWindow = new PlayerInfoWindow(WindowDim.center(668, 470, this.width, this.height), true, gameBackend, this);
-        worldMapWindow = new WorldMapWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
-        helpWindow = new HelpWindow(new WindowDim(210, 5,672,672), true, gameBackend, this);
+        monsterInfoWindow = new MonsterInfoWindow(layout.getLogPaneDim(), false, gameBackend, this);
+        playerInfoWindow = new PlayerInfoWindow(layout.center(668, 470), true, gameBackend, this);
+        worldMapWindow = new WorldMapWindow(layout.getCenterPaneDim(), true, gameBackend, this);
+        helpWindow = new HelpWindow(layout.getCenterPaneDim(), true, gameBackend, this);
 
         windows = new ArrayDeque<>();
         setState(State.WELCOME);
@@ -208,7 +211,7 @@ public class Frontend {
         }
 
         if (alreadyExists) {
-            WindowDim dim = WindowDim.center(600, 120, width, height);
+            WindowDim dim = layout.center(600, 120);
             open(new ConfirmWindow(dim, true, gameBackend, this,
                     "The character '" + data.name + "' already exists.  Do you want to overwrite it?",
                     "Overwrite", "Cancel",
@@ -221,7 +224,7 @@ public class Frontend {
     private void createMainCharacter() {
         gameBackend.setGameInProgress(false);
         SelectCharWindow createCharWindow = new SelectCharWindow(
-                WindowDim.center(490, 280, this.width, this.height),
+                layout.center(490, 300),
                 gameBackend, this,
                 Collections.singletonList("Select your character:"), false,
                 this::tryToStartNewGame, () -> setState(Frontend.State.OPEN_GAME));
@@ -230,7 +233,7 @@ public class Frontend {
 
     private void choosePet() {
         SelectCharWindow createCharWindow = new SelectCharWindow(
-                WindowDim.center(490, 300, this.width, this.height),
+                layout.center(490, 300),
                 gameBackend, this,
                 Arrays.asList("Congratulations, you got a pet!", "Select your character:"), true,
                 (data) -> {
@@ -248,7 +251,7 @@ public class Frontend {
         List<ShopData.ShopEntry> entries;
         switch (shopData.state) {
             case INN:
-                dim = WindowDim.center(600, 120, width, height);
+                dim = layout.center(600, 120);
                 int cost = shopData.innCost;
                 open(new ConfirmWindow(dim, true, gameBackend, this,
                         "Do you want to rest at the inn? It costs " + cost + " gold.",
@@ -256,17 +259,17 @@ public class Frontend {
                         () -> gameBackend.tellSelectedActor(new RestAtInn())));
                 break;
             case WEAPON_SHOP:
-                dim = WindowDim.center(400, 520, width, height);
+                dim = layout.center(400, 520);
                 entries = shopData.weaponItems;
                 open(new ShopWindow(dim, true, gameBackend, this, entries));
                 break;
             case MAGIC_SHOP:
-                dim = WindowDim.center(400, 520, width, height);
+                dim = layout.center(400, 520);
                 entries = shopData.magicItems;
                 open(new ShopWindow(dim, true, gameBackend, this, entries));
                 break;
             case JEWELER_SHOP:
-                dim = WindowDim.center(650, 550, width, height);
+                dim = layout.center(650, 550);
                 open(new JewelerShopWindow(dim, true, gameBackend, this,
                         (UpgradeItem.UpgradeInfo i) -> gameBackend.tellSelectedActor(new UpgradeItem(i))));
                 break;
@@ -287,16 +290,13 @@ public class Frontend {
         }
         openPortals.sort(Comparator.comparing((PortalChoiceWindow.AreaNameAndId p) -> p.name));
 
-        open(new PortalChoiceWindow(300, 150,
+        open(new PortalChoiceWindow(
                 gameBackend, this,
                 "Which area do you wish to go to?",
                 openPortals,
                 (String areaId) -> gameBackend.tellSelectedActor(new ExitPortal(gameBackend.getGameState().party.player, areaId))
         ));
     }
-
-
-    private static final Color BACKGROUND_COLOR = Color.BLACK;
 
     public void draw(Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D) graphics;
@@ -310,7 +310,7 @@ public class Frontend {
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        graphics.setColor(BACKGROUND_COLOR);
+        graphics.setColor(Style.DESKTOP_COLOR);
         graphics.fillRect(0, 0, width, height);
         // draw back to front
         Iterator<AbstractWindow> i = windows.descendingIterator();
@@ -322,5 +322,12 @@ public class Frontend {
     public void resize(int width, int height) {
         this.width = width;
         this.height = height;
+        this.layout.setScreenSize(width, height);
+
+        this.statusWindow.resize(layout.getStatusPaneDim());
+        this.gameWindow.resize(layout.getCenterPaneDim());
+        this.helpWindow.resize(layout.getCenterPaneDim());
+        this.mapWindow.resize(layout.getMapPaneDim());
+        this.logWindow.resize(layout.getLogPaneDim());
     }
 }

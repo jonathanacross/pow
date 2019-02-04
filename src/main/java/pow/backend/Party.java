@@ -16,7 +16,7 @@ public class Party implements Serializable {
     public Player selectedActor;  // which actor is the player controlling?
     public final Artifacts artifacts;   // set of artifacts the party is carrying.
     public final Knowledge knowledge;
-    public List<DungeonItem> returnedPearls;
+    public final List<DungeonItem> returnedPearls;
 
     public Party(Player player) {
         addPlayer(player);

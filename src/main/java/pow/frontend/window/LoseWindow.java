@@ -8,8 +8,7 @@ import pow.frontend.utils.ImageController;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
@@ -22,8 +21,7 @@ public class LoseWindow extends AbstractWindow {
         splashImage = ImageController.getGameOverImage();
         int width = splashImage.getWidth();
         int height = splashImage.getHeight();
-        this.dim = WindowDim.center(width + 2* Style.SMALL_MARGIN, height + 2*Style.SMALL_MARGIN,
-                this.frontend.width, this.frontend.height);
+        this.dim = this.frontend.layout.center(width + 2 * Style.SMALL_MARGIN, height + 2 * Style.SMALL_MARGIN);
     }
 
     @Override
@@ -36,7 +34,7 @@ public class LoseWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
         graphics.drawImage(splashImage, Style.SMALL_MARGIN, Style.SMALL_MARGIN, null);
 

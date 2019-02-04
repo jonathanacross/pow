@@ -16,7 +16,6 @@ import pow.backend.behavior.RunBehavior;
 import pow.backend.dungeon.*;
 import pow.backend.dungeon.gen.FeatureData;
 import pow.frontend.Style;
-import pow.frontend.WindowDim;
 import pow.frontend.utils.*;
 import pow.util.Direction;
 import pow.util.Point;
@@ -96,7 +95,7 @@ public class GameMainLayer extends AbstractWindow {
         }
         Point loc = gs.party.selectedActor.loc;
         ItemList items = gs.getCurrentMap().map[loc.x][loc.y].items;
-        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Ground:",
+        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Ground:",
                 items, ItemActions.ItemLocation.GROUND));
     }
 
@@ -105,7 +104,7 @@ public class GameMainLayer extends AbstractWindow {
             backend.logMessage(gs.party.pet.getNoun() + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
-        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Inventory:",
+        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Inventory:",
                        gs.party.selectedActor.inventory, ItemActions.ItemLocation.INVENTORY));
     }
 
@@ -114,19 +113,19 @@ public class GameMainLayer extends AbstractWindow {
             backend.logMessage(gs.party.pet.getNoun() + " cannot wear/wield items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
-        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Equipment:",
+        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Equipment:",
                 gs.party.selectedActor.equipment, ItemActions.ItemLocation.EQUIPMENT));
     }
 
     private void showPetInventory(GameState gs) {
         backend.logMessage(gs.party.pet.getNoun() + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
-        frontend.open(new ItemActionWindow(300, 15, this.backend, this.frontend, "Pet:",
+        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Pet:",
                 gs.party.pet.inventory, ItemActions.ItemLocation.PET));
     }
 
     private void showKnowledge(GameState gs) {
         frontend.open(
-                new KnowledgeWindow(new WindowDim(210, 5, 672, 672), true, this.backend, this.frontend,
+                new KnowledgeWindow(frontend.layout.getCenterPaneDim(), true, this.backend, this.frontend,
                         gs.party.knowledge.getMonsterSummary()));
     }
 
@@ -326,7 +325,7 @@ public class GameMainLayer extends AbstractWindow {
             case AUTO_PLAY: tryAutoplayOptions(gs); break;
             //case SELECT_CHARACTER: backend.tellSelectedActor(new SelectNextCharacter()); break;
             //case DROP: tryDrop(gs); break;
-            case GET: tryPickup(gs); break;
+            //case GET: tryPickup(gs); break;
             case FIRE: tryFire(gs); break;
             case MAGIC: tryCastSpell(gs); break;
             case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
@@ -381,10 +380,12 @@ public class GameMainLayer extends AbstractWindow {
     @Override
     public void drawContents(Graphics graphics) {
         GameState gs = backend.getGameState();
-        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, backend.getGameState());
+        MapView mapView = new MapView(dim.width, dim.height - GameWindow.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, backend.getGameState());
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
+        graphics.setColor(Style.BACKGROUND_COLOR);
+        graphics.fillRect(0, dim.height - GameWindow.MESSAGE_BAR_HEIGHT, dim.width, GameWindow.MESSAGE_BAR_HEIGHT);
 
         // draw the map
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
@@ -411,7 +412,8 @@ public class GameMainLayer extends AbstractWindow {
             petTarget = PetAi.getPrimaryTarget(pet, gs);
         }
         for (Actor actor : gs.getCurrentMap().actors) {
-            if (gs.party.selectedActor.canSeeLocation(gs, actor.loc) && gs.party.selectedActor.canSeeActor(actor)) {
+            if (mapView.isVisible(actor.loc.x, actor.loc.y) &&
+                    gs.party.selectedActor.canSeeLocation(gs, actor.loc) && gs.party.selectedActor.canSeeActor(actor)) {
                 if (this.showPetAi && pet != null) {
                     // show how dangerous this is to the pet.
                     if (actor != pet) {
@@ -441,14 +443,14 @@ public class GameMainLayer extends AbstractWindow {
 
         // draw player targets
         Point target = gs.party.selectedActor.getTarget();
-        if (target != null) {
+        if ((target != null) && mapView.isVisible(target.x, target.y)) {
             mapView.drawCircle(graphics, Color.RED, target.x, target.y);
         }
 
         // draw effects
         for (DungeonEffect effect : gs.getCurrentMap().effects) {
             for (DungeonEffect.ImageLoc imageLoc : effect.imageLocs) {
-                if (gs.party.selectedActor.canSeeLocation(gs, imageLoc.loc)) {
+                if (mapView.isVisible(imageLoc.loc.x, imageLoc.loc.y) && gs.party.selectedActor.canSeeLocation(gs, imageLoc.loc)) {
                     mapView.drawTile(graphics, imageLoc.imageName, imageLoc.loc.x, imageLoc.loc.y, ImageController.DrawMode.NORMAL);
                 }
             }
@@ -509,7 +511,7 @@ public class GameMainLayer extends AbstractWindow {
 
         // draw line at the bottom
         graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        int lineHeight = dim.height - parent.MESSAGE_BAR_HEIGHT;
+        int lineHeight = dim.height - GameWindow.MESSAGE_BAR_HEIGHT;
         graphics.drawLine(0, lineHeight, dim.width, lineHeight);
     }
 
@@ -565,7 +567,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startLooking(GameState gameState) {
-        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height - GameWindow.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getLookTargets(gameState, mapView);
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.LOOK, Point -> {}));
     }
@@ -589,7 +591,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startFloorTargeting(GameState gameState) {
-        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height - GameWindow.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getFloorTargets(gameState, mapView);
         if (targetableSquares.isEmpty()) {
             backend.logMessage("you can't see anything!", MessageLog.MessageType.USER_ERROR);

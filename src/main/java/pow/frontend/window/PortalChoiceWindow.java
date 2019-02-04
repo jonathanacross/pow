@@ -3,7 +3,6 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
-import pow.frontend.WindowDim;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -26,11 +25,11 @@ public class PortalChoiceWindow extends AbstractWindow {
     private final List<AreaNameAndId> areas;
     private final Consumer<String> callback;
 
-    public PortalChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
+    public PortalChoiceWindow(GameBackend backend, Frontend frontend,
                               String message,
                               List<AreaNameAndId> areas,
                               Consumer<String> callback) {
-        super( new WindowDim(x, y, 300, 70 + Style.FONT_SIZE * areas.size()),
+        super(frontend.layout.center(300, 70 + Style.FONT_SIZE * areas.size()),
                 true, backend, frontend);
         this.message = message;
         this.areas = areas;
@@ -60,7 +59,7 @@ public class PortalChoiceWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         graphics.setFont(Style.getDefaultFont());
