@@ -298,9 +298,6 @@ public class Frontend {
         ));
     }
 
-
-    private static final Color BACKGROUND_COLOR = Color.BLACK;
-
     public void draw(Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.setRenderingHint(
@@ -313,7 +310,7 @@ public class Frontend {
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        graphics.setColor(BACKGROUND_COLOR);
+        graphics.setColor(Style.DESKTOP_COLOR);
         graphics.fillRect(0, 0, width, height);
         // draw back to front
         Iterator<AbstractWindow> i = windows.descendingIterator();

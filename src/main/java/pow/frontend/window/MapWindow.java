@@ -32,7 +32,7 @@ public class MapWindow extends AbstractWindow {
         GameState gs = backend.getGameState();
         MapView mapView = new MapView(dim.width, dim.height, Style.MAP_TILE_SIZE, backend.getGameState());
 
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         // draw the map

@@ -384,6 +384,8 @@ public class GameMainLayer extends AbstractWindow {
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
+        graphics.setColor(Style.BACKGROUND_COLOR);
+        graphics.fillRect(0, dim.height - GameWindow.MESSAGE_BAR_HEIGHT, dim.width, GameWindow.MESSAGE_BAR_HEIGHT);
 
         // draw the map
         for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {

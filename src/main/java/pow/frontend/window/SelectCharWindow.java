@@ -38,6 +38,7 @@ public class SelectCharWindow extends AbstractWindow {
     private final Runnable cancelCallback;
     private final List<String> messages;
     private final boolean showSpeed;
+    private final boolean allowCancel;
 
     public SelectCharWindow(WindowDim dim, GameBackend backend, Frontend frontend,
                             List<String> messages, boolean showPets,
@@ -53,6 +54,7 @@ public class SelectCharWindow extends AbstractWindow {
         this.successCallback = successCallback;
         this.cancelCallback = cancelCallback;
         this.showSpeed = showPets;  // only show speed stat for pets
+        this.allowCancel = !showPets;
     }
 
     private void processNameKey(KeyEvent e) {
@@ -185,7 +187,7 @@ public class SelectCharWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         graphics.setFont(Style.getDefaultFont());
@@ -215,9 +217,12 @@ public class SelectCharWindow extends AbstractWindow {
             drawCharData(graphics, characterData.get(charSelectId), Style.SMALL_MARGIN, y, showSpeed);
         }
 
+        String helpChooseString = allowCancel
+                ? "Press left/right to choose, [enter] to select, [esc] to cancel."
+                : "Press left/right to choose, [enter] to select.";
         String helpString = onName
                 ? "Press * for a random name, [enter] to select, [esc] to cancel."
-                : "Press left/right to choose, [enter] to select, [esc] to cancel.";
+                : helpChooseString;
         graphics.setColor(Color.WHITE);
         graphics.drawString(helpString, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }

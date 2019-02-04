@@ -29,9 +29,11 @@ public class Style {
     public static Font getDefaultFont() { return defaultFont; }
     public static Font getBigFont() { return bigFont; }
 
-    // Window placement
+    // Window appearance and colors.
     public static final int WINDOW_SPACING = 5;
 
-    // Colors
-    public static final Color SEPARATOR_LINE_COLOR = Color.DARK_GRAY;
+    public static final Color WINDOW_FRAME_COLOR = Color.DARK_GRAY;
+    public static final Color DESKTOP_COLOR = Color.BLACK;
+    public static final Color BACKGROUND_COLOR = new Color(20, 20, 20);
+    public static final Color SEPARATOR_LINE_COLOR = WINDOW_FRAME_COLOR;
 }

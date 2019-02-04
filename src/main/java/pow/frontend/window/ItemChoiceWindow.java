@@ -85,7 +85,7 @@ public class ItemChoiceWindow extends AbstractWindow {
         String currMessage = this.useSecondList ? this.altMessage : this.message;
         List<DungeonItem> currItems = this.useSecondList ? this.altItems : this.items;
 
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         graphics.setFont(Style.getDefaultFont());
