@@ -24,7 +24,7 @@ import java.util.*;
 public class Frontend {
 
     private final Deque<AbstractWindow> windows;
-    public WindowLayout layout;
+    public final WindowLayout layout;
 
     public int width;
     public int height;

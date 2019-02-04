@@ -380,7 +380,7 @@ public class GameMainLayer extends AbstractWindow {
     @Override
     public void drawContents(Graphics graphics) {
         GameState gs = backend.getGameState();
-        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, backend.getGameState());
+        MapView mapView = new MapView(dim.width, dim.height - GameWindow.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, backend.getGameState());
 
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, dim.width, dim.height);
@@ -509,7 +509,7 @@ public class GameMainLayer extends AbstractWindow {
 
         // draw line at the bottom
         graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        int lineHeight = dim.height - parent.MESSAGE_BAR_HEIGHT;
+        int lineHeight = dim.height - GameWindow.MESSAGE_BAR_HEIGHT;
         graphics.drawLine(0, lineHeight, dim.width, lineHeight);
     }
 
@@ -565,7 +565,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startLooking(GameState gameState) {
-        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height - GameWindow.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getLookTargets(gameState, mapView);
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.LOOK, Point -> {}));
     }
@@ -589,7 +589,7 @@ public class GameMainLayer extends AbstractWindow {
     }
 
     private void startFloorTargeting(GameState gameState) {
-        MapView mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
+        MapView mapView = new MapView(dim.width, dim.height - GameWindow.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gameState);
         List<Point> targetableSquares = Targeting.getFloorTargets(gameState, mapView);
         if (targetableSquares.isEmpty()) {
             backend.logMessage("you can't see anything!", MessageLog.MessageType.USER_ERROR);

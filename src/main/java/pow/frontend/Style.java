@@ -30,7 +30,7 @@ public class Style {
     public static Font getBigFont() { return bigFont; }
 
     // Window placement
-    public static int WINDOW_SPACING = 5;
+    public static final int WINDOW_SPACING = 5;
 
     // Colors
     public static final Color SEPARATOR_LINE_COLOR = Color.DARK_GRAY;

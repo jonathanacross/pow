@@ -40,7 +40,7 @@ cloak	& cloak~	cloak	cloak	cloak				1	30	1	1	1	def:x
 fur cloak	& fur cloak~	fur cloak	fur cloak	cloak				31	60	2	3	1	def:x,cold:1
 shadow cloak	& shadow cloak~	blue cloak	shadow cloak	cloak				61	90	3	5	1	def:x,dex:1
 wizard cloak	& wizard cloak~	purple cloak	wizard cloak	cloak				61	90	3	6	1	def:x,int:1
-etherial cloak	& etherial cloak~	light blue cloak	etherial cloak	cloak				71	90	4	7	1	def:x,dex:1,acid:1
+ethereal cloak	& ethereal cloak~	light blue cloak	ethereal cloak	cloak				71	90	4	7	1	def:x,dex:1,acid:1
 # shields													
 small wood shield	& small wood shield~	leather shield	small wood shield	shield				1	30	1	2	1	def:x
 large wood shield	& large wood shield~	large shield	large wood shield	shield				11	50	2	4	1	def:x

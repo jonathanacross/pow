@@ -2,7 +2,6 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
-import pow.backend.MessageLog;
 import pow.backend.SpellParams;
 import pow.backend.utils.AttackUtils;
 import pow.backend.utils.SpellUtils;

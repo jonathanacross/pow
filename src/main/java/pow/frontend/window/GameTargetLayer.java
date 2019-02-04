@@ -45,7 +45,7 @@ public class GameTargetLayer extends AbstractWindow {
         this.mode = mode;
         this.callback = callback;
         GameState gs = backend.getGameState();
-        mapView = new MapView(dim.width, dim.height - parent.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gs);
+        mapView = new MapView(dim.width, dim.height - GameWindow.MESSAGE_BAR_HEIGHT, ImageController.TILE_SIZE, gs);
 
         lookMessage = "";
         helpMessage = "";

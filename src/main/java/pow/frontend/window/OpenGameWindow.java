@@ -4,7 +4,6 @@ import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
-import pow.frontend.WindowLayout;
 import pow.frontend.utils.SaveUtils;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.KeyUtils;
