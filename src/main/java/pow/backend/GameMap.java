@@ -117,7 +117,9 @@ public class GameMap implements Serializable {
             addBrightness(source);
         }
         addBrightness(player);
-        addBrightness(pet);
+        if (pet != null && this.actors.contains(pet)) {
+            addBrightness(pet);
+        }
     }
 
     public GameMap(String id,
@@ -178,7 +180,7 @@ public class GameMap implements Serializable {
 
     private void updateSeenLocationsAndMonsters(Player player, Player pet) {
         updateSeenLocationsAndMonsters(player);
-        if (pet != null) {
+        if (pet != null && this.actors.contains(pet)) {
             updateSeenLocationsAndMonsters(pet);
         }
     }
