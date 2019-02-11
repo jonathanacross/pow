@@ -18,9 +18,9 @@ import java.util.Set;
 
 public class WorldMapWindow extends AbstractWindow {
 
-    private static final Color UNSEEN_FILL_COLOR = Color.BLACK;
+    private static final Color UNSEEN_FILL_COLOR = Style.BACKGROUND_COLOR;
     private static final Color UNSEEN_EDGE_COLOR =
-            GameConstants.PLAYER_CAN_SEE_UNKNOWN_AREAS ? Color.DARK_GRAY : Color.BLACK;
+            GameConstants.PLAYER_CAN_SEE_UNKNOWN_AREAS ? Color.DARK_GRAY : Style.BACKGROUND_COLOR;
     private static final Color VISITED_FILL_COLOR = Color.DARK_GRAY;
     private static final Color VISITED_EDGE_COLOR = Color.GRAY;
     private static final Color ACTIVE_FILL_COLOR = Color.ORANGE;
