@@ -1,5 +1,5 @@
 # id	# name	image	description	artifact slot
-# main dungeon items
+# main dungeon items				
 lantern	lantern	lantern	It provides a warm glow around you.	lantern
 magic key	magic key	magic key	It allows you to open locked doors.	key
 water float	water float	float	It allows you to swim in water.	float
@@ -9,7 +9,7 @@ magic pickaxe	magic pickaxe	magic pickaxe	It allows you to dig through some wall
 heat suit	heat suit	heat suit	It protects you from the radiant heat of volcanos.	heatsuit
 x-ray scope	x-ray scope	x-ray scope	It allows you to see hidden traps.	xrayscope
 # optional items				
-pet statue	pet statue	magic statue	It is a bronze statue of a cat.	petstatue
+pet statue	pet statue	magic statue	It is a pewter statue of a cat.	petstatue
 magic atlas	magic atlas	magic atlas	It shows a map of the world (press M).	map
 portal key	portal key	portal key	It is a silver key with a shimmering jewel etched in the shape of a spiral.	portalkey
 magic bag	magic bag	bag	It increases the number of items you can hold in a slot.	bag

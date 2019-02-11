@@ -1,6 +1,8 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
+import pow.backend.Party;
+import pow.backend.SpellParams;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.utils.AttackUtils;
@@ -8,6 +10,9 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
+import pow.frontend.utils.ImageUtils;
+import pow.frontend.utils.KeyInput;
+import pow.frontend.utils.KeyUtils;
 import pow.util.TextUtils;
 
 import java.awt.*;
@@ -18,39 +23,32 @@ import java.util.List;
 
 public class PlayerInfoWindow extends AbstractWindow {
 
-    private boolean mainView;
-    private final Map<DungeonItem.Slot, StringPosition> slotData;
+    private int viewPane;
+    private static final String HELP_STRING = "Press [left]/[right] to change view, c/[esc]/[enter] to close.";
 
     public PlayerInfoWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
-        mainView = true;
-
-        slotData = new HashMap<>();
-        slotData.put(DungeonItem.Slot.WEAPON, new StringPosition("Weapon", 0));
-        slotData.put(DungeonItem.Slot.BOW, new StringPosition("Bow", 1));
-        slotData.put(DungeonItem.Slot.SHIELD, new StringPosition("Shield", 2));
-        slotData.put(DungeonItem.Slot.HEADGEAR, new StringPosition("Head", 3));
-        slotData.put(DungeonItem.Slot.ARMOR, new StringPosition("Armor", 4));
-        slotData.put(DungeonItem.Slot.CLOAK, new StringPosition("Cloak", 5));
-        slotData.put(DungeonItem.Slot.RING, new StringPosition("Ring", 6));
-        slotData.put(DungeonItem.Slot.BRACELET, new StringPosition("Bracelet", 7));
-        slotData.put(DungeonItem.Slot.AMULET, new StringPosition("Amulet", 8));
-        slotData.put(DungeonItem.Slot.GLOVES, new StringPosition("Gloves",9));
-        slotData.put(DungeonItem.Slot.BOOTS, new StringPosition("Boots", 10));
+        viewPane = 0;
     }
 
     @Override
     public void processKey(KeyEvent e) {
-        int keyCode = e.getKeyCode();
+        KeyInput input = KeyUtils.getKeyInput(e);
 
-        if (keyCode == KeyEvent.VK_ESCAPE) {
-            frontend.close();
-            return;
-        }
-
-        if (keyCode == KeyEvent.VK_TAB || keyCode == KeyEvent.VK_SPACE) {
-            mainView = !mainView;
-            frontend.setDirty(true);
+        switch (input) {
+            case EAST:
+                viewPane = (viewPane + 1) % 3;
+                frontend.setDirty(true);
+                break;
+            case WEST:
+                viewPane = (viewPane + 3 - 1) % 3;
+                frontend.setDirty(true);
+                break;
+            case OKAY:
+            case CANCEL:
+            case PLAYER_INFO:
+                frontend.close();
+                break;
         }
     }
 
@@ -64,25 +62,34 @@ public class PlayerInfoWindow extends AbstractWindow {
 
     }
 
-    private void drawMainInfo(Graphics graphics) {
-        graphics.setColor(Style.BACKGROUND_COLOR);
-        graphics.fillRect(0, 0, dim.width, dim.height);
+    private static List<String> getSpellNames(List<SpellParams> spells) {
+        List<String> strings = new ArrayList<>(spells.size());
+        for (SpellParams spell : spells) {
+            strings.add(spell.name);
+        }
+        return strings;
+    }
+    private void drawCharInfo(Graphics graphics, Player player, Point where, int width) {
+        ImageController.drawTile(graphics, player.image, where.x, where.y);
+        int textWidth = width - Style.TILE_SIZE - Style.SMALL_MARGIN;
+
         graphics.setFont(Style.getDefaultFont());
-
-        Player player = backend.getGameState().party.player;
-
-        ImageController.drawTile(graphics, player.image, Style.SMALL_MARGIN, Style.SMALL_MARGIN);
+        FontMetrics textMetrics = graphics.getFontMetrics(Style.getDefaultFont());
+        List<String> spellLines = player.spells.isEmpty()
+                ? Collections.emptyList()
+                : ImageUtils.wrapText("Spells: " + TextUtils.formatList(getSpellNames(player.spells)) + ".", textMetrics, textWidth);
 
         List<String> lines = new ArrayList<>();
         String winnerString = player.isWinner() ? " (Winner!)" : "";
         lines.add(player.name + winnerString);
         lines.add("");
+        lines.add("");
         lines.add("HP:        " + player.getHealth() + "/" + player.getMaxHealth());
         lines.add("MP:        " + player.getMana() + "/" + player.getMaxMana());
+        lines.add("");
         lines.add("Exp:       " + player.experience);
         lines.add("Exp next:  " + player.getExpToNextLevel());
         lines.add("Level:     " + player.level);
-        lines.add("Gold:      " + player.gold);
         lines.add("");
         lines.add("Str:       " + player.baseStats.strength);
         lines.add("Dex:       " + player.baseStats.dexterity);
@@ -104,70 +111,38 @@ public class PlayerInfoWindow extends AbstractWindow {
         lines.add("rElec:     " + getResistPercent(player.baseStats.resElec));
         lines.add("rPois:     " + getResistPercent(player.baseStats.resPois));
         lines.add("rDam:      " + getResistPercent(player.baseStats.resDam));
+        lines.add("");
+        lines.addAll(spellLines);
 
         graphics.setColor(Color.WHITE);
         for (int i = 0; i < lines.size(); i++) {
-            graphics.drawString(lines.get(i), Style.TILE_SIZE + 2 * Style.SMALL_MARGIN, Style.SMALL_MARGIN + (i + 1) * Style.FONT_SIZE);
+            graphics.drawString(lines.get(i),
+                    where.x + Style.TILE_SIZE + Style.SMALL_MARGIN,
+                    where.y + Style.TILE_SIZE - 5 + i * Style.FONT_SIZE);
         }
 
-        // draw slot stuff
-        for (StringPosition sd : slotData.values()) {
-            graphics.drawString(sd.name, 260, Style.SMALL_MARGIN + Style.TILE_SIZE * sd.position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2);
-        }
-        for (DungeonItem item: player.equipment.items) {
-            int position = slotData.get(item.slot).position;
-            int y = Style.TILE_SIZE * position + Style.SMALL_MARGIN;
-            ImageController.drawTile(graphics, item.image, 315, y);
-            graphics.drawString(TextUtils.format(item.name, 1, false),  355, y + Style.FONT_SIZE + 2);
-            graphics.drawString(item.bonusString(), 355, y + 2*Style.FONT_SIZE + 2);
-        }
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        graphics.drawLine(where.x, where.y + Style.TILE_SIZE + 1,
+                where.x + width, where.y + Style.TILE_SIZE + 1);
+    }
 
-        // draw artifacts and returned pearls
-        Map<DungeonItem.ArtifactSlot, Point> artifactLocations = new HashMap<>();
-        artifactLocations.put(DungeonItem.ArtifactSlot.PETSTATUE, new Point(0,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN, new Point(1,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.KEY, new Point(2,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.MAP, new Point(3,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.FLOAT, new Point(4,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.GASMASK, new Point(5,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PORTALKEY, new Point(6,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.GLASSES, new Point(7,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PICKAXE, new Point(8,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.BAG, new Point(9,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.TURTLESHELL, new Point(10,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.HEATSUIT, new Point(11,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.XRAYSCOPE, new Point(12,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN2, new Point(13,1));
+    private void drawMainInfo(Graphics graphics) {
+        graphics.setColor(Style.BACKGROUND_COLOR);
+        graphics.fillRect(0, 0, dim.width, dim.height);
+        graphics.setFont(Style.getDefaultFont());
 
-        Map<String, Point> pearlLocations = new HashMap<>();
-        pearlLocations.put("pearl 1", new Point(0, 0));
-        pearlLocations.put("pearl 2", new Point(1, 0));
-        pearlLocations.put("pearl 3", new Point(2, 0));
-        pearlLocations.put("pearl 4", new Point(3, 0));
-        pearlLocations.put("pearl 5", new Point(4, 0));
-        pearlLocations.put("pearl 6", new Point(5, 0));
-        pearlLocations.put("pearl 7", new Point(6, 0));
-        pearlLocations.put("pearl 8", new Point(7, 0));
+        Player player = backend.getGameState().party.player;
+        Player pet = backend.getGameState().party.pet;
+        int infoWidth = 300;
 
-        for (DungeonItem item : player.party.artifacts.getArtifacts().values()) {
-            Point loc = artifactLocations.get(item.artifactSlot);
-            int x = 15 + Style.TILE_SIZE * loc.x;
-            int y = 370 + Style.TILE_SIZE * loc.y;
-            ImageController.drawTile(graphics, item.image, x, y);
-        }
-        for (DungeonItem item : player.party.returnedPearls) {
-            if (!pearlLocations.containsKey(item.id)) {
-                continue;
-            }
-            Point loc = pearlLocations.get(item.id);
-            int x = 15 + Style.TILE_SIZE * loc.x;
-            int y = 370 + Style.TILE_SIZE * loc.y;
-            ImageController.drawTile(graphics, item.image, x, y);
+        drawCharInfo(graphics, player, new Point(2*Style.SMALL_MARGIN, Style.SMALL_MARGIN), infoWidth);
+        if (pet != null) {
+            drawCharInfo(graphics, pet, new Point(4*Style.SMALL_MARGIN + infoWidth, Style.SMALL_MARGIN), infoWidth);
         }
 
         // bottom text
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press [space]/[tab] to change view, [esc] to close.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        graphics.drawString(HELP_STRING, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 
     private void drawStatsInfo(Graphics graphics) {
@@ -175,7 +150,6 @@ public class PlayerInfoWindow extends AbstractWindow {
         graphics.fillRect(0, 0, dim.width, dim.height);
 
         Player player = backend.getGameState().party.player;
-        ImageController.drawTile(graphics, player.image, Style.SMALL_MARGIN, Style.SMALL_MARGIN);
 
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
@@ -217,7 +191,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         int numSlots = slotData.size();
         int numBonuses = bonusData.size();
 
-        int gridTop = Style.SMALL_MARGIN + 50;  // top of interior of grid (excluding header)
+        int gridTop = Style.SMALL_MARGIN + 45;  // top of interior of grid (excluding header)
         int gridLeft = Style.SMALL_MARGIN + 105;  // left of interior of grid (excluding header)
 
         // header on top
@@ -272,9 +246,108 @@ public class PlayerInfoWindow extends AbstractWindow {
         graphics.drawLine(gridLeft + dy*numBonuses, gridTop, gridLeft + dy*numBonuses, gridTop + dy*numSlots);
         graphics.drawLine(gridLeft, gridTop + numSlots*dy, gridLeft + numBonuses*dx, gridTop + numSlots*dy);
 
+        // bottom sum
+        int[] bonusTotals = new int[DungeonItem.NUM_BONUSES];
+        for (DungeonItem item: player.equipment.items) {
+            for (int i = 0; i < DungeonItem.NUM_BONUSES; i++) {
+                bonusTotals[i] += item.bonuses[i];
+            }
+        }
+        graphics.setColor(Color.WHITE);
+        int sumY = gridTop + numSlots*dy + Style.SMALL_MARGIN + Style.FONT_SIZE;
+        graphics.drawString("(total)", gridLeft - 100, sumY);
+        for (Map.Entry<Integer, StringPosition> entry : bonusData.entrySet()) {
+            int bonusIdx = entry.getKey();
+            StringPosition bonus = entry.getValue();
+            int x = gridLeft + 5 + bonus.position * dx;
+            if (bonusTotals[bonusIdx] > 0) {
+                graphics.drawString(bonusString(bonusTotals[bonusIdx]), x, sumY);
+            }
+        }
+
         // bottom text
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Press [space]/[tab] to change view, [esc] to close.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        graphics.drawString(HELP_STRING, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+    }
+
+    private void drawProgressInfo(Graphics graphics) {
+        graphics.setColor(Style.BACKGROUND_COLOR);
+        graphics.fillRect(0, 0, dim.width, dim.height);
+
+        Party party = backend.getGameState().party;
+
+        graphics.setFont(Style.getDefaultFont());
+
+        // draw artifacts
+        graphics.setColor(Color.WHITE);
+        int y1 = Style.SMALL_MARGIN + Style.FONT_SIZE;
+        graphics.drawString("Artifacts:", Style.SMALL_MARGIN, y1);
+        FontMetrics textMetrics = graphics.getFontMetrics(Style.getDefaultFont());
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        graphics.drawLine(Style.SMALL_MARGIN, y1 + 3, dim.width - Style.SMALL_MARGIN, y1 + 3);
+
+        Map<DungeonItem.ArtifactSlot, Point> artifactLocations = new HashMap<>();
+        artifactLocations.put(DungeonItem.ArtifactSlot.PETSTATUE, new Point(0,0));
+        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN, new Point(0,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.KEY, new Point(0,2));
+        artifactLocations.put(DungeonItem.ArtifactSlot.MAP, new Point(0,3));
+        artifactLocations.put(DungeonItem.ArtifactSlot.FLOAT, new Point(0,4));
+        artifactLocations.put(DungeonItem.ArtifactSlot.GASMASK, new Point(0,5));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PORTALKEY, new Point(0,6));
+        artifactLocations.put(DungeonItem.ArtifactSlot.GLASSES, new Point(0,7));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PICKAXE, new Point(1,0));
+        artifactLocations.put(DungeonItem.ArtifactSlot.BAG, new Point(1,1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.TURTLESHELL, new Point(1,2));
+        artifactLocations.put(DungeonItem.ArtifactSlot.HEATSUIT, new Point(1,3));
+        artifactLocations.put(DungeonItem.ArtifactSlot.XRAYSCOPE, new Point(1,4));
+        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN2, new Point(1,5));
+        int dx = 320;
+        int dy = Style.TILE_SIZE + Style.FONT_SIZE;
+        graphics.setColor(Color.WHITE);
+        for (DungeonItem item : party.artifacts.getArtifacts().values()) {
+            Point loc = artifactLocations.get(item.artifactSlot);
+            int x = Style.MARGIN + loc.x * dx;
+            int y = Style.SMALL_MARGIN + 2*Style.FONT_SIZE + loc.y * dy;
+            ImageController.drawTile(graphics, item.image, x, y);
+            List<String> descLines =
+                    ImageUtils.wrapText(item.name + ": " + item.description, textMetrics, dx - (2*Style.SMALL_MARGIN + Style.TILE_SIZE));
+            for (int i = 0; i < descLines.size(); i++) {
+                graphics.drawString(descLines.get(i), x + Style.TILE_SIZE + Style.SMALL_MARGIN,
+                        y + (i+1)*Style.FONT_SIZE);
+            }
+
+        }
+
+        // draw returned pearls
+        graphics.setColor(Color.WHITE);
+        int y2 = 400;
+        graphics.drawString("Returned Pearls:", Style.SMALL_MARGIN, y2);
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        graphics.drawLine(Style.SMALL_MARGIN, y2 + 3, dim.width - Style.SMALL_MARGIN, y2 + 3);
+
+        Map<String, Point> pearlLocations = new HashMap<>();
+        pearlLocations.put("pearl 1", new Point(0, 0));
+        pearlLocations.put("pearl 2", new Point(1, 0));
+        pearlLocations.put("pearl 3", new Point(2, 0));
+        pearlLocations.put("pearl 4", new Point(3, 0));
+        pearlLocations.put("pearl 5", new Point(4, 0));
+        pearlLocations.put("pearl 6", new Point(5, 0));
+        pearlLocations.put("pearl 7", new Point(6, 0));
+        pearlLocations.put("pearl 8", new Point(7, 0));
+
+        for (DungeonItem item : party.returnedPearls) {
+            if (!pearlLocations.containsKey(item.id)) {
+                continue;
+            }
+            Point loc = pearlLocations.get(item.id);
+            int x = Style.MARGIN + (Style.SMALL_MARGIN + Style.TILE_SIZE) * loc.x;
+            int y = 410;
+            ImageController.drawTile(graphics, item.image, x, y);
+        }
+
+        // bottom text
+        graphics.setColor(Color.WHITE);
+        graphics.drawString(HELP_STRING, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 
     // right justifies string, assumes bonus is <= 999.
@@ -293,10 +366,10 @@ public class PlayerInfoWindow extends AbstractWindow {
 
     @Override
     public void drawContents(Graphics graphics) {
-        if (mainView) {
-            drawMainInfo(graphics);
-        } else {
-            drawStatsInfo(graphics);
+        switch (viewPane) {
+            case 0: drawMainInfo(graphics); break;
+            case 1: drawStatsInfo(graphics); break;
+            case 2: drawProgressInfo(graphics); break;
         }
     }
 
