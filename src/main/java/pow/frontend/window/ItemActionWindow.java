@@ -9,11 +9,20 @@ import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ItemActions;
+import pow.frontend.utils.table.Cell;
+import pow.frontend.utils.table.EmptyCell;
+import pow.frontend.utils.table.ImageCell;
+import pow.frontend.utils.table.Table;
+import pow.frontend.utils.table.TableBuilder;
+import pow.frontend.utils.table.TextCell;
 import pow.util.TextUtils;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ItemActionWindow extends AbstractWindow {
@@ -21,16 +30,20 @@ public class ItemActionWindow extends AbstractWindow {
     private final String message;
     private final ItemList items;
     private final ItemActions.ItemLocation location;
+    private final Table itemTable;
 
     public ItemActionWindow(int x, int y, GameBackend backend, Frontend frontend,
                             String message,
                             ItemList items,
                             ItemActions.ItemLocation location) {
         super(new WindowDim(x, y, 400,
-                55 + 32 * items.size()), true, backend, frontend);
+                55 + 34 * items.size()), true, backend, frontend);
         this.message = message;
         this.items = items;
         this.location = location;
+        this.itemTable = getItemTable(items);
+        int height = 3*Style.SMALL_MARGIN + Style.FONT_SIZE + itemTable.getHeight();
+        this.resize(frontend.layout.center(400, height));
     }
 
     @Override
@@ -59,34 +72,47 @@ public class ItemActionWindow extends AbstractWindow {
         }
     }
 
+    private Table getItemTable(ItemList items) {
+        Font font = Style.getDefaultFont();
+
+        TableBuilder tableBuilder = new TableBuilder();
+        List<Cell> header = new ArrayList<>();
+        header.add(new TextCell(Arrays.asList(message), TextCell.Style.NORMAL, font));
+        header.add(new EmptyCell());
+        header.add(new EmptyCell());
+        tableBuilder.addRow(header);
+
+        int idx = 0;
+        for (DungeonItem item : items.items) {
+            List<Cell> row = new ArrayList<>();
+            String label = (char) ((int) 'a' + idx) + ")";
+            List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
+
+            row.add(new TextCell(Arrays.asList(label), TextCell.Style.NORMAL, font));
+            row.add(new ImageCell(item.image, false));
+            row.add(new TextCell(itemInfo, TextCell.Style.NORMAL, font));
+            tableBuilder.addRow(row);
+
+            idx++;
+        }
+
+        tableBuilder.setDrawHeaderLine(true);
+        tableBuilder.setSpacing(2);
+        tableBuilder.setColWidths(Arrays.asList(20, Style.TILE_SIZE + Style.SMALL_MARGIN, 300));
+        Table itemTable = tableBuilder.build();
+
+        return itemTable;
+    }
+
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
+        Font font = Style.getDefaultFont();
+        graphics.setFont(font);
 
-        int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
-        graphics.drawString(message, Style.SMALL_MARGIN, y);
-
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(Style.SMALL_MARGIN, y + 5, dim.width - Style.SMALL_MARGIN, y + 5);
-
-        graphics.setColor(Color.WHITE);
-        y = 30;
-        int idx = 0;
-        for (DungeonItem item : items.items) {
-            String label = (char) ((int) 'a' + idx) + ")";
-            graphics.drawString(label, Style.SMALL_MARGIN, y + 20);
-
-            ImageController.drawTile(graphics, item.image, Style.SMALL_MARGIN + 20, y);
-            graphics.drawString(TextUtils.format(item.name, item.count, false),  Style.SMALL_MARGIN + 60, y + Style.FONT_SIZE + 2);
-            graphics.drawString(item.bonusString(), Style.SMALL_MARGIN + 60, y + 2*Style.FONT_SIZE + 2);
-
-            idx++;
-            y += Style.TILE_SIZE;
-        }
+        itemTable.draw(graphics, Style.SMALL_MARGIN, Style.SMALL_MARGIN);
 
         graphics.setColor(Color.WHITE);
         graphics.drawString("Select an item or press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);

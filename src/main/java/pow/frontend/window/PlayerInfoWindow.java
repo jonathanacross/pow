@@ -31,7 +31,7 @@ import java.util.List;
 public class PlayerInfoWindow extends AbstractWindow {
 
     private int viewPane;
-    private static final String HELP_STRING = "Press [left]/[right] to change view, c/[esc]/[enter] to close.";
+    private static final String HELP_STRING = "Press [left]/[right]/[space] to change view, c/[esc]/[enter] to close.";
 
     public PlayerInfoWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
@@ -44,6 +44,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         switch (input) {
             case EAST:
+            case CYCLE:
                 viewPane = (viewPane + 1) % 3;
                 frontend.setDirty(true);
                 break;
@@ -84,7 +85,6 @@ public class PlayerInfoWindow extends AbstractWindow {
         row.add(new TextCell(Arrays.asList(value), TextCell.Style.NORMAL, font));
         return row;
     }
-
 
     private void drawCharInfo(Graphics graphics, Player player, Point where, int width) {
         int textWidth = width - Style.TILE_SIZE - 2*Style.SMALL_MARGIN;
@@ -134,7 +134,7 @@ public class PlayerInfoWindow extends AbstractWindow {
             tableBuilder.addRow(getRow(line, "", font));
         }
 
-        tableBuilder.setColWidths(Arrays.asList(Style.TILE_SIZE + 2*Style.SMALL_MARGIN, 80, 100));
+        tableBuilder.setColWidths(Arrays.asList(Style.TILE_SIZE + 2*Style.SMALL_MARGIN, 80, textWidth - 80));
         tableBuilder.setDrawHeaderLine(true);
 
         Table table = tableBuilder.build();

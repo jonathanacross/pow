@@ -11,11 +11,20 @@ import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ItemActions;
+import pow.frontend.utils.table.Cell;
+import pow.frontend.utils.table.EmptyCell;
+import pow.frontend.utils.table.ImageCell;
+import pow.frontend.utils.table.Table;
+import pow.frontend.utils.table.TableBuilder;
+import pow.frontend.utils.table.TextCell;
 import pow.util.TextUtils;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // Window to choose which action to take (given a particular item).
@@ -99,25 +108,43 @@ public class ActionChoiceWindow extends AbstractWindow {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
+        Font font = Style.getDefaultFont();
+        graphics.setFont(font);
         graphics.setColor(Color.WHITE);
 
         graphics.drawString(message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
 
-        int y = 30;
-        int idx = 0;
         DungeonItem item = items.get(itemIndex);
-        ImageController.drawTile(graphics, item.image, Style.SMALL_MARGIN, y);
-        graphics.drawString(TextUtils.format(item.name, item.count, false),  Style.SMALL_MARGIN + 40, y + Style.FONT_SIZE + 2);
-        graphics.drawString(item.bonusString(), Style.SMALL_MARGIN + 40, y + 2*Style.FONT_SIZE + 2);
 
+        TableBuilder tableBuilder = new TableBuilder();
+        List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
+
+        List<Cell> header = new ArrayList<>();
+        header.add(new ImageCell(item.image, false));
+        header.add(new TextCell(itemInfo, TextCell.Style.NORMAL, font));
+        header.add(new EmptyCell());
+        tableBuilder.addRow(header);
+
+        List<Cell> spacer = new ArrayList<>();
+        spacer.add(new EmptyCell(0, Style.SMALL_MARGIN));
+        spacer.add(new EmptyCell(0, Style.SMALL_MARGIN));
+        spacer.add(new EmptyCell(0, Style.SMALL_MARGIN));
+        tableBuilder.addRow(spacer);
+
+        int idx = 0;
         for (ItemActions.Action action : actions) {
             String label = (char) ((int) 'a' + idx) + ")";
-            y = 80 + Style.FONT_SPACING * idx;
-            graphics.drawString(label, Style.SMALL_MARGIN, y);
-            graphics.drawString(action.getText(), 60, y);
+            List<Cell> row = new ArrayList<>();
+            row.add(new EmptyCell());
+            row.add(new TextCell(Arrays.asList(label), TextCell.Style.NORMAL, font));
+            row.add(new TextCell(Arrays.asList(action.getText()), TextCell.Style.NORMAL, font));
             idx++;
+            tableBuilder.addRow(row);
         }
+
+        tableBuilder.setColWidths(Arrays.asList(Style.TILE_SIZE, 30, 100));
+        Table actionTable = tableBuilder.build();
+        actionTable.draw(graphics, Style.SMALL_MARGIN, 30);
 
         graphics.setColor(Color.WHITE);
         graphics.drawString("Select an action or press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);

@@ -5,11 +5,18 @@ import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Player;
 import pow.backend.actors.Knowledge;
 import pow.frontend.Style;
+import pow.frontend.utils.table.Cell;
+import pow.frontend.utils.table.EmptyCell;
+import pow.frontend.utils.table.ImageCell;
+import pow.frontend.utils.table.Table;
+import pow.frontend.utils.table.TableBuilder;
+import pow.frontend.utils.table.TextCell;
 import pow.util.Point;
 import pow.util.TextUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,6 +34,13 @@ public class MonsterDisplay {
         return strings;
     }
 
+    private static List<Cell> getRow(String key, String value, Font font) {
+        List<Cell> row = new ArrayList<>();
+        row.add(new TextCell(Arrays.asList(key), TextCell.Style.NORMAL, font));
+        row.add(new TextCell(Arrays.asList(value), TextCell.Style.NORMAL, font));
+        return row;
+    }
+
     public static void drawMonsterInfo(
             Graphics graphics,
             Knowledge.MonsterSummary monster,
@@ -35,56 +49,66 @@ public class MonsterDisplay {
             int width,
             Point position
     ) {
-        final int fontSize = Style.FONT_SIZE;
-        final int tileSize = Style.TILE_SIZE;
-        final int margin = Style.SMALL_MARGIN;
-
-        // figure out the description; it's a multi-line mess
-        int textWidth = width - 3*margin - tileSize;
-
-        graphics.setFont(Style.getDefaultFont());
+        Font font = Style.getDefaultFont();
         FontMetrics textMetrics = graphics.getFontMetrics(Style.getDefaultFont());
+        int textWidth = width;
+        TableBuilder tableBuilder = new TableBuilder();
+
+        String healthValue = showCurrentHealth
+                ? monster.health + "/" + monster.maxHealth
+                : String.valueOf(monster.maxHealth);
+        String manaValue = showCurrentHealth
+                ? monster.mana + "/" + monster.maxMana
+                : String.valueOf(monster.maxMana);
+
+        String hitYou = "Can hit you " + toPercentString(AttackUtils.hitProb(monster.primaryAttack.plusToHit, player.getDefense())) + "% of the time";
+        String youHit = "You can hit " + toPercentString(AttackUtils.hitProb(player.getPrimaryAttack().plusToHit, monster.defense)) + "% of the time (melee)";
+        String bowHit = "You can hit " + toPercentString(AttackUtils.hitProb(player.getSecondaryAttack().plusToHit, monster.defense)) + "% of the time (bow)";
+
         List<String> descriptionLines = ImageUtils.wrapText(monster.description, textMetrics, textWidth);
         List<String> spellLines = monster.spells.isEmpty()
                 ? Collections.emptyList()
                 : ImageUtils.wrapText("Can cast " + TextUtils.formatList(getSpellNames(monster.spells)) + ".", textMetrics, textWidth);
 
-        List<String> lines = new ArrayList<>();
-        lines.add(TextUtils.singular(monster.name));
-        lines.add("");
-        lines.addAll(descriptionLines);
-        lines.addAll(spellLines);
-        lines.add("");
-        lines.add("Str:    " + monster.strength);
-        lines.add("Dex:    " + monster.dexterity);
-        lines.add("Int:    " + monster.intelligence);
-        lines.add("Con:    " + monster.constitution);
-        lines.add("");
-        if (showCurrentHealth) {
-            lines.add("HP:     " + monster.health + "/" + monster.maxHealth);
-            lines.add("MP:     " + monster.mana + "/" + monster.maxMana);
-        } else {
-            lines.add("HP:     " + monster.maxHealth);
-            lines.add("MP:     " + monster.maxMana);
+        List<Cell> header = new ArrayList<>();
+        header.add(new ImageCell(monster.image, false));
+        header.add(new TextCell(Arrays.asList(TextUtils.singular(monster.name)), TextCell.Style.NORMAL, font));
+        tableBuilder.addRow(header);
+        String statsLine =
+                "Str: " + monster.strength +
+                        "  Dex: " + monster.dexterity +
+                        "  Int: " + monster.intelligence +
+                        "  Con: " + monster.constitution;
+
+        for (String line : descriptionLines) {
+            tableBuilder.addRow(getRow(line, "", font));
         }
-        lines.add("");
-        lines.add("Level:  " + monster.level);
-        lines.add("Attack: " + monster.primaryAttack);
-        lines.add("Def:    " + monster.defense);
-        lines.add("Speed:  " + monster.speed);
-        lines.add("Exp.:   " + monster.experience);
-        lines.add("");
-        lines.add("Can hit you " + toPercentString(AttackUtils.hitProb(monster.primaryAttack.plusToHit, player.getDefense())) + "% of the time");
-        lines.add("You can hit " + toPercentString(AttackUtils.hitProb(player.getPrimaryAttack().plusToHit, monster.defense)) + "% of the time (melee)");
+        tableBuilder.addRow(getRow("", "", font));
+        tableBuilder.addRow(getRow(statsLine, "", font));
+        for (String line : spellLines) {
+            tableBuilder.addRow(getRow(line, "", font));
+        }
+        tableBuilder.addRow(getRow("", "", font));
+        tableBuilder.addRow(getRow("HP:        ", healthValue, font));
+        tableBuilder.addRow(getRow("MP:        ", manaValue, font));
+        tableBuilder.addRow(getRow("", "", font));
+        tableBuilder.addRow(getRow("Exp:       ", "" + monster.experience, font));
+        tableBuilder.addRow(getRow("Level:     ", "" + monster.level, font));
+        tableBuilder.addRow(getRow("", "", font));
+        tableBuilder.addRow(getRow("Attack:    ", "" + monster.primaryAttack, font));
+        tableBuilder.addRow(getRow("Defense:   ", "" + monster.defense, font));
+        tableBuilder.addRow(getRow("Speed:     ", "" + monster.speed, font));
+        tableBuilder.addRow(getRow("", "", font));
+        tableBuilder.addRow(getRow(hitYou, "", font));
+        tableBuilder.addRow(getRow(youHit, "", font));
         if (player.hasBowEquipped()) {
-            lines.add("You can hit " + toPercentString(AttackUtils.hitProb(player.getSecondaryAttack().plusToHit, monster.defense)) + "% of the time (bow)");
+            tableBuilder.addRow(getRow(bowHit, "", font));
         }
 
-        ImageController.drawTile(graphics, monster.image, position.x + margin, position.y + margin);
+        tableBuilder.setColWidths(Arrays.asList(80, textWidth - 80));
+        tableBuilder.setDrawHeaderLine(true);
 
-        graphics.setColor(Color.WHITE);
-        for (int i = 0; i < lines.size(); i++) {
-            graphics.drawString(lines.get(i), position.x + tileSize + 2*margin, position.y + margin + (i+1)*fontSize);
-        }
+        Table table = tableBuilder.build();
+        table.draw(graphics, position.x, position.y);
     }
 }

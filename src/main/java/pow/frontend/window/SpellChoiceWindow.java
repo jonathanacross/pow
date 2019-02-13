@@ -111,7 +111,7 @@ public class SpellChoiceWindow extends AbstractWindow {
 
         graphics.drawString(this.message, Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
 
-        spellTable.draw(graphics, Style.MARGIN, Style.MARGIN + 35);
+        spellTable.draw(graphics, Style.MARGIN, Style.MARGIN + 30);
 
         graphics.setColor(Color.WHITE);
         graphics.drawString("Select a spell, or press [esc] to cancel.", Style.MARGIN, dim.height - Style.MARGIN);

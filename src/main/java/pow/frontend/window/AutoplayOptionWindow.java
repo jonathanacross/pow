@@ -6,9 +6,15 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
+import pow.frontend.utils.table.EmptyCell;
+import pow.frontend.utils.table.ImageCell;
+import pow.frontend.utils.table.Table;
+import pow.frontend.utils.table.TableBuilder;
+import pow.frontend.utils.table.TextCell;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 public class AutoplayOptionWindow extends AbstractWindow {
 
@@ -78,31 +84,40 @@ public class AutoplayOptionWindow extends AbstractWindow {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
+        Font font = Style.getDefaultFont();
+        graphics.setFont(font);
         graphics.setColor(Color.WHITE);
 
         GameState gs = backend.getGameState();
-
-        int textOffset = (Style.FONT_SIZE + Style.TILE_SIZE) / 2;
 
         int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
         graphics.drawString("Who do you want to control?", Style.SMALL_MARGIN, y);
         y += Style.FONT_SIZE;
 
-        graphics.drawString("a) ", Style.SMALL_MARGIN, y + textOffset);
-        graphics.drawString(gs.party.player.name, 70, y + textOffset);
-        ImageController.drawTile(graphics, gs.party.player.image, Style.SMALL_MARGIN + 20, y);
-        y += Style.TILE_SIZE;
+        TableBuilder tableBuilder = new TableBuilder();
 
-        graphics.drawString("b) ", Style.SMALL_MARGIN, y + textOffset);
-        graphics.drawString(gs.party.pet.name, 70, y + textOffset);
-        ImageController.drawTile(graphics, gs.party.pet.image, Style.SMALL_MARGIN + 20, y);
-        y += Style.TILE_SIZE;
+        tableBuilder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList("a)"), TextCell.Style.NORMAL, font),
+                new ImageCell(gs.party.player.image, false),
+                new TextCell(Arrays.asList(gs.party.player.name), TextCell.Style.NORMAL, font),
+                new EmptyCell()
+                ));
+        tableBuilder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList("b)"), TextCell.Style.NORMAL, font),
+                new ImageCell(gs.party.pet.image, false),
+                new TextCell(Arrays.asList(gs.party.pet.name), TextCell.Style.NORMAL, font),
+                new EmptyCell()
+        ));
+        tableBuilder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList("c)"), TextCell.Style.NORMAL, font),
+                new ImageCell(gs.party.player.image, false),
+                new ImageCell(gs.party.pet.image, false),
+                new TextCell(Arrays.asList("both"), TextCell.Style.NORMAL, font)
+        ));
 
-        graphics.drawString("c) ", Style.SMALL_MARGIN, y + textOffset);
-        graphics.drawString("both", 70 + Style.TILE_SIZE, y + textOffset);
-        ImageController.drawTile(graphics, gs.party.player.image, Style.SMALL_MARGIN + 20, y);
-        ImageController.drawTile(graphics, gs.party.pet.image, Style.SMALL_MARGIN + 20 + Style.TILE_SIZE, y);
+        tableBuilder.setColWidths(Arrays.asList(20, Style.TILE_SIZE + Style.SMALL_MARGIN, Style.TILE_SIZE + Style.SMALL_MARGIN, 40));
+        Table table = tableBuilder.build();
+        table.draw(graphics, Style.SMALL_MARGIN, y);
 
         graphics.setColor(Color.WHITE);
         graphics.drawString("Press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);

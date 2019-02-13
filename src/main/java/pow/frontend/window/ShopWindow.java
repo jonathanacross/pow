@@ -9,20 +9,31 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
+import pow.frontend.utils.table.EmptyCell;
+import pow.frontend.utils.table.ImageCell;
+import pow.frontend.utils.table.Table;
+import pow.frontend.utils.table.TableBuilder;
+import pow.frontend.utils.table.TextCell;
 import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ShopWindow extends AbstractWindow {
     private final List<ShopData.ShopEntry> entries;
+    private final Table shopTable;
 
-    public ShopWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend,
+    public ShopWindow(boolean visible, GameBackend backend, Frontend frontend,
                       List<ShopData.ShopEntry> entries) {
-        super(dim, visible, backend, frontend);
+        super(new WindowDim(0,0,0,0), visible, backend, frontend);
         this.entries = entries;
+        this.shopTable = getShopTable();
+        int width = shopTable.getWidth() + 2*Style.MARGIN;
+        int height = shopTable.getHeight() + 2*Style.MARGIN + 5*Style.FONT_SIZE;
+        this.resize(frontend.layout.center(width, height));
     }
 
     @Override
@@ -69,45 +80,56 @@ public class ShopWindow extends AbstractWindow {
         return maxNum;
     }
 
+    private Table getShopTable() {
+        Font font = Style.getDefaultFont();
+
+        TableBuilder builder = new TableBuilder();
+
+        builder.addRow(Arrays.asList(
+                new EmptyCell(),
+                new TextCell(Arrays.asList("Item"), TextCell.Style.NORMAL, font),
+                new EmptyCell(),
+                new TextCell(Arrays.asList("Price"), TextCell.Style.NORMAL, font)
+        ));
+
+        int idx = 0;
+        for (ShopData.ShopEntry entry : this.entries) {
+            boolean isGrayed = maxNumBuyable(entry) == 0;
+            TextCell.Style textStyle = isGrayed ? TextCell.Style.DISABLED : TextCell.Style.NORMAL;
+
+            String label = (char) ((int) 'a' + idx) + ")";
+            List<String> itemInfo = Arrays.asList(TextUtils.format(entry.item.name, entry.item.count, false), entry.item.bonusString());
+            String price = String.valueOf(entry.price);
+
+            builder.addRow(Arrays.asList(
+                    new TextCell(Arrays.asList(label), textStyle, font),
+                    new ImageCell(entry.item.image, isGrayed),
+                    new TextCell(itemInfo, textStyle, font),
+                    new TextCell(Arrays.asList(price), textStyle, font)
+            ));
+
+            idx++;
+        }
+
+        builder.setDrawHeaderLine(true);
+        builder.setSpacing(2);
+        builder.setColWidths(Arrays.asList(20, Style.TILE_SIZE + Style.SMALL_MARGIN, 250, 50));
+        Table shopTable = builder.build();
+        return shopTable;
+    }
+
     @Override
     public void drawContents(Graphics graphics) {
-
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
+        Font font = Style.getDefaultFont();
+        graphics.setFont(font);
         graphics.setColor(Color.WHITE);
         graphics.drawString("Hi " + backend.getGameState().party.player.name + ", what would you like to buy?",
                 Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
 
-        int priceX = dim.width - Style.MARGIN - 40;
-        graphics.drawString("Item", 20 + Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE);
-        graphics.drawString("Price", priceX, Style.MARGIN + 3*Style.FONT_SIZE);
-
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(30, Style.MARGIN + 3*Style.FONT_SIZE + 5,
-                dim.width - Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE + 5);
-
-        int y = Style.MARGIN + 4*Style.FONT_SIZE;
-
-        int idx = 0;
-        for (ShopData.ShopEntry entry : this.entries) {
-            boolean isEnabled = maxNumBuyable(entry) > 0;
-            ImageController.DrawMode drawMode = isEnabled ? ImageController.DrawMode.NORMAL : ImageController.DrawMode.GRAY;
-            ImageController.drawTile(graphics, entry.item.image, 15 + Style.MARGIN, y, drawMode);
-
-            String label = (char) ((int) 'a' + idx) + ")";
-            int textY = y + 20;
-            graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
-            graphics.drawString(label, Style.MARGIN, textY);
-            graphics.drawString(TextUtils.format(entry.item.name, entry.item.count, false),  50+Style.MARGIN, textY - 5);
-            graphics.drawString(entry.item.bonusString(), 50+Style.MARGIN, textY + Style.FONT_SIZE - 5);
-
-            graphics.drawString(String.valueOf(entry.price), priceX, textY);
-
-            idx++;
-            y += Style.TILE_SIZE;
-        }
+        shopTable.draw(graphics, Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE);
 
         graphics.setColor(Color.WHITE);
         graphics.drawString("Select an item to buy or press [esc] to cancel.", Style.MARGIN, dim.height - Style.MARGIN);

@@ -259,14 +259,12 @@ public class Frontend {
                         () -> gameBackend.tellSelectedActor(new RestAtInn())));
                 break;
             case WEAPON_SHOP:
-                dim = layout.center(400, 520);
                 entries = shopData.weaponItems;
-                open(new ShopWindow(dim, true, gameBackend, this, entries));
+                open(new ShopWindow(true, gameBackend, this, entries));
                 break;
             case MAGIC_SHOP:
-                dim = layout.center(400, 520);
                 entries = shopData.magicItems;
-                open(new ShopWindow(dim, true, gameBackend, this, entries));
+                open(new ShopWindow(true, gameBackend, this, entries));
                 break;
             case JEWELER_SHOP:
                 dim = layout.center(650, 550);

@@ -18,10 +18,9 @@ public class ImageCell implements Cell {
     @Override
     public void draw(Graphics graphics, int x, int y, int cellWidth, int cellHeight) {
         ImageController.DrawMode drawMode = grayed ? ImageController.DrawMode.GRAY : ImageController.DrawMode.NORMAL;
-        // center the image in the cell
-        int dx = (cellWidth - getWidth()) / 2;
+        // center the image in the cell vertically, align left
         int dy = (cellHeight - getHeight()) / 2;
-        ImageController.drawTile(graphics, imageName, x + dx, y + dy, drawMode);
+        ImageController.drawTile(graphics, imageName, x, y + dy, drawMode);
     }
 
     @Override

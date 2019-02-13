@@ -48,7 +48,7 @@ public class MonsterInfoWindow extends AbstractWindow {
                 monsterSummary,
                 player,
                 true,
-                dim.width,
-                new Point(0,0));
+                dim.width - 2*Style.SMALL_MARGIN,
+                new Point(Style.SMALL_MARGIN,Style.SMALL_MARGIN));
     }
 }
