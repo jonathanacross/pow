@@ -21,9 +21,9 @@ public class Style {
     public static final int TILE_SIZE = 32;
     public static final int MAP_TILE_SIZE = 4;
 
-    private static final Font smallFont = new Font("Courier", Font.PLAIN, SMALL_FONT_SIZE);
-    private static final Font defaultFont = new Font("Courier", Font.PLAIN, FONT_SIZE);
-    private static final Font bigFont = new Font("Courier", Font.PLAIN, BIG_FONT_SIZE);
+    private static final Font smallFont = new Font("Ubuntu", Font.PLAIN, SMALL_FONT_SIZE);
+    private static final Font defaultFont = new Font("Ubuntu", Font.PLAIN, FONT_SIZE);
+    private static final Font bigFont = new Font("Ubuntu", Font.PLAIN, BIG_FONT_SIZE);
 
     public static Font getSmallFont() { return smallFont; }
     public static Font getDefaultFont() { return defaultFont; }
