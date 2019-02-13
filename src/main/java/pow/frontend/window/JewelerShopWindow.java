@@ -188,16 +188,16 @@ public class JewelerShopWindow extends AbstractWindow {
         // if insufficient items, then let the player know and skip the complex drawing logic.
         if (!selections.haveNeededItems()) {
             graphics.drawString("Hi " + player.name + ", come back when you have a socketed item and a gem.",
-                    Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
+                    Style.MARGIN, Style.MARGIN + Style.getFontSize());
 
             graphics.drawString("Press [esc] to exit.", Style.MARGIN, dim.height - Style.MARGIN);
             return;
         }
 
         graphics.drawString("Hi " + player.name + ", select an item and a gem.",
-                Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
+                Style.MARGIN, Style.MARGIN + Style.getFontSize());
 
-        final int yHeader = Style.MARGIN + 3 * Style.FONT_SIZE;
+        final int yHeader = Style.MARGIN + 3 * Style.getFontSize();
         final int col1x = Style.MARGIN;
         final int col2x = 430;
 
@@ -210,7 +210,7 @@ public class JewelerShopWindow extends AbstractWindow {
             graphics.drawLine(col1x, y + 5, col2x - 30, y + 5);
             graphics.setColor(Color.WHITE);
             graphics.drawString("Equipment:", Style.MARGIN, y);
-            y += Style.FONT_SIZE;
+            y += Style.getFontSize();
             for (ShopUtils.ItemInfo entry : selections.equipment) {
                 boolean isSelected = idx == selections.equipmentSelectIdx;
                 drawItem(graphics, new Point(Style.MARGIN, y), idx, entry.item, isSelected, true);
@@ -228,7 +228,7 @@ public class JewelerShopWindow extends AbstractWindow {
             graphics.drawLine(col1x, y + 5, col2x - 30, y + 5);
             graphics.setColor(Color.WHITE);
             graphics.drawString("Inventory:", Style.MARGIN, y);
-            y += Style.FONT_SIZE;
+            y += Style.getFontSize();
             for (ShopUtils.ItemInfo entry : selections.inventory) {
                 boolean isSelected = idx - baseInventoryIdx == selections.inventorySelectIdx;
                 drawItem(graphics, new Point(Style.MARGIN, y), idx, entry.item, isSelected, true);
@@ -244,7 +244,7 @@ public class JewelerShopWindow extends AbstractWindow {
         graphics.drawLine(col2x, y + 5, dim.width - Style.MARGIN, y + 5);
         graphics.setColor(Color.WHITE);
         graphics.drawString("Gems:", col2x, y);
-        y += Style.FONT_SIZE;
+        y += Style.getFontSize();
         for (ShopUtils.ItemInfo entry : selections.gems) {
             boolean isSelected = idx - baseGemIdx == selections.gemsSelect;
             drawItem(graphics, new Point(col2x, y), idx, entry.item, isSelected, true);
@@ -263,22 +263,22 @@ public class JewelerShopWindow extends AbstractWindow {
         DungeonItem gem = selections.getSelectedGem();
         boolean enabled = selections.playerCanAffordUpgrade();
 
-        y += Style.FONT_SIZE;
+        y += Style.getFontSize();
         drawItem(graphics, new Point(col1x, y), -1, upgradeItem, false, enabled);
         drawItem(graphics, new Point(col2x, y), -1, gem, false, enabled);
 
-        y += Style.TILE_SIZE + 2 * Style.FONT_SIZE;
+        y += Style.TILE_SIZE + 2 * Style.getFontSize();
         graphics.setColor(Color.WHITE);
         graphics.drawString("It costs " + selections.getCostOfSelectedItems() +
                 " gold to combine these items.", Style.MARGIN, y);
-        y += Style.FONT_SIZE;
+        y += Style.getFontSize();
         if (selections.playerCanAffordUpgrade()) {
-            y += 2 * Style.FONT_SIZE;
+            y += 2 * Style.getFontSize();
             graphics.drawString("Press return to accept, Esc to cancel.", Style.MARGIN, y);
         } else {
             graphics.setColor(Color.RED);
             graphics.drawString("You don't have enough money.", Style.MARGIN, y);
-            y += 2 * Style.FONT_SIZE;
+            y += 2 * Style.getFontSize();
             graphics.setColor(Color.WHITE);
             graphics.drawString("Choose another combination or press [esc] to cancel.", Style.MARGIN, y);
 

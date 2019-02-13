@@ -226,14 +226,14 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         // left item types
         for (StringPosition sd : slotData.values()) {
-            int y = gridTop + dy * sd.position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2;
+            int y = gridTop + dy * sd.position + Style.TILE_SIZE/2 + Style.getFontSize()/2;
             graphics.drawString(sd.name, gridLeft - 100, y);
         }
 
         // grid interior
         for (DungeonItem item: player.equipment.items) {
             int position = slotData.get(item.slot).position;
-            int y = gridTop + dy * position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2;
+            int y = gridTop + dy * position + Style.TILE_SIZE/2 + Style.getFontSize()/2;
 
             for (Map.Entry<Integer, StringPosition> entry : bonusData.entrySet()) {
                 int bonusIdx = entry.getKey();
@@ -269,7 +269,7 @@ public class PlayerInfoWindow extends AbstractWindow {
             }
         }
         graphics.setColor(Color.WHITE);
-        int sumY = gridTop + numSlots*dy + Style.SMALL_MARGIN + Style.FONT_SIZE;
+        int sumY = gridTop + numSlots*dy + Style.SMALL_MARGIN + Style.getFontSize();
         graphics.drawString("(total)", gridLeft - 100, sumY);
         for (Map.Entry<Integer, StringPosition> entry : bonusData.entrySet()) {
             int bonusIdx = entry.getKey();

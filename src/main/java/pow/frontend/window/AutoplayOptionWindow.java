@@ -90,9 +90,9 @@ public class AutoplayOptionWindow extends AbstractWindow {
 
         GameState gs = backend.getGameState();
 
-        int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
+        int y = Style.SMALL_MARGIN + Style.getFontSize();
         graphics.drawString("Who do you want to control?", Style.SMALL_MARGIN, y);
-        y += Style.FONT_SIZE;
+        y += Style.getFontSize();
 
         TableBuilder tableBuilder = new TableBuilder();
 

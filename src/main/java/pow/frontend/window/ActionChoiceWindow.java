@@ -112,7 +112,7 @@ public class ActionChoiceWindow extends AbstractWindow {
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
+        graphics.drawString(message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.getFontSize());
 
         DungeonItem item = items.get(itemIndex);
 

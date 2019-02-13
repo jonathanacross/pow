@@ -28,10 +28,10 @@ public class HelpWindow extends AbstractWindow {
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        int y = Style.FONT_SIZE + Style.MARGIN;
+        int y = Style.getFontSize() + Style.MARGIN;
         for (String line: HelpController.getHelpText()) {
             graphics.drawString(line, Style.MARGIN, y);
-            y += Style.FONT_SIZE;
+            y += Style.getFontSize();
         }
     }
 }

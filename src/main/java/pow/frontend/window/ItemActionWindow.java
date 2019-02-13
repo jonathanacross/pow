@@ -42,7 +42,7 @@ public class ItemActionWindow extends AbstractWindow {
         this.items = items;
         this.location = location;
         this.itemTable = getItemTable(items);
-        int height = 3*Style.SMALL_MARGIN + Style.FONT_SIZE + itemTable.getHeight();
+        int height = 3*Style.SMALL_MARGIN + Style.getFontSize() + itemTable.getHeight();
         this.resize(frontend.layout.center(400, height));
     }
 

@@ -165,10 +165,10 @@ public class SelectCharWindow extends AbstractWindow {
         int maxGains = showSpeed ? gains.length : gains.length - 1;
         for (int i = 0; i < maxGains; i++) {
             int width = (int) Math.round(gains[i] * 100);
-            drawBar(graphics, barLeft, y + i * Style.FONT_SIZE, width, Style.FONT_SIZE, gains[i]);
-            graphics.drawString(labels[i], x, y + (i+1) * Style.FONT_SIZE);
+            drawBar(graphics, barLeft, y + i * Style.getFontSize(), width, Style.getFontSize(), gains[i]);
+            graphics.drawString(labels[i], x, y + (i+1) * Style.getFontSize());
         }
-        y += (maxGains + 1) * Style.FONT_SIZE;
+        y += (maxGains + 1) * Style.getFontSize();
 
         int textWidth = dim.width - 2*Style.SMALL_MARGIN;
         Font font = graphics.getFont();
@@ -180,7 +180,7 @@ public class SelectCharWindow extends AbstractWindow {
                 ImageUtils.wrapText(
                         "Spells: " + TextUtils.formatList(getSpellNames(characterData.spells)), textMetrics, textWidth));
         for (String line : extraLines) {
-            y += Style.FONT_SIZE;
+            y += Style.getFontSize();
             graphics.drawString(line, x, y);
         }
     }
@@ -193,24 +193,24 @@ public class SelectCharWindow extends AbstractWindow {
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
+        int y = Style.SMALL_MARGIN + Style.getFontSize();
         for (String message : messages) {
             graphics.drawString(message, Style.SMALL_MARGIN, y);
-            y += 2 * Style.FONT_SIZE;
+            y += 2 * Style.getFontSize();
         }
-        y -= Style.FONT_SIZE;
+        y -= Style.getFontSize();
         for (int i = 0; i < characterData.size(); i++) {
             ImageController.drawTile(graphics, characterData.get(i).image, Style.SMALL_MARGIN + i*(ImageController.TILE_SIZE + 5), y);
         }
         graphics.setColor(Color.YELLOW);
         graphics.drawRect(Style.SMALL_MARGIN + charSelectId*(ImageController.TILE_SIZE + 5), y, ImageController.TILE_SIZE, ImageController.TILE_SIZE);
-        y += ImageController.TILE_SIZE + Style.FONT_SIZE;
+        y += ImageController.TILE_SIZE + Style.getFontSize();
 
         if (onName) {
             graphics.setColor(Color.WHITE);
-            y += Style.FONT_SIZE;
+            y += Style.getFontSize();
             graphics.drawString("Enter the name of your character.", Style.SMALL_MARGIN, y);
-            y += 2*Style.FONT_SIZE;
+            y += 2*Style.getFontSize();
             graphics.drawString(name, Style.SMALL_MARGIN, y);
         } else {
             graphics.setColor(Color.WHITE);

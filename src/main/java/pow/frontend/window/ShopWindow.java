@@ -32,7 +32,7 @@ public class ShopWindow extends AbstractWindow {
         this.entries = entries;
         this.shopTable = getShopTable();
         int width = shopTable.getWidth() + 2*Style.MARGIN;
-        int height = shopTable.getHeight() + 2*Style.MARGIN + 5*Style.FONT_SIZE;
+        int height = shopTable.getHeight() + 2*Style.MARGIN + 5*Style.getFontSize();
         this.resize(frontend.layout.center(width, height));
     }
 
@@ -127,9 +127,9 @@ public class ShopWindow extends AbstractWindow {
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
         graphics.drawString("Hi " + backend.getGameState().party.player.name + ", what would you like to buy?",
-                Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
+                Style.MARGIN, Style.MARGIN + Style.getFontSize());
 
-        shopTable.draw(graphics, Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE);
+        shopTable.draw(graphics, Style.MARGIN, Style.MARGIN + 3*Style.getFontSize());
 
         graphics.setColor(Color.WHITE);
         graphics.drawString("Select an item to buy or press [esc] to cancel.", Style.MARGIN, dim.height - Style.MARGIN);

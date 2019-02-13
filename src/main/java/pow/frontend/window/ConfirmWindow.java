@@ -51,8 +51,8 @@ public class ConfirmWindow extends AbstractWindow {
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(message, Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
-        graphics.drawString("Esc:    " + cancelText, 2 * Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE);
-        graphics.drawString("Enter:  " + okayText, 2 * Style.MARGIN, Style.MARGIN + 4*Style.FONT_SIZE);
+        graphics.drawString(message, Style.MARGIN, Style.MARGIN + Style.getFontSize());
+        graphics.drawString("Esc:    " + cancelText, 2 * Style.MARGIN, Style.MARGIN + 3*Style.getFontSize());
+        graphics.drawString("Enter:  " + okayText, 2 * Style.MARGIN, Style.MARGIN + 4*Style.getFontSize());
     }
 }

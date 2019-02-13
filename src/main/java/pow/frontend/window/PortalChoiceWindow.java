@@ -29,7 +29,7 @@ public class PortalChoiceWindow extends AbstractWindow {
                               String message,
                               List<AreaNameAndId> areas,
                               Consumer<String> callback) {
-        super(frontend.layout.center(300, 70 + Style.FONT_SIZE * areas.size()),
+        super(frontend.layout.center(300, 70 + Style.getFontSize() * areas.size()),
                 true, backend, frontend);
         this.message = message;
         this.areas = areas;
@@ -65,7 +65,7 @@ public class PortalChoiceWindow extends AbstractWindow {
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(this.message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
+        graphics.drawString(this.message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.getFontSize());
 
         int y = 45;
         int idx = 0;
@@ -74,7 +74,7 @@ public class PortalChoiceWindow extends AbstractWindow {
             graphics.drawString(label, Style.SMALL_MARGIN, y);
             graphics.drawString(areaId.name, Style.SMALL_MARGIN + 20, y);
             idx++;
-            y += Style.FONT_SIZE;
+            y += Style.getFontSize();
         }
 
         graphics.setColor(Color.WHITE);

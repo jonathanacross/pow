@@ -69,7 +69,7 @@ public class KnowledgeWindow extends AbstractWindow {
 
         Font font = Style.getDefaultFont();
         graphics.setFont(font);
-        graphics.drawString("Monster Knowledge", Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
+        graphics.drawString("Monster Knowledge", Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.getFontSize());
 
         // compute the number of monsters we can show given the window size
         // Note that the number must be even.
@@ -105,7 +105,7 @@ public class KnowledgeWindow extends AbstractWindow {
         builder.setDrawHeaderLine(true);
         builder.setColWidths(Arrays.asList(Style.TILE_SIZE + Style.SMALL_MARGIN, 180, 50));
         Table monsterTable = builder.build();
-        monsterTable.draw(graphics, Style.SMALL_MARGIN, Style.SMALL_MARGIN + 3*Style.FONT_SIZE);
+        monsterTable.draw(graphics, Style.SMALL_MARGIN, Style.SMALL_MARGIN + 3*Style.getFontSize());
 
         // draw scrollbar
         int sbTop = 65;

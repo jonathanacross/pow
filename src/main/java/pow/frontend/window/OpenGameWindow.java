@@ -87,7 +87,7 @@ public class OpenGameWindow extends AbstractWindow {
 
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Select your game.", Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
+        graphics.drawString("Select your game.", Style.MARGIN, Style.MARGIN + Style.getFontSize());
 
         int y = 60;
         int idx = 0;
@@ -100,7 +100,7 @@ public class OpenGameWindow extends AbstractWindow {
             }
             graphics.drawString(f.getName(), Style.MARGIN + 20, y);
             idx++;
-            y += Style.FONT_SIZE;
+            y += Style.getFontSize();
         }
 
         graphics.setColor(Color.WHITE);

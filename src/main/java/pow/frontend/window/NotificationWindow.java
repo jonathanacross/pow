@@ -30,6 +30,6 @@ public class NotificationWindow extends AbstractWindow {
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
+        graphics.drawString(message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.getFontSize());
     }
 }

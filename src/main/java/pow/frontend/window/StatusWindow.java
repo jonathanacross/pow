@@ -54,9 +54,9 @@ public class StatusWindow extends AbstractWindow {
         // draw bars
         Color healthColor = Color.RED;
         Color manaColor = Color.BLUE;
-        drawBar(graphics, textX, y + Style.FONT_SIZE, BAR_WIDTH, Style.FONT_SIZE-1, healthColor, a.getHealth(), a.getMaxHealth());
+        drawBar(graphics, textX, y + Style.getFontSize(), BAR_WIDTH, Style.getFontSize()-1, healthColor, a.getHealth(), a.getMaxHealth());
         if (a.getMaxMana() > 0) {
-            drawBar(graphics, textX, y + 2 * Style.FONT_SIZE, BAR_WIDTH, Style.FONT_SIZE - 1, manaColor, a.getMana(), a.getMaxMana());
+            drawBar(graphics, textX, y + 2 * Style.getFontSize(), BAR_WIDTH, Style.getFontSize() - 1, manaColor, a.getMana(), a.getMaxMana());
         }
 
         // draw character
@@ -68,12 +68,12 @@ public class StatusWindow extends AbstractWindow {
 
         // draw the text
         graphics.setColor(Color.WHITE);
-        graphics.drawString(TextUtils.format(a.name, 1, false), textX, y + Style.FONT_SIZE);
+        graphics.drawString(TextUtils.format(a.name, 1, false), textX, y + Style.getFontSize());
         if (showExact) {
-            graphics.drawString("HP:" + a.getHealth() + "/" + a.getMaxHealth(), textX, y + 2*Style.FONT_SIZE);
+            graphics.drawString("HP:" + a.getHealth() + "/" + a.getMaxHealth(), textX, y + 2*Style.getFontSize());
         }
         if (showExact && a.getMaxMana() > 0) {
-            graphics.drawString("MP:" + a.getMana() + "/" + a.getMaxMana(), textX, y + 3*Style.FONT_SIZE);
+            graphics.drawString("MP:" + a.getMana() + "/" + a.getMaxMana(), textX, y + 3*Style.getFontSize());
         }
 
     }
@@ -91,25 +91,25 @@ public class StatusWindow extends AbstractWindow {
         int textX = Style.TILE_SIZE + 2*Style.SMALL_MARGIN;
         boolean selectPlayer = gs.party.selectedActor == gs.party.player;
         boolean selectPet = gs.party.selectedActor == gs.party.pet;
-        drawActorSummary(graphics, gs.party.player, Style.SMALL_MARGIN, y, true, selectPlayer); y += 4*Style.FONT_SIZE;
-        graphics.drawString("Exp:       " + gs.party.player.experience, textX, y); y += Style.FONT_SIZE;
-        graphics.drawString("Exp next:  " + gs.party.player.getExpToNextLevel(), textX, y); y += Style.FONT_SIZE;
-        graphics.drawString("Level:     " + gs.party.player.level, textX, y); y += Style.FONT_SIZE;
-        graphics.drawString("Gold:      " + gs.party.player.gold, textX, y); y += Style.FONT_SIZE;
+        drawActorSummary(graphics, gs.party.player, Style.SMALL_MARGIN, y, true, selectPlayer); y += 4*Style.getFontSize();
+        graphics.drawString("Exp:       " + gs.party.player.experience, textX, y); y += Style.getFontSize();
+        graphics.drawString("Exp next:  " + gs.party.player.getExpToNextLevel(), textX, y); y += Style.getFontSize();
+        graphics.drawString("Level:     " + gs.party.player.level, textX, y); y += Style.getFontSize();
+        graphics.drawString("Gold:      " + gs.party.player.gold, textX, y); y += Style.getFontSize();
 
         if (gs.party.pet != null) {
             y += 5;
-            drawActorSummary(graphics, gs.party.pet, Style.SMALL_MARGIN, y, true, selectPet); y += 4*Style.FONT_SIZE;
-            graphics.drawString("Exp:       " + gs.party.pet.experience, textX, y); y += Style.FONT_SIZE;
-            graphics.drawString("Exp next:  " + gs.party.pet.getExpToNextLevel(), textX, y); y += Style.FONT_SIZE;
-            graphics.drawString("Level:     " + gs.party.pet.level, textX, y); y += Style.FONT_SIZE;
+            drawActorSummary(graphics, gs.party.pet, Style.SMALL_MARGIN, y, true, selectPet); y += 4*Style.getFontSize();
+            graphics.drawString("Exp:       " + gs.party.pet.experience, textX, y); y += Style.getFontSize();
+            graphics.drawString("Exp next:  " + gs.party.pet.getExpToNextLevel(), textX, y); y += Style.getFontSize();
+            graphics.drawString("Level:     " + gs.party.pet.level, textX, y); y += Style.getFontSize();
         }
 
         y += 5;
         graphics.setColor(Style.SEPARATOR_LINE_COLOR);
         graphics.drawLine(Style.SMALL_MARGIN, y, dim.width - Style.SMALL_MARGIN, y);
         graphics.setColor(Color.WHITE);
-        y += Style.FONT_SIZE;
+        y += Style.getFontSize();
 
         for (Actor a: gs.getCurrentMap().actors) {
             if (gs.party.containsActor(a)) continue;

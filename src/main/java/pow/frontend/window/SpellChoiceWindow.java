@@ -29,7 +29,7 @@ public class SpellChoiceWindow extends AbstractWindow {
                              String message,
                              List<SpellParams> spells,
                              Consumer<Integer> callback) {
-        super( new WindowDim(x, y, 570, 105 + Style.FONT_SIZE * spells.size()),
+        super( new WindowDim(x, y, 570, 105 + Style.getFontSize() * spells.size()),
                 true, backend, frontend);
         this.message = message;
         this.spells = spells;
@@ -109,7 +109,7 @@ public class SpellChoiceWindow extends AbstractWindow {
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(this.message, Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
+        graphics.drawString(this.message, Style.MARGIN, Style.MARGIN + Style.getFontSize());
 
         spellTable.draw(graphics, Style.MARGIN, Style.MARGIN + 30);
 
