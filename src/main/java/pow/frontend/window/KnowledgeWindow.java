@@ -7,7 +7,7 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.MonsterDisplay;
-import pow.frontend.utils.table.*;
+import pow.frontend.widget.*;
 import pow.util.MathUtils;
 import pow.util.TextUtils;
 
@@ -79,18 +79,18 @@ public class KnowledgeWindow extends AbstractWindow {
 
         TableBuilder builder = new TableBuilder();
         builder.addRow(Arrays.asList(
-                new EmptyCell(),
-                new TextCell(Arrays.asList("Name"), State.NORMAL, font),
-                new TextCell(Arrays.asList("Killed"), State.NORMAL, font)
+                new Space(),
+                new TextBox(Arrays.asList("Name"), State.NORMAL, font),
+                new TextBox(Arrays.asList("Killed"), State.NORMAL, font)
         ));
 
         for (int index = minIndex; index < maxIndex; index++) {
             Knowledge.MonsterSummary ms = monsterSummary.get(index);
             State state = index == selectIndex ? State.SELECTED : State.NORMAL;
             builder.addRow(Arrays.asList(
-                    new ImageCell(ms.image, state),
-                    new TextCell(Arrays.asList(TextUtils.singular(ms.name)), state, font),
-                    new TextCell(Arrays.asList(String.valueOf(ms.numKilled)), state, font)
+                    new Tile(ms.image, state),
+                    new TextBox(Arrays.asList(TextUtils.singular(ms.name)), state, font),
+                    new TextBox(Arrays.asList(String.valueOf(ms.numKilled)), state, font)
             ));
         }
         builder.setDrawHeaderLine(true);

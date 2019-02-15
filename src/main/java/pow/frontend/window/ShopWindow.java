@@ -8,7 +8,7 @@ import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.table.*;
+import pow.frontend.widget.*;
 import pow.util.TextUtils;
 
 import java.awt.*;
@@ -81,10 +81,10 @@ public class ShopWindow extends AbstractWindow {
         // build the inner list
         TableBuilder listBuilder = new TableBuilder();
         listBuilder.addRow(Arrays.asList(
-                new EmptyCell(),
-                new TextCell(Arrays.asList("Item"), State.NORMAL, font),
-                new EmptyCell(),
-                new TextCell(Arrays.asList("Price"), State.NORMAL, font)
+                new Space(),
+                new TextBox(Arrays.asList("Item"), State.NORMAL, font),
+                new Space(),
+                new TextBox(Arrays.asList("Price"), State.NORMAL, font)
         ));
         for (int i = 0; i < this.entries.size(); i++) {
             ShopData.ShopEntry entry = entries.get(i);
@@ -96,10 +96,10 @@ public class ShopWindow extends AbstractWindow {
             String price = String.valueOf(entry.price);
 
             listBuilder.addRow(Arrays.asList(
-                    new TextCell(Arrays.asList(label), state, font),
-                    new ImageCell(entry.item.image, state),
-                    new TextCell(itemInfo, state, font),
-                    new TextCell(Arrays.asList(price), state, font)
+                    new TextBox(Arrays.asList(label), state, font),
+                    new Tile(entry.item.image, state),
+                    new TextBox(itemInfo, state, font),
+                    new TextBox(Arrays.asList(price), state, font)
             ));
         }
         listBuilder.setDrawHeaderLine(true);
@@ -111,13 +111,13 @@ public class ShopWindow extends AbstractWindow {
         String greeting = "Hi " + backend.getGameState().party.player.name + ", what would you like to buy?";
         String help = "Select an item to buy or press [esc] to cancel.";
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(greeting), State.NORMAL, font)
+                new TextBox(Arrays.asList(greeting), State.NORMAL, font)
         ));
         builder.addRow(Arrays.asList(
                 itemList
         ));
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(help), State.NORMAL, font)
+                new TextBox(Arrays.asList(help), State.NORMAL, font)
         ));
         builder.setVSpacing(Style.MARGIN);
 

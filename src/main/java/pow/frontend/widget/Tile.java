@@ -1,25 +1,24 @@
-package pow.frontend.utils.table;
+package pow.frontend.widget;
 
 import pow.frontend.Style;
 import pow.frontend.utils.ImageController;
 
 import java.awt.*;
 
-// TODO: change Image to Tile.
-public class ImageCell implements Cell {
+public class Tile implements Widget {
 
-    String imageName;
+    String tileName;
     State state;
 
-    public ImageCell(String imageName, State state) {
-        this.imageName = imageName;
+    public Tile(String tileName, State state) {
+        this.tileName = tileName;
         this.state = state;
     }
 
     @Override
     public void draw(Graphics graphics, int x, int y) {
         ImageController.DrawMode drawMode = state == State.DISABLED ? ImageController.DrawMode.GRAY : ImageController.DrawMode.NORMAL;
-        ImageController.drawTile(graphics, imageName, x, y, drawMode);
+        ImageController.drawTile(graphics, tileName, x, y, drawMode);
         if (state == State.SELECTED) {
             graphics.setColor(Color.YELLOW);
             graphics.drawRect(x, y, getWidth(), getHeight());

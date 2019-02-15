@@ -5,7 +5,7 @@ import pow.backend.SpellParams;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.table.*;
+import pow.frontend.widget.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -63,11 +63,11 @@ public class SpellChoiceWindow extends AbstractWindow {
         // Build the inner spell list
         TableBuilder spellListBuilder = new TableBuilder();
         spellListBuilder.addRow(Arrays.asList(
-                new EmptyCell(),
-                new TextCell(Arrays.asList("Spell"), State.NORMAL, font),
-                new TextCell(Arrays.asList("Level"), State.NORMAL, font),
-                new TextCell(Arrays.asList("Mana"), State.NORMAL, font),
-                new TextCell(Arrays.asList("Info"), State.NORMAL, font)
+                new Space(),
+                new TextBox(Arrays.asList("Spell"), State.NORMAL, font),
+                new TextBox(Arrays.asList("Level"), State.NORMAL, font),
+                new TextBox(Arrays.asList("Mana"), State.NORMAL, font),
+                new TextBox(Arrays.asList("Info"), State.NORMAL, font)
         ));
         for (int i = 0; i < spells.size(); i++) {
             SpellParams spell = spells.get(i);
@@ -77,11 +77,11 @@ public class SpellChoiceWindow extends AbstractWindow {
             String desc = spell.getDescription(backend.getGameState().party.selectedActor);
 
             spellListBuilder.addRow(Arrays.asList(
-                    new TextCell(Arrays.asList(label), state, font),
-                    new TextCell(Arrays.asList(spell.name), state, font),
-                    new TextCell(Arrays.asList(Integer.toString(spell.minLevel)), state, font),
-                    new TextCell(Arrays.asList(Integer.toString(spell.requiredMana)), state, font),
-                    new TextCell(Arrays.asList(desc), state, font)
+                    new TextBox(Arrays.asList(label), state, font),
+                    new TextBox(Arrays.asList(spell.name), state, font),
+                    new TextBox(Arrays.asList(Integer.toString(spell.minLevel)), state, font),
+                    new TextBox(Arrays.asList(Integer.toString(spell.requiredMana)), state, font),
+                    new TextBox(Arrays.asList(desc), state, font)
             ));
         }
         spellListBuilder.setHSpacing(Style.MARGIN);
@@ -92,13 +92,13 @@ public class SpellChoiceWindow extends AbstractWindow {
         TableBuilder tableBuilder = new TableBuilder();
 
         tableBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(this.message), State.NORMAL, font)
+                new TextBox(Arrays.asList(this.message), State.NORMAL, font)
         ));
         tableBuilder.addRow(Arrays.asList(
                 spellList
         ));
         tableBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("Select a spell, or press [esc] to cancel."), State.NORMAL, font)
+                new TextBox(Arrays.asList("Select a spell, or press [esc] to cancel."), State.NORMAL, font)
         ));
 
         tableBuilder.setVSpacing(Style.MARGIN);

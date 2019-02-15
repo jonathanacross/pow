@@ -8,7 +8,7 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ItemActions;
-import pow.frontend.utils.table.*;
+import pow.frontend.widget.*;
 import pow.util.TextUtils;
 
 import java.awt.Font;
@@ -74,25 +74,25 @@ public class ItemActionWindow extends AbstractWindow {
             String label = (char) ((int) 'a' + i) + ")";
             List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
             itemListBuilder.addRow(Arrays.asList(
-                    new TextCell(Arrays.asList(label), State.NORMAL, font),
-                    new ImageCell(item.image, State.NORMAL),
-                    new TextCell(itemInfo, State.NORMAL, font)
+                    new TextBox(Arrays.asList(label), State.NORMAL, font),
+                    new Tile(item.image, State.NORMAL),
+                    new TextBox(itemInfo, State.NORMAL, font)
             ));
         }
         itemListBuilder.setHSpacing(Style.MARGIN);
         Table itemList = itemListBuilder.build();
 
-        // make the outer table with header and footer
+        // make the outer widget with header and footer
         TableBuilder tableBuilder = new TableBuilder();
         tableBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(message), State.NORMAL, font)
+                new TextBox(Arrays.asList(message), State.NORMAL, font)
         ));
         tableBuilder.addRow(Arrays.asList(
                 itemList
         ));
         String helpMessage = "Select an item or press [esc] to cancel.";
         tableBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(helpMessage), State.NORMAL, font)
+                new TextBox(Arrays.asList(helpMessage), State.NORMAL, font)
         ));
         tableBuilder.setVSpacing(Style.MARGIN);
 

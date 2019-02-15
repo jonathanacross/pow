@@ -1,11 +1,11 @@
-package pow.frontend.utils.table;
+package pow.frontend.widget;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class TableBuilder {
-    private List<List<Cell>> cells;
+    private List<List<Widget>> cells;
     private List<Integer> colWidths;
     private List<Integer> rowHeights;
     private boolean drawHeaderLine;
@@ -19,11 +19,11 @@ public class TableBuilder {
         this.vSpacing = 0;
     }
 
-    public void setCells(List<List<Cell>> cells) {
+    public void setCells(List<List<Widget>> cells) {
         this.cells = cells;
     }
 
-    public void addRow(List<Cell> row) {
+    public void addRow(List<Widget> row) {
         cells.add(row);
     }
 
@@ -45,10 +45,10 @@ public class TableBuilder {
 
     private List<Integer> getDefaultHeights() {
         List<Integer> heights = new ArrayList<>();
-        for (List<Cell> row : cells) {
+        for (List<Widget> row : cells) {
             int height = 0;
-            for (Cell cell : row) {
-                height = Math.max(height, cell.getHeight());
+            for (Widget widget : row) {
+                height = Math.max(height, widget.getHeight());
             }
             heights.add(height);
         }
@@ -60,8 +60,8 @@ public class TableBuilder {
         for (int c = 0; c < cells.get(0).size(); c++) {
             int width = 0;
             for (int r = 0; r < cells.size(); r++) {
-                Cell cell = cells.get(r).get(c);
-                int cellAutoWidth = cell.getWidth();
+                Widget widget = cells.get(r).get(c);
+                int cellAutoWidth = widget.getWidth();
                 width = Math.max(width, cellAutoWidth);
             }
             widths.add(width);

@@ -4,7 +4,7 @@ import pow.backend.GameBackend;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.table.*;
+import pow.frontend.widget.*;
 import pow.util.MathUtils;
 
 import java.awt.*;
@@ -69,8 +69,8 @@ public class GetCountWindow extends AbstractWindow {
         Font font = Style.getDefaultFont();
         TableBuilder topRowBuilder = new TableBuilder();
         topRowBuilder.addRow(Arrays.asList(
-                new ImageCell(imageName, State.NORMAL),
-                new TextCell(messages, State.NORMAL, font)
+                new Tile(imageName, State.NORMAL),
+                new TextBox(messages, State.NORMAL, font)
         ));
         topRowBuilder.setHSpacing(Style.MARGIN);
         Table topRow = topRowBuilder.build();
@@ -81,10 +81,10 @@ public class GetCountWindow extends AbstractWindow {
                 topRow
         ));
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("> " + countString), State.NORMAL, font)
+                new TextBox(Arrays.asList("> " + countString), State.NORMAL, font)
         ));
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("Press [esc] to cancel."), State.NORMAL, font)
+                new TextBox(Arrays.asList("Press [esc] to cancel."), State.NORMAL, font)
         ));
         builder.setVSpacing(Style.MARGIN);
         return builder.build();

@@ -10,7 +10,7 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ItemActions;
-import pow.frontend.utils.table.*;
+import pow.frontend.widget.*;
 import pow.util.TextUtils;
 
 import java.awt.Font;
@@ -106,8 +106,8 @@ public class ActionChoiceWindow extends AbstractWindow {
             ItemActions.Action action = actions.get(i);
             String label = (char) ((int) 'a' + i) + ")";
             listBuilder.addRow(Arrays.asList(
-                    new TextCell(Arrays.asList(label), State.NORMAL, font),
-                    new TextCell(Arrays.asList(action.getText()), State.NORMAL, font)
+                    new TextBox(Arrays.asList(label), State.NORMAL, font),
+                    new TextBox(Arrays.asList(action.getText()), State.NORMAL, font)
             ));
         }
         listBuilder.setHSpacing(Style.MARGIN);
@@ -118,8 +118,8 @@ public class ActionChoiceWindow extends AbstractWindow {
         List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
         TableBuilder itemLineBuilder = new TableBuilder();
         itemLineBuilder.addRow(Arrays.asList(
-                new ImageCell(item.image, State.NORMAL),
-                new TextCell(itemInfo, State.NORMAL, font)
+                new Tile(item.image, State.NORMAL),
+                new TextBox(itemInfo, State.NORMAL, font)
         ));
         itemLineBuilder.setHSpacing(Style.MARGIN);
         Table itemLine = itemLineBuilder.build();
@@ -127,7 +127,7 @@ public class ActionChoiceWindow extends AbstractWindow {
         // build the overall layout
         TableBuilder builder = new TableBuilder();
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(message), State.NORMAL, font)
+                new TextBox(Arrays.asList(message), State.NORMAL, font)
         ));
         builder.addRow(Arrays.asList(
                 itemLine
@@ -136,7 +136,7 @@ public class ActionChoiceWindow extends AbstractWindow {
                 list
         ));
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("Select an action or press [esc] to cancel."), State.NORMAL, font)
+                new TextBox(Arrays.asList("Select an action or press [esc] to cancel."), State.NORMAL, font)
         ));
         builder.setVSpacing(Style.MARGIN);
 

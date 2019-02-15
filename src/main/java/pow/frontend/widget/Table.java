@@ -1,24 +1,23 @@
-package pow.frontend.utils.table;
+package pow.frontend.widget;
 
 import pow.frontend.Style;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
 
-public class Table implements Cell {
+public class Table implements Widget {
 
     // rather than list of cells, use tableCells:
-    // class TableCell { Cell cell, Alignment alignment, Color background }
+    // class TableCell { Widget cell, Alignment alignment, Color background }
 
-    final List<List<Cell>> cells;
+    final List<List<Widget>> cells;
     final List<Integer> colWidths;
     final List<Integer> rowHeights;
     final boolean drawHeaderLine;
     final int hSpacing;
     final int vSpacing;
 
-    public Table(List<List<Cell>> cells, List<Integer> colWidths, List<Integer> rowHeights, int hSpacing, int vSpacing, boolean drawHeaderLine) {
+    public Table(List<List<Widget>> cells, List<Integer> colWidths, List<Integer> rowHeights, int hSpacing, int vSpacing, boolean drawHeaderLine) {
         this.cells = cells;
         this.colWidths = colWidths;
         this.rowHeights = rowHeights;
@@ -49,17 +48,17 @@ public class Table implements Cell {
         // draw cell contents
         int yOffset = y;
         for (int r = 0; r < cells.size(); r++) {
-            List<Cell> row = cells.get(r);
+            List<Widget> row = cells.get(r);
 
             int xOffset = x;
             for (int c = 0; c < row.size(); c++) {
                 // Show borders of cells for debugging
                 // graphics.setColor(Color.RED);
                 // graphics.drawRect(xOffset, yOffset, colWidths.get(c), rowHeights.get(r));
-                Cell cell = row.get(c);
+                Widget widget = row.get(c);
                 // draw left aligned, vertically centered.
-                int dy = (rowHeights.get(r) - cell.getHeight()) / 2;
-                cell.draw(graphics, xOffset, yOffset + dy);
+                int dy = (rowHeights.get(r) - widget.getHeight()) / 2;
+                widget.draw(graphics, xOffset, yOffset + dy);
                 xOffset += colWidths.get(c) + hSpacing;
             }
 

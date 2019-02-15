@@ -1,4 +1,4 @@
-package pow.frontend.utils.table;
+package pow.frontend.widget;
 
 // used to control the appearance of certain elements, notably text and tiles.
 public enum State {

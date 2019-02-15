@@ -1,17 +1,17 @@
-package pow.frontend.utils.table;
+package pow.frontend.widget;
 
 import java.awt.Graphics;
 
-public class EmptyCell implements Cell {
+public class Space implements Widget {
     int width;
     int height;
 
-    public EmptyCell(int width, int height) {
+    public Space(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
-    public EmptyCell() {
+    public Space() {
         this(0, 0);
     }
 

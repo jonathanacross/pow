@@ -1,4 +1,4 @@
-package pow.frontend.utils.table;
+package pow.frontend.widget;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,7 +8,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class TextCell implements Cell {
+public class TextBox implements Widget {
 
     // Used to get font metrics to compute text heights/widths
     private static Graphics fakeGraphics;
@@ -25,7 +25,7 @@ public class TextCell implements Cell {
     int lineHeight;
     int ascent;
 
-    public TextCell(List<String> lines, State state, Font font) {
+    public TextBox(List<String> lines, State state, Font font) {
         this.lines = lines;
         this.state = state;
         this.font = font;
