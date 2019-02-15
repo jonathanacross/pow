@@ -6,19 +6,21 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
 
-public class Table {
+public class Table implements Cell {
 
     final List<List<Cell>> cells;
     final List<Integer> colWidths;
     final List<Integer> rowHeights;
     final boolean drawHeaderLine;
-    final int spacing;
+    final int hSpacing;
+    final int vSpacing;
 
-    public Table(List<List<Cell>> cells, List<Integer> colWidths, List<Integer> rowHeights, int spacing, boolean drawHeaderLine) {
+    public Table(List<List<Cell>> cells, List<Integer> colWidths, List<Integer> rowHeights, int hSpacing, int vSpacing, boolean drawHeaderLine) {
         this.cells = cells;
         this.colWidths = colWidths;
         this.rowHeights = rowHeights;
-        this.spacing = spacing;
+        this.hSpacing = hSpacing;
+        this.vSpacing = vSpacing;
         this.drawHeaderLine = drawHeaderLine;
     }
 
@@ -27,7 +29,7 @@ public class Table {
         for (int cw : colWidths) {
             totalWidth += cw;
         }
-        totalWidth += (colWidths.size() - 1) * spacing;
+        totalWidth += (colWidths.size() - 1) * hSpacing;
         return totalWidth;
     }
 
@@ -36,7 +38,7 @@ public class Table {
         for (int rh : rowHeights) {
             totalHeight += rh;
         }
-        totalHeight += (rowHeights.size() - 1) * spacing;
+        totalHeight += (rowHeights.size() - 1) * vSpacing;
         return totalHeight;
     }
 
@@ -48,19 +50,22 @@ public class Table {
 
             int xOffset = x;
             for (int c = 0; c < row.size(); c++) {
+                //TODO: remove dead code
 //                graphics.setColor(Color.RED);
 //                graphics.drawRect(xOffset, yOffset, colWidths.get(c), rowHeights.get(r));
                 Cell cell = row.get(c);
-                cell.draw(graphics, xOffset, yOffset, colWidths.get(c), rowHeights.get(r));
-                xOffset += colWidths.get(c) + spacing;
+                // draw left aligned, vertically centered.
+                int dy = (rowHeights.get(r) - cell.getHeight()) / 2;
+                cell.draw(graphics, xOffset, yOffset + dy);
+                xOffset += colWidths.get(c) + hSpacing;
             }
 
-            yOffset += rowHeights.get(r) + spacing;
+            yOffset += rowHeights.get(r) + vSpacing;
         }
 
         // draw header line
         if (drawHeaderLine) {
-            int lineY = y + rowHeights.get(0) + (spacing / 2);
+            int lineY = y + rowHeights.get(0) + (vSpacing / 2);
             graphics.setColor(Style.SEPARATOR_LINE_COLOR);
             graphics.drawLine(x, lineY, x + getWidth(), lineY);
         }

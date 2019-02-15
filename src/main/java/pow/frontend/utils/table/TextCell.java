@@ -48,9 +48,9 @@ public class TextCell implements Cell {
     }
 
     @Override
-    public void draw(Graphics graphics, int x, int y, int cellWidth, int cellHeight) {
+    public void draw(Graphics graphics, int x, int y) {
         // vertically center
-        int yOffset = y + (cellHeight - height) / 2 + ascent;
+        int yOffset = y + ascent;
         for (String line : lines) {
             switch (style) {
                 case NORMAL: graphics.setColor(Color.WHITE); break;

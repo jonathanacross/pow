@@ -34,19 +34,21 @@ public class ActionChoiceWindow extends AbstractWindow {
     private final ItemList items;
     private final int itemIndex;
     private final List<ItemActions.Action> actions;
+    private final Table layoutTable;
 
     public ActionChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
                               String message,
                               ItemList items,
                               int itemIndex,
                               List<ItemActions.Action> actions) {
-        super(new WindowDim(x, y, 400,
-                100 + 17 * actions.size()),
-                true, backend, frontend);
+        super(new WindowDim(0, 0, 0, 0), true, backend, frontend);
         this.message = message;
         this.items = items;
         this.itemIndex = itemIndex;
         this.actions = actions;
+        this.layoutTable = getLayoutTable();
+        this.resize(new WindowDim(x, y, layoutTable.getWidth() + 2*Style.MARGIN,
+                layoutTable.getHeight() + 2*Style.MARGIN));
     }
 
     @Override
@@ -103,50 +105,57 @@ public class ActionChoiceWindow extends AbstractWindow {
         }
     }
 
+    private Table getLayoutTable() {
+        Font font = Style.getDefaultFont();
+
+        // build the inner list
+        TableBuilder listBuilder = new TableBuilder();
+        for (int i = 0; i < actions.size(); i++) {
+            ItemActions.Action action = actions.get(i);
+            String label = (char) ((int) 'a' + i) + ")";
+            listBuilder.addRow(Arrays.asList(
+                    new TextCell(Arrays.asList(label), TextCell.Style.NORMAL, font),
+                    new TextCell(Arrays.asList(action.getText()), TextCell.Style.NORMAL, font)
+            ));
+        }
+        listBuilder.setHSpacing(Style.MARGIN);
+        Table list = listBuilder.build();
+
+        // build the item line
+        DungeonItem item = items.get(itemIndex);
+        List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
+        TableBuilder itemLineBuilder = new TableBuilder();
+        itemLineBuilder.addRow(Arrays.asList(
+                new ImageCell(item.image, false),
+                new TextCell(itemInfo, TextCell.Style.NORMAL, font)
+        ));
+        itemLineBuilder.setHSpacing(Style.MARGIN);
+        Table itemLine = itemLineBuilder.build();
+
+        // build the overall layout
+        TableBuilder builder = new TableBuilder();
+        builder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList(message), TextCell.Style.NORMAL, font)
+        ));
+        builder.addRow(Arrays.asList(
+                itemLine
+        ));
+        builder.addRow(Arrays.asList(
+                list
+        ));
+        builder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList("Select an action or press [esc] to cancel."), TextCell.Style.NORMAL, font)
+        ));
+        builder.setVSpacing(Style.MARGIN);
+
+        return builder.build();
+    }
+
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = Style.getDefaultFont();
-        graphics.setFont(font);
-        graphics.setColor(Color.WHITE);
-
-        graphics.drawString(message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.getFontSize());
-
-        DungeonItem item = items.get(itemIndex);
-
-        TableBuilder tableBuilder = new TableBuilder();
-        List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
-
-        List<Cell> header = new ArrayList<>();
-        header.add(new ImageCell(item.image, false));
-        header.add(new TextCell(itemInfo, TextCell.Style.NORMAL, font));
-        header.add(new EmptyCell());
-        tableBuilder.addRow(header);
-
-        List<Cell> spacer = new ArrayList<>();
-        spacer.add(new EmptyCell(0, Style.SMALL_MARGIN));
-        spacer.add(new EmptyCell(0, Style.SMALL_MARGIN));
-        spacer.add(new EmptyCell(0, Style.SMALL_MARGIN));
-        tableBuilder.addRow(spacer);
-
-        int idx = 0;
-        for (ItemActions.Action action : actions) {
-            String label = (char) ((int) 'a' + idx) + ")";
-            List<Cell> row = new ArrayList<>();
-            row.add(new EmptyCell());
-            row.add(new TextCell(Arrays.asList(label), TextCell.Style.NORMAL, font));
-            row.add(new TextCell(Arrays.asList(action.getText()), TextCell.Style.NORMAL, font));
-            idx++;
-            tableBuilder.addRow(row);
-        }
-
-        tableBuilder.setColWidths(Arrays.asList(Style.TILE_SIZE, 30, 100));
-        Table actionTable = tableBuilder.build();
-        actionTable.draw(graphics, Style.SMALL_MARGIN, 30);
-
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Select an action or press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        layoutTable.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

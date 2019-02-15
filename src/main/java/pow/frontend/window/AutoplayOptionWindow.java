@@ -5,7 +5,6 @@ import pow.backend.GameState;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
 import pow.frontend.utils.table.EmptyCell;
 import pow.frontend.utils.table.ImageCell;
 import pow.frontend.utils.table.Table;
@@ -24,6 +23,8 @@ public class AutoplayOptionWindow extends AbstractWindow {
         PET,
         BOTH
     }
+
+    private Table layoutTable;
 
     private void setAutoplay(HumanControlSelection selection) {
         GameState gs = backend.getGameState();
@@ -48,8 +49,12 @@ public class AutoplayOptionWindow extends AbstractWindow {
         }
     }
 
-    public AutoplayOptionWindow(WindowDim dim, GameBackend backend, Frontend frontend) {
-        super(dim, true, backend, frontend);
+    public AutoplayOptionWindow(GameBackend backend, Frontend frontend) {
+        super(new WindowDim(0, 0, 0, 0), true, backend, frontend);
+
+        this.layoutTable = getLayoutTable();
+        this.resize(frontend.layout.center(layoutTable.getWidth() + 2*Style.MARGIN,
+                layoutTable.getHeight() + 2*Style.MARGIN));
     }
 
     @Override
@@ -79,47 +84,54 @@ public class AutoplayOptionWindow extends AbstractWindow {
         }
     }
 
-    @Override
-    public void drawContents(Graphics graphics) {
-        graphics.setColor(Style.BACKGROUND_COLOR);
-        graphics.fillRect(0, 0, dim.width, dim.height);
-
+    private Table getLayoutTable() {
         Font font = Style.getDefaultFont();
-        graphics.setFont(font);
-        graphics.setColor(Color.WHITE);
-
         GameState gs = backend.getGameState();
 
-        int y = Style.SMALL_MARGIN + Style.getFontSize();
-        graphics.drawString("Who do you want to control?", Style.SMALL_MARGIN, y);
-        y += Style.getFontSize();
-
-        TableBuilder tableBuilder = new TableBuilder();
-
-        tableBuilder.addRow(Arrays.asList(
+        // build the inner list of options
+        TableBuilder listBuilder = new TableBuilder();
+        listBuilder.addRow(Arrays.asList(
                 new TextCell(Arrays.asList("a)"), TextCell.Style.NORMAL, font),
                 new ImageCell(gs.party.player.image, false),
-                new TextCell(Arrays.asList(gs.party.player.name), TextCell.Style.NORMAL, font),
-                new EmptyCell()
-                ));
-        tableBuilder.addRow(Arrays.asList(
+                new EmptyCell(),
+                new TextCell(Arrays.asList(gs.party.player.name), TextCell.Style.NORMAL, font)
+        ));
+        listBuilder.addRow(Arrays.asList(
                 new TextCell(Arrays.asList("b)"), TextCell.Style.NORMAL, font),
                 new ImageCell(gs.party.pet.image, false),
-                new TextCell(Arrays.asList(gs.party.pet.name), TextCell.Style.NORMAL, font),
-                new EmptyCell()
+                new EmptyCell(),
+                new TextCell(Arrays.asList(gs.party.pet.name), TextCell.Style.NORMAL, font)
         ));
-        tableBuilder.addRow(Arrays.asList(
+        listBuilder.addRow(Arrays.asList(
                 new TextCell(Arrays.asList("c)"), TextCell.Style.NORMAL, font),
                 new ImageCell(gs.party.player.image, false),
                 new ImageCell(gs.party.pet.image, false),
                 new TextCell(Arrays.asList("both"), TextCell.Style.NORMAL, font)
         ));
+        listBuilder.setHSpacing(Style.MARGIN);
+        Table list = listBuilder.build();
 
-        tableBuilder.setColWidths(Arrays.asList(20, Style.TILE_SIZE + Style.SMALL_MARGIN, Style.TILE_SIZE + Style.SMALL_MARGIN, 40));
-        Table table = tableBuilder.build();
-        table.draw(graphics, Style.SMALL_MARGIN, y);
+        // build the outer layout
+        TableBuilder tableBuilder = new TableBuilder();
+        tableBuilder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList("Who do you want to control?"), TextCell.Style.NORMAL, font)
+        ));
+        tableBuilder.addRow(Arrays.asList(
+                list
+        ));
+        tableBuilder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList("Press [esc] to cancel."), TextCell.Style.NORMAL, font)
+        ));
+        tableBuilder.setVSpacing(Style.MARGIN);
 
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        return tableBuilder.build();
+    }
+
+    @Override
+    public void drawContents(Graphics graphics) {
+        graphics.setColor(Style.BACKGROUND_COLOR);
+        graphics.fillRect(0, 0, dim.width, dim.height);
+
+        layoutTable.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

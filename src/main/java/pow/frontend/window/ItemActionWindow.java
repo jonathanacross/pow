@@ -7,21 +7,16 @@ import pow.backend.dungeon.ItemList;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ItemActions;
-import pow.frontend.utils.table.Cell;
-import pow.frontend.utils.table.EmptyCell;
 import pow.frontend.utils.table.ImageCell;
 import pow.frontend.utils.table.Table;
 import pow.frontend.utils.table.TableBuilder;
 import pow.frontend.utils.table.TextCell;
 import pow.util.TextUtils;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,18 +27,18 @@ public class ItemActionWindow extends AbstractWindow {
     private final ItemActions.ItemLocation location;
     private final Table itemTable;
 
-    public ItemActionWindow(int x, int y, GameBackend backend, Frontend frontend,
+    public ItemActionWindow(GameBackend backend, Frontend frontend,
                             String message,
                             ItemList items,
                             ItemActions.ItemLocation location) {
-        super(new WindowDim(x, y, 400,
-                55 + 34 * items.size()), true, backend, frontend);
+        super(new WindowDim(0, 0, 0, 0), true, backend, frontend);
         this.message = message;
         this.items = items;
         this.location = location;
         this.itemTable = getItemTable(items);
-        int height = 3*Style.SMALL_MARGIN + Style.getFontSize() + itemTable.getHeight();
-        this.resize(frontend.layout.center(400, height));
+        int height = 2*Style.MARGIN + itemTable.getHeight();
+        int width = 2*Style.MARGIN + itemTable.getWidth();
+        this.resize(frontend.layout.center(width, height));
     }
 
     @Override
@@ -75,33 +70,36 @@ public class ItemActionWindow extends AbstractWindow {
     private Table getItemTable(ItemList items) {
         Font font = Style.getDefaultFont();
 
-        TableBuilder tableBuilder = new TableBuilder();
-        List<Cell> header = new ArrayList<>();
-        header.add(new TextCell(Arrays.asList(message), TextCell.Style.NORMAL, font));
-        header.add(new EmptyCell());
-        header.add(new EmptyCell());
-        tableBuilder.addRow(header);
-
-        int idx = 0;
-        for (DungeonItem item : items.items) {
-            List<Cell> row = new ArrayList<>();
-            String label = (char) ((int) 'a' + idx) + ")";
+        // build the list in the middle
+        TableBuilder itemListBuilder = new TableBuilder();
+        for (int i = 0; i < items.items.size(); i++) {
+            DungeonItem item = items.items.get(i);
+            String label = (char) ((int) 'a' + i) + ")";
             List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
-
-            row.add(new TextCell(Arrays.asList(label), TextCell.Style.NORMAL, font));
-            row.add(new ImageCell(item.image, false));
-            row.add(new TextCell(itemInfo, TextCell.Style.NORMAL, font));
-            tableBuilder.addRow(row);
-
-            idx++;
+            itemListBuilder.addRow(Arrays.asList(
+                    new TextCell(Arrays.asList(label), TextCell.Style.NORMAL, font),
+                    new ImageCell(item.image, false),
+                    new TextCell(itemInfo, TextCell.Style.NORMAL, font)
+            ));
         }
+        itemListBuilder.setHSpacing(Style.MARGIN);
+        Table itemList = itemListBuilder.build();
 
-        tableBuilder.setDrawHeaderLine(true);
-        tableBuilder.setSpacing(2);
-        tableBuilder.setColWidths(Arrays.asList(20, Style.TILE_SIZE + Style.SMALL_MARGIN, 300));
-        Table itemTable = tableBuilder.build();
+        // make the outer table with header and footer
+        TableBuilder tableBuilder = new TableBuilder();
+        tableBuilder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList(message), TextCell.Style.NORMAL, font)
+        ));
+        tableBuilder.addRow(Arrays.asList(
+                itemList
+        ));
+        String helpMessage = "Select an item or press [esc] to cancel.";
+        tableBuilder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList(helpMessage), TextCell.Style.NORMAL, font)
+        ));
+        tableBuilder.setVSpacing(Style.MARGIN);
 
-        return itemTable;
+        return tableBuilder.build();
     }
 
     @Override
@@ -109,12 +107,6 @@ public class ItemActionWindow extends AbstractWindow {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = Style.getDefaultFont();
-        graphics.setFont(font);
-
-        itemTable.draw(graphics, Style.SMALL_MARGIN, Style.SMALL_MARGIN);
-
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Select an item or press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        itemTable.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

@@ -255,7 +255,6 @@ public class PlayerInfoWindow extends AbstractWindow {
         }
 
         // grid border
-        graphics.setColor(Color.GRAY);
         graphics.drawLine(gridLeft, gridTop, gridLeft, gridTop + dy*numSlots);
         graphics.drawLine(gridLeft, gridTop, gridLeft + numBonuses*dx, gridTop);
         graphics.drawLine(gridLeft + dy*numBonuses, gridTop, gridLeft + dy*numBonuses, gridTop + dy*numSlots);
@@ -341,7 +340,8 @@ public class PlayerInfoWindow extends AbstractWindow {
         artifactTableBuilder.setCells(cells);
         artifactTableBuilder.setColWidths(Arrays.asList(imageWidth, descWidth, imageWidth, descWidth));
         artifactTableBuilder.setDrawHeaderLine(true);
-        artifactTableBuilder.setSpacing(Style.SMALL_MARGIN);
+        artifactTableBuilder.setHSpacing(Style.SMALL_MARGIN);
+        artifactTableBuilder.setVSpacing(Style.SMALL_MARGIN);
         Table artifactTable = artifactTableBuilder.build();
 
         return artifactTable;
@@ -384,7 +384,8 @@ public class PlayerInfoWindow extends AbstractWindow {
         pearlTableBuilder.addRow(pearlRow);
         pearlTableBuilder.setColWidths(colWidths);
         pearlTableBuilder.setDrawHeaderLine(true);
-        pearlTableBuilder.setSpacing(Style.SMALL_MARGIN);
+        pearlTableBuilder.setHSpacing(Style.SMALL_MARGIN);
+        pearlTableBuilder.setVSpacing(Style.SMALL_MARGIN);
         Table pearlTable = pearlTableBuilder.build();
 
         return pearlTable;

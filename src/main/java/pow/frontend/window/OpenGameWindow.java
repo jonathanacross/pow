@@ -69,8 +69,7 @@ public class OpenGameWindow extends AbstractWindow {
                     } catch (InvalidClassException ex) {
                         // May happen if the GameState has a different serialVersionUID if
                         // E.g., from code updates.  Alert the user that we can't open this.
-                        WindowDim dim = this.frontend.layout.center(550, 40);
-                        frontend.open(new NotificationWindow(dim, true, this.backend, this.frontend,
+                        frontend.open(new NotificationWindow(true, this.backend, this.frontend,
                                 "This file was created with an older version of PoW, and cannot be opened."));
                     } catch (Exception ex) {
                         DebugLogger.fatal(ex);

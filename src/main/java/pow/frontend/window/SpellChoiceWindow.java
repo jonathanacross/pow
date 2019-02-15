@@ -25,17 +25,17 @@ public class SpellChoiceWindow extends AbstractWindow {
     private final Consumer<Integer> callback;
     private final Table spellTable;
 
-    public SpellChoiceWindow(int x, int y, GameBackend backend, Frontend frontend,
+    public SpellChoiceWindow(GameBackend backend, Frontend frontend,
                              String message,
                              List<SpellParams> spells,
                              Consumer<Integer> callback) {
-        super( new WindowDim(x, y, 570, 105 + Style.getFontSize() * spells.size()),
-                true, backend, frontend);
+        super(new WindowDim(0, 0, 0, 0), true, backend, frontend);
         this.message = message;
         this.spells = spells;
         this.spellTable = getSpellTable();
         this.callback = callback;
-        this.resize(new WindowDim(x, y, spellTable.getWidth() + 2*Style.MARGIN, spellTable.getHeight() + 100));
+        this.resize(frontend.layout.center(spellTable.getWidth() + 2*Style.MARGIN,
+                spellTable.getHeight() + 2*Style.MARGIN));
     }
 
     @Override
@@ -65,35 +65,48 @@ public class SpellChoiceWindow extends AbstractWindow {
     private Table getSpellTable() {
         Font font = Style.getDefaultFont();
 
-        TableBuilder tableBuilder = new TableBuilder();
-
-        List<Cell> header = new ArrayList<>();
-        header.add(new EmptyCell());
-        header.add(new TextCell(Arrays.asList("Spell"), TextCell.Style.NORMAL, font));
-        header.add(new TextCell(Arrays.asList("Level"), TextCell.Style.NORMAL, font));
-        header.add(new TextCell(Arrays.asList("Mana"), TextCell.Style.NORMAL, font));
-        header.add(new TextCell(Arrays.asList("Info"), TextCell.Style.NORMAL, font));
-
-        tableBuilder.addRow(header);
-        int idx = 0;
-        for (SpellParams spell : spells) {
-            List<Cell> row = new ArrayList<>();
+        // Build the inner spell list
+        TableBuilder spellListBuilder = new TableBuilder();
+        spellListBuilder.addRow(Arrays.asList(
+                new EmptyCell(),
+                new TextCell(Arrays.asList("Spell"), TextCell.Style.NORMAL, font),
+                new TextCell(Arrays.asList("Level"), TextCell.Style.NORMAL, font),
+                new TextCell(Arrays.asList("Mana"), TextCell.Style.NORMAL, font),
+                new TextCell(Arrays.asList("Info"), TextCell.Style.NORMAL, font)
+        ));
+        for (int i = 0; i < spells.size(); i++) {
+            SpellParams spell = spells.get(i);
             TextCell.Style style = enabled(spell) ? TextCell.Style.NORMAL : TextCell.Style.DISABLED;
 
-            String label = (char) ((int) 'a' + idx) + ")";
-            idx++;
+            String label = (char) ((int) 'a' + i) + ")";
             String desc = spell.getDescription(backend.getGameState().party.selectedActor);
 
-            row.add(new TextCell(Arrays.asList(label), style, font));
-            row.add(new TextCell(Arrays.asList(spell.name), style, font));
-            row.add(new TextCell(Arrays.asList(Integer.toString(spell.minLevel)), style, font));
-            row.add(new TextCell(Arrays.asList(Integer.toString(spell.requiredMana)), style, font));
-            row.add(new TextCell(Arrays.asList(desc), style, font));
-            tableBuilder.addRow(row);
+            spellListBuilder.addRow(Arrays.asList(
+                    new TextCell(Arrays.asList(label), style, font),
+                    new TextCell(Arrays.asList(spell.name), style, font),
+                    new TextCell(Arrays.asList(Integer.toString(spell.minLevel)), style, font),
+                    new TextCell(Arrays.asList(Integer.toString(spell.requiredMana)), style, font),
+                    new TextCell(Arrays.asList(desc), style, font)
+            ));
         }
+        spellListBuilder.setHSpacing(Style.MARGIN);
+        spellListBuilder.setDrawHeaderLine(true);
+        Table spellList = spellListBuilder.build();
 
-        tableBuilder.setColWidths(Arrays.asList(20, 140, 40, 40, 300));
-        tableBuilder.setDrawHeaderLine(true);
+        // build the full window
+        TableBuilder tableBuilder = new TableBuilder();
+
+        tableBuilder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList(this.message), TextCell.Style.NORMAL, font)
+        ));
+        tableBuilder.addRow(Arrays.asList(
+                spellList
+        ));
+        tableBuilder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList("Select a spell, or press [esc] to cancel."), TextCell.Style.NORMAL, font)
+        ));
+
+        tableBuilder.setVSpacing(Style.MARGIN);
         Table spellTable = tableBuilder.build();
 
         return spellTable;
@@ -105,15 +118,6 @@ public class SpellChoiceWindow extends AbstractWindow {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = Style.getDefaultFont();
-        graphics.setFont(font);
-        graphics.setColor(Color.WHITE);
-
-        graphics.drawString(this.message, Style.MARGIN, Style.MARGIN + Style.getFontSize());
-
-        spellTable.draw(graphics, Style.MARGIN, Style.MARGIN + 30);
-
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Select a spell, or press [esc] to cancel.", Style.MARGIN, dim.height - Style.MARGIN);
+        spellTable.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

@@ -33,7 +33,6 @@ public class Frontend {
     private final WinWindow winWindow;
     private final Win2Window win2Window;
     private final LoseWindow loseWindow;
-    public final AutoplayOptionWindow autoplayOptionWindow;
     private final OpenGameWindow openGameWindow;
     public final MonsterInfoWindow monsterInfoWindow;
     public final PlayerInfoWindow playerInfoWindow;
@@ -72,7 +71,6 @@ public class Frontend {
         winWindow = new WinWindow(layout.center(580, 200), true, gameBackend, this);
         win2Window = new Win2Window(layout.center(580, 200), true, gameBackend, this);
         loseWindow = new LoseWindow(layout.center(480, 200), true, gameBackend, this);
-        autoplayOptionWindow = new AutoplayOptionWindow(layout.center(210, 160), gameBackend, this);
         openGameWindow = new OpenGameWindow(layout.center(490, 300), true, gameBackend, this);
         // main game
         statusWindow = new StatusWindow(layout.getStatusPaneDim(), true, gameBackend, this);
@@ -211,8 +209,7 @@ public class Frontend {
         }
 
         if (alreadyExists) {
-            WindowDim dim = layout.center(600, 120);
-            open(new ConfirmWindow(dim, true, gameBackend, this,
+            open(new ConfirmWindow(true, gameBackend, this,
                     "The character '" + data.name + "' already exists.  Do you want to overwrite it?",
                     "Overwrite", "Cancel",
                     () -> startNewGame(data)));
@@ -251,9 +248,8 @@ public class Frontend {
         List<ShopData.ShopEntry> entries;
         switch (shopData.state) {
             case INN:
-                dim = layout.center(600, 120);
                 int cost = shopData.innCost;
-                open(new ConfirmWindow(dim, true, gameBackend, this,
+                open(new ConfirmWindow(true, gameBackend, this,
                         "Do you want to rest at the inn? It costs " + cost + " gold.",
                         "Rest", "Cancel",
                         () -> gameBackend.tellSelectedActor(new RestAtInn())));

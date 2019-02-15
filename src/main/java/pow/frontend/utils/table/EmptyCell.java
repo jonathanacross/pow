@@ -16,8 +16,7 @@ public class EmptyCell implements Cell {
     }
 
     @Override
-    public void draw(Graphics graphics, int x, int y, int cellWidth, int cellHeight) {
-    }
+    public void draw(Graphics graphics, int x, int y) {}
 
     @Override
     public int getHeight() {

@@ -5,10 +5,15 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
+import pow.frontend.utils.table.ImageCell;
+import pow.frontend.utils.table.Table;
+import pow.frontend.utils.table.TableBuilder;
+import pow.frontend.utils.table.TextCell;
 import pow.util.MathUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.function.IntConsumer;
 import java.util.List;
 
@@ -28,6 +33,8 @@ public class GetCountWindow extends AbstractWindow {
         this.messages = messages;
         this.maxNum = maxNum;
         this.callback = callback;
+        Table layout = getLayoutTable();
+        this.resize(new WindowDim(dim.x, dim.y, dim.width,  layout.getHeight() + 2*Style.MARGIN));
     }
 
     @Override
@@ -62,22 +69,49 @@ public class GetCountWindow extends AbstractWindow {
         }
     }
 
+    public Table getLayoutTable() {
+        Font font = Style.getDefaultFont();
+        TableBuilder topRowBuilder = new TableBuilder();
+        topRowBuilder.addRow(Arrays.asList(
+                new ImageCell(imageName, false),
+                new TextCell(messages, TextCell.Style.NORMAL, font)
+        ));
+        topRowBuilder.setHSpacing(Style.MARGIN);
+        Table topRow = topRowBuilder.build();
+
+        // main layout
+        TableBuilder builder = new TableBuilder();
+        builder.addRow(Arrays.asList(
+                topRow
+        ));
+        builder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList("> " + countString), TextCell.Style.NORMAL, font)
+        ));
+        builder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList("Press [esc] to cancel."), TextCell.Style.NORMAL, font)
+        ));
+        builder.setVSpacing(Style.MARGIN);
+        return builder.build();
+    }
+
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        ImageController.drawTile(graphics, imageName, Style.MARGIN, Style.MARGIN, ImageController.DrawMode.NORMAL);
+        getLayoutTable().draw(graphics, Style.MARGIN, Style.MARGIN);
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-        for (int i = 0; i < messages.size(); i++) {
-            graphics.drawString(messages.get(i), 2 * Style.MARGIN + Style.TILE_SIZE, Style.MARGIN + (i+1)*Style.getFontSize());
-        }
-
-        graphics.drawString("> " + countString, 2*Style.MARGIN + Style.TILE_SIZE, Style.MARGIN + (messages.size() + 2)*Style.getFontSize());
-
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Press [esc] to cancel.", 2*Style.MARGIN + Style.TILE_SIZE, dim.height - Style.MARGIN);
+//        ImageController.drawTile(graphics, imageName, Style.MARGIN, Style.MARGIN, ImageController.DrawMode.NORMAL);
+//
+//        graphics.setFont(Style.getDefaultFont());
+//        graphics.setColor(Color.WHITE);
+//        for (int i = 0; i < messages.size(); i++) {
+//            graphics.drawString(messages.get(i), 2 * Style.MARGIN + Style.TILE_SIZE, Style.MARGIN + (i+1)*Style.getFontSize());
+//        }
+//
+//        graphics.drawString("> " + countString, 2*Style.MARGIN + Style.TILE_SIZE, Style.MARGIN + (messages.size() + 2)*Style.getFontSize());
+//
+//        graphics.setColor(Color.WHITE);
+//        graphics.drawString("Press [esc] to cancel.", 2*Style.MARGIN + Style.TILE_SIZE, dim.height - Style.MARGIN);
     }
 }

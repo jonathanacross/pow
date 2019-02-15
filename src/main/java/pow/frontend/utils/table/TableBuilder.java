@@ -1,6 +1,7 @@
 package pow.frontend.utils.table;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TableBuilder {
@@ -8,14 +9,14 @@ public class TableBuilder {
     private List<Integer> colWidths;
     private List<Integer> rowHeights;
     private boolean drawHeaderLine;
-    private int specifiedHeight;
-    private int spacing;
+    private int hSpacing;
+    private int vSpacing;
 
     public TableBuilder() {
         this.cells = new ArrayList<>();
         this.drawHeaderLine = false;
-        this.specifiedHeight = -1;
-        this.spacing = 0;
+        this.hSpacing = 0;
+        this.vSpacing = 0;
     }
 
     public void setCells(List<List<Cell>> cells) {
@@ -30,16 +31,16 @@ public class TableBuilder {
         this.drawHeaderLine = drawHeaderLine;
     }
 
-    public void setRowHeight(int height) {
-        this.specifiedHeight = height;
-    }
-
     public void setColWidths(List<Integer> colWidths) {
         this.colWidths = colWidths;
     }
 
-    public void setSpacing(int spacing) {
-        this.spacing = spacing;
+    public void setHSpacing(int hSpacing) {
+        this.hSpacing = hSpacing;
+    }
+
+    public void setVSpacing(int vSpacing) {
+        this.vSpacing = vSpacing;
     }
 
     private List<Integer> getDefaultHeights() {
@@ -54,20 +55,14 @@ public class TableBuilder {
         return heights;
     }
 
-    private List<Integer> getConstantHeights() {
-        List<Integer> heights = new ArrayList<>();
-        for (int i = 0; i < cells.size(); i++) {
-            heights.add(specifiedHeight);
-        }
-        return heights;
-    }
-
     private List<Integer> getDefaultWidths() {
         List<Integer> widths = new ArrayList<>();
         for (int c = 0; c < cells.get(0).size(); c++) {
             int width = 0;
             for (int r = 0; r < cells.size(); r++) {
-                width = Math.max(width, cells.get(r).get(c).getWidth());
+                Cell cell = cells.get(r).get(c);
+                int cellAutoWidth = cell.getWidth();
+                width = Math.max(width, cellAutoWidth);
             }
             widths.add(width);
         }
@@ -75,13 +70,18 @@ public class TableBuilder {
     }
 
     public Table build() {
-        if (colWidths == null) {
-            colWidths = getDefaultWidths();
-        }
-        if (rowHeights == null) {
-            rowHeights = specifiedHeight > 0 ? getConstantHeights() : getDefaultHeights();
+        if (cells.isEmpty()) {
+            colWidths = Arrays.asList();
+            rowHeights = Arrays.asList();
+        } else {
+            if (colWidths == null) {
+                colWidths = getDefaultWidths();
+            }
+            if (rowHeights == null) {
+                rowHeights = getDefaultHeights();
+            }
         }
 
-        return new Table(cells, colWidths, rowHeights, spacing, drawHeaderLine);
+        return new Table(cells, colWidths, rowHeights, hSpacing, vSpacing, drawHeaderLine);
     }
 }

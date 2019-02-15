@@ -3,9 +3,15 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
+import pow.frontend.WindowDim;
+import pow.frontend.utils.table.EmptyCell;
+import pow.frontend.utils.table.Table;
+import pow.frontend.utils.table.TableBuilder;
+import pow.frontend.utils.table.TextCell;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -24,16 +30,19 @@ public class PortalChoiceWindow extends AbstractWindow {
     private final String message;
     private final List<AreaNameAndId> areas;
     private final Consumer<String> callback;
+    private final Table layoutTable;
 
     public PortalChoiceWindow(GameBackend backend, Frontend frontend,
                               String message,
                               List<AreaNameAndId> areas,
                               Consumer<String> callback) {
-        super(frontend.layout.center(300, 70 + Style.getFontSize() * areas.size()),
-                true, backend, frontend);
+        super(new WindowDim(0, 0, 0, 0), true, backend, frontend);
         this.message = message;
         this.areas = areas;
         this.callback = callback;
+        this.layoutTable = getLayoutTable();
+        this.resize(frontend.layout.center(layoutTable.getWidth() + 2*Style.MARGIN,
+                layoutTable.getHeight() + 2*Style.MARGIN));
     }
 
     @Override
@@ -57,27 +66,43 @@ public class PortalChoiceWindow extends AbstractWindow {
         }
     }
 
+    private Table getLayoutTable() {
+        Font font = Style.getDefaultFont();
+
+        // build the list of places
+        TableBuilder placeListBuilder = new TableBuilder();
+        for (int i = 0; i < areas.size(); i++) {
+            String label = (char) ((int) 'a' + i) + ")";
+            String areaName = areas.get(i).name;
+            placeListBuilder.addRow(Arrays.asList(
+                    new TextCell(Arrays.asList(label), TextCell.Style.NORMAL, font),
+                    new TextCell(Arrays.asList(areaName), TextCell.Style.NORMAL, font)
+            ));
+        }
+        placeListBuilder.setHSpacing(Style.MARGIN);
+        Table placeList = placeListBuilder.build();
+
+        // build the outer layout
+        TableBuilder builder = new TableBuilder();
+        builder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList(message), TextCell.Style.NORMAL, font)
+        ));
+        builder.addRow(Arrays.asList(
+                placeList
+        ));
+        builder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList("Select an area or press [esc] to cancel."), TextCell.Style.NORMAL, font)
+        ));
+
+        builder.setVSpacing(Style.MARGIN);
+        return builder.build();
+    }
+
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-
-        graphics.drawString(this.message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.getFontSize());
-
-        int y = 45;
-        int idx = 0;
-        for (AreaNameAndId areaId : areas) {
-            String label = (char) ((int) 'a' + idx) + ")";
-            graphics.drawString(label, Style.SMALL_MARGIN, y);
-            graphics.drawString(areaId.name, Style.SMALL_MARGIN + 20, y);
-            idx++;
-            y += Style.getFontSize();
-        }
-
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Select an area or press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        layoutTable.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

@@ -3,7 +3,8 @@ package pow.frontend.utils.table;
 import java.awt.Graphics;
 
 public interface Cell {
-    void draw(Graphics graphics, int x, int y, int cellWidth, int cellHeight);
+    // draws the contents at the location x, y.
+    void draw(Graphics graphics, int x, int y);
 
     int getHeight();
     int getWidth();

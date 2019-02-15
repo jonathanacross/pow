@@ -24,15 +24,15 @@ import java.util.List;
 
 public class ShopWindow extends AbstractWindow {
     private final List<ShopData.ShopEntry> entries;
-    private final Table shopTable;
+    private final Table layoutTable;
 
     public ShopWindow(boolean visible, GameBackend backend, Frontend frontend,
                       List<ShopData.ShopEntry> entries) {
         super(new WindowDim(0,0,0,0), visible, backend, frontend);
         this.entries = entries;
-        this.shopTable = getShopTable();
-        int width = shopTable.getWidth() + 2*Style.MARGIN;
-        int height = shopTable.getHeight() + 2*Style.MARGIN + 5*Style.getFontSize();
+        this.layoutTable = getLayoutTable();
+        int width = layoutTable.getWidth() + 2*Style.MARGIN;
+        int height = layoutTable.getHeight() + 2*Style.MARGIN;
         this.resize(frontend.layout.center(width, height));
     }
 
@@ -58,7 +58,7 @@ public class ShopWindow extends AbstractWindow {
                     if (!bonus.isEmpty()) {
                         messages.add(entry.item.bonusString());
                     }
-                    messages.add("do you want? (max " + maxNum + ")?");
+                    messages.add("do you want (max " + maxNum + ")?");
                     frontend.open(new GetCountWindow(cDim, this.backend, this.frontend,
                             entry.item.image, messages, maxNum,
                             (int count) -> backend.tellSelectedActor(new BuyItem(entries, itemNumber, count))));
@@ -80,42 +80,54 @@ public class ShopWindow extends AbstractWindow {
         return maxNum;
     }
 
-    private Table getShopTable() {
+    private Table getLayoutTable() {
         Font font = Style.getDefaultFont();
 
-        TableBuilder builder = new TableBuilder();
-
-        builder.addRow(Arrays.asList(
+        // build the inner list
+        TableBuilder listBuilder = new TableBuilder();
+        listBuilder.addRow(Arrays.asList(
                 new EmptyCell(),
                 new TextCell(Arrays.asList("Item"), TextCell.Style.NORMAL, font),
                 new EmptyCell(),
                 new TextCell(Arrays.asList("Price"), TextCell.Style.NORMAL, font)
         ));
-
-        int idx = 0;
-        for (ShopData.ShopEntry entry : this.entries) {
+        for (int i = 0; i < this.entries.size(); i++) {
+            ShopData.ShopEntry entry = entries.get(i);
             boolean isGrayed = maxNumBuyable(entry) == 0;
             TextCell.Style textStyle = isGrayed ? TextCell.Style.DISABLED : TextCell.Style.NORMAL;
 
-            String label = (char) ((int) 'a' + idx) + ")";
+            String label = (char) ((int) 'a' + i) + ")";
             List<String> itemInfo = Arrays.asList(TextUtils.format(entry.item.name, entry.item.count, false), entry.item.bonusString());
             String price = String.valueOf(entry.price);
 
-            builder.addRow(Arrays.asList(
+            listBuilder.addRow(Arrays.asList(
                     new TextCell(Arrays.asList(label), textStyle, font),
                     new ImageCell(entry.item.image, isGrayed),
                     new TextCell(itemInfo, textStyle, font),
                     new TextCell(Arrays.asList(price), textStyle, font)
             ));
-
-            idx++;
         }
+        listBuilder.setDrawHeaderLine(true);
+        listBuilder.setHSpacing(Style.MARGIN);
+        Table itemList = listBuilder.build();
+        //builder.setColWidths(Arrays.asList(20, Style.TILE_SIZE + Style.SMALL_MARGIN, 250, 50));
 
-        builder.setDrawHeaderLine(true);
-        builder.setSpacing(2);
-        builder.setColWidths(Arrays.asList(20, Style.TILE_SIZE + Style.SMALL_MARGIN, 250, 50));
-        Table shopTable = builder.build();
-        return shopTable;
+        // build the overall layout
+        TableBuilder builder = new TableBuilder();
+        String greeting = "Hi " + backend.getGameState().party.player.name + ", what would you like to buy?";
+        String help = "Select an item to buy or press [esc] to cancel.";
+        builder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList(greeting), TextCell.Style.NORMAL, font)
+        ));
+        builder.addRow(Arrays.asList(
+                itemList
+        ));
+        builder.addRow(Arrays.asList(
+                new TextCell(Arrays.asList(help), TextCell.Style.NORMAL, font)
+        ));
+        builder.setVSpacing(Style.MARGIN);
+
+        return builder.build();
     }
 
     @Override
@@ -123,15 +135,6 @@ public class ShopWindow extends AbstractWindow {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        Font font = Style.getDefaultFont();
-        graphics.setFont(font);
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Hi " + backend.getGameState().party.player.name + ", what would you like to buy?",
-                Style.MARGIN, Style.MARGIN + Style.getFontSize());
-
-        shopTable.draw(graphics, Style.MARGIN, Style.MARGIN + 3*Style.getFontSize());
-
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Select an item to buy or press [esc] to cancel.", Style.MARGIN, dim.height - Style.MARGIN);
+        layoutTable.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

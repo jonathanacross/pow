@@ -5,6 +5,7 @@ import pow.frontend.utils.ImageController;
 
 import java.awt.Graphics;
 
+// TODO: change Image to Tile.
 public class ImageCell implements Cell {
 
     String imageName;
@@ -16,11 +17,9 @@ public class ImageCell implements Cell {
     }
 
     @Override
-    public void draw(Graphics graphics, int x, int y, int cellWidth, int cellHeight) {
+    public void draw(Graphics graphics, int x, int y) {
         ImageController.DrawMode drawMode = grayed ? ImageController.DrawMode.GRAY : ImageController.DrawMode.NORMAL;
-        // center the image in the cell vertically, align left
-        int dy = (cellHeight - getHeight()) / 2;
-        ImageController.drawTile(graphics, imageName, x, y + dy, drawMode);
+        ImageController.drawTile(graphics, imageName, x, y, drawMode);
     }
 
     @Override
