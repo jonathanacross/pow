@@ -5,11 +5,7 @@ import pow.backend.GameState;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.table.EmptyCell;
-import pow.frontend.utils.table.ImageCell;
-import pow.frontend.utils.table.Table;
-import pow.frontend.utils.table.TableBuilder;
-import pow.frontend.utils.table.TextCell;
+import pow.frontend.utils.table.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -91,22 +87,22 @@ public class AutoplayOptionWindow extends AbstractWindow {
         // build the inner list of options
         TableBuilder listBuilder = new TableBuilder();
         listBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("a)"), TextCell.Style.NORMAL, font),
-                new ImageCell(gs.party.player.image, false),
+                new TextCell(Arrays.asList("a)"), State.NORMAL, font),
+                new ImageCell(gs.party.player.image, State.NORMAL),
                 new EmptyCell(),
-                new TextCell(Arrays.asList(gs.party.player.name), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList(gs.party.player.name), State.NORMAL, font)
         ));
         listBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("b)"), TextCell.Style.NORMAL, font),
-                new ImageCell(gs.party.pet.image, false),
+                new TextCell(Arrays.asList("b)"), State.NORMAL, font),
+                new ImageCell(gs.party.pet.image, State.NORMAL),
                 new EmptyCell(),
-                new TextCell(Arrays.asList(gs.party.pet.name), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList(gs.party.pet.name), State.NORMAL, font)
         ));
         listBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("c)"), TextCell.Style.NORMAL, font),
-                new ImageCell(gs.party.player.image, false),
-                new ImageCell(gs.party.pet.image, false),
-                new TextCell(Arrays.asList("both"), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList("c)"), State.NORMAL, font),
+                new ImageCell(gs.party.player.image, State.NORMAL),
+                new ImageCell(gs.party.pet.image, State.NORMAL),
+                new TextCell(Arrays.asList("both"), State.NORMAL, font)
         ));
         listBuilder.setHSpacing(Style.MARGIN);
         Table list = listBuilder.build();
@@ -114,13 +110,13 @@ public class AutoplayOptionWindow extends AbstractWindow {
         // build the outer layout
         TableBuilder tableBuilder = new TableBuilder();
         tableBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("Who do you want to control?"), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList("Who do you want to control?"), State.NORMAL, font)
         ));
         tableBuilder.addRow(Arrays.asList(
                 list
         ));
         tableBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("Press [esc] to cancel."), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList("Press [esc] to cancel."), State.NORMAL, font)
         ));
         tableBuilder.setVSpacing(Style.MARGIN);
 

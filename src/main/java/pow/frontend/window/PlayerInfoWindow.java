@@ -14,19 +14,14 @@ import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ImageUtils;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
-import pow.frontend.utils.table.Cell;
-import pow.frontend.utils.table.EmptyCell;
-import pow.frontend.utils.table.ImageCell;
-import pow.frontend.utils.table.Table;
-import pow.frontend.utils.table.TableBuilder;
-import pow.frontend.utils.table.TextCell;
+import pow.frontend.utils.table.*;
 import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class PlayerInfoWindow extends AbstractWindow {
 
@@ -81,8 +76,8 @@ public class PlayerInfoWindow extends AbstractWindow {
     private List<Cell> getRow(String key, String value, Font font) {
         List<Cell> row = new ArrayList<>();
         row.add(new EmptyCell());
-        row.add(new TextCell(Arrays.asList(key), TextCell.Style.NORMAL, font));
-        row.add(new TextCell(Arrays.asList(value), TextCell.Style.NORMAL, font));
+        row.add(new TextCell(Arrays.asList(key), State.NORMAL, font));
+        row.add(new TextCell(Arrays.asList(value), State.NORMAL, font));
         return row;
     }
 
@@ -101,8 +96,8 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         TableBuilder tableBuilder = new TableBuilder();
         List<Cell> header = new ArrayList<>();
-        header.add(new ImageCell(player.image, false));
-        header.add(new TextCell(Arrays.asList(player.name + winnerString), TextCell.Style.NORMAL, font));
+        header.add(new ImageCell(player.image, State.NORMAL));
+        header.add(new TextCell(Arrays.asList(player.name + winnerString), State.NORMAL, font));
         header.add(new EmptyCell());
         tableBuilder.addRow(header);
 
@@ -289,7 +284,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         // add the header
         List<Cell> header = new ArrayList<>();
-        header.add(new TextCell(Arrays.asList("Artifacts:"), TextCell.Style.NORMAL, font));
+        header.add(new TextCell(Arrays.asList("Artifacts:"), State.NORMAL, font));
         header.add(new EmptyCell());
         header.add(new EmptyCell());
         header.add(new EmptyCell());
@@ -331,9 +326,9 @@ public class PlayerInfoWindow extends AbstractWindow {
             Point loc = artifactLocations.get(item.artifactSlot);
             List<String> descLines =
                     ImageUtils.wrapText(item.name + ": " + item.description, textMetrics, descWidth);
-            cells.get(loc.y).set(loc.x, new ImageCell(item.image, false));
+            cells.get(loc.y).set(loc.x, new ImageCell(item.image, State.NORMAL));
             cells.get(loc.y).set(loc.x + 1,
-                    new TextCell(descLines, TextCell.Style.NORMAL, font));
+                    new TextCell(descLines, State.NORMAL, font));
         }
 
         TableBuilder artifactTableBuilder = new TableBuilder();
@@ -358,7 +353,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
     private Table getPearlTable(Party party, Font font) {
         List<Cell> header = new ArrayList<>();
-        header.add(new TextCell(Arrays.asList("Pearls:"), TextCell.Style.NORMAL, font));
+        header.add(new TextCell(Arrays.asList("Pearls:"), State.NORMAL, font));
         for (int c = 1; c < GameConstants.NUM_PEARLS_TO_WIN; c++) {
             header.add(new EmptyCell());
         }
@@ -368,7 +363,7 @@ public class PlayerInfoWindow extends AbstractWindow {
             String itemId = "pearl " + (c+1);
             DungeonItem pearl = findPearl(party, itemId);
             if (pearl != null) {
-                pearlRow.add(new ImageCell(pearl.image, false));
+                pearlRow.add(new ImageCell(pearl.image, State.NORMAL));
             } else {
                 pearlRow.add(new EmptyCell());
             }

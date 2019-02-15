@@ -5,12 +5,7 @@ import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Player;
 import pow.backend.actors.Knowledge;
 import pow.frontend.Style;
-import pow.frontend.utils.table.Cell;
-import pow.frontend.utils.table.EmptyCell;
-import pow.frontend.utils.table.ImageCell;
-import pow.frontend.utils.table.Table;
-import pow.frontend.utils.table.TableBuilder;
-import pow.frontend.utils.table.TextCell;
+import pow.frontend.utils.table.*;
 import pow.util.Point;
 import pow.util.TextUtils;
 
@@ -36,8 +31,8 @@ public class MonsterDisplay {
 
     private static List<Cell> getRow(String key, String value, Font font) {
         List<Cell> row = new ArrayList<>();
-        row.add(new TextCell(Arrays.asList(key), TextCell.Style.NORMAL, font));
-        row.add(new TextCell(Arrays.asList(value), TextCell.Style.NORMAL, font));
+        row.add(new TextCell(Arrays.asList(key), State.NORMAL, font));
+        row.add(new TextCell(Arrays.asList(value), State.NORMAL, font));
         return row;
     }
 
@@ -71,8 +66,8 @@ public class MonsterDisplay {
                 : ImageUtils.wrapText("Can cast " + TextUtils.formatList(getSpellNames(monster.spells)) + ".", textMetrics, textWidth);
 
         List<Cell> header = new ArrayList<>();
-        header.add(new ImageCell(monster.image, false));
-        header.add(new TextCell(Arrays.asList(TextUtils.singular(monster.name)), TextCell.Style.NORMAL, font));
+        header.add(new ImageCell(monster.image, State.NORMAL));
+        header.add(new TextCell(Arrays.asList(TextUtils.singular(monster.name)), State.NORMAL, font));
         tableBuilder.addRow(header);
         String statsLine =
                 "Str: " + monster.strength +

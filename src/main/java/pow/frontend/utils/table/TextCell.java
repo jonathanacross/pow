@@ -10,12 +10,6 @@ import java.util.List;
 
 public class TextCell implements Cell {
 
-    public enum Style {
-        NORMAL,
-        DISABLED,
-        SELECTED
-    }
-
     // Used to get font metrics to compute text heights/widths
     private static Graphics fakeGraphics;
     static {
@@ -24,16 +18,16 @@ public class TextCell implements Cell {
     }
 
     List<String> lines;
-    Style style;
+    State state;
     Font font;
     int width;
     int height;
     int lineHeight;
     int ascent;
 
-    public TextCell(List<String> lines, Style style, Font font) {
+    public TextCell(List<String> lines, State state, Font font) {
         this.lines = lines;
-        this.style = style;
+        this.state = state;
         this.font = font;
 
         FontMetrics textMetrics = fakeGraphics.getFontMetrics(font);
@@ -52,7 +46,7 @@ public class TextCell implements Cell {
         // vertically center
         int yOffset = y + ascent;
         for (String line : lines) {
-            switch (style) {
+            switch (state) {
                 case NORMAL: graphics.setColor(Color.WHITE); break;
                 case DISABLED: graphics.setColor(Color.GRAY); break;
                 case SELECTED: graphics.setColor(Color.YELLOW); break;

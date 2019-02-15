@@ -6,14 +6,8 @@ import pow.backend.actors.Player;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
 import pow.frontend.utils.MonsterDisplay;
-import pow.frontend.utils.table.Cell;
-import pow.frontend.utils.table.EmptyCell;
-import pow.frontend.utils.table.ImageCell;
-import pow.frontend.utils.table.Table;
-import pow.frontend.utils.table.TableBuilder;
-import pow.frontend.utils.table.TextCell;
+import pow.frontend.utils.table.*;
 import pow.util.MathUtils;
 import pow.util.TextUtils;
 
@@ -21,7 +15,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,19 +80,17 @@ public class KnowledgeWindow extends AbstractWindow {
         TableBuilder builder = new TableBuilder();
         builder.addRow(Arrays.asList(
                 new EmptyCell(),
-                new TextCell(Arrays.asList("Name"), TextCell.Style.NORMAL, font),
-                new TextCell(Arrays.asList("Killed"), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList("Name"), State.NORMAL, font),
+                new TextCell(Arrays.asList("Killed"), State.NORMAL, font)
         ));
 
         for (int index = minIndex; index < maxIndex; index++) {
             Knowledge.MonsterSummary ms = monsterSummary.get(index);
-            TextCell.Style style = index == selectIndex
-                    ? TextCell.Style.SELECTED
-                    : TextCell.Style.NORMAL;
+            State state = index == selectIndex ? State.SELECTED : State.NORMAL;
             builder.addRow(Arrays.asList(
-                    new ImageCell(ms.image, false),
-                    new TextCell(Arrays.asList(TextUtils.singular(ms.name)), style, font),
-                    new TextCell(Arrays.asList(String.valueOf(ms.numKilled)), style, font)
+                    new ImageCell(ms.image, state),
+                    new TextCell(Arrays.asList(TextUtils.singular(ms.name)), state, font),
+                    new TextCell(Arrays.asList(String.valueOf(ms.numKilled)), state, font)
             ));
         }
         builder.setDrawHeaderLine(true);

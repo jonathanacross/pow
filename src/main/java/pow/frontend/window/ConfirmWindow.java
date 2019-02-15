@@ -6,6 +6,7 @@ import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
+import pow.frontend.utils.table.State;
 import pow.frontend.utils.table.Table;
 import pow.frontend.utils.table.TableBuilder;
 import pow.frontend.utils.table.TextCell;
@@ -50,12 +51,12 @@ public class ConfirmWindow extends AbstractWindow {
         // build the inner option list
         TableBuilder optionTableBuilder = new TableBuilder();
         optionTableBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("[esc]"), TextCell.Style.NORMAL, font),
-                new TextCell(Arrays.asList(cancelText), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList("[esc]"), State.NORMAL, font),
+                new TextCell(Arrays.asList(cancelText), State.NORMAL, font)
         ));
         optionTableBuilder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("[enter]"), TextCell.Style.NORMAL, font),
-                new TextCell(Arrays.asList(okayText), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList("[enter]"), State.NORMAL, font),
+                new TextCell(Arrays.asList(okayText), State.NORMAL, font)
         ));
         optionTableBuilder.setHSpacing(Style.MARGIN);
         Table options = optionTableBuilder.build();
@@ -63,7 +64,7 @@ public class ConfirmWindow extends AbstractWindow {
         // build the main layout
         TableBuilder builder = new TableBuilder();
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(message), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList(message), State.NORMAL, font)
         ));
         builder.addRow(Arrays.asList(
                 options

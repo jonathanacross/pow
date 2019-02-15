@@ -8,12 +8,7 @@ import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
-import pow.frontend.utils.table.EmptyCell;
-import pow.frontend.utils.table.ImageCell;
-import pow.frontend.utils.table.Table;
-import pow.frontend.utils.table.TableBuilder;
-import pow.frontend.utils.table.TextCell;
+import pow.frontend.utils.table.*;
 import pow.util.TextUtils;
 
 import java.awt.*;
@@ -87,43 +82,42 @@ public class ShopWindow extends AbstractWindow {
         TableBuilder listBuilder = new TableBuilder();
         listBuilder.addRow(Arrays.asList(
                 new EmptyCell(),
-                new TextCell(Arrays.asList("Item"), TextCell.Style.NORMAL, font),
+                new TextCell(Arrays.asList("Item"), State.NORMAL, font),
                 new EmptyCell(),
-                new TextCell(Arrays.asList("Price"), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList("Price"), State.NORMAL, font)
         ));
         for (int i = 0; i < this.entries.size(); i++) {
             ShopData.ShopEntry entry = entries.get(i);
             boolean isGrayed = maxNumBuyable(entry) == 0;
-            TextCell.Style textStyle = isGrayed ? TextCell.Style.DISABLED : TextCell.Style.NORMAL;
+            State state = isGrayed ? State.DISABLED : State.NORMAL;
 
             String label = (char) ((int) 'a' + i) + ")";
             List<String> itemInfo = Arrays.asList(TextUtils.format(entry.item.name, entry.item.count, false), entry.item.bonusString());
             String price = String.valueOf(entry.price);
 
             listBuilder.addRow(Arrays.asList(
-                    new TextCell(Arrays.asList(label), textStyle, font),
-                    new ImageCell(entry.item.image, isGrayed),
-                    new TextCell(itemInfo, textStyle, font),
-                    new TextCell(Arrays.asList(price), textStyle, font)
+                    new TextCell(Arrays.asList(label), state, font),
+                    new ImageCell(entry.item.image, state),
+                    new TextCell(itemInfo, state, font),
+                    new TextCell(Arrays.asList(price), state, font)
             ));
         }
         listBuilder.setDrawHeaderLine(true);
         listBuilder.setHSpacing(Style.MARGIN);
         Table itemList = listBuilder.build();
-        //builder.setColWidths(Arrays.asList(20, Style.TILE_SIZE + Style.SMALL_MARGIN, 250, 50));
 
         // build the overall layout
         TableBuilder builder = new TableBuilder();
         String greeting = "Hi " + backend.getGameState().party.player.name + ", what would you like to buy?";
         String help = "Select an item to buy or press [esc] to cancel.";
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(greeting), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList(greeting), State.NORMAL, font)
         ));
         builder.addRow(Arrays.asList(
                 itemList
         ));
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(help), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList(help), State.NORMAL, font)
         ));
         builder.setVSpacing(Style.MARGIN);
 

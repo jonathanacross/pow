@@ -9,21 +9,13 @@ import pow.backend.dungeon.ItemList;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ItemActions;
-import pow.frontend.utils.table.Cell;
-import pow.frontend.utils.table.EmptyCell;
-import pow.frontend.utils.table.ImageCell;
-import pow.frontend.utils.table.Table;
-import pow.frontend.utils.table.TableBuilder;
-import pow.frontend.utils.table.TextCell;
+import pow.frontend.utils.table.*;
 import pow.util.TextUtils;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -114,8 +106,8 @@ public class ActionChoiceWindow extends AbstractWindow {
             ItemActions.Action action = actions.get(i);
             String label = (char) ((int) 'a' + i) + ")";
             listBuilder.addRow(Arrays.asList(
-                    new TextCell(Arrays.asList(label), TextCell.Style.NORMAL, font),
-                    new TextCell(Arrays.asList(action.getText()), TextCell.Style.NORMAL, font)
+                    new TextCell(Arrays.asList(label), State.NORMAL, font),
+                    new TextCell(Arrays.asList(action.getText()), State.NORMAL, font)
             ));
         }
         listBuilder.setHSpacing(Style.MARGIN);
@@ -126,8 +118,8 @@ public class ActionChoiceWindow extends AbstractWindow {
         List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
         TableBuilder itemLineBuilder = new TableBuilder();
         itemLineBuilder.addRow(Arrays.asList(
-                new ImageCell(item.image, false),
-                new TextCell(itemInfo, TextCell.Style.NORMAL, font)
+                new ImageCell(item.image, State.NORMAL),
+                new TextCell(itemInfo, State.NORMAL, font)
         ));
         itemLineBuilder.setHSpacing(Style.MARGIN);
         Table itemLine = itemLineBuilder.build();
@@ -135,7 +127,7 @@ public class ActionChoiceWindow extends AbstractWindow {
         // build the overall layout
         TableBuilder builder = new TableBuilder();
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(message), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList(message), State.NORMAL, font)
         ));
         builder.addRow(Arrays.asList(
                 itemLine
@@ -144,7 +136,7 @@ public class ActionChoiceWindow extends AbstractWindow {
                 list
         ));
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("Select an action or press [esc] to cancel."), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList("Select an action or press [esc] to cancel."), State.NORMAL, font)
         ));
         builder.setVSpacing(Style.MARGIN);
 

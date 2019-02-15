@@ -4,7 +4,7 @@ import pow.backend.GameBackend;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.table.EmptyCell;
+import pow.frontend.utils.table.State;
 import pow.frontend.utils.table.Table;
 import pow.frontend.utils.table.TableBuilder;
 import pow.frontend.utils.table.TextCell;
@@ -75,8 +75,8 @@ public class PortalChoiceWindow extends AbstractWindow {
             String label = (char) ((int) 'a' + i) + ")";
             String areaName = areas.get(i).name;
             placeListBuilder.addRow(Arrays.asList(
-                    new TextCell(Arrays.asList(label), TextCell.Style.NORMAL, font),
-                    new TextCell(Arrays.asList(areaName), TextCell.Style.NORMAL, font)
+                    new TextCell(Arrays.asList(label), State.NORMAL, font),
+                    new TextCell(Arrays.asList(areaName), State.NORMAL, font)
             ));
         }
         placeListBuilder.setHSpacing(Style.MARGIN);
@@ -85,13 +85,13 @@ public class PortalChoiceWindow extends AbstractWindow {
         // build the outer layout
         TableBuilder builder = new TableBuilder();
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList(message), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList(message), State.NORMAL, font)
         ));
         builder.addRow(Arrays.asList(
                 placeList
         ));
         builder.addRow(Arrays.asList(
-                new TextCell(Arrays.asList("Select an area or press [esc] to cancel."), TextCell.Style.NORMAL, font)
+                new TextCell(Arrays.asList("Select an area or press [esc] to cancel."), State.NORMAL, font)
         ));
 
         builder.setVSpacing(Style.MARGIN);

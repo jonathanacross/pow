@@ -8,6 +8,9 @@ import java.util.List;
 
 public class Table implements Cell {
 
+    // rather than list of cells, use tableCells:
+    // class TableCell { Cell cell, Alignment alignment, Color background }
+
     final List<List<Cell>> cells;
     final List<Integer> colWidths;
     final List<Integer> rowHeights;
@@ -50,9 +53,9 @@ public class Table implements Cell {
 
             int xOffset = x;
             for (int c = 0; c < row.size(); c++) {
-                //TODO: remove dead code
-//                graphics.setColor(Color.RED);
-//                graphics.drawRect(xOffset, yOffset, colWidths.get(c), rowHeights.get(r));
+                // Show borders of cells for debugging
+                // graphics.setColor(Color.RED);
+                // graphics.drawRect(xOffset, yOffset, colWidths.get(c), rowHeights.get(r));
                 Cell cell = row.get(c);
                 // draw left aligned, vertically centered.
                 int dy = (rowHeights.get(r) - cell.getHeight()) / 2;
