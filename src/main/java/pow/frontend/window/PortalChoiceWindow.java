@@ -6,7 +6,6 @@ import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.widget.State;
 import pow.frontend.widget.Table;
-import pow.frontend.widget.TableBuilder;
 import pow.frontend.widget.TextBox;
 
 import java.awt.*;
@@ -70,32 +69,29 @@ public class PortalChoiceWindow extends AbstractWindow {
         Font font = Style.getDefaultFont();
 
         // build the list of places
-        TableBuilder placeListBuilder = new TableBuilder();
+        Table placeList = new Table();
         for (int i = 0; i < areas.size(); i++) {
             String label = (char) ((int) 'a' + i) + ")";
             String areaName = areas.get(i).name;
-            placeListBuilder.addRow(Arrays.asList(
+            placeList.addRow(Arrays.asList(
                     new TextBox(Arrays.asList(label), State.NORMAL, font),
                     new TextBox(Arrays.asList(areaName), State.NORMAL, font)
             ));
         }
-        placeListBuilder.setHSpacing(Style.MARGIN);
-        Table placeList = placeListBuilder.build();
+        placeList.setHSpacing(Style.MARGIN);
+        placeList.autosize();
 
         // build the outer layout
-        TableBuilder builder = new TableBuilder();
-        builder.addRow(Arrays.asList(
-                new TextBox(Arrays.asList(message), State.NORMAL, font)
-        ));
-        builder.addRow(Arrays.asList(
-                placeList
-        ));
-        builder.addRow(Arrays.asList(
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TextBox(Arrays.asList(message), State.NORMAL, font),
+                placeList,
                 new TextBox(Arrays.asList("Select an area or press [esc] to cancel."), State.NORMAL, font)
         ));
 
-        builder.setVSpacing(Style.MARGIN);
-        return builder.build();
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+        return layout;
     }
 
     @Override

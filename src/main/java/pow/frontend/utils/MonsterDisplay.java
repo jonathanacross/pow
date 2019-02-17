@@ -47,7 +47,7 @@ public class MonsterDisplay {
         Font font = Style.getDefaultFont();
         FontMetrics textMetrics = graphics.getFontMetrics(Style.getDefaultFont());
         int textWidth = width;
-        TableBuilder tableBuilder = new TableBuilder();
+        Table table = new Table();
 
         String healthValue = showCurrentHealth
                 ? monster.health + "/" + monster.maxHealth
@@ -68,7 +68,7 @@ public class MonsterDisplay {
         List<Widget> header = new ArrayList<>();
         header.add(new Tile(monster.image, State.NORMAL));
         header.add(new TextBox(Arrays.asList(TextUtils.singular(monster.name)), State.NORMAL, font));
-        tableBuilder.addRow(header);
+        table.addRow(header);
         String statsLine =
                 "Str: " + monster.strength +
                         "  Dex: " + monster.dexterity +
@@ -76,34 +76,34 @@ public class MonsterDisplay {
                         "  Con: " + monster.constitution;
 
         for (String line : descriptionLines) {
-            tableBuilder.addRow(getRow(line, "", font));
+            table.addRow(getRow(line, "", font));
         }
-        tableBuilder.addRow(getRow("", "", font));
-        tableBuilder.addRow(getRow(statsLine, "", font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow(statsLine, "", font));
         for (String line : spellLines) {
-            tableBuilder.addRow(getRow(line, "", font));
+            table.addRow(getRow(line, "", font));
         }
-        tableBuilder.addRow(getRow("", "", font));
-        tableBuilder.addRow(getRow("HP:        ", healthValue, font));
-        tableBuilder.addRow(getRow("MP:        ", manaValue, font));
-        tableBuilder.addRow(getRow("", "", font));
-        tableBuilder.addRow(getRow("Exp:       ", "" + monster.experience, font));
-        tableBuilder.addRow(getRow("Level:     ", "" + monster.level, font));
-        tableBuilder.addRow(getRow("", "", font));
-        tableBuilder.addRow(getRow("Attack:    ", "" + monster.primaryAttack, font));
-        tableBuilder.addRow(getRow("Defense:   ", "" + monster.defense, font));
-        tableBuilder.addRow(getRow("Speed:     ", "" + monster.speed, font));
-        tableBuilder.addRow(getRow("", "", font));
-        tableBuilder.addRow(getRow(hitYou, "", font));
-        tableBuilder.addRow(getRow(youHit, "", font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("HP:        ", healthValue, font));
+        table.addRow(getRow("MP:        ", manaValue, font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("Exp:       ", "" + monster.experience, font));
+        table.addRow(getRow("Level:     ", "" + monster.level, font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("Attack:    ", "" + monster.primaryAttack, font));
+        table.addRow(getRow("Defense:   ", "" + monster.defense, font));
+        table.addRow(getRow("Speed:     ", "" + monster.speed, font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow(hitYou, "", font));
+        table.addRow(getRow(youHit, "", font));
         if (player.hasBowEquipped()) {
-            tableBuilder.addRow(getRow(bowHit, "", font));
+            table.addRow(getRow(bowHit, "", font));
         }
 
-        tableBuilder.setColWidths(Arrays.asList(80, textWidth - 80));
-        tableBuilder.setDrawHeaderLine(true);
+        table.setColWidths(Arrays.asList(80, textWidth - 80));
+        table.setDrawHeaderLine(true);
+        table.autosize();
 
-        Table table = tableBuilder.build();
         table.draw(graphics, position.x, position.y);
     }
 }

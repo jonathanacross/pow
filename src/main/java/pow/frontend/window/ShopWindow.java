@@ -79,8 +79,8 @@ public class ShopWindow extends AbstractWindow {
         Font font = Style.getDefaultFont();
 
         // build the inner list
-        TableBuilder listBuilder = new TableBuilder();
-        listBuilder.addRow(Arrays.asList(
+        Table list = new Table();
+        list.addRow(Arrays.asList(
                 new Space(),
                 new TextBox(Arrays.asList("Item"), State.NORMAL, font),
                 new Space(),
@@ -95,33 +95,30 @@ public class ShopWindow extends AbstractWindow {
             List<String> itemInfo = Arrays.asList(TextUtils.format(entry.item.name, entry.item.count, false), entry.item.bonusString());
             String price = String.valueOf(entry.price);
 
-            listBuilder.addRow(Arrays.asList(
+            list.addRow(Arrays.asList(
                     new TextBox(Arrays.asList(label), state, font),
                     new Tile(entry.item.image, state),
                     new TextBox(itemInfo, state, font),
                     new TextBox(Arrays.asList(price), state, font)
             ));
         }
-        listBuilder.setDrawHeaderLine(true);
-        listBuilder.setHSpacing(Style.MARGIN);
-        Table itemList = listBuilder.build();
+        list.setDrawHeaderLine(true);
+        list.setHSpacing(Style.MARGIN);
+        list.autosize();
 
         // build the overall layout
-        TableBuilder builder = new TableBuilder();
+        Table layout = new Table();
         String greeting = "Hi " + backend.getGameState().party.player.name + ", what would you like to buy?";
         String help = "Select an item to buy or press [esc] to cancel.";
-        builder.addRow(Arrays.asList(
-                new TextBox(Arrays.asList(greeting), State.NORMAL, font)
-        ));
-        builder.addRow(Arrays.asList(
-                itemList
-        ));
-        builder.addRow(Arrays.asList(
+        layout.addColumn(Arrays.asList(
+                new TextBox(Arrays.asList(greeting), State.NORMAL, font),
+                list,
                 new TextBox(Arrays.asList(help), State.NORMAL, font)
         ));
-        builder.setVSpacing(Style.MARGIN);
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
 
-        return builder.build();
+        return layout;
     }
 
     @Override

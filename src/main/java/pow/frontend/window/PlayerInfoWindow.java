@@ -94,45 +94,45 @@ public class PlayerInfoWindow extends AbstractWindow {
         String winnerString = player.isWinner() ? " (Winner!)" : "";
         String secondaryAttack = player.hasBowEquipped() ? String.valueOf(player.getSecondaryAttack()) : "N/A";
 
-        TableBuilder tableBuilder = new TableBuilder();
+        Table table = new Table();
         List<Widget> header = new ArrayList<>();
         header.add(new Tile(player.image, State.NORMAL));
         header.add(new TextBox(Arrays.asList(player.name + winnerString), State.NORMAL, font));
         header.add(new Space());
-        tableBuilder.addRow(header);
+        table.addRow(header);
 
-        tableBuilder.addRow(getRow("HP:        ", player.getHealth() + "/" + player.getMaxHealth(), font));
-        tableBuilder.addRow(getRow("MP:        ", player.getMana() + "/" + player.getMaxMana(), font));
-        tableBuilder.addRow(getRow("", "", font));
-        tableBuilder.addRow(getRow("Exp:       ", "" + player.experience, font));
-        tableBuilder.addRow(getRow("Exp next:  ", "" + player.getExpToNextLevel(), font));
-        tableBuilder.addRow(getRow("Level:     ", "" + player.level, font));
-        tableBuilder.addRow(getRow("", "", font));
-        tableBuilder.addRow(getRow("Str:       ", "" + player.baseStats.strength, font));
-        tableBuilder.addRow(getRow("Dex:       ", "" + player.baseStats.dexterity, font));
-        tableBuilder.addRow(getRow("Int:       ", "" + player.baseStats.intelligence, font));
-        tableBuilder.addRow(getRow("Con:       ", "" + player.baseStats.constitution, font));
-        tableBuilder.addRow(getRow("", "", font));
-        tableBuilder.addRow(getRow("Attack:    ", "" + player.getPrimaryAttack(), font));
-        tableBuilder.addRow(getRow("Bow:       ", "" + secondaryAttack, font));
-        tableBuilder.addRow(getRow("Defense:   ", "" + player.getDefense(), font));
-        tableBuilder.addRow(getRow("Speed:     ", "" + player.getSpeed(), font));
-        tableBuilder.addRow(getRow("", "", font));
-        tableBuilder.addRow(getRow("rFire:     ", "" + getResistPercent(player.baseStats.resFire), font));
-        tableBuilder.addRow(getRow("rCold:     ", "" + getResistPercent(player.baseStats.resCold), font));
-        tableBuilder.addRow(getRow("rAcid:     ", "" + getResistPercent(player.baseStats.resAcid), font));
-        tableBuilder.addRow(getRow("rElec:     ", "" + getResistPercent(player.baseStats.resElec), font));
-        tableBuilder.addRow(getRow("rPois:     ", "" + getResistPercent(player.baseStats.resPois), font));
-        tableBuilder.addRow(getRow("rDam:      ", "" + getResistPercent(player.baseStats.resDam), font));
-        tableBuilder.addRow(getRow("", "", font));
+        table.addRow(getRow("HP:        ", player.getHealth() + "/" + player.getMaxHealth(), font));
+        table.addRow(getRow("MP:        ", player.getMana() + "/" + player.getMaxMana(), font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("Exp:       ", "" + player.experience, font));
+        table.addRow(getRow("Exp next:  ", "" + player.getExpToNextLevel(), font));
+        table.addRow(getRow("Level:     ", "" + player.level, font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("Str:       ", "" + player.baseStats.strength, font));
+        table.addRow(getRow("Dex:       ", "" + player.baseStats.dexterity, font));
+        table.addRow(getRow("Int:       ", "" + player.baseStats.intelligence, font));
+        table.addRow(getRow("Con:       ", "" + player.baseStats.constitution, font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("Attack:    ", "" + player.getPrimaryAttack(), font));
+        table.addRow(getRow("Bow:       ", "" + secondaryAttack, font));
+        table.addRow(getRow("Defense:   ", "" + player.getDefense(), font));
+        table.addRow(getRow("Speed:     ", "" + player.getSpeed(), font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("rFire:     ", "" + getResistPercent(player.baseStats.resFire), font));
+        table.addRow(getRow("rCold:     ", "" + getResistPercent(player.baseStats.resCold), font));
+        table.addRow(getRow("rAcid:     ", "" + getResistPercent(player.baseStats.resAcid), font));
+        table.addRow(getRow("rElec:     ", "" + getResistPercent(player.baseStats.resElec), font));
+        table.addRow(getRow("rPois:     ", "" + getResistPercent(player.baseStats.resPois), font));
+        table.addRow(getRow("rDam:      ", "" + getResistPercent(player.baseStats.resDam), font));
+        table.addRow(getRow("", "", font));
         for (String line : spellLines) {
-            tableBuilder.addRow(getRow(line, "", font));
+            table.addRow(getRow(line, "", font));
         }
 
-        tableBuilder.setColWidths(Arrays.asList(Style.TILE_SIZE + 2*Style.SMALL_MARGIN, 80, textWidth - 80));
-        tableBuilder.setDrawHeaderLine(true);
+        table.setColWidths(Arrays.asList(Style.TILE_SIZE + 2*Style.SMALL_MARGIN, 80, textWidth - 80));
+        table.setDrawHeaderLine(true);
+        table.autosize();
 
-        Table table = tableBuilder.build();
         table.draw(graphics, where.x, where.y);
     }
 
@@ -331,13 +331,13 @@ public class PlayerInfoWindow extends AbstractWindow {
                     new TextBox(descLines, State.NORMAL, font));
         }
 
-        TableBuilder artifactTableBuilder = new TableBuilder();
-        artifactTableBuilder.setCells(cells);
-        artifactTableBuilder.setColWidths(Arrays.asList(imageWidth, descWidth, imageWidth, descWidth));
-        artifactTableBuilder.setDrawHeaderLine(true);
-        artifactTableBuilder.setHSpacing(Style.SMALL_MARGIN);
-        artifactTableBuilder.setVSpacing(Style.SMALL_MARGIN);
-        Table artifactTable = artifactTableBuilder.build();
+        Table artifactTable = new Table();
+        artifactTable.setCells(cells);
+        artifactTable.setColWidths(Arrays.asList(imageWidth, descWidth, imageWidth, descWidth));
+        artifactTable.setDrawHeaderLine(true);
+        artifactTable.setHSpacing(Style.SMALL_MARGIN);
+        artifactTable.setVSpacing(Style.SMALL_MARGIN);
+        artifactTable.autosize();
 
         return artifactTable;
     }
@@ -374,14 +374,14 @@ public class PlayerInfoWindow extends AbstractWindow {
         for (int i = 0; i < GameConstants.NUM_PEARLS_TO_WIN; i++) {
             colWidths.add(imageWidth);
         }
-        TableBuilder pearlTableBuilder = new TableBuilder();
-        pearlTableBuilder.addRow(header);
-        pearlTableBuilder.addRow(pearlRow);
-        pearlTableBuilder.setColWidths(colWidths);
-        pearlTableBuilder.setDrawHeaderLine(true);
-        pearlTableBuilder.setHSpacing(Style.SMALL_MARGIN);
-        pearlTableBuilder.setVSpacing(Style.SMALL_MARGIN);
-        Table pearlTable = pearlTableBuilder.build();
+        Table pearlTable = new Table();
+        pearlTable.addRow(header);
+        pearlTable.addRow(pearlRow);
+        pearlTable.setColWidths(colWidths);
+        pearlTable.setDrawHeaderLine(true);
+        pearlTable.setHSpacing(Style.SMALL_MARGIN);
+        pearlTable.setVSpacing(Style.SMALL_MARGIN);
+        pearlTable.autosize();
 
         return pearlTable;
     }

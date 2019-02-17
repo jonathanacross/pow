@@ -101,46 +101,41 @@ public class ActionChoiceWindow extends AbstractWindow {
         Font font = Style.getDefaultFont();
 
         // build the inner list
-        TableBuilder listBuilder = new TableBuilder();
+        Table list = new Table();
         for (int i = 0; i < actions.size(); i++) {
             ItemActions.Action action = actions.get(i);
             String label = (char) ((int) 'a' + i) + ")";
-            listBuilder.addRow(Arrays.asList(
+            list.addRow(Arrays.asList(
                     new TextBox(Arrays.asList(label), State.NORMAL, font),
                     new TextBox(Arrays.asList(action.getText()), State.NORMAL, font)
             ));
         }
-        listBuilder.setHSpacing(Style.MARGIN);
-        Table list = listBuilder.build();
+        list.setHSpacing(Style.MARGIN);
+        list.autosize();
 
         // build the item line
         DungeonItem item = items.get(itemIndex);
         List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
-        TableBuilder itemLineBuilder = new TableBuilder();
-        itemLineBuilder.addRow(Arrays.asList(
+        Table itemLine = new Table();
+        itemLine.addRow(Arrays.asList(
                 new Tile(item.image, State.NORMAL),
                 new TextBox(itemInfo, State.NORMAL, font)
         ));
-        itemLineBuilder.setHSpacing(Style.MARGIN);
-        Table itemLine = itemLineBuilder.build();
+        itemLine.setHSpacing(Style.MARGIN);
+        itemLine.autosize();
 
         // build the overall layout
-        TableBuilder builder = new TableBuilder();
-        builder.addRow(Arrays.asList(
-                new TextBox(Arrays.asList(message), State.NORMAL, font)
-        ));
-        builder.addRow(Arrays.asList(
-                itemLine
-        ));
-        builder.addRow(Arrays.asList(
-                list
-        ));
-        builder.addRow(Arrays.asList(
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TextBox(Arrays.asList(message), State.NORMAL, font),
+                itemLine,
+                list,
                 new TextBox(Arrays.asList("Select an action or press [esc] to cancel."), State.NORMAL, font)
         ));
-        builder.setVSpacing(Style.MARGIN);
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
 
-        return builder.build();
+        return layout;
     }
 
     @Override

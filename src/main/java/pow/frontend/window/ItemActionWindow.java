@@ -68,35 +68,31 @@ public class ItemActionWindow extends AbstractWindow {
         Font font = Style.getDefaultFont();
 
         // build the list in the middle
-        TableBuilder itemListBuilder = new TableBuilder();
+        Table itemList = new Table();
         for (int i = 0; i < items.items.size(); i++) {
             DungeonItem item = items.items.get(i);
             String label = (char) ((int) 'a' + i) + ")";
             List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
-            itemListBuilder.addRow(Arrays.asList(
+            itemList.addRow(Arrays.asList(
                     new TextBox(Arrays.asList(label), State.NORMAL, font),
                     new Tile(item.image, State.NORMAL),
                     new TextBox(itemInfo, State.NORMAL, font)
             ));
         }
-        itemListBuilder.setHSpacing(Style.MARGIN);
-        Table itemList = itemListBuilder.build();
+        itemList.setHSpacing(Style.MARGIN);
+        itemList.autosize();
 
         // make the outer widget with header and footer
-        TableBuilder tableBuilder = new TableBuilder();
-        tableBuilder.addRow(Arrays.asList(
-                new TextBox(Arrays.asList(message), State.NORMAL, font)
+        Table table = new Table();
+        table.addColumn(Arrays.asList(
+                new TextBox(Arrays.asList(message), State.NORMAL, font),
+                itemList,
+                new TextBox(Arrays.asList("Select an item or press [esc] to cancel."), State.NORMAL, font)
         ));
-        tableBuilder.addRow(Arrays.asList(
-                itemList
-        ));
-        String helpMessage = "Select an item or press [esc] to cancel.";
-        tableBuilder.addRow(Arrays.asList(
-                new TextBox(Arrays.asList(helpMessage), State.NORMAL, font)
-        ));
-        tableBuilder.setVSpacing(Style.MARGIN);
+        table.setVSpacing(Style.MARGIN);
+        table.autosize();
 
-        return tableBuilder.build();
+        return table;
     }
 
     @Override

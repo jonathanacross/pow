@@ -77,8 +77,8 @@ public class KnowledgeWindow extends AbstractWindow {
             maxIndex = Math.min(monsterSummary.size(), centerIndex + radius);
         }
 
-        TableBuilder builder = new TableBuilder();
-        builder.addRow(Arrays.asList(
+        Table table = new Table();
+        table.addRow(Arrays.asList(
                 new Space(),
                 new TextBox(Arrays.asList("Name"), State.NORMAL, font),
                 new TextBox(Arrays.asList("Killed"), State.NORMAL, font)
@@ -87,16 +87,16 @@ public class KnowledgeWindow extends AbstractWindow {
         for (int index = minIndex; index < maxIndex; index++) {
             Knowledge.MonsterSummary ms = monsterSummary.get(index);
             State state = index == selectIndex ? State.SELECTED : State.NORMAL;
-            builder.addRow(Arrays.asList(
+            table.addRow(Arrays.asList(
                     new Tile(ms.image, state),
                     new TextBox(Arrays.asList(TextUtils.singular(ms.name)), state, font),
                     new TextBox(Arrays.asList(String.valueOf(ms.numKilled)), state, font)
             ));
         }
-        builder.setDrawHeaderLine(true);
-        builder.setColWidths(Arrays.asList(Style.TILE_SIZE + Style.SMALL_MARGIN, 180, 50));
-        Table monsterTable = builder.build();
-        monsterTable.draw(graphics, Style.SMALL_MARGIN, Style.SMALL_MARGIN + 3*Style.getFontSize());
+        table.setDrawHeaderLine(true);
+        table.setColWidths(Arrays.asList(Style.TILE_SIZE + Style.SMALL_MARGIN, 180, 50));
+        table.autosize();
+        table.draw(graphics, Style.SMALL_MARGIN, Style.SMALL_MARGIN + 3*Style.getFontSize());
 
         // draw scrollbar
         int sbTop = 65;

@@ -3,6 +3,8 @@ package pow.frontend.widget;
 import pow.frontend.Style;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Table implements Widget {
@@ -10,20 +12,94 @@ public class Table implements Widget {
     // rather than list of cells, use tableCells:
     // class TableCell { Widget cell, Alignment alignment, Color background }
 
-    final List<List<Widget>> cells;
-    final List<Integer> colWidths;
-    final List<Integer> rowHeights;
-    final boolean drawHeaderLine;
-    final int hSpacing;
-    final int vSpacing;
+    List<List<Widget>> cells;
+    List<Integer> colWidths;
+    List<Integer> rowHeights;
+    boolean drawHeaderLine;
+    int hSpacing;
+    int vSpacing;
 
-    public Table(List<List<Widget>> cells, List<Integer> colWidths, List<Integer> rowHeights, int hSpacing, int vSpacing, boolean drawHeaderLine) {
+    public Table() {
+        this.cells = new ArrayList<>();
+        this.drawHeaderLine = false;
+        this.hSpacing = 0;
+        this.vSpacing = 0;
+    }
+
+    public void setCells(List<List<Widget>> cells) {
         this.cells = cells;
-        this.colWidths = colWidths;
-        this.rowHeights = rowHeights;
-        this.hSpacing = hSpacing;
-        this.vSpacing = vSpacing;
+    }
+
+    public void addRow(List<Widget> row) {
+        cells.add(row);
+    }
+
+    // adds to the end
+    public void addColumn(List<Widget> col) {
+        // make sure we have enough rows
+        for (int i = cells.size(); i < col.size(); i++) {
+            cells.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < col.size(); i++) {
+            cells.get(i).add(col.get(i));
+        }
+    }
+
+    public void setDrawHeaderLine(boolean drawHeaderLine) {
         this.drawHeaderLine = drawHeaderLine;
+    }
+
+    public void setColWidths(List<Integer> colWidths) {
+        this.colWidths = colWidths;
+    }
+
+    public void setHSpacing(int hSpacing) {
+        this.hSpacing = hSpacing;
+    }
+
+    public void setVSpacing(int vSpacing) {
+        this.vSpacing = vSpacing;
+    }
+
+    private List<Integer> getDefaultHeights() {
+        List<Integer> heights = new ArrayList<>();
+        for (List<Widget> row : cells) {
+            int height = 0;
+            for (Widget widget : row) {
+                height = Math.max(height, widget.getHeight());
+            }
+            heights.add(height);
+        }
+        return heights;
+    }
+
+    private List<Integer> getDefaultWidths() {
+        List<Integer> widths = new ArrayList<>();
+        for (int c = 0; c < cells.get(0).size(); c++) {
+            int width = 0;
+            for (int r = 0; r < cells.size(); r++) {
+                Widget widget = cells.get(r).get(c);
+                int cellAutoWidth = widget.getWidth();
+                width = Math.max(width, cellAutoWidth);
+            }
+            widths.add(width);
+        }
+        return widths;
+    }
+
+    public void autosize() {
+        if (cells.isEmpty()) {
+            colWidths = Arrays.asList();
+            rowHeights = Arrays.asList();
+        } else {
+            if (colWidths == null) {
+                colWidths = getDefaultWidths();
+            }
+            if (rowHeights == null) {
+                rowHeights = getDefaultHeights();
+            }
+        }
     }
 
     public int getWidth() {

@@ -8,7 +8,6 @@ import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 import pow.frontend.widget.State;
 import pow.frontend.widget.Table;
-import pow.frontend.widget.TableBuilder;
 import pow.frontend.widget.TextBox;
 
 import java.awt.*;
@@ -49,28 +48,28 @@ public class ConfirmWindow extends AbstractWindow {
         Font font = Style.getDefaultFont();
 
         // build the inner option list
-        TableBuilder optionTableBuilder = new TableBuilder();
-        optionTableBuilder.addRow(Arrays.asList(
+        Table optionTable = new Table();
+        optionTable.addRow(Arrays.asList(
                 new TextBox(Arrays.asList("[esc]"), State.NORMAL, font),
                 new TextBox(Arrays.asList(cancelText), State.NORMAL, font)
         ));
-        optionTableBuilder.addRow(Arrays.asList(
+        optionTable.addRow(Arrays.asList(
                 new TextBox(Arrays.asList("[enter]"), State.NORMAL, font),
                 new TextBox(Arrays.asList(okayText), State.NORMAL, font)
         ));
-        optionTableBuilder.setHSpacing(Style.MARGIN);
-        Table options = optionTableBuilder.build();
+        optionTable.setHSpacing(Style.MARGIN);
+        optionTable.autosize();
 
         // build the main layout
-        TableBuilder builder = new TableBuilder();
-        builder.addRow(Arrays.asList(
-                new TextBox(Arrays.asList(message), State.NORMAL, font)
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TextBox(Arrays.asList(message), State.NORMAL, font),
+                optionTable
         ));
-        builder.addRow(Arrays.asList(
-                options
-        ));
-        builder.setVSpacing(Style.MARGIN);
-        return builder.build();
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+        return layout;
+
     }
 
     @Override

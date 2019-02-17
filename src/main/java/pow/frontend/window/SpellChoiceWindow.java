@@ -61,8 +61,8 @@ public class SpellChoiceWindow extends AbstractWindow {
         Font font = Style.getDefaultFont();
 
         // Build the inner spell list
-        TableBuilder spellListBuilder = new TableBuilder();
-        spellListBuilder.addRow(Arrays.asList(
+        Table spellList = new Table();
+        spellList.addRow(Arrays.asList(
                 new Space(),
                 new TextBox(Arrays.asList("Spell"), State.NORMAL, font),
                 new TextBox(Arrays.asList("Level"), State.NORMAL, font),
@@ -76,7 +76,7 @@ public class SpellChoiceWindow extends AbstractWindow {
             String label = (char) ((int) 'a' + i) + ")";
             String desc = spell.getDescription(backend.getGameState().party.selectedActor);
 
-            spellListBuilder.addRow(Arrays.asList(
+            spellList.addRow(Arrays.asList(
                     new TextBox(Arrays.asList(label), state, font),
                     new TextBox(Arrays.asList(spell.name), state, font),
                     new TextBox(Arrays.asList(Integer.toString(spell.minLevel)), state, font),
@@ -84,27 +84,21 @@ public class SpellChoiceWindow extends AbstractWindow {
                     new TextBox(Arrays.asList(desc), state, font)
             ));
         }
-        spellListBuilder.setHSpacing(Style.MARGIN);
-        spellListBuilder.setDrawHeaderLine(true);
-        Table spellList = spellListBuilder.build();
+        spellList.setHSpacing(Style.MARGIN);
+        spellList.setDrawHeaderLine(true);
+        spellList.autosize();
 
         // build the full window
-        TableBuilder tableBuilder = new TableBuilder();
-
-        tableBuilder.addRow(Arrays.asList(
-                new TextBox(Arrays.asList(this.message), State.NORMAL, font)
-        ));
-        tableBuilder.addRow(Arrays.asList(
-                spellList
-        ));
-        tableBuilder.addRow(Arrays.asList(
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TextBox(Arrays.asList(this.message), State.NORMAL, font),
+                spellList,
                 new TextBox(Arrays.asList("Select a spell, or press [esc] to cancel."), State.NORMAL, font)
         ));
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
 
-        tableBuilder.setVSpacing(Style.MARGIN);
-        Table spellTable = tableBuilder.build();
-
-        return spellTable;
+        return layout;
     }
 
     @Override

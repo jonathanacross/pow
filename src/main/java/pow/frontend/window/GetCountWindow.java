@@ -67,27 +67,25 @@ public class GetCountWindow extends AbstractWindow {
 
     public Table getLayoutTable() {
         Font font = Style.getDefaultFont();
-        TableBuilder topRowBuilder = new TableBuilder();
-        topRowBuilder.addRow(Arrays.asList(
+
+        Table topRow = new Table();
+        topRow.addRow(Arrays.asList(
                 new Tile(imageName, State.NORMAL),
                 new TextBox(messages, State.NORMAL, font)
         ));
-        topRowBuilder.setHSpacing(Style.MARGIN);
-        Table topRow = topRowBuilder.build();
+        topRow.setHSpacing(Style.MARGIN);
+        topRow.autosize();
 
         // main layout
-        TableBuilder builder = new TableBuilder();
-        builder.addRow(Arrays.asList(
-                topRow
-        ));
-        builder.addRow(Arrays.asList(
-                new TextBox(Arrays.asList("> " + countString), State.NORMAL, font)
-        ));
-        builder.addRow(Arrays.asList(
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                topRow,
+                new TextBox(Arrays.asList("> " + countString), State.NORMAL, font),
                 new TextBox(Arrays.asList("Press [esc] to cancel."), State.NORMAL, font)
         ));
-        builder.setVSpacing(Style.MARGIN);
-        return builder.build();
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+        return layout;
     }
 
     @Override

@@ -85,42 +85,39 @@ public class AutoplayOptionWindow extends AbstractWindow {
         GameState gs = backend.getGameState();
 
         // build the inner list of options
-        TableBuilder listBuilder = new TableBuilder();
-        listBuilder.addRow(Arrays.asList(
+        Table list = new Table();
+        list.addRow(Arrays.asList(
                 new TextBox(Arrays.asList("a)"), State.NORMAL, font),
                 new Tile(gs.party.player.image, State.NORMAL),
                 new Space(),
                 new TextBox(Arrays.asList(gs.party.player.name), State.NORMAL, font)
         ));
-        listBuilder.addRow(Arrays.asList(
+        list.addRow(Arrays.asList(
                 new TextBox(Arrays.asList("b)"), State.NORMAL, font),
                 new Tile(gs.party.pet.image, State.NORMAL),
                 new Space(),
                 new TextBox(Arrays.asList(gs.party.pet.name), State.NORMAL, font)
         ));
-        listBuilder.addRow(Arrays.asList(
+        list.addRow(Arrays.asList(
                 new TextBox(Arrays.asList("c)"), State.NORMAL, font),
                 new Tile(gs.party.player.image, State.NORMAL),
                 new Tile(gs.party.pet.image, State.NORMAL),
                 new TextBox(Arrays.asList("both"), State.NORMAL, font)
         ));
-        listBuilder.setHSpacing(Style.MARGIN);
-        Table list = listBuilder.build();
+        list.setHSpacing(Style.MARGIN);
+        list.autosize();
 
         // build the outer layout
-        TableBuilder tableBuilder = new TableBuilder();
-        tableBuilder.addRow(Arrays.asList(
-                new TextBox(Arrays.asList("Who do you want to control?"), State.NORMAL, font)
-        ));
-        tableBuilder.addRow(Arrays.asList(
-                list
-        ));
-        tableBuilder.addRow(Arrays.asList(
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TextBox(Arrays.asList("Who do you want to control?"), State.NORMAL, font),
+                list,
                 new TextBox(Arrays.asList("Press [esc] to cancel."), State.NORMAL, font)
         ));
-        tableBuilder.setVSpacing(Style.MARGIN);
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
 
-        return tableBuilder.build();
+        return layout;
     }
 
     @Override
