@@ -118,6 +118,13 @@ public class Table implements Widget {
     }
 
     public void draw(Graphics graphics, int x, int y) {
+        // draw header line
+        if (drawHeaderLine) {
+            int lineY = y + rowHeights.get(0) + (vSpacing / 2);
+            graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+            graphics.drawLine(x, lineY, x + getWidth(), lineY);
+        }
+
         // draw cell contents
         int yOffset = y;
         for (int r = 0; r < cells.size(); r++) {
@@ -141,13 +148,6 @@ public class Table implements Widget {
             }
 
             yOffset += rowHeights.get(r) + vSpacing;
-        }
-
-        // draw header line
-        if (drawHeaderLine) {
-            int lineY = y + rowHeights.get(0) + (vSpacing / 2);
-            graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-            graphics.drawLine(x, lineY, x + getWidth(), lineY);
         }
     }
 }

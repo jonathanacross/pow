@@ -43,7 +43,7 @@ public class TextBox implements Widget {
             this.lines.addAll(wrappedLines);
 
         }
-        this.height = textMetrics.getHeight() * lines.size();
+        this.height = textMetrics.getHeight() * this.lines.size();
     }
 
     // compute width based on given text

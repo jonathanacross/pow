@@ -5,7 +5,6 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 

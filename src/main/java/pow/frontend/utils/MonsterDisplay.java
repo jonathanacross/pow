@@ -12,7 +12,6 @@ import pow.util.TextUtils;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class MonsterDisplay {
@@ -46,65 +45,66 @@ public class MonsterDisplay {
             Point position
     ) {
         Font font = Style.getDefaultFont();
-        FontMetrics textMetrics = graphics.getFontMetrics(Style.getDefaultFont());
         int textWidth = width;
-        Table table = new Table();
 
+        // Inner table showing stats
         String healthValue = showCurrentHealth
                 ? monster.health + "/" + monster.maxHealth
                 : String.valueOf(monster.maxHealth);
         String manaValue = showCurrentHealth
                 ? monster.mana + "/" + monster.maxMana
                 : String.valueOf(monster.maxMana);
+        Table statsTable = new Table();
+        statsTable.addRow(getRow("HP:        ", healthValue, font));
+        statsTable.addRow(getRow("MP:        ", manaValue, font));
+        statsTable.addRow(getRow("", "", font));
+        statsTable.addRow(getRow("Exp:       ", "" + monster.experience, font));
+        statsTable.addRow(getRow("Level:     ", "" + monster.level, font));
+        statsTable.addRow(getRow("", "", font));
+        statsTable.addRow(getRow("Attack:    ", "" + monster.primaryAttack, font));
+        statsTable.addRow(getRow("Defense:   ", "" + monster.defense, font));
+        statsTable.addRow(getRow("Speed:     ", "" + monster.speed, font));
+        statsTable.setHSpacing(Style.MARGIN);
+        statsTable.autosize();
 
-        String hitYou = "Can hit you " + toPercentString(AttackUtils.hitProb(monster.primaryAttack.plusToHit, player.getDefense())) + "% of the time";
-        String youHit = "You can hit " + toPercentString(AttackUtils.hitProb(player.getPrimaryAttack().plusToHit, monster.defense)) + "% of the time (melee)";
-        String bowHit = "You can hit " + toPercentString(AttackUtils.hitProb(player.getSecondaryAttack().plusToHit, monster.defense)) + "% of the time (bow)";
-
-        List<String> descriptionLines = ImageUtils.wrapText(monster.description, textMetrics, textWidth);
-        List<String> spellLines = monster.spells.isEmpty()
-                ? Collections.emptyList()
-                : ImageUtils.wrapText("Can cast " + TextUtils.formatList(getSpellNames(monster.spells)) + ".", textMetrics, textWidth);
-
-        table.addRow(Arrays.asList(
+        // header showing icon and name
+        Table header = new Table();
+        header.addRow(Arrays.asList(
                 new TableCell(new Tile(monster.image, State.NORMAL)),
-                new TableCell(new TextBox(Arrays.asList(TextUtils.singular(monster.name)), State.NORMAL, font)))
-        );
+                new TableCell(new TextBox(Arrays.asList(TextUtils.singular(monster.name)), State.NORMAL, font), TableCell.VertAlign.BOTTOM)
+        ));
+        header.setHSpacing(Style.MARGIN);
+        header.autosize();
+
+        // Main layout
         String statsLine =
                 "Str: " + monster.strength +
                         "  Dex: " + monster.dexterity +
                         "  Int: " + monster.intelligence +
                         "  Con: " + monster.constitution;
-
-        for (String line : descriptionLines) {
-            table.addRow(getRow(line, "", font));
-        }
-        table.addRow(getRow("", "", font));
-        table.addRow(getRow(statsLine, "", font));
-        for (String line : spellLines) {
-            table.addRow(getRow(line, "", font));
-        }
-        table.addRow(getRow("", "", font));
-        table.addRow(getRow("HP:        ", healthValue, font));
-        table.addRow(getRow("MP:        ", manaValue, font));
-        table.addRow(getRow("", "", font));
-        table.addRow(getRow("Exp:       ", "" + monster.experience, font));
-        table.addRow(getRow("Level:     ", "" + monster.level, font));
-        table.addRow(getRow("", "", font));
-        table.addRow(getRow("Attack:    ", "" + monster.primaryAttack, font));
-        table.addRow(getRow("Defense:   ", "" + monster.defense, font));
-        table.addRow(getRow("Speed:     ", "" + monster.speed, font));
-        table.addRow(getRow("", "", font));
-        table.addRow(getRow(hitYou, "", font));
-        table.addRow(getRow(youHit, "", font));
+        String hitYou = "Can hit you " + toPercentString(AttackUtils.hitProb(monster.primaryAttack.plusToHit, player.getDefense())) + "% of the time";
+        String youHit = "You can hit " + toPercentString(AttackUtils.hitProb(player.getPrimaryAttack().plusToHit, monster.defense)) + "% of the time (melee)";
+        String bowHit = "You can hit " + toPercentString(AttackUtils.hitProb(player.getSecondaryAttack().plusToHit, monster.defense)) + "% of the time (bow)";
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TableCell(header),
+                new TableCell(new TextBox(Arrays.asList(""), State.NORMAL, font)),
+                new TableCell(new TextBox(Arrays.asList(monster.description), State.NORMAL, font, textWidth)),
+                new TableCell(new TextBox(Arrays.asList(""), State.NORMAL, font)),
+                new TableCell(new TextBox(Arrays.asList(statsLine), State.NORMAL, font)),
+                new TableCell(new TextBox(Arrays.asList(""), State.NORMAL, font)),
+                new TableCell(statsTable),
+                new TableCell(new TextBox(Arrays.asList(""), State.NORMAL, font)),
+                new TableCell(new TextBox(Arrays.asList(hitYou), State.NORMAL, font)),
+                new TableCell(new TextBox(Arrays.asList(youHit), State.NORMAL, font))
+        ));
         if (player.hasBowEquipped()) {
-            table.addRow(getRow(bowHit, "", font));
+            layout.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Arrays.asList(bowHit), State.NORMAL, font))
+            ));
         }
+        layout.autosize();
 
-        table.setColWidths(Arrays.asList(80, textWidth - 80));
-        table.setDrawHeaderLine(true);
-        table.autosize();
-
-        table.draw(graphics, position.x, position.y);
+        layout.draw(graphics, position.x, position.y);
     }
 }

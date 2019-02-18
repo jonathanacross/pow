@@ -10,7 +10,6 @@ import pow.frontend.WindowDim;
 import pow.frontend.utils.MonsterDisplay;
 import pow.util.Point;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
