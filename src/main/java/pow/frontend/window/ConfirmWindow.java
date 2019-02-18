@@ -8,6 +8,7 @@ import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 import pow.frontend.widget.State;
 import pow.frontend.widget.Table;
+import pow.frontend.widget.TableCell;
 import pow.frontend.widget.TextBox;
 
 import java.awt.*;
@@ -50,12 +51,12 @@ public class ConfirmWindow extends AbstractWindow {
         // build the inner option list
         Table optionTable = new Table();
         optionTable.addRow(Arrays.asList(
-                new TextBox(Arrays.asList("[esc]"), State.NORMAL, font),
-                new TextBox(Arrays.asList(cancelText), State.NORMAL, font)
+                new TableCell(new TextBox(Arrays.asList("[esc]"), State.NORMAL, font)),
+                new TableCell(new TextBox(Arrays.asList(cancelText), State.NORMAL, font))
         ));
         optionTable.addRow(Arrays.asList(
-                new TextBox(Arrays.asList("[enter]"), State.NORMAL, font),
-                new TextBox(Arrays.asList(okayText), State.NORMAL, font)
+                new TableCell(new TextBox(Arrays.asList("[enter]"), State.NORMAL, font)),
+                new TableCell(new TextBox(Arrays.asList(okayText), State.NORMAL, font))
         ));
         optionTable.setHSpacing(Style.MARGIN);
         optionTable.autosize();
@@ -63,8 +64,8 @@ public class ConfirmWindow extends AbstractWindow {
         // build the main layout
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
-                new TextBox(Arrays.asList(message), State.NORMAL, font),
-                optionTable
+                new TableCell(new TextBox(Arrays.asList(message), State.NORMAL, font)),
+                new TableCell(optionTable)
         ));
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();

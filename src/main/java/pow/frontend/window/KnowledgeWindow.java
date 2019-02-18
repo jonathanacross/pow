@@ -79,18 +79,18 @@ public class KnowledgeWindow extends AbstractWindow {
 
         Table table = new Table();
         table.addRow(Arrays.asList(
-                new Space(),
-                new TextBox(Arrays.asList("Name"), State.NORMAL, font),
-                new TextBox(Arrays.asList("Killed"), State.NORMAL, font)
+                new TableCell(new Space()),
+                new TableCell(new TextBox(Arrays.asList("Name"), State.NORMAL, font)),
+                new TableCell(new TextBox(Arrays.asList("Killed"), State.NORMAL, font))
         ));
 
         for (int index = minIndex; index < maxIndex; index++) {
             Knowledge.MonsterSummary ms = monsterSummary.get(index);
             State state = index == selectIndex ? State.SELECTED : State.NORMAL;
             table.addRow(Arrays.asList(
-                    new Tile(ms.image, state),
-                    new TextBox(Arrays.asList(TextUtils.singular(ms.name)), state, font),
-                    new TextBox(Arrays.asList(String.valueOf(ms.numKilled)), state, font)
+                    new TableCell(new Tile(ms.image, state)),
+                    new TableCell(new TextBox(Arrays.asList(TextUtils.singular(ms.name)), state, font)),
+                    new TableCell(new TextBox(Arrays.asList(String.valueOf(ms.numKilled)), state, font))
             ));
         }
         table.setDrawHeaderLine(true);

@@ -29,10 +29,11 @@ public class MonsterDisplay {
         return strings;
     }
 
-    private static List<Widget> getRow(String key, String value, Font font) {
-        List<Widget> row = new ArrayList<>();
-        row.add(new TextBox(Arrays.asList(key), State.NORMAL, font));
-        row.add(new TextBox(Arrays.asList(value), State.NORMAL, font));
+    private static List<TableCell> getRow(String key, String value, Font font) {
+        List<TableCell> row = Arrays.asList(
+                new TableCell(new TextBox(Arrays.asList(key), State.NORMAL, font)),
+                new TableCell(new TextBox(Arrays.asList(value), State.NORMAL, font))
+        );
         return row;
     }
 
@@ -65,10 +66,10 @@ public class MonsterDisplay {
                 ? Collections.emptyList()
                 : ImageUtils.wrapText("Can cast " + TextUtils.formatList(getSpellNames(monster.spells)) + ".", textMetrics, textWidth);
 
-        List<Widget> header = new ArrayList<>();
-        header.add(new Tile(monster.image, State.NORMAL));
-        header.add(new TextBox(Arrays.asList(TextUtils.singular(monster.name)), State.NORMAL, font));
-        table.addRow(header);
+        table.addRow(Arrays.asList(
+                new TableCell(new Tile(monster.image, State.NORMAL)),
+                new TableCell(new TextBox(Arrays.asList(TextUtils.singular(monster.name)), State.NORMAL, font)))
+        );
         String statsLine =
                 "Str: " + monster.strength +
                         "  Dex: " + monster.dexterity +

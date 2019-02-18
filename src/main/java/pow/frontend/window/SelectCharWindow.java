@@ -163,8 +163,8 @@ public class SelectCharWindow extends AbstractWindow {
         for (int i = 0; i < maxGains; i++) {
             int barWidth = (int) Math.round(gains[i] * 100);
             statsTable.addRow(Arrays.asList(
-                    new TextBox(Arrays.asList(labels[i]), State.NORMAL, font),
-                    new Bar(barWidth, barWidth, getBarFillColor(gains[i]), "", font)
+                    new TableCell(new TextBox(Arrays.asList(labels[i]), State.NORMAL, font)),
+                    new TableCell(new Bar(barWidth, barWidth, getBarFillColor(gains[i]), "", font))
             ));
         }
         statsTable.setHSpacing(Style.MARGIN);
@@ -178,8 +178,8 @@ public class SelectCharWindow extends AbstractWindow {
 
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
-                statsTable,
-                abilities
+                new TableCell(statsTable),
+                new TableCell(abilities)
         ));
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();
@@ -198,7 +198,7 @@ public class SelectCharWindow extends AbstractWindow {
         for (int i = 0; i < characterData.size(); i++) {
             State state = i == charSelectId ? State.SELECTED : State.NORMAL;
             charList.addColumn(Arrays.asList(
-                    new Tile(characterData.get(i).image, state)
+                    new TableCell(new Tile(characterData.get(i).image, state))
             ));
         }
         charList.setHSpacing(Style.SMALL_MARGIN);
@@ -223,12 +223,12 @@ public class SelectCharWindow extends AbstractWindow {
 
         // overall layout
         Table layout = new Table();
-        layout.addRow(Arrays.asList(messagesBox));
-        layout.addRow(Arrays.asList(charList));
+        layout.addRow(Arrays.asList(new TableCell(messagesBox)));
+        layout.addRow(Arrays.asList(new TableCell(charList)));
         if (onName) {
-            layout.addRow(Arrays.asList(nameBox));
+            layout.addRow(Arrays.asList(new TableCell(nameBox)));
         } else {
-            layout.addRow(Arrays.asList(getCharInfoTable(characterData.get(charSelectId), font, width)));
+            layout.addRow(Arrays.asList(new TableCell(getCharInfoTable(characterData.get(charSelectId), font, width))));
         }
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();

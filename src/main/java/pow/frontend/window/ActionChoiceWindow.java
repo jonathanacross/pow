@@ -106,8 +106,8 @@ public class ActionChoiceWindow extends AbstractWindow {
             ItemActions.Action action = actions.get(i);
             String label = (char) ((int) 'a' + i) + ")";
             list.addRow(Arrays.asList(
-                    new TextBox(Arrays.asList(label), State.NORMAL, font),
-                    new TextBox(Arrays.asList(action.getText()), State.NORMAL, font)
+                    new TableCell(new TextBox(Arrays.asList(label), State.NORMAL, font)),
+                    new TableCell(new TextBox(Arrays.asList(action.getText()), State.NORMAL, font))
             ));
         }
         list.setHSpacing(Style.MARGIN);
@@ -118,8 +118,8 @@ public class ActionChoiceWindow extends AbstractWindow {
         List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
         Table itemLine = new Table();
         itemLine.addRow(Arrays.asList(
-                new Tile(item.image, State.NORMAL),
-                new TextBox(itemInfo, State.NORMAL, font)
+                new TableCell(new Tile(item.image, State.NORMAL)),
+                new TableCell(new TextBox(itemInfo, State.NORMAL, font))
         ));
         itemLine.setHSpacing(Style.MARGIN);
         itemLine.autosize();
@@ -127,10 +127,10 @@ public class ActionChoiceWindow extends AbstractWindow {
         // build the overall layout
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
-                new TextBox(Arrays.asList(message), State.NORMAL, font),
-                itemLine,
-                list,
-                new TextBox(Arrays.asList("Select an action or press [esc] to cancel."), State.NORMAL, font)
+                new TableCell(new TextBox(Arrays.asList(message), State.NORMAL, font)),
+                new TableCell(itemLine),
+                new TableCell(list),
+                new TableCell(new TextBox(Arrays.asList("Select an action or press [esc] to cancel."), State.NORMAL, font))
         ));
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();

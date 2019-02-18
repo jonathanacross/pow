@@ -73,11 +73,11 @@ public class PlayerInfoWindow extends AbstractWindow {
         return strings;
     }
 
-    private List<Widget> getRow(String key, String value, Font font) {
-        List<Widget> row = new ArrayList<>();
-        row.add(new Space());
-        row.add(new TextBox(Arrays.asList(key), State.NORMAL, font));
-        row.add(new TextBox(Arrays.asList(value), State.NORMAL, font));
+    private List<TableCell> getRow(String key, String value, Font font) {
+        List<TableCell> row = new ArrayList<>();
+        row.add(new TableCell(new Space()));
+        row.add(new TableCell(new TextBox(Arrays.asList(key), State.NORMAL, font)));
+        row.add(new TableCell(new TextBox(Arrays.asList(value), State.NORMAL, font)));
         return row;
     }
 
@@ -95,11 +95,11 @@ public class PlayerInfoWindow extends AbstractWindow {
         String secondaryAttack = player.hasBowEquipped() ? String.valueOf(player.getSecondaryAttack()) : "N/A";
 
         Table table = new Table();
-        List<Widget> header = new ArrayList<>();
-        header.add(new Tile(player.image, State.NORMAL));
-        header.add(new TextBox(Arrays.asList(player.name + winnerString), State.NORMAL, font));
-        header.add(new Space());
-        table.addRow(header);
+        table.addRow(Arrays.asList(
+                new TableCell(new Tile(player.image, State.NORMAL)),
+                new TableCell(new TextBox(Arrays.asList(player.name + winnerString), State.NORMAL, font)),
+                new TableCell(new Space())
+        ));
 
         table.addRow(getRow("HP:        ", player.getHealth() + "/" + player.getMaxHealth(), font));
         table.addRow(getRow("MP:        ", player.getMana() + "/" + player.getMaxMana(), font));
@@ -280,25 +280,24 @@ public class PlayerInfoWindow extends AbstractWindow {
     }
 
     private Table getArtifactTable(Party party, Graphics graphics, Font font) {
-        List<List<Widget>> cells = new ArrayList<>();
+        List<List<TableCell>> cells = new ArrayList<>();
 
         // add the header
-        List<Widget> header = new ArrayList<>();
-        header.add(new TextBox(Arrays.asList("Artifacts:"), State.NORMAL, font));
-        header.add(new Space());
-        header.add(new Space());
-        header.add(new Space());
-
-        cells.add(header);
+        cells.add(Arrays.asList(
+                new TableCell(new TextBox(Arrays.asList("Artifacts:"), State.NORMAL, font)),
+                new TableCell(new Space()),
+                new TableCell(new Space()),
+                new TableCell(new Space())
+        ));
 
         // add blank cells; we'll fill these in later
         for (int i = 1; i <= 8; i++) {
-            List<Widget> row = new ArrayList<>();
-            row.add(new Space(Style.TILE_SIZE, Style.TILE_SIZE));
-            row.add(new Space());
-            row.add(new Space(Style.TILE_SIZE, Style.TILE_SIZE));
-            row.add(new Space());
-            cells.add(row);
+            cells.add(Arrays.asList(
+                    new TableCell(new Space(Style.TILE_SIZE, Style.TILE_SIZE)),
+                    new TableCell(new Space()),
+                    new TableCell(new Space(Style.TILE_SIZE, Style.TILE_SIZE)),
+                    new TableCell(new Space())
+            ));
         }
 
         // the point x, y refers to the column and row in the widget.
@@ -326,9 +325,8 @@ public class PlayerInfoWindow extends AbstractWindow {
             Point loc = artifactLocations.get(item.artifactSlot);
             List<String> descLines =
                     ImageUtils.wrapText(item.name + ": " + item.description, textMetrics, descWidth);
-            cells.get(loc.y).set(loc.x, new Tile(item.image, State.NORMAL));
-            cells.get(loc.y).set(loc.x + 1,
-                    new TextBox(descLines, State.NORMAL, font));
+            cells.get(loc.y).get(loc.x).widget = new Tile(item.image, State.NORMAL);
+            cells.get(loc.y).get(loc.x + 1).widget = new TextBox(descLines, State.NORMAL, font);
         }
 
         Table artifactTable = new Table();
@@ -352,20 +350,20 @@ public class PlayerInfoWindow extends AbstractWindow {
     }
 
     private Table getPearlTable(Party party, Font font) {
-        List<Widget> header = new ArrayList<>();
-        header.add(new TextBox(Arrays.asList("Pearls:"), State.NORMAL, font));
+        List<TableCell> header = new ArrayList<>();
+        header.add(new TableCell(new TextBox(Arrays.asList("Pearls:"), State.NORMAL, font)));
         for (int c = 1; c < GameConstants.NUM_PEARLS_TO_WIN; c++) {
-            header.add(new Space());
+            header.add(new TableCell(new Space()));
         }
 
-        List<Widget> pearlRow = new ArrayList<>();
+        List<TableCell> pearlRow = new ArrayList<>();
         for (int c = 0; c < GameConstants.NUM_PEARLS_TO_WIN; c++) {
             String itemId = "pearl " + (c+1);
             DungeonItem pearl = findPearl(party, itemId);
             if (pearl != null) {
-                pearlRow.add(new Tile(pearl.image, State.NORMAL));
+                pearlRow.add(new TableCell(new Tile(pearl.image, State.NORMAL)));
             } else {
-                pearlRow.add(new Space());
+                pearlRow.add(new TableCell(new Space()));
             }
         }
 

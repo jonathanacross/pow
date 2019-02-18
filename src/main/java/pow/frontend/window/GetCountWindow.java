@@ -70,8 +70,8 @@ public class GetCountWindow extends AbstractWindow {
 
         Table topRow = new Table();
         topRow.addRow(Arrays.asList(
-                new Tile(imageName, State.NORMAL),
-                new TextBox(messages, State.NORMAL, font)
+                new TableCell(new Tile(imageName, State.NORMAL)),
+                new TableCell(new TextBox(messages, State.NORMAL, font))
         ));
         topRow.setHSpacing(Style.MARGIN);
         topRow.autosize();
@@ -79,9 +79,9 @@ public class GetCountWindow extends AbstractWindow {
         // main layout
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
-                topRow,
-                new TextBox(Arrays.asList("> " + countString), State.NORMAL, font),
-                new TextBox(Arrays.asList("Press [esc] to cancel."), State.NORMAL, font)
+                new TableCell(topRow),
+                new TableCell(new TextBox(Arrays.asList("> " + countString), State.NORMAL, font)),
+                new TableCell(new TextBox(Arrays.asList("Press [esc] to cancel."), State.NORMAL, font))
         ));
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();

@@ -74,9 +74,9 @@ public class ItemActionWindow extends AbstractWindow {
             String label = (char) ((int) 'a' + i) + ")";
             List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
             itemList.addRow(Arrays.asList(
-                    new TextBox(Arrays.asList(label), State.NORMAL, font),
-                    new Tile(item.image, State.NORMAL),
-                    new TextBox(itemInfo, State.NORMAL, font)
+                    new TableCell(new TextBox(Arrays.asList(label), State.NORMAL, font)),
+                    new TableCell(new Tile(item.image, State.NORMAL)),
+                    new TableCell(new TextBox(itemInfo, State.NORMAL, font))
             ));
         }
         itemList.setHSpacing(Style.MARGIN);
@@ -85,9 +85,9 @@ public class ItemActionWindow extends AbstractWindow {
         // make the outer widget with header and footer
         Table table = new Table();
         table.addColumn(Arrays.asList(
-                new TextBox(Arrays.asList(message), State.NORMAL, font),
-                itemList,
-                new TextBox(Arrays.asList("Select an item or press [esc] to cancel."), State.NORMAL, font)
+                new TableCell(new TextBox(Arrays.asList(message), State.NORMAL, font)),
+                new TableCell(itemList),
+                new TableCell(new TextBox(Arrays.asList("Select an item or press [esc] to cancel."), State.NORMAL, font))
         ));
         table.setVSpacing(Style.MARGIN);
         table.autosize();
