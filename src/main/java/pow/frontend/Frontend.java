@@ -71,7 +71,7 @@ public class Frontend {
         winWindow = new WinWindow(layout.center(580, 200), true, gameBackend, this);
         win2Window = new Win2Window(layout.center(580, 200), true, gameBackend, this);
         loseWindow = new LoseWindow(layout.center(480, 200), true, gameBackend, this);
-        openGameWindow = new OpenGameWindow(layout.center(490, 300), true, gameBackend, this);
+        openGameWindow = new OpenGameWindow(layout.center(490, 330), true, gameBackend, this);
         // main game
         statusWindow = new StatusWindow(layout.getStatusPaneDim(), true, gameBackend, this);
         gameWindow = new GameWindow(layout.getCenterPaneDim(), true, gameBackend, this);
@@ -221,7 +221,7 @@ public class Frontend {
     private void createMainCharacter() {
         gameBackend.setGameInProgress(false);
         SelectCharWindow createCharWindow = new SelectCharWindow(
-                layout.center(490, 300),
+                layout.center(490, 330),
                 gameBackend, this,
                 Collections.singletonList("Select your character:"), false,
                 this::tryToStartNewGame, () -> setState(Frontend.State.OPEN_GAME));
@@ -230,7 +230,7 @@ public class Frontend {
 
     private void choosePet() {
         SelectCharWindow createCharWindow = new SelectCharWindow(
-                layout.center(490, 300),
+                layout.center(490, 330),
                 gameBackend, this,
                 Arrays.asList("Congratulations, you got a pet!", "Select your character:"), true,
                 (data) -> {

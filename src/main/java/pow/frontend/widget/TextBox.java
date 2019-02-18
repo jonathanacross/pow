@@ -1,11 +1,14 @@
 package pow.frontend.widget;
 
+import pow.frontend.utils.ImageUtils;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TextBox implements Widget {
@@ -25,6 +28,25 @@ public class TextBox implements Widget {
     int lineHeight;
     int ascent;
 
+    // force width by wrapping text
+    public TextBox(List<String> lines, State state, Font font, int width) {
+        this.state = state;
+        this.font = font;
+
+        FontMetrics textMetrics = fakeGraphics.getFontMetrics(font);
+        this.lineHeight = textMetrics.getHeight();
+        this.ascent = textMetrics.getAscent();
+        this.width = width;
+        this.lines = new ArrayList<>();
+        for (String line : lines) {
+            List<String> wrappedLines = ImageUtils.wrapText(line, textMetrics, width);
+            this.lines.addAll(wrappedLines);
+
+        }
+        this.height = textMetrics.getHeight() * lines.size();
+    }
+
+    // compute width based on given text
     public TextBox(List<String> lines, State state, Font font) {
         this.lines = lines;
         this.state = state;
