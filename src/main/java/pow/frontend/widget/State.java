@@ -4,5 +4,7 @@ package pow.frontend.widget;
 public enum State {
     NORMAL,
     DISABLED,
-    SELECTED
+    SELECTED,
+    HEADER1,
+    HEADER2
 }

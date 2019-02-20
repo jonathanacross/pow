@@ -47,13 +47,15 @@ public class MarkdownReader {
             // Remove #'s from the beginning and trim.
             List<String> trimmedLines = new ArrayList<>();
             for (String line : lines) {
-                trimmedLines.add(line.replace("^#*", "").trim());
+                String tLine = line.replaceAll("^#+", "").trim();
+                trimmedLines.add(tLine);
             }
             this.text = String.join(" ", trimmedLines);
         }
 
         public Widget convertToWidget(int width) {
-            return new TextBox(Collections.singletonList(text), State.NORMAL, Style.getDefaultFont(), width);
+            State state = this.level == 1 ? State.HEADER1 : State.HEADER2;
+            return new TextBox(Collections.singletonList(text), state, Style.getDefaultFont(), width);
         }
     }
 

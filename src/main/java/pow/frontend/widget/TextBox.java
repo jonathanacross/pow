@@ -69,11 +69,12 @@ public class TextBox implements Widget {
         int yOffset = y + ascent;
         for (String line : lines) {
             switch (state) {
-                case NORMAL: graphics.setColor(Color.WHITE); break;
-                case DISABLED: graphics.setColor(Color.GRAY); break;
-                case SELECTED: graphics.setColor(Color.YELLOW); break;
+                case NORMAL: graphics.setColor(Color.WHITE); graphics.setFont(font); break;
+                case DISABLED: graphics.setColor(Color.GRAY); graphics.setFont(font); break;
+                case SELECTED: graphics.setColor(Color.YELLOW); graphics.setFont(font); break;
+                case HEADER1: graphics.setColor(Color.WHITE); graphics.setFont(font.deriveFont(Font.BOLD, (float) (font.getSize()*1.3))); break;
+                case HEADER2: graphics.setColor(Color.WHITE); graphics.setFont(font.deriveFont(Font.BOLD)); break;
             }
-            graphics.setFont(font);
             graphics.drawString(line, x, yOffset);
             yOffset += lineHeight;
         }
