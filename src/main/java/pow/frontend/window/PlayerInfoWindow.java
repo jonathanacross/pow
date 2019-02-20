@@ -76,8 +76,8 @@ public class PlayerInfoWindow extends AbstractWindow {
     private List<TableCell> getRow(String key, String value, Font font) {
         List<TableCell> row = new ArrayList<>();
         row.add(new TableCell(new Space()));
-        row.add(new TableCell(new TextBox(Arrays.asList(key), State.NORMAL, font)));
-        row.add(new TableCell(new TextBox(Arrays.asList(value), State.NORMAL, font)));
+        row.add(new TableCell(new TextBox(Collections.singletonList(key), State.NORMAL, font)));
+        row.add(new TableCell(new TextBox(Collections.singletonList(value), State.NORMAL, font)));
         return row;
     }
 
@@ -97,7 +97,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         Table table = new Table();
         table.addRow(Arrays.asList(
                 new TableCell(new Tile(player.image, State.NORMAL)),
-                new TableCell(new TextBox(Arrays.asList(player.name + winnerString), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(player.name + winnerString), State.NORMAL, font)),
                 new TableCell(new Space())
         ));
 
@@ -284,7 +284,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         // add the header
         cells.add(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList("Artifacts:"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("Artifacts:"), State.NORMAL, font)),
                 new TableCell(new Space()),
                 new TableCell(new Space()),
                 new TableCell(new Space())
@@ -351,7 +351,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
     private Table getPearlTable(Party party, Font font) {
         List<TableCell> header = new ArrayList<>();
-        header.add(new TableCell(new TextBox(Arrays.asList("Pearls:"), State.NORMAL, font)));
+        header.add(new TableCell(new TextBox(Collections.singletonList("Pearls:"), State.NORMAL, font)));
         for (int c = 1; c < GameConstants.NUM_PEARLS_TO_WIN; c++) {
             header.add(new TableCell(new Space()));
         }

@@ -16,6 +16,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class KnowledgeWindow extends AbstractWindow {
@@ -80,8 +81,8 @@ public class KnowledgeWindow extends AbstractWindow {
         Table table = new Table();
         table.addRow(Arrays.asList(
                 new TableCell(new Space()),
-                new TableCell(new TextBox(Arrays.asList("Name"), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList("Killed"), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("Name"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("Killed"), State.NORMAL, font))
         ));
 
         for (int index = minIndex; index < maxIndex; index++) {
@@ -89,8 +90,8 @@ public class KnowledgeWindow extends AbstractWindow {
             State state = index == selectIndex ? State.SELECTED : State.NORMAL;
             table.addRow(Arrays.asList(
                     new TableCell(new Tile(ms.image, state)),
-                    new TableCell(new TextBox(Arrays.asList(TextUtils.singular(ms.name)), state, font)),
-                    new TableCell(new TextBox(Arrays.asList(String.valueOf(ms.numKilled)), state, font))
+                    new TableCell(new TextBox(Collections.singletonList(TextUtils.singular(ms.name)), state, font)),
+                    new TableCell(new TextBox(Collections.singletonList(String.valueOf(ms.numKilled)), state, font))
             ));
         }
         table.setDrawHeaderLine(true);

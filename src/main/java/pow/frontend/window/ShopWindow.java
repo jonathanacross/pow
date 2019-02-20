@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ShopWindow extends AbstractWindow {
@@ -82,9 +83,9 @@ public class ShopWindow extends AbstractWindow {
         Table list = new Table();
         list.addRow(Arrays.asList(
                 new TableCell(new Space()),
-                new TableCell(new TextBox(Arrays.asList("Item"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("Item"), State.NORMAL, font)),
                 new TableCell(new Space()),
-                new TableCell(new TextBox(Arrays.asList("Price"), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("Price"), State.NORMAL, font))
         ));
         for (int i = 0; i < this.entries.size(); i++) {
             ShopData.ShopEntry entry = entries.get(i);
@@ -96,10 +97,10 @@ public class ShopWindow extends AbstractWindow {
             String price = String.valueOf(entry.price);
 
             list.addRow(Arrays.asList(
-                    new TableCell(new TextBox(Arrays.asList(label), state, font)),
+                    new TableCell(new TextBox(Collections.singletonList(label), state, font)),
                     new TableCell(new Tile(entry.item.image, state)),
                     new TableCell(new TextBox(itemInfo, state, font)),
-                    new TableCell(new TextBox(Arrays.asList(price), state, font))
+                    new TableCell(new TextBox(Collections.singletonList(price), state, font))
             ));
         }
         list.setDrawHeaderLine(true);
@@ -111,9 +112,9 @@ public class ShopWindow extends AbstractWindow {
         String greeting = "Hi " + backend.getGameState().party.player.name + ", what would you like to buy?";
         String help = "Select an item to buy or press [esc] to cancel.";
         layout.addColumn(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList(greeting), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(greeting), State.NORMAL, font)),
                 new TableCell(list),
-                new TableCell(new TextBox(Arrays.asList(help), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList(help), State.NORMAL, font))
         ));
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();

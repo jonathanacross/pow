@@ -10,6 +10,7 @@ import pow.frontend.widget.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -64,10 +65,10 @@ public class SpellChoiceWindow extends AbstractWindow {
         Table spellList = new Table();
         spellList.addRow(Arrays.asList(
                 new TableCell(new Space()),
-                new TableCell(new TextBox(Arrays.asList("Spell"), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList("Level"), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList("Mana"), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList("Info"), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("Spell"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("Level"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("Mana"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("Info"), State.NORMAL, font))
         ));
         for (int i = 0; i < spells.size(); i++) {
             SpellParams spell = spells.get(i);
@@ -77,11 +78,11 @@ public class SpellChoiceWindow extends AbstractWindow {
             String desc = spell.getDescription(backend.getGameState().party.selectedActor);
 
             spellList.addRow(Arrays.asList(
-                    new TableCell(new TextBox(Arrays.asList(label), state, font)),
-                    new TableCell(new TextBox(Arrays.asList(spell.name), state, font)),
-                    new TableCell(new TextBox(Arrays.asList(Integer.toString(spell.minLevel)), state, font)),
-                    new TableCell(new TextBox(Arrays.asList(Integer.toString(spell.requiredMana)), state, font)),
-                    new TableCell(new TextBox(Arrays.asList(desc), state, font))
+                    new TableCell(new TextBox(Collections.singletonList(label), state, font)),
+                    new TableCell(new TextBox(Collections.singletonList(spell.name), state, font)),
+                    new TableCell(new TextBox(Collections.singletonList(Integer.toString(spell.minLevel)), state, font)),
+                    new TableCell(new TextBox(Collections.singletonList(Integer.toString(spell.requiredMana)), state, font)),
+                    new TableCell(new TextBox(Collections.singletonList(desc), state, font))
             ));
         }
         spellList.setHSpacing(Style.MARGIN);
@@ -91,9 +92,9 @@ public class SpellChoiceWindow extends AbstractWindow {
         // build the full window
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList(this.message), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(this.message), State.NORMAL, font)),
                 new TableCell(spellList),
-                new TableCell(new TextBox(Arrays.asList("Select a spell, or press [esc] to cancel."), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("Select a spell, or press [esc] to cancel."), State.NORMAL, font))
         ));
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();

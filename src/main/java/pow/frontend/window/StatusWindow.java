@@ -13,6 +13,7 @@ import pow.util.TextUtils;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class StatusWindow extends AbstractWindow {
 
@@ -31,21 +32,21 @@ public class StatusWindow extends AbstractWindow {
     private Widget getStats(Player p, boolean includeGold, Font font) {
         Table table = new Table();
         table.addRow(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList("Exp:"), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(String.valueOf(p.experience)), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("Exp:"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(String.valueOf(p.experience)), State.NORMAL, font))
         ));
         table.addRow(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList("Exp next:"), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(String.valueOf(p.getExpToNextLevel())), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("Exp next:"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(String.valueOf(p.getExpToNextLevel())), State.NORMAL, font))
         ));
         table.addRow(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList("Level:"), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(String.valueOf(p.level)), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("Level:"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(String.valueOf(p.level)), State.NORMAL, font))
         ));
         if (includeGold) {
             table.addRow(Arrays.asList(
-                    new TableCell(new TextBox(Arrays.asList("Gold:"), State.NORMAL, font)),
-                    new TableCell(new TextBox(Arrays.asList(String.valueOf(p.gold)), State.NORMAL, font))
+                    new TableCell(new TextBox(Collections.singletonList("Gold:"), State.NORMAL, font)),
+                    new TableCell(new TextBox(Collections.singletonList(String.valueOf(p.gold)), State.NORMAL, font))
             ));
         }
         table.setHSpacing(Style.MARGIN);
@@ -60,7 +61,7 @@ public class StatusWindow extends AbstractWindow {
         String healthBarText = showExact ? "HP: " + a.getHealth() + "/" + a.getMaxHealth() : "";
         String manaBarText = showExact ? "MP: " + a.getMana() + "/" + a.getMaxMana() : "";
         rightCol.addColumn(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList(TextUtils.format(a.name, 1, false)), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(TextUtils.format(a.name, 1, false)), State.NORMAL, font)),
                 new TableCell(new Bar(BAR_WIDTH, healhBarFilledWidth, HEALTH_BAR_COLOR, healthBarText, font)),
                 new TableCell(new Bar(BAR_WIDTH, manaBarFilledWidth, MANA_BAR_COLOR, manaBarText, font)),
                 new TableCell(stats)
@@ -84,13 +85,13 @@ public class StatusWindow extends AbstractWindow {
 
         Table layout = new Table();
         boolean selectPlayer = gs.party.selectedActor == gs.party.player;
-        layout.addRow(Arrays.asList(
+        layout.addRow(Collections.singletonList(
                 new TableCell(getActorSummary(gs.party.player, true, selectPlayer,
                         getStats(gs.party.player, true, font), font))
         ));
         if (gs.party.pet != null) {
             boolean selectPet = gs.party.selectedActor == gs.party.pet;
-            layout.addRow(Arrays.asList(
+            layout.addRow(Collections.singletonList(
                     new TableCell(getActorSummary(gs.party.pet, true, selectPet,
                             getStats(gs.party.pet, false, font), font))
             ));
@@ -109,7 +110,7 @@ public class StatusWindow extends AbstractWindow {
         for (Actor a: gs.getCurrentMap().actors) {
             if (gs.party.containsActor(a)) continue;
             if (!gs.party.player.canSeeLocation(gs, a.loc)) continue;
-            layout.addRow(Arrays.asList(
+            layout.addRow(Collections.singletonList(
                     new TableCell(getActorSummary(a, false, false, new Space(), font))
             ));
         }

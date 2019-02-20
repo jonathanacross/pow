@@ -3,8 +3,8 @@ package pow.frontend.widget;
 import java.awt.Graphics;
 
 public class Space implements Widget {
-    int width;
-    int height;
+    private int width;
+    private int height;
 
     public Space(int width, int height) {
         this.width = width;

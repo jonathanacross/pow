@@ -10,6 +10,7 @@ import pow.frontend.widget.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class AutoplayOptionWindow extends AbstractWindow {
 
@@ -87,22 +88,22 @@ public class AutoplayOptionWindow extends AbstractWindow {
         // build the inner list of options
         Table list = new Table();
         list.addRow(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList("a)"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("a)"), State.NORMAL, font)),
                 new TableCell(new Tile(gs.party.player.image, State.NORMAL)),
                 new TableCell(new Space()),
-                new TableCell(new TextBox(Arrays.asList(gs.party.player.name), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList(gs.party.player.name), State.NORMAL, font))
         ));
         list.addRow(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList("b)"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("b)"), State.NORMAL, font)),
                 new TableCell(new Tile(gs.party.pet.image, State.NORMAL)),
                 new TableCell(new Space()),
-                new TableCell(new TextBox(Arrays.asList(gs.party.pet.name), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList(gs.party.pet.name), State.NORMAL, font))
         ));
         list.addRow(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList("c)"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("c)"), State.NORMAL, font)),
                 new TableCell(new Tile(gs.party.player.image, State.NORMAL)),
                 new TableCell(new Tile(gs.party.pet.image, State.NORMAL)),
-                new TableCell(new TextBox(Arrays.asList("both"), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("both"), State.NORMAL, font))
         ));
         list.setHSpacing(Style.MARGIN);
         list.autosize();
@@ -110,9 +111,9 @@ public class AutoplayOptionWindow extends AbstractWindow {
         // build the outer layout
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList("Who do you want to control?"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("Who do you want to control?"), State.NORMAL, font)),
                 new TableCell(list),
-                new TableCell(new TextBox(Arrays.asList("Press [esc] to cancel."), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("Press [esc] to cancel."), State.NORMAL, font))
         ));
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();

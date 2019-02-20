@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class HelpController {
@@ -49,7 +50,7 @@ public class HelpController {
     public static Table getHelpTable(int width) {
         Table table = new Table();
         for (MarkdownReader.MarkdownElement element : instance.elements) {
-            table.addRow(Arrays.asList(
+            table.addRow(Collections.singletonList(
                     new TableCell(element.convertToWidget(width))
             ));
         }

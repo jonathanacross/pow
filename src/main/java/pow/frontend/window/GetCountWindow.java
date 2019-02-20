@@ -10,6 +10,7 @@ import pow.util.MathUtils;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.function.IntConsumer;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class GetCountWindow extends AbstractWindow {
         }
     }
 
-    public Table getLayoutTable() {
+    private Table getLayoutTable() {
         Font font = Style.getDefaultFont();
 
         Table topRow = new Table();
@@ -80,8 +81,8 @@ public class GetCountWindow extends AbstractWindow {
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
                 new TableCell(topRow),
-                new TableCell(new TextBox(Arrays.asList("> " + countString), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList("Press [esc] to cancel."), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("> " + countString), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("Press [esc] to cancel."), State.NORMAL, font))
         ));
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();

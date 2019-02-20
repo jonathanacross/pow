@@ -17,6 +17,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -163,7 +164,7 @@ public class SelectCharWindow extends AbstractWindow {
         for (int i = 0; i < maxGains; i++) {
             int barWidth = (int) Math.round(gains[i] * 100);
             statsTable.addRow(Arrays.asList(
-                    new TableCell(new TextBox(Arrays.asList(labels[i]), State.NORMAL, font)),
+                    new TableCell(new TextBox(Collections.singletonList(labels[i]), State.NORMAL, font)),
                     new TableCell(new Bar(barWidth, barWidth, getBarFillColor(gains[i]), "", font))
             ));
         }
@@ -197,7 +198,7 @@ public class SelectCharWindow extends AbstractWindow {
         Table charList = new Table();
         for (int i = 0; i < characterData.size(); i++) {
             State state = i == charSelectId ? State.SELECTED : State.NORMAL;
-            charList.addColumn(Arrays.asList(
+            charList.addColumn(Collections.singletonList(
                     new TableCell(new Tile(characterData.get(i).image, state))
             ));
         }
@@ -219,16 +220,16 @@ public class SelectCharWindow extends AbstractWindow {
         String helpString = onName
                 ? "Press * for a random name, [enter] to select, [esc] to cancel."
                 : helpChooseString;
-        TextBox helpBox = new TextBox(Arrays.asList(helpString), State.NORMAL, font);
+        TextBox helpBox = new TextBox(Collections.singletonList(helpString), State.NORMAL, font);
 
         // overall layout
         Table layout = new Table();
-        layout.addRow(Arrays.asList(new TableCell(messagesBox)));
-        layout.addRow(Arrays.asList(new TableCell(charList)));
+        layout.addRow(Collections.singletonList(new TableCell(messagesBox)));
+        layout.addRow(Collections.singletonList(new TableCell(charList)));
         if (onName) {
-            layout.addRow(Arrays.asList(new TableCell(nameBox)));
+            layout.addRow(Collections.singletonList(new TableCell(nameBox)));
         } else {
-            layout.addRow(Arrays.asList(new TableCell(getCharInfoTable(characterData.get(charSelectId), font, width))));
+            layout.addRow(Collections.singletonList(new TableCell(getCharInfoTable(characterData.get(charSelectId), font, width))));
         }
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();

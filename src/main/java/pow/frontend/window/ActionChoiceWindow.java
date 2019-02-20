@@ -17,6 +17,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 // Window to choose which action to take (given a particular item).
@@ -106,8 +107,8 @@ public class ActionChoiceWindow extends AbstractWindow {
             ItemActions.Action action = actions.get(i);
             String label = (char) ((int) 'a' + i) + ")";
             list.addRow(Arrays.asList(
-                    new TableCell(new TextBox(Arrays.asList(label), State.NORMAL, font)),
-                    new TableCell(new TextBox(Arrays.asList(action.getText()), State.NORMAL, font))
+                    new TableCell(new TextBox(Collections.singletonList(label), State.NORMAL, font)),
+                    new TableCell(new TextBox(Collections.singletonList(action.getText()), State.NORMAL, font))
             ));
         }
         list.setHSpacing(Style.MARGIN);
@@ -127,10 +128,10 @@ public class ActionChoiceWindow extends AbstractWindow {
         // build the overall layout
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList(message), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(message), State.NORMAL, font)),
                 new TableCell(itemLine),
                 new TableCell(list),
-                new TableCell(new TextBox(Arrays.asList("Select an action or press [esc] to cancel."), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("Select an action or press [esc] to cancel."), State.NORMAL, font))
         ));
         layout.setVSpacing(Style.MARGIN);
         layout.autosize();

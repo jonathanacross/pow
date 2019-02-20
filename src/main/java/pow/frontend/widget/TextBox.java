@@ -20,13 +20,13 @@ public class TextBox implements Widget {
         fakeGraphics = dummyImage.getGraphics();
     }
 
-    List<String> lines;
-    State state;
-    Font font;
-    int width;
-    int height;
-    int lineHeight;
-    int ascent;
+    private List<String> lines;
+    private State state;
+    private Font font;
+    private int width;
+    private int height;
+    private int lineHeight;
+    private int ascent;
 
     // force width by wrapping text
     public TextBox(List<String> lines, State state, Font font, int width) {

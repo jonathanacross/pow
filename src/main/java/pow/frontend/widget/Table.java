@@ -5,16 +5,17 @@ import pow.frontend.Style;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Table implements Widget {
 
-    List<List<TableCell>> cells;
-    List<Integer> colWidths;
-    List<Integer> rowHeights;
-    boolean drawHeaderLine;
-    int hSpacing;
-    int vSpacing;
+    private List<List<TableCell>> cells;
+    private List<Integer> colWidths;
+    private List<Integer> rowHeights;
+    private boolean drawHeaderLine;
+    private int hSpacing;
+    private int vSpacing;
 
     public Table() {
         this.cells = new ArrayList<>();
@@ -87,8 +88,8 @@ public class Table implements Widget {
 
     public void autosize() {
         if (cells.isEmpty()) {
-            colWidths = Arrays.asList();
-            rowHeights = Arrays.asList();
+            colWidths = Collections.emptyList();
+            rowHeights = Collections.emptyList();
         } else {
             if (colWidths == null) {
                 colWidths = getDefaultWidths();

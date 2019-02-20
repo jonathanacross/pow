@@ -10,6 +10,7 @@ import pow.frontend.widget.TextBox;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class NotificationWindow extends AbstractWindow {
     private final TextBox textCell;
@@ -17,7 +18,7 @@ public class NotificationWindow extends AbstractWindow {
     public NotificationWindow(boolean visible, GameBackend backend, Frontend frontend,
                          String message) {
         super(new WindowDim(0, 0, 0, 0), visible, backend, frontend);
-        this.textCell = new TextBox(Arrays.asList(message), State.NORMAL, Style.getDefaultFont());
+        this.textCell = new TextBox(Collections.singletonList(message), State.NORMAL, Style.getDefaultFont());
         this.resize(frontend.layout.center(textCell.getWidth() + 2*Style.MARGIN,
                 textCell.getHeight() + 2* Style.MARGIN));
     }

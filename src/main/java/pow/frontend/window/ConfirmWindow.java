@@ -14,6 +14,7 @@ import pow.frontend.widget.TextBox;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class ConfirmWindow extends AbstractWindow {
 
@@ -45,18 +46,18 @@ public class ConfirmWindow extends AbstractWindow {
         }
     }
 
-    public Table getTableLayout(String message, String okayText, String cancelText) {
+    private Table getTableLayout(String message, String okayText, String cancelText) {
         Font font = Style.getDefaultFont();
 
         // build the inner option list
         Table optionTable = new Table();
         optionTable.addRow(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList("[esc]"), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(cancelText), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("[esc]"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(cancelText), State.NORMAL, font))
         ));
         optionTable.addRow(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList("[enter]"), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(okayText), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("[enter]"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(okayText), State.NORMAL, font))
         ));
         optionTable.setHSpacing(Style.MARGIN);
         optionTable.autosize();
@@ -64,7 +65,7 @@ public class ConfirmWindow extends AbstractWindow {
         // build the main layout
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList(message), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(message), State.NORMAL, font)),
                 new TableCell(optionTable)
         ));
         layout.setVSpacing(Style.MARGIN);

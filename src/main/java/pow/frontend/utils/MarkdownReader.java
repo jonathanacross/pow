@@ -29,7 +29,7 @@ public class MarkdownReader {
 
         @Override
         public Widget convertToWidget(int width) {
-            return new TextBox(Arrays.asList(text), State.NORMAL, Style.getDefaultFont(), width);
+            return new TextBox(Collections.singletonList(text), State.NORMAL, Style.getDefaultFont(), width);
         }
     }
 
@@ -53,7 +53,7 @@ public class MarkdownReader {
         }
 
         public Widget convertToWidget(int width) {
-            return new TextBox(Arrays.asList(text), State.NORMAL, Style.getDefaultFont(), width);
+            return new TextBox(Collections.singletonList(text), State.NORMAL, Style.getDefaultFont(), width);
         }
     }
 
@@ -92,7 +92,7 @@ public class MarkdownReader {
             for (List<String> row : data) {
                 List<TableCell> cells = new ArrayList<>();
                 for (String entry : row) {
-                    cells.add(new TableCell(new TextBox(Arrays.asList(entry), State.NORMAL, Style.getDefaultFont())));
+                    cells.add(new TableCell(new TextBox(Collections.singletonList(entry), State.NORMAL, Style.getDefaultFont())));
                 }
                 table.addRow(cells);
             }

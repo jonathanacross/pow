@@ -4,13 +4,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Bar implements Widget {
-    int width;
-    int height;
-    int fillWidth;
-    Color color;
-    String text;
-    Font font;
-    int ascent;
+    private int width;
+    private int height;
+    private int fillWidth;
+    private Color color;
+    private String text;
+    private Font font;
+    private int ascent;
 
     // Used to get font metrics to compute text heights
     private static Graphics fakeGraphics;
@@ -30,7 +30,8 @@ public class Bar implements Widget {
         this.ascent = textMetrics.getAscent();
     }
 
-    private static Color darkenColor(Color orig, double percent) {
+    private static Color darkenColor(Color orig) {
+        double percent = 0.3;
         int r = (int) Math.round(orig.getRed() * percent);
         int g = (int) Math.round(orig.getGreen() * percent);
         int b = (int) Math.round(orig.getBlue() * percent);
@@ -39,7 +40,7 @@ public class Bar implements Widget {
 
     @Override
     public void draw(Graphics graphics, int x, int y) {
-        Color empty = darkenColor(color, 0.3);
+        Color empty = darkenColor(color);
 
         graphics.setColor(empty);
         graphics.fillRect(x, y + 1, width, height - 2);

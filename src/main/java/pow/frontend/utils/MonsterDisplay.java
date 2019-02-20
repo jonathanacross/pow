@@ -12,6 +12,7 @@ import pow.util.TextUtils;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class MonsterDisplay {
@@ -30,8 +31,8 @@ public class MonsterDisplay {
 
     private static List<TableCell> getRow(String key, String value, Font font) {
         List<TableCell> row = Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList(key), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(value), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList(key), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(value), State.NORMAL, font))
         );
         return row;
     }
@@ -71,7 +72,7 @@ public class MonsterDisplay {
         Table header = new Table();
         header.addRow(Arrays.asList(
                 new TableCell(new Tile(monster.image, State.NORMAL)),
-                new TableCell(new TextBox(Arrays.asList(TextUtils.singular(monster.name)), State.NORMAL, font), TableCell.VertAlign.BOTTOM)
+                new TableCell(new TextBox(Collections.singletonList(TextUtils.singular(monster.name)), State.NORMAL, font), TableCell.VertAlign.BOTTOM)
         ));
         header.setHSpacing(Style.MARGIN);
         header.autosize();
@@ -88,19 +89,19 @@ public class MonsterDisplay {
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
                 new TableCell(header),
-                new TableCell(new TextBox(Arrays.asList(""), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(monster.description), State.NORMAL, font, textWidth)),
-                new TableCell(new TextBox(Arrays.asList(""), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(statsLine), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(""), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(""), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(monster.description), State.NORMAL, font, textWidth)),
+                new TableCell(new TextBox(Collections.singletonList(""), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(statsLine), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(""), State.NORMAL, font)),
                 new TableCell(statsTable),
-                new TableCell(new TextBox(Arrays.asList(""), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(hitYou), State.NORMAL, font)),
-                new TableCell(new TextBox(Arrays.asList(youHit), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList(""), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(hitYou), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(youHit), State.NORMAL, font))
         ));
         if (player.hasBowEquipped()) {
-            layout.addRow(Arrays.asList(
-                    new TableCell(new TextBox(Arrays.asList(bowHit), State.NORMAL, font))
+            layout.addRow(Collections.singletonList(
+                    new TableCell(new TextBox(Collections.singletonList(bowHit), State.NORMAL, font))
             ));
         }
         layout.autosize();

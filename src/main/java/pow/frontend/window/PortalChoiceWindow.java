@@ -12,6 +12,7 @@ import pow.frontend.widget.TextBox;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -75,8 +76,8 @@ public class PortalChoiceWindow extends AbstractWindow {
             String label = (char) ((int) 'a' + i) + ")";
             String areaName = areas.get(i).name;
             placeList.addRow(Arrays.asList(
-                    new TableCell(new TextBox(Arrays.asList(label), State.NORMAL, font)),
-                    new TableCell(new TextBox(Arrays.asList(areaName), State.NORMAL, font))
+                    new TableCell(new TextBox(Collections.singletonList(label), State.NORMAL, font)),
+                    new TableCell(new TextBox(Collections.singletonList(areaName), State.NORMAL, font))
             ));
         }
         placeList.setHSpacing(Style.MARGIN);
@@ -85,9 +86,9 @@ public class PortalChoiceWindow extends AbstractWindow {
         // build the outer layout
         Table layout = new Table();
         layout.addColumn(Arrays.asList(
-                new TableCell(new TextBox(Arrays.asList(message), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(message), State.NORMAL, font)),
                 new TableCell(placeList),
-                new TableCell(new TextBox(Arrays.asList("Select an area or press [esc] to cancel."), State.NORMAL, font))
+                new TableCell(new TextBox(Collections.singletonList("Select an area or press [esc] to cancel."), State.NORMAL, font))
         ));
 
         layout.setVSpacing(Style.MARGIN);
