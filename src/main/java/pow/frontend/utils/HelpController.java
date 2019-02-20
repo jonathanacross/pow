@@ -1,5 +1,8 @@
 package pow.frontend.utils;
 
+import pow.frontend.Style;
+import pow.frontend.widget.Table;
+import pow.frontend.widget.TableCell;
 import pow.util.DebugLogger;
 
 import java.io.BufferedReader;
@@ -8,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HelpController {
@@ -22,15 +26,12 @@ public class HelpController {
         }
     }
 
-    public static List<String> getHelpText() {
-        return instance.helpText;
-    }
-
-    private List<String> helpText;
+    private List<MarkdownReader.MarkdownElement> elements;
 
     private HelpController() throws IOException {
-        InputStream fileStream = this.getClass().getResourceAsStream("/help.txt");
-        this.helpText = readLines(fileStream);
+        InputStream mdFileStream = this.getClass().getResourceAsStream("/help.md");
+        List<String> mdLines = readLines(mdFileStream);
+        this.elements = MarkdownReader.parseText(mdLines);
     }
 
     private List<String> readLines(InputStream stream) throws IOException {
@@ -43,5 +44,17 @@ public class HelpController {
             }
         }
         return lines;
+    }
+
+    public static Table getHelpTable(int width) {
+        Table table = new Table();
+        for (MarkdownReader.MarkdownElement element : instance.elements) {
+            table.addRow(Arrays.asList(
+                    new TableCell(element.convertToWidget(width))
+            ));
+        }
+        table.setVSpacing(Style.MARGIN);
+        table.autosize();
+        return table;
     }
 }

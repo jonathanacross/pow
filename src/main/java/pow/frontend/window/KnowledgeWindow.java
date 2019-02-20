@@ -20,14 +20,17 @@ import java.util.List;
 
 public class KnowledgeWindow extends AbstractWindow {
 
-    private int selectIndex;
+    private ScrollBar scrollBar;
     private final List<Knowledge.MonsterSummary> monsterSummary;
 
     public KnowledgeWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend,
                            java.util.List<Knowledge.MonsterSummary> monsterSummary) {
         super(dim, visible, backend, frontend);
+
         this.monsterSummary = monsterSummary;
-        this.selectIndex = 0;
+        int numViewableMonsters = ((dim.height - 75) / (2*Style.TILE_SIZE)) * 2;
+        int sbHeight = numViewableMonsters * Style.TILE_SIZE;
+        this.scrollBar = new ScrollBar(sbHeight, 1, monsterSummary.size(), 1);
     }
 
     @Override
@@ -35,17 +38,13 @@ public class KnowledgeWindow extends AbstractWindow {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
             case KeyEvent.VK_K:
-                if (selectIndex > 0) {
-                    selectIndex--;
-                    frontend.setDirty(true);
-                }
+                scrollBar.scrollUp();
+                frontend.setDirty(true);
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_J:
-                if (selectIndex < monsterSummary.size() - 1) {
-                    selectIndex++;
-                    frontend.setDirty(true);
-                }
+                scrollBar.scrollDown();
+                frontend.setDirty(true);
                 break;
             default:
                 frontend.close();
@@ -70,6 +69,7 @@ public class KnowledgeWindow extends AbstractWindow {
 
         int minIndex = 0;
         int maxIndex = monsterSummary.size();
+        int selectIndex = scrollBar.getPosition();
         if (monsterSummary.size() > numViewableMonsters) {
             int radius = numViewableMonsters/2;
             int centerIndex = MathUtils.clamp(selectIndex, radius, monsterSummary.size() - radius);
@@ -98,17 +98,7 @@ public class KnowledgeWindow extends AbstractWindow {
         table.autosize();
         table.draw(graphics, Style.SMALL_MARGIN, Style.SMALL_MARGIN + 3*Style.getFontSize());
 
-        // draw scrollbar
-        int sbTop = 65;
-        int sbLeft = 295;
-        if (monsterSummary.size() > 0) {
-            int sbHeight = numViewableMonsters * Style.TILE_SIZE;
-            int centerTop = sbHeight * minIndex / monsterSummary.size();
-            int centerBottom = sbHeight * maxIndex / monsterSummary.size();
-            graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-            graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
-            graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
-        }
+        scrollBar.draw(graphics, 295, 65);
 
         graphics.setColor(Color.WHITE);
         graphics.drawString("Press up/down to scroll through monsters, any other key to close.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);

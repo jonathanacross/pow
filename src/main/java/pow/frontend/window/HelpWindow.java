@@ -5,19 +5,41 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.HelpController;
+import pow.frontend.utils.KeyInput;
+import pow.frontend.utils.KeyUtils;
+import pow.frontend.widget.ScrollBar;
+import pow.frontend.widget.Table;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class HelpWindow extends AbstractWindow {
 
+    private Table helpTable;
+    private ScrollBar scrollBar;
+
     public HelpWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
+        helpTable = HelpController.getHelpTable(dim.width - 3 * Style.MARGIN);
+        scrollBar = new ScrollBar(dim.height - 2*Style.MARGIN,
+                dim.height - 2*Style.MARGIN, helpTable.getHeight(), 20);
     }
 
     @Override
     public void processKey(KeyEvent e) {
-        frontend.close();
+        KeyInput input = KeyUtils.getKeyInput(e);
+        switch (input) {
+            case NORTH:
+                scrollBar.scrollUp();
+                break;
+            case SOUTH:
+                scrollBar.scrollDown();
+                break;
+            default:
+                frontend.close();
+                break;
+        }
+        frontend.setDirty(true);
     }
 
     @Override
@@ -28,10 +50,7 @@ public class HelpWindow extends AbstractWindow {
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        int y = Style.getFontSize() + Style.MARGIN;
-        for (String line: HelpController.getHelpText()) {
-            graphics.drawString(line, Style.MARGIN, y);
-            y += Style.getFontSize();
-        }
+        helpTable.draw(graphics, Style.MARGIN, Style.MARGIN - scrollBar.getPosition());
+        scrollBar.draw(graphics, dim.width - Style.MARGIN, Style.MARGIN);
     }
 }
