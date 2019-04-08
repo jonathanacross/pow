@@ -21,9 +21,12 @@ public class HelpWindow extends AbstractWindow {
     public HelpWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);
         helpTable = HelpController.getHelpTable(dim.width - 3 * Style.MARGIN);
-        scrollBar = new ScrollBar(dim.height - 2*Style.MARGIN,
-                dim.height - 2*Style.MARGIN, helpTable.getHeight(), 20);
+        scrollBar = new ScrollBar(getScrollBarHeight(), getViewSize(),
+                helpTable.getHeight(), 20);
     }
+
+    private int getScrollBarHeight() { return dim.height - 2*Style.MARGIN; }
+    private int getViewSize() { return dim.height - 2*Style.MARGIN; }
 
     @Override
     public void processKey(KeyEvent e) {
@@ -50,6 +53,7 @@ public class HelpWindow extends AbstractWindow {
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
+        scrollBar.adjustDimensions(getScrollBarHeight(), getViewSize(), helpTable.getHeight());
         helpTable.draw(graphics, Style.MARGIN, Style.MARGIN - scrollBar.getPosition());
         scrollBar.draw(graphics, dim.width - Style.MARGIN, Style.MARGIN);
     }

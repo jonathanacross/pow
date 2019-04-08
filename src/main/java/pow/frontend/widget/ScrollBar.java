@@ -6,20 +6,24 @@ import java.awt.*;
 
 public class ScrollBar implements Widget {
 
-    private final int scrollBarHeight;
-    private final int viewSize;
-    private final int contentSize;
+    private int scrollBarHeight;
+    private int viewSize;
+    private int contentSize;
     private final int scrollStep;  // How much to scroll if up/down is pressed.
-    private final boolean everythingVisible;
+    private boolean everythingVisible;
     private int position;
 
     public ScrollBar(int scrollBarHeight, int viewSize, int contentSize, int scrollStep) {
+        this.scrollStep = scrollStep;
+        this.position = 0;
+        adjustDimensions(scrollBarHeight, viewSize, contentSize);
+    }
+
+    public void adjustDimensions(int scrollBarHeight, int viewSize, int contentSize) {
         this.scrollBarHeight = scrollBarHeight;
         this.viewSize = viewSize;
         this.contentSize = contentSize;
-        this.scrollStep = scrollStep;
         this.everythingVisible = viewSize >= contentSize;
-        this.position = 0;
     }
 
     public void scrollUp() {
