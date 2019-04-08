@@ -328,7 +328,7 @@ public class GameMainLayer extends AbstractWindow {
             //case GET: tryPickup(gs); break;
             case FIRE: tryFire(gs); break;
             case MAGIC: tryCastSpell(gs); break;
-            case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
+            case PLAYER_INFO: frontend.open(new PlayerInfoWindow(true, backend, frontend)); break;
             case SHOW_WORLD_MAP: tryShowMap(gs); break;
             case KNOWLEDGE: showKnowledge(gs); break;
             case OPTIMIZE_EQUIPMENT: optimizeEquipment(gs); break;

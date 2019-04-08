@@ -16,10 +16,16 @@ public class Table implements Widget {
     private boolean drawHeaderLine;
     private int hSpacing;
     private int vSpacing;
+    private boolean drawGrid;
+    private int gridColStart;
+    private int gridRowStart;
+    private int gridColStop;
+    private int gridRowStop;
 
     public Table() {
         this.cells = new ArrayList<>();
         this.drawHeaderLine = false;
+        this.drawGrid = false;
         this.hSpacing = 0;
         this.vSpacing = 0;
     }
@@ -46,6 +52,14 @@ public class Table implements Widget {
 
     public void setDrawHeaderLine(boolean drawHeaderLine) {
         this.drawHeaderLine = drawHeaderLine;
+    }
+
+    public void setGrid(int colStart, int rowStart, int colStop, int rowStop) {
+        this.drawGrid = true;
+        this.gridColStart = colStart;
+        this.gridRowStart = rowStart;
+        this.gridColStop = colStop;
+        this.gridRowStop = rowStop;
     }
 
     public void setColWidths(List<Integer> colWidths) {
@@ -118,12 +132,47 @@ public class Table implements Widget {
         return totalHeight;
     }
 
+    private void drawGrid(Graphics graphics, int x, int y) {
+        List<Integer> rowOffsets = new ArrayList<>();
+        rowOffsets.add(y);
+        for (int r = 0; r < rowHeights.size(); r++) {
+            rowOffsets.add(rowOffsets.get(r) + rowHeights.get(r));
+        }
+
+        List<Integer> colOffsets = new ArrayList<>();
+        colOffsets.add(y);
+        for (int c = 0; c < colWidths.size(); c++) {
+            colOffsets.add(colOffsets.get(c) + colWidths.get(c));
+        }
+
+        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+
+        // Draw horizontal lines.
+        int left = colOffsets.get(gridColStart);
+        int right = colOffsets.get(gridColStop);
+        for (int r = gridRowStart; r <= gridRowStop; r++) {
+            graphics.drawLine(left, rowOffsets.get(r), right, rowOffsets.get(r));
+        }
+
+        // Draw vertical lines.
+        int top = rowOffsets.get(gridRowStart);
+        int bottom = rowOffsets.get(gridRowStop);
+        for (int c = gridColStart; c <= gridColStop; c++) {
+            graphics.drawLine(colOffsets.get(c), top, colOffsets.get(c), bottom);
+        }
+
+    }
+
     public void draw(Graphics graphics, int x, int y) {
         // draw header line
         if (drawHeaderLine) {
             int lineY = y + rowHeights.get(0) + (vSpacing / 2);
             graphics.setColor(Style.SEPARATOR_LINE_COLOR);
             graphics.drawLine(x, lineY, x + getWidth(), lineY);
+        }
+
+        if (drawGrid) {
+            drawGrid(graphics, x, y);
         }
 
         // draw cell contents
@@ -150,5 +199,7 @@ public class Table implements Widget {
 
             yOffset += rowHeights.get(r) + vSpacing;
         }
+
+        // TODO: draw grid
     }
 }

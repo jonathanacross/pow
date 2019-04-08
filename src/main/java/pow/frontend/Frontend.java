@@ -35,7 +35,6 @@ public class Frontend {
     private final LoseWindow loseWindow;
     private final OpenGameWindow openGameWindow;
     public final MonsterInfoWindow monsterInfoWindow;
-    public final PlayerInfoWindow playerInfoWindow;
     public final WorldMapWindow worldMapWindow;
     private final LogWindow logWindow;
     private final StatusWindow statusWindow;
@@ -79,7 +78,6 @@ public class Frontend {
         logWindow = new LogWindow(layout.getLogPaneDim(), true, gameBackend, this);
         // popups in main game
         monsterInfoWindow = new MonsterInfoWindow(layout.getLogPaneDim(), false, gameBackend, this);
-        playerInfoWindow = new PlayerInfoWindow(layout.center(668, 540), true, gameBackend, this);
         worldMapWindow = new WorldMapWindow(layout.getCenterPaneDim(), true, gameBackend, this);
         helpWindow = new HelpWindow(layout.getCenterPaneDim(), true, gameBackend, this);
 
