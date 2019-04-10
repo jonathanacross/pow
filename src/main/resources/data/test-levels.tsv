@@ -5,7 +5,7 @@ island	Island	2		D		terrain		ripple	stairs up,stairs down	outside	purple turtle	
 desert	Desert	30		N		terrain		recursiveInterpolation	desert,tower,brown cave entrance	outside		gray wolf,brown scorpion
 blacktowerl1	Black tower 1	24		U		desert		premade	blacktowerl1,black tower	permLight		bot,blue snake,blue beetle
 blacktowerl2	Black Tower 2	25		U		blacktowerl1		premade	blacktowerl2,black tower	permLight	blue wizard	bot,blue snake,blue beetle
-digdesert	Dig desert	25		E		terrain		recursiveInterpolation	desert,tower,green cave entrance	hot	white rat	blue ghost,pink ghost,evil eye
+digdesert	Dig desert	25		E		terrain		recursiveInterpolation	forest,tower,green cave entrance		white rat	blue ghost,pink ghost,evil eye
 item	Items	2		W		terrain		item test	crypt			
 cave	Cave	17		D		island		cellularAutomata	1,true,basement	poisonGas	minotaur	brown scorpion,goldfish,chess knight,pink ghost
 arena	Arena	99		S		terrain		arena	dungeon		evil incarnate	:all:

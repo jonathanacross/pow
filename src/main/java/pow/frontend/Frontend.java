@@ -33,10 +33,8 @@ public class Frontend {
     private final WinWindow winWindow;
     private final Win2Window win2Window;
     private final LoseWindow loseWindow;
-    public final AutoplayOptionWindow autoplayOptionWindow;
     private final OpenGameWindow openGameWindow;
     public final MonsterInfoWindow monsterInfoWindow;
-    public final PlayerInfoWindow playerInfoWindow;
     public final WorldMapWindow worldMapWindow;
     private final LogWindow logWindow;
     private final StatusWindow statusWindow;
@@ -72,8 +70,7 @@ public class Frontend {
         winWindow = new WinWindow(layout.center(580, 200), true, gameBackend, this);
         win2Window = new Win2Window(layout.center(580, 200), true, gameBackend, this);
         loseWindow = new LoseWindow(layout.center(480, 200), true, gameBackend, this);
-        autoplayOptionWindow = new AutoplayOptionWindow(layout.center(210, 160), gameBackend, this);
-        openGameWindow = new OpenGameWindow(layout.center(490, 300), true, gameBackend, this);
+        openGameWindow = new OpenGameWindow(layout.center(490, 330), true, gameBackend, this);
         // main game
         statusWindow = new StatusWindow(layout.getStatusPaneDim(), true, gameBackend, this);
         gameWindow = new GameWindow(layout.getCenterPaneDim(), true, gameBackend, this);
@@ -81,7 +78,6 @@ public class Frontend {
         logWindow = new LogWindow(layout.getLogPaneDim(), true, gameBackend, this);
         // popups in main game
         monsterInfoWindow = new MonsterInfoWindow(layout.getLogPaneDim(), false, gameBackend, this);
-        playerInfoWindow = new PlayerInfoWindow(layout.center(668, 470), true, gameBackend, this);
         worldMapWindow = new WorldMapWindow(layout.getCenterPaneDim(), true, gameBackend, this);
         helpWindow = new HelpWindow(layout.getCenterPaneDim(), true, gameBackend, this);
 
@@ -211,8 +207,7 @@ public class Frontend {
         }
 
         if (alreadyExists) {
-            WindowDim dim = layout.center(600, 120);
-            open(new ConfirmWindow(dim, true, gameBackend, this,
+            open(new ConfirmWindow(true, gameBackend, this,
                     "The character '" + data.name + "' already exists.  Do you want to overwrite it?",
                     "Overwrite", "Cancel",
                     () -> startNewGame(data)));
@@ -224,7 +219,7 @@ public class Frontend {
     private void createMainCharacter() {
         gameBackend.setGameInProgress(false);
         SelectCharWindow createCharWindow = new SelectCharWindow(
-                layout.center(490, 300),
+                layout.center(490, 330),
                 gameBackend, this,
                 Collections.singletonList("Select your character:"), false,
                 this::tryToStartNewGame, () -> setState(Frontend.State.OPEN_GAME));
@@ -233,7 +228,7 @@ public class Frontend {
 
     private void choosePet() {
         SelectCharWindow createCharWindow = new SelectCharWindow(
-                layout.center(490, 300),
+                layout.center(490, 330),
                 gameBackend, this,
                 Arrays.asList("Congratulations, you got a pet!", "Select your character:"), true,
                 (data) -> {
@@ -251,26 +246,22 @@ public class Frontend {
         List<ShopData.ShopEntry> entries;
         switch (shopData.state) {
             case INN:
-                dim = layout.center(600, 120);
                 int cost = shopData.innCost;
-                open(new ConfirmWindow(dim, true, gameBackend, this,
+                open(new ConfirmWindow(true, gameBackend, this,
                         "Do you want to rest at the inn? It costs " + cost + " gold.",
                         "Rest", "Cancel",
                         () -> gameBackend.tellSelectedActor(new RestAtInn())));
                 break;
             case WEAPON_SHOP:
-                dim = layout.center(400, 520);
                 entries = shopData.weaponItems;
-                open(new ShopWindow(dim, true, gameBackend, this, entries));
+                open(new ShopWindow(true, gameBackend, this, entries));
                 break;
             case MAGIC_SHOP:
-                dim = layout.center(400, 520);
                 entries = shopData.magicItems;
-                open(new ShopWindow(dim, true, gameBackend, this, entries));
+                open(new ShopWindow(true, gameBackend, this, entries));
                 break;
             case JEWELER_SHOP:
-                dim = layout.center(650, 550);
-                open(new JewelerShopWindow(dim, true, gameBackend, this,
+                open(new JewelerShopWindow(true, gameBackend, this,
                         (UpgradeItem.UpgradeInfo i) -> gameBackend.tellSelectedActor(new UpgradeItem(i))));
                 break;
             default:

@@ -10,7 +10,6 @@ import pow.frontend.WindowDim;
 import pow.frontend.utils.MonsterDisplay;
 import pow.util.Point;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
@@ -48,7 +47,7 @@ public class MonsterInfoWindow extends AbstractWindow {
                 monsterSummary,
                 player,
                 true,
-                dim.width,
-                new Point(0,0));
+                dim.width - 2*Style.SMALL_MARGIN,
+                new Point(Style.SMALL_MARGIN,Style.SMALL_MARGIN));
     }
 }

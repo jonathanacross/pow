@@ -100,7 +100,7 @@ public class GameTargetLayer extends AbstractWindow {
 
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
-        graphics.drawString(lookMessage, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN - Style.FONT_SIZE);
+        graphics.drawString(lookMessage, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN - Style.getFontSize());
         graphics.drawString(helpMessage, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
     }
 

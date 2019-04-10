@@ -8,21 +8,28 @@ import pow.backend.dungeon.DungeonItem;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
+import pow.frontend.widget.*;
 import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ShopWindow extends AbstractWindow {
     private final List<ShopData.ShopEntry> entries;
+    private final Table layoutTable;
 
-    public ShopWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend,
+    public ShopWindow(boolean visible, GameBackend backend, Frontend frontend,
                       List<ShopData.ShopEntry> entries) {
-        super(dim, visible, backend, frontend);
+        super(new WindowDim(0,0,0,0), visible, backend, frontend);
         this.entries = entries;
+        this.layoutTable = getLayoutTable();
+        int width = layoutTable.getWidth() + 2*Style.MARGIN;
+        int height = layoutTable.getHeight() + 2*Style.MARGIN;
+        this.resize(frontend.layout.center(width, height));
     }
 
     @Override
@@ -47,7 +54,7 @@ public class ShopWindow extends AbstractWindow {
                     if (!bonus.isEmpty()) {
                         messages.add(entry.item.bonusString());
                     }
-                    messages.add("do you want? (max " + maxNum + ")?");
+                    messages.add("do you want (max " + maxNum + ")?");
                     frontend.open(new GetCountWindow(cDim, this.backend, this.frontend,
                             entry.item.image, messages, maxNum,
                             (int count) -> backend.tellSelectedActor(new BuyItem(entries, itemNumber, count))));
@@ -69,47 +76,57 @@ public class ShopWindow extends AbstractWindow {
         return maxNum;
     }
 
+    private Table getLayoutTable() {
+        Font font = Style.getDefaultFont();
+
+        // build the inner list
+        Table list = new Table();
+        list.addRow(Arrays.asList(
+                new TableCell(new Space()),
+                new TableCell(new TextBox(Collections.singletonList("Item"), State.NORMAL, font)),
+                new TableCell(new Space()),
+                new TableCell(new TextBox(Collections.singletonList("Price"), State.NORMAL, font))
+        ));
+        for (int i = 0; i < this.entries.size(); i++) {
+            ShopData.ShopEntry entry = entries.get(i);
+            boolean isGrayed = maxNumBuyable(entry) == 0;
+            State state = isGrayed ? State.DISABLED : State.NORMAL;
+
+            String label = (char) ((int) 'a' + i) + ")";
+            List<String> itemInfo = Arrays.asList(TextUtils.format(entry.item.name, entry.item.count, false), entry.item.bonusString());
+            String price = String.valueOf(entry.price);
+
+            list.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Collections.singletonList(label), state, font)),
+                    new TableCell(new Tile(entry.item.image, state)),
+                    new TableCell(new TextBox(itemInfo, state, font)),
+                    new TableCell(new TextBox(Collections.singletonList(price), state, font))
+            ));
+        }
+        list.setDrawHeaderLine(true);
+        list.setHSpacing(Style.MARGIN);
+        list.autosize();
+
+        // build the overall layout
+        Table layout = new Table();
+        String greeting = "Hi " + backend.getGameState().party.player.name + ", what would you like to buy?";
+        String help = "Select an item to buy or press [esc] to cancel.";
+        layout.addColumn(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList(greeting), State.NORMAL, font)),
+                new TableCell(list),
+                new TableCell(new TextBox(Collections.singletonList(help), State.NORMAL, font))
+        ));
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+
+        return layout;
+    }
+
     @Override
     public void drawContents(Graphics graphics) {
-
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Hi " + backend.getGameState().party.player.name + ", what would you like to buy?",
-                Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
-
-        int priceX = dim.width - Style.MARGIN - 40;
-        graphics.drawString("Item", 20 + Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE);
-        graphics.drawString("Price", priceX, Style.MARGIN + 3*Style.FONT_SIZE);
-
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(30, Style.MARGIN + 3*Style.FONT_SIZE + 5,
-                dim.width - Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE + 5);
-
-        int y = Style.MARGIN + 4*Style.FONT_SIZE;
-
-        int idx = 0;
-        for (ShopData.ShopEntry entry : this.entries) {
-            boolean isEnabled = maxNumBuyable(entry) > 0;
-            ImageController.DrawMode drawMode = isEnabled ? ImageController.DrawMode.NORMAL : ImageController.DrawMode.GRAY;
-            ImageController.drawTile(graphics, entry.item.image, 15 + Style.MARGIN, y, drawMode);
-
-            String label = (char) ((int) 'a' + idx) + ")";
-            int textY = y + 20;
-            graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
-            graphics.drawString(label, Style.MARGIN, textY);
-            graphics.drawString(TextUtils.format(entry.item.name, entry.item.count, false),  50+Style.MARGIN, textY - 5);
-            graphics.drawString(entry.item.bonusString(), 50+Style.MARGIN, textY + Style.FONT_SIZE - 5);
-
-            graphics.drawString(String.valueOf(entry.price), priceX, textY);
-
-            idx++;
-            y += Style.TILE_SIZE;
-        }
-
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Select an item to buy or press [esc] to cancel.", Style.MARGIN, dim.height - Style.MARGIN);
+        layoutTable.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

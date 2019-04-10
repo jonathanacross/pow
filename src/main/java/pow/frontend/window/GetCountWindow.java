@@ -4,11 +4,13 @@ import pow.backend.GameBackend;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
+import pow.frontend.widget.*;
 import pow.util.MathUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.function.IntConsumer;
 import java.util.List;
 
@@ -28,6 +30,8 @@ public class GetCountWindow extends AbstractWindow {
         this.messages = messages;
         this.maxNum = maxNum;
         this.callback = callback;
+        Table layout = getLayoutTable();
+        this.resize(new WindowDim(dim.x, dim.y, dim.width,  layout.getHeight() + 2*Style.MARGIN));
     }
 
     @Override
@@ -62,22 +66,34 @@ public class GetCountWindow extends AbstractWindow {
         }
     }
 
+    private Table getLayoutTable() {
+        Font font = Style.getDefaultFont();
+
+        Table topRow = new Table();
+        topRow.addRow(Arrays.asList(
+                new TableCell(new Tile(imageName, State.NORMAL)),
+                new TableCell(new TextBox(messages, State.NORMAL, font))
+        ));
+        topRow.setHSpacing(Style.MARGIN);
+        topRow.autosize();
+
+        // main layout
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TableCell(topRow),
+                new TableCell(new TextBox(Collections.singletonList("> " + countString), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("Press [esc] to cancel."), State.NORMAL, font))
+        ));
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+        return layout;
+    }
+
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        ImageController.drawTile(graphics, imageName, Style.MARGIN, Style.MARGIN, ImageController.DrawMode.NORMAL);
-
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-        for (int i = 0; i < messages.size(); i++) {
-            graphics.drawString(messages.get(i), 2 * Style.MARGIN + Style.TILE_SIZE, Style.MARGIN + (i+1)*Style.FONT_SIZE);
-        }
-
-        graphics.drawString("> " + countString, 2*Style.MARGIN + Style.TILE_SIZE, Style.MARGIN + (messages.size() + 2)*Style.FONT_SIZE);
-
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Press [esc] to cancel.", 2*Style.MARGIN + Style.TILE_SIZE, dim.height - Style.MARGIN);
+        getLayoutTable().draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

@@ -95,7 +95,7 @@ public class GameMainLayer extends AbstractWindow {
         }
         Point loc = gs.party.selectedActor.loc;
         ItemList items = gs.getCurrentMap().map[loc.x][loc.y].items;
-        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Ground:",
+        frontend.open(new ItemActionWindow(this.backend, this.frontend, "Ground:",
                 items, ItemActions.ItemLocation.GROUND));
     }
 
@@ -104,7 +104,7 @@ public class GameMainLayer extends AbstractWindow {
             backend.logMessage(gs.party.pet.getNoun() + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
-        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Inventory:",
+        frontend.open(new ItemActionWindow(this.backend, this.frontend, "Inventory:",
                        gs.party.selectedActor.inventory, ItemActions.ItemLocation.INVENTORY));
     }
 
@@ -113,13 +113,13 @@ public class GameMainLayer extends AbstractWindow {
             backend.logMessage(gs.party.pet.getNoun() + " cannot wear/wield items.", MessageLog.MessageType.USER_ERROR);
             return;
         }
-        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Equipment:",
+        frontend.open(new ItemActionWindow(this.backend, this.frontend, "Equipment:",
                 gs.party.selectedActor.equipment, ItemActions.ItemLocation.EQUIPMENT));
     }
 
     private void showPetInventory(GameState gs) {
         backend.logMessage(gs.party.pet.getNoun() + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
-        frontend.open(new ItemActionWindow(400, 15, this.backend, this.frontend, "Pet:",
+        frontend.open(new ItemActionWindow(this.backend, this.frontend, "Pet:",
                 gs.party.pet.inventory, ItemActions.ItemLocation.PET));
     }
 
@@ -252,7 +252,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void tryCastSpell(GameState gs) {
         frontend.open(
-                new SpellChoiceWindow(332, 100, this.backend, this.frontend,
+                new SpellChoiceWindow(this.backend, this.frontend,
                         "Cast which spell?",
                         gs.party.selectedActor.spells,
                         (Integer choice) -> {
@@ -278,7 +278,7 @@ public class GameMainLayer extends AbstractWindow {
 
     private void tryAutoplayOptions(GameState gs) {
         if (gs.party.pet != null) {
-            frontend.open(frontend.autoplayOptionWindow);
+            frontend.open(new AutoplayOptionWindow(this.backend, this.frontend));
         } else {
             backend.logMessage("You don't have a pet; no autoplay available.", MessageLog.MessageType.USER_ERROR);
         }
@@ -328,7 +328,7 @@ public class GameMainLayer extends AbstractWindow {
             //case GET: tryPickup(gs); break;
             case FIRE: tryFire(gs); break;
             case MAGIC: tryCastSpell(gs); break;
-            case PLAYER_INFO: frontend.open(frontend.playerInfoWindow); break;
+            case PLAYER_INFO: frontend.open(new PlayerInfoWindow(true, backend, frontend)); break;
             case SHOW_WORLD_MAP: tryShowMap(gs); break;
             case KNOWLEDGE: showKnowledge(gs); break;
             case OPTIMIZE_EQUIPMENT: optimizeEquipment(gs); break;

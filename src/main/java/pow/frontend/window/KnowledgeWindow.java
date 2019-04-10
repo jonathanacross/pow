@@ -6,26 +6,32 @@ import pow.backend.actors.Player;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
 import pow.frontend.utils.MonsterDisplay;
+import pow.frontend.widget.*;
 import pow.util.MathUtils;
 import pow.util.TextUtils;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class KnowledgeWindow extends AbstractWindow {
 
-    private int selectIndex;
+    private ScrollBar scrollBar;
     private final List<Knowledge.MonsterSummary> monsterSummary;
 
     public KnowledgeWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend,
                            java.util.List<Knowledge.MonsterSummary> monsterSummary) {
         super(dim, visible, backend, frontend);
+
         this.monsterSummary = monsterSummary;
-        this.selectIndex = 0;
+        int numViewableMonsters = ((dim.height - 75) / (2*Style.TILE_SIZE)) * 2;
+        int sbHeight = numViewableMonsters * Style.TILE_SIZE;
+        this.scrollBar = new ScrollBar(sbHeight, 1, monsterSummary.size(), 1);
     }
 
     @Override
@@ -33,17 +39,13 @@ public class KnowledgeWindow extends AbstractWindow {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
             case KeyEvent.VK_K:
-                if (selectIndex > 0) {
-                    selectIndex--;
-                    frontend.setDirty(true);
-                }
+                scrollBar.scrollUp();
+                frontend.setDirty(true);
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_J:
-                if (selectIndex < monsterSummary.size() - 1) {
-                    selectIndex++;
-                    frontend.setDirty(true);
-                }
+                scrollBar.scrollDown();
+                frontend.setDirty(true);
                 break;
             default:
                 frontend.close();
@@ -58,16 +60,9 @@ public class KnowledgeWindow extends AbstractWindow {
 
         graphics.setColor(Color.WHITE);
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.drawString("Monster Knowledge", Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
-
-        final int nameX = 70;
-        final int killedX = 220;
-        final int fontOffsetY = (Style.TILE_SIZE + Style.FONT_SIZE)/2;
-
-        int y = 50;
-        graphics.drawString("Name", nameX, y);
-        graphics.drawString("Killed", killedX, y);
+        Font font = Style.getDefaultFont();
+        graphics.setFont(font);
+        graphics.drawString("Monster Knowledge", Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.getFontSize());
 
         // compute the number of monsters we can show given the window size
         // Note that the number must be even.
@@ -75,6 +70,7 @@ public class KnowledgeWindow extends AbstractWindow {
 
         int minIndex = 0;
         int maxIndex = monsterSummary.size();
+        int selectIndex = scrollBar.getPosition();
         if (monsterSummary.size() > numViewableMonsters) {
             int radius = numViewableMonsters/2;
             int centerIndex = MathUtils.clamp(selectIndex, radius, monsterSummary.size() - radius);
@@ -82,38 +78,28 @@ public class KnowledgeWindow extends AbstractWindow {
             maxIndex = Math.min(monsterSummary.size(), centerIndex + radius);
         }
 
-        // draw scrollbar
-        int sbTop = 60;
-        int sbLeft = 295;
-        if (monsterSummary.size() > 0) {
-            int sbHeight = numViewableMonsters * Style.TILE_SIZE;
-            int centerTop = sbHeight * minIndex / monsterSummary.size();
-            int centerBottom = sbHeight * maxIndex / monsterSummary.size();
-            graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-            graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + sbHeight);
-            graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
-        }
+        Table table = new Table();
+        table.addRow(Arrays.asList(
+                new TableCell(new Space()),
+                new TableCell(new TextBox(Collections.singletonList("Name"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList("Killed"), State.NORMAL, font))
+        ));
 
-        // underline the header
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(nameX,y + 5, sbLeft - Style.MARGIN, y + 5);
-
-        graphics.setColor(Color.WHITE);
-
-        y = 60;
         for (int index = minIndex; index < maxIndex; index++) {
             Knowledge.MonsterSummary ms = monsterSummary.get(index);
-            ImageController.drawTile(graphics, ms.image, Style.SMALL_MARGIN, y);
-            if (index == selectIndex) {
-                graphics.setColor(Color.YELLOW);
-            } else {
-                graphics.setColor(Color.WHITE);
-            }
-            graphics.drawString(TextUtils.singular(ms.name), nameX, y + fontOffsetY);
-            graphics.drawString(String.valueOf(ms.numKilled), killedX, y + fontOffsetY);
-            y += Style.TILE_SIZE;
+            State state = index == selectIndex ? State.SELECTED : State.NORMAL;
+            table.addRow(Arrays.asList(
+                    new TableCell(new Tile(ms.image, state)),
+                    new TableCell(new TextBox(Collections.singletonList(TextUtils.singular(ms.name)), state, font)),
+                    new TableCell(new TextBox(Collections.singletonList(String.valueOf(ms.numKilled)), state, font))
+            ));
         }
+        table.setDrawHeaderLine(true);
+        table.setColWidths(Arrays.asList(Style.TILE_SIZE + Style.SMALL_MARGIN, 180, 50));
+        table.autosize();
+        table.draw(graphics, Style.SMALL_MARGIN, Style.SMALL_MARGIN + 3*Style.getFontSize());
 
+        scrollBar.draw(graphics, 295, 65);
 
         graphics.setColor(Color.WHITE);
         graphics.drawString("Press up/down to scroll through monsters, any other key to close.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
@@ -125,8 +111,8 @@ public class KnowledgeWindow extends AbstractWindow {
                     monsterSummary.get(selectIndex),
                     player,
                     true,
-                    300,
-                    new pow.util.Point(310,30));
+                    320,
+                    new pow.util.Point(320,40));
         }
     }
 }

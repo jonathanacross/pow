@@ -91,7 +91,7 @@ public class ItemChoiceWindow extends AbstractWindow {
         graphics.setFont(Style.getDefaultFont());
         graphics.setColor(Color.WHITE);
 
-        graphics.drawString(currMessage, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
+        graphics.drawString(currMessage, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.getFontSize());
 
         int y = 30;
         int idx = 0;
@@ -105,7 +105,7 @@ public class ItemChoiceWindow extends AbstractWindow {
             graphics.setColor(isEnabled ? Color.WHITE : Color.GRAY);
             graphics.drawString(label, Style.SMALL_MARGIN, textY);
             graphics.drawString(TextUtils.format(item.name, item.count, false),  60, textY - 5);
-            graphics.drawString(item.bonusString(), 60, textY + Style.FONT_SIZE - 5);
+            graphics.drawString(item.bonusString(), 60, textY + Style.getFontSize() - 5);
 
             idx++;
             y += Style.TILE_SIZE;

@@ -7,13 +7,15 @@ import pow.backend.dungeon.ItemList;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ItemActions;
+import pow.frontend.widget.*;
 import pow.util.TextUtils;
 
-import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ItemActionWindow extends AbstractWindow {
@@ -21,16 +23,20 @@ public class ItemActionWindow extends AbstractWindow {
     private final String message;
     private final ItemList items;
     private final ItemActions.ItemLocation location;
+    private final Table itemTable;
 
-    public ItemActionWindow(int x, int y, GameBackend backend, Frontend frontend,
+    public ItemActionWindow(GameBackend backend, Frontend frontend,
                             String message,
                             ItemList items,
                             ItemActions.ItemLocation location) {
-        super(new WindowDim(x, y, 400,
-                55 + 32 * items.size()), true, backend, frontend);
+        super(new WindowDim(0, 0, 0, 0), true, backend, frontend);
         this.message = message;
         this.items = items;
         this.location = location;
+        this.itemTable = getItemTable(items);
+        int height = 2*Style.MARGIN + itemTable.getHeight();
+        int width = 2*Style.MARGIN + itemTable.getWidth();
+        this.resize(frontend.layout.center(width, height));
     }
 
     @Override
@@ -59,36 +65,42 @@ public class ItemActionWindow extends AbstractWindow {
         }
     }
 
+    private Table getItemTable(ItemList items) {
+        Font font = Style.getDefaultFont();
+
+        // build the list in the middle
+        Table itemList = new Table();
+        for (int i = 0; i < items.items.size(); i++) {
+            DungeonItem item = items.items.get(i);
+            String label = (char) ((int) 'a' + i) + ")";
+            List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
+            itemList.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Collections.singletonList(label), State.NORMAL, font)),
+                    new TableCell(new Tile(item.image, State.NORMAL)),
+                    new TableCell(new TextBox(itemInfo, State.NORMAL, font))
+            ));
+        }
+        itemList.setHSpacing(Style.MARGIN);
+        itemList.autosize();
+
+        // make the outer widget with header and footer
+        Table table = new Table();
+        table.addColumn(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList(message), State.NORMAL, font)),
+                new TableCell(itemList),
+                new TableCell(new TextBox(Collections.singletonList("Select an item or press [esc] to cancel."), State.NORMAL, font))
+        ));
+        table.setVSpacing(Style.MARGIN);
+        table.autosize();
+
+        return table;
+    }
+
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-
-        int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
-        graphics.drawString(message, Style.SMALL_MARGIN, y);
-
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(Style.SMALL_MARGIN, y + 5, dim.width - Style.SMALL_MARGIN, y + 5);
-
-        graphics.setColor(Color.WHITE);
-        y = 30;
-        int idx = 0;
-        for (DungeonItem item : items.items) {
-            String label = (char) ((int) 'a' + idx) + ")";
-            graphics.drawString(label, Style.SMALL_MARGIN, y + 20);
-
-            ImageController.drawTile(graphics, item.image, Style.SMALL_MARGIN + 20, y);
-            graphics.drawString(TextUtils.format(item.name, item.count, false),  Style.SMALL_MARGIN + 60, y + Style.FONT_SIZE + 2);
-            graphics.drawString(item.bonusString(), Style.SMALL_MARGIN + 60, y + 2*Style.FONT_SIZE + 2);
-
-            idx++;
-            y += Style.TILE_SIZE;
-        }
-
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Select an item or press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        itemTable.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

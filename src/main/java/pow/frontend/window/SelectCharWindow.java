@@ -9,12 +9,15 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.*;
+import pow.frontend.widget.*;
 import pow.util.MathUtils;
 import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -122,28 +125,6 @@ public class SelectCharWindow extends AbstractWindow {
         return strings;
     }
 
-    private void drawBar(Graphics graphics, int x, int y, int width, int height, double gain) {
-        Color saveColor = graphics.getColor();
-
-        // min/max expected values for gains.
-        double min = 0.5;
-        double max = 1.5;
-
-        // Convert the gain to red-yellow-green color scale.
-        double z = MathUtils.clamp((gain - min) / (max - min), 0, 1);
-
-        int red   = (int) (255.0 * MathUtils.clamp(2.0 * (1 - z), 0, 1));
-        int green = (int) (255.0 * MathUtils.clamp(2.0 * z, 0, 1));
-        int blue  = 0;
-
-        Color fillColor = new Color(red, green, blue);
-
-        graphics.setColor(fillColor);
-        graphics.fillRect(x, y+3, width, height-1);
-
-        graphics.setColor(saveColor);
-    }
-
     private String getAbilityString(Abilities abilities) {
         List<String> abilityStrings = new ArrayList<>();
         if (abilities.archeryBonus) {
@@ -158,31 +139,102 @@ public class SelectCharWindow extends AbstractWindow {
         return TextUtils.formatList(abilityStrings);
     }
 
-    private void drawCharData(Graphics graphics, CharacterGenerator.CharacterData characterData, int x, int y, boolean showSpeed) {
-        int barLeft = x + 60;
-        String[] labels = {"Str   ", "Dex   ", "Int   ", "Con   ", "Speed "};
+    // Convert the gain to red-yellow-green color scale.
+    private Color getBarFillColor(double gain) {
+        // min/max expected values for gains.
+        double min = 0.5;
+        double max = 1.5;
+
+        double z = MathUtils.clamp((gain - min) / (max - min), 0, 1);
+
+        int red   = (int) (255.0 * MathUtils.clamp(2.0 * (1 - z), 0, 1));
+        int green = (int) (255.0 * MathUtils.clamp(2.0 * z, 0, 1));
+        int blue  = 0;
+
+        Color fillColor = new Color(red, green, blue);
+        return fillColor;
+    }
+
+    private Table getCharInfoTable(CharacterGenerator.CharacterData characterData, Font font, int textWidth) {
+        String[] labels = {"Str", "Dex", "Int", "Con", "Speed"};
         double[] gains = {characterData.strGain, characterData.dexGain, characterData.intGain, characterData.conGain, characterData.speedGain};
         int maxGains = showSpeed ? gains.length : gains.length - 1;
-        for (int i = 0; i < maxGains; i++) {
-            int width = (int) Math.round(gains[i] * 100);
-            drawBar(graphics, barLeft, y + i * Style.FONT_SIZE, width, Style.FONT_SIZE, gains[i]);
-            graphics.drawString(labels[i], x, y + (i+1) * Style.FONT_SIZE);
-        }
-        y += (maxGains + 1) * Style.FONT_SIZE;
 
-        int textWidth = dim.width - 2*Style.SMALL_MARGIN;
-        Font font = graphics.getFont();
-        FontMetrics textMetrics = graphics.getFontMetrics(font);
-        List<String> extraLines =
-                ImageUtils.wrapText(
-                        "Abilities: " + getAbilityString(characterData.abilities), textMetrics, textWidth);
-        extraLines.addAll(
-                ImageUtils.wrapText(
-                        "Spells: " + TextUtils.formatList(getSpellNames(characterData.spells)), textMetrics, textWidth));
-        for (String line : extraLines) {
-            y += Style.FONT_SIZE;
-            graphics.drawString(line, x, y);
+        Table statsTable = new Table();
+        for (int i = 0; i < maxGains; i++) {
+            int barWidth = (int) Math.round(gains[i] * 100);
+            statsTable.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Collections.singletonList(labels[i]), State.NORMAL, font)),
+                    new TableCell(new Bar(barWidth, barWidth, getBarFillColor(gains[i]), "", font))
+            ));
         }
+        statsTable.setHSpacing(Style.MARGIN);
+        statsTable.autosize();
+
+        TextBox abilities = new TextBox(
+                Arrays.asList(
+                        "Abilities: " + getAbilityString(characterData.abilities),
+                        "Spells: " + TextUtils.formatList(getSpellNames(characterData.spells))),
+                State.NORMAL, font, textWidth);
+
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TableCell(statsTable),
+                new TableCell(abilities)
+        ));
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+
+        return layout;
+    }
+
+    private Table getLayout(int width) {
+        Font font = Style.getDefaultFont();
+
+        // messages at top
+        TextBox messagesBox = new TextBox(messages, State.NORMAL, font);
+
+        // build character list
+        Table charList = new Table();
+        for (int i = 0; i < characterData.size(); i++) {
+            State state = i == charSelectId ? State.SELECTED : State.NORMAL;
+            charList.addColumn(Collections.singletonList(
+                    new TableCell(new Tile(characterData.get(i).image, state))
+            ));
+        }
+        charList.setHSpacing(Style.SMALL_MARGIN);
+        charList.autosize();
+
+        // place to enter name
+        TextBox nameBox = new TextBox(
+                Arrays.asList(
+                        "Enter the name of your character:",
+                        "",
+                        "> " + name),
+                State.NORMAL, font);
+
+        // Help message
+        String helpChooseString = allowCancel
+                ? "Press left/right to choose, [enter] to select, [esc] to cancel."
+                : "Press left/right to choose, [enter] to select.";
+        String helpString = onName
+                ? "Press * for a random name, [enter] to select, [esc] to cancel."
+                : helpChooseString;
+        TextBox helpBox = new TextBox(Collections.singletonList(helpString), State.NORMAL, font);
+
+        // overall layout
+        Table layout = new Table();
+        layout.addRow(Collections.singletonList(new TableCell(messagesBox)));
+        layout.addRow(Collections.singletonList(new TableCell(charList)));
+        if (onName) {
+            layout.addRow(Collections.singletonList(new TableCell(nameBox)));
+        } else {
+            layout.addRow(Collections.singletonList(new TableCell(getCharInfoTable(characterData.get(charSelectId), font, width))));
+        }
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+
+        return layout;
     }
 
     @Override
@@ -190,32 +242,8 @@ public class SelectCharWindow extends AbstractWindow {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-
-        int y = Style.SMALL_MARGIN + Style.FONT_SIZE;
-        for (String message : messages) {
-            graphics.drawString(message, Style.SMALL_MARGIN, y);
-            y += 2 * Style.FONT_SIZE;
-        }
-        y -= Style.FONT_SIZE;
-        for (int i = 0; i < characterData.size(); i++) {
-            ImageController.drawTile(graphics, characterData.get(i).image, Style.SMALL_MARGIN + i*(ImageController.TILE_SIZE + 5), y);
-        }
-        graphics.setColor(Color.YELLOW);
-        graphics.drawRect(Style.SMALL_MARGIN + charSelectId*(ImageController.TILE_SIZE + 5), y, ImageController.TILE_SIZE, ImageController.TILE_SIZE);
-        y += ImageController.TILE_SIZE + Style.FONT_SIZE;
-
-        if (onName) {
-            graphics.setColor(Color.WHITE);
-            y += Style.FONT_SIZE;
-            graphics.drawString("Enter the name of your character.", Style.SMALL_MARGIN, y);
-            y += 2*Style.FONT_SIZE;
-            graphics.drawString(name, Style.SMALL_MARGIN, y);
-        } else {
-            graphics.setColor(Color.WHITE);
-            drawCharData(graphics, characterData.get(charSelectId), Style.SMALL_MARGIN, y, showSpeed);
-        }
+        Table layout = getLayout(dim.width - 2*Style.MARGIN);
+        layout.draw(graphics, Style.MARGIN, Style.MARGIN);
 
         String helpChooseString = allowCancel
                 ? "Press left/right to choose, [enter] to select, [esc] to cancel."
@@ -224,6 +252,6 @@ public class SelectCharWindow extends AbstractWindow {
                 ? "Press * for a random name, [enter] to select, [esc] to cancel."
                 : helpChooseString;
         graphics.setColor(Color.WHITE);
-        graphics.drawString(helpString, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        graphics.drawString(helpString, Style.MARGIN, dim.height - Style.MARGIN);
     }
 }

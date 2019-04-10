@@ -6,25 +6,28 @@ import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
+import pow.frontend.widget.State;
+import pow.frontend.widget.Table;
+import pow.frontend.widget.TableCell;
+import pow.frontend.widget.TextBox;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class ConfirmWindow extends AbstractWindow {
 
-    private final String message;
-    private final String okayText;
-    private final String cancelText;
+    private final Table tableLayout;
     private final Runnable action;
 
-    public ConfirmWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend,
+    public ConfirmWindow(boolean visible, GameBackend backend, Frontend frontend,
                          String message, String okayText, String cancelText, Runnable action) {
-        super(dim, visible, backend, frontend);
-        this.message = message;
-        this.okayText = okayText;
-        this.cancelText = cancelText;
+        super(new WindowDim(0, 0, 0, 0), visible, backend, frontend);
+        this.tableLayout = getTableLayout(message, okayText, cancelText);
         this.action = action;
+        this.resize(frontend.layout.center(tableLayout.getWidth() + 2*Style.MARGIN,
+                tableLayout.getHeight() + 2*Style.MARGIN));
     }
 
     @Override
@@ -43,16 +46,39 @@ public class ConfirmWindow extends AbstractWindow {
         }
     }
 
+    private Table getTableLayout(String message, String okayText, String cancelText) {
+        Font font = Style.getDefaultFont();
+
+        // build the inner option list
+        Table optionTable = new Table();
+        optionTable.addRow(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList("[esc]"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(cancelText), State.NORMAL, font))
+        ));
+        optionTable.addRow(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList("[enter]"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(okayText), State.NORMAL, font))
+        ));
+        optionTable.setHSpacing(Style.MARGIN);
+        optionTable.autosize();
+
+        // build the main layout
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList(message), State.NORMAL, font)),
+                new TableCell(optionTable)
+        ));
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+        return layout;
+
+    }
+
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-
-        graphics.drawString(message, Style.MARGIN, Style.MARGIN + Style.FONT_SIZE);
-        graphics.drawString("Esc:    " + cancelText, 2 * Style.MARGIN, Style.MARGIN + 3*Style.FONT_SIZE);
-        graphics.drawString("Enter:  " + okayText, 2 * Style.MARGIN, Style.MARGIN + 4*Style.FONT_SIZE);
+        tableLayout.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

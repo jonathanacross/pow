@@ -1,6 +1,7 @@
 package pow.frontend.window;
 
 import pow.backend.GameBackend;
+import pow.backend.GameConstants;
 import pow.backend.Party;
 import pow.backend.SpellParams;
 import pow.backend.actors.Player;
@@ -9,25 +10,27 @@ import pow.backend.utils.AttackUtils;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
+import pow.frontend.WindowLayout;
 import pow.frontend.utils.ImageController;
 import pow.frontend.utils.ImageUtils;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
+import pow.frontend.widget.*;
 import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class PlayerInfoWindow extends AbstractWindow {
 
     private int viewPane;
-    private static final String HELP_STRING = "Press [left]/[right] to change view, c/[esc]/[enter] to close.";
 
-    public PlayerInfoWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
-        super(dim, visible, backend, frontend);
+    public PlayerInfoWindow(boolean visible, GameBackend backend, Frontend frontend) {
+        super(new WindowDim(0,0,0,0), visible, backend, frontend);
+        resize(getWindowDim(this.frontend.layout));
         viewPane = 0;
     }
 
@@ -37,6 +40,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         switch (input) {
             case EAST:
+            case CYCLE:
                 viewPane = (viewPane + 1) % 3;
                 frontend.setDirty(true);
                 break;
@@ -69,182 +73,173 @@ public class PlayerInfoWindow extends AbstractWindow {
         }
         return strings;
     }
-    private void drawCharInfo(Graphics graphics, Player player, Point where, int width) {
-        ImageController.drawTile(graphics, player.image, where.x, where.y);
-        int textWidth = width - Style.TILE_SIZE - Style.SMALL_MARGIN;
 
-        graphics.setFont(Style.getDefaultFont());
-        FontMetrics textMetrics = graphics.getFontMetrics(Style.getDefaultFont());
-        List<String> spellLines = player.spells.isEmpty()
-                ? Collections.emptyList()
-                : ImageUtils.wrapText("Spells: " + TextUtils.formatList(getSpellNames(player.spells)) + ".", textMetrics, textWidth);
-
-        List<String> lines = new ArrayList<>();
-        String winnerString = player.isWinner() ? " (Winner!)" : "";
-        lines.add(player.name + winnerString);
-        lines.add("");
-        lines.add("");
-        lines.add("HP:        " + player.getHealth() + "/" + player.getMaxHealth());
-        lines.add("MP:        " + player.getMana() + "/" + player.getMaxMana());
-        lines.add("");
-        lines.add("Exp:       " + player.experience);
-        lines.add("Exp next:  " + player.getExpToNextLevel());
-        lines.add("Level:     " + player.level);
-        lines.add("");
-        lines.add("Str:       " + player.baseStats.strength);
-        lines.add("Dex:       " + player.baseStats.dexterity);
-        lines.add("Int:       " + player.baseStats.intelligence);
-        lines.add("Con:       " + player.baseStats.constitution);
-        lines.add("");
-        lines.add("Attack:    " + player.getPrimaryAttack());   // 2d4 (+3, +1)
-        if (player.hasBowEquipped()) {
-            lines.add("Bow:       " + player.getSecondaryAttack());  // 1d2 (+2, +0)
-        } else {
-            lines.add("Bow:       N/A");
-        }
-        lines.add("Defense:   " + player.getDefense()); // [19, +5]
-        lines.add("Speed:     " + player.getSpeed());
-        lines.add("");
-        lines.add("rFire:     " + getResistPercent(player.baseStats.resFire));
-        lines.add("rCold:     " + getResistPercent(player.baseStats.resCold));
-        lines.add("rAcid:     " + getResistPercent(player.baseStats.resAcid));
-        lines.add("rElec:     " + getResistPercent(player.baseStats.resElec));
-        lines.add("rPois:     " + getResistPercent(player.baseStats.resPois));
-        lines.add("rDam:      " + getResistPercent(player.baseStats.resDam));
-        lines.add("");
-        lines.addAll(spellLines);
-
-        graphics.setColor(Color.WHITE);
-        for (int i = 0; i < lines.size(); i++) {
-            graphics.drawString(lines.get(i),
-                    where.x + Style.TILE_SIZE + Style.SMALL_MARGIN,
-                    where.y + Style.TILE_SIZE - 5 + i * Style.FONT_SIZE);
-        }
-
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(where.x, where.y + Style.TILE_SIZE + 1,
-                where.x + width, where.y + Style.TILE_SIZE + 1);
+    private List<TableCell> getRow(String key, String value, Font font) {
+        List<TableCell> row = new ArrayList<>();
+        row.add(new TableCell(new Space()));
+        row.add(new TableCell(new TextBox(Collections.singletonList(key), State.NORMAL, font)));
+        row.add(new TableCell(new TextBox(Collections.singletonList(value), State.NORMAL, font)));
+        return row;
     }
 
-    private void drawMainInfo(Graphics graphics) {
-        graphics.setColor(Style.BACKGROUND_COLOR);
-        graphics.fillRect(0, 0, dim.width, dim.height);
-        graphics.setFont(Style.getDefaultFont());
+    private Table getCharInfoTable(Player player, int width) {
+        int textWidth = width - Style.TILE_SIZE - 2*Style.SMALL_MARGIN;
+        String winnerString = player.isWinner() ? " (Winner!)" : "";
+        String secondaryAttack = player.hasBowEquipped() ? String.valueOf(player.getSecondaryAttack()) : "N/A";
+        Font font = Style.getDefaultFont();
 
+        Table table = new Table();
+        table.addRow(Arrays.asList(
+                new TableCell(new Tile(player.image, State.NORMAL)),
+                new TableCell(new TextBox(Collections.singletonList(player.name + winnerString), State.NORMAL, font)),
+                new TableCell(new Space())
+        ));
+
+        table.addRow(getRow("HP:        ", player.getHealth() + "/" + player.getMaxHealth(), font));
+        table.addRow(getRow("MP:        ", player.getMana() + "/" + player.getMaxMana(), font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("Exp:       ", "" + player.experience, font));
+        table.addRow(getRow("Exp next:  ", "" + player.getExpToNextLevel(), font));
+        table.addRow(getRow("Level:     ", "" + player.level, font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("Str:       ", "" + player.baseStats.strength, font));
+        table.addRow(getRow("Dex:       ", "" + player.baseStats.dexterity, font));
+        table.addRow(getRow("Int:       ", "" + player.baseStats.intelligence, font));
+        table.addRow(getRow("Con:       ", "" + player.baseStats.constitution, font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("Attack:    ", "" + player.getPrimaryAttack(), font));
+        table.addRow(getRow("Bow:       ", "" + secondaryAttack, font));
+        table.addRow(getRow("Defense:   ", "" + player.getDefense(), font));
+        table.addRow(getRow("Speed:     ", "" + player.getSpeed(), font));
+        table.addRow(getRow("", "", font));
+        table.addRow(getRow("rFire:     ", "" + getResistPercent(player.baseStats.resFire), font));
+        table.addRow(getRow("rCold:     ", "" + getResistPercent(player.baseStats.resCold), font));
+        table.addRow(getRow("rAcid:     ", "" + getResistPercent(player.baseStats.resAcid), font));
+        table.addRow(getRow("rElec:     ", "" + getResistPercent(player.baseStats.resElec), font));
+        table.addRow(getRow("rPois:     ", "" + getResistPercent(player.baseStats.resPois), font));
+        table.addRow(getRow("rDam:      ", "" + getResistPercent(player.baseStats.resDam), font));
+        table.addRow(getRow("", "", font));
+        if (!player.spells.isEmpty()) {
+            String spellsString = "Spells: " + TextUtils.formatList(getSpellNames(player.spells)) + ".";
+            table.addRow(Arrays.asList(
+                    new TableCell(new Space()),
+                    new TableCell(new TextBox(Arrays.asList(spellsString), State.NORMAL, font, textWidth)),
+                    new TableCell(new Space())
+            ));
+        }
+
+        table.setColWidths(Arrays.asList(Style.TILE_SIZE + 2*Style.SMALL_MARGIN, 80, textWidth - 80));
+        table.setDrawHeaderLine(true);
+        table.autosize();
+
+        return table;
+    }
+
+    private Table getMainInfoTable() {
         Player player = backend.getGameState().party.player;
         Player pet = backend.getGameState().party.pet;
         int infoWidth = 300;
 
-        drawCharInfo(graphics, player, new Point(2*Style.SMALL_MARGIN, Style.SMALL_MARGIN), infoWidth);
+        Table table = new Table();
+        List<TableCell> row = new ArrayList<>();
+        row.add(new TableCell(getCharInfoTable(player, infoWidth), TableCell.VertAlign.TOP));
         if (pet != null) {
-            drawCharInfo(graphics, pet, new Point(4*Style.SMALL_MARGIN + infoWidth, Style.SMALL_MARGIN), infoWidth);
+            row.add(new TableCell(getCharInfoTable(pet, infoWidth), TableCell.VertAlign.TOP));
         }
+        table.addRow(row);
+        table.setHSpacing(Style.MARGIN);
+        table.autosize();
 
-        // bottom text
-        graphics.setColor(Color.WHITE);
-        graphics.drawString(HELP_STRING, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        return table;
     }
 
-    private void drawStatsInfo(Graphics graphics) {
-        graphics.setColor(Style.BACKGROUND_COLOR);
-        graphics.fillRect(0, 0, dim.width, dim.height);
-
+    private Table getStatsTable() {
         Player player = backend.getGameState().party.player;
+        Font font = Style.getDefaultFont();
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-
-        // draw slot stuff
         Map<DungeonItem.Slot, StringPosition> slotData = new HashMap<>();
-        slotData.put(DungeonItem.Slot.WEAPON, new StringPosition("Weapon", 0));
-        slotData.put(DungeonItem.Slot.BOW, new StringPosition("Bow", 1));
-        slotData.put(DungeonItem.Slot.SHIELD, new StringPosition("Shield", 2));
-        slotData.put(DungeonItem.Slot.HEADGEAR, new StringPosition("Head", 3));
-        slotData.put(DungeonItem.Slot.ARMOR, new StringPosition("Armor", 4));
-        slotData.put(DungeonItem.Slot.CLOAK, new StringPosition("Cloak", 5));
-        slotData.put(DungeonItem.Slot.RING, new StringPosition("Ring", 6));
-        slotData.put(DungeonItem.Slot.BRACELET, new StringPosition("Bracelet", 7));
-        slotData.put(DungeonItem.Slot.AMULET, new StringPosition("Amulet", 8));
-        slotData.put(DungeonItem.Slot.GLOVES, new StringPosition("Gloves",9));
-        slotData.put(DungeonItem.Slot.BOOTS, new StringPosition("Boots", 10));
+        slotData.put(DungeonItem.Slot.WEAPON, new StringPosition("Weapon", 1));
+        slotData.put(DungeonItem.Slot.BOW, new StringPosition("Bow", 2));
+        slotData.put(DungeonItem.Slot.SHIELD, new StringPosition("Shield", 3));
+        slotData.put(DungeonItem.Slot.HEADGEAR, new StringPosition("Head", 4));
+        slotData.put(DungeonItem.Slot.ARMOR, new StringPosition("Armor", 5));
+        slotData.put(DungeonItem.Slot.CLOAK, new StringPosition("Cloak", 6));
+        slotData.put(DungeonItem.Slot.RING, new StringPosition("Ring", 7));
+        slotData.put(DungeonItem.Slot.BRACELET, new StringPosition("Bracelet", 8));
+        slotData.put(DungeonItem.Slot.AMULET, new StringPosition("Amulet", 9));
+        slotData.put(DungeonItem.Slot.GLOVES, new StringPosition("Gloves",10));
+        slotData.put(DungeonItem.Slot.BOOTS, new StringPosition("Boots", 11));
 
         Map<Integer, StringPosition> bonusData = new HashMap<>();
-        bonusData.put(DungeonItem.TO_HIT_IDX, new StringPosition("hit", 0));
-        bonusData.put(DungeonItem.TO_DAM_IDX, new StringPosition("dam", 1));
-        bonusData.put(DungeonItem.DEF_IDX, new StringPosition("def", 2));
-        bonusData.put(DungeonItem.STR_IDX, new StringPosition("str", 3));
-        bonusData.put(DungeonItem.DEX_IDX, new StringPosition("dex", 4));
-        bonusData.put(DungeonItem.INT_IDX, new StringPosition("int", 5));
-        bonusData.put(DungeonItem.CON_IDX, new StringPosition("con", 6));
-        bonusData.put(DungeonItem.RES_FIRE_IDX, new StringPosition("rFire", 7));
-        bonusData.put(DungeonItem.RES_COLD_IDX, new StringPosition("rCold", 8));
-        bonusData.put(DungeonItem.RES_ACID_IDX, new StringPosition("rAcid", 9));
-        bonusData.put(DungeonItem.RES_ELEC_IDX, new StringPosition("rElec", 10));
-        bonusData.put(DungeonItem.RES_POIS_IDX, new StringPosition("rPois", 11));
-        bonusData.put(DungeonItem.RES_DAM_IDX, new StringPosition("rDam", 12));
-        bonusData.put(DungeonItem.SPEED_IDX, new StringPosition("speed", 13));
-        bonusData.put(DungeonItem.WEALTH_IDX, new StringPosition("wealth", 14));
-        bonusData.put(DungeonItem.SOCKETS_IDX, new StringPosition("sockets", 15));
+        bonusData.put(DungeonItem.TO_HIT_IDX, new StringPosition("hit", 4));
+        bonusData.put(DungeonItem.TO_DAM_IDX, new StringPosition("dam", 5));
+        bonusData.put(DungeonItem.DEF_IDX, new StringPosition("def", 6));
+        bonusData.put(DungeonItem.STR_IDX, new StringPosition("str", 7));
+        bonusData.put(DungeonItem.DEX_IDX, new StringPosition("dex", 8));
+        bonusData.put(DungeonItem.INT_IDX, new StringPosition("int", 9));
+        bonusData.put(DungeonItem.CON_IDX, new StringPosition("con", 10));
+        bonusData.put(DungeonItem.RES_FIRE_IDX, new StringPosition("rFire", 11));
+        bonusData.put(DungeonItem.RES_COLD_IDX, new StringPosition("rCold", 12));
+        bonusData.put(DungeonItem.RES_ACID_IDX, new StringPosition("rAcid", 13));
+        bonusData.put(DungeonItem.RES_ELEC_IDX, new StringPosition("rElec", 14));
+        bonusData.put(DungeonItem.RES_POIS_IDX, new StringPosition("rPois", 15));
+        bonusData.put(DungeonItem.RES_DAM_IDX, new StringPosition("rDam", 16));
+        bonusData.put(DungeonItem.SPEED_IDX, new StringPosition("speed", 17));
+        bonusData.put(DungeonItem.WEALTH_IDX, new StringPosition("wealth", 18));
+        bonusData.put(DungeonItem.SOCKETS_IDX, new StringPosition("sockets", 19));
 
-        int dx = Style.TILE_SIZE;
-        int dy = Style.TILE_SIZE;
-        int numSlots = slotData.size();
-        int numBonuses = bonusData.size();
+        int numRows = slotData.size() + 2; // number of slots + 2 for header and total
+        int numCols = 20;
 
-        int gridTop = Style.SMALL_MARGIN + 45;  // top of interior of grid (excluding header)
-        int gridLeft = Style.SMALL_MARGIN + 105;  // left of interior of grid (excluding header)
+        // Make a grid of blank cells; we'll replace some as necessary below.
+        List<List<TableCell>> cells = new ArrayList<>();
+        for (int r = 0; r < numRows; r++) {
+            List<TableCell> blankRow = new ArrayList<>();
+            for (int c = 0; c < numCols; c++) {
+                blankRow.add(new TableCell(new Space(Style.TILE_SIZE, Style.TILE_SIZE)));
+            }
+            cells.add(blankRow);
+        }
 
         // header on top
         for (StringPosition bonus : bonusData.values()) {
-            int x = gridLeft + 15 + bonus.position * dx;
-            int y = gridTop - 5;
-            drawRotated(graphics, bonus.name, x, y, -45);
+            int col = bonus.position;
+            cells.get(0).set(col, new TableCell(
+                    new RotatedText(Style.TILE_SIZE, Style.TILE_SIZE + Style.MARGIN, bonus.name, font)));
         }
 
         // left icons
         for (DungeonItem item: player.equipment.items) {
-            int position = slotData.get(item.slot).position;
-            int x = gridLeft - 40;
-            int y = gridTop + dy * position;
-            ImageController.drawTile(graphics, item.image, x, y);
+            int row = slotData.get(item.slot).position;
+            cells.get(row).set(2, new TableCell(new Tile(item.image, State.NORMAL)));
         }
 
         // left item types
         for (StringPosition sd : slotData.values()) {
-            int y = gridTop + dy * sd.position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2;
-            graphics.drawString(sd.name, gridLeft - 100, y);
+            int row = sd.position;
+            cells.get(row).set(0, new TableCell(new TextBox(Arrays.asList(sd.name), State.NORMAL, font)));
+        }
+
+        // spacing around icons
+        for (int r = 0; r < numRows; r++) {
+            cells.get(r).set(1, new TableCell(new Space(Style.MARGIN, Style.TILE_SIZE)));
+            cells.get(r).set(3, new TableCell(new Space(Style.MARGIN, Style.TILE_SIZE)));
         }
 
         // grid interior
         for (DungeonItem item: player.equipment.items) {
-            int position = slotData.get(item.slot).position;
-            int y = gridTop + dy * position + Style.TILE_SIZE/2 + Style.FONT_SIZE/2;
+            int row = slotData.get(item.slot).position;
 
             for (Map.Entry<Integer, StringPosition> entry : bonusData.entrySet()) {
                 int bonusIdx = entry.getKey();
                 StringPosition bonus = entry.getValue();
-                int x = gridLeft + 5 + bonus.position * dx;
+                int col = bonus.position;
                 if (item.bonuses[bonusIdx] > 0) {
-                    graphics.drawString(bonusString(item.bonuses[bonusIdx]), x, y);
+                    cells.get(row).set(col, new TableCell(
+                            new TextBox(Arrays.asList(bonusString(item.bonuses[bonusIdx])), State.NORMAL, font)));
                 }
             }
         }
-
-        // grid interior lines
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        for (int bonusIdx = 1; bonusIdx < numBonuses; bonusIdx++) {
-            graphics.drawLine(gridLeft + dy*bonusIdx, gridTop, gridLeft + dy*bonusIdx, gridTop + dy*numSlots);
-        }
-        for (int slotIdx = 1; slotIdx < numSlots; slotIdx++) {
-            graphics.drawLine(gridLeft, gridTop + slotIdx*dy, gridLeft + numBonuses*dx, gridTop + slotIdx*dy);
-        }
-
-        // grid border
-        graphics.setColor(Color.GRAY);
-        graphics.drawLine(gridLeft, gridTop, gridLeft, gridTop + dy*numSlots);
-        graphics.drawLine(gridLeft, gridTop, gridLeft + numBonuses*dx, gridTop);
-        graphics.drawLine(gridLeft + dy*numBonuses, gridTop, gridLeft + dy*numBonuses, gridTop + dy*numSlots);
-        graphics.drawLine(gridLeft, gridTop + numSlots*dy, gridLeft + numBonuses*dx, gridTop + numSlots*dy);
 
         // bottom sum
         int[] bonusTotals = new int[DungeonItem.NUM_BONUSES];
@@ -253,101 +248,144 @@ public class PlayerInfoWindow extends AbstractWindow {
                 bonusTotals[i] += item.bonuses[i];
             }
         }
-        graphics.setColor(Color.WHITE);
-        int sumY = gridTop + numSlots*dy + Style.SMALL_MARGIN + Style.FONT_SIZE;
-        graphics.drawString("(total)", gridLeft - 100, sumY);
+        cells.get(numRows-1).set(0, new TableCell(new TextBox(Arrays.asList("(total)"), State.NORMAL, font)));
         for (Map.Entry<Integer, StringPosition> entry : bonusData.entrySet()) {
             int bonusIdx = entry.getKey();
             StringPosition bonus = entry.getValue();
-            int x = gridLeft + 5 + bonus.position * dx;
+            int col = bonus.position;
             if (bonusTotals[bonusIdx] > 0) {
-                graphics.drawString(bonusString(bonusTotals[bonusIdx]), x, sumY);
+                cells.get(numRows-1).set(col, new TableCell(
+                            new TextBox(Arrays.asList(bonusString(bonusTotals[bonusIdx])), State.NORMAL, font)));
             }
         }
 
-        // bottom text
-        graphics.setColor(Color.WHITE);
-        graphics.drawString(HELP_STRING, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        Table table = new Table();
+        table.setCells(cells);
+        table.setGrid(4, 1, numCols, numRows-1);
+        table.autosize();
+
+        return table;
     }
 
-    private void drawProgressInfo(Graphics graphics) {
-        graphics.setColor(Style.BACKGROUND_COLOR);
-        graphics.fillRect(0, 0, dim.width, dim.height);
+    private Table getArtifactTable(Party party, Font font) {
+        List<List<TableCell>> cells = new ArrayList<>();
 
-        Party party = backend.getGameState().party;
+        // add the header
+        cells.add(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList("Artifacts:"), State.NORMAL, font)),
+                new TableCell(new Space()),
+                new TableCell(new Space()),
+                new TableCell(new Space())
+        ));
 
-        graphics.setFont(Style.getDefaultFont());
+        // add blank cells; we'll fill these in later
+        for (int i = 1; i <= 8; i++) {
+            cells.add(Arrays.asList(
+                    new TableCell(new Space(Style.TILE_SIZE, Style.TILE_SIZE)),
+                    new TableCell(new Space()),
+                    new TableCell(new Space(Style.TILE_SIZE, Style.TILE_SIZE)),
+                    new TableCell(new Space())
+            ));
+        }
 
-        // draw artifacts
-        graphics.setColor(Color.WHITE);
-        int y1 = Style.SMALL_MARGIN + Style.FONT_SIZE;
-        graphics.drawString("Artifacts:", Style.SMALL_MARGIN, y1);
-        FontMetrics textMetrics = graphics.getFontMetrics(Style.getDefaultFont());
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(Style.SMALL_MARGIN, y1 + 3, dim.width - Style.SMALL_MARGIN, y1 + 3);
-
+        // the point x, y refers to the column and row in the widget.
         Map<DungeonItem.ArtifactSlot, Point> artifactLocations = new HashMap<>();
-        artifactLocations.put(DungeonItem.ArtifactSlot.PETSTATUE, new Point(0,0));
-        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN, new Point(0,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.KEY, new Point(0,2));
-        artifactLocations.put(DungeonItem.ArtifactSlot.MAP, new Point(0,3));
-        artifactLocations.put(DungeonItem.ArtifactSlot.FLOAT, new Point(0,4));
-        artifactLocations.put(DungeonItem.ArtifactSlot.GASMASK, new Point(0,5));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PORTALKEY, new Point(0,6));
-        artifactLocations.put(DungeonItem.ArtifactSlot.GLASSES, new Point(0,7));
-        artifactLocations.put(DungeonItem.ArtifactSlot.PICKAXE, new Point(1,0));
-        artifactLocations.put(DungeonItem.ArtifactSlot.BAG, new Point(1,1));
-        artifactLocations.put(DungeonItem.ArtifactSlot.TURTLESHELL, new Point(1,2));
-        artifactLocations.put(DungeonItem.ArtifactSlot.HEATSUIT, new Point(1,3));
-        artifactLocations.put(DungeonItem.ArtifactSlot.XRAYSCOPE, new Point(1,4));
-        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN2, new Point(1,5));
-        int dx = 320;
-        int dy = Style.TILE_SIZE + Style.FONT_SIZE;
-        graphics.setColor(Color.WHITE);
+        artifactLocations.put(DungeonItem.ArtifactSlot.PETSTATUE, new Point(0, 1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN, new Point(0, 2));
+        artifactLocations.put(DungeonItem.ArtifactSlot.KEY, new Point(0, 3));
+        artifactLocations.put(DungeonItem.ArtifactSlot.MAP, new Point(0, 4));
+        artifactLocations.put(DungeonItem.ArtifactSlot.FLOAT, new Point(0, 5));
+        artifactLocations.put(DungeonItem.ArtifactSlot.GASMASK, new Point(0, 6));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PORTALKEY, new Point(0, 7));
+        artifactLocations.put(DungeonItem.ArtifactSlot.GLASSES, new Point(0, 8));
+        artifactLocations.put(DungeonItem.ArtifactSlot.PICKAXE, new Point(2, 1));
+        artifactLocations.put(DungeonItem.ArtifactSlot.BAG, new Point(2, 2));
+        artifactLocations.put(DungeonItem.ArtifactSlot.TURTLESHELL, new Point(2, 3));
+        artifactLocations.put(DungeonItem.ArtifactSlot.HEATSUIT, new Point(2, 4));
+        artifactLocations.put(DungeonItem.ArtifactSlot.XRAYSCOPE, new Point(2, 5));
+        artifactLocations.put(DungeonItem.ArtifactSlot.LANTERN2, new Point(2, 6));
+
+        int descWidth = 265;
+        int imageWidth = Style.TILE_SIZE;
+
         for (DungeonItem item : party.artifacts.getArtifacts().values()) {
             Point loc = artifactLocations.get(item.artifactSlot);
-            int x = Style.MARGIN + loc.x * dx;
-            int y = Style.SMALL_MARGIN + 2*Style.FONT_SIZE + loc.y * dy;
-            ImageController.drawTile(graphics, item.image, x, y);
-            List<String> descLines =
-                    ImageUtils.wrapText(item.name + ": " + item.description, textMetrics, dx - (2*Style.SMALL_MARGIN + Style.TILE_SIZE));
-            for (int i = 0; i < descLines.size(); i++) {
-                graphics.drawString(descLines.get(i), x + Style.TILE_SIZE + Style.SMALL_MARGIN,
-                        y + (i+1)*Style.FONT_SIZE);
-            }
-
+            cells.get(loc.y).get(loc.x).widget = new Tile(item.image, State.NORMAL);
+            cells.get(loc.y).get(loc.x + 1).widget = new TextBox(Arrays.asList(item.name + ": " + item.description), State.NORMAL, font, descWidth);
         }
 
-        // draw returned pearls
-        graphics.setColor(Color.WHITE);
-        int y2 = 400;
-        graphics.drawString("Returned Pearls:", Style.SMALL_MARGIN, y2);
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(Style.SMALL_MARGIN, y2 + 3, dim.width - Style.SMALL_MARGIN, y2 + 3);
+        Table artifactTable = new Table();
+        artifactTable.setCells(cells);
+        artifactTable.setColWidths(Arrays.asList(imageWidth, descWidth, imageWidth, descWidth));
+        artifactTable.setDrawHeaderLine(true);
+        artifactTable.setHSpacing(Style.SMALL_MARGIN);
+        artifactTable.setVSpacing(Style.SMALL_MARGIN);
+        artifactTable.autosize();
 
-        Map<String, Point> pearlLocations = new HashMap<>();
-        pearlLocations.put("pearl 1", new Point(0, 0));
-        pearlLocations.put("pearl 2", new Point(1, 0));
-        pearlLocations.put("pearl 3", new Point(2, 0));
-        pearlLocations.put("pearl 4", new Point(3, 0));
-        pearlLocations.put("pearl 5", new Point(4, 0));
-        pearlLocations.put("pearl 6", new Point(5, 0));
-        pearlLocations.put("pearl 7", new Point(6, 0));
-        pearlLocations.put("pearl 8", new Point(7, 0));
+        return artifactTable;
+    }
 
+    private DungeonItem findPearl(Party party, String itemId) {
         for (DungeonItem item : party.returnedPearls) {
-            if (!pearlLocations.containsKey(item.id)) {
-                continue;
+            if (item.id.equals(itemId)) {
+                return item;
             }
-            Point loc = pearlLocations.get(item.id);
-            int x = Style.MARGIN + (Style.SMALL_MARGIN + Style.TILE_SIZE) * loc.x;
-            int y = 410;
-            ImageController.drawTile(graphics, item.image, x, y);
+        }
+        return null;
+    }
+
+    private Table getPearlTable(Party party, Font font) {
+        List<TableCell> header = new ArrayList<>();
+        header.add(new TableCell(new TextBox(Collections.singletonList("Pearls:"), State.NORMAL, font)));
+        for (int c = 1; c < GameConstants.NUM_PEARLS_TO_WIN; c++) {
+            header.add(new TableCell(new Space()));
         }
 
-        // bottom text
-        graphics.setColor(Color.WHITE);
-        graphics.drawString(HELP_STRING, Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        List<TableCell> pearlRow = new ArrayList<>();
+        for (int c = 0; c < GameConstants.NUM_PEARLS_TO_WIN; c++) {
+            String itemId = "pearl " + (c+1);
+            DungeonItem pearl = findPearl(party, itemId);
+            if (pearl != null) {
+                pearlRow.add(new TableCell(new Tile(pearl.image, State.NORMAL)));
+            } else {
+                pearlRow.add(new TableCell(new Space()));
+            }
+        }
+
+        int imageWidth = Style.TILE_SIZE;
+        List<Integer> colWidths = new ArrayList<>();
+        for (int i = 0; i < GameConstants.NUM_PEARLS_TO_WIN; i++) {
+            colWidths.add(imageWidth);
+        }
+        Table pearlTable = new Table();
+        pearlTable.addRow(header);
+        pearlTable.addRow(pearlRow);
+        pearlTable.setColWidths(colWidths);
+        pearlTable.setDrawHeaderLine(true);
+        pearlTable.setHSpacing(Style.SMALL_MARGIN);
+        pearlTable.setVSpacing(Style.SMALL_MARGIN);
+        pearlTable.autosize();
+
+        return pearlTable;
+    }
+
+
+    private Table getProgressTable() {
+        Party party = backend.getGameState().party;
+        Font font = Style.getDefaultFont();
+
+        Table artifactTable = getArtifactTable(party, font);
+        Table pearlTable = getPearlTable(party, font);
+
+        Table progressTable = new Table();
+        progressTable.addColumn(Arrays.asList(
+                new TableCell(artifactTable), new TableCell(pearlTable)
+        ));
+
+        progressTable.setVSpacing(Style.MARGIN);
+        progressTable.autosize();
+
+        return progressTable;
     }
 
     // right justifies string, assumes bonus is <= 999.
@@ -355,22 +393,51 @@ public class PlayerInfoWindow extends AbstractWindow {
         return String.format("%3s", bonus);
     }
 
-    private static void drawRotated(Graphics g, String text, double x, double y, int angle) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.translate((float)x,(float)y);
-        g2d.rotate(Math.toRadians(angle));
-        g2d.drawString(text,0,0);
-        g2d.rotate(-Math.toRadians(angle));
-        g2d.translate(-(float)x,-(float)y);
+    private WindowDim getWindowDim(WindowLayout layout) {
+        // compute the maximum size needed to draw all three views.
+        int maxWidth = 0;
+        int maxHeight = 0;
+
+        // main view
+        Table mainInfoTable = getMainInfoTable();
+        maxWidth = Math.max(maxWidth, mainInfoTable.getWidth());
+        maxHeight = Math.max(maxHeight, mainInfoTable.getHeight());
+
+        // stats view
+        Table statsTable = getStatsTable();
+        maxWidth = Math.max(maxWidth, statsTable.getWidth());
+        maxHeight = Math.max(maxHeight, statsTable.getHeight());
+
+        // progress view
+        Table progressTable = getProgressTable();
+        maxWidth = Math.max(maxWidth, progressTable.getWidth());
+        maxHeight = Math.max(maxHeight, progressTable.getHeight());
+
+        // finally, increase width and height to include margin and bottom text.
+        maxWidth += 2*Style.MARGIN;
+        maxHeight += 3*Style.MARGIN + Style.getFontSize();
+
+        return layout.center(maxWidth, maxHeight);
     }
 
     @Override
     public void drawContents(Graphics graphics) {
+        graphics.setColor(Style.BACKGROUND_COLOR);
+        graphics.fillRect(0, 0, dim.width, dim.height);
+
+        Table table = null;
         switch (viewPane) {
-            case 0: drawMainInfo(graphics); break;
-            case 1: drawStatsInfo(graphics); break;
-            case 2: drawProgressInfo(graphics); break;
+            case 0: table = getMainInfoTable(); break;
+            case 1: table = getStatsTable(); break;
+            case 2: table = getProgressTable(); break;
         }
+        if (table != null) {
+            table.draw(graphics, Style.MARGIN, Style.MARGIN);
+        }
+
+        graphics.setColor(Color.WHITE);
+        graphics.drawString("Press [left]/[right]/[space] to change view, c/[esc]/[enter] to close.",
+                Style.MARGIN, dim.height - Style.MARGIN);
     }
 
     private static class StringPosition {

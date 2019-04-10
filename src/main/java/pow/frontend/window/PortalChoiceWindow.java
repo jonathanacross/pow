@@ -3,9 +3,16 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
+import pow.frontend.WindowDim;
+import pow.frontend.widget.State;
+import pow.frontend.widget.Table;
+import pow.frontend.widget.TableCell;
+import pow.frontend.widget.TextBox;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -24,16 +31,19 @@ public class PortalChoiceWindow extends AbstractWindow {
     private final String message;
     private final List<AreaNameAndId> areas;
     private final Consumer<String> callback;
+    private final Table layoutTable;
 
     public PortalChoiceWindow(GameBackend backend, Frontend frontend,
                               String message,
                               List<AreaNameAndId> areas,
                               Consumer<String> callback) {
-        super(frontend.layout.center(300, 70 + Style.FONT_SIZE * areas.size()),
-                true, backend, frontend);
+        super(new WindowDim(0, 0, 0, 0), true, backend, frontend);
         this.message = message;
         this.areas = areas;
         this.callback = callback;
+        this.layoutTable = getLayoutTable();
+        this.resize(frontend.layout.center(layoutTable.getWidth() + 2*Style.MARGIN,
+                layoutTable.getHeight() + 2*Style.MARGIN));
     }
 
     @Override
@@ -57,27 +67,40 @@ public class PortalChoiceWindow extends AbstractWindow {
         }
     }
 
+    private Table getLayoutTable() {
+        Font font = Style.getDefaultFont();
+
+        // build the list of places
+        Table placeList = new Table();
+        for (int i = 0; i < areas.size(); i++) {
+            String label = (char) ((int) 'a' + i) + ")";
+            String areaName = areas.get(i).name;
+            placeList.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Collections.singletonList(label), State.NORMAL, font)),
+                    new TableCell(new TextBox(Collections.singletonList(areaName), State.NORMAL, font))
+            ));
+        }
+        placeList.setHSpacing(Style.MARGIN);
+        placeList.autosize();
+
+        // build the outer layout
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList(message), State.NORMAL, font)),
+                new TableCell(placeList),
+                new TableCell(new TextBox(Collections.singletonList("Select an area or press [esc] to cancel."), State.NORMAL, font))
+        ));
+
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+        return layout;
+    }
+
     @Override
     public void drawContents(Graphics graphics) {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-
-        graphics.drawString(this.message, Style.SMALL_MARGIN, Style.SMALL_MARGIN + Style.FONT_SIZE);
-
-        int y = 45;
-        int idx = 0;
-        for (AreaNameAndId areaId : areas) {
-            String label = (char) ((int) 'a' + idx) + ")";
-            graphics.drawString(label, Style.SMALL_MARGIN, y);
-            graphics.drawString(areaId.name, Style.SMALL_MARGIN + 20, y);
-            idx++;
-            y += Style.FONT_SIZE;
-        }
-
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Select an area or press [esc] to cancel.", Style.SMALL_MARGIN, dim.height - Style.SMALL_MARGIN);
+        layoutTable.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

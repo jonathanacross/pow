@@ -3,14 +3,17 @@ package pow.frontend.window;
 import pow.backend.GameBackend;
 import pow.backend.GameState;
 import pow.backend.actors.Actor;
+import pow.backend.actors.Player;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
+import pow.frontend.widget.*;
 import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class StatusWindow extends AbstractWindow {
 
@@ -22,60 +25,99 @@ public class StatusWindow extends AbstractWindow {
     public void processKey(KeyEvent e) {
     }
 
-    final private int BAR_WIDTH = 130;
+    private static final int BAR_WIDTH = 135;
+    private static final Color HEALTH_BAR_COLOR = new Color(178, 0, 0);
+    private static final Color MANA_BAR_COLOR = new Color(0, 0, 178);
 
-    private Color darkenColor(Color orig, double percent) {
-        int r = (int) Math.round(orig.getRed() * percent);
-        int g = (int) Math.round(orig.getGreen() * percent);
-        int b = (int) Math.round(orig.getBlue() * percent);
-        return new Color(r,g,b);
+    private Widget getStats(Player p, boolean includeGold, Font font) {
+        Table table = new Table();
+        table.addRow(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList("Exp:"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(String.valueOf(p.experience)), State.NORMAL, font))
+        ));
+        table.addRow(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList("Exp next:"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(String.valueOf(p.getExpToNextLevel())), State.NORMAL, font))
+        ));
+        table.addRow(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList("Level:"), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(String.valueOf(p.level)), State.NORMAL, font))
+        ));
+        if (includeGold) {
+            table.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Collections.singletonList("Gold:"), State.NORMAL, font)),
+                    new TableCell(new TextBox(Collections.singletonList(String.valueOf(p.gold)), State.NORMAL, font))
+            ));
+        }
+        table.setHSpacing(Style.MARGIN);
+        table.autosize();
+        return table;
     }
 
-    private void drawBar(Graphics graphics, int x, int y, int width, int height, Color c, int curr, int max) {
-        int filledWidth = (int) Math.round(width * (double) curr / max);
+    private Table getActorSummary(Actor a, boolean showExact, boolean selected, Widget stats, Font font) {
+        Table rightCol = new Table();
+        int healhBarFilledWidth = (int) Math.round(BAR_WIDTH * (double) a.getHealth() /a.getMaxHealth());
+        int manaBarFilledWidth = (int) Math.round(BAR_WIDTH * (double) a.getMana() /a.getMaxMana());
+        String healthBarText = showExact ? "HP: " + a.getHealth() + "/" + a.getMaxHealth() : "";
+        String manaBarText = showExact ? "MP: " + a.getMana() + "/" + a.getMaxMana() : "";
+        rightCol.addColumn(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList(TextUtils.format(a.name, 1, false)), State.NORMAL, font)),
+                new TableCell(new Bar(BAR_WIDTH, healhBarFilledWidth, HEALTH_BAR_COLOR, healthBarText, font)),
+                new TableCell(new Bar(BAR_WIDTH, manaBarFilledWidth, MANA_BAR_COLOR, manaBarText, font)),
+                new TableCell(stats)
+        ));
+        rightCol.autosize();
 
-        Color saveColor = graphics.getColor();
+        Table table = new Table();
+        table.addRow(Arrays.asList(
+                new TableCell(new Tile(a.image, selected ? State.SELECTED : State.NORMAL), TableCell.VertAlign.TOP),
+                new TableCell(rightCol, TableCell.VertAlign.TOP)
+        ));
+        table.setHSpacing(Style.SMALL_MARGIN);
+        table.autosize();
 
-        Color empty = darkenColor(c, 0.2);
-        Color full = darkenColor(c, 0.7);
-
-        graphics.setColor(empty);
-        graphics.fillRect(x, y, width, height);
-
-        graphics.setColor(full);
-        graphics.fillRect(x, y, filledWidth, height);
-        graphics.drawRect(x, y, width, height);
-        graphics.setColor(saveColor);
+        return table;
     }
 
-    private void drawActorSummary(Graphics graphics, Actor a, int x, int y, boolean showExact, boolean selected) {
-        int textX = x + Style.TILE_SIZE + Style.SMALL_MARGIN;
+    private Table getPartyLayout() {
+        GameState gs = backend.getGameState();
+        Font font = Style.getDefaultFont();
 
-        // draw bars
-        Color healthColor = Color.RED;
-        Color manaColor = Color.BLUE;
-        drawBar(graphics, textX, y + Style.FONT_SIZE, BAR_WIDTH, Style.FONT_SIZE-1, healthColor, a.getHealth(), a.getMaxHealth());
-        if (a.getMaxMana() > 0) {
-            drawBar(graphics, textX, y + 2 * Style.FONT_SIZE, BAR_WIDTH, Style.FONT_SIZE - 1, manaColor, a.getMana(), a.getMaxMana());
+        Table layout = new Table();
+        boolean selectPlayer = gs.party.selectedActor == gs.party.player;
+        layout.addRow(Collections.singletonList(
+                new TableCell(getActorSummary(gs.party.player, true, selectPlayer,
+                        getStats(gs.party.player, true, font), font))
+        ));
+        if (gs.party.pet != null) {
+            boolean selectPet = gs.party.selectedActor == gs.party.pet;
+            layout.addRow(Collections.singletonList(
+                    new TableCell(getActorSummary(gs.party.pet, true, selectPet,
+                            getStats(gs.party.pet, false, font), font))
+            ));
         }
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
 
-        // draw character
-        ImageController.drawTile(graphics, a.image, x, y);
-        if (selected) {
-            graphics.setColor(Color.YELLOW);
-            graphics.drawRect(x, y, Style.TILE_SIZE - 1, Style.TILE_SIZE - 1);
-        }
+        return layout;
+    }
 
-        // draw the text
-        graphics.setColor(Color.WHITE);
-        graphics.drawString(TextUtils.format(a.name, 1, false), textX, y + Style.FONT_SIZE);
-        if (showExact) {
-            graphics.drawString("HP:" + a.getHealth() + "/" + a.getMaxHealth(), textX, y + 2*Style.FONT_SIZE);
-        }
-        if (showExact && a.getMaxMana() > 0) {
-            graphics.drawString("MP:" + a.getMana() + "/" + a.getMaxMana(), textX, y + 3*Style.FONT_SIZE);
-        }
+    private Table getMonsterLayout() {
+        GameState gs = backend.getGameState();
+        Font font = Style.getDefaultFont();
 
+        Table layout = new Table();
+        for (Actor a: gs.getCurrentMap().actors) {
+            if (gs.party.containsActor(a)) continue;
+            if (!gs.party.player.canSeeLocation(gs, a.loc)) continue;
+            layout.addRow(Collections.singletonList(
+                    new TableCell(getActorSummary(a, false, false, new Space(), font))
+            ));
+        }
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+
+        return layout;
     }
 
     @Override
@@ -83,38 +125,14 @@ public class StatusWindow extends AbstractWindow {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-        GameState gs = backend.getGameState();
+        Table partyLayout = getPartyLayout();
+        partyLayout.draw(graphics, Style.SMALL_MARGIN, Style.SMALL_MARGIN);
 
-        int y = 10;
-        int textX = Style.TILE_SIZE + 2*Style.SMALL_MARGIN;
-        boolean selectPlayer = gs.party.selectedActor == gs.party.player;
-        boolean selectPet = gs.party.selectedActor == gs.party.pet;
-        drawActorSummary(graphics, gs.party.player, Style.SMALL_MARGIN, y, true, selectPlayer); y += 4*Style.FONT_SIZE;
-        graphics.drawString("Exp:       " + gs.party.player.experience, textX, y); y += Style.FONT_SIZE;
-        graphics.drawString("Exp next:  " + gs.party.player.getExpToNextLevel(), textX, y); y += Style.FONT_SIZE;
-        graphics.drawString("Level:     " + gs.party.player.level, textX, y); y += Style.FONT_SIZE;
-        graphics.drawString("Gold:      " + gs.party.player.gold, textX, y); y += Style.FONT_SIZE;
-
-        if (gs.party.pet != null) {
-            y += 5;
-            drawActorSummary(graphics, gs.party.pet, Style.SMALL_MARGIN, y, true, selectPet); y += 4*Style.FONT_SIZE;
-            graphics.drawString("Exp:       " + gs.party.pet.experience, textX, y); y += Style.FONT_SIZE;
-            graphics.drawString("Exp next:  " + gs.party.pet.getExpToNextLevel(), textX, y); y += Style.FONT_SIZE;
-            graphics.drawString("Level:     " + gs.party.pet.level, textX, y); y += Style.FONT_SIZE;
-        }
-
-        y += 5;
         graphics.setColor(Style.SEPARATOR_LINE_COLOR);
+        int y = Style.SMALL_MARGIN + Style.MARGIN + partyLayout.getHeight();
         graphics.drawLine(Style.SMALL_MARGIN, y, dim.width - Style.SMALL_MARGIN, y);
-        graphics.setColor(Color.WHITE);
-        y += Style.FONT_SIZE;
 
-        for (Actor a: gs.getCurrentMap().actors) {
-            if (gs.party.containsActor(a)) continue;
-            if (!gs.party.player.canSeeLocation(gs, a.loc)) continue;
-            drawActorSummary(graphics, a, Style.SMALL_MARGIN, y, false, false); y += 40;
-        }
+        Table monsterLayout = getMonsterLayout();
+        monsterLayout.draw(graphics, Style.SMALL_MARGIN, y + Style.MARGIN);
     }
 }
