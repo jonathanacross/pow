@@ -74,6 +74,7 @@ public class TextBox implements Widget {
                 case SELECTED: graphics.setColor(Color.YELLOW); graphics.setFont(font); break;
                 case HEADER1: graphics.setColor(Color.WHITE); graphics.setFont(font.deriveFont(Font.BOLD, (float) (font.getSize()*1.3))); break;
                 case HEADER2: graphics.setColor(Color.WHITE); graphics.setFont(font.deriveFont(Font.BOLD)); break;
+                case ERROR: graphics.setColor(Color.RED); graphics.setFont(font); break;
             }
             graphics.drawString(line, x, yOffset);
             yOffset += lineHeight;

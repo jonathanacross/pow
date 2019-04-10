@@ -10,11 +10,13 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.utils.ImageController;
+import pow.frontend.widget.*;
+import pow.util.TextUtils;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -32,7 +34,7 @@ public class JewelerShopWindow extends AbstractWindow {
 
         public int equipmentSelectIdx;
         public int inventorySelectIdx;
-        public int gemsSelect;
+        public int gemsSelectIdx;
 
         public int size() {
             return equipment.size() + inventory.size() + gems.size();
@@ -53,7 +55,7 @@ public class JewelerShopWindow extends AbstractWindow {
         }
 
         public DungeonItem getSelectedGem() {
-            DungeonItem item = new DungeonItem(gems.get(gemsSelect).item);
+            DungeonItem item = new DungeonItem(gems.get(gemsSelectIdx).item);
             item.count = 1;
             return item;
         }
@@ -91,9 +93,9 @@ public class JewelerShopWindow extends AbstractWindow {
             }
 
             if (!gems.isEmpty()) {
-                gemsSelect = 0;
+                gemsSelectIdx = 0;
             } else {
-                gemsSelect = -1;
+                gemsSelectIdx = -1;
             }
         }
 
@@ -105,7 +107,7 @@ public class JewelerShopWindow extends AbstractWindow {
                 equipmentSelectIdx = -1;
                 inventorySelectIdx = idx - inventoryIdxMin;
             } else {
-                gemsSelect = idx - gemsIdxMin;
+                gemsSelectIdx = idx - gemsIdxMin;
             }
         }
     }
@@ -125,6 +127,11 @@ public class JewelerShopWindow extends AbstractWindow {
         List<ShopUtils.ItemInfo> inventory = ShopUtils.getListOfUpgradeableItems(player.inventory.items);
         List<ShopUtils.ItemInfo> gems = ShopUtils.getListOfGems(player);
         selections = new Selections(equipment, inventory, gems, player.gold);
+
+        Table layoutTable = getLayoutTable();
+        int height = 2*Style.MARGIN + layoutTable.getHeight();
+        int width = 2*Style.MARGIN + layoutTable.getWidth();
+        this.resize(frontend.layout.center(width, height));
     }
 
     @Override
@@ -148,7 +155,7 @@ public class JewelerShopWindow extends AbstractWindow {
             if (keyCode == KeyEvent.VK_ENTER) {
                 int equipmentIdx = getIdxOrMinus1(selections.equipment, selections.equipmentSelectIdx);
                 int inventoryIdx = getIdxOrMinus1(selections.inventory, selections.inventorySelectIdx);
-                int gemsIdx = getIdxOrMinus1(selections.gems, selections.gemsSelect);
+                int gemsIdx = getIdxOrMinus1(selections.gems, selections.gemsSelectIdx);
                 callback.accept(new UpgradeItem.UpgradeInfo(equipmentIdx, inventoryIdx, gemsIdx, selections.getCostOfSelectedItems()));
                 frontend.close();
             }
@@ -173,115 +180,129 @@ public class JewelerShopWindow extends AbstractWindow {
         graphics.drawString(item.stringWithInfo(), position.x + 50, textY);
     }
 
-    @Override
-    public void drawContents(Graphics graphics) {
+    public Table getItemTable(String title, int labelStartIdx, int selectIdx, List<ShopUtils.ItemInfo> items) {
+        Font font = Style.getDefaultFont();
 
+        Table itemList = new Table();
+        for (int idx = 0; idx < items.size(); idx++) {
+            DungeonItem item = items.get(idx).item;
+            State state = idx == selectIdx ? State.SELECTED : State.NORMAL;
+            String label = (char) ((int) 'a' + idx + labelStartIdx) + ")";
+            List<String> itemInfo = Arrays.asList(TextUtils.format(item.name, item.count, false),  item.bonusString());
+            itemList.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Collections.singletonList(label), state, font)),
+                    new TableCell(new Tile(item.image, state)),
+                    new TableCell(new TextBox(itemInfo, state, font))
+            ));
+        }
+        itemList.setHSpacing(Style.MARGIN);
+        itemList.autosize();
+
+        Table table = new Table();
+        table.addColumn(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList(title), State.NORMAL, font)),
+                new TableCell(itemList)
+                ));
+        table.setVSpacing(Style.MARGIN);
+        table.setDrawHeaderLine(true);
+        table.autosize();
+
+        return table;
+    }
+
+    public Table getLayoutTable() {
         Player player = backend.getGameState().party.player;
-
-        graphics.setColor(Style.BACKGROUND_COLOR);
-        graphics.fillRect(0, 0, dim.width, dim.height);
-
-        graphics.setFont(Style.getDefaultFont());
-        graphics.setColor(Color.WHITE);
-
+        Font font = Style.getDefaultFont();
 
         // if insufficient items, then let the player know and skip the complex drawing logic.
         if (!selections.haveNeededItems()) {
-            graphics.drawString("Hi " + player.name + ", come back when you have a socketed item and a gem.",
-                    Style.MARGIN, Style.MARGIN + Style.getFontSize());
-
-            graphics.drawString("Press [esc] to exit.", Style.MARGIN, dim.height - Style.MARGIN);
-            return;
+            String greeting = "Hi " + player.name + ", come back when you have a socketed item and a gem.";
+            String helpMsg = "Press [esc] to exit.";
+            Table table = new Table();
+            table.addColumn(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList(greeting), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(helpMsg), State.NORMAL, font))
+            ));
+            table.setVSpacing(Style.MARGIN);
+            table.autosize();
+            return table;
         }
 
-        graphics.drawString("Hi " + player.name + ", select an item and a gem.",
-                Style.MARGIN, Style.MARGIN + Style.getFontSize());
-
-        final int yHeader = Style.MARGIN + 3 * Style.getFontSize();
-        final int col1x = Style.MARGIN;
-        final int col2x = 430;
-
-        int y = yHeader;
-        int idx = 0;
-
-        // equipment, first column
+        // left pane
+        int labelStartIdx = 0;
+        Table leftPane = new Table();
         if (!selections.equipment.isEmpty()) {
-            graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-            graphics.drawLine(col1x, y + 5, col2x - 30, y + 5);
-            graphics.setColor(Color.WHITE);
-            graphics.drawString("Equipment:", Style.MARGIN, y);
-            y += Style.getFontSize();
-            for (ShopUtils.ItemInfo entry : selections.equipment) {
-                boolean isSelected = idx == selections.equipmentSelectIdx;
-                drawItem(graphics, new Point(Style.MARGIN, y), idx, entry.item, isSelected, true);
-                idx++;
-                y += Style.TILE_SIZE;
-            }
-
-            y += 20;
+            leftPane.addRow(Arrays.asList(
+                    new TableCell(getItemTable("Equipment:", labelStartIdx, selections.equipmentSelectIdx,
+                            selections.equipment))
+            ));
+            labelStartIdx += selections.equipment.size();
         }
-
-        // inventory, first column
-        int baseInventoryIdx = idx;
         if (!selections.inventory.isEmpty()) {
-            graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-            graphics.drawLine(col1x, y + 5, col2x - 30, y + 5);
-            graphics.setColor(Color.WHITE);
-            graphics.drawString("Inventory:", Style.MARGIN, y);
-            y += Style.getFontSize();
-            for (ShopUtils.ItemInfo entry : selections.inventory) {
-                boolean isSelected = idx - baseInventoryIdx == selections.inventorySelectIdx;
-                drawItem(graphics, new Point(Style.MARGIN, y), idx, entry.item, isSelected, true);
-                idx++;
-                y += Style.TILE_SIZE;
-            }
+            leftPane.addRow(Arrays.asList(
+                    new TableCell(getItemTable("Inventory:", labelStartIdx, selections.inventorySelectIdx,
+                            selections.inventory))
+            ));
+            labelStartIdx += selections.inventory.size();
         }
+        leftPane.setVSpacing(Style.MARGIN);
+        leftPane.autosize();
 
-        // gems, second column
-        int baseGemIdx = idx;
-        y = yHeader;
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(col2x, y + 5, dim.width - Style.MARGIN, y + 5);
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Gems:", col2x, y);
-        y += Style.getFontSize();
-        for (ShopUtils.ItemInfo entry : selections.gems) {
-            boolean isSelected = idx - baseGemIdx == selections.gemsSelect;
-            drawItem(graphics, new Point(col2x, y), idx, entry.item, isSelected, true);
-            idx++;
-            y += Style.TILE_SIZE;
-        }
+        // right pane
+        Table rightPane = new Table();
+        rightPane.addRow(Arrays.asList(
+                new TableCell(getItemTable("Gems:", labelStartIdx, selections.gemsSelectIdx,
+                        selections.gems))
+        ));
+        rightPane.autosize();
 
-        // status at the bottom
-        y = dim.height - 125;
-        graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(Style.MARGIN, y + 5, dim.width - Style.MARGIN, y + 5);
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("Items to combine:", Style.MARGIN, y);
+        // select table
+        Table selectTable = new Table();
+        selectTable.addRow(Arrays.asList(
+                new TableCell(leftPane, TableCell.VertAlign.TOP),
+                new TableCell(rightPane, TableCell.VertAlign.TOP)
+        ));
+        selectTable.setHSpacing(Style.MARGIN);
+        selectTable.autosize();
 
-        DungeonItem upgradeItem = selections.getSelectedItem();
-        DungeonItem gem = selections.getSelectedGem();
-        boolean enabled = selections.playerCanAffordUpgrade();
+        // full layout
+        String title = "Hi " + player.name + ", select an item and a gem.";
+        String costMsg = "It costs " + selections.getCostOfSelectedItems() +
+                " gold to combine these items.";
+        String errMsg = selections.playerCanAffordUpgrade()
+                ? ""
+                : "You don't have enough money.";
+        String helpMsg = selections.playerCanAffordUpgrade()
+                ? "Press return to accept, Esc to cancel."
+                : "Choose another combination or press [esc] to cancel.";
 
-        y += Style.getFontSize();
-        drawItem(graphics, new Point(col1x, y), -1, upgradeItem, false, enabled);
-        drawItem(graphics, new Point(col2x, y), -1, gem, false, enabled);
 
-        y += Style.TILE_SIZE + 2 * Style.getFontSize();
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("It costs " + selections.getCostOfSelectedItems() +
-                " gold to combine these items.", Style.MARGIN, y);
-        y += Style.getFontSize();
-        if (selections.playerCanAffordUpgrade()) {
-            y += 2 * Style.getFontSize();
-            graphics.drawString("Press return to accept, Esc to cancel.", Style.MARGIN, y);
-        } else {
-            graphics.setColor(Color.RED);
-            graphics.drawString("You don't have enough money.", Style.MARGIN, y);
-            y += 2 * Style.getFontSize();
-            graphics.setColor(Color.WHITE);
-            graphics.drawString("Choose another combination or press [esc] to cancel.", Style.MARGIN, y);
+        Table costTable = new Table();
+        costTable.addColumn(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList(costMsg), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(errMsg), State.ERROR, font))
+        ));
+        costTable.autosize();
 
-        }
+        Table layout = new Table();
+        layout.addColumn(Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList(title), State.NORMAL, font)),
+                new TableCell(selectTable),
+                new TableCell(costTable),
+                new TableCell(new TextBox(Collections.singletonList(helpMsg), State.NORMAL, font))
+        ));
+        layout.setVSpacing(Style.MARGIN);
+        layout.autosize();
+
+        return layout;
+    }
+
+    @Override
+    public void drawContents(Graphics graphics) {
+        graphics.setColor(Style.BACKGROUND_COLOR);
+        graphics.fillRect(0, 0, dim.width, dim.height);
+
+        Table layout = getLayoutTable();
+        layout.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

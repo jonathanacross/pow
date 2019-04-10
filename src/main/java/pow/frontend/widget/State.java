@@ -6,5 +6,6 @@ public enum State {
     DISABLED,
     SELECTED,
     HEADER1,
-    HEADER2
+    HEADER2,
+    ERROR
 }
