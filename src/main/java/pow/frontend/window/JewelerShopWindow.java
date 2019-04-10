@@ -115,12 +115,11 @@ public class JewelerShopWindow extends AbstractWindow {
     private final Selections selections;
     private final Consumer<UpgradeItem.UpgradeInfo> callback;
 
-    public JewelerShopWindow(WindowDim dim,
-                             boolean visible,
+    public JewelerShopWindow(boolean visible,
                              GameBackend backend,
                              Frontend frontend,
                              Consumer<UpgradeItem.UpgradeInfo> callback) {
-        super(dim, visible, backend, frontend);
+        super(new WindowDim(0, 0, 0, 0), visible, backend, frontend);
         this.callback = callback;
         Player player = backend.getGameState().party.player;
         List<ShopUtils.ItemInfo> equipment = ShopUtils.getListOfUpgradeableItems(player.equipment.items);

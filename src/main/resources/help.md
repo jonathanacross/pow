@@ -198,7 +198,8 @@ when you wish to cancel targeting of all monsters.
 # Customization
 
 You can change the window size by dragging the border. You can
-change the font and size used by PoW by running PoW from the command line.
+change the font and size used by running PoW from the command line.
+Note that even non-monospaced fonts work well.
 
 java pow-0.9.0-jar-with-dependencies.jar -Dfont.name="Monaco" -Dfont.size=16
 

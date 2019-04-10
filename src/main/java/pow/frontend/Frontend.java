@@ -261,8 +261,7 @@ public class Frontend {
                 open(new ShopWindow(true, gameBackend, this, entries));
                 break;
             case JEWELER_SHOP:
-                dim = layout.center(650, 550);
-                open(new JewelerShopWindow(dim, true, gameBackend, this,
+                open(new JewelerShopWindow(true, gameBackend, this,
                         (UpgradeItem.UpgradeInfo i) -> gameBackend.tellSelectedActor(new UpgradeItem(i))));
                 break;
             default:

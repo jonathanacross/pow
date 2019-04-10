@@ -7,9 +7,12 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TextBox implements Widget {
 
@@ -65,6 +68,9 @@ public class TextBox implements Widget {
 
     @Override
     public void draw(Graphics graphics, int x, int y) {
+        Map<TextAttribute, Integer> underlined = new HashMap<>();
+        underlined.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+
         // vertically center
         int yOffset = y + ascent;
         for (String line : lines) {
@@ -72,8 +78,12 @@ public class TextBox implements Widget {
                 case NORMAL: graphics.setColor(Color.WHITE); graphics.setFont(font); break;
                 case DISABLED: graphics.setColor(Color.GRAY); graphics.setFont(font); break;
                 case SELECTED: graphics.setColor(Color.YELLOW); graphics.setFont(font); break;
-                case HEADER1: graphics.setColor(Color.WHITE); graphics.setFont(font.deriveFont(Font.BOLD, (float) (font.getSize()*1.3))); break;
-                case HEADER2: graphics.setColor(Color.WHITE); graphics.setFont(font.deriveFont(Font.BOLD)); break;
+                case HEADER1: graphics.setColor(Color.WHITE);
+                    graphics.setFont(font.deriveFont(Font.BOLD, (float) (font.getSize()*1.3)).deriveFont(underlined));
+                    break;
+                case HEADER2:
+                    graphics.setColor(Color.WHITE); graphics.setFont(font.deriveFont(Font.BOLD).deriveFont(underlined));
+                    break;
                 case ERROR: graphics.setColor(Color.RED); graphics.setFont(font); break;
             }
             graphics.drawString(line, x, yOffset);
