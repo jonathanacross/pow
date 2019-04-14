@@ -15,9 +15,7 @@ import pow.util.TextUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -42,8 +40,10 @@ public class SelectCharWindow extends AbstractWindow {
     private final List<String> messages;
     private final boolean showSpeed;
     private final boolean allowCancel;
+    private final Random rng;
 
     public SelectCharWindow(WindowDim dim, GameBackend backend, Frontend frontend,
+                            Random rng,
                             List<String> messages, boolean showPets,
                             Consumer<NamedCharData> successCallback, Runnable cancelCallback) {
         super(dim, true, backend, frontend);
@@ -53,6 +53,7 @@ public class SelectCharWindow extends AbstractWindow {
         this.characterData = showPets
                 ? CharacterGenerator.getPetCharacterData()
                 : CharacterGenerator.getPlayerCharacterData();
+        this.rng = rng;
         this.messages = messages;
         this.successCallback = successCallback;
         this.cancelCallback = cancelCallback;
@@ -63,7 +64,7 @@ public class SelectCharWindow extends AbstractWindow {
     private void processNameKey(KeyEvent e) {
         char c = e.getKeyChar();
         if (c == '*') {
-            name = NameGenerator.getRandomName(backend.getGameState().rng);
+            name = NameGenerator.getRandomName(rng);
             frontend.setDirty(true);
         } else if (Character.isLetterOrDigit(c) || c == ' ') {
             name = name + c;
@@ -211,15 +212,6 @@ public class SelectCharWindow extends AbstractWindow {
                         "",
                         "> " + name),
                 State.NORMAL, font);
-
-        // Help message
-        String helpChooseString = allowCancel
-                ? "Press left/right to choose, [enter] to select, [esc] to cancel."
-                : "Press left/right to choose, [enter] to select.";
-        String helpString = onName
-                ? "Press * for a random name, [enter] to select, [esc] to cancel."
-                : helpChooseString;
-        TextBox helpBox = new TextBox(Collections.singletonList(helpString), State.NORMAL, font);
 
         // overall layout
         Table layout = new Table();

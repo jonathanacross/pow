@@ -27,16 +27,6 @@ public class GameState implements Serializable {
         return world.recentMaps.getCurrentMap();
     }
 
-    // makes a partial GameState useful when not playing the actual game..
-    public GameState() {
-        this.world = null;
-        this.rng = new Random();
-        this.gameInProgress = false;
-        this.party = new Party(new Player());
-        this.log = new MessageLog(GameConstants.MESSAGE_LOG_SIZE);
-        this.turnCount = 0;
-    }
-
     public GameState(Player player) {
         this.gameInProgress = false;
         int seed = (new Random()).nextInt();

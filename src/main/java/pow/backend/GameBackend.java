@@ -11,6 +11,7 @@ import java.util.*;
 
 public class GameBackend {
 
+    private boolean gameInProgress;
     private GameState gameState;
     private final Deque<Action> commandQueue;
     private final Deque<GameEvent> eventQueue;
@@ -21,7 +22,8 @@ public class GameBackend {
     }
 
     public GameBackend() {
-        this.gameState = new GameState();
+        this.gameState = null;
+        this.gameInProgress = false;
         this.commandQueue = new ArrayDeque<>();
         this.eventQueue = new ArrayDeque<>();
         this.dirty = false;
@@ -42,7 +44,7 @@ public class GameBackend {
     }
 
     public void setGameInProgress(boolean gameInProgress) {
-        gameState.gameInProgress = gameInProgress;
+        this.gameInProgress = gameInProgress;
     }
 
     private List<GameEvent> processCommand(Deque<Action> commandQueue) {
@@ -118,7 +120,7 @@ public class GameBackend {
                 }
             }
 
-            if (!gameState.gameInProgress) {
+            if (!gameInProgress) {
                 return gameResult;
             }
 

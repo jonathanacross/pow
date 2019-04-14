@@ -221,6 +221,7 @@ public class Frontend {
         SelectCharWindow createCharWindow = new SelectCharWindow(
                 layout.center(490, 330),
                 gameBackend, this,
+                new Random(),
                 Collections.singletonList("Select your character:"), false,
                 this::tryToStartNewGame, () -> setState(Frontend.State.OPEN_GAME));
         open(createCharWindow);
@@ -230,6 +231,7 @@ public class Frontend {
         SelectCharWindow createCharWindow = new SelectCharWindow(
                 layout.center(490, 330),
                 gameBackend, this,
+                gameBackend.getGameState().rng,
                 Arrays.asList("Congratulations, you got a pet!", "Select your character:"), true,
                 (data) -> {
                     Player pet = CharacterGenerator.getPlayer(data.name, data.characterData.id);
@@ -242,7 +244,6 @@ public class Frontend {
 
     private void processShopEntry() {
         ShopData shopData = gameBackend.getGameState().getCurrentMap().shopData;
-        WindowDim dim;
         List<ShopData.ShopEntry> entries;
         switch (shopData.state) {
             case INN:
