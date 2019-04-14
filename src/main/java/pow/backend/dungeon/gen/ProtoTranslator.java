@@ -6,8 +6,6 @@ import pow.backend.dungeon.DungeonTerrain;
 import java.util.Map;
 
 public class ProtoTranslator {
-
-    // TODO: see if it's possible to handle just maps of integer -> string?
     private final Map<Integer, DungeonTerrain> terrainMap;
     private final Map<Integer, DungeonFeature> featureMap;
 

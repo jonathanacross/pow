@@ -17,7 +17,7 @@ import java.util.Map;
 public class TextBox implements Widget {
 
     // Used to get font metrics to compute text heights/widths
-    private static Graphics fakeGraphics;
+    private static final Graphics fakeGraphics;
     static {
         Image dummyImage = new BufferedImage(10, 10,  BufferedImage.TYPE_INT_ARGB);
         fakeGraphics = dummyImage.getGraphics();

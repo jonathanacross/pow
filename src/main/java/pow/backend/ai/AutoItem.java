@@ -1,11 +1,6 @@
 package pow.backend.ai;
 
 import pow.backend.GameState;
-import pow.backend.action.Action;
-import pow.backend.action.Drop;
-import pow.backend.action.DropEquipment;
-import pow.backend.action.PickUp;
-import pow.backend.action.Wear;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;

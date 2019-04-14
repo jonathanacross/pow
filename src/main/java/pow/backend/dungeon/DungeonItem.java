@@ -225,7 +225,6 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     public String bonusString() {
         // For potions, return description, which is more meaningful than an empty bonus string
-        // TODO: consider adding artifacts too.
         if (flags.potion) {
             return "(" + description + ")";
         } else {

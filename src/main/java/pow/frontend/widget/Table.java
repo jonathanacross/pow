@@ -197,7 +197,5 @@ public class Table implements Widget {
 
             yOffset += rowHeights.get(r) + vSpacing;
         }
-
-        // TODO: draw grid
     }
 }

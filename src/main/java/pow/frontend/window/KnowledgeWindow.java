@@ -21,7 +21,7 @@ import java.util.List;
 
 public class KnowledgeWindow extends AbstractWindow {
 
-    private ScrollBar scrollBar;
+    private final ScrollBar scrollBar;
     private final List<Knowledge.MonsterSummary> monsterSummary;
 
     public KnowledgeWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend,

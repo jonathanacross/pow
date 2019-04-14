@@ -9,7 +9,6 @@ import pow.backend.utils.ShopUtils;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
 import pow.frontend.widget.*;
 import pow.util.TextUtils;
 
@@ -217,14 +216,14 @@ public class JewelerShopWindow extends AbstractWindow {
         int labelStartIdx = 0;
         Table leftPane = new Table();
         if (!selections.equipment.isEmpty()) {
-            leftPane.addRow(Arrays.asList(
+            leftPane.addRow(Collections.singletonList(
                     new TableCell(getItemTable("Equipment:", labelStartIdx, selections.equipmentSelectIdx,
                             selections.equipment))
             ));
             labelStartIdx += selections.equipment.size();
         }
         if (!selections.inventory.isEmpty()) {
-            leftPane.addRow(Arrays.asList(
+            leftPane.addRow(Collections.singletonList(
                     new TableCell(getItemTable("Inventory:", labelStartIdx, selections.inventorySelectIdx,
                             selections.inventory))
             ));
@@ -235,7 +234,7 @@ public class JewelerShopWindow extends AbstractWindow {
 
         // right pane
         Table rightPane = new Table();
-        rightPane.addRow(Arrays.asList(
+        rightPane.addRow(Collections.singletonList(
                 new TableCell(getItemTable("Gems:", labelStartIdx, selections.gemsSelectIdx,
                         selections.gems))
         ));

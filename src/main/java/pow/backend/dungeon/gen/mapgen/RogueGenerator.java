@@ -258,7 +258,7 @@ public class RogueGenerator implements MapGenerator {
         }
 
         // sort the rooms by closest path so there aren't
-        // too many long paths that criss-cross over the
+        // too many long paths that crisscross over the
         // dungeon..
         List<Integer> pi = visitPermutation(rooms);
         // but add a few extra paths so that the final result isn't

@@ -15,8 +15,8 @@ import java.awt.event.KeyEvent;
 
 public class HelpWindow extends AbstractWindow {
 
-    private Table helpTable;
-    private ScrollBar scrollBar;
+    private final Table helpTable;
+    private final ScrollBar scrollBar;
 
     public HelpWindow(WindowDim dim, boolean visible, GameBackend backend, Frontend frontend) {
         super(dim, visible, backend, frontend);

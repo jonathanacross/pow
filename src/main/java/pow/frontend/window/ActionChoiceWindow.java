@@ -88,9 +88,6 @@ public class ActionChoiceWindow extends AbstractWindow {
                     case TAKE_OFF:
                         backend.tellSelectedActor(new TakeOff(selectedActor, itemIndex));
                         break;
-//                    case GIVE:
-//                        // TODO: allow user to specify count
-//                        backend.tellSelectedActor(new TransferItem(selectedActor, nonselectedActor, itemIndex, item.count));
                 }
                 frontend.close();
                 frontend.close();

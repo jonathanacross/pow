@@ -23,7 +23,6 @@ public class ExitPortal implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        backend.getGameState().inPortal = false;
         List<GameEvent> events = new ArrayList<>();
 
         // If no area given, then exit back at current area.

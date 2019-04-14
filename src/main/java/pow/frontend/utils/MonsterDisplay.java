@@ -1,6 +1,5 @@
 package pow.frontend.utils;
 
-import pow.backend.SpellParams;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Player;
 import pow.backend.actors.Knowledge;

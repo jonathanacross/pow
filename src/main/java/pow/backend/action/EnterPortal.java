@@ -17,7 +17,6 @@ public class EnterPortal implements Action {
 
     @Override
     public ActionResult process(GameBackend backend) {
-        backend.getGameState().inPortal = true;
 
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.IN_PORTAL);  // trigger the frontend to pop open a window to see what to do.

@@ -145,7 +145,6 @@ public class ImageController {
         Map<String, Point> tileMap = new HashMap<>();
         for (String[] line : reader.getData()) {
             if (line.length != 5) {
-                // TODO: improve error handling
                 throw new DataFormatException("expected line to have 5 fields");
             }
 

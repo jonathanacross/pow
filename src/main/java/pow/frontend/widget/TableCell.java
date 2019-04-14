@@ -8,7 +8,7 @@ public class TableCell {
     }
 
     public Widget widget;
-    public VertAlign vAlign;
+    public final VertAlign vAlign;
 
     public TableCell(Widget widget) {
         this.widget = widget;

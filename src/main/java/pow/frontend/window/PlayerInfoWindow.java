@@ -121,7 +121,7 @@ public class PlayerInfoWindow extends AbstractWindow {
             String spellsString = "Spells: " + TextUtils.formatList(getSpellNames(player.spells)) + ".";
             table.addRow(Arrays.asList(
                     new TableCell(new Space()),
-                    new TableCell(new TextBox(Arrays.asList(spellsString), State.NORMAL, font, textWidth)),
+                    new TableCell(new TextBox(Collections.singletonList(spellsString), State.NORMAL, font, textWidth)),
                     new TableCell(new Space())
             ));
         }
@@ -215,7 +215,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         // left item types
         for (StringPosition sd : slotData.values()) {
             int row = sd.position;
-            cells.get(row).set(0, new TableCell(new TextBox(Arrays.asList(sd.name), State.NORMAL, font)));
+            cells.get(row).set(0, new TableCell(new TextBox(Collections.singletonList(sd.name), State.NORMAL, font)));
         }
 
         // spacing around icons
@@ -234,7 +234,7 @@ public class PlayerInfoWindow extends AbstractWindow {
                 int col = bonus.position;
                 if (item.bonuses[bonusIdx] > 0) {
                     cells.get(row).set(col, new TableCell(
-                            new TextBox(Arrays.asList(bonusString(item.bonuses[bonusIdx])), State.NORMAL, font)));
+                            new TextBox(Collections.singletonList(bonusString(item.bonuses[bonusIdx])), State.NORMAL, font)));
                 }
             }
         }
@@ -246,14 +246,14 @@ public class PlayerInfoWindow extends AbstractWindow {
                 bonusTotals[i] += item.bonuses[i];
             }
         }
-        cells.get(numRows-1).set(0, new TableCell(new TextBox(Arrays.asList("(total)"), State.NORMAL, font)));
+        cells.get(numRows-1).set(0, new TableCell(new TextBox(Collections.singletonList("(total)"), State.NORMAL, font)));
         for (Map.Entry<Integer, StringPosition> entry : bonusData.entrySet()) {
             int bonusIdx = entry.getKey();
             StringPosition bonus = entry.getValue();
             int col = bonus.position;
             if (bonusTotals[bonusIdx] > 0) {
                 cells.get(numRows-1).set(col, new TableCell(
-                            new TextBox(Arrays.asList(bonusString(bonusTotals[bonusIdx])), State.NORMAL, font)));
+                            new TextBox(Collections.singletonList(bonusString(bonusTotals[bonusIdx])), State.NORMAL, font)));
             }
         }
 
@@ -309,7 +309,7 @@ public class PlayerInfoWindow extends AbstractWindow {
         for (DungeonItem item : party.artifacts.getArtifacts().values()) {
             Point loc = artifactLocations.get(item.artifactSlot);
             cells.get(loc.y).get(loc.x).widget = new Tile(item.image, State.NORMAL);
-            cells.get(loc.y).get(loc.x + 1).widget = new TextBox(Arrays.asList(item.name + ": " + item.description), State.NORMAL, font, descWidth);
+            cells.get(loc.y).get(loc.x + 1).widget = new TextBox(Collections.singletonList(item.name + ": " + item.description), State.NORMAL, font, descWidth);
         }
 
         Table artifactTable = new Table();
