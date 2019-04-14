@@ -44,6 +44,7 @@ public class GameMap implements Serializable {
     public ShopData shopData; // for stores contained in this map
     public final Flags flags;
     public boolean visited;  // has the player visited this map
+    public boolean petCouldNotBePlaced;
 
     public void updatePlayerVisibilityData(Player player, Player pet) {
         updateBrightness(player, pet);
@@ -143,13 +144,15 @@ public class GameMap implements Serializable {
         this.flags = flags;
         this.shopData = shopData;
         this.visited = false;
+        this.petCouldNotBePlaced = false;
         initLightSources();
     }
 
     // Call when a player enters a level.
     // Player is set to the requested location, and set to full energy.
     // Pet is moved as near to the player as possible.
-    public void placePlayerAndPet(Player player, Point playerLoc, Player pet) {
+    // Returns true of pet placement was successful.
+    public boolean placePlayerAndPet(Player player, Point playerLoc, Player pet) {
         // Make sure the player doesn't appear on a monster.
         player.loc = findClosestOpenSquare(player, playerLoc);
         visited = true;
@@ -161,21 +164,30 @@ public class GameMap implements Serializable {
             if (nearestLocation != null) {
                 addActor(pet);
                 pet.loc = nearestLocation;
+                petCouldNotBePlaced = false;
+            } else {
+                petCouldNotBePlaced = true;
             }
         }
 
         updatePlayerVisibilityData(player, pet);
+        return (!petCouldNotBePlaced);
     }
 
-    public void placePet(Player player, Player pet) {
+    // Returns true of pet placement was successful.
+    public boolean placePet(Player player, Player pet) {
         if (pet != null) {
             Point nearestLocation = findClosestOpenSquare(pet, player.loc);
             if (nearestLocation != null) {
                 addActor(pet);
                 pet.loc = nearestLocation;
+                petCouldNotBePlaced = false;
+            } else {
+                petCouldNotBePlaced = true;
             }
         }
         updatePlayerVisibilityData(player, pet);
+        return (!petCouldNotBePlaced);
     }
 
     private void updateSeenLocationsAndMonsters(Player player, Player pet) {
@@ -210,7 +222,7 @@ public class GameMap implements Serializable {
         return actors.get(currActorIdx);
     }
 
-    private void addActor(Actor a) {
+    public void addActor(Actor a) {
         actors.add(a);
     }
 
