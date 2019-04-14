@@ -225,15 +225,14 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
     public String bonusString() {
         // For potions, return description, which is more meaningful than an empty bonus string
-        // TODO: consider adding artifacts too.
         if (flags.potion) {
             return "(" + description + ")";
         } else {
-            return formatGroupBonus(bonuses, bonusNames);
+            return formatGroupBonus(bonuses);
         }
     }
 
-    private static String formatGroupBonus(int[] bonusAmts, String[] names) {
+    private static String formatGroupBonus(int[] bonusAmts) {
         // simple case - see if all 0
         int numNonZero = 0;
         for (int bonusAmt : bonusAmts) {
@@ -261,7 +260,7 @@ public class DungeonItem implements Comparable<DungeonItem>, Serializable {
 
             List<String> stats = new ArrayList<>();
             for (int idx : statIdxs) {
-                stats.add(TextUtils.formatThing(names[idx], bonusAmt > 1));
+                stats.add(TextUtils.formatThing(DungeonItem.bonusNames[idx], bonusAmt > 1));
             }
             groups.add(TextUtils.formatBonus(bonusAmt) + " " + String.join("/", stats));
         }

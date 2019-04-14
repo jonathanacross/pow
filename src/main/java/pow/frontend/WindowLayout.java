@@ -49,7 +49,7 @@ public class WindowLayout {
         int mapAndLogPaneLeft = 3*Style.WINDOW_SPACING + statusPaneWidth + centerPaneWidth;
         int mapPaneWidth = width - 4*Style.WINDOW_SPACING - statusPaneWidth - centerPaneWidth;
         int mapPaneHeight = centerPaneHeight / 3;
-        int logPaneWiidth = mapPaneWidth;
+        int logPaneWidth = mapPaneWidth;
         int logPaneHeight = centerPaneHeight - Style.WINDOW_SPACING - mapPaneHeight;
 
         statusPaneDim = new WindowDim(Style.WINDOW_SPACING, Style.WINDOW_SPACING, statusPaneWidth, statusPaneHeight);
@@ -57,7 +57,7 @@ public class WindowLayout {
                 Style.WINDOW_SPACING, centerPaneWidth, centerPaneHeight);
         mapPaneDim = new WindowDim(mapAndLogPaneLeft, Style.WINDOW_SPACING, mapPaneWidth, mapPaneHeight);
         logPaneDim = new WindowDim(mapAndLogPaneLeft, 2*Style.WINDOW_SPACING + mapPaneHeight,
-                logPaneWiidth, logPaneHeight);
+                logPaneWidth, logPaneHeight);
     }
 
     // The height of all the windows is determined by the main game window,

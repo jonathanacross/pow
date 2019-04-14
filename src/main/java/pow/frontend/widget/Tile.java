@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class Tile implements Widget {
 
-    private String tileName;
-    private State state;
+    private final String tileName;
+    private final State state;
 
     public Tile(String tileName, State state) {
         this.tileName = tileName;

@@ -5,9 +5,6 @@ import pow.util.Point;
 import java.io.Serializable;
 
 public class DungeonObject implements Serializable {
-    // TODO: do DungeonObjects really need an Id?  Seems more like
-    // we want a map of id -> dungeonObject, which would be filled out
-    // during data file reading.
     public final String id;   // program id, e.g., "axe"
     public final String name; // english name, e.g., "& axe~"
     public final String image; // for display
@@ -42,15 +39,5 @@ public class DungeonObject implements Serializable {
         this.description = params.description;
         this.loc = params.loc;
         this.solid = params.solid;
-    }
-
-    public void move(int dx, int dy) {
-        this.loc.x += dx;
-        this.loc.y += dy;
-    }
-
-    public void moveTo(int x, int y) {
-        this.loc.x = x;
-        this.loc.y = y;
     }
 }

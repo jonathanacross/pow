@@ -8,7 +8,7 @@ import java.util.Properties;
 // the user to override with -Dproperty=value
 public class PropertyController {
 
-    private Properties properties;
+    private final Properties properties;
 
     public PropertyController() throws IOException {
         this.properties = new Properties();

@@ -21,9 +21,9 @@ public class Style {
     public static final int TILE_SIZE = 32;
     public static final int MAP_TILE_SIZE = 4;
 
-    private static Font smallFont;
-    private static Font defaultFont;
-    private static Font bigFont;
+    private static final Font smallFont;
+    private static final Font defaultFont;
+    private static final Font bigFont;
 
     private static int fontSize;
 

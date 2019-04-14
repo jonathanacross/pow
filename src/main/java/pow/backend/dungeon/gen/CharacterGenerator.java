@@ -73,10 +73,6 @@ public class CharacterGenerator {
         }
     }
 
-    public static List<CharacterData> getCharacterData() {
-        return instance.characterData;
-    }
-
     public static List<CharacterData> getPlayerCharacterData() {
         List<CharacterData> players = new ArrayList<>();
         for (CharacterData cd : instance.characterData) {

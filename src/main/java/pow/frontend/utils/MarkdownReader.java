@@ -16,7 +16,7 @@ public class MarkdownReader {
     }
 
     public static class MarkdownParagraph extends MarkdownElement {
-        String text;
+        final String text;
 
         public MarkdownParagraph(List<String> lines) {
             List<String> trimmedLines = new ArrayList<>();
@@ -24,7 +24,7 @@ public class MarkdownReader {
                 trimmedLines.add(line.trim());
             }
 
-            this.text = String.join(" ", lines);
+            this.text = String.join(" ", trimmedLines);
         }
 
         @Override
@@ -34,8 +34,8 @@ public class MarkdownReader {
     }
 
     public static class MarkdownHeader extends MarkdownElement {
-        int level;
-        String text;
+        final int level;
+        final String text;
 
         public MarkdownHeader(List<String> lines) {
             if (lines.get(0).startsWith("##")) {
@@ -60,8 +60,8 @@ public class MarkdownReader {
     }
 
     public static class MarkdownTable extends MarkdownElement {
-        boolean hasHeader;
-        List<List<String>> data;
+        final boolean hasHeader;
+        final List<List<String>> data;
 
         // true if the line has the format "| ----- | ---- | ------ |"
         private boolean isSepLine(String line) {

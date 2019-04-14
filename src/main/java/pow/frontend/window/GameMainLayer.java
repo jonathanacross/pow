@@ -117,12 +117,6 @@ public class GameMainLayer extends AbstractWindow {
                 gs.party.selectedActor.equipment, ItemActions.ItemLocation.EQUIPMENT));
     }
 
-    private void showPetInventory(GameState gs) {
-        backend.logMessage(gs.party.pet.getNoun() + " cannot carry items.", MessageLog.MessageType.USER_ERROR);
-        frontend.open(new ItemActionWindow(this.backend, this.frontend, "Pet:",
-                gs.party.pet.inventory, ItemActions.ItemLocation.PET));
-    }
-
     private void showKnowledge(GameState gs) {
         frontend.open(
                 new KnowledgeWindow(frontend.layout.getCenterPaneDim(), true, this.backend, this.frontend,

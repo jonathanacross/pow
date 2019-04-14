@@ -55,22 +55,6 @@ public class Player extends Actor implements Serializable, LightSource {
             114573
     };
 
-    // default (empty) player
-    // TODO: can this be replaced by a player builder? this is only needed for game start.
-    public Player() {
-        this(new DungeonObject.Params(
-                        "player", // id
-                        "", // name
-                        "human_adventurer", // image
-                        "yourself", // description
-                        new Point(-1, -1), // location -- will be updated later
-                        true), // solid
-                GainRatiosData.getGainRatios("player adventurer"),
-                Collections.emptyList(),
-                new Abilities(),
-                Collections.emptyList());
-    }
-
     public Player(DungeonObject.Params objectParams,
                    GainRatios gainRatios,
                    List<SpellParams> spells, Abilities abilities, List<DungeonItem> startItems) {

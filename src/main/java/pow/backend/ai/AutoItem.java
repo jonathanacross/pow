@@ -1,11 +1,6 @@
 package pow.backend.ai;
 
 import pow.backend.GameState;
-import pow.backend.action.Action;
-import pow.backend.action.Drop;
-import pow.backend.action.DropEquipment;
-import pow.backend.action.PickUp;
-import pow.backend.action.Wear;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonItem;
 import pow.backend.dungeon.DungeonSquare;
@@ -298,63 +293,6 @@ public class AutoItem {
         }
 
         return result;
-    }
-
-    private static List<Action> makeActions(List<ItemMovement> movements, GameState gs) {
-        List<Action> actions = new ArrayList<>();
-        Player player = gs.party.player;
-        DungeonSquare square = gs.getCurrentMap().map[player.loc.x][player.loc.y];
-        ItemList groundItems = square.items;
-        ItemList inventoryItems = player.inventory;
-
-        // do drop actions first
-        for (ItemMovement movement : movements) {
-            if (movement.from != movement.to && movement.to == Location.GROUND) {
-                if (movement.from == Location.INVENTORY) {
-                    int itemLoc = player.inventory.items.indexOf(movement.item);
-                    if (itemLoc >= 0) {
-                        actions.add(new Drop(player, itemLoc, movement.item.count));
-                    } else {
-                        System.out.println("error: couldn't find item " + movement.item.stringWithInfo() + " in player's inventory");
-                    }
-                } else if (movement.from == Location.EQUIPMENT) {
-                    int itemLoc = player.equipment.items.indexOf(movement.item);
-                    if (itemLoc >= 0) {
-                        actions.add(new DropEquipment(player, itemLoc));
-                    } else {
-                        System.out.println("error: couldn't find item " + movement.item.stringWithInfo() + " in player's equipment");
-                    }
-                }
-                System.out.println("move " + movement.item.stringWithInfo() + " from " + movement.from + " to " + movement.to);
-            }
-        }
-
-        // next do equip actions
-        for (ItemMovement movement : movements) {
-            if (movement.from != movement.to && movement.to == Location.EQUIPMENT) {
-                ItemList sourceList = movement.from == Location.INVENTORY ? inventoryItems : groundItems;
-                int itemLoc = sourceList.items.indexOf(movement.item);
-                if (itemLoc >= 0) {
-                    actions.add(new Wear(player, sourceList, itemLoc));
-                } else {
-                    System.out.println("error: couldn't find item " + movement.item.stringWithInfo());
-                }
-            }
-        }
-
-        // finally do get actions
-        for (ItemMovement movement : movements) {
-            if (movement.from == Location.GROUND && movement.to == Location.INVENTORY) {
-                int itemLoc = groundItems.items.indexOf(movement.item);
-                if (itemLoc >= 0) {
-                    actions.add(new PickUp(player, itemLoc, movement.item.count));
-                } else {
-                    System.out.println("error: couldn't find item " + movement.item.stringWithInfo() + " in player's inventory");
-                }
-            }
-        }
-
-        return actions;
     }
 
     private static int getTotalBonus(DungeonItem item) {

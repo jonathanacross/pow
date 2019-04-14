@@ -49,10 +49,6 @@ public class ItemUtils {
 
     // --------------- functions related to item pricing -------
 
-    private static double sqr(int x) {
-        return x*x;
-    }
-
     // Returns an exponential price for x, assuming
     // that the price for value x1 is y1, and the price for
     // value x2 is y2.  Model is y = a e^(bx).

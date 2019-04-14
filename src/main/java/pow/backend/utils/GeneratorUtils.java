@@ -326,33 +326,6 @@ public class GeneratorUtils {
         }
     }
 
-    // debug method: puts one of every type of monster in the level
-    public static List<Actor> createMonstersOrdered(DungeonSquare[][] dungeonMap, Random rng) {
-        List<Actor> actors = new ArrayList<>();
-        int width = Array2D.width(dungeonMap);
-        int height = Array2D.height(dungeonMap);
-
-        // to make sure we don't put monsters on top of each other
-        boolean[][] monsterAt = new boolean[width][height];
-
-        int x = 0;
-        int y = 0;
-        for (String monster : MonsterGenerator.getMonsterIds()) {
-            do {
-                x++;
-                if (x >= width) {
-                    x = 0;
-                    y++;
-                }
-            } while (dungeonMap[x][y].blockGround() || monsterAt[x][y]);
-            Point location = new Point(x,y);
-
-            actors.add(MonsterGenerator.genMonster(monster, rng, false, location));
-            monsterAt[location.x][location.y] = true;
-        }
-        return actors;
-    }
-
     // --------------------- related to exits --------------
 
     // We require a 1 square border around a stair, so that they may be entered from

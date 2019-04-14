@@ -15,10 +15,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static pow.util.TextUtils.formatList;
+
 public class MonsterDisplay {
 
     private static String toPercentString(double d) {
         return String.format("%1$,.1f", d * 100);
+    }
+
+    private static List<TableCell> getRow(String key, String value, Font font) {
+        return Arrays.asList(
+                new TableCell(new TextBox(Collections.singletonList(key), State.NORMAL, font)),
+                new TableCell(new TextBox(Collections.singletonList(value), State.NORMAL, font))
+        );
     }
 
     private static List<String> getSpellNames(List<SpellParams> spells) {
@@ -27,14 +36,6 @@ public class MonsterDisplay {
             strings.add(spell.name);
         }
         return strings;
-    }
-
-    private static List<TableCell> getRow(String key, String value, Font font) {
-        List<TableCell> row = Arrays.asList(
-                new TableCell(new TextBox(Collections.singletonList(key), State.NORMAL, font)),
-                new TableCell(new TextBox(Collections.singletonList(value), State.NORMAL, font))
-        );
-        return row;
     }
 
     public static void drawMonsterInfo(
@@ -46,7 +47,6 @@ public class MonsterDisplay {
             Point position
     ) {
         Font font = Style.getDefaultFont();
-        int textWidth = width;
 
         // Inner table showing stats
         String healthValue = showCurrentHealth
@@ -55,6 +55,7 @@ public class MonsterDisplay {
         String manaValue = showCurrentHealth
                 ? monster.mana + "/" + monster.maxMana
                 : String.valueOf(monster.maxMana);
+
         Table statsTable = new Table();
         statsTable.addRow(getRow("HP:        ", healthValue, font));
         statsTable.addRow(getRow("MP:        ", manaValue, font));
@@ -90,7 +91,7 @@ public class MonsterDisplay {
         layout.addColumn(Arrays.asList(
                 new TableCell(header),
                 new TableCell(new TextBox(Collections.singletonList(""), State.NORMAL, font)),
-                new TableCell(new TextBox(Collections.singletonList(monster.description), State.NORMAL, font, textWidth)),
+                new TableCell(new TextBox(Collections.singletonList(monster.description), State.NORMAL, font, width)),
                 new TableCell(new TextBox(Collections.singletonList(""), State.NORMAL, font)),
                 new TableCell(new TextBox(Collections.singletonList(statsLine), State.NORMAL, font)),
                 new TableCell(new TextBox(Collections.singletonList(""), State.NORMAL, font)),
@@ -102,6 +103,15 @@ public class MonsterDisplay {
         if (player.hasBowEquipped()) {
             layout.addRow(Collections.singletonList(
                     new TableCell(new TextBox(Collections.singletonList(bowHit), State.NORMAL, font))
+            ));
+        }
+        if (!monster.spells.isEmpty()) {
+            String spellsString = "Can cast: " + formatList(getSpellNames(monster.spells));
+            layout.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Collections.singletonList(""), State.NORMAL, font))
+            ));
+            layout.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Collections.singletonList(spellsString), State.NORMAL, font, width))
             ));
         }
         layout.autosize();

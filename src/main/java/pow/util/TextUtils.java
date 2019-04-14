@@ -143,9 +143,9 @@ public class TextUtils {
         } else {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < items.size() - 1; i++) {
-                sb.append(items.get(i) + ", ");
+                sb.append(items.get(i)).append(", ");
             }
-            sb.append("and " + items.get(items.size()-1));
+            sb.append("and ").append(items.get(items.size() - 1));
             return sb.toString();
         }
     }

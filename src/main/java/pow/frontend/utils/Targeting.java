@@ -43,22 +43,6 @@ public class Targeting {
         return points;
     }
 
-    public static List<Point> getMonsterTargets(GameState gameState, MapView mapView) {
-        GameMap map = gameState.getCurrentMap();
-        List<Point> points = new ArrayList<>();
-        for (int x = mapView.colMin; x <= mapView.colMax; x++) {
-            for (int y = mapView.rowMin; y <= mapView.rowMax; y++) {
-                if (!gameState.party.selectedActor.canSeeLocation(gameState, new Point(x, y))) continue;
-                Actor a = map.actorAt(x, y);
-                if (a != null && !a.friendly) {
-                    points.add(new Point(x, y));
-                }
-            }
-        }
-        orderPointsByDistance(gameState.party.selectedActor.loc, points);
-        return points;
-    }
-
     public static List<Point> getCloseDoorTargets(GameState gameState) {
         Point playerLoc = gameState.party.selectedActor.loc;
         GameMap map = gameState.getCurrentMap();

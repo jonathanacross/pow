@@ -4,7 +4,6 @@ import pow.frontend.Style;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -140,7 +139,7 @@ public class Table implements Widget {
         }
 
         List<Integer> colOffsets = new ArrayList<>();
-        colOffsets.add(y);
+        colOffsets.add(x);
         for (int c = 0; c < colWidths.size(); c++) {
             colOffsets.add(colOffsets.get(c) + colWidths.get(c));
         }
@@ -160,7 +159,6 @@ public class Table implements Widget {
         for (int c = gridColStart; c <= gridColStop; c++) {
             graphics.drawLine(colOffsets.get(c), top, colOffsets.get(c), bottom);
         }
-
     }
 
     public void draw(Graphics graphics, int x, int y) {
@@ -199,7 +197,5 @@ public class Table implements Widget {
 
             yOffset += rowHeights.get(r) + vSpacing;
         }
-
-        // TODO: draw grid
     }
 }

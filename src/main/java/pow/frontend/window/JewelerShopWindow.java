@@ -9,7 +9,6 @@ import pow.backend.utils.ShopUtils;
 import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
-import pow.frontend.utils.ImageController;
 import pow.frontend.widget.*;
 import pow.util.TextUtils;
 
@@ -165,20 +164,6 @@ public class JewelerShopWindow extends AbstractWindow {
         return idx < 0 ? -1 : itemInfoList.get(idx).listIndex;
     }
 
-    private void drawItem(Graphics graphics, Point position, int idx, DungeonItem item, boolean isSelected, boolean isEnabled) {
-        ImageController.DrawMode drawMode =
-                isEnabled ? ImageController.DrawMode.NORMAL : ImageController.DrawMode.GRAY;
-        ImageController.drawTile(graphics, item.image, position.x + 15, position.y, drawMode);
-
-        graphics.setColor(isEnabled ? (isSelected ? Color.YELLOW : Color.WHITE) : Color.GRAY);
-        int textY = position.y + 20;
-        if (idx >= 0) {
-            String label = (char) ((int) 'a' + idx) + ")";
-            graphics.drawString(label, position.x, textY);
-        }
-        graphics.drawString(item.stringWithInfo(), position.x + 50, textY);
-    }
-
     public Table getItemTable(String title, int labelStartIdx, int selectIdx, List<ShopUtils.ItemInfo> items) {
         Font font = Style.getDefaultFont();
 
@@ -231,14 +216,14 @@ public class JewelerShopWindow extends AbstractWindow {
         int labelStartIdx = 0;
         Table leftPane = new Table();
         if (!selections.equipment.isEmpty()) {
-            leftPane.addRow(Arrays.asList(
+            leftPane.addRow(Collections.singletonList(
                     new TableCell(getItemTable("Equipment:", labelStartIdx, selections.equipmentSelectIdx,
                             selections.equipment))
             ));
             labelStartIdx += selections.equipment.size();
         }
         if (!selections.inventory.isEmpty()) {
-            leftPane.addRow(Arrays.asList(
+            leftPane.addRow(Collections.singletonList(
                     new TableCell(getItemTable("Inventory:", labelStartIdx, selections.inventorySelectIdx,
                             selections.inventory))
             ));
@@ -249,7 +234,7 @@ public class JewelerShopWindow extends AbstractWindow {
 
         // right pane
         Table rightPane = new Table();
-        rightPane.addRow(Arrays.asList(
+        rightPane.addRow(Collections.singletonList(
                 new TableCell(getItemTable("Gems:", labelStartIdx, selections.gemsSelectIdx,
                         selections.gems))
         ));

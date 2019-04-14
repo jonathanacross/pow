@@ -53,7 +53,7 @@ public class AttackUtils {
         updateExperience(backend, source, actor);
 
         if (actor == gs.party.player) {
-            gs.gameInProgress = false;
+            backend.setGameInProgress(false);
             return GameEvent.LOST_GAME;
         }
 
@@ -108,7 +108,7 @@ public class AttackUtils {
         return GameEvent.KILLED;
     }
 
-    public static String getDamageTypeString(SpellParams.Element element) {
+    private static String getDamageTypeString(SpellParams.Element element) {
         String damTypeString = "";
         if (element != SpellParams.Element.NONE && element != SpellParams.Element.DAMAGE) {
             damTypeString = " " + element.toString().toLowerCase();
@@ -182,7 +182,6 @@ public class AttackUtils {
         switch (hitParams.element) {
             case CONFUSE:
                 if (backend.getGameState().rng.nextDouble() < hitProb(attacker.level, defender.level)) {
-                    // TODO: have this not affect the caster?
                     events.addAll(defender.conditions.get(ConditionTypes.CONFUSE).start(backend, hitParams.duration, hitParams.intensity, attacker));
                 } else {
                     backend.logMessage(attacker.getNoun() + " failed to confuse " + defender.getNoun(), MessageLog.MessageType.COMBAT_NEUTRAL);

@@ -13,7 +13,7 @@ public class Bar implements Widget {
     private int ascent;
 
     // Used to get font metrics to compute text heights
-    private static Graphics fakeGraphics;
+    private static final Graphics fakeGraphics;
     static {
         Image dummyImage = new BufferedImage(10, 10,  BufferedImage.TYPE_INT_ARGB);
         fakeGraphics = dummyImage.getGraphics();

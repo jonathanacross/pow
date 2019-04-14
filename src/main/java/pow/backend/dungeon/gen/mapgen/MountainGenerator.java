@@ -158,9 +158,5 @@ public class MountainGenerator implements MapGenerator {
         }
         return result;
     }
-
-    private static double[][] makeNoise(int width, int height, int scale, int interpolationSteps) {
-        return GeneratorUtils.fractalNoise(width, height, 1.0, scale, 0.0, interpolationSteps);
-    }
 }
 
