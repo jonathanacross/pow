@@ -29,7 +29,6 @@ public abstract class AbstractWindow {
     }
 
     // to be filled out by subclasses
-    // TODO: make processKey be a bool -- returns true if there's a backend change
     public abstract void processKey(KeyEvent e);
     protected abstract void drawContents(Graphics graphics);
 

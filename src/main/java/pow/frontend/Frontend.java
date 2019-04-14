@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.*;
 
-// TODO: make interface for this
 public class Frontend {
 
     private final Deque<AbstractWindow> windows;

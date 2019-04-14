@@ -1,5 +1,6 @@
 package pow.frontend.utils;
 
+import pow.backend.SpellParams;
 import pow.backend.utils.AttackUtils;
 import pow.backend.actors.Player;
 import pow.backend.actors.Knowledge;
@@ -9,9 +10,12 @@ import pow.util.Point;
 import pow.util.TextUtils;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static pow.util.TextUtils.formatList;
 
 public class MonsterDisplay {
 
@@ -24,6 +28,14 @@ public class MonsterDisplay {
                 new TableCell(new TextBox(Collections.singletonList(key), State.NORMAL, font)),
                 new TableCell(new TextBox(Collections.singletonList(value), State.NORMAL, font))
         );
+    }
+
+    private static List<String> getSpellNames(List<SpellParams> spells) {
+        List<String> strings = new ArrayList<>(spells.size());
+        for (SpellParams spell : spells) {
+            strings.add(spell.name);
+        }
+        return strings;
     }
 
     public static void drawMonsterInfo(
@@ -43,6 +55,7 @@ public class MonsterDisplay {
         String manaValue = showCurrentHealth
                 ? monster.mana + "/" + monster.maxMana
                 : String.valueOf(monster.maxMana);
+
         Table statsTable = new Table();
         statsTable.addRow(getRow("HP:        ", healthValue, font));
         statsTable.addRow(getRow("MP:        ", manaValue, font));
@@ -90,6 +103,15 @@ public class MonsterDisplay {
         if (player.hasBowEquipped()) {
             layout.addRow(Collections.singletonList(
                     new TableCell(new TextBox(Collections.singletonList(bowHit), State.NORMAL, font))
+            ));
+        }
+        if (!monster.spells.isEmpty()) {
+            String spellsString = "Can cast: " + formatList(getSpellNames(monster.spells));
+            layout.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Collections.singletonList(""), State.NORMAL, font))
+            ));
+            layout.addRow(Arrays.asList(
+                    new TableCell(new TextBox(Collections.singletonList(spellsString), State.NORMAL, font, width))
             ));
         }
         layout.autosize();
