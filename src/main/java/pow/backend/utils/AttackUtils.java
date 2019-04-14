@@ -53,7 +53,7 @@ public class AttackUtils {
         updateExperience(backend, source, actor);
 
         if (actor == gs.party.player) {
-            gs.gameInProgress = false;
+            backend.setGameInProgress(false);
             return GameEvent.LOST_GAME;
         }
 

@@ -20,15 +20,12 @@ public class GameState implements Serializable {
     // logging
     public final MessageLog log;
 
-    public boolean gameInProgress;
-
     // convenience method
     public GameMap getCurrentMap() {
         return world.recentMaps.getCurrentMap();
     }
 
     public GameState(Player player) {
-        this.gameInProgress = false;
         int seed = (new Random()).nextInt();
         System.out.println("starting seed = " + seed);
         this.rng = new Random(seed);
