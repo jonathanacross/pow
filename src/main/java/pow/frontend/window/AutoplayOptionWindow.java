@@ -21,7 +21,7 @@ public class AutoplayOptionWindow extends AbstractWindow {
         BOTH
     }
 
-    private Table layoutTable;
+    private final Table layoutTable;
 
     private void setAutoplay(HumanControlSelection selection) {
         GameState gs = backend.getGameState();

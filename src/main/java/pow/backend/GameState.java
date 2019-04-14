@@ -39,7 +39,6 @@ public class GameState implements Serializable {
 
     public GameState(Player player) {
         this.gameInProgress = false;
-        //int seed =  -524622737;
         int seed = (new Random()).nextInt();
         System.out.println("starting seed = " + seed);
         this.rng = new Random(seed);

@@ -83,14 +83,10 @@ public class KnightMovement implements Movement, Serializable {
 
     @Override
     public Actor findNearestEnemy(Actor actor, GameState gs) {
-        return findNearestActor(actor, gs, true);
-    }
-
-    private Actor findNearestActor(Actor actor, GameState gs, boolean enemyOnly) {
         int bestDist = Integer.MAX_VALUE;
         Actor closestMonster = null;
         for (Actor m : gs.getCurrentMap().actors) {
-            if (enemyOnly && actor.friendly == m.friendly) {
+            if (actor.friendly == m.friendly) {
                 continue;
             }
 
