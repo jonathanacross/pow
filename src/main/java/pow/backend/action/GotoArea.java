@@ -2,6 +2,7 @@ package pow.backend.action;
 
 import pow.backend.GameBackend;
 import pow.backend.GameState;
+import pow.backend.MessageLog;
 import pow.backend.actors.Actor;
 import pow.backend.actors.Player;
 import pow.backend.event.GameEvent;
@@ -48,7 +49,10 @@ public class GotoArea implements Action {
         }
 
         // set up player/pet in the new area
-        gs.getCurrentMap().placePlayerAndPet(gs.party.selectedActor, loc, gs.party.otherPlayerInParty(gs.party.selectedActor));
+        if (! gs.getCurrentMap().placePlayerAndPet(gs.party.selectedActor, loc, gs.party.otherPlayerInParty(gs.party.selectedActor))) {
+            backend.logMessage("There is no space for " + gs.party.pet.getNoun() + " to join you here",
+                    MessageLog.MessageType.GENERAL);
+        }
 
         List<GameEvent> events = new ArrayList<>();
         events.add(GameEvent.DUNGEON_UPDATED);

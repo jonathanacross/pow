@@ -35,7 +35,10 @@ public class GameBackend {
     public void setPet(Player pet) {
         this.gameState.party.addPet(pet);
         this.gameState.party.pet.setAutoplay(this.gameState, true);
-        this.gameState.getCurrentMap().placePet(this.gameState.party.player, this.gameState.party.pet);
+        if (! this.gameState.getCurrentMap().placePet(this.gameState.party.player, this.gameState.party.pet) ) {
+            this.logMessage("There is no space for " + this.gameState.party.pet.getNoun() + " to join you here",
+                    MessageLog.MessageType.GENERAL);
+        }
     }
 
     public void setGameInProgress(boolean gameInProgress) {

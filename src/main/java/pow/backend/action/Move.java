@@ -1,9 +1,6 @@
 package pow.backend.action;
-import pow.backend.GameBackend;
-import pow.backend.GameState;
-import pow.backend.MessageLog;
+import pow.backend.*;
 import pow.backend.actors.Actor;
-import pow.backend.ActionParams;
 import pow.backend.actors.Player;
 import pow.backend.dungeon.DungeonExit;
 import pow.backend.dungeon.DungeonFeature;
@@ -48,6 +45,7 @@ public class Move implements Action {
     @Override
     public ActionResult process(GameBackend backend) {
         GameState gs = backend.getGameState();
+        GameMap map = gs.getCurrentMap();
 
         // just stay still
         if (dx == 0 && dy == 0) {
@@ -60,10 +58,10 @@ public class Move implements Action {
         // Check that the target location is valid.  The ONLY case where it is
         // valid to move off the map is if the actor == player, and the 
         // player is on a tile that lets them go to another area.
-        if (!gs.getCurrentMap().isOnMap(newx, newy)) {
+        if (!map.isOnMap(newx, newy)) {
             // check for player changing maps
             if (gs.party.containsActor(actor)) {
-                DungeonTerrain currSquareTerrain = gs.getCurrentMap().map[actor.loc.x][actor.loc.y].terrain;
+                DungeonTerrain currSquareTerrain = map.map[actor.loc.x][actor.loc.y].terrain;
                 if (currSquareTerrain.flags.teleport) {
                     DungeonExit exit = new DungeonExit(currSquareTerrain.actionParams.name);
                     String targetArea = exit.areaId;
@@ -77,7 +75,7 @@ public class Move implements Action {
         }
 
         // Check if we should attack
-        Actor defender = gs.getCurrentMap().actorAt(newx, newy);
+        Actor defender = map.actorAt(newx, newy);
         if (defender != null) {
             if (!defender.friendly)  {
                 // attack
@@ -89,7 +87,7 @@ public class Move implements Action {
             }
         }
 
-        DungeonTerrain terrain = gs.getCurrentMap().map[newx][newy].terrain;
+        DungeonTerrain terrain = map.map[newx][newy].terrain;
         if (terrain.flags.actOnStep) {
             if (!terrain.flags.diggable || actor.canDig()) {
                 Point loc = new Point(newx, newy);
@@ -100,7 +98,7 @@ public class Move implements Action {
             }
         }
 
-        DungeonFeature feature = gs.getCurrentMap().map[newx][newy].feature;
+        DungeonFeature feature = map.map[newx][newy].feature;
         if (feature != null && feature.flags.actOnStep) {
             if (feature.flags.stairs) {
                 // special case if the feature is stairs, as we have to compute final destination
@@ -119,12 +117,22 @@ public class Move implements Action {
             }
         }
 
-        if (! gs.getCurrentMap().isBlocked(this.actor, newx, newy)) {
+        if (! map.isBlocked(this.actor, newx, newy)) {
+            Point previousLoc = new Point(actor.loc.x, actor.loc.y);
+
             // move
             actor.loc.x = newx;
             actor.loc.y = newy;
             if (actor == gs.party.selectedActor) {
-                gs.getCurrentMap().updatePlayerVisibilityData(gs.party.player, gs.party.pet);
+                if (gs.party.pet != null && map.petCouldNotBePlaced) {
+                    // If the pet couldn't previously be placed, it can now,
+                    // using the space where the player was.
+                    backend.logMessage(gs.party.pet.getNoun() + " rejoins you", MessageLog.MessageType.GENERAL);
+                    map.addActor(gs.party.pet);
+                    gs.party.pet.loc = previousLoc;
+                    map.petCouldNotBePlaced = false;
+                }
+                map.updatePlayerVisibilityData(gs.party.player, gs.party.pet);
             }
             for (Player p : gs.party.playersInParty()) {
                 // update the party's targeting, in case the player or target move
