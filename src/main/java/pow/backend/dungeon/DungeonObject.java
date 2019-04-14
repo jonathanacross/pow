@@ -44,13 +44,10 @@ public class DungeonObject implements Serializable {
         this.solid = params.solid;
     }
 
-    public void move(int dx, int dy) {
-        this.loc.x += dx;
-        this.loc.y += dy;
-    }
-
-    public void moveTo(int x, int y) {
-        this.loc.x = x;
-        this.loc.y = y;
-    }
+// --Commented out by Inspection START (2019-04-13 23:03):
+//    public void move(int dx, int dy) {
+//        this.loc.x += dx;
+//        this.loc.y += dy;
+//    }
+// --Commented out by Inspection STOP (2019-04-13 23:03)
 }

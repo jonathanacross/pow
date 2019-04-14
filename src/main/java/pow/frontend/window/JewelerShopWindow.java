@@ -165,20 +165,6 @@ public class JewelerShopWindow extends AbstractWindow {
         return idx < 0 ? -1 : itemInfoList.get(idx).listIndex;
     }
 
-    private void drawItem(Graphics graphics, Point position, int idx, DungeonItem item, boolean isSelected, boolean isEnabled) {
-        ImageController.DrawMode drawMode =
-                isEnabled ? ImageController.DrawMode.NORMAL : ImageController.DrawMode.GRAY;
-        ImageController.drawTile(graphics, item.image, position.x + 15, position.y, drawMode);
-
-        graphics.setColor(isEnabled ? (isSelected ? Color.YELLOW : Color.WHITE) : Color.GRAY);
-        int textY = position.y + 20;
-        if (idx >= 0) {
-            String label = (char) ((int) 'a' + idx) + ")";
-            graphics.drawString(label, position.x, textY);
-        }
-        graphics.drawString(item.stringWithInfo(), position.x + 50, textY);
-    }
-
     public Table getItemTable(String title, int labelStartIdx, int selectIdx, List<ShopUtils.ItemInfo> items) {
         Font font = Style.getDefaultFont();
 

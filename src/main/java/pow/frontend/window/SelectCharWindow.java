@@ -151,8 +151,7 @@ public class SelectCharWindow extends AbstractWindow {
         int green = (int) (255.0 * MathUtils.clamp(2.0 * z, 0, 1));
         int blue  = 0;
 
-        Color fillColor = new Color(red, green, blue);
-        return fillColor;
+        return new Color(red, green, blue);
     }
 
     private Table getCharInfoTable(CharacterGenerator.CharacterData characterData, Font font, int textWidth) {

@@ -21,9 +21,9 @@ public class AiMap {
 
     // Points of interest
     public final Point actorLoc;  // location of actor
-    public final List<Point> monsterLocs;  // locations of monsters
-    public final List<Point> partyLocs;  // locations of other party members
-    public final List<Point> unseenLocs;  // locations of unseen squares.
+    private final List<Point> monsterLocs;  // locations of monsters
+    private final List<Point> partyLocs;  // locations of other party members
+    private final List<Point> unseenLocs;  // locations of unseen squares.
 
     private static final double TRAP = 200;
     public static final double IMPASSABLE = 1e10;

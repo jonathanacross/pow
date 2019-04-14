@@ -31,7 +31,6 @@ public enum Direction {
     public static final Direction[] CARDINALS = {N, E, S, W};
     public static final Direction[] DIAGONALS = {NE, SE, NW, SW};
     public static final Direction[] ALL = {N, NE, E, SE, S, SW, W, NW};
-    public static final Direction[] EXITS = {N, NE, E, SE, S, SW, W, NW, U, D, T};
 
     public static Direction getDir(int dx, int dy) {
         if (dx == 0) {

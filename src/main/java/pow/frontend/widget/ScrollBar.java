@@ -50,17 +50,14 @@ public class ScrollBar implements Widget {
             return;
         }
 
-        int sbLeft = x;
-        int sbTop = y;
-
         int viewTop = position;
         int viewBottom = Math.min(position + viewSize, contentSize);
 
         int centerTop = scrollBarHeight * viewTop / contentSize;
         int centerBottom = scrollBarHeight * viewBottom / contentSize;
         graphics.setColor(Style.SEPARATOR_LINE_COLOR);
-        graphics.drawLine(sbLeft, sbTop, sbLeft, sbTop + scrollBarHeight);
-        graphics.drawRect(sbLeft - 3, centerTop + sbTop, 6, centerBottom - centerTop);
+        graphics.drawLine(x, y, x, y + scrollBarHeight);
+        graphics.drawRect(x - 3, centerTop + y, 6, centerBottom - centerTop);
     }
 
     @Override

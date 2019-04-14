@@ -108,7 +108,7 @@ public class AttackUtils {
         return GameEvent.KILLED;
     }
 
-    public static String getDamageTypeString(SpellParams.Element element) {
+    private static String getDamageTypeString(SpellParams.Element element) {
         String damTypeString = "";
         if (element != SpellParams.Element.NONE && element != SpellParams.Element.DAMAGE) {
             damTypeString = " " + element.toString().toLowerCase();

@@ -81,11 +81,6 @@ public class StepMovement implements Movement, Serializable {
         return findNearestActor(actor, gs, true);
     }
 
-    @Override
-    public Actor findNearestActor(Actor actor, GameState gs) {
-        return findNearestActor(actor, gs, false);
-    }
-
     private Actor findNearestActor(Actor actor, GameState gs, boolean enemyOnly) {
         int bestDist = Integer.MAX_VALUE;
         Actor closestMonster = null;

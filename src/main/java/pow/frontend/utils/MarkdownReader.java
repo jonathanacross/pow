@@ -24,7 +24,7 @@ public class MarkdownReader {
                 trimmedLines.add(line.trim());
             }
 
-            this.text = String.join(" ", lines);
+            this.text = String.join(" ", trimmedLines);
         }
 
         @Override

@@ -86,13 +86,6 @@ public class ItemActions {
         return true;
     }
 
-    public static boolean canGive(GameState gameState, ItemLocation location) {
-        if (gameState.party.pet == null) {
-            return false;
-        }
-        return location == ItemLocation.INVENTORY || location == ItemLocation.PET;
-    }
-
     public static List<Action> getActions(DungeonItem item, GameState gameState, ItemLocation location) {
         List<Action> actions = new ArrayList<>();
         if (canGet(location)) {

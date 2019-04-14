@@ -21,10 +21,6 @@ public interface Movement {
     // and movement type).  May return null if there is no nearest enemy.
     Actor findNearestEnemy(Actor actor, GameState gs);
 
-    // Finds the 'nearest' other actor to the actor.  May return null if
-    // there is no nearest actor.
-    Actor findNearestActor(Actor actor, GameState gs);
-
     // Returns true if the actor can hit the target.
     boolean canHit(Actor actor, Actor target);
 }

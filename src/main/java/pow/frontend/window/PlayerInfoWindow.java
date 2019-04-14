@@ -11,8 +11,6 @@ import pow.frontend.Frontend;
 import pow.frontend.Style;
 import pow.frontend.WindowDim;
 import pow.frontend.WindowLayout;
-import pow.frontend.utils.ImageController;
-import pow.frontend.utils.ImageUtils;
 import pow.frontend.utils.KeyInput;
 import pow.frontend.utils.KeyUtils;
 import pow.frontend.widget.*;

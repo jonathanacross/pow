@@ -14,7 +14,7 @@ import java.util.*;
 // Assumes normal step movement.
 public class ShortestPathFinder {
 
-    public final AiMap aiMap;
+    private final AiMap aiMap;
     public Map<Point, Double> cost;
     private Map<Point, Point> cameFrom;
 
