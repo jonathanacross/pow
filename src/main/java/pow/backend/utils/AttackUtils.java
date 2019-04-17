@@ -56,6 +56,10 @@ public class AttackUtils {
             backend.setGameInProgress(false);
             return GameEvent.LOST_GAME;
         }
+        if (actor == gs.party.pet) {
+            // transfer control to the player
+            gs.party.player.setAutoplay(gs, false);
+        }
 
         // see if this is a boss; if so, update the map so it won't regenerate
         if (map.genMonsterIds.canGenBoss && map.genMonsterIds.bossId.equals(actor.id)) {
