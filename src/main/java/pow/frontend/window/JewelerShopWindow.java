@@ -243,8 +243,8 @@ public class JewelerShopWindow extends AbstractWindow {
         // select table
         Table selectTable = new Table();
         selectTable.addRow(Arrays.asList(
-                new TableCell(leftPane, TableCell.VertAlign.TOP),
-                new TableCell(rightPane, TableCell.VertAlign.TOP)
+                new TableCell(leftPane, TableCell.VertAlign.TOP, TableCell.HorizAlign.LEFT),
+                new TableCell(rightPane, TableCell.VertAlign.TOP, TableCell.HorizAlign.LEFT)
         ));
         selectTable.setHSpacing(Style.MARGIN);
         selectTable.autosize();

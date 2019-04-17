@@ -140,9 +140,9 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         Table table = new Table();
         List<TableCell> row = new ArrayList<>();
-        row.add(new TableCell(getCharInfoTable(player, infoWidth), TableCell.VertAlign.TOP));
+        row.add(new TableCell(getCharInfoTable(player, infoWidth), TableCell.VertAlign.TOP, TableCell.HorizAlign.LEFT));
         if (pet != null) {
-            row.add(new TableCell(getCharInfoTable(pet, infoWidth), TableCell.VertAlign.TOP));
+            row.add(new TableCell(getCharInfoTable(pet, infoWidth), TableCell.VertAlign.TOP, TableCell.HorizAlign.LEFT));
         }
         table.addRow(row);
         table.setHSpacing(Style.MARGIN);
@@ -234,7 +234,8 @@ public class PlayerInfoWindow extends AbstractWindow {
                 int col = bonus.position;
                 if (item.bonuses[bonusIdx] > 0) {
                     cells.get(row).set(col, new TableCell(
-                            new TextBox(Collections.singletonList(bonusString(item.bonuses[bonusIdx])), State.NORMAL, font)));
+                            new TextBox(Collections.singletonList(bonusString(item.bonuses[bonusIdx])), State.NORMAL, font),
+                            TableCell.VertAlign.CENTER, TableCell.HorizAlign.CENTER));
                 }
             }
         }
@@ -253,7 +254,8 @@ public class PlayerInfoWindow extends AbstractWindow {
             int col = bonus.position;
             if (bonusTotals[bonusIdx] > 0) {
                 cells.get(numRows-1).set(col, new TableCell(
-                            new TextBox(Collections.singletonList(bonusString(bonusTotals[bonusIdx])), State.NORMAL, font)));
+                            new TextBox(Collections.singletonList(bonusString(bonusTotals[bonusIdx])), State.NORMAL, font),
+                        TableCell.VertAlign.CENTER, TableCell.HorizAlign.CENTER));
             }
         }
 
@@ -334,7 +336,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
     private Table getPearlTable(Party party, Font font) {
         List<TableCell> header = new ArrayList<>();
-        header.add(new TableCell(new TextBox(Collections.singletonList("Pearls:"), State.NORMAL, font)));
+        header.add(new TableCell(new TextBox(Collections.singletonList("Returned Pearls:"), State.NORMAL, font)));
         for (int c = 1; c < GameConstants.NUM_PEARLS_TO_WIN; c++) {
             header.add(new TableCell(new Space()));
         }

@@ -41,13 +41,8 @@ The keys . or number pad 5 indicate to stay still.
 
 ## Debugging commands
 
-Debugging commands (may be removed when the game is complete!)
-
 | Key  | Action                    |
 | ---  | ------------------------- |
-|   !  | Heal player               |
-|   +  | Gain a level              |
-|   S  | Save                      |
 |   (  | Show player AI info       |
 |   )  | Show pet AI info          |
 

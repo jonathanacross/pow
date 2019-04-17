@@ -107,7 +107,7 @@ amethyst	& amethyst~	amethyst	amethyst	none	gem			11	90	1	1	0	con:1
 dragon egg	& dragon egg~	dragon egg	dragon egg	none	gem,special			-1	-1	1	1	0	str:2,dex:2,int:2,con:2
 # potions													
 small mana potion	& small mana potion~	small blue potion	restore 15 mana	none	potion	restoreMana:15:		1	30	0	0	0	
-small health potion	& small health potion~	small red potion	restore 15 heath	none	potion	heal:20:		1	30	0	0	0	
+small health potion	& small health potion~	small red potion	restore 20 heath	none	potion	heal:20:		1	30	0	0	0	
 small restore potion	& small restore potion~	small purple potion	restore 30 health/mana	none	potion	restore:30:		11	40	0	0	0	
 mana potion	& mana potion~	medium blue potion	restore 60 mana	none	potion	restoreMana:60:		31	60	0	0	0	
 health potion	& health potion~	medium red potion	restore 80 health	none	potion	heal:80:		31	60	0	0	0	

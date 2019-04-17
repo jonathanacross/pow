@@ -73,7 +73,8 @@ public class MonsterDisplay {
         Table header = new Table();
         header.addRow(Arrays.asList(
                 new TableCell(new Tile(monster.image, State.NORMAL)),
-                new TableCell(new TextBox(Collections.singletonList(TextUtils.singular(monster.name)), State.NORMAL, font), TableCell.VertAlign.BOTTOM)
+                new TableCell(new TextBox(Collections.singletonList(TextUtils.singular(monster.name)), State.NORMAL, font),
+                        TableCell.VertAlign.BOTTOM, TableCell.HorizAlign.LEFT)
         ));
         header.setHSpacing(Style.MARGIN);
         header.autosize();
