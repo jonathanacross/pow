@@ -26,12 +26,12 @@ public class AttackUtils {
     public static int adjustDamage(int baseDamage, SpellParams.Element element, Actor defender) {
         int bonus;
         switch (element) {
-            case FIRE: bonus = defender.baseStats.resFire; break;
-            case ICE: bonus = defender.baseStats.resCold; break;
-            case ACID: bonus = defender.baseStats.resAcid; break;
-            case LIGHTNING: bonus = defender.baseStats.resElec; break;
-            case POISON: bonus = defender.baseStats.resPois; break;
-            case DAMAGE: bonus = defender.baseStats.resDam; break;
+            case FIRE: bonus = defender.getResFire(); break;
+            case ICE: bonus = defender.getResCold(); break;
+            case ACID: bonus = defender.getResAcid(); break;
+            case LIGHTNING: bonus = defender.getResElec(); break;
+            case POISON: bonus = defender.getResPois(); break;
+            case DAMAGE: bonus = defender.getResDam(); break;
             default: bonus = 0;
         }
 
