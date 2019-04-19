@@ -527,7 +527,11 @@ public class GameMainLayer extends AbstractWindow {
         } else {
             // several doors; prompt user to pick which one
             parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.CLOSE_DOOR,
-                    (Point p) -> closeDoor(gameState, p)));
+                    (Point p) -> {
+                        if (p != null) {
+                            closeDoor(gameState, p);
+                        }
+                    }));
         }
     }
 
@@ -574,8 +578,8 @@ public class GameMainLayer extends AbstractWindow {
         }
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,
                 (Point p) -> {
-                    Actor m = gameState.getCurrentMap().actorAt(p.x, p.y);
-                    if (!m.friendly) {
+                    if (p != null) {
+                        Actor m = gameState.getCurrentMap().actorAt(p.x, p.y);
                         gameState.party.selectedActor.target.setMonster(m);
                     } else {
                         gameState.party.selectedActor.target.clear();
@@ -592,7 +596,13 @@ public class GameMainLayer extends AbstractWindow {
             return;
         }
         parent.addLayer(new GameTargetLayer(parent, targetableSquares, GameTargetLayer.TargetMode.TARGET,
-                (Point p) -> gameState.party.selectedActor.target.setFloor(p)
+                (Point p) -> {
+                    if (p != null) {
+                        gameState.party.selectedActor.target.setFloor(p);
+                    } else {
+                        gameState.party.selectedActor.target.clear();
+                    }
+                }
         ));
     }
 }

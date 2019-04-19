@@ -65,7 +65,10 @@ public class GameTargetLayer extends AbstractWindow {
             case SOUTH_WEST: moveCursor(-1, 1); break;
             case SOUTH_EAST: moveCursor(1, 1); break;
             case CYCLE: cycleCursor(); break;
-            case CANCEL: stopLooking(); break;
+            case CANCEL:
+                stopLooking();
+                callback.accept(null);
+                break;
             case OKAY:
             case LOOK:
             case CLOSE_DOOR:
@@ -151,7 +154,7 @@ public class GameTargetLayer extends AbstractWindow {
             case LOOK:
                 return "Press a direction or [space] to look at a location, x/[enter]/[esc] to cancel.";
             case CLOSE_DOOR:
-                return "Press a direction or [space] to select a door, c/[enter] to close, [esc] to cancel.";
+                return "Press a direction or [space] to select a door, C/[enter] to close, [esc] to cancel.";
             case TARGET:
                 return "Press a direction or [space] to select a target, t/[enter] to accept, [esc] to cancel.";
             default:
