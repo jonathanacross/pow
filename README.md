@@ -8,7 +8,8 @@ You play an adventurer, exploring levels, fighting monsters, and collecting
 items.  The goal is to collect the eight pearls of wisdom, each one guarded by
 a monster deep in a dungeon.
 
-<img src="screenshots/screenshot1.png" width="50%"> <img src="screenshots/screenshot2.png" width="50%">
+<img src="screenshots/screenshot1.png" width="25%"> <img src="screenshots/screenshot2.png" width="25%">
+<img src="screenshots/screenshot3.png" width="25%"> <img src="screenshots/screenshot4.png" width="25%">
 
 ## FAQ
 
