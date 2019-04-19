@@ -70,8 +70,8 @@ public class StatusWindow extends AbstractWindow {
 
         Table table = new Table();
         table.addRow(Arrays.asList(
-                new TableCell(new Tile(a.image, selected ? State.SELECTED : State.NORMAL), TableCell.VertAlign.TOP),
-                new TableCell(rightCol, TableCell.VertAlign.TOP)
+                new TableCell(new Tile(a.image, selected ? State.SELECTED : State.NORMAL), TableCell.VertAlign.TOP, TableCell.HorizAlign.LEFT),
+                new TableCell(rightCol, TableCell.VertAlign.TOP, TableCell.HorizAlign.LEFT)
         ));
         table.setHSpacing(Style.SMALL_MARGIN);
         table.autosize();

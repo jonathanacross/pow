@@ -110,12 +110,12 @@ public class PlayerInfoWindow extends AbstractWindow {
         table.addRow(getRow("Defense:   ", "" + player.getDefense(), font));
         table.addRow(getRow("Speed:     ", "" + player.getSpeed(), font));
         table.addRow(getRow("", "", font));
-        table.addRow(getRow("rFire:     ", "" + getResistPercent(player.baseStats.resFire), font));
-        table.addRow(getRow("rCold:     ", "" + getResistPercent(player.baseStats.resCold), font));
-        table.addRow(getRow("rAcid:     ", "" + getResistPercent(player.baseStats.resAcid), font));
-        table.addRow(getRow("rElec:     ", "" + getResistPercent(player.baseStats.resElec), font));
-        table.addRow(getRow("rPois:     ", "" + getResistPercent(player.baseStats.resPois), font));
-        table.addRow(getRow("rDam:      ", "" + getResistPercent(player.baseStats.resDam), font));
+        table.addRow(getRow("rFire:     ", "" + getResistPercent(player.getResFire()), font));
+        table.addRow(getRow("rCold:     ", "" + getResistPercent(player.getResCold()), font));
+        table.addRow(getRow("rAcid:     ", "" + getResistPercent(player.getResAcid()), font));
+        table.addRow(getRow("rElec:     ", "" + getResistPercent(player.getResElec()), font));
+        table.addRow(getRow("rPois:     ", "" + getResistPercent(player.getResPois()), font));
+        table.addRow(getRow("rDam:      ", "" + getResistPercent(player.getResDam()), font));
         table.addRow(getRow("", "", font));
         if (!player.spells.isEmpty()) {
             String spellsString = "Spells: " + TextUtils.formatList(getSpellNames(player.spells)) + ".";
@@ -140,9 +140,9 @@ public class PlayerInfoWindow extends AbstractWindow {
 
         Table table = new Table();
         List<TableCell> row = new ArrayList<>();
-        row.add(new TableCell(getCharInfoTable(player, infoWidth), TableCell.VertAlign.TOP));
+        row.add(new TableCell(getCharInfoTable(player, infoWidth), TableCell.VertAlign.TOP, TableCell.HorizAlign.LEFT));
         if (pet != null) {
-            row.add(new TableCell(getCharInfoTable(pet, infoWidth), TableCell.VertAlign.TOP));
+            row.add(new TableCell(getCharInfoTable(pet, infoWidth), TableCell.VertAlign.TOP, TableCell.HorizAlign.LEFT));
         }
         table.addRow(row);
         table.setHSpacing(Style.MARGIN);
@@ -234,7 +234,8 @@ public class PlayerInfoWindow extends AbstractWindow {
                 int col = bonus.position;
                 if (item.bonuses[bonusIdx] > 0) {
                     cells.get(row).set(col, new TableCell(
-                            new TextBox(Collections.singletonList(bonusString(item.bonuses[bonusIdx])), State.NORMAL, font)));
+                            new TextBox(Collections.singletonList(bonusString(item.bonuses[bonusIdx])), State.NORMAL, font),
+                            TableCell.VertAlign.CENTER, TableCell.HorizAlign.CENTER));
                 }
             }
         }
@@ -253,7 +254,8 @@ public class PlayerInfoWindow extends AbstractWindow {
             int col = bonus.position;
             if (bonusTotals[bonusIdx] > 0) {
                 cells.get(numRows-1).set(col, new TableCell(
-                            new TextBox(Collections.singletonList(bonusString(bonusTotals[bonusIdx])), State.NORMAL, font)));
+                            new TextBox(Collections.singletonList(bonusString(bonusTotals[bonusIdx])), State.NORMAL, font),
+                        TableCell.VertAlign.CENTER, TableCell.HorizAlign.CENTER));
             }
         }
 
@@ -334,7 +336,7 @@ public class PlayerInfoWindow extends AbstractWindow {
 
     private Table getPearlTable(Party party, Font font) {
         List<TableCell> header = new ArrayList<>();
-        header.add(new TableCell(new TextBox(Collections.singletonList("Pearls:"), State.NORMAL, font)));
+        header.add(new TableCell(new TextBox(Collections.singletonList("Returned Pearls:"), State.NORMAL, font)));
         for (int c = 1; c < GameConstants.NUM_PEARLS_TO_WIN; c++) {
             header.add(new TableCell(new Space()));
         }

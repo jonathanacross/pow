@@ -41,13 +41,8 @@ The keys . or number pad 5 indicate to stay still.
 
 ## Debugging commands
 
-Debugging commands (may be removed when the game is complete!)
-
 | Key  | Action                    |
 | ---  | ------------------------- |
-|   !  | Heal player               |
-|   +  | Gain a level              |
-|   S  | Save                      |
 |   (  | Show player AI info       |
 |   )  | Show pet AI info          |
 
@@ -101,10 +96,9 @@ emphasizes speed and dexterity.
 Bear: While lacking in magical ability, this animal can both hit the hardest
 and sustain the most damage.
 
-Note that pets cannot carry items, wear armor, or wield weapons, and cannot
-leave a level without the main player.  However, you can feed potions to your
-pet.  This may be useful to augment their speed or attack, or to replenish
-their health or mana.
+Note that pets cannot carry items, wear armor, or wield weapons. However, you
+can feed potions to your pet.  This may be useful to augment their speed or
+attack, or to replenish their health or mana.
 
 Keep your pet alive! If it dies, it's gone forever.
 

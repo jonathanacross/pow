@@ -131,6 +131,12 @@ public abstract class Actor extends DungeonObject implements Serializable {
                 conditions.get(ConditionTypes.DEFENSE).getIntensity() -
                 conditions.get(ConditionTypes.STUN).getIntensity());
     }
+    public int getResFire() { return baseStats.resFire + conditions.get(ConditionTypes.RESIST_FIRE).getIntensity(); }
+    public int getResCold() { return baseStats.resCold + conditions.get(ConditionTypes.RESIST_COLD).getIntensity(); }
+    public int getResAcid() { return baseStats.resAcid + conditions.get(ConditionTypes.RESIST_ACID).getIntensity(); }
+    public int getResElec() { return baseStats.resElec + conditions.get(ConditionTypes.RESIST_ELEC).getIntensity(); }
+    public int getResPois() { return baseStats.resPois + conditions.get(ConditionTypes.RESIST_POIS).getIntensity(); }
+    public int getResDam() { return baseStats.resDam + conditions.get(ConditionTypes.RESIST_DAM).getIntensity(); }
     public int getSpeed() { return baseStats.speed + conditions.get(ConditionTypes.SPEED).getIntensity(); }
     public abstract boolean canSeeLocation(GameState gs, Point point);
 

@@ -184,14 +184,24 @@ public class Table implements Widget {
                 // graphics.setColor(Color.RED);
                 // graphics.drawRect(xOffset, yOffset, colWidths.get(c), rowHeights.get(r));
                 TableCell cell = row.get(c);
-                // Adjust for vertical alignment.  By default, everything is left aligned.
+
+                // adjust horizontal alignment.
+                int dx = 0;
+                switch (cell.hAlign) {
+                    case LEFT: dx = 0; break;
+                    case CENTER: dx = (colWidths.get(c) - cell.widget.getWidth()) / 2; break;
+                    case RIGHT: dx = colWidths.get(c) - cell.widget.getWidth(); break;
+                }
+
+                // Adjust for vertical alignment.
                 int dy = 0;
                 switch (cell.vAlign) {
                     case TOP: dy = 0; break;
                     case CENTER: dy = (rowHeights.get(r) - cell.widget.getHeight()) / 2; break;
                     case BOTTOM: dy = rowHeights.get(r) - cell.widget.getHeight(); break;
                 }
-                cell.widget.draw(graphics, xOffset, yOffset + dy);
+
+                cell.widget.draw(graphics, xOffset + dx, yOffset + dy);
                 xOffset += colWidths.get(c) + hSpacing;
             }
 

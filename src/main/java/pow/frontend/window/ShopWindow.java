@@ -20,15 +20,14 @@ import java.util.List;
 
 public class ShopWindow extends AbstractWindow {
     private final List<ShopData.ShopEntry> entries;
-    private final Table layoutTable;
 
     public ShopWindow(boolean visible, GameBackend backend, Frontend frontend,
                       List<ShopData.ShopEntry> entries) {
         super(new WindowDim(0,0,0,0), visible, backend, frontend);
         this.entries = entries;
-        this.layoutTable = getLayoutTable();
-        int width = layoutTable.getWidth() + 2*Style.MARGIN;
-        int height = layoutTable.getHeight() + 2*Style.MARGIN;
+        Table layout = getLayoutTable();
+        int width = layout.getWidth() + 2*Style.MARGIN;
+        int height = layout.getHeight() + 2*Style.MARGIN;
         this.resize(frontend.layout.center(width, height));
     }
 
@@ -127,6 +126,7 @@ public class ShopWindow extends AbstractWindow {
         graphics.setColor(Style.BACKGROUND_COLOR);
         graphics.fillRect(0, 0, dim.width, dim.height);
 
-        layoutTable.draw(graphics, Style.MARGIN, Style.MARGIN);
+        Table layout = getLayoutTable();
+        layout.draw(graphics, Style.MARGIN, Style.MARGIN);
     }
 }

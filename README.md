@@ -8,7 +8,8 @@ You play an adventurer, exploring levels, fighting monsters, and collecting
 items.  The goal is to collect the eight pearls of wisdom, each one guarded by
 a monster deep in a dungeon.
 
-<img src="screenshots/dungeon.png" width="50%"> <img src="screenshots/forest.png" width="50%">
+<img src="screenshots/screenshot1.png" width="50%"> <img src="screenshots/screenshot2.png" width="50%">
+<img src="screenshots/screenshot3.png" width="50%"> <img src="screenshots/screenshot4.png" width="50%">
 
 ## FAQ
 
@@ -16,6 +17,13 @@ a monster deep in a dungeon.
 
 **A:** You will need Java 8 on your computer to run Pearls of Wisdom.  Once you
 have it, just double-click the .jar file.
+
+Additionally, you can run PoW through the command line, and specify a custom font.  
+For example:
+
+```
+java pow-0.9.0-jar-with-dependencies.jar -Dfont.name="Helvetica" -Dfont.size=14
+```
 
 **Q:** Where are my games stored?
 
