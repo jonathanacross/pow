@@ -99,6 +99,7 @@ public class ParseUtils {
             case "poison": params.actionName = ActionParams.ActionName.POISON_ACTION; break;
             case "moveToArea": params.actionName = ActionParams.ActionName.MOVE_TO_AREA_ACTION; break;
             case "heal": params.actionName = ActionParams.ActionName.HEAL_ACTION; break;
+            case "restoreHealth": params.actionName = ActionParams.ActionName.RESTORE_HEALTH_ACTION; break;
             case "restoreMana": params.actionName = ActionParams.ActionName.RESTORE_MANA_ACTION; break;
             case "restore": params.actionName = ActionParams.ActionName.RESTORE_ACTION; break;
             case "enterShop": params.actionName = ActionParams.ActionName.ENTER_SHOP_ACTION; break;

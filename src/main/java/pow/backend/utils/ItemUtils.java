@@ -69,7 +69,7 @@ public class ItemUtils {
         int actionValue = item.actionParams.number;
         switch (item.actionParams.actionName) {
             case MODIFY_SPEED_ACTION: bonus = expFit(actionValue, 1, 10, 3, 1000); break;
-            case HEAL_ACTION: bonus = linFit(actionValue, 20, 8, 320, 800); break;
+            case RESTORE_HEALTH_ACTION: bonus = linFit(actionValue, 20, 8, 320, 800); break;
             case RESTORE_MANA_ACTION: bonus = linFit(actionValue, 15, 6, 240, 600); break;
             case RESTORE_ACTION: bonus = linFit(actionValue, 30, 24, 480, 2400); break;
             case HEROISM_ACTION: bonus = expFit(actionValue, 8, 25, 16, 2500); break;

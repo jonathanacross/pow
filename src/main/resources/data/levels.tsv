@@ -59,7 +59,8 @@ d6l3	Crypt 3	57		D		d6l2		shapeDLA	crypt			skeleton mage,skeleton warrior,skelet
 d6l4	Crypt 4	58		D		d6l3		shapeDLA	crypt		skeletal dragon	skeleton mage,skeleton warrior,skeleton archer,mummy,pink ghost,vampire,evil eye,floating skull,vampire bat
 dig desert1	Khorixas Desert	60	8	N,E,S,W	6,7			recursiveInterpolation	dig desert,tower,dungeon entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 town4	Huab Outpost	61	8	N,E,S,W	8			town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
-dig desert2	Khorixas Desert	62	8	N,E,S,W	8			recursiveInterpolation	dig desert,tower,dungeon entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
+dig desert2	Khorixas Desert	62	8	N,E,S,W	8			recursiveInterpolation	dig desert,tower,brown cave entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
+troll cave	Troll Cave	65		D		dig desert2		delve	desert cave		black troll	troll mage,troll warrior,troll archer,blue dragon,red cobra
 dig desert3	Khorixas Desert	63	8	N,E,S,W	8			recursiveInterpolation	dig desert,tower,dungeon entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 dig desert4	Khorixas Desert	64	8	N,E,S,W	8			recursiveInterpolation	dig desert,tower,dungeon entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 d7l1	Omaruru Cave 1	65		D		dig desert4		cellularAutomata	2,false,brown cave			troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
@@ -68,7 +69,7 @@ d7l3	Omaruru Cave 3	67		D		d7l2		cellularAutomata	2,false,brown cave			troll mag
 d7l4	Omaruru Cave 4	68		D		d7l3		cellularAutomata	2,false,brown cave		oliphant	troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
 ocean1	Cihuati Ocean	70	9	N,E,S,W	8			recursiveInterpolation	water,stairs up,stairs down	outside		copper jellyfish,scaryfish,water whirlwind,octopus,medusa,sea dragon
 ocean2	Cihuati Ocean	71	9	N,E,S,W	9			recursiveInterpolation	water,stairs up,stairs down	outside		copper jellyfish,scaryfish,water whirlwind,octopus,medusa,sea dragon
-turtle island   Turtle Island		71	9	N,E,S,W	9			mountain	stairs up,stairs down	outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,sea dragon
+turtle island	Turtle Island	71	9	N,E,S,W	9			mountain	stairs up,stairs down	outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,sea dragon
 volcano1	Ulukau Volcano	72	10	N,E,S,W	9			recursiveInterpolation	volcano,tower,dungeon entrance	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
 volcano2	Ulukau Volcano	73	10	N,E,S,W	10		closed	recursiveInterpolation	volcano,tower,dungeon entrance	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
 volcano3	Mouth of Ulukau	74	10	N,E,S,W	10			radial	volcano	outside,hot		demon archer,demon rogue,green dragon,red dragon,creeping magma,lava beetle,mumak,fire vortex
