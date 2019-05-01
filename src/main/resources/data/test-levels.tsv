@@ -1,11 +1,10 @@
 #id	name	level	group	possible dirs	from groups	from id	teleport	generator	genParams	flags	boss	monsters
 terrain	Terrain Test	0					open	terrain test	basement	permLight		
 pearl room	Pearl Temple	1		U		terrain		premade	pearlroom,basement	permLight		farmer,jester,beggar,salesman
+dig desert2	Khorixas Desert	62		E		terrain		recursiveInterpolation	dig desert,tower,brown cave entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
+troll cave	Troll Cave	65		D		dig desert2		delve	desert cave		black troll	troll mage,troll warrior,troll archer,blue dragon,red cobra
 island	Island	2		D		terrain		ripple	stairs up,stairs down	outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon
-desert	Desert	30		N		terrain		recursiveInterpolation	desert,tower,brown cave entrance	outside		gray wolf,brown scorpion
-blacktowerl1	Black tower 1	24		U		desert		premade	blacktowerl1,black tower	permLight		bot,blue snake,blue beetle
-blacktowerl2	Black Tower 2	25		U		blacktowerl1		premade	blacktowerl2,black tower	permLight	blue wizard	bot,blue snake,blue beetle
-digdesert	Dig desert	25		E		terrain		recursiveInterpolation	forest,tower,green cave entrance		white rat	blue ghost,pink ghost,evil eye
+digdesert	Dig desert	25		S		dig desert2		recursiveInterpolation	forest,tower,green cave entrance		white rat	blue ghost,pink ghost,evil eye
 item	Items	2		W		terrain		item test	crypt			
 cave	Cave	17		D		island		cellularAutomata	1,true,basement	poisonGas	minotaur	brown scorpion,goldfish,chess knight,pink ghost
 arena	Arena	99		S		terrain		arena	dungeon		evil incarnate	:all:

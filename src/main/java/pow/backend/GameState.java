@@ -27,7 +27,6 @@ public class GameState implements Serializable {
 
     public GameState(Player player) {
         int seed = (new Random()).nextInt();
-        System.out.println("starting seed = " + seed);
         this.rng = new Random(seed);
         this.party = new Party(player);
         this.world = new GameWorld(rng, party); // fixes positions of player and pet

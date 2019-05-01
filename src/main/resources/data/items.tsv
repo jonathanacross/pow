@@ -107,13 +107,13 @@ amethyst	& amethyst~	amethyst	amethyst	none	gem			11	90	1	1	0	con:1
 dragon egg	& dragon egg~	dragon egg	dragon egg	none	gem,special			-1	-1	1	1	0	str:2,dex:2,int:2,con:2
 # potions													
 small mana potion	& small mana potion~	small blue potion	restore 15 mana	none	potion	restoreMana:15:		1	30	0	0	0	
-small health potion	& small health potion~	small red potion	restore 20 heath	none	potion	heal:20:		1	30	0	0	0	
+small health potion	& small health potion~	small red potion	restore 20 heath	none	potion	restoreHealth:20:		1	30	0	0	0	
 small restore potion	& small restore potion~	small purple potion	restore 30 health/mana	none	potion	restore:30:		11	40	0	0	0	
 mana potion	& mana potion~	medium blue potion	restore 60 mana	none	potion	restoreMana:60:		31	60	0	0	0	
-health potion	& health potion~	medium red potion	restore 80 health	none	potion	heal:80:		31	60	0	0	0	
+health potion	& health potion~	medium red potion	restore 80 health	none	potion	restoreHealth:80:		31	60	0	0	0	
 restore potion	& restore potion~	medium purple potion	restore 120 health/mana	none	potion	restore:120:		41	70	0	0	0	
 large mana potion	& large mana potion~	large blue potion	restore 240 mana	none	potion	restoreMana:240:		61	90	0	0	0	
-large health potion	& large health potion~	large red potion	restore 320 heath	none	potion	heal:320:		61	90	0	0	0	
+large health potion	& large health potion~	large red potion	restore 320 heath	none	potion	restoreHealth:320:		61	90	0	0	0	
 large restore potion	& large restore potion~	large purple potion	restore 480 health/mana	none	potion	restore:480:		71	90	0	0	0	
 mountain dew potion	& potion~ of mountain dew	small green potion	+1 speed for 30 turns	none	potion	modifySpeed:1:		0	60	0	0	0	
 #test poison potion	& potion~ of poison	white potion	poison	none	potion	poison:1:		0	60	0	0	0	

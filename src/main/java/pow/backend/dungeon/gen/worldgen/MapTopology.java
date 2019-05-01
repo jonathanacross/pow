@@ -27,10 +27,7 @@ public class MapTopology {
         if (attempts > 100) {
             throw new RuntimeException("couldn't create world topology after 100 attempts. failing.");
         }
-
-        System.out.println(this.toString());
     }
-
 
     // Makes a string to show the topology; useful for debugging, primarily.
     // Only shows the rooms where z = 0, since 3d is hard.

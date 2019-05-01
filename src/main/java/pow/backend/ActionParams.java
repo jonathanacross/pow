@@ -25,6 +25,7 @@ public class ActionParams implements Serializable {
         HEAL_ACTION,
         HEROISM_ACTION,
         AGILITY_ACTION,
+        RESTORE_HEALTH_ACTION,
         RESTORE_MANA_ACTION,
         RESTORE_ACTION,
         UNLOCK_DOOR_ACTION,
@@ -67,6 +68,8 @@ public class ActionParams implements Serializable {
                 return new GotoArea(params.name, params.point);
             case HEAL_ACTION:
                 return new Heal(actor, params.number);
+            case RESTORE_HEALTH_ACTION:
+                return new RestoreHealth(actor, params.number);
             case RESTORE_MANA_ACTION:
                 return new RestoreMana(actor, params.number);
             case RESTORE_ACTION:
