@@ -417,8 +417,17 @@ public class WorldDataGen {
     }
 
     private static MapGenerator buildDelveGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
-        ProtoTranslator style = getProtoTranslator(params);
-        return new Delve(GameConstants.DELVE_AREA_SIZE, GameConstants.DELVE_AREA_SIZE, style, monsterIds, level, flags);
+        String[] subParams = params.split(",", 2);
+        int digStyle = Integer.parseInt(subParams[0]);
+        ProtoTranslator style = getProtoTranslator(subParams[1]);
+        if (digStyle == 1) {
+            // tighter, smaller levels
+            return new Delve(GameConstants.DELVE_AREA_SIZE, GameConstants.DELVE_AREA_SIZE, 1, 8, 5, false, style, monsterIds, level, flags);
+        } else {
+            // larger, more open levels
+            int size = (int)(Math.round(GameConstants.DELVE_AREA_SIZE * 1.5));
+            return new Delve(size, size, 1, 5, 5, true, style, monsterIds, level, flags);
+        }
     }
 
     private static MapGenerator buildCellularAutomataGenerator(String params, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {

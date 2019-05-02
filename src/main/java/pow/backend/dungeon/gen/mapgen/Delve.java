@@ -14,18 +14,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-// from http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern
-// C code at http://angband.pl/files/delve_b.c
+// From http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern
+// Based on C code at http://angband.pl/files/delve_b.c
 public class Delve implements MapGenerator {
 
-    private int width;
-    private int height;
-    private int neighborMin;  // 1 <= neighborMin <= 3
-    private int neighborMax;  // neighborMin <= neighborMax <= 8
-    private int connChance;   // 0 <= connChance <= 100
-    private ProtoTranslator translator;
-    private int level;
-    private MonsterIdGroup monsterIds;
+    private final int width;
+    private final int height;
+    private final int neighborMin;  // 1 <= neighborMin <= 3
+    private final int neighborMax;  // neighborMin <= neighborMax <= 8
+    private final int connChance;   // 0 <= connChance <= 100
+    private final boolean cardinalOnly;  // if true, then will dig passages that only follow cardinal directions
+    private final ProtoTranslator translator;
+    private final int level;
+    private final MonsterIdGroup monsterIds;
     private final GameMap.Flags flags;
 
     private static final Point[] OFFSETS = {
@@ -53,13 +54,7 @@ public class Delve implements MapGenerator {
             1, 1, 2, 1, 2, 1, 2, 1, 2, 2, 3, 2, 2, 1, 2, 1,   // e0
             1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1};  // f0
 
-    public Delve(int width, int height, ProtoTranslator translator, MonsterIdGroup monsterIds,
-                 int level, GameMap.Flags flags) {
-        // reasonable defaults for this game
-        this(width, height, 1, 8, 5, translator, monsterIds, level, flags);
-    }
-
-    private Delve(int width, int height, int neighborMin, int neighborMax, int connChance,
+    public Delve(int width, int height, int neighborMin, int neighborMax, int connChance, boolean cardinalOnly,
                  ProtoTranslator translator, MonsterIdGroup monsterIds, int level, GameMap.Flags flags) {
         assert (1 <= neighborMin && neighborMin <= 3);
         assert (neighborMin <= neighborMax && neighborMax <= 8);
@@ -70,6 +65,7 @@ public class Delve implements MapGenerator {
         this.neighborMin = neighborMin;
         this.neighborMax = neighborMax;
         this.connChance = connChance;
+        this.cardinalOnly = cardinalOnly;
         this.translator = translator;
         this.monsterIds = monsterIds;
         this.level = level;
@@ -193,6 +189,11 @@ public class Delve implements MapGenerator {
             int j = pi[i];
             int px = x + OFFSETS[j].x;
             int py = y + OFFSETS[j].y;
+            if (cardinalOnly && (OFFSETS[j].x * OFFSETS[j].y != 0)) {
+                // skip diagonal directions
+                continue;
+            }
+
             if (interior(map, px, py) && (map[px][py] == ava)) {
                 cellStore.store(px, py);
             }

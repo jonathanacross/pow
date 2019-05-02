@@ -2,7 +2,7 @@
 terrain	Terrain Test	0					open	terrain test	basement	permLight		
 pearl room	Pearl Temple	1		U		terrain		premade	pearlroom,basement	permLight		farmer,jester,beggar,salesman
 dig desert2	Khorixas Desert	62		E		terrain		recursiveInterpolation	dig desert,tower,brown cave entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
-troll cave	Troll Cave	65		D		dig desert2		delve	desert cave		black troll	troll mage,troll warrior,troll archer,blue dragon,red cobra
+troll cave	Troll Cave	65		N		terrain		delve	2,desert cave	permLight	black troll	troll mage,troll warrior,troll archer,blue dragon,red cobra
 island	Island	2		D		terrain		ripple	stairs up,stairs down	outside	purple turtle	yellow turtle,red turtle,scaryfish,octopus,medusa,sea dragon
 digdesert	Dig desert	25		S		dig desert2		recursiveInterpolation	forest,tower,green cave entrance		white rat	blue ghost,pink ghost,evil eye
 item	Items	2		W		terrain		item test	crypt			

@@ -35,10 +35,10 @@ water2	Daria Sea	31	4	N,E,S,W	4			recursiveInterpolation	water,stairs up,stairs 
 snow1	Kir Highlands	32	5	N,E,S,W	4			recursiveInterpolation	snow,tower,dungeon entrance	outside		dark elf mage,dark elf archer,dark elf rogue,blue beetle,gray wolf,bear,big red spiny
 snow2	Kir Highlands	33	5	N,E,S,W	5		closed	recursiveInterpolation	snow,tower,dungeon entrance	outside		dark elf mage,dark elf archer,dark elf rogue,blue beetle,gray wolf,bear,big red spiny
 snow3	Kir Highlands	34	5	N,E,S,W	5			recursiveInterpolation	snow,tower,dungeon entrance	outside		dark elf mage,dark elf archer,dark elf rogue,blue beetle,gray wolf,bear,big red spiny
-d4l1	Ice Cave 1	35		D		snow3		delve	ice cave			dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
-d4l2	Ice Cave 2	36		D		d4l1		delve	ice cave		Hagar the Merciless	dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
-d4l3	Ice Cave 3	37		D		d4l2		delve	ice cave			dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
-d4l4	Ice Cave 4	38		D		d4l3		delve	ice cave		ice creature	dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
+d4l1	Ice Cave 1	35		D		snow3		delve	1,ice cave			dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
+d4l2	Ice Cave 2	36		D		d4l1		delve	1,ice cave		Hagar the Merciless	dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
+d4l3	Ice Cave 3	37		D		d4l2		delve	1,ice cave			dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
+d4l4	Ice Cave 4	38		D		d4l3		delve	1,ice cave		ice creature	dark elf mage,dark elf warrior,dark elf archer,baby blue dragon,baby yellow dragon,white wolf,frost giant
 swamp1	Canoas Swamp	40	6	N,E,S,W	4			recursiveInterpolation	swamp,tower,dungeon entrance	outside,poisonGas		orc archer,orc rogue,baby green dragon,gold dragonfly,purple worms,griffin,copperhead snake
 town3	Okonogan Village	41	6	N,E,S,W	6			town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
 swamp2	Canoas Swamp	42	6	N,E,S,W	6			recursiveInterpolation	swamp,tower,dungeon entrance	outside,poisonGas		orc archer,orc rogue,baby green dragon,gold dragonfly,purple worms,griffin,copperhead snake
@@ -60,7 +60,7 @@ d6l4	Crypt 4	58		D		d6l3		shapeDLA	crypt		skeletal dragon	skeleton mage,skeleton
 dig desert1	Khorixas Desert	60	8	N,E,S,W	6,7			recursiveInterpolation	dig desert,tower,dungeon entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 town4	Huab Outpost	61	8	N,E,S,W	8			town	town	outside,permLight		farmer,mangy leper,jester,beggar,salesman
 dig desert2	Khorixas Desert	62	8	N,E,S,W	8			recursiveInterpolation	dig desert,tower,brown cave entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
-troll cave	Troll Cave	65		D		dig desert2		delve	desert cave		black troll	troll mage,troll warrior,troll archer,blue dragon,red cobra
+troll cave	Troll Cave	65		D		dig desert2		delve	2,desert cave		black troll	troll mage,troll warrior,troll archer,blue dragon,red cobra
 dig desert3	Khorixas Desert	63	8	N,E,S,W	8			recursiveInterpolation	dig desert,tower,dungeon entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 dig desert4	Khorixas Desert	64	8	N,E,S,W	8			recursiveInterpolation	dig desert,tower,dungeon entrance	outside		troll mage,troll archer,troll rogue,yellow dragon,red komodo,giant roc,zombie,red cobra,sandworm
 d7l1	Omaruru Cave 1	65		D		dig desert4		cellularAutomata	2,false,brown cave			troll mage,troll warrior,troll archer,blue dragon,yellow dragon,giant roc,zombie,red cobra
