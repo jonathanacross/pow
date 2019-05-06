@@ -3,12 +3,16 @@ package pow.frontend.utils;
 import pow.frontend.Style;
 import pow.frontend.widget.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 // Reads a *very* limited set of markdown.  Supported features:
 // - paragraphs
 // - tables (requiring |s at beginning and end of each row).  Allows tables without a header row, as well)
 // - section headers with # and ##
+// - one level of unordered lists, using asterisks *
 public class MarkdownReader {
 
     public abstract static class MarkdownElement {
@@ -56,6 +60,36 @@ public class MarkdownReader {
         public Widget convertToWidget(int width) {
             State state = this.level == 1 ? State.HEADER1 : State.HEADER2;
             return new TextBox(Collections.singletonList(text), state, Style.getDefaultFont(), width);
+        }
+    }
+
+    public static class MarkdownList extends MarkdownElement {
+        final String text;
+
+        public MarkdownList(List<String> lines) {
+            // Remove #'s from the beginning and trim.
+            List<String> trimmedLines = new ArrayList<>();
+            for (String line : lines) {
+                String tLine = line.replaceAll("^\\*", "").trim();
+                trimmedLines.add(tLine);
+            }
+
+            this.text = String.join(" ", trimmedLines);
+        }
+
+        @Override
+        public Widget convertToWidget(int width) {
+            Table table = new Table();
+            table.addRow(Arrays.asList(
+                    // unicode 2022 is a bullet
+                    new TableCell(new TextBox(Collections.singletonList("\u2022"), State.NORMAL, Style.getDefaultFont()),
+                            TableCell.VertAlign.TOP, TableCell.HorizAlign.LEFT),
+                    new TableCell(new TextBox(Collections.singletonList(this.text), State.NORMAL, Style.getDefaultFont(),
+                            width - 12 - Style.MARGIN))
+            ));
+            table.autosize();
+            table.setHSpacing(Style.MARGIN);
+            return table;
         }
     }
 
@@ -134,6 +168,8 @@ public class MarkdownReader {
             return new MarkdownTable(lines);
         } else if (firstLine.startsWith("#")) {
             return new MarkdownHeader(lines);
+        } else if (firstLine.startsWith("*")) {
+            return new MarkdownList(lines);
         } else {
             return new MarkdownParagraph(lines);
         }

@@ -399,7 +399,6 @@ public class AutoItem {
         return result;
     }
 
-
     private static DungeonItem makeItem(String id, DungeonItem.Slot slot, int toHit, int toDam, int toDef) {
         return new DungeonItem(id, id, id, id, slot,
                 DungeonItem.ArtifactSlot.NONE,
