@@ -42,7 +42,7 @@ Additionally, you can run PoW through the command line, and specify a custom fon
 For example:
 
 ```
-java pow-0.9.0-jar-with-dependencies.jar -Dfont.name="Helvetica" -Dfont.size=14
+java pow-1.0.0-jar-with-dependencies.jar -Dfont.name="Helvetica" -Dfont.size=14
 ```
 
 **Q:** Oops, something's wrong.  I think I found a bug.  Or, I have some feedback
