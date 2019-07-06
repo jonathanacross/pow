@@ -64,22 +64,23 @@ can reopen the game where you last saved.
 There are four different characters you can choose to play.  Each type has a
 somewhat different flavor, having different spells and strengths.
 
-Archer: This character has average stats, but does more ranged damage (using
-bows) than all other characters, so they will tend to favor long-range attacks.
+* Archer: This character has average stats, but does more ranged damage (using
+  bows) than all other characters, so they will tend to favor long-range
+  attacks.
 
-Mage: This character is rather weak physically, but has an arsenal of powerful
-magic to attack.
+* Mage: This character is rather weak physically, but has an arsenal of
+  powerful magic to attack.
 
-Warrior: This character is physically strong, favoring hand-to-hand combat.
-Occasionally their attacks may stun an enemy, which lowers their defenses while
-they recover.
+* Warrior: This character is physically strong, favoring hand-to-hand combat.
+  Occasionally their attacks may stun an enemy, which lowers their defenses
+  while they recover.
 
-Rogue: This character, though not as powerful as a warrior, is still quick and
-agile. Their attacks may occasionally poison an enemy, sapping their strength
-over a period of time.
+* Rogue: This character, though not as powerful as a warrior, is still quick
+  and agile. Their attacks may occasionally poison an enemy, sapping their
+  strength over a period of time.
 
-Half Dragon: This character is physically stronger and more dexterous than any
-human, also has the ability to do breath attacks.
+* Half Dragon: This character is physically stronger and more dexterous than
+  any human, also has the ability to do breath attacks.
 
 ## Pets
 
@@ -87,14 +88,14 @@ You will have the opportunity to gain a pet during the game.
 
 The pets are as follows:
 
-Fox: Similar to a mage, this animal is weaker physically but has powerful
-magical abilities.
+* Fox: Similar to a mage, this animal is weaker physically but has powerful
+  magical abilities.
 
-Panther: This animal is strong and fast; it does modest physical damage, but
-emphasizes speed and dexterity.
+* Panther: This animal is strong and fast; it does modest physical damage, but
+  emphasizes speed and dexterity.
 
-Bear: While lacking in magical ability, this animal can both hit the hardest
-and sustain the most damage.
+* Bear: While lacking in magical ability, this animal can both hit the hardest
+  and sustain the most damage.
 
 Note that pets cannot carry items, wear armor, or wield weapons. However, you
 can feed potions to your pet.  This may be useful to augment their speed or
@@ -177,6 +178,45 @@ they can upgrade the item for a fee.  Note that this is not reversible, so
 choose wisely!  The more powerful the item, the more expensive the upgrade will
 be.
 
+## Picking up items
+
+The easiest way to pick up items is to press 'g'.  This command tries to
+intelligently pick up and wear items that are better than items you already
+have.  Here are the rules it follows:
+
+* Gold will always be picked up.
+
+* Unique/game items will always be picked up.
+
+* If you are missing a weapon or armor for a specific slot, always pick up and
+  wear the item.
+
+* If the stats for equipment/armor is strictly better than one you are wearing,
+  then upgrade your items and drop the old ones.  Thus, if you are wearing a
+  ring (+2 hit, +1 dam), and see a ring (+2 hit, +2 dam) on the floor, this
+  will automatically pick up and wear the better ring and drop the old one.
+
+* Potions, gems, and arrows matching your current inventory will be picked up.
+
+* Items that don't match anything in your inventory will not be picked up.
+
+* Items that aren't strictly better than your existing items will not be picked
+  up.  For example, say you have a ring (+1 rFire, +2 rCold) and you are
+  standing on a ring (+2 rFire, +5 rElec).  The second ring will not be picked
+  up, because it does not have better cold resistance, even though you may
+  consider it superior because the total resistance bonus is greater.  Later in
+  the game this sort of situation may arise often, so so look carefully and
+  don't always rely on the auto-optimization.
+
+Note that if there are multiple items that will be picked up and worn, then
+using 'g' will take multiple turns.  If there are monsters attacking you, be
+careful.
+
+If you want to manually pick up or use an item on the ground, press 'G'.  This
+is needed when auto-optimization doesn't pick up an item you want, or when you
+want to use a particular item in the fewest turns (e.g., drink a healing potion
+on the ground while under attack).
+
 ## Targeting
 
 In order to cast offensive spells or fire arrows at monsters, it is necessary
@@ -195,5 +235,5 @@ You can change the window size by dragging the border. You can
 change the font and size used by running PoW from the command line.
 Note that even non-monospaced fonts work well.
 
-java pow-0.9.0-jar-with-dependencies.jar -Dfont.name="Monaco" -Dfont.size=16
+java pow-1.0.0-jar-with-dependencies.jar -Dfont.name="Monaco" -Dfont.size=16
 
