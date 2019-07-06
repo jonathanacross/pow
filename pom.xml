@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.juggle5</groupId>
     <artifactId>pow</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,7 +29,7 @@
         <connection>scm:git:git@github.com:jonathanacross/pow.git</connection>
         <url>scm:git:git@github.com:jonathanacross/pow.git</url>
         <developerConnection>scm:git:git@github.com:jonathanacross/pow.git</developerConnection>
-      <tag>v1.0.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <build>
