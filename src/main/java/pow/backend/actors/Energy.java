@@ -9,9 +9,9 @@ import java.io.Serializable;
 public class Energy implements Serializable {
     private static final int MIN_SPEED = 0;
     private static final int NORMAL_SPEED = 6;
-    private static final int MAX_SPEED = 12;
+    private static final int MAX_SPEED = 15;
 
-    private static final int ACTION_COST = 240;
+    private static final int ACTION_COST = 480;
 
     // How much energy is gained each game turn for each speed.
     // Each increase is approximately 2^(1/3) = 1.25992105 times larger
@@ -30,7 +30,10 @@ public class Energy implements Serializable {
             120,    // 2x normal speed
             151,
             190,
-            240     // 4x normal speed
+            240,    // 4x normal speed
+            302,
+            381,
+            480     // 8x normal speed
             };
 
     private int energy = 0;

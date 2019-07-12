@@ -29,6 +29,7 @@ rift	rift	6	20	breath	stun	7	10	40	1	0	0.3	strength	range {s}, dam {1}, stun {2}
 chain lightning	chain lightning	7	20	chain	lightning	7	0	30	2	0	0	intelligence	range {s}, dam {1}	casts a chain of lightning
 circle cut	circle cut	3	5	circle cut	damage	2	0	0	1	0	0	attack	range {s}, dam {1}	cuts in a circle
 lesser heal	lesser heal	4	3	heal	none	0	0	0	0	10	0	intelligence	heal {2}% / {2} hp	casts lesser heal
+medium heal	medium heal	10	9	heal	none	0	0	0	0	25	0	intelligence	heal {2}% / {2} hp	casts medium heal
 greater heal	greater heal	7	15	heal	none	0	0	0	0	40	0	intelligence	heal {2}% / {2} hp	casts greater heal
 group heal	group heal	10	25	group heal	none	0	0	0	0	30	0	intelligence	heal all {2}% / {2} hp	casts group heal
 blink	blink	2	5	phase	none	3	0	0	0	0	0	intelligence	max dist {s}	casts blink

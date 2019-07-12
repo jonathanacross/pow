@@ -133,6 +133,7 @@ public class MonsterGenerator {
                     case "stationary": stationary = true; break;
                     case "knightmove": knightmove = true; break;
                     case "boss": break;
+                    case "finalboss": break;
                     case "friendly": friendly = true; break;
                     case "invisible": invisible = true; break;
                     case "aquatic": aquatic = true; break;
