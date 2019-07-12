@@ -4,7 +4,7 @@ public class GameConstants {
     // --------------- world construction -----------------
 
     // Use test world (for debugging).
-    public final static boolean USE_TEST_WORLD = true;
+    public final static boolean USE_TEST_WORLD = false;
 
     // How many monsters per square there should be, on average.
     public final static double MONSTER_DENSITY = 1.0 / 100.0;
